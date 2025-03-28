@@ -18,6 +18,3 @@ local.properties
 #intellij project files
 *.iml
 *.idea
-
-#Debug module
-core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/Debug.java
