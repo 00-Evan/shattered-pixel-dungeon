@@ -76,7 +76,7 @@ public class AscendedForm extends ArmorAbility {
 		{
 			type = buffType.POSITIVE;
 
-			detachesAtZero = true;
+			detachesAtZero = false;
 		}
 
 		public static float DURATION = 10f;
