@@ -31,11 +31,11 @@ public class Debug {
     public static float Spawn_Multiplier = 1;
     public static float Respawn_Multiplier = 1;
 
-    public static final int Starting_Floor = 7;
+    public static final int Starting_Floor = 1;
     public static final int Starting_HeroLevel = 8;
     public static final int Starting_Str = 10;
 
-    private static final boolean ActOnStart = true;
+    private static final boolean ActOnStart = false;
     private static final boolean ActOnLoad = false;
     private static final ArrayList<Class<?extends Item>> Starting_Items;
     static {
@@ -43,7 +43,6 @@ public class Debug {
                 /*PotionOfHaste.class, PotionOfMindVision.class, PotionOfInvisibility.class, ElixirOfFeatherFall.class,
                 ScrollOfMagicMapping.class, ScrollOfTeleportation.class, ScrollOfUpgrade.class,
                 TimekeepersHourglass.class*/
-                Berry.class, SmallRation.class
         ));
     }
     public static void Starting_Bag() {
