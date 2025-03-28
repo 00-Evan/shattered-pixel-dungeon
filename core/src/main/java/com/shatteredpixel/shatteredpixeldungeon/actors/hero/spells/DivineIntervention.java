@@ -93,6 +93,10 @@ public class DivineIntervention extends ClericSpell {
 
 	public static class DivineShield extends ShieldBuff{
 
+		{
+			shieldUsePriority = 1;
+		}
+
 		@Override
 		public boolean act() {
 

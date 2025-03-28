@@ -70,6 +70,8 @@ public class Blocking extends Weapon.Enchantment {
 
 		{
 			type = buffType.POSITIVE;
+
+			shieldUsePriority = 2;
 		}
 
 		@Override
