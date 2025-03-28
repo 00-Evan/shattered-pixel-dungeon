@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
+import static com.shatteredpixel.shatteredpixeldungeon.actors.Actor.TICK;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -197,7 +199,7 @@ public class EtherealChains extends Artifact {
 				Actor.add(new Pushing(enemy, enemy.pos, pulledPos, new Callback() {
 					public void call() {
 						enemy.pos = pulledPos;
-						Buff.affect(enemy, Cripple.class, baseCripple + 3*chargeUse);
+						Buff.affect(enemy, Cripple.class, baseCripple + (enemy.cooldown() % TICK) + 3*chargeUse);
 
 						charge -= chargeUse;
 						Invisibility.dispel(hero);

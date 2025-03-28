@@ -46,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.SkeletonSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.BArray;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
@@ -455,7 +456,7 @@ public class Necromancer extends Mob {
 		}
 
 		private void teleportSpend(Char enemy){
-			spend(max(enemy.cooldown() - this.cooldown(), 0));
+			spend(GameMath.gate(0f,enemy.cooldown() - this.cooldown(), 1f));
 		}
 		
 		public static class NecroSkeletonSprite extends SkeletonSprite{
