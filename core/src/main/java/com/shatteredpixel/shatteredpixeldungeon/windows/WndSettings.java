@@ -856,7 +856,7 @@ public class WndSettings extends WndTabbed {
 			chkQuickslot.checked(SPDSettings.Polished.quickslot());
 			add(chkQuickslot);
 
-			chkQuickTransitions = new CheckBox(Messages.get(this, "quickslot")){
+			chkQuickTransitions = new CheckBox(Messages.get(this, "quick_transitions")){
 				@Override
 				protected void onClick() {
 					super.onClick();
