@@ -336,6 +336,8 @@ public class TimekeepersHourglass extends Artifact {
 		}
 
 		public void endFreeze() {
+			spend(-1f);
+
 			if(turnPenalty <= 0) detach();
 			else slowTimers.add(this);
 		}
@@ -415,7 +417,9 @@ public class TimekeepersHourglass extends Artifact {
 
 		@Override
 		public String iconTextDisplay() {
-			return Integer.toString((int)(cooldown()+.0001f));
+			int cd = (int)(cooldown()+.0001f);
+			if(target.buff(timeFreeze.class) != null) cd--;
+			return Integer.toString(cd);
 		}
 
 		@Override
