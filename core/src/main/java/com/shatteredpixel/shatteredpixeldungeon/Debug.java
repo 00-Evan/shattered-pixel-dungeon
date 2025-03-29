@@ -45,7 +45,7 @@ public class Debug {
     public static final int Starting_HeroLevel = 1;
     public static final int Starting_Str = 10;
 
-    private static final boolean ActOnStart = false;
+    private static final boolean ActOnStart = true;
     private static final boolean ActOnLoad = false;
     private static final ArrayList<Class<?extends Item>> Starting_Items;
     static {
@@ -53,6 +53,7 @@ public class Debug {
                 /*PotionOfHaste.class, PotionOfMindVision.class, PotionOfInvisibility.class, ElixirOfFeatherFall.class,
                 ScrollOfMagicMapping.class, ScrollOfTeleportation.class, ScrollOfUpgrade.class,
                 TimekeepersHourglass.class*/
+                PotionOfHaste.class
         ));
     }
     public static void Starting_Bag() {
