@@ -15,6 +15,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.AquaBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfFeatherFall;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -26,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Glaive;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shortsword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.Reflection;
 
@@ -53,7 +55,7 @@ public class Debug {
                 /*PotionOfHaste.class, PotionOfMindVision.class, PotionOfInvisibility.class, ElixirOfFeatherFall.class,
                 ScrollOfMagicMapping.class, ScrollOfTeleportation.class, ScrollOfUpgrade.class,
                 TimekeepersHourglass.class*/
-                PotionOfHaste.class
+                AquaBrew.class, Shuriken.class
         ));
     }
     public static void Starting_Bag() {
@@ -81,7 +83,7 @@ public class Debug {
 
 
     public static void DebugCollect(Class<?extends Item> itemType) {
-        DebugCollect(itemType, 0, 99);
+        DebugCollect(itemType, 0, 9);
     }
     public static void DebugCollect(Class<?extends Item> itemType, int level) {
         DebugCollect(itemType, level, 1);

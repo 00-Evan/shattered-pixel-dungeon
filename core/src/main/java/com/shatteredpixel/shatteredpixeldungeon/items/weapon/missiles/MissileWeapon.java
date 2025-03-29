@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -311,6 +312,8 @@ abstract public class MissileWeapon extends Weapon {
 				}
 			}
 			Dungeon.level.drop( this, cell ).sprite.drop();
+		} else {
+			//Dungeon.quickslot.clearMissile(this);
 		}
 	}
 	
