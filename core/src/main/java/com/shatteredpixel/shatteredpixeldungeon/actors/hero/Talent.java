@@ -576,7 +576,7 @@ public enum Talent {
 	public static class NatureBerriesDropped extends CounterBuff{{revivePersists = true;}};
 
 	public static void onFoodEaten( Hero hero, float foodVal, Item foodSource ){
-		boolean snack = foodSource instanceof HornOfPlenty && foodVal <= HornOfPlenty.satietyPerCharge;
+		boolean snack = foodSource instanceof HornOfPlenty && foodVal <= HornOfPlenty.getSatietyPerCharge();
 
 		if (hero.hasTalent(HEARTY_MEAL)){
 			//3/5 HP healed, when hero is below 30% health
