@@ -126,6 +126,10 @@ public class TimekeepersHourglass extends Artifact {
 							@Override
 							protected void onSelect(int index) {
 								if (index == 0) {
+									if(charge < 2) {
+										//GLog.i( Messages.get(this, "no_charge") );
+										//return;
+									}
 									GLog.i( Messages.get(TimekeepersHourglass.class, "onstasis") );
 									GameScene.flash(0x80FFFFFF);
 									Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
@@ -335,6 +339,10 @@ public class TimekeepersHourglass extends Artifact {
 			spend(time);
 		}
 
+		public void delay(float time) {
+			spend(time);
+		}
+
 		public void endFreeze() {
 			spend(-1f);
 
@@ -458,12 +466,23 @@ public class TimekeepersHourglass extends Artifact {
 		public boolean attachTo(Char target) {
 
 			if (super.attachTo(target)) {
+				int usedCharge = Math.min(charge, 2);
+				int stasisTime = 5*usedCharge;
+
+				timeFreeze f = target.buff(timeFreeze.class);
+				if(f != null) f.detach();
+
+				for(timeDebt debt : slowTimers) {
+					debt.delay(stasisTime+1);
+				}
+				Slow slow = target.buff(Slow.class);
+				if(slow != null) slow.delay(stasisTime+1);
+
 
 				Invisibility.dispel();
 
-				int usedCharge = Math.min(charge, 2);
 				//buffs always act last, so the stasis buff should end a turn early.
-				spend(5*usedCharge);
+				spend(stasisTime);
 
 				//shouldn't punish the player for going into stasis frequently
 				Hunger hunger = Buff.affect(target, Hunger.class);
