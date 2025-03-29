@@ -867,7 +867,7 @@ public class Hero extends Char {
 		BuffIndicator.refreshHero();
 		BuffIndicator.refreshBoss();
 
-		if(paralysed > 0 || !(curAction instanceof HeroAction.Move)) {
+		if(paralysed > 0 || (!(curAction instanceof HeroAction.Move) && !(curAction instanceof HeroAction.PickUp))) {
 			Polished.noEnemiesLast = Polished.noEnemiesSeen();
 		}
 
@@ -1103,6 +1103,8 @@ public class Hero extends Char {
 			
 			Heap heap = Dungeon.level.heaps.get( pos );
 			if (heap != null) {
+				Polished.noEnemiesLast = Polished.noEnemiesSeen();
+
 				Item item = heap.peek();
 				if (item.doPickUp( this )) {
 					heap.pickUp();
@@ -1167,7 +1169,7 @@ public class Hero extends Char {
 			return false;
 
 		} else if (getCloser( dst )) {
-
+			if(justMoved) Polished.noEnemiesLast = Polished.noEnemiesSeen();
 			return true;
 
 		} else {
