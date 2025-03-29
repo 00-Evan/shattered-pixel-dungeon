@@ -7,6 +7,16 @@ android {
 
     sourceSets.main.assets.srcDirs = [new File(project(':core').projectDir, "/src/main/assets")]
 
+    signingConfigs {
+        //release key
+        release {
+            storeFile file('C:')
+            storePassword ""
+            keyAlias ""
+            keyPassword ""
+        }
+    }
+
     defaultConfig {
         manifestPlaceholders = [appName:appName]
         applicationId appPackageName
@@ -19,6 +29,7 @@ android {
         targetSdkVersion appAndroidTargetSDK
         resourceConfigurations += ['en_US', 'cs', 'de', 'el', 'es', 'fr', 'hu', 'in', 'it', 'ja', 'ko', 'nl', 'pl', 'pt', 'ru', 'tr', 'uk', 'vi', 'zh_CN']
 
+        signingConfig signingConfigs.release
     }
 
     buildTypes {
