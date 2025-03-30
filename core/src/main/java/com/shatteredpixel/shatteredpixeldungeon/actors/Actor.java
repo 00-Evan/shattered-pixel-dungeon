@@ -56,6 +56,14 @@ public abstract class Actor implements Bundlable {
 
 	protected abstract boolean act();
 
+	protected void alignTurnWheel( float time ) {
+		float diff = (time - this.time) % TICK;
+		if(diff < 0) diff++;
+
+		//we dont wanna use spendConstant() to avoid rounding
+		this.time += diff;
+	}
+
 	//Always spends exactly the specified amount of time, regardless of time-influencing factors
 	protected void spendConstant( float time ){
 		this.time += time;
@@ -90,6 +98,14 @@ public abstract class Actor implements Bundlable {
 		return time - now;
 	}
 
+	public void resetTime() {
+		spendConstant(-time);
+		if (this instanceof Char){
+			for (Buff b : ((Char) this).buffs()){
+				b.spendConstant(-time);
+			}
+		}
+	}
 	public void clearTime() {
 		spendConstant(-Actor.now());
 		if (this instanceof Char){

@@ -106,7 +106,7 @@ public class Blob extends Actor {
 	
 	@Override
 	public boolean act() {
-		
+
 		spend( TICK );
 		
 		if (volume > 0) {
@@ -126,6 +126,13 @@ public class Blob extends Actor {
 				area.setEmpty();
 				//clear any values remaining in off
 				System.arraycopy(cur, 0, off, 0, cur.length);
+
+				if(Dungeon.level.blobs.containsKey(this.getClass())) {
+					Dungeon.level.blobs.remove(this.getClass());
+				}
+				if(Actor.all().contains(this)) {
+					Actor.remove(this);
+				}
 			}
 		}
 		
@@ -245,13 +252,21 @@ public class Blob extends Actor {
 		
 		if (gas == null) {
 			gas = Reflection.newInstance(type);
-			//this ensures that gasses do not get an 'extra turn' if they are added by a mob or buff
-			if (Actor.curActorPriority() < gas.actPriority) {
-				gas.spend(1f);
-			}
 		}
 		
 		if (gas != null){
+			//set the gas to act immediately
+			if(Actor.all().contains(gas)) {
+				gas.timeToNow();
+			} else {
+				gas.resetTime();
+			}
+
+			if (Actor.curActorPriority() < gas.actPriority) {
+				//this ensures that gasses do not get an 'extra turn' if they are added by a mob or buff
+				gas.spend(1f);
+			}
+
 			level.blobs.put( type, gas );
 			gas.seed( level, cell, amount );
 		}
