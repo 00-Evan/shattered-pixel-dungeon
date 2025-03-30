@@ -326,8 +326,7 @@ public class Wandmaker extends NPC {
 				given = false;
 				wand1 = (Wand) Generator.random(Generator.Category.WAND);
 				wand1.cursed = false;
-				// POLISHED: limit upgrades to +2
-				if(wand1.level() <= 1) wand1.upgrade();
+				wand1.upgrade();
 
 				wand2 = (Wand) Generator.random(Generator.Category.WAND);
 				ArrayList<Item> toUndo = new ArrayList<>();
@@ -339,8 +338,7 @@ public class Wandmaker extends NPC {
 					Generator.undoDrop(i);
 				}
 				wand2.cursed = false;
-				// POLISHED: limit upgrades to +2
-				if(wand2.level() <= 1) wand2.upgrade();
+				wand2.upgrade();
 				
 			}
 		}
