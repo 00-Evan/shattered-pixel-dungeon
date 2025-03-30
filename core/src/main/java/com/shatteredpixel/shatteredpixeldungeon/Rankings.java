@@ -189,8 +189,8 @@ public enum Rankings {
 
 			Statistics.exploreScore = 0;
 			int scorePerFloor = Statistics.floorsExplored.size * 50;
-			for (Boolean b : Statistics.floorsExplored.valueList()){
-				if (b) Statistics.exploreScore += scorePerFloor;
+			for (float percentExplored : Statistics.floorsExplored.valueList()){
+				Statistics.exploreScore += Math.round(percentExplored*scorePerFloor);
 			}
 
 			Statistics.totalBossScore = 0;
