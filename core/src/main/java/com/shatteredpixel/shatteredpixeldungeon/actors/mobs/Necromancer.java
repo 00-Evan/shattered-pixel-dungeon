@@ -246,6 +246,13 @@ public class Necromancer extends Mob {
 	public void summonMinion(){
 		if (Actor.findChar(summoningPos) != null) {
 
+			//cancel if character cannot be moved
+			if (Char.hasProp(Actor.findChar(summoningPos), Property.IMMOVABLE)){
+				summoning = false;
+				((NecromancerSprite)sprite).finishSummoning();
+				return;
+			}
+
 			int pushPos = pos;
 			for (int c : PathFinder.NEIGHBOURS8) {
 				if (Actor.findChar(summoningPos + c) == null
@@ -427,7 +434,7 @@ public class Necromancer extends Mob {
 				}
 
 			} else {
-				if(!enemySeen) return super.act(enemyInFOV, justAlerted);
+				if(!enemySeen || Dungeon.level.distance(pos, enemy.pos) > 4) return super.act(enemyInFOV, justAlerted);
 				else {
 					spend(TICK);
 					return true;
