@@ -255,75 +255,75 @@ public enum Document {
 	static {
 		boolean debug = DeviceCompat.isDebug();
 		//hero gets these when guidebook is collected
-		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_INTRO,          debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_EXAMINING,      debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_SURPRISE_ATKS,  debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_IDING,          debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_FOOD,           debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_ALCHEMY,        debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_DIEING,         debug ? READ : NOT_FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_INTRO,          READ);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_EXAMINING,      READ);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_SURPRISE_ATKS,  READ);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_IDING,          READ);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_FOOD,           READ);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_ALCHEMY,        READ);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_DIEING,         READ);
 		//given in sewers
-		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_SEARCHING,      debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put("Strength",           debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put("Upgrades",           debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put("Looting",            debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put("Levelling",          debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put("Positioning",        debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put("Magic",              debug ? READ : NOT_FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_SEARCHING,      READ);
+		ADVENTURERS_GUIDE.pagesStates.put("Strength",           READ);
+		ADVENTURERS_GUIDE.pagesStates.put("Upgrades",           READ);
+		ADVENTURERS_GUIDE.pagesStates.put("Looting",            READ);
+		ADVENTURERS_GUIDE.pagesStates.put("Levelling",          READ);
+		ADVENTURERS_GUIDE.pagesStates.put("Positioning",        READ);
+		ADVENTURERS_GUIDE.pagesStates.put("Magic",              READ);
 		
 		//given in sewers
-		ALCHEMY_GUIDE.pagesStates.put("Potions",                debug ? READ : NOT_FOUND);
-		ALCHEMY_GUIDE.pagesStates.put("Stones",                 debug ? READ : NOT_FOUND);
-		ALCHEMY_GUIDE.pagesStates.put("Energy_Food",            debug ? READ : NOT_FOUND);
-		ALCHEMY_GUIDE.pagesStates.put("Exotic_Potions",         debug ? READ : NOT_FOUND);
-		ALCHEMY_GUIDE.pagesStates.put("Exotic_Scrolls",         debug ? READ : NOT_FOUND);
+		ALCHEMY_GUIDE.pagesStates.put("Potions",                READ);
+		ALCHEMY_GUIDE.pagesStates.put("Stones",                 READ);
+		ALCHEMY_GUIDE.pagesStates.put("Energy_Food",            READ);
+		ALCHEMY_GUIDE.pagesStates.put("Exotic_Potions",         READ);
+		ALCHEMY_GUIDE.pagesStates.put("Exotic_Scrolls",         READ);
 		//given in prison
-		ALCHEMY_GUIDE.pagesStates.put("Bombs",                  debug ? READ : NOT_FOUND);
-		ALCHEMY_GUIDE.pagesStates.put("Weapons",                debug ? READ : NOT_FOUND);
-		ALCHEMY_GUIDE.pagesStates.put("Brews_Elixirs",          debug ? READ : NOT_FOUND);
-		ALCHEMY_GUIDE.pagesStates.put("Spells",                 debug ? READ : NOT_FOUND);
+		ALCHEMY_GUIDE.pagesStates.put("Bombs",                  READ);
+		ALCHEMY_GUIDE.pagesStates.put("Weapons",                READ);
+		ALCHEMY_GUIDE.pagesStates.put("Brews_Elixirs",          READ);
+		ALCHEMY_GUIDE.pagesStates.put("Spells",                 READ);
 
 		INTROS.pagesStates.put("Dungeon",                       READ);
-		INTROS.pagesStates.put("Sewers",                        debug ? READ : NOT_FOUND);
-		INTROS.pagesStates.put("Prison",                        debug ? READ : NOT_FOUND);
-		INTROS.pagesStates.put("Caves",                         debug ? READ : NOT_FOUND);
-		INTROS.pagesStates.put("City",                          debug ? READ : NOT_FOUND);
-		INTROS.pagesStates.put("Halls",                         debug ? READ : NOT_FOUND);
+		INTROS.pagesStates.put("Sewers",                        READ);
+		INTROS.pagesStates.put("Prison",                        READ);
+		INTROS.pagesStates.put("Caves",                         READ);
+		INTROS.pagesStates.put("City",                          READ);
+		INTROS.pagesStates.put("Halls",                         READ);
 
-		SEWERS_GUARD.pagesStates.put("new_position",            debug ? READ : NOT_FOUND);
-		SEWERS_GUARD.pagesStates.put("dangerous",               debug ? READ : NOT_FOUND);
-		SEWERS_GUARD.pagesStates.put("crabs",                   debug ? READ : NOT_FOUND);
-		SEWERS_GUARD.pagesStates.put("guild",                   debug ? READ : NOT_FOUND);
-		SEWERS_GUARD.pagesStates.put("lost",                    debug ? READ : NOT_FOUND);
-		SEWERS_GUARD.pagesStates.put("not_worth",               debug ? READ : NOT_FOUND);
+		SEWERS_GUARD.pagesStates.put("new_position",            READ);
+		SEWERS_GUARD.pagesStates.put("dangerous",               READ);
+		SEWERS_GUARD.pagesStates.put("crabs",                   READ);
+		SEWERS_GUARD.pagesStates.put("guild",                   READ);
+		SEWERS_GUARD.pagesStates.put("lost",                    READ);
+		SEWERS_GUARD.pagesStates.put("not_worth",               READ);
 
-		PRISON_WARDEN.pagesStates.put("journal",                debug ? READ : NOT_FOUND);
-		PRISON_WARDEN.pagesStates.put("recruits",               debug ? READ : NOT_FOUND);
-		PRISON_WARDEN.pagesStates.put("mines",                  debug ? READ : NOT_FOUND);
-		PRISON_WARDEN.pagesStates.put("rotberry",               debug ? READ : NOT_FOUND);
-		PRISON_WARDEN.pagesStates.put("no_support",             debug ? READ : NOT_FOUND);
-		PRISON_WARDEN.pagesStates.put("letter",                 debug ? READ : NOT_FOUND);
+		PRISON_WARDEN.pagesStates.put("journal",                READ);
+		PRISON_WARDEN.pagesStates.put("recruits",               READ);
+		PRISON_WARDEN.pagesStates.put("mines",                  READ);
+		PRISON_WARDEN.pagesStates.put("rotberry",               READ);
+		PRISON_WARDEN.pagesStates.put("no_support",             READ);
+		PRISON_WARDEN.pagesStates.put("letter",                 READ);
 
-		CAVES_EXPLORER.pagesStates.put("expedition",            debug ? READ : NOT_FOUND);
-		CAVES_EXPLORER.pagesStates.put("gold",                  debug ? READ : NOT_FOUND);
-		CAVES_EXPLORER.pagesStates.put("troll",                 debug ? READ : NOT_FOUND);
-		CAVES_EXPLORER.pagesStates.put("city",                  debug ? READ : NOT_FOUND);
-		CAVES_EXPLORER.pagesStates.put("alive",                 debug ? READ : NOT_FOUND);
-		CAVES_EXPLORER.pagesStates.put("report",                debug ? READ : NOT_FOUND);
+		CAVES_EXPLORER.pagesStates.put("expedition",            READ);
+		CAVES_EXPLORER.pagesStates.put("gold",                  READ);
+		CAVES_EXPLORER.pagesStates.put("troll",                 READ);
+		CAVES_EXPLORER.pagesStates.put("city",                  READ);
+		CAVES_EXPLORER.pagesStates.put("alive",                 READ);
+		CAVES_EXPLORER.pagesStates.put("report",                READ);
 
-		CITY_WARLOCK.pagesStates.put("old_king",                debug ? READ : NOT_FOUND);
-		CITY_WARLOCK.pagesStates.put("resistance",              debug ? READ : NOT_FOUND);
-		CITY_WARLOCK.pagesStates.put("failure",                 debug ? READ : NOT_FOUND);
-		CITY_WARLOCK.pagesStates.put("more_powerful",           debug ? READ : NOT_FOUND);
-		CITY_WARLOCK.pagesStates.put("new_power",               debug ? READ : NOT_FOUND);
-		CITY_WARLOCK.pagesStates.put("seen_it",                 debug ? READ : NOT_FOUND);
+		CITY_WARLOCK.pagesStates.put("old_king",                READ);
+		CITY_WARLOCK.pagesStates.put("resistance",              READ);
+		CITY_WARLOCK.pagesStates.put("failure",                 READ);
+		CITY_WARLOCK.pagesStates.put("more_powerful",           READ);
+		CITY_WARLOCK.pagesStates.put("new_power",               READ);
+		CITY_WARLOCK.pagesStates.put("seen_it",                 READ);
 
-		HALLS_KING.pagesStates.put("Rejection",                 debug ? READ : NOT_FOUND);
-		HALLS_KING.pagesStates.put("amulet",                    debug ? READ : NOT_FOUND);
-		HALLS_KING.pagesStates.put("ritual",                    debug ? READ : NOT_FOUND);
-		HALLS_KING.pagesStates.put("new_king",                  debug ? READ : NOT_FOUND);
-		HALLS_KING.pagesStates.put("thing",                     debug ? READ : NOT_FOUND);
-		HALLS_KING.pagesStates.put(KING_ATTRITION,              debug ? NOT_FOUND : NOT_FOUND);
+		HALLS_KING.pagesStates.put("Rejection",                 READ);
+		HALLS_KING.pagesStates.put("amulet",                    READ);
+		HALLS_KING.pagesStates.put("ritual",                    READ);
+		HALLS_KING.pagesStates.put("new_king",                  READ);
+		HALLS_KING.pagesStates.put("thing",                     READ);
+		HALLS_KING.pagesStates.put(KING_ATTRITION,              NOT_FOUND);
 
 	}
 	
