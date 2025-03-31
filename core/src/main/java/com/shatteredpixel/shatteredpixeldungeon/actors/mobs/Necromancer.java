@@ -250,6 +250,7 @@ public class Necromancer extends Mob {
 			if (Char.hasProp(Actor.findChar(summoningPos), Property.IMMOVABLE)){
 				summoning = false;
 				((NecromancerSprite)sprite).finishSummoning();
+				spend(-TICK);
 				return;
 			}
 
