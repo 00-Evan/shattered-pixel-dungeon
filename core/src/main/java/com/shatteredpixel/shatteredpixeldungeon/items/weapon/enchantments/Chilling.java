@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
@@ -37,11 +38,18 @@ public class Chilling extends Weapon.Enchantment {
 	@Override
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
 		int level = Math.max( 0, weapon.buffedLvl() );
+		float procChance;
+
+		// lvl 0 - 33%
+		// lvl 1 - 43%
+		// lvl 2 - 50%
+		procChance = (level+2f)/(level+6f) * procChanceMultiplier(attacker);
 
 		// lvl 0 - 25%
-		// lvl 1 - 40%
-		// lvl 2 - 50%
-		float procChance = (level+1f)/(level+4f) * procChanceMultiplier(attacker);
+		// lvl 1 - 32%
+		// lvl 2 - 38%
+		if(!Dungeon.level.water[defender.pos]) procChance /= 1.33f;
+
 		if (Random.Float() < procChance) {
 
 			float powerMulti = Math.max(1f, procChance);
