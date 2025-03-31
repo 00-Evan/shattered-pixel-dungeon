@@ -98,6 +98,10 @@ import java.util.TimeZone;
 
 public class Dungeon {
 
+	public static class Polished {
+		public static final int DEFAULT_VIEW_DISTANCE = 8;
+	}
+
 	//enum of items which have limited spawns, records how many have spawned
 	//could all be their own separate numbers, but this allows iterating, much nicer for bundling/initializing.
 	public static enum LimitedDrops {

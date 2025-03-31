@@ -793,7 +793,50 @@ public abstract class Char extends Actor {
 		needsShieldUpdate = false;
 		return cachedShield;
 	}
-	
+
+	boolean isExternal(Char defender, Object src) {
+
+		if(!(src instanceof Char)) {
+			//dont get def boost against debuffs, traps and such
+			return false;
+		}
+
+		else if(Dungeon.level instanceof RegularLevel) {
+			Char attacker = (Char)src;
+			RegularLevel level = (RegularLevel)Dungeon.level;
+
+			ArrayList<Integer> roomCells = new ArrayList<>();
+			Room r = (level.room(pos));
+
+			if(r != null) {
+				for (Point p : r.getPoints()){
+					roomCells.add(level.pointToCell(p));
+				}
+
+				return !roomCells.contains(attacker.pos);
+			}
+
+			else {
+				boolean enemyRoom = true;
+				for(int i : PathFinder.NEIGHBOURS9) {
+					if ( level.room( attacker.pos+i ) == null )
+						enemyRoom = false;
+				}
+
+				if(enemyRoom) {
+					return true;
+				}
+
+				else if(Dungeon.level.distance(attacker.pos, defender.pos) <= Dungeon.Polished.DEFAULT_VIEW_DISTANCE) {
+					//if within a reasonable distance, we assume they're in the same room
+					return false;
+				}
+				else return true;
+			}
+
+		}
+		else return false;
+	}
 	public void damage( int dmg, Object src ) {
 		
 		if (!isAlive() || dmg < 0) {
@@ -895,23 +938,14 @@ public abstract class Char extends Actor {
 
 		dmg = Math.round(damage);
 
-		//we ceil these specifically to favor the player vs. champ dmg reduction
-		// most important vs. giant champions in the earlygame
-		for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
-			boolean externalAttack = false;
 
-			if(buff instanceof ChampionEnemy.Giant && Dungeon.level instanceof RegularLevel && src instanceof Char) {
-				ArrayList<Integer> roomCells = new ArrayList<>();
-				Room r = ((RegularLevel) Dungeon.level).room(pos);
+		ChampionEnemy.Giant giant = this.buff(ChampionEnemy.Giant.class);
+		if (giant != null){
+			boolean externalAttack = isExternal(this, src);
 
-				for (Point p : r.getPoints()){
-					roomCells.add(Dungeon.level.pointToCell(p));
-				}
-
-				externalAttack = !roomCells.contains(((Char)src).pos);
-			}
-
-			dmg = (int) Math.ceil(dmg * buff.damageTakenFactor(externalAttack));
+			//we ceil these specifically to favor the player vs. champ dmg reduction
+			// most important vs. giant champions in the earlygame
+			dmg = (int) Math.ceil(dmg * giant.damageTakenFactor(externalAttack));
 		}
 		
 		//TODO improve this when I have proper damage source logic
