@@ -53,8 +53,8 @@ public class Chilling extends Weapon.Enchantment {
 		if (Random.Float() < procChance) {
 
 			float powerMulti = Math.max(1f, procChance);
-			float durationToAdd = (Chill.TICK+1) * powerMulti;
-			float max = Chill.WATER_TICK;
+			float durationToAdd = (Chill.Polished.CHILL_TICK +1) * powerMulti;
+			float max = Chill.Polished.WATER_TICK;
 
 			Chill existing = defender.buff(Chill.class);
 			if (existing != null){
@@ -62,7 +62,7 @@ public class Chilling extends Weapon.Enchantment {
 				durationToAdd = Math.max(durationToAdd, 0);
 			}
 
-			Buff.affect(defender, Chill.class, durationToAdd).alignTurnWheel(defender.cooldown());
+			Buff.Polished.affectAligned(defender, Chill.class, durationToAdd);
 			Splash.at( defender.sprite.center(), 0xFFB2D6FF, 5);
 
 		}

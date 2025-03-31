@@ -36,7 +36,8 @@ public class FrostImbue extends FlavourBuff {
 	public static final float DURATION	= 50f;
 	
 	public void proc(Char enemy){
-		Buff.affect(enemy, Chill.class, 3f);
+		Buff.Polished.affectAligned(enemy, Chill.class, Chill.Polished.CHILL_TICK);
+
 		enemy.sprite.emitter().burst( SnowParticle.FACTORY, 3 );
 	}
 	
