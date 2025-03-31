@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
@@ -113,6 +114,23 @@ public class CrystalGuardian extends Mob{
 	@Override
 	public boolean reset() {
 		return true;
+	}
+
+	@Override
+	public int attackProc(Char enemy, int damage) {
+		//if enemy is hero, and they aren't currently fighting the spire, -100 points
+		if (enemy == Dungeon.hero){
+			boolean spireNear = false;
+			for (Mob m : Dungeon.level.mobs.toArray(new Mob[0])){
+				if (m instanceof CrystalSpire && m.HP != m.HT && Dungeon.level.distance(pos, m.pos) <= 8){
+					spireNear = true;
+				}
+			}
+			if (!spireNear){
+				Statistics.questScores[2] -= 100;
+			}
+		}
+		return super.attackProc(enemy, damage);
 	}
 
 	@Override

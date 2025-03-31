@@ -23,7 +23,9 @@ package com.shatteredpixel.shatteredpixeldungeon.items.quest;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -180,6 +182,35 @@ public class CorpseDust extends Item {
 		}
 	}
 
-	public static class DustWraith extends Wraith{};
+	public static class DustWraith extends Wraith{
+
+		private int hitCount = 0;
+
+		@Override
+		public int attackProc(Char enemy, int damage) {
+			if (enemy == Dungeon.hero){
+				hitCount++;
+				//first hit from each wraith is free, max of -200 point penalty per wraith
+				if (hitCount == 2 || hitCount == 3){
+					Statistics.questScores[1] -= 100;
+				}
+			}
+			return super.attackProc(enemy, damage);
+		}
+
+		private static final String HIT_COUNT = "hit_count";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(HIT_COUNT, hitCount);
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			hitCount = bundle.getInt(HIT_COUNT);
+		}
+	}
 
 }

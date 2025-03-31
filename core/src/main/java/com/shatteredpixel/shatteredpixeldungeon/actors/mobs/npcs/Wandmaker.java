@@ -446,7 +446,10 @@ public class Wandmaker extends NPC {
 			wand2 = null;
 			
 			Notes.remove( Notes.Landmark.WANDMAKER );
-			Statistics.questScores[1] = 2000;
+			//other quests award score when their boss is defeated
+			if (Quest.type == 1) {
+				Statistics.questScores[1] += 2000;
+			}
 		}
 	}
 }

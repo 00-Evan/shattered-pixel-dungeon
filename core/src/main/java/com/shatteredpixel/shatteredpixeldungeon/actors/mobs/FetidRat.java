@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StenchGas;
@@ -65,6 +66,9 @@ public class FetidRat extends Rat {
 		damage = super.attackProc( enemy, damage );
 		if (Random.Int(3) == 0) {
 			Buff.affect(enemy, Ooze.class).set( Ooze.DURATION );
+			if (enemy == Dungeon.hero && !Dungeon.level.water[enemy.pos]){
+				Statistics.questScores[0] -= 50;
+			}
 		}
 
 		return damage;
