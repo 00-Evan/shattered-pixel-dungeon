@@ -54,7 +54,7 @@ public class Chilling extends Weapon.Enchantment {
 
 			float powerMulti = Math.max(1f, procChance);
 			float durationToAdd = (Chill.Polished.CHILL_TICK +1) * powerMulti;
-			float max = Chill.Polished.WATER_TICK;
+			float max = Chill.Polished.WATER_TICK-1;
 
 			Chill existing = defender.buff(Chill.class);
 			if (existing != null){
