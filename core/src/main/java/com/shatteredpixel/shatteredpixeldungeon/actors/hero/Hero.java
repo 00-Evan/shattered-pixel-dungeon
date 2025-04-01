@@ -1635,7 +1635,9 @@ public class Hero extends Char {
 		dmg = Math.round(damage);
 
 		//we ceil this one to avoid letting the player easily take 0 dmg from tenacity early
-		dmg = (int)Math.ceil(dmg * RingOfTenacity.damageMultiplier( this ));
+		//POLISHED: we round normally, and then just set a min of 1. Why doesn't it work like this already?
+		dmg = Math.round(dmg * RingOfTenacity.damageMultiplier( this ));
+		dmg = Math.max(dmg, 1);
 
 		int preHP = HP + shielding();
 		if (src instanceof Hunger) preHP -= shielding();
