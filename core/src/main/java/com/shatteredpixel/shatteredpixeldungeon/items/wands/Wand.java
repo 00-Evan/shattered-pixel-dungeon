@@ -542,12 +542,11 @@ public abstract class Wand extends Item {
 	
 	@Override
 	public Item random() {
-		//POLISHED: adjusted chances to match melee weapons
-		//+0: 75% (3/4)
-		//+1: 20% (4/20)
-		//+2: 5%  (1/20)
+		//+0: 66.67% (2/3)
+		//+1: 26.67% (4/15)
+		//+2: 6.67%  (1/15)
 		int n = 0;
-		if (Random.Int(4) == 0) {
+		if (Random.Int(3) == 0) {
 			n++;
 			if (Random.Int(5) == 0) {
 				n++;
