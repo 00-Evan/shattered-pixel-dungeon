@@ -476,8 +476,10 @@ public abstract class Char extends Actor {
 			}
 
 			//POLISHED: do we let them stack?
-			if ( buff(Weakness.class) != null || buff(Brittle.class) != null ){
+			if ( buff(Weakness.class) != null ){
 				dmg *= 0.67f;
+			} else if(buff(Brittle.class) != null) {
+				dmg *= 0.75f;
 			}
 
 			//characters influenced by aggression deal 1/2 damage to bosses
@@ -503,8 +505,10 @@ public abstract class Char extends Actor {
 
 				//vulnerable specifically applies after armor reductions
 				//POLISHED: do we let them stack?
-				if (enemy.buff(Vulnerable.class) != null || enemy.buff(Brittle.class) != null) {
+				if (enemy.buff(Vulnerable.class) != null) {
 					effectiveDamage *= 1.33f;
+				} else if(enemy.buff(Brittle.class) != null) {
+					effectiveDamage *= 1.25f;
 				}
 
 				effectiveDamage = attackProc(enemy, effectiveDamage);
