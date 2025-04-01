@@ -163,31 +163,39 @@ public class WandOfCorruption extends Wand {
 			
 			//100% health: 5x resist   75%: 3.25x resist   50%: 2x resist   25%: 1.25x resist
 			enemyResist *= 1 + 4*Math.pow(enemy.HP/(float)enemy.HT, 2);
-			
-			//debuffs placed on the enemy reduce their resistance
-			for (Buff buff : enemy.buffs()){
-				if (MAJOR_DEBUFFS.containsKey(buff.getClass()))         enemyResist *= (1f-MAJOR_DEBUFF_WEAKEN);
-				else if (MINOR_DEBUFFS.containsKey(buff.getClass()))    enemyResist *= (1f-MINOR_DEBUFF_WEAKEN);
-				else if (buff.type == Buff.buffType.NEGATIVE)           enemyResist *= (1f-MINOR_DEBUFF_WEAKEN);
-			}
-			
-			//cannot re-corrupt or doom an enemy, so give them a major debuff instead
-			if(enemy.buff(Corruption.class) != null || enemy.buff(Doom.class) != null){
-				corruptingPower = enemyResist - 0.001f;
-			}
-			
-			if (corruptingPower > enemyResist){
-				corruptEnemy( enemy );
-			} else {
-				float debuffChance = corruptingPower / enemyResist;
-				if (Random.Float() < debuffChance){
-					debuffEnemy( enemy, MAJOR_DEBUFFS);
+
+			int chargesUsed = 0;
+			for(int i = 0; i < chargesPerCast(); i++) {
+				chargesUsed++;
+
+				float nerfedResist = enemyResist;
+
+				//debuffs placed on the enemy reduce their resistance
+				for (Buff buff : enemy.buffs()){
+					if (MAJOR_DEBUFFS.containsKey(buff.getClass()))         nerfedResist *= (1f-MAJOR_DEBUFF_WEAKEN);
+					else if (MINOR_DEBUFFS.containsKey(buff.getClass()))    nerfedResist *= (1f-MINOR_DEBUFF_WEAKEN);
+					else if (buff.type == Buff.buffType.NEGATIVE)           nerfedResist *= (1f-MINOR_DEBUFF_WEAKEN);
+				}
+
+				//cannot re-corrupt or doom an enemy, so give them a major debuff instead
+				if(enemy.buff(Corruption.class) != null || enemy.buff(Doom.class) != null){
+					corruptingPower = nerfedResist - 0.001f;
+				}
+
+				if (corruptingPower > nerfedResist){
+					corruptEnemy( enemy );
+					break;
 				} else {
-					debuffEnemy( enemy, MINOR_DEBUFFS);
+					float debuffChance = corruptingPower / nerfedResist;
+					if (Random.Float() < debuffChance){
+						debuffEnemy( enemy, MAJOR_DEBUFFS);
+					} else {
+						debuffEnemy( enemy, MINOR_DEBUFFS);
+					}
 				}
 			}
 
-			wandProc(ch, chargesPerCast());
+			wandProc(ch, chargesUsed);
 			Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, 0.8f * Random.Float(0.87f, 1.15f) );
 			
 		} else {
@@ -214,7 +222,10 @@ public class WandOfCorruption extends Wand {
 		Class<?extends FlavourBuff> debuffCls = (Class<? extends FlavourBuff>) Random.chances(debuffs);
 		
 		if (debuffCls != null){
-			Buff.append(enemy, debuffCls, 6 + buffedLvl()*3);
+			Buff debuff = Buff.append(enemy, debuffCls, 6 + buffedLvl()*3);
+			if(debuff instanceof Charm) {
+				((Charm) debuff).object = Dungeon.hero.id();
+			}
 		} else {
 			//if no debuff can be applied (all are present), then go up one tier
 			if (category == MINOR_DEBUFFS)          debuffEnemy( enemy, MAJOR_DEBUFFS);

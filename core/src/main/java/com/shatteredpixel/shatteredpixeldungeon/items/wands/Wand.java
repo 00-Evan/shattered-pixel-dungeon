@@ -67,6 +67,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
@@ -433,7 +434,12 @@ public abstract class Wand extends Item {
 	}
 
 	protected int chargesPerCast() {
-		return 1;
+		if (cursed ||
+				(charger != null && charger.target != null && charger.target.buff(WildMagic.WildMagicTracker.class) != null)){
+			return 1;
+		}
+		//consumes 30% of current charges, rounded up, with a min of 1 and a max of 3.
+		return (int) GameMath.gate(1, (int)Math.ceil(curCharges*0.3f), 3);
 	}
 	
 	public void fx(Ballistica bolt, Callback callback) {
