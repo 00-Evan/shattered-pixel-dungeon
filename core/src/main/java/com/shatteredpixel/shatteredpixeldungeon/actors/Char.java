@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Brittle;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
@@ -474,8 +475,11 @@ public abstract class Char extends Actor {
 				dmg *= 0.2f;
 			}
 
+			//POLISHED: do we let them stack?
 			if ( buff(Weakness.class) != null ){
 				dmg *= 0.67f;
+			} else if(buff(Brittle.class) != null) {
+				dmg *= 0.75f;
 			}
 
 			//characters influenced by aggression deal 1/2 damage to bosses
@@ -500,8 +504,11 @@ public abstract class Char extends Actor {
 				}
 
 				//vulnerable specifically applies after armor reductions
+				//POLISHED: do we let them stack?
 				if (enemy.buff(Vulnerable.class) != null) {
 					effectiveDamage *= 1.33f;
+				} else if(enemy.buff(Brittle.class) != null) {
+					effectiveDamage *= 1.25f;
 				}
 
 				effectiveDamage = attackProc(enemy, effectiveDamage);
@@ -642,7 +649,7 @@ public abstract class Char extends Actor {
 
 		float acuRoll = Random.Float( acuStat );
 		if (attacker.buff(Bless.class) != null) acuRoll *= 1.25f;
-		if (attacker.buff(  Hex.class) != null) acuRoll *= 0.8f;
+		if (attacker.buff(  Hex.class) != null) acuRoll *= 0.75f;
 		if (attacker.buff( Daze.class) != null) acuRoll *= 0.5f;
 		for (ChampionEnemy buff : attacker.buffs(ChampionEnemy.class)){
 			acuRoll *= buff.accuracyFactor();
@@ -657,7 +664,7 @@ public abstract class Char extends Actor {
 		
 		float defRoll = Random.Float( defStat );
 		if (defender.buff(Bless.class) != null) defRoll *= 1.25f;
-		if (defender.buff(  Hex.class) != null) defRoll *= 0.8f;
+		if (defender.buff(  Hex.class) != null) defRoll *= 0.75f;
 		if (defender.buff( Daze.class) != null) defRoll *= 0.5f;
 		for (ChampionEnemy buff : defender.buffs(ChampionEnemy.class)){
 			boolean surprise = (defender instanceof Mob && ((Mob)defender).surprisedBy(attacker));
