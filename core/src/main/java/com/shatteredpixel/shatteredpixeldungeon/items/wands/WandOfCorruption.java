@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Brittle;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
@@ -89,36 +90,38 @@ public class WandOfCorruption extends Wand {
 	private static final float MINOR_DEBUFF_WEAKEN = 1/4f;
 	private static final HashMap<Class<? extends Buff>, Float> MINOR_DEBUFFS = new HashMap<>();
 	static{
-		MINOR_DEBUFFS.put(Weakness.class,       2f);
-		MINOR_DEBUFFS.put(Vulnerable.class,     2f);
-		MINOR_DEBUFFS.put(Cripple.class,        1f);
-		MINOR_DEBUFFS.put(Blindness.class,      1f);
-		MINOR_DEBUFFS.put(Terror.class,         1f);
 
+		MINOR_DEBUFFS.put(Brittle.class,        2f);
+		MINOR_DEBUFFS.put(Hex.class,        	2f);
+		MINOR_DEBUFFS.put(Charm.class,        	1f);
+		MINOR_DEBUFFS.put(Cripple.class,        1f);
+
+		MINOR_DEBUFFS.put(Weakness.class,       0f);
+		MINOR_DEBUFFS.put(Vulnerable.class,     0f);
 		MINOR_DEBUFFS.put(Chill.class,          0f);
 		MINOR_DEBUFFS.put(Ooze.class,           0f);
-		MINOR_DEBUFFS.put(Roots.class,          0f);
-		MINOR_DEBUFFS.put(Vertigo.class,        0f);
 		MINOR_DEBUFFS.put(Drowsy.class,         0f);
 		MINOR_DEBUFFS.put(Bleeding.class,       0f);
 		MINOR_DEBUFFS.put(Burning.class,        0f);
 		MINOR_DEBUFFS.put(Poison.class,         0f);
+		MINOR_DEBUFFS.put(SoulMark.class,       0f);
+		MINOR_DEBUFFS.put(Corrosion.class,      0f);
 	}
 
 	private static final float MAJOR_DEBUFF_WEAKEN = 1/2f;
 	private static final HashMap<Class<? extends Buff>, Float> MAJOR_DEBUFFS = new HashMap<>();
 	static{
 		MAJOR_DEBUFFS.put(Amok.class,           3f);
-		MAJOR_DEBUFFS.put(Slow.class,           2f);
-		MAJOR_DEBUFFS.put(Hex.class,            2f);
-		MAJOR_DEBUFFS.put(Paralysis.class,      1f);
+		MAJOR_DEBUFFS.put(Daze.class,           2f);
+		MAJOR_DEBUFFS.put(Terror.class,         2f);
+		MAJOR_DEBUFFS.put(Slow.class,           1f);
 
-		MAJOR_DEBUFFS.put(Daze.class,           0f);
+		MAJOR_DEBUFFS.put(Roots.class,          0f);
+		MAJOR_DEBUFFS.put(Vertigo.class,        0f);
+		MAJOR_DEBUFFS.put(Paralysis.class,      0f);
+		MAJOR_DEBUFFS.put(Blindness.class,     	0f);
 		MAJOR_DEBUFFS.put(Dread.class,          0f);
-		MAJOR_DEBUFFS.put(Charm.class,          0f);
 		MAJOR_DEBUFFS.put(MagicalSleep.class,   0f);
-		MAJOR_DEBUFFS.put(SoulMark.class,       0f);
-		MAJOR_DEBUFFS.put(Corrosion.class,      0f);
 		MAJOR_DEBUFFS.put(Frost.class,          0f);
 		MAJOR_DEBUFFS.put(Doom.class,           0f);
 	}
