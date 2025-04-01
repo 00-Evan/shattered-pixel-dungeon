@@ -184,6 +184,9 @@ public class Burning extends Buff implements Hero.Doom {
 	
 	public void reignite( Char ch, float duration ) {
 		if (ch.isImmune(Burning.class)){
+			FireImbue fb = Buff.affect(ch, FireImbue.class);
+			fb.prolong(2f);
+
 			if (ch.glyphLevel(Brimstone.class) >= 0){
 				//generate avg of 1 shield per turn per 50% boost, to a max of 4x boost
 				float shieldChance = 2*(Armor.Glyph.genericProcChanceMultiplier(ch) - 1f);
