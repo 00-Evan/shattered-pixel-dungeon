@@ -22,6 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
@@ -36,6 +39,10 @@ public class Vampiric extends Weapon.Enchantment {
 	
 	@Override
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
+		if(attacker instanceof Hero) {
+			if( ((Hero)attacker).isStarving() || !Regeneration.regenOn() )
+				return damage;
+		}
 		
 		//chance to heal scales from 5%-30% based on missing HP
 		float missingPercent = (attacker.HT - attacker.HP) / (float)attacker.HT;
