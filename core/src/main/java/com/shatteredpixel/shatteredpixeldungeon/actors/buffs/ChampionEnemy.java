@@ -205,20 +205,21 @@ public abstract class ChampionEnemy extends Buff {
 		public void storeInBundle(Bundle bundle) {
 			super.storeInBundle(bundle);
 			bundle.put(Polished.COOLDOWN, polished.cooldown);
-			bundle.put(Polished.TIMER, polished.timer);
+			if(polished.timer != null) bundle.put(Polished.TIMER, polished.timer);
 		}
 		@Override
 		public void restoreFromBundle(Bundle bundle) {
 			super.restoreFromBundle(bundle);
 
 			//get rid of the spawn timer since we're loading
-			Actor.remove(polished.timer);
 			if(bundle.contains(Polished.COOLDOWN))
 				polished.cooldown = bundle.getBoolean(Polished.COOLDOWN);
 			if(bundle.contains(Polished.TIMER)) {
-				polished.timer = (Actor)bundle.get(Polished.COOLDOWN);
-				//restore the loaded one
-				Actor.add(polished.timer);
+				if (polished.timer == null) polished.initCooldown();
+				polished.timer.restoreFromBundle(bundle.getBundle(Polished.TIMER));
+			} else {
+				Actor.remove(polished.timer);
+				polished.timer = null;
 			}
 		}
 
