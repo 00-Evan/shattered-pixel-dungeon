@@ -67,7 +67,7 @@ public class MobSprite extends CharSprite {
 			health.killAndErase();
 		}
 		
-		parent.add( new ScaleTweener( this, new PointF( 0, 0 ), FALL_TIME ) {
+		if (parent != null) parent.add( new ScaleTweener( this, new PointF( 0, 0 ), FALL_TIME ) {
 			@Override
 			protected void onComplete() {
 				MobSprite.this.killAndErase();

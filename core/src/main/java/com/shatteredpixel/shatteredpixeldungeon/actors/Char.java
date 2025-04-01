@@ -586,7 +586,9 @@ public abstract class Char extends Actor {
 			
 		} else {
 
-			enemy.sprite.showStatus( CharSprite.NEUTRAL, enemy.defenseVerb() );
+			if (enemy.sprite != null){
+				enemy.sprite.showStatus( CharSprite.NEUTRAL, enemy.defenseVerb() );
+			}
 			if (visibleFight) {
 				//TODO enemy.defenseSound? currently miss plays for monks/crab even when they parry
 				Sample.INSTANCE.play(Assets.Sounds.MISS);
