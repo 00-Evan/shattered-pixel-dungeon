@@ -48,11 +48,16 @@ public class RunicBlade extends MeleeWeapon {
 
 	//Essentially it's a tier 4 weapon, with tier 3 base max damage, and tier 5 scaling.
 	//equal to tier 4 in damage at +5
-
+	//POLISHED: removed the higher scaling, kept the lower base damage
+	//instead, it gets a boost in enchantment power
 	@Override
 	public int max(int lvl) {
 		return  5*(tier) +                	//20 base, down from 25
-				Math.round(lvl*(tier+2));	//+6 per level, up from +5
+				Math.round(lvl*(tier+1));	//+5 per level, up from +5
+	}
+
+	public float enchantmentBoost() {
+		return .2f * buffedLvl();
 	}
 
 	@Override

@@ -41,7 +41,7 @@ public class Chilling extends Weapon.Enchantment {
 		// lvl 0 - 25%
 		// lvl 1 - 40%
 		// lvl 2 - 50%
-		float procChance = (level+1f)/(level+4f) * procChanceMultiplier(attacker);
+		float procChance = (level+1f)/(level+4f) * Polished_procChanceMultiplier(attacker, weapon);
 		if (Random.Float() < procChance) {
 
 			float powerMulti = Math.max(1f, procChance);
