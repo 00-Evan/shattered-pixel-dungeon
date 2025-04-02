@@ -57,6 +57,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.WildMagic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bee;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
@@ -73,6 +74,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
 
 import java.util.HashMap;
@@ -125,7 +127,19 @@ public class WandOfCorruption extends Wand {
 		MAJOR_DEBUFFS.put(Frost.class,          0f);
 		MAJOR_DEBUFFS.put(Doom.class,           0f);
 	}
-	
+
+	@Override
+	protected int chargesPerCast() {
+		if (cursed ||
+				(charger != null && charger.target != null && charger.target.buff(WildMagic.WildMagicTracker.class) != null)){
+			return 1;
+		}
+		//consumes 35% of current charges instead of the usual 30%
+		//2 charges at 3 (+1)
+		//3 charges at 6 (+4)
+		return (int) GameMath.gate(1, (int)Math.ceil(curCharges*0.35f), 3);
+	}
+
 	@Override
 	public void onZap(Ballistica bolt) {
 		Char ch = Actor.findChar(bolt.collisionPos);
@@ -263,6 +277,14 @@ public class WandOfCorruption extends Wand {
 
 			Buff.prolong( defender, Amok.class, Math.round((4+level*2) * powerMulti));
 		}
+	}
+
+	@Override
+	public String statsDesc() {
+		if (isIdentified())
+			return Messages.get(this, "stats_desc", chargesPerCast());
+		else
+			return Messages.get(this, "typical_stats_desc");
 	}
 
 	@Override
