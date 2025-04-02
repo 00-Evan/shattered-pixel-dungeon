@@ -56,8 +56,11 @@ public class RunicBlade extends MeleeWeapon {
 				Math.round(lvl*(tier+1));	//+5 per level, up from +5
 	}
 
-	public float enchantmentBoost() {
+	public float Polished_enchantmentBoost() {
 		return .2f * buffedLvl();
+	}
+	public static String Polished_enchantmentBoost(int buffedLvl) {
+		return Messages.decimalFormat("#.##x", 1+.2f*buffedLvl);
 	}
 
 	@Override
@@ -106,6 +109,15 @@ public class RunicBlade extends MeleeWeapon {
 				afterAbilityUsed(hero);
 			}
 		});
+	}
+
+	public String statsInfo(){
+		if (isIdentified()){
+			return Messages.get(this, "stats_desc",
+					Math.round(100f*(1f+Polished_enchantmentBoost())));
+		} else {
+			return Messages.get(this, "typical_stats_desc");
+		}
 	}
 
 	@Override

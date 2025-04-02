@@ -554,7 +554,7 @@ abstract public class Weapon extends KindOfWeapon {
 			}
 
 			if(weapon instanceof RunicBlade) {
-				multi += ((RunicBlade) weapon).enchantmentBoost();
+				multi += ((RunicBlade) weapon).Polished_enchantmentBoost();
 			}
 
 			return multi;
