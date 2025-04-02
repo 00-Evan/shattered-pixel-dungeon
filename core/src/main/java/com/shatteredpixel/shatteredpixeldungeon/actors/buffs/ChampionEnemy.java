@@ -111,7 +111,6 @@ public abstract class ChampionEnemy extends Buff {
 			case 4:             buffCls = Blessed.class;      break;
 			case 5:             buffCls = Growing.class;      break;
 		}
-		buffCls=Projecting.class;
 
 		if (Dungeon.mobsToChampion <= 0 && Dungeon.isChallenged(Challenges.CHAMPION_ENEMIES)) {
 			Buff.affect(m, buffCls);
