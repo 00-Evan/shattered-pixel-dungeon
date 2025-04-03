@@ -162,21 +162,27 @@ public class BrokenSeal extends Item {
 			BrokenSeal seal = (BrokenSeal) curItem;
 			if (item != null && item instanceof Armor) {
 				Armor armor = (Armor)item;
-				if (!armor.levelKnown){
+				if (!armor.cursedKnown){
 					GLog.w(Messages.get(BrokenSeal.class, "unknown_armor"));
 
-				} else if (armor.cursed && (seal.getGlyph() == null || !seal.getGlyph().curse())){
-					GLog.w(Messages.get(BrokenSeal.class, "cursed_armor"));
-
-				} else if (armor.glyph != null && seal.getGlyph() != null
+				}  else if (armor.glyph != null && seal.getGlyph() != null
 						&& armor.glyph.getClass() != seal.getGlyph().getClass()) {
+
+					//cannot apply the seal's non-curse glyph to a curse glyph armor
+					final boolean sealGlyphApplicable = !armor.glyph.curse() || seal.getGlyph().curse();
+					String bodyText = Messages.get(BrokenSeal.class, "choose_desc");
+					if (!sealGlyphApplicable){
+						bodyText += "\n\n" + Messages.get(BrokenSeal.class, "choose_curse_warn");
+					}
+
 					GameScene.show(new WndOptions(new ItemSprite(seal),
 							Messages.get(BrokenSeal.class, "choose_title"),
-							Messages.get(BrokenSeal.class, "choose_desc"),
+							bodyText,
 							armor.glyph.name(),
 							seal.getGlyph().name()){
 						@Override
 						protected void onSelect(int index) {
+							if (index == -1) return;
 							if (index == 0) seal.setGlyph(null);
 							//if index is 1, then the glyph transfer happens in affixSeal
 
@@ -185,6 +191,14 @@ public class BrokenSeal extends Item {
 							Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
 							armor.affixSeal(seal);
 							seal.detach(Dungeon.hero.belongings.backpack);
+						}
+
+						@Override
+						protected boolean enabled(int index) {
+							if (index == 1 && !sealGlyphApplicable){
+								return false;
+							}
+							return super.enabled(index);
 						}
 					});
 
