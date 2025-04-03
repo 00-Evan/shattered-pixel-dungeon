@@ -66,6 +66,10 @@ public class FireImbue extends Buff {
 		left += duration;
 	}
 
+	public void prolong( float duration ) {
+		left = Math.max(left, duration);
+	}
+
 	@Override
 	public boolean act() {
 		if (Dungeon.level.map[target.pos] == Terrain.GRASS) {
