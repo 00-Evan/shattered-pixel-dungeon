@@ -259,7 +259,7 @@ public class Blob extends Actor {
 			if(Actor.all().contains(gas)) {
 				gas.timeToNow();
 			} else {
-				gas.resetTime();
+				gas.Polished_resetTime();
 			}
 
 			if (Actor.curActorPriority() < gas.actPriority) {

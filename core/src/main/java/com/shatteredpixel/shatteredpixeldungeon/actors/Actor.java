@@ -98,7 +98,7 @@ public abstract class Actor implements Bundlable {
 		return time - now;
 	}
 
-	public void resetTime() {
+	public void Polished_resetTime() {
 		spendConstant(-time);
 		if (this instanceof Char){
 			for (Buff b : ((Char) this).buffs()){
