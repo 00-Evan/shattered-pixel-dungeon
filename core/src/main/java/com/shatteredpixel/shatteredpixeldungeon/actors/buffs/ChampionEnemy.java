@@ -32,9 +32,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Snake;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.HolyBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.HolyDart;
+import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.BArray;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
@@ -158,17 +160,82 @@ public abstract class ChampionEnemy extends Buff {
 			color = 0x8800FF;
 		}
 
-		public int Polished_cooldown = 2;
+		public class Polished {
+
+			private static final String COOLDOWN = "cooldown";
+			private static final String TIMER = "timer";
+
+			final static float baseCooldown = 1f;
+			public boolean cooldown;
+			Actor timer = null;
+			{
+				initCooldown(baseCooldown+1f);
+			}
+
+			void initCooldown() {
+				initCooldown(baseCooldown);
+			}
+			void initCooldown(float cd) {
+				cooldown = true;
+
+				//this should realistically never happen
+				if(timer != null) return;
+				timer = new Actor() {
+
+					{
+						actPriority = LAST_PRIO;
+					}
+
+					@Override
+					protected boolean act() {
+						cooldown = false;
+						timer = null;
+
+						Actor.remove(this);
+						return true;
+					}
+				};
+				Actor.addDelayed(timer, cd);
+			}
+		}
+		Polished polished = new Polished();
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(Polished.COOLDOWN, polished.cooldown);
+			if(polished.timer != null) bundle.put(Polished.TIMER, polished.timer);
+		}
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+
+			if(bundle.contains(Polished.COOLDOWN))
+				polished.cooldown = bundle.getBoolean(Polished.COOLDOWN);
+			if(bundle.contains(Polished.TIMER)) {
+				if (polished.timer == null) polished.initCooldown();
+				polished.timer.restoreFromBundle(bundle.getBundle(Polished.TIMER));
+			} else {
+				//get rid of the spawn timer since we're loading
+				polished.cooldown = false;
+				Actor.remove(polished.timer);
+				polished.timer = null;
+			}
+		}
+
 
 		@Override
 		public float meleeDamageFactor(boolean adjacent) {
-			if(!adjacent) Polished_cooldown = 1;
+			if(!adjacent) {
+				polished.initCooldown();
+			}
+
 			return 1.25f;
 		}
 
 		@Override
 		public boolean canAttackWithExtraReach(Char enemy) {
-			int range = Polished_cooldown <= 0 ? 4 : 1;
+			int range = polished.cooldown ? 1 : 4;
 
 			if (Dungeon.level.distance( target.pos, enemy.pos ) > range) {
 				return false;

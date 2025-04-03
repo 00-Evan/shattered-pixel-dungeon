@@ -142,11 +142,6 @@ public abstract class Mob extends Char {
 		}
 	}
 
-	private void Polished_tickProjCooldown() {
-		ChampionEnemy.Projecting proj = buff(ChampionEnemy.Projecting.class);
-		if(proj != null) proj.Polished_cooldown--;
-	}
-
 	private static final String STATE	= "state";
 	private static final String SEEN	= "seen";
 	private static final String TARGET	= "target";
@@ -263,8 +258,6 @@ public abstract class Mob extends Char {
 			Dungeon.level.updateFieldOfView( this, fieldOfView );
 			GameScene.updateFog(pos, viewDistance+(int)Math.ceil(speed()));
 		}
-
-		Polished_tickProjCooldown();
 
 		return result;
 	}

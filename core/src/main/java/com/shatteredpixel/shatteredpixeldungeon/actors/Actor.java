@@ -50,6 +50,7 @@ public abstract class Actor implements Bundlable {
 	protected static final int MOB_PRIO    = -20;   //mobs act between buffs and blobs
 	protected static final int BUFF_PRIO   = -30;   //buffs act last in a turn
 	private static final int   DEFAULT     = -100;  //if no priority is given, act after all else
+	protected static final int LAST_PRIO   = -200;
 
 	//used to determine what order actors act in if their time is equal. Higher values act earlier.
 	protected int actPriority = DEFAULT;
