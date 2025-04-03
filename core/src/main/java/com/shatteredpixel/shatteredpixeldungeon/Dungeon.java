@@ -100,17 +100,15 @@ import java.util.TimeZone;
 public class Dungeon {
 
 	private static void updateNearbyTiles(boolean[] extendedHeroFOV, int pos) {
-
-		int max = 1000; // < 1024 to not get out of bounds
-
 		for (int i = 0; i < 3; i++) {
-			int offset = Math.min(pos + level.pointToCell(-1, -1+i), max);
+			int offset = pos + level.pointToCell(-1, -1+i);
 
 			BArray.or( level.visited, level.heroFOV, offset, 3, level.visited );
 		}
 
 		for (int i = 0; i < 5; i++) {
-			int offset = Math.min(pos + level.pointToCell(-2, -2+i), max);
+			int offset = pos + level.pointToCell(-2, -2+i);
+
 			BArray.or( level.traversable, extendedHeroFOV, offset, 5, level.traversable );
 		}
 	}
