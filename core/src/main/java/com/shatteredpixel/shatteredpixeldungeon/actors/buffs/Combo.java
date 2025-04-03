@@ -411,13 +411,10 @@ public class Combo extends Buff implements ActionIndicator.Action {
 							ch.sprite.bloodBurstA(target.sprite.center(), aoeHit);
 							ch.sprite.flash();
 
-							if (!ch.isAlive()) {
-								if (hero.hasTalent(Talent.LETHAL_DEFENSE) && hero.buff(BrokenSeal.WarriorShield.class) != null) {
-									BrokenSeal.WarriorShield shield = hero.buff(BrokenSeal.WarriorShield.class);
-									int shieldAmt = Math.round(shield.maxShield() * hero.pointsInTalent(Talent.LETHAL_DEFENSE) / 3f);
-									shield.supercharge(shieldAmt);
-									hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldAmt), FloatingText.SHIELDING);
-								}
+							if (!ch.isAlive() && hero.hasTalent(Talent.LETHAL_DEFENSE)) {
+								int shieldToGive = Math.round(6.67f*hero.pointsInTalent(Talent.LETHAL_DEFENSE));
+								hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldToGive), FloatingText.SHIELDING);
+								Buff.affect(hero, Barrier.class).setShield(shieldToGive);
 							}
 						}
 					}

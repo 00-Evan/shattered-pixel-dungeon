@@ -22,6 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
@@ -120,7 +122,13 @@ public abstract class ShieldBuff extends Buff {
 				}
 			});
 			for (ShieldBuff buff : buffs){
+				if (buff.shielding() <= 0) continue;
 				damage = buff.absorbDamage(damage);
+				if (buff.shielding() <= 0){
+					if (target instanceof Hero && ((Hero) target).hasTalent(Talent.PROVOKED_ANGER)){
+						Buff.affect(target, Talent.ProvokedAngerTracker.class, 5f);
+					}
+				}
 				if (damage == 0) break;
 			}
 		}
