@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -35,12 +34,15 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.GameMath;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,7 +90,8 @@ public class BrokenSeal extends Item {
 	}
 
 	public int maxShield( int armTier, int armLvl ){
-		return armTier + armLvl + Dungeon.hero.pointsInTalent(Talent.IRON_WILL);
+		// 5-15, based on equip tier and iron will
+		return 3 + 2*armTier + Dungeon.hero.pointsInTalent(Talent.IRON_WILL);
 	}
 
 	@Override
@@ -213,35 +216,112 @@ public class BrokenSeal extends Item {
 	public static class WarriorShield extends ShieldBuff {
 
 		{
+			type = buffType.POSITIVE;
+
 			detachesAtZero = false;
+			shieldUsePriority = 2;
 		}
 
 		private Armor armor;
-		private float partialShield;
+
+		private int cooldown = 0;
+		private int turnsSinceEnemies = 0;
+
+		private static int COOLDOWN_START = 100;
+
+		@Override
+		public int icon() {
+			if (coolingDown() || shielding() > 0){
+				return BuffIndicator.SEAL_SHIELD;
+			} else {
+				return BuffIndicator.NONE;
+			}
+		}
+
+		@Override
+		public void tintIcon(Image icon) {
+			if (coolingDown() && shielding() == 0){
+				icon.brightness(0.3f);
+			} else {
+				icon.resetColor();
+			}
+		}
+
+		@Override
+		public float iconFadePercent() {
+			if (shielding() > 0){
+				return GameMath.gate(0, 1f - shielding()/(float)maxShield(), 1);
+			} else if (coolingDown()){
+				return GameMath.gate(0, cooldown / (float)COOLDOWN_START, 1);
+			} else {
+				return 0;
+			}
+		}
+
+		@Override
+		public String iconTextDisplay() {
+			if (shielding() > 0){
+				return Integer.toString(shielding());
+			} else if (coolingDown()){
+				return Integer.toString(cooldown);
+			} else {
+				return "";
+			}
+		}
+
+		@Override
+		public String desc() {
+			if (shielding() > 0){
+				return Messages.get(this, "desc_active", shielding(), cooldown);
+			} else {
+				return Messages.get(this, "desc_cooldown", cooldown);
+			}
+		}
 
 		@Override
 		public synchronized boolean act() {
-			if (Regeneration.regenOn() && shielding() < maxShield()) {
-				partialShield += 1/30f;
+			if (cooldown > 0){
+				cooldown--;
+			}
+
+			if (shielding() > 0){
+				if (Dungeon.hero.visibleEnemies() == 0){
+					turnsSinceEnemies++;
+					//TODO
+					if (turnsSinceEnemies >= 5){
+						float percentLeft = shielding() / (float)maxShield();
+						cooldown -= COOLDOWN_START*(percentLeft/2f); //max of 50% cooldown refund
+						decShield(shielding());
+					}
+				} else {
+					turnsSinceEnemies = 0;
+				}
 			}
 			
-			while (partialShield >= 1){
-				incShield();
-				partialShield--;
-			}
-			
-			if (shielding() <= 0 && maxShield() <= 0){
+			if (shielding() <= 0 && maxShield() <= 0 && cooldown == 0){
 				detach();
 			}
 			
 			spend(TICK);
 			return true;
 		}
+
+		public synchronized void activate() {
+			setShield(maxShield());
+			cooldown = COOLDOWN_START;
+			turnsSinceEnemies = 0;
+		}
+
+		public boolean coolingDown(){
+			return cooldown > 0;
+		}
 		
 		public synchronized void supercharge(int maxShield){
 			if (maxShield > shielding()){
 				setShield(maxShield);
 			}
+			cooldown = COOLDOWN_START;
+			turnsSinceEnemies = 0;
 		}
 
 		public synchronized void setArmor(Armor arm){
@@ -258,6 +338,29 @@ public class BrokenSeal extends Item {
 				return armor.checkSeal().maxShield(armor.tier, armor.level());
 			} else {
 				return 0;
+			}
+		}
+
+		public static final String COOLDOWN = "cooldown";
+		public static final String TURNS_SINCE_ENEMIES = "turns_since_enemies";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(COOLDOWN, cooldown);
+			bundle.put(TURNS_SINCE_ENEMIES, turnsSinceEnemies);
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			if (bundle.contains(COOLDOWN)) {
+				cooldown = bundle.getInt(COOLDOWN);
+				turnsSinceEnemies = bundle.getInt(TURNS_SINCE_ENEMIES);
+			} else {
+				//TODO what about berserker runs in progress?
+				// we could potentially screw someone who had a big shield prior to v3.1
+				setShield(0); //clears old pre-v3.1 shield
 			}
 		}
 	}
