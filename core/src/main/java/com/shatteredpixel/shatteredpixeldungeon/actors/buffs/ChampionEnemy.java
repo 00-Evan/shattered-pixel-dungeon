@@ -31,6 +31,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Snake;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.HolyBomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.HolyDart;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -203,6 +205,15 @@ public abstract class ChampionEnemy extends Buff {
 
 			immunities.remove(HolyBomb.HolyDamage.class);
 			immunities.remove(HolyDart.class);
+
+			immunities.remove( Weakness.class );
+			immunities.remove( Vulnerable.class );
+			//immunities.remove( Brittle.class );
+			immunities.remove( Hex.class );
+			immunities.remove( Degrade.class );
+
+			immunities.remove( Blazing.class );
+			immunities.remove( Shocking.class );
 		}
 
 	}
