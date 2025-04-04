@@ -140,7 +140,44 @@ public abstract class Mob extends Char {
 			HP = Math.round(HT * percent);
 			firstAdded = false;
 		}
+
+
 	}
+	public class Polished {
+		public boolean onCooldown = false;
+		Actor timer = null;
+		int blockCooldown = 20;
+
+		void initTimer() {
+			timer = new Actor() {
+				@Override
+				protected boolean act() {
+					onCooldown = false;
+					killTimer();
+					return true;
+				}
+ 			};
+			Actor.addDelayed(timer, blockCooldown);
+		}
+		void killTimer() {
+			if(timer != null) {
+				Actor.remove(timer);
+				timer = null;
+			}
+		}
+
+		public void spot(boolean spot) {
+			if(spot) {
+				onCooldown = true;
+				killTimer();
+			} else {
+				if(onCooldown && timer == null) {
+					initTimer();
+				}
+			}
+		}
+	}
+	public Polished polished = new Polished();
 
 	private static final String STATE	= "state";
 	private static final String SEEN	= "seen";
