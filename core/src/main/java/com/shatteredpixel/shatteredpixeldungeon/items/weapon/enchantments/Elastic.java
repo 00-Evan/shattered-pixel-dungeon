@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
@@ -44,7 +45,13 @@ public class Elastic extends Weapon.Enchantment {
 		float procChance = (level+1f)/(level+5f) * procChanceMultiplier(attacker);
 		if (Random.Float() < procChance) {
 
+			int dist = Dungeon.level.distance(attacker.pos, defender.pos);
 			float powerMulti = Math.max(1f, procChance);
+			float push = 2f*powerMulti;
+			//dist 1/2 = 2 push; dist 3/4 = 1 push; dist 5+ = 0 push
+			//will start getting extra knockback at 1.25+ powermulti
+			push -= (dist-1)/2f;
+			push = Math.max(Math.round(push), 0);
 
 			//trace a ballistica to our target (which will also extend past them
 			Ballistica trajectory = new Ballistica(attacker.pos, defender.pos, Ballistica.STOP_TARGET);
@@ -53,7 +60,7 @@ public class Elastic extends Weapon.Enchantment {
 			//knock them back along that ballistica
 			WandOfBlastWave.throwChar(defender,
 					trajectory,
-					Math.round(2 * powerMulti),
+					(int)push,
 					!(weapon instanceof MissileWeapon || weapon instanceof SpiritBow),
 					true,
 					this);
