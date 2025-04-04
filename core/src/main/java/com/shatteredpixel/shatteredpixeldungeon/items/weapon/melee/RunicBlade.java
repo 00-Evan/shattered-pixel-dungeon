@@ -57,10 +57,10 @@ public class RunicBlade extends MeleeWeapon {
 	}
 
 	public float Polished_enchantmentBoost() {
-		return .2f * buffedLvl();
+		return .1f + .1f * buffedLvl();
 	}
 	public static String Polished_enchantmentBoost(int buffedLvl) {
-		return Messages.decimalFormat("#.##x", 1+.2f*buffedLvl);
+		return Messages.decimalFormat("#.##x", 1.1f + .1f*buffedLvl);
 	}
 
 	@Override
