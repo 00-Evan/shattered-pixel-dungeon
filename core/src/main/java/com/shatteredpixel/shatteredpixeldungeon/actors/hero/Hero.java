@@ -235,7 +235,7 @@ public class Hero extends Char {
 	
 	public float awareness;
 
-	public int lvl = Debug.DEBUG_MODE ? Debug.Starting_HeroLevel : 1;
+	public int lvl = 1;
 	public int exp = 0;
 	
 	public int HTBoost = 0;
@@ -243,6 +243,18 @@ public class Hero extends Char {
 	private ArrayList<Mob> visibleEnemies;
 
 	public static class Polished {
+		public static void Debug_UpdateStats(int newLvl) {
+			Hero hero = Dungeon.hero;
+			if(!Debug.DEBUG_MODE || newLvl <= hero.lvl) return;
+
+			int diff = newLvl - hero.lvl;
+			Dungeon.hero.attackSkill+=diff;
+			Dungeon.hero.defenseSkill+=diff;
+
+			hero.lvl = newLvl;
+			hero.updateHT(true);
+		}
+
 		static private ArrayList<Mob> spottedEnemies;
 		public static boolean noEnemiesLast = false;
 
@@ -284,7 +296,7 @@ public class Hero extends Char {
 	public void updateHT( boolean boostHP ){
 		int curHT = HT;
 		
-		HT = 20 + 5*(lvl-1) + HTBoost;
+		HT = STARTING_HP + 5*(lvl-1) + HTBoost;
 		float multiplier = RingOfMight.HTMultiplier(this);
 		HT = Math.round(multiplier * HT);
 		
