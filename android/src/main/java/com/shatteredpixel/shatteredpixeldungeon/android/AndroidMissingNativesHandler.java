@@ -66,7 +66,7 @@ public class AndroidMissingNativesHandler extends Activity {
 
 		TextView text = new TextView(this);
 		String message = "ShatteredPD failed to access some of its internal code and cannot start!\n\n" +
-				"Try downloading the game from an official source if you haven't already. You can also screenshot this debug info and send it to the developer (Evan@ShatteredPixel.com):";
+				"Try downloading the game from an official source if you haven't already. You can also screenshot this debug info and send it to the developer (polishedpixeldungeon@gmail.com):";
 
 		message += "\n\nPackage: " + getPackageName();
 		message += "\nVersion: " + versionName + " (" + versionCode + ")";
