@@ -80,7 +80,8 @@ public class Freezing extends Blob {
 					turnsToAdd = Math.min(turnsToAdd, chillToCap);
 				}
 				if (turnsToAdd > 0f) {
-					Buff.Polished.affectAligned(ch, Chill.class, turnsToAdd);
+					//Buff.Polished.affectAligned(ch, Chill.class, turnsToAdd);
+					Buff.affect(ch, Chill.class, turnsToAdd);
 				}
 				if (chill != null
 						&& chill.cooldown() >= Chill.DURATION &&
