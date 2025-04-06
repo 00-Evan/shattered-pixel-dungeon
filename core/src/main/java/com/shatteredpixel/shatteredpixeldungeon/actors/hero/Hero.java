@@ -301,6 +301,7 @@ public class Hero extends Char {
 		belongings = new Belongings( this );
 		
 		visibleEnemies = new ArrayList<>();
+		Polished.spottedEnemies = new ArrayList<>();
 	}
 	
 	public void updateHT( boolean boostHP ){
@@ -871,9 +872,9 @@ public class Hero extends Char {
 		if(paralysed > 0 || (!(curAction instanceof HeroAction.Move) && !(curAction instanceof HeroAction.PickUp))) {
 			Polished.noEnemiesLast = Polished.noEnemiesSeen();
 		}
-		
+
 		//Do an input block check before updating fov to account for enemies entering the edge of your vision
-		if(fieldOfView != null && fieldOfView.length > 0) {
+		if(fieldOfView != null && fieldOfView.length > 0 && fieldOfView.length == Dungeon.level.mobs.size()) {
 			for (Mob m : Dungeon.level.mobs.toArray(new Mob[0])) {
 				if (fieldOfView[ m.pos ] && m.alignment == Alignment.ENEMY) {
 					if(Polished.interruptsInput(m) && !m.polished.onCooldown) {
