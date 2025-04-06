@@ -387,7 +387,7 @@ public class SpiritBow extends Weapon {
 				if (curCharges == maxCharge) {
 					GLog.w(Messages.get(SpiritBow.class, "max_charges"));
 				} else {
-					user.spendAndNext(castDelay(user, dst) * 2);
+					user.spendAndNext(2);
 					curCharges = maxCharge;
 					Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
 					ScrollOfRecharging.charge(curUser);
