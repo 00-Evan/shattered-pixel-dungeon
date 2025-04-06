@@ -382,8 +382,7 @@ public class SpiritBow extends Weapon {
 
 		@Override
 		public void cast(final Hero user, final int dst) {
-			final int cell = throwPos( user, dst );
-			if (user.pos == cell) {
+			if (user.pos == dst) {
 				int maxCharge = getMaxCharge();
 				if (curCharges == maxCharge) {
 					GLog.w(Messages.get(SpiritBow.class, "max_charges"));
@@ -401,6 +400,7 @@ public class SpiritBow extends Weapon {
 				return;
 			}
 			curCharges--;
+			final int cell = throwPos( user, dst );
 			SpiritBow.this.targetPos = cell;
 			if (sniperSpecial && SpiritBow.this.augment == Augment.SPEED){
 				if (flurryCount == -1) flurryCount = 3;
