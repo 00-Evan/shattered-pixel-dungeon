@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
@@ -37,25 +38,28 @@ public class Chilling extends Weapon.Enchantment {
 	@Override
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
 		int level = Math.max( 0, weapon.buffedLvl() );
+		float procChance;
 
-		// lvl 0 - 25%
-		// lvl 1 - 40%
+		// lvl 0 - 33%
+		// lvl 1 - 43%
 		// lvl 2 - 50%
-		float procChance = (level+1f)/(level+4f) * Polished_procChanceMultiplier(attacker, weapon);
+		procChance = (level+2f)/(level+6f) * Polished_procChanceMultiplier(attacker, weapon);
+		if(!Dungeon.level.water[defender.pos]) procChance /= 1.33f;
+
 		if (Random.Float() < procChance) {
 
 			float powerMulti = Math.max(1f, procChance);
+			float durationToAdd = (Chill.Polished.CHILL_TICK +1) * powerMulti;
+			float max = Chill.Polished.WATER_TICK-1;
 
-			//adds 3 turns of chill per proc, with a cap of 6 turns
-			float durationToAdd = 3f * powerMulti;
 			Chill existing = defender.buff(Chill.class);
 			if (existing != null){
-				durationToAdd = Math.min(durationToAdd, (6f*powerMulti)-existing.cooldown());
+				durationToAdd = Math.min(durationToAdd, max-existing.cooldown());
+				durationToAdd = Math.max(durationToAdd, 0);
 			}
 
-			if (durationToAdd > 0) {
-				Buff.affect(defender, Chill.class, durationToAdd);
-			}
+			//Buff.Polished.affectAligned(defender, Chill.class, durationToAdd);
+			Buff.affect(defender, Chill.class, durationToAdd);
 			Splash.at( defender.sprite.center(), 0xFFB2D6FF, 5);
 
 		}

@@ -434,12 +434,7 @@ public abstract class Wand extends Item {
 	}
 
 	protected int chargesPerCast() {
-		if (cursed ||
-				(charger != null && charger.target != null && charger.target.buff(WildMagic.WildMagicTracker.class) != null)){
-			return 1;
-		}
-		//consumes 30% of current charges, rounded up, with a min of 1 and a max of 3.
-		return (int) GameMath.gate(1, (int)Math.ceil(curCharges*0.3f), 3);
+		return 1;
 	}
 	
 	public void fx(Ballistica bolt, Callback callback) {
@@ -695,8 +690,8 @@ public abstract class Wand extends Item {
 							return;
 						}
 
-						float shield = curUser.HT * (0.04f*curWand.curCharges);
-						if (curUser.pointsInTalent(Talent.SHIELD_BATTERY) == 2) shield *= 1.5f;
+						float ratio = .02f + 0.015f * curUser.pointsInTalent(Talent.SHIELD_BATTERY);
+						float shield = curUser.HT * ratio * curWand.curCharges;
 						Buff.affect(curUser, Barrier.class).setShield(Math.round(shield));
 						curUser.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(Math.round(shield)), FloatingText.SHIELDING);
 						curWand.curCharges = 0;
@@ -732,7 +727,8 @@ public abstract class Wand extends Item {
 						//regular. If hero owns wand but it isn't in belongings it must be in the staff
 						if (curUser.heroClass == HeroClass.MAGE && !curUser.belongings.contains(curWand)){
 							//grants 3/5 shielding
-							int shieldToGive = 1 + 2 * Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER);
+							//POLISHED: 2/4
+							int shieldToGive = 2 * Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER);
 							Buff.affect(Dungeon.hero, Barrier.class).setShield(shieldToGive);
 							Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldToGive), FloatingText.SHIELDING);
 
@@ -746,7 +742,8 @@ public abstract class Wand extends Item {
 							}
 							if (highest){
 								//grants 3/5 shielding
-								int shieldToGive = 1 + 2 * Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER);
+								//POLISHED: 2/4
+								int shieldToGive = 2 * Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER);
 								Buff.affect(Dungeon.hero, Barrier.class).setShield(shieldToGive);
 								Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldToGive), FloatingText.SHIELDING);
 							}

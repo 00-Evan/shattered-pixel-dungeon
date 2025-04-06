@@ -215,12 +215,6 @@ public class HeroSelectScene extends PixelScene {
 			add(btnOptions);
 		}
 
-		if (!Badges.isUnlocked(Badges.Badge.VICTORY) && !DeviceCompat.isDebug()){
-			Dungeon.challenges = 0;
-			SPDSettings.challenges(0);
-			SPDSettings.customSeed("");
-		}
-
 		if (landscape()){
 			float leftArea = Math.max(100, Camera.main.width/3f);
 			float uiHeight = Math.min(Camera.main.height-20, 300);

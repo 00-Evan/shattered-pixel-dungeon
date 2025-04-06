@@ -205,6 +205,7 @@ public class Hero extends Char {
 	public static final int MAX_LEVEL = 30;
 
 	public static final int STARTING_STR = Debug.DEBUG_MODE ? Debug.Starting_Str : 10;
+	public static final int STARTING_HP  = Debug.DEBUG_MODE ? Debug.Starting_HP : 20;
 	
 	private static final float TIME_TO_REST		    = 1f;
 	private static final float TIME_TO_SEARCH	    = 2f;
@@ -271,7 +272,7 @@ public class Hero extends Char {
 	public Hero() {
 		super();
 
-		HP = HT = 20;
+		HP = HT = STARTING_HP;
 		STR = STARTING_STR;
 		
 		belongings = new Belongings( this );
@@ -1635,7 +1636,11 @@ public class Hero extends Char {
 		dmg = Math.round(damage);
 
 		//we ceil this one to avoid letting the player easily take 0 dmg from tenacity early
-		dmg = (int)Math.ceil(dmg * RingOfTenacity.damageMultiplier( this ));
+		//POLISHED: we round normally, and then just set a min of 1. Why doesn't it work like this already?
+		int prevDmg = dmg;
+		dmg = Math.round(dmg * RingOfTenacity.damageMultiplier( this ));
+		dmg = Math.max(dmg, 1);
+		dmg = Math.min(dmg, prevDmg);
 
 		int preHP = HP + shielding();
 		if (src instanceof Hunger) preHP -= shielding();

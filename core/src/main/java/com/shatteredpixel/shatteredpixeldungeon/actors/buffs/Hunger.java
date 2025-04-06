@@ -96,7 +96,8 @@ public class Hunger extends Buff implements Hero.Doom {
 				if (newLevel >= STARVING) {
 
 					GLog.n( Messages.get(this, "onstarving") );
-					hero.damage( 1, this );
+					//POLISHED: get rid of this so Warlock doesn't constantly take damage from soulmark restoration
+					//hero.damage( 1, this );
 
 					hero.interrupt();
 					newLevel = STARVING;
