@@ -386,7 +386,7 @@ public class SpiritBow extends Weapon {
 			if (user.pos == cell) {
 				int maxCharge = getMaxCharge();
 				if (curCharges == maxCharge) {
-					GLog.w(Messages.get(Wand.class, "fizzles"));
+					GLog.w(Messages.get(SpiritBow.class, "max_charges"));
 				} else {
 					user.spendAndNext(castDelay(user, dst) * 2);
 					curCharges = maxCharge;
@@ -397,7 +397,7 @@ public class SpiritBow extends Weapon {
 				return;
 			}
 			if (curCharges == 0) {
-				GLog.w(Messages.get(this, "fizzles"));
+				GLog.w(Messages.get(SpiritBow.class, "empty"));
 				return;
 			}
 			curCharges--;
