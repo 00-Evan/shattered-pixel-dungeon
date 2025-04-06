@@ -27,10 +27,24 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.Rect;
 import com.watabou.utils.Reflection;
 
 public class Blob extends Actor {
+
+	public class Polished {
+		public boolean delayed = false;
+
+		private static final String DELAYED	= "delayed";
+		public void restoreFromBundle(Bundle bundle) {
+			if(bundle.contains(DELAYED)) delayed = bundle.getBoolean(DELAYED);
+		}
+		public void storeInBundle(Bundle bundle) {
+			bundle.put(DELAYED, delayed);
+		}
+	}
+	Polished polished = new Polished();
 
 	{
 		actPriority = BLOB_PRIO;
@@ -106,6 +120,11 @@ public class Blob extends Actor {
 	
 	@Override
 	public boolean act() {
+
+		//POLISHED
+		{
+			polished.delayed = false;
+		}
 
 		spend( TICK );
 		
@@ -253,24 +272,34 @@ public class Blob extends Actor {
 		if (gas == null) {
 			gas = Reflection.newInstance(type);
 		}
-		
-		if (gas != null){
-			//set the gas to act immediately
-			if(Actor.all().contains(gas)) {
-				gas.timeToNow();
-			} else {
-				gas.Polished_resetTime();
-			}
 
-			if (Actor.curActorPriority() < gas.actPriority) {
-				//this ensures that gasses do not get an 'extra turn' if they are added by a mob or buff
-				gas.spend(1f);
+		//POLISHED
+		if (gas != null){
+
+			//Hero/VFX actions
+			if(Actor.curActorPriority() >= HERO_PRIO-1) {
+				//set the gas to act immediately
+				gas.Polished_timeToNow();
+			}
+			//Blob actions
+			else if(Actor.curActorPriority() >= gas.actPriority) {
+				//leave it as it is
+			}
+			//Mob/Debuff actions
+			else {
+				if(Actor.all().contains(gas) && gas.polished.delayed) {
+					float delay = GameMath.gate(0, Dungeon.hero.cooldown()-gas.cooldown(), 1f);
+					gas.spendConstant(delay);
+				} else {
+					gas.Polished_timeToNow();
+					gas.spendConstant(1f);
+					gas.polished.delayed=true;
+				}
 			}
 
 			level.blobs.put( type, gas );
 			gas.seed( level, cell, amount );
 		}
-		
 		return gas;
 	}
 

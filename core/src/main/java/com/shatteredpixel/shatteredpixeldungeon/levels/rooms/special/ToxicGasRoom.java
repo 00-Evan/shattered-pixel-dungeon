@@ -121,6 +121,10 @@ public class ToxicGasRoom extends SpecialRoom {
 	}
 
 	public static class ToxicGasSeed extends Blob {
+		{
+			//set to act right before t gas
+			actPriority=BLOB_PRIO+1;
+		}
 
 		@Override
 		protected void evolve() {
