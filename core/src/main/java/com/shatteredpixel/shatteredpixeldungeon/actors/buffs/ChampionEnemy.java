@@ -275,7 +275,7 @@ public abstract class ChampionEnemy extends Buff {
 
 			immunities.remove( Weakness.class );
 			immunities.remove( Vulnerable.class );
-			//immunities.remove( Brittle.class );
+			immunities.remove( Brittle.class );
 			immunities.remove( Hex.class );
 			immunities.remove( Degrade.class );
 
