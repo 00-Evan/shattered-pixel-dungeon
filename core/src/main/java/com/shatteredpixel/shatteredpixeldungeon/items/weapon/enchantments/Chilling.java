@@ -43,11 +43,7 @@ public class Chilling extends Weapon.Enchantment {
 		// lvl 0 - 33%
 		// lvl 1 - 43%
 		// lvl 2 - 50%
-		procChance = (level+2f)/(level+6f) * procChanceMultiplier(attacker);
-
-		// lvl 0 - 25%
-		// lvl 1 - 32%
-		// lvl 2 - 38%
+		procChance = (level+2f)/(level+6f) * Polished_procChanceMultiplier(attacker, weapon);
 		if(!Dungeon.level.water[defender.pos]) procChance /= 1.33f;
 
 		if (Random.Float() < procChance) {

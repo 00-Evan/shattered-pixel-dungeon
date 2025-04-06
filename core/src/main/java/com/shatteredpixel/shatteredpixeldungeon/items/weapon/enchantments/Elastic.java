@@ -41,7 +41,7 @@ public class Elastic extends Weapon.Enchantment {
 		// lvl 0 - 20%
 		// lvl 1 - 33%
 		// lvl 2 - 43%
-		float procChance = (level+1f)/(level+5f) * procChanceMultiplier(attacker);
+		float procChance = (level+1f)/(level+5f) * Polished_procChanceMultiplier(attacker, weapon);
 		if (Random.Float() < procChance) {
 
 			float powerMulti = Math.max(1f, procChance);

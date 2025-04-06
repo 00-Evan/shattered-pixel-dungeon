@@ -48,7 +48,7 @@ public class Vampiric extends Weapon.Enchantment {
 		float missingPercent = (attacker.HT - attacker.HP) / (float)attacker.HT;
 		float healChance = 0.05f + .25f*missingPercent;
 
-		healChance *= procChanceMultiplier(attacker);
+		healChance *= Polished_procChanceMultiplier(attacker, weapon);
 		
 		if (Random.Float() < healChance
 				&& attacker.alignment != defender.alignment
