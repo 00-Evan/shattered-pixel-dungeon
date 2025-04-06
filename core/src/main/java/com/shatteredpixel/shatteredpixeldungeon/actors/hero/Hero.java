@@ -871,7 +871,7 @@ public class Hero extends Char {
 		}
 
 		//Do an input block check before updating fov to account for enemies entering the edge of your vision
-		if(fieldOfView != null && fieldOfView.length > 0 && fieldOfView.length == Dungeon.level.mobs.size()) {
+		if(fieldOfView != null && fieldOfView.length > 0 && fieldOfView.length == Dungeon.level.length()) {
 			for (Mob m : Dungeon.level.mobs.toArray(new Mob[0])) {
 				if (fieldOfView[ m.pos ] && m.alignment == Alignment.ENEMY) {
 					if(Polished.interruptsInput(m) && !m.polished.onCooldown) {

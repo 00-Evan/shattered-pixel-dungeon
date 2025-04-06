@@ -199,7 +199,7 @@ public class EtherealChains extends Artifact {
 				Actor.add(new Pushing(enemy, enemy.pos, pulledPos, new Callback() {
 					public void call() {
 						enemy.pos = pulledPos;
-						Buff.affect(enemy, Cripple.class, baseCripple + (enemy.cooldown() % TICK) + 3*chargeUse);
+						Buff.Polished.affectAligned(enemy, Cripple.class, baseCripple + 3*chargeUse);
 
 						charge -= chargeUse;
 						Invisibility.dispel(hero);
