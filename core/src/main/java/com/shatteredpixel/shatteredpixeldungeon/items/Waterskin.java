@@ -51,7 +51,7 @@ public class Waterskin extends Item {
 	{
 		image = ItemSpriteSheet.WATERSKIN;
 
-		defaultAction = AC_DRINK;
+		defaultAction = Dungeon.isChallenged(Challenges.NO_HERBALISM) ? AC_THROW : AC_DRINK;
 
 		unique = true;
 	}

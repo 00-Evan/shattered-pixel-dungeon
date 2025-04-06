@@ -175,6 +175,13 @@ public class Hunger extends Buff implements Hero.Doom {
 		return (int)Math.ceil(level);
 	}
 
+	private int turnsLeftToHurt() {
+		if(level < STARVING) return -1;
+
+		float damageTick = target.HT/1000f;
+		return (int)Math.ceil((1f - partialDamage - .001f) / damageTick);
+	}
+
 	@Override
 	public int icon() {
 		if (level < HUNGRY) {
@@ -187,10 +194,17 @@ public class Hunger extends Buff implements Hero.Doom {
 	}
 	@Override
 	public String iconTextDisplay() {
-		return Integer.toString((int)(STARVING-level));
+		return isStarving() ? Integer.toString(turnsLeftToHurt()) : Integer.toString((int)(STARVING-level));
 	}
 
-	public float hungerPercentage() {
+	float percent() {
+		return isStarving() ? 1 - turnsLeftToHurt() * (target.HT / 1000f) : (level-HUNGRY) / (STARVING-HUNGRY);
+	}
+	public float iconFadePercent() {
+		return Math.max(0, percent());
+	}
+
+	private float hungerPercentage() {
 		return (STARVING - level) / (STARVING - HUNGRY);
 	}
 	public float textColor_red() {
@@ -228,8 +242,13 @@ public class Hunger extends Buff implements Hero.Doom {
 		} else {
 			result = Messages.get(this, "desc_intro_starving");
 		}
-
 		result += Messages.get(this, "desc");
+
+		if (level < STARVING) {
+			result += Messages.get(this, "saturation", (int)(STARVING-level));
+		} else {
+			result += Messages.get(this, "starve_damage", turnsLeftToHurt());
+		}
 
 		return result;
 	}

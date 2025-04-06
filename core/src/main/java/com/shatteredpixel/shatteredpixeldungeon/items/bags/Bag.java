@@ -190,6 +190,15 @@ public class Bag extends Item implements Iterable<Item> {
 		return false;
 	}
 
+	public boolean Polished_canHoldGlobal(Item item) {
+		for (Item i : items) {
+			if (i instanceof Bag && ((Bag)i).canHold( item )) {
+				return true;
+			}
+		}
+
+		return canHold(item);
+	}
 	public boolean canHold( Item item ){
 		if (!loading && owner != null && owner.buff(LostInventory.class) != null
 			&& !item.keptThroughLostInventory()){
