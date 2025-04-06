@@ -372,9 +372,10 @@ public class BrokenSeal extends Item {
 				cooldown = bundle.getInt(COOLDOWN);
 				turnsSinceEnemies = bundle.getInt(TURNS_SINCE_ENEMIES);
 			} else {
-				//TODO what about berserker runs in progress?
-				// we could potentially screw someone who had a big shield prior to v3.1
-				setShield(0); //clears old pre-v3.1 shield
+				//pre-3.1 shield, normally just clear it, but retain if it's big and possibly from berserking
+				if (shielding() < maxShield()+5 && target.HP > 0){
+					setShield(0);
+				}
 			}
 		}
 	}

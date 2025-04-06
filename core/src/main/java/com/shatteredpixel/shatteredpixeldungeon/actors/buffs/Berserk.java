@@ -43,10 +43,13 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 
-public class Berserk extends Buff implements ActionIndicator.Action {
+public class Berserk extends ShieldBuff implements ActionIndicator.Action {
 
 	{
 		type = buffType.POSITIVE;
+
+		detachesAtZero = false;
+		shieldUsePriority = -1; //other shielding buffs are always consumed first
 	}
 
 	private enum State{
@@ -97,21 +100,11 @@ public class Berserk extends Buff implements ActionIndicator.Action {
 	@Override
 	public boolean act() {
 		if (state == State.BERSERK){
-			ShieldBuff buff = target.buff(WarriorShield.class);
 			if (target.shielding() > 0) {
 				//lose 2.5% of shielding per turn, but no less than 1
 				int dmg = (int)Math.ceil(target.shielding() * 0.025f);
-				if (buff != null && buff.shielding() > 0) {
-					dmg = buff.absorbDamage(dmg);
-				}
 
-				if (dmg > 0){
-					//if there is leftover damage, then try to remove from other shielding buffs
-					for (ShieldBuff s : target.buffs(ShieldBuff.class)){
-						dmg = s.absorbDamage(dmg);
-						if (dmg == 0) break;
-					}
-				}
+				dmg = ShieldBuff.processDamage(target, dmg, this);
 
 				if (target.shielding() <= 0){
 					state = State.RECOVERING;
@@ -177,7 +170,6 @@ public class Berserk extends Buff implements ActionIndicator.Action {
 		if (target.HP == 0
 				&& state == State.NORMAL
 				&& power >= 1f
-				&& target.buff(WarriorShield.class) != null
 				&& ((Hero)target).hasTalent(Talent.DEATHLESS_FURY)){
 			startBerserking();
 			ActionIndicator.clearAction(this);
@@ -200,8 +192,8 @@ public class Berserk extends Buff implements ActionIndicator.Action {
 			turnRecovery = 0;
 		}
 
-		//base multiplier scales at 2/3/4/5/6x at 100/37/20/9/0% HP
-		float shieldMultiplier = 2f + 4*(float)Math.pow((1f-(target.HP/(float)target.HT)), 3);
+		//base multiplier scales at 1/1.5/2/2.5/3x at 100/37/20/9/0% HP
+		float shieldMultiplier = 1f + 2*(float)Math.pow((1f-(target.HP/(float)target.HT)), 3);
 
 		//Endless rage effect on shield and cooldown
 		if (power > 1f){
@@ -210,9 +202,12 @@ public class Berserk extends Buff implements ActionIndicator.Action {
 			turnRecovery *= 2f - power;
 		}
 
-		WarriorShield shield = target.buff(WarriorShield.class);
-		int shieldAmount = Math.round(shield.maxShield() * shieldMultiplier);
-		shield.supercharge(shieldAmount);
+		int baseShield = 10;
+		if (target instanceof Hero && ((Hero) target).belongings.armor() != null){
+			baseShield += 2*((Hero) target).belongings.armor().buffedLvl();
+		}
+		int shieldAmount = Math.round(baseShield * shieldMultiplier);
+		setShield(shieldAmount);
 		target.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(shieldAmount), FloatingText.SHIELDING );
 
 		BuffIndicator.refreshHero();
