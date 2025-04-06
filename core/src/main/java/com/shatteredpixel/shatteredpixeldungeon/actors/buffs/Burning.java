@@ -50,7 +50,7 @@ import java.util.ArrayList;
 
 public class Burning extends Buff implements Hero.Doom {
 	
-	private static final float DURATION = 8f;
+	public static final float DURATION = 6f;
 	
 	private float left;
 	private boolean acted = false; //whether the debuff has done any damage at all yet
@@ -88,6 +88,10 @@ public class Burning extends Buff implements Hero.Doom {
 		return super.attachTo(target);
 	}
 
+	public static int tickDamage() {
+		return Random.NormalIntRange(1, 2) + Dungeon.scalingDepth()/5;
+	}
+
 	@Override
 	public boolean act() {
 
@@ -96,7 +100,7 @@ public class Burning extends Buff implements Hero.Doom {
 		} else if (target.isAlive() && !target.isImmune(getClass())) {
 
 			acted = true;
-			int damage = Random.NormalIntRange( 1, 3 + Dungeon.scalingDepth()/4 );
+			int damage = tickDamage();
 			Buff.detach( target, Chill.class);
 
 			if (target instanceof Hero
@@ -181,6 +185,9 @@ public class Burning extends Buff implements Hero.Doom {
 	public void reignite( Char ch, float duration ) {
 		if (ch.isImmune(Burning.class)){
 			if (ch.glyphLevel(Brimstone.class) >= 0){
+				FireImbue fb = Buff.affect(ch, FireImbue.class);
+				fb.prolong(2f);
+
 				//generate avg of 1 shield per turn per 50% boost, to a max of 4x boost
 				float shieldChance = 2*(Armor.Glyph.genericProcChanceMultiplier(ch) - 1f);
 				int shieldCap = Math.round(shieldChance*4f);

@@ -73,6 +73,11 @@ public class HornOfPlenty extends Artifact {
 	public static final String AC_EAT = "EAT";
 	public static final String AC_STORE = "STORE";
 
+	public static int getSatietyPerCharge() {
+		return Dungeon.isChallenged(Challenges.NO_FOOD)
+				? (int)(Hunger.STARVING/15f) : (int)(Hunger.STARVING/5f);
+	}
+
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
@@ -99,14 +104,8 @@ public class HornOfPlenty extends Artifact {
 			if (!isEquipped(hero)) GLog.i( Messages.get(Artifact.class, "need_to_equip") );
 			else if (charge == 0)  GLog.i( Messages.get(this, "no_food") );
 			else {
-				//consume as much food as it takes to be full, to a minimum of 1
-				int satietyPerCharge = (int) (Hunger.STARVING/5f);
-				if (Dungeon.isChallenged(Challenges.NO_FOOD)){
-					satietyPerCharge /= 3;
-				}
-
 				Hunger hunger = Buff.affect(Dungeon.hero, Hunger.class);
-				int chargesToUse = Math.max( 1, hunger.hunger() / satietyPerCharge);
+				int chargesToUse = Math.max( 1, hunger.hunger() / getSatietyPerCharge());
 				if (chargesToUse > charge) chargesToUse = charge;
 
 				//always use 1 charge if snacking
@@ -125,12 +124,7 @@ public class HornOfPlenty extends Artifact {
 	}
 
 	public void doEatEffect(Hero hero, int chargesToUse){
-		int satietyPerCharge = (int) (Hunger.STARVING/5f);
-		if (Dungeon.isChallenged(Challenges.NO_FOOD)){
-			satietyPerCharge /= 3;
-		}
-
-		Buff.affect(hero, Hunger.class).satisfy(satietyPerCharge * chargesToUse);
+		Buff.affect(hero, Hunger.class).satisfy(getSatietyPerCharge() * chargesToUse);
 
 		Statistics.foodEaten++;
 
@@ -154,7 +148,7 @@ public class HornOfPlenty extends Artifact {
 			hero.spend(Food.TIME_TO_EAT);
 		}
 
-		Talent.onFoodEaten(hero, satietyPerCharge * chargesToUse, this);
+		Talent.onFoodEaten(hero, getSatietyPerCharge() * chargesToUse, this);
 
 		Badges.validateFoodEaten();
 
@@ -227,12 +221,11 @@ public class HornOfPlenty extends Artifact {
 		if (level() >= 10) return;
 		
 		storedFoodEnergy += food.energy;
-		//Pasties and phantom meat are worth two upgrades instead of 1.5, meat pies are worth 4 instead of 3!
-		if (food instanceof Pasty || food instanceof PhantomMeat){
-			storedFoodEnergy += Hunger.HUNGRY/2;
-		} else if (food instanceof MeatPie){
-			storedFoodEnergy += Hunger.HUNGRY;
+		//Phantom meat and Meat pie both give an extra upgrade level
+		if (food instanceof MeatPie || food instanceof PhantomMeat){
+			storedFoodEnergy += (int)Hunger.HUNGRY;
 		}
+
 		if (storedFoodEnergy >= Hunger.HUNGRY){
 			int upgrades = storedFoodEnergy / (int)Hunger.HUNGRY;
 			upgrades = Math.min(upgrades, 10 - level());

@@ -112,7 +112,11 @@ public enum HeroClass {
 		new VelvetPouch().collect();
 		Dungeon.LimitedDrops.VELVET_POUCH.drop();
 
-		Waterskin waterskin = new Waterskin();
+		Waterskin waterskin = null;
+		if(!Dungeon.isChallenged(Challenges.NO_HERBALISM)) {
+			//
+		}
+		waterskin = new Waterskin();
 		waterskin.collect();
 
 		new ScrollOfIdentify().identify();
@@ -143,7 +147,7 @@ public enum HeroClass {
 				break;
 		}
 
-		if (SPDSettings.quickslotWaterskin()) {
+		if (SPDSettings.quickslotWaterskin() && waterskin != null) {
 			for (int s = 0; s < QuickSlot.SIZE; s++) {
 				if (Dungeon.quickslot.getItem(s) == null) {
 					Dungeon.quickslot.setSlot(s, waterskin);
@@ -329,23 +333,8 @@ public enum HeroClass {
 	}
 	
 	public boolean isUnlocked(){
-		//always unlock on debug builds
-		if (DeviceCompat.isDebug()) return true;
-
-		switch (this){
-			case WARRIOR: default:
-				return true;
-			case MAGE:
-				return Badges.isUnlocked(Badges.Badge.UNLOCK_MAGE);
-			case ROGUE:
-				return Badges.isUnlocked(Badges.Badge.UNLOCK_ROGUE);
-			case HUNTRESS:
-				return Badges.isUnlocked(Badges.Badge.UNLOCK_HUNTRESS);
-			case DUELIST:
-				return Badges.isUnlocked(Badges.Badge.UNLOCK_DUELIST);
-			case CLERIC:
-				return Badges.isUnlocked(Badges.Badge.UNLOCK_CLERIC);
-		}
+		//always unlock
+		return true;
 	}
 	
 	public String unlockMsg() {

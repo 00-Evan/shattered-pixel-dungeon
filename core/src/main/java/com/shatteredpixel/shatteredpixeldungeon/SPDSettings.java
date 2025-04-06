@@ -322,6 +322,8 @@ public class SPDSettings extends GameSettings {
 	public static class Polished {
 		public static final String KEY_INPUT_BLOCK		= "input_block";
 		public static final String KEY_AUTO_PICKUP		= "auto_pickup";
+		public static final String KEY_QUICKSLOT		= "quickslot";
+		public static final String KEY_QUICK_TRANSITIONS= "quick_transitions";
 
 		public static void inputBlock( boolean value ) { put(KEY_INPUT_BLOCK, value); }
 		public static boolean inputBlock(){
@@ -330,6 +332,22 @@ public class SPDSettings extends GameSettings {
 
 		public static void autoPickup( boolean value ) { put(KEY_AUTO_PICKUP, value); }
 		public static boolean autoPickup() {return getBoolean(KEY_AUTO_PICKUP, true);}
+
+
+		public static void quickslot(boolean value){
+			put(KEY_QUICKSLOT, value);
+		}
+
+		public static boolean quickslot(){
+			return getBoolean(KEY_QUICKSLOT, true);
+		}
+
+		public static void quickTransitions(boolean value){
+			put(KEY_QUICK_TRANSITIONS, value);
+		}
+		public static boolean quickTransitions(){
+			return getBoolean(KEY_QUICK_TRANSITIONS, true);
+		}
 	}
 
 	//Connectivity
@@ -362,7 +380,7 @@ public class SPDSettings extends GameSettings {
 	}
 
 	public static boolean betas(){
-		return getBoolean(KEY_BETAS, Game.version.contains("BETA") || Game.version.contains("RC"));
+		return getBoolean(KEY_BETAS, true);
 	}
 
 	public static void WiFi(boolean value){

@@ -89,13 +89,15 @@ public class Hunger extends Buff implements Hero.Doom {
 				if (target.buff(Shadows.class) != null){
 					hungerDelay *= 1.5f;
 				}
-				hungerDelay /= SaltCube.hungerGainMultiplier();
+
+				if(!Dungeon.bossLevel()) hungerDelay /= SaltCube.hungerGainMultiplier();
 
 				float newLevel = level + (1f/hungerDelay);
 				if (newLevel >= STARVING) {
 
 					GLog.n( Messages.get(this, "onstarving") );
-					hero.damage( 1, this );
+					//POLISHED: get rid of this so Warlock doesn't constantly take damage from soulmark restoration
+					//hero.damage( 1, this );
 
 					hero.interrupt();
 					newLevel = STARVING;
@@ -173,6 +175,13 @@ public class Hunger extends Buff implements Hero.Doom {
 		return (int)Math.ceil(level);
 	}
 
+	private int turnsLeftToHurt() {
+		if(level < STARVING) return -1;
+
+		float damageTick = target.HT/1000f;
+		return (int)Math.ceil((1f - partialDamage - .001f) / damageTick);
+	}
+
 	@Override
 	public int icon() {
 		if (level < HUNGRY) {
@@ -182,6 +191,38 @@ public class Hunger extends Buff implements Hero.Doom {
 		} else {
 			return BuffIndicator.STARVATION;
 		}
+	}
+	@Override
+	public String iconTextDisplay() {
+		return isStarving() ? Integer.toString(turnsLeftToHurt()) : Integer.toString((int)(STARVING-level));
+	}
+
+	float percent() {
+		return isStarving() ? 1 - turnsLeftToHurt() * (target.HT / 1000f) : (level-HUNGRY) / (STARVING-HUNGRY);
+	}
+	public float iconFadePercent() {
+		return Math.max(0, percent());
+	}
+
+	private float hungerPercentage() {
+		return (STARVING - level) / (STARVING - HUNGRY);
+	}
+	public float textColor_red() {
+		int r = 255;
+
+		return r / 255f;
+	}
+	public float textColor_green() {
+		int g = 255;
+
+		g = (int)(g*hungerPercentage());
+		return g / 255f;
+	}
+	public float textColor_blue() {
+		int b = 255;
+
+		b = (int)(b*hungerPercentage());
+		return b / 255f;
 	}
 
 	@Override
@@ -201,8 +242,13 @@ public class Hunger extends Buff implements Hero.Doom {
 		} else {
 			result = Messages.get(this, "desc_intro_starving");
 		}
-
 		result += Messages.get(this, "desc");
+
+		if (level < STARVING) {
+			result += Messages.get(this, "saturation", (int)(STARVING-level));
+		} else {
+			result += Messages.get(this, "starve_damage", turnsLeftToHurt());
+		}
 
 		return result;
 	}

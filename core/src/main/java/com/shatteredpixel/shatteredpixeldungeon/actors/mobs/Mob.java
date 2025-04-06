@@ -140,7 +140,44 @@ public abstract class Mob extends Char {
 			HP = Math.round(HT * percent);
 			firstAdded = false;
 		}
+
+
 	}
+	public class Polished {
+		public boolean onCooldown = false;
+		Actor timer = null;
+		int blockCooldown = 20;
+
+		void initTimer() {
+			timer = new Actor() {
+				@Override
+				protected boolean act() {
+					onCooldown = false;
+					killTimer();
+					return true;
+				}
+ 			};
+			Actor.addDelayed(timer, blockCooldown);
+		}
+		void killTimer() {
+			if(timer != null) {
+				Actor.remove(timer);
+				timer = null;
+			}
+		}
+
+		public void spot(boolean spot) {
+			if(spot) {
+				onCooldown = true;
+				killTimer();
+			} else {
+				if(onCooldown && timer == null) {
+					initTimer();
+				}
+			}
+		}
+	}
+	public Polished polished = new Polished();
 
 	private static final String STATE	= "state";
 	private static final String SEEN	= "seen";
@@ -743,13 +780,14 @@ public abstract class Mob extends Char {
 				restoration = Math.round(restoration * 0.4f*Dungeon.hero.pointsInTalent(Talent.SOUL_SIPHON)/3f);
 			}
 			if (restoration > 0) {
-				Buff.affect(Dungeon.hero, Hunger.class).affectHunger(restoration*Dungeon.hero.pointsInTalent(Talent.SOUL_EATER)/3f);
-
-				if (Dungeon.hero.HP < Dungeon.hero.HT) {
-					int heal = (int)Math.ceil(restoration * 0.4f);
+				if (Dungeon.hero.HP < Dungeon.hero.HT && !Dungeon.hero.isStarving()) {
+					int heal = (int)Math.ceil(restoration * SoulMark.Polished.healRatio);
 					Dungeon.hero.HP = Math.min(Dungeon.hero.HT, Dungeon.hero.HP + heal);
 					Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(heal), FloatingText.HEALING);
 				}
+
+				//we specifically restore hunger after the heal check so starving characters don't heal
+				Buff.affect(Dungeon.hero, Hunger.class).affectHunger(restoration*Dungeon.hero.pointsInTalent(Talent.SOUL_EATER)/3f);
 			}
 		}
 
@@ -869,9 +907,12 @@ public abstract class Mob extends Char {
 	public void die( Object cause ) {
 
 		if (cause == Chasm.class){
+			//will reincorporate after chasm rework
 			//50% chance to round up, 50% to round down
-			if (EXP % 2 == 1) EXP += Random.Int(2);
-			EXP /= 2;
+			//if (EXP % 2 == 1) EXP += Random.Int(2);
+			//EXP /= 2;
+
+			EXP = 0;
 		}
 
 		if (alignment == Alignment.ENEMY){
@@ -1023,6 +1064,19 @@ public abstract class Mob extends Char {
 			state = WANDERING;
 		}
 		target = cell;
+	}
+
+	private boolean Polished_huntNoti = false;
+	private void Polished_growingHunt() {
+		ChampionEnemy.Growing grow = buff(ChampionEnemy.Growing.class);
+
+		if(grow != null && grow.Polished_hunt()) {
+			target=Dungeon.hero.pos;
+			if(!Polished_huntNoti) {
+				GLog.w(Messages.get(grow.getClass(), "hunt"));
+				Polished_huntNoti = true;
+			}
+		}
 	}
 	
 	public String description() {
@@ -1182,6 +1236,8 @@ public abstract class Mob extends Char {
 		
 		protected boolean continueWandering(){
 			enemySeen = false;
+
+			Polished_growingHunt();
 			
 			int oldPos = pos;
 			if (target != -1 && getCloser( target )) {

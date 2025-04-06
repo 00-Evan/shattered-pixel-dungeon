@@ -23,8 +23,11 @@ package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.utils.GameMath;
 
 public class RingOfTenacity extends Ring {
 
@@ -38,9 +41,17 @@ public class RingOfTenacity extends Ring {
 			String info = Messages.get(this, "stats",
 					Messages.decimalFormat("#.##", 100f * (1f - Math.pow(0.85f, soloBuffedBonus()))));
 			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero)){
-				info += "\n\n" + Messages.get(this, "combined_stats",
+				info += "\n" + Messages.get(this, "combined_stats",
 						Messages.decimalFormat("#.##", 100f * (1f - Math.pow(0.85f, combinedBuffedBonus(Dungeon.hero)))));
 			}
+
+			if (isEquipped(Dungeon.hero)){
+				info += "\n" + Messages.get(this, "current_stats",
+						Messages.decimalFormat("#.##", 100f * (1f - damageMultiplier(Dungeon.hero))));
+			} else {
+				info += "\n\n" + Messages.get(this, "not_equip");
+			}
+
 			return info;
 		} else {
 			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 15f));
@@ -58,8 +69,13 @@ public class RingOfTenacity extends Ring {
 	}
 	
 	public static float damageMultiplier( Char t ){
-		//(HT - HP)/HT = heroes current % missing health.
-		return (float)Math.pow(0.85, getBuffedBonus( t, Tenacity.class)*((float)(t.HT - t.HP)/t.HT));
+		//scales from 15-100% hp
+		float min = .15f;
+
+		float missingHP = (float)(t.HT - t.HP) / t.HT;
+		missingHP = GameMath.gate(0, missingHP/(1f-min), 1);
+
+		return (float)Math.pow(0.85, getBuffedBonus( t, Tenacity.class)*missingHP );
 	}
 
 	public class Tenacity extends RingBuff {

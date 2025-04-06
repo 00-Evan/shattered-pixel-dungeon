@@ -19,41 +19,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
+package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CrabSprite;
-import com.watabou.utils.Random;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
-public class Crab extends Mob {
+public class Brittle extends FlavourBuff {
 
-	{
-		spriteClass = CrabSprite.class;
-		
-		HP = HT = 15;
-		defenseSkill = 5;
-		baseSpeed = 1.5f;
-		
-		EXP = 4;
-		maxLvl = 9;
-		
-		loot = MysteryMeat.class;
-		lootChance = 0.167f;
-	}
-	
-	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 1, 7 );
-	}
-	
-	@Override
-	public int attackSkill( Char target ) {
-		return 12;
-	}
-	
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 4);
-	}
+    public static final float DURATION = 20f;
+
+    {
+        type = buffType.NEGATIVE;
+        announced = true;
+    }
+
+    @Override
+    public int icon() {
+        return BuffIndicator.DEGRADE;
+    }
+
+    @Override
+    public float iconFadePercent() {
+        return Math.max(0, (DURATION - visualcooldown()) / DURATION);
+    }
 }

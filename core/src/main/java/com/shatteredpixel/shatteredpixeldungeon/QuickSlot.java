@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -37,7 +38,7 @@ public class QuickSlot {
 	 */
 
 	//note that the current max size is coded at 6, due to UI constraints, but it could be much much bigger with no issue.
-	public static int SIZE = 6;
+	public static int SIZE = 7;
 	private Item[] slots = new Item[SIZE];
 
 
@@ -67,6 +68,23 @@ public class QuickSlot {
 			}
 		}
 		return -1;
+	}
+
+	public void clearMissile(Item item) {
+		//unused for now
+
+		for (int i = 0; i < SIZE; i++) {
+			if (item.isSimilar(getItem(i)) && isPlaceholder(i)) {
+				boolean found = false;
+				for(Heap h : Dungeon.level.heaps.valueList()) {
+					for(Item it : h.items) {
+						if(it.isSimilar(item)) found = true;
+					}
+				}
+
+				if(!found) clearSlot(i);
+			}
+		}
 	}
 
 	public Boolean isPlaceholder(int slot){

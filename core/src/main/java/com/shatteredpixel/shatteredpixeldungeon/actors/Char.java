@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Brittle;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
@@ -92,6 +93,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CrystalSpire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollGeomancer;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Necromancer;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogDzewa;
@@ -133,9 +135,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sickle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.ShockingDart;
+import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GeyserTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GnollRockfallTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
@@ -152,6 +156,7 @@ import com.watabou.utils.BArray;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -440,7 +445,7 @@ public abstract class Char extends Actor {
 			}
 
 			for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
-				dmg *= buff.meleeDamageFactor();
+				dmg *= buff.meleeDamageFactor(Dungeon.level.adjacent(this.pos, enemy.pos));
 			}
 
 			dmg *= AscensionChallenge.statModifier(this);
@@ -469,8 +474,11 @@ public abstract class Char extends Actor {
 				dmg *= 0.2f;
 			}
 
+			//POLISHED: do we let them stack?
 			if ( buff(Weakness.class) != null ){
 				dmg *= 0.67f;
+			} else if(buff(Brittle.class) != null) {
+				dmg *= 0.75f;
 			}
 
 			//characters influenced by aggression deal 1/2 damage to bosses
@@ -495,8 +503,11 @@ public abstract class Char extends Actor {
 				}
 
 				//vulnerable specifically applies after armor reductions
+				//POLISHED: do we let them stack?
 				if (enemy.buff(Vulnerable.class) != null) {
 					effectiveDamage *= 1.33f;
+				} else if(enemy.buff(Brittle.class) != null) {
+					effectiveDamage *= 1.25f;
 				}
 
 				effectiveDamage = attackProc(enemy, effectiveDamage);
@@ -605,6 +616,11 @@ public abstract class Char extends Actor {
 	}
 
 	public static boolean hit( Char attacker, Char defender, float accMulti, boolean magic ) {
+		//uncomment this if you wanna make proj go on cooldown on dodges aswell.
+		//ChampionEnemy.Projecting proj = attacker.buff(ChampionEnemy.Projecting.class);
+		//boolean adjacent = Dungeon.level.adjacent(attacker.pos, defender.pos);
+		//if(proj != null && !adjacent) proj.Polished_cooldown = 2;
+
 		float acuStat = attacker.attackSkill( defender );
 		float defStat = defender.defenseSkill( attacker );
 
@@ -613,9 +629,10 @@ public abstract class Char extends Actor {
 		}
 
 		//invisible chars always hit (for the hero this is surprise attacking)
-		if (attacker.invisible > 0 && attacker.canSurpriseAttack()){
+		if (attacker.invisible > 0 && attacker.canSurpriseAttack() && defender.buff(ChampionEnemy.Blessed.class) == null) {
 			acuStat = INFINITE_ACCURACY;
 		}
+		if(attacker.buff(ChampionEnemy.Blessed.class) != null) acuStat = INFINITE_ACCURACY;
 
 		if (defender.buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class) != null){
 			defStat = INFINITE_EVASION;
@@ -631,10 +648,10 @@ public abstract class Char extends Actor {
 
 		float acuRoll = Random.Float( acuStat );
 		if (attacker.buff(Bless.class) != null) acuRoll *= 1.25f;
-		if (attacker.buff(  Hex.class) != null) acuRoll *= 0.8f;
+		if (attacker.buff(  Hex.class) != null) acuRoll *= 0.75f;
 		if (attacker.buff( Daze.class) != null) acuRoll *= 0.5f;
 		for (ChampionEnemy buff : attacker.buffs(ChampionEnemy.class)){
-			acuRoll *= buff.evasionAndAccuracyFactor();
+			acuRoll *= buff.accuracyFactor();
 		}
 		acuRoll *= AscensionChallenge.statModifier(attacker);
 		if (Dungeon.hero.heroClass != HeroClass.CLERIC
@@ -646,10 +663,12 @@ public abstract class Char extends Actor {
 		
 		float defRoll = Random.Float( defStat );
 		if (defender.buff(Bless.class) != null) defRoll *= 1.25f;
-		if (defender.buff(  Hex.class) != null) defRoll *= 0.8f;
+		if (defender.buff(  Hex.class) != null) defRoll *= 0.75f;
 		if (defender.buff( Daze.class) != null) defRoll *= 0.5f;
 		for (ChampionEnemy buff : defender.buffs(ChampionEnemy.class)){
-			defRoll *= buff.evasionAndAccuracyFactor();
+			boolean surprise = (defender instanceof Mob && ((Mob)defender).surprisedBy(attacker));
+
+			defRoll *= buff.evasionFactor(surprise);
 		}
 		defRoll *= AscensionChallenge.statModifier(defender);
 		if (Dungeon.hero.heroClass != HeroClass.CLERIC
@@ -780,7 +799,50 @@ public abstract class Char extends Actor {
 		needsShieldUpdate = false;
 		return cachedShield;
 	}
-	
+
+	boolean isExternal(Char defender, Object src) {
+
+		if(!(src instanceof Char)) {
+			//dont get def boost against debuffs, traps and such
+			return false;
+		}
+
+		else if(Dungeon.level instanceof RegularLevel) {
+			Char attacker = (Char)src;
+			RegularLevel level = (RegularLevel)Dungeon.level;
+
+			ArrayList<Integer> roomCells = new ArrayList<>();
+			Room r = (level.room(pos));
+
+			if(r != null) {
+				for (Point p : r.getPoints()){
+					roomCells.add(level.pointToCell(p));
+				}
+
+				return !roomCells.contains(attacker.pos);
+			}
+
+			else {
+				boolean enemyRoom = true;
+				for(int i : PathFinder.NEIGHBOURS9) {
+					if ( level.room( attacker.pos+i ) == null )
+						enemyRoom = false;
+				}
+
+				if(enemyRoom) {
+					return true;
+				}
+
+				else if(Dungeon.level.distance(attacker.pos, defender.pos) <= Dungeon.Polished.DEFAULT_VIEW_DISTANCE) {
+					//if within a reasonable distance, we assume they're in the same room
+					return false;
+				}
+				else return true;
+			}
+
+		}
+		else return false;
+	}
 	public void damage( int dmg, Object src ) {
 		
 		if (!isAlive() || dmg < 0) {
@@ -882,10 +944,14 @@ public abstract class Char extends Actor {
 
 		dmg = Math.round(damage);
 
-		//we ceil these specifically to favor the player vs. champ dmg reduction
-		// most important vs. giant champions in the earlygame
-		for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
-			dmg = (int) Math.ceil(dmg * buff.damageTakenFactor());
+
+		ChampionEnemy.Giant giant = this.buff(ChampionEnemy.Giant.class);
+		if (giant != null){
+			boolean externalAttack = isExternal(this, src);
+
+			//we ceil these specifically to favor the player vs. champ dmg reduction
+			// most important vs. giant champions in the earlygame
+			dmg = (int) Math.ceil(dmg * giant.damageTakenFactor(externalAttack));
 		}
 		
 		//TODO improve this when I have proper damage source logic
@@ -939,7 +1005,7 @@ public abstract class Char extends Actor {
 			if (((Char) src).buff(Kinetic.KineticTracker.class) != null){
 				int dmgToAdd = -HP;
 				dmgToAdd -= ((Char) src).buff(Kinetic.KineticTracker.class).conservedDamage;
-				dmgToAdd = Math.round(dmgToAdd * Weapon.Enchantment.genericProcChanceMultiplier((Char) src));
+				dmgToAdd = Math.round(dmgToAdd * Weapon.Enchantment.Polished_procChanceMultiplier((Char) src, Dungeon.hero.belongings.attackingWeapon()));
 				if (dmgToAdd > 0) {
 					Buff.affect((Char) src, Kinetic.ConservedDamage.class).setBonus(dmgToAdd);
 				}

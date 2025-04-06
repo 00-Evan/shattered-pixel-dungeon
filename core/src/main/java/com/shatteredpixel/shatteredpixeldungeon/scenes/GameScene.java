@@ -210,7 +210,7 @@ public class GameScene extends PixelScene {
 
 	public static class Polished {
 		//millis
-		private static final int inputBlock = 550;
+		private static final int inputBlock = 500;
 		private static long inputBlockTimer = 0;
 
 		public static void blockInput() {
@@ -581,7 +581,10 @@ public class GameScene extends PixelScene {
 
 			for (Mob mob : Dungeon.level.mobs) {
 				if (!mob.buffs(ChampionEnemy.class).isEmpty()) {
-					GLog.w(Messages.get(ChampionEnemy.class, "warn"));
+					for (ChampionEnemy champ : mob.buffs(ChampionEnemy.class)) {
+						Class<?> type = champ.getClass();
+						GLog.w(Messages.get(type, "warn"));
+					}
 				}
 			}
 
@@ -697,9 +700,12 @@ public class GameScene extends PixelScene {
 	public synchronized void onPause() {
 		try {
 			if (!Dungeon.hero.ready) waitForActorThread(500, false);
-			Dungeon.saveAll();
-			Badges.saveGlobal();
-			Journal.saveGlobal();
+
+			if(!DeviceCompat.isDebug()) {
+				Dungeon.saveAll();
+				Badges.saveGlobal();
+				Journal.saveGlobal();
+			}
 		} catch (IOException e) {
 			ShatteredPixelDungeon.reportException(e);
 		}

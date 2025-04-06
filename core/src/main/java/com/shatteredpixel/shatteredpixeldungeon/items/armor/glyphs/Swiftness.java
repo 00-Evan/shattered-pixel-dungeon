@@ -21,12 +21,25 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs;
 
+import static java.lang.Math.floor;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Stamina;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BloodParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EnergyParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 public class Swiftness extends Armor.Glyph {
 
@@ -34,42 +47,40 @@ public class Swiftness extends Armor.Glyph {
 
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
-		//no proc effect, triggers in Char.speed()
+		int level = max(0, armor.buffedLvl());
+		float procChance = (level+2f)/(level+12f) * procChanceMultiplier(defender);
+
+		if ( attacker.alignment != defender.alignment && Random.Float() < procChance ) {
+			float powerMulti = max(1f, procChance);
+
+			float boost = (powerMulti * (3+level));
+
+			Stamina stamina = defender.buff(Stamina.class);
+			if(stamina != null) {
+				//boost up to maxtotal
+				float maxTotal = 1.5f*boost;
+				float diff = max(maxTotal - stamina.cooldown(), 0);
+				boost = min(diff, boost);
+			}
+
+			Buff.affect( defender, Stamina.class, boost);
+
+			//defender.sprite.centerEmitter().start(BloodParticle.BURST, 0.05f, 10);
+			//defender.sprite.centerEmitter().burst(EnergyParticle.FACTORY, 10);
+			defender.sprite.centerEmitter().burst(SparkParticle.FACTORY, 10);
+		}
+
 		return damage;
 	}
 
 	public static float speedBoost( Char owner, int level ){
-		if (level == -1){
-			return 1;
-		}
+		//POLISHED: removed
 
-		boolean enemyNear = false;
-		//for each enemy, check if they are adjacent, or within 2 tiles and an adjacent cell is open
-		for (Char ch : Actor.chars()){
-			if ( Dungeon.level.distance(ch.pos, owner.pos) <= 2 && owner.alignment != ch.alignment && ch.alignment != Char.Alignment.NEUTRAL){
-				if (Dungeon.level.adjacent(ch.pos, owner.pos)){
-					enemyNear = true;
-					break;
-				} else {
-					for (int i : PathFinder.NEIGHBOURS8){
-						if (Dungeon.level.adjacent(owner.pos+i, ch.pos) && !Dungeon.level.solid[owner.pos+i]){
-							enemyNear = true;
-							break;
-						}
-					}
-				}
-			}
-		}
-		if (enemyNear){
-			return 1;
-		} else {
-			return (1.2f + 0.04f * level) * genericProcChanceMultiplier(owner);
-		}
+		return 1f;
 	}
 
 	@Override
 	public ItemSprite.Glowing glowing() {
 		return YELLOW;
 	}
-
 }

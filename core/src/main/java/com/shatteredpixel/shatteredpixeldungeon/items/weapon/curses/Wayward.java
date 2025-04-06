@@ -36,7 +36,7 @@ public class Wayward extends Weapon.Enchantment {
 
 	@Override
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
-		float procChance = 1/4f * procChanceMultiplier(attacker);
+		float procChance = 1/4f * Polished_procChanceMultiplier(attacker, weapon);
 
 		if (attacker.buff(WaywardBuff.class) != null){
 			Buff.detach(attacker, WaywardBuff.class);

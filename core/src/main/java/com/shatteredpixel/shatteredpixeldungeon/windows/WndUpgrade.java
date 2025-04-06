@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatshield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RoundShield;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -312,6 +313,13 @@ public class WndUpgrade extends Window {
 							bottom);
 				}
 			}
+		}
+
+		if (toUpgrade instanceof RunicBlade) {
+			bottom = fillFields(Messages.get(this, "ench_boost"),
+					RunicBlade.Polished_enchantmentBoost(levelFrom),
+					RunicBlade.Polished_enchantmentBoost(levelTo),
+					bottom);
 		}
 
 		//visual separators for each column

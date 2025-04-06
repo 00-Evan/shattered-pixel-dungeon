@@ -79,7 +79,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.Smite;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Necromancer;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Snake;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Swarm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogDzewa;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CheckedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
@@ -201,6 +205,7 @@ public class Hero extends Char {
 	public static final int MAX_LEVEL = 30;
 
 	public static final int STARTING_STR = Debug.DEBUG_MODE ? Debug.Starting_Str : 10;
+	public static final int STARTING_HP  = Debug.DEBUG_MODE ? Debug.Starting_HP : 20;
 	
 	private static final float TIME_TO_REST		    = 1f;
 	private static final float TIME_TO_SEARCH	    = 2f;
@@ -230,7 +235,7 @@ public class Hero extends Char {
 	
 	public float awareness;
 
-	public int lvl = Debug.DEBUG_MODE ? Debug.Starting_HeroLevel : 1;
+	public int lvl = 1;
 	public int exp = 0;
 	
 	public int HTBoost = 0;
@@ -238,9 +243,36 @@ public class Hero extends Char {
 	private ArrayList<Mob> visibleEnemies;
 
 	public static class Polished {
+		public static void Debug_UpdateStats(int newLvl) {
+			Hero hero = Dungeon.hero;
+			if(!Debug.DEBUG_MODE || newLvl <= hero.lvl) return;
+
+			int diff = newLvl - hero.lvl;
+			Dungeon.hero.attackSkill+=diff;
+			Dungeon.hero.defenseSkill+=diff;
+
+			hero.lvl = newLvl;
+			hero.updateHT(true);
+		}
+
 		static private ArrayList<Mob> spottedEnemies;
 
+		public static boolean noEnemiesLast = false;
+
 		public static int trampledItemsLast = 0;
+
+		private static boolean interruptsInput(Mob mob) {
+			if(  mob instanceof Necromancer.NecroSkeleton ||
+					mob instanceof Wraith ||
+					(mob instanceof Swarm && ((Swarm)mob).generation > 0) ||
+					mob instanceof YogDzewa.Larva) {
+				return false;
+			}
+			else return true;
+		}
+		public static boolean noEnemiesSeen() {
+			return Dungeon.hero.visibleEnemies.isEmpty();
+		}
 		private static boolean autoPickUp(Heap heap) {
 			if (heap == null) return false;
 
@@ -250,9 +282,9 @@ public class Hero extends Char {
 			if (item instanceof Dewdrop && waterskin == null) return false;
 			if (item instanceof Dewdrop && waterskin.isFull()) return false;
 			if (!(item instanceof Dewdrop || item instanceof Plant.Seed || item instanceof Runestone || item instanceof Berry)) return false;
-			if(!Dungeon.hero.belongings.backpack.canHold(item)) return false;
+			if(!Dungeon.hero.belongings.backpack.Polished_canHoldGlobal(item)) return false;
 
-			return (SPDSettings.Polished.autoPickup() && Dungeon.hero.visibleEnemies.isEmpty());
+			return (SPDSettings.Polished.autoPickup() && noEnemiesSeen() && noEnemiesLast);
 		}
 	}
 
@@ -263,19 +295,18 @@ public class Hero extends Char {
 	public Hero() {
 		super();
 
-		HP = HT = 20;
+		HP = HT = STARTING_HP;
 		STR = STARTING_STR;
 		
 		belongings = new Belongings( this );
 		
 		visibleEnemies = new ArrayList<>();
-		Polished.spottedEnemies = new ArrayList<>();
 	}
 	
 	public void updateHT( boolean boostHP ){
 		int curHT = HT;
 		
-		HT = 20 + 5*(lvl-1) + HTBoost;
+		HT = STARTING_HP + 5*(lvl-1) + HTBoost;
 		float multiplier = RingOfMight.HTMultiplier(this);
 		HT = Math.round(multiplier * HT);
 		
@@ -837,14 +868,27 @@ public class Hero extends Char {
 	
 	@Override
 	public boolean act() {
-		
-		//calls to dungeon.observe will also update hero's local FOV.
-		fieldOfView = Dungeon.level.heroFOV;
-
-		if (buff(Endure.EndureTracker.class) != null){
-			buff(Endure.EndureTracker.class).endEnduring();
+		if(paralysed > 0 || (!(curAction instanceof HeroAction.Move) && !(curAction instanceof HeroAction.PickUp))) {
+			Polished.noEnemiesLast = Polished.noEnemiesSeen();
 		}
 		
+		//Do an input block check before updating fov to account for enemies entering the edge of your vision
+		if(fieldOfView != null && fieldOfView.length > 0) {
+			for (Mob m : Dungeon.level.mobs.toArray(new Mob[0])) {
+				if (fieldOfView[ m.pos ] && m.alignment == Alignment.ENEMY) {
+					if(Polished.interruptsInput(m) && !m.polished.onCooldown) {
+						interrupt();
+						GameScene.Polished.blockInput();
+					}
+					m.polished.spot(true);
+				} else {
+					m.polished.spot(false);
+				}
+			}
+		}
+
+		//calls to dungeon.observe will also update hero's local FOV.
+		fieldOfView = Dungeon.level.heroFOV;
 		if (!ready) {
 			//do a full observe (including fog update) if not resting.
 			if (!resting || buff(MindVision.class) != null || buff(Awareness.class) != null) {
@@ -854,11 +898,16 @@ public class Hero extends Char {
 				Dungeon.level.updateFieldOfView(this, fieldOfView);
 			}
 		}
-		
 		checkVisibleMobs();
+
+
+		if (buff(Endure.EndureTracker.class) != null){
+			buff(Endure.EndureTracker.class).endEnduring();
+		}
+
 		BuffIndicator.refreshHero();
 		BuffIndicator.refreshBoss();
-		
+
 		if (paralysed > 0) {
 			
 			curAction = null;
@@ -987,6 +1036,7 @@ public class Hero extends Char {
 	private boolean actMove( HeroAction.Move action ) {
 
 		if (getCloser( action.dst )) {
+			if(justMoved) Polished.noEnemiesLast = Polished.noEnemiesSeen();
 			canSelfTrample = false;
 			return true;
 
@@ -1090,6 +1140,8 @@ public class Hero extends Char {
 			
 			Heap heap = Dungeon.level.heaps.get( pos );
 			if (heap != null) {
+				Polished.noEnemiesLast = Polished.noEnemiesSeen();
+
 				Item item = heap.peek();
 				if (item.doPickUp( this )) {
 					heap.pickUp();
@@ -1154,7 +1206,7 @@ public class Hero extends Char {
 			return false;
 
 		} else if (getCloser( dst )) {
-
+			if(justMoved) Polished.noEnemiesLast = Polished.noEnemiesSeen();
 			return true;
 
 		} else {
@@ -1613,15 +1665,20 @@ public class Hero extends Char {
 			damage = thorns.proc((int)damage, (src instanceof Char ? (Char)src : null),  this);
 		}
 
-		if (buff(Talent.WarriorFoodImmunity.class) != null){
-			if (pointsInTalent(Talent.IRON_STOMACH) == 1)       damage /= 4f;
+		Talent.WarriorFoodImmunity immu = buff(Talent.WarriorFoodImmunity.class);
+		if (immu != null){
+			if (pointsInTalent(Talent.IRON_STOMACH) == 1)       damage /= (immu.snack ? 2f : 4f);
 			else if (pointsInTalent(Talent.IRON_STOMACH) == 2)  damage = 0;
 		}
 
 		dmg = Math.round(damage);
 
 		//we ceil this one to avoid letting the player easily take 0 dmg from tenacity early
-		dmg = (int)Math.ceil(dmg * RingOfTenacity.damageMultiplier( this ));
+		//POLISHED: we round normally, and then just set a min of 1. Why doesn't it work like this already?
+		int prevDmg = dmg;
+		dmg = Math.round(dmg * RingOfTenacity.damageMultiplier( this ));
+		dmg = Math.max(dmg, 1);
+		dmg = Math.min(dmg, prevDmg);
 
 		int preHP = HP + shielding();
 		if (src instanceof Hunger) preHP -= shielding();
@@ -1657,12 +1714,11 @@ public class Hero extends Char {
 			}
 		}
 	}
-	
+
 	public void checkVisibleMobs() {
 		ArrayList<Mob> visible = new ArrayList<>();
 
 		boolean newMob = false;
-		boolean firstTime = false;
 
 		Mob target = null;
 		for (Mob m : Dungeon.level.mobs.toArray(new Mob[0])) {
@@ -1675,11 +1731,11 @@ public class Hero extends Char {
 				if (!visibleEnemies.contains( m )) {
 					newMob = true;
 
-					if(!Polished.spottedEnemies.contains(m)) {
-						Polished.spottedEnemies.add(m);
-						firstTime = true;
+					if(Polished.interruptsInput(m) && !m.polished.onCooldown) {
+						GameScene.Polished.blockInput();
 					}
 				}
+				m.polished.spot(true);
 
 				//only do a simple check for mind visioned enemies, better performance
 				if ((!mindVisionEnemies.contains(m) && QuickSlotButton.autoAim(m) != -1)
@@ -1696,6 +1752,8 @@ public class Hero extends Char {
 						Document.ADVENTURERS_GUIDE.readPage(Document.GUIDE_EXAMINING);
 					}
 				}
+			} else {
+				m.polished.spot(false);
 			}
 		}
 
@@ -1712,10 +1770,6 @@ public class Hero extends Char {
 				Dungeon.observe();
 			}
 			interrupt();
-
-			if(firstTime) {
-				GameScene.Polished.blockInput();
-			}
 		}
 
 		visibleEnemies = visible;
@@ -1779,6 +1833,8 @@ public class Hero extends Char {
 					justMoved = false;
 					return true;
 				}
+			} else {
+				Polished.trampledItemsLast = 0;
 			}
 		}
 

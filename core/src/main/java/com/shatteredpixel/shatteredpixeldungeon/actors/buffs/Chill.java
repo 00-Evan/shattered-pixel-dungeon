@@ -28,6 +28,11 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Chill extends FlavourBuff {
 
+	public static class Polished {
+		public static final float CHILL_TICK = 3f;
+		public static final float WATER_TICK = 6f;
+	}
+
 	public static final float DURATION = 10f;
 
 	{

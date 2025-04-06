@@ -111,6 +111,9 @@ public class Dungeon {
 
 			BArray.or( level.traversable, extendedHeroFOV, offset, 5, level.traversable );
 		}
+  }
+	public static class Polished {
+		public static final int DEFAULT_VIEW_DISTANCE = 8;
 	}
 
 	//enum of items which have limited spawns, records how many have spawned

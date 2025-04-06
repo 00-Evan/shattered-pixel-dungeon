@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
+import static com.shatteredpixel.shatteredpixeldungeon.actors.Actor.TICK;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -32,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Chains;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Effects;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
@@ -55,6 +58,8 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 
 public class EtherealChains extends Artifact {
+
+	protected static final float baseCripple = 0f;
 
 	public static final String AC_CAST       = "CAST";
 
@@ -194,6 +199,7 @@ public class EtherealChains extends Artifact {
 				Actor.add(new Pushing(enemy, enemy.pos, pulledPos, new Callback() {
 					public void call() {
 						enemy.pos = pulledPos;
+						Buff.affect(enemy, Cripple.class, baseCripple + (enemy.cooldown() % TICK) + 3*chargeUse);
 
 						charge -= chargeUse;
 						Invisibility.dispel(hero);
@@ -230,15 +236,17 @@ public class EtherealChains extends Artifact {
 			return;
 		}
 		
-		//don't pull if there are no solid objects next to the pull location
-		boolean solidFound = false;
+		//don't pull if there are no enemy mobs next to the pull location
+		boolean enemyFound = false;
 		for (int i : PathFinder.NEIGHBOURS8){
-			if (Dungeon.level.solid[chain.collisionPos + i]){
-				solidFound = true;
+			Mob mob = Dungeon.level.findMob(chain.collisionPos+i);
+			if (mob != null && mob.alignment == Char.Alignment.ENEMY &&
+					Dungeon.hero.fieldOfView[chain.collisionPos+i] && Dungeon.hero.fieldOfView[chain.collisionPos]) {
+				enemyFound = true;
 				break;
 			}
 		}
-		if (!solidFound){
+		if (!enemyFound){
 			GLog.i( Messages.get(EtherealChains.class, "nothing_to_grab") );
 			return;
 		}

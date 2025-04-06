@@ -43,11 +43,12 @@ public class Shocking extends Weapon.Enchantment {
 	@Override
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
 		int level = Math.max( 0, weapon.buffedLvl() );
+		boolean onWater = Dungeon.level.water[defender.pos];
 
 		// lvl 0 - 25%
 		// lvl 1 - 40%
 		// lvl 2 - 50%
-		float procChance = (level+1f)/(level+4f) * procChanceMultiplier(attacker);
+		float procChance = (level+1f)/(level+4f) * Polished_procChanceMultiplier(attacker, weapon);
 		if (Random.Float() < procChance) {
 
 			float powerMulti = Math.max(1f, procChance);
@@ -60,7 +61,7 @@ public class Shocking extends Weapon.Enchantment {
 			affected.remove(defender); //defender isn't hurt by lightning
 			for (Char ch : affected) {
 				if (ch.alignment != attacker.alignment) {
-					ch.damage(Math.round(damage * 0.4f * powerMulti), this);
+					ch.damage(Math.round(damage * powerMulti * (onWater ? 0.75f : 0.5f)), this);
 				}
 			}
 

@@ -593,9 +593,7 @@ public abstract class Level implements Bundlable {
 		Swiftthistle.TimeBubble timeBubble = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
 		if (timeBubble != null) timeBubble.disarmPresses();
 
-		//iron stomach and challenge arena do not persist between floors
-		Talent.WarriorFoodImmunity foodImmune = Dungeon.hero.buff(Talent.WarriorFoodImmunity.class);
-		if (foodImmune != null) foodImmune.detach();
+		//challenge arena do not persist between floors
 		ScrollOfChallenge.ChallengeArena arena = Dungeon.hero.buff(ScrollOfChallenge.ChallengeArena.class);
 		if (arena != null) arena.detach();
 		//awareness also doesn't, honestly it's weird that it's a buff
@@ -763,8 +761,11 @@ public abstract class Level implements Bundlable {
 
 		if (Dungeon.hero.isAlive() && mob.pos != -1 && PathFinder.distance[mob.pos] >= disLimit) {
 			GameScene.add( mob );
-			if (!mob.buffs(ChampionEnemy.class).isEmpty()){
-				GLog.w(Messages.get(ChampionEnemy.class, "warn"));
+			if (!mob.buffs(ChampionEnemy.class).isEmpty()) {
+				for (ChampionEnemy champ : mob.buffs(ChampionEnemy.class)) {
+					Class<?> type = champ.getClass();
+					GLog.w(Messages.get(type, "warn"));
+				}
 			}
 			return true;
 		} else {

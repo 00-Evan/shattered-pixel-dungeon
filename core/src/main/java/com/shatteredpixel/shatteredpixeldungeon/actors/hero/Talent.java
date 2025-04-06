@@ -576,56 +576,91 @@ public enum Talent {
 	public static class NatureBerriesDropped extends CounterBuff{{revivePersists = true;}};
 
 	public static void onFoodEaten( Hero hero, float foodVal, Item foodSource ){
+		boolean snack = foodSource instanceof HornOfPlenty && foodVal <= HornOfPlenty.getSatietyPerCharge();
+
 		if (hero.hasTalent(HEARTY_MEAL)){
 			//3/5 HP healed, when hero is below 30% health
 			if (hero.HP/(float)hero.HT <= 0.3f) {
 				int healing = 1 + 2 * hero.pointsInTalent(HEARTY_MEAL);
+				//2/3
+				if(snack) healing = 1 + hero.pointsInTalent(HEARTY_MEAL);
+
 				hero.HP = Math.min(hero.HP + healing, hero.HT);
 				hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(healing), FloatingText.HEALING);
-
 			}
 		}
 		if (hero.hasTalent(IRON_STOMACH)){
 			if (hero.cooldown() > 0) {
-				Buff.affect(hero, WarriorFoodImmunity.class, hero.cooldown());
+				WarriorFoodImmunity immu = Buff.affect(hero, WarriorFoodImmunity.class, hero.cooldown());
+				immu.snack = snack;
 			}
 		}
 		if (hero.hasTalent(EMPOWERING_MEAL)){
 			//2/3 bonus wand damage for next 3 zaps
-			Buff.affect( hero, WandEmpower.class).set(1 + hero.pointsInTalent(EMPOWERING_MEAL), 3);
+			int bonus = 1 + hero.pointsInTalent(EMPOWERING_MEAL);
+			//1/2
+			if(snack) bonus--;
+
+			Buff.affect( hero, WandEmpower.class).set(bonus, 3);
 			ScrollOfRecharging.charge( hero );
 		}
 		if (hero.hasTalent(ENERGIZING_MEAL)){
 			//5/8 turns of recharging
-			Buff.prolong( hero, Recharging.class, 2 + 3*(hero.pointsInTalent(ENERGIZING_MEAL)) );
+			int recharge = 2 + 3*hero.pointsInTalent(ENERGIZING_MEAL);
+			//3/4
+			if(snack) recharge = 2 + hero.pointsInTalent(ENERGIZING_MEAL);
+
+			Buff.prolong( hero, Recharging.class, recharge );
 			ScrollOfRecharging.charge( hero );
 			SpellSprite.show(hero, SpellSprite.CHARGE);
 		}
 		if (hero.hasTalent(MYSTICAL_MEAL)){
 			//3/5 turns of recharging
+			int recharge = 1 + 2*(hero.pointsInTalent(MYSTICAL_MEAL));
+			//2/3
+			if(snack) recharge = 1 + (hero.pointsInTalent(MYSTICAL_MEAL));
+
 			ArtifactRecharge buff = Buff.affect( hero, ArtifactRecharge.class);
 			if (buff.left() < 1 + 2*(hero.pointsInTalent(MYSTICAL_MEAL))){
-				Buff.affect( hero, ArtifactRecharge.class).set(1 + 2*(hero.pointsInTalent(MYSTICAL_MEAL))).ignoreHornOfPlenty = foodSource instanceof HornOfPlenty;
+				Buff.affect( hero, ArtifactRecharge.class).set(recharge).ignoreHornOfPlenty = foodSource instanceof HornOfPlenty;
 			}
 			ScrollOfRecharging.charge( hero );
 			SpellSprite.show(hero, SpellSprite.CHARGE, 0, 1, 1);
 		}
 		if (hero.hasTalent(INVIGORATING_MEAL)){
 			//effectively 1/2 turns of haste
-			Buff.prolong( hero, Haste.class, 0.67f+hero.pointsInTalent(INVIGORATING_MEAL));
+			float haste = 0.67f+hero.pointsInTalent(INVIGORATING_MEAL);
+			//2/4 ticks of movement
+			if(snack) haste = 0.67f + 0.67f * (hero.pointsInTalent(INVIGORATING_MEAL));
+
+			Buff.prolong( hero, Haste.class, haste);
 		}
 		if (hero.hasTalent(STRENGTHENING_MEAL)){
 			//3 bonus physical damage for next 2/3 attacks
-			Buff.affect( hero, PhysicalEmpower.class).set(3, 1 + hero.pointsInTalent(STRENGTHENING_MEAL));
+			int bonus = 1 + hero.pointsInTalent(STRENGTHENING_MEAL);
+			//1/2
+			if(snack) bonus--;
+
+			Buff.affect( hero, PhysicalEmpower.class).set(3, bonus);
 		}
 		if (hero.hasTalent(FOCUSED_MEAL)){
 			if (hero.heroClass == HeroClass.DUELIST){
 				//0.67/1 charge for the duelist
-				Buff.affect( hero, MeleeWeapon.Charger.class ).gainCharge((hero.pointsInTalent(FOCUSED_MEAL)+1)/3f);
+				float charge = (hero.pointsInTalent(FOCUSED_MEAL)+1)/3f;
+				//0.33/0.67
+				if(snack) charge = 0.34f * hero.pointsInTalent(FOCUSED_MEAL);
+
+				Buff.affect( hero, MeleeWeapon.Charger.class ).gainCharge(charge);
 				ScrollOfRecharging.charge( hero );
 			} else {
 				// lvl/3 / lvl/2 bonus dmg on next hit for other classes
-				Buff.affect( hero, PhysicalEmpower.class).set(Math.round(hero.lvl / (4f - hero.pointsInTalent(FOCUSED_MEAL))), 1);
+				int bonus = Math.round(hero.lvl / (4f - hero.pointsInTalent(FOCUSED_MEAL)));
+				// lvl/6 / lvl/4
+				if(snack) bonus = Math.round(hero.lvl / (5f - hero.pointsInTalent(FOCUSED_MEAL)));
+
+				bonus = Math.max(bonus, 1);
+
+				Buff.affect( hero, PhysicalEmpower.class).set(bonus, 1);
 			}
 		}
 		if (hero.hasTalent(SATIATED_SPELLS)){
@@ -634,6 +669,9 @@ public enum Talent {
 			} else {
 				//3/5 shielding, delayed up to 10 turns
 				int amount = 1 + 2*hero.pointsInTalent(SATIATED_SPELLS);
+				//2/3
+				if(snack) amount = 1 + hero.pointsInTalent(SATIATED_SPELLS);
+
 				Barrier b = Buff.affect(hero, Barrier.class);
 				if (b.shielding() <= amount){
 					b.setShield(amount);
@@ -645,23 +683,34 @@ public enum Talent {
 			if (hero.heroClass == HeroClass.CLERIC) {
 				HolyTome tome = hero.belongings.getItem(HolyTome.class);
 				if (tome != null) {
-					tome.directCharge( 0.5f * (1+hero.pointsInTalent(ENLIGHTENING_MEAL)));
+					// 1/1.5
+					float amount = 0.5f * (1+hero.pointsInTalent(ENLIGHTENING_MEAL));
+					// 0.5 / 0.75
+					if(snack) amount /= 2f;
+
+					tome.directCharge(amount);
 					ScrollOfRecharging.charge(hero);
 				}
 			} else {
 				//2/3 turns of recharging
+				int recharge = 1 + (hero.pointsInTalent(ENLIGHTENING_MEAL));
+				//1/2
+				if(snack) recharge--;
+
 				ArtifactRecharge buff = Buff.affect( hero, ArtifactRecharge.class);
-				if (buff.left() < 1 + (hero.pointsInTalent(ENLIGHTENING_MEAL))){
-					Buff.affect( hero, ArtifactRecharge.class).set(1 + (hero.pointsInTalent(ENLIGHTENING_MEAL))).ignoreHornOfPlenty = foodSource instanceof HornOfPlenty;
+				if (buff.left() < recharge){
+					Buff.affect( hero, ArtifactRecharge.class).set(recharge).ignoreHornOfPlenty = foodSource instanceof HornOfPlenty;
 				}
-				Buff.prolong( hero, Recharging.class, 1 + (hero.pointsInTalent(ENLIGHTENING_MEAL)) );
+
+				Buff.prolong( hero, Recharging.class, recharge );
 				ScrollOfRecharging.charge( hero );
 				SpellSprite.show(hero, SpellSprite.CHARGE);
 			}
 		}
 	}
 
-	public static class WarriorFoodImmunity extends FlavourBuff{
+	public static class WarriorFoodImmunity extends FlavourBuff {
+		public boolean snack = false;
 		{ actPriority = HERO_PRIO+1; }
 	}
 

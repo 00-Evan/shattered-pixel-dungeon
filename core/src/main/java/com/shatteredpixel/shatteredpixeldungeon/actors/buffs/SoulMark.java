@@ -27,6 +27,11 @@ import com.watabou.noosa.Image;
 
 public class SoulMark extends FlavourBuff {
 
+	public static class Polished {
+		public static float healRatio = .33f;
+		public static float satiationRatio = .33f;
+	}
+
 	public static final float DURATION	= 10f;
 
 	{
