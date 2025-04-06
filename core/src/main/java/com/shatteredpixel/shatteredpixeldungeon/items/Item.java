@@ -322,7 +322,7 @@ public class Item implements Bundlable {
 		} else
 		if (quantity == 1) {
 
-			if (stackable){
+			if (stackable || this instanceof Waterskin){
 				Dungeon.quickslot.convertToPlaceholder(this);
 			}
 

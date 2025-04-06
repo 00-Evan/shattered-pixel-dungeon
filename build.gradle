@@ -19,7 +19,7 @@ allprojects {
 
         //just add the PPD version after the SPD code (883)
         appVersionCode = 833110
-        appVersionName = '1.0.0-SPD_3.0.2'
+        appVersionName = '1.0.0-SPD3.0.2'
 
         appJavaCompatibility = JavaVersion.VERSION_1_8
 

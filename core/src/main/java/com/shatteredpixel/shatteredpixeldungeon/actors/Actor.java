@@ -57,6 +57,17 @@ public abstract class Actor implements Bundlable {
 
 	protected abstract boolean act();
 
+	public float Polished_alignTurnWheel( float time ) {
+		float partial = time % TICK;
+		if(partial < 0) partial++;
+
+		//do we wanna use spendConstant()? there might be unwanted rounding...
+		spendConstant(partial);
+		//this.time += partial;
+
+		return partial;
+	}
+
 	//Always spends exactly the specified amount of time, regardless of time-influencing factors
 	protected void spendConstant( float time ){
 		this.time += time;

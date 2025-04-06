@@ -149,6 +149,7 @@ public abstract class Level implements Bundlable {
 	
 	public int[] map;
 	public boolean[] visited;
+	public boolean[] traversable;
 	public boolean[] mapped;
 	public boolean[] discoverable;
 
@@ -198,6 +199,7 @@ public abstract class Level implements Bundlable {
 	private static final String HEIGHT      = "height";
 	private static final String MAP			= "map";
 	private static final String VISITED		= "visited";
+	private static final String TRAVERSABLE	= "traversable";
 	private static final String MAPPED		= "mapped";
 	private static final String TRANSITIONS	= "transitions";
 	private static final String LOCKED      = "locked";
@@ -324,6 +326,7 @@ public abstract class Level implements Bundlable {
 		Arrays.fill( map, feeling == Level.Feeling.CHASM ? Terrain.CHASM : Terrain.WALL );
 		
 		visited     = new boolean[length];
+		traversable = new boolean[length];
 		mapped      = new boolean[length];
 		
 		heroFOV     = new boolean[length];
@@ -379,6 +382,8 @@ public abstract class Level implements Bundlable {
 		map		= bundle.getIntArray( MAP );
 
 		visited	= bundle.getBooleanArray( VISITED );
+		if(bundle.contains(TRAVERSABLE))
+			traversable	= bundle.getBooleanArray( TRAVERSABLE );
 		mapped	= bundle.getBooleanArray( MAPPED );
 
 		transitions = new ArrayList<>();
@@ -460,6 +465,7 @@ public abstract class Level implements Bundlable {
 		bundle.put( HEIGHT, height );
 		bundle.put( MAP, map );
 		bundle.put( VISITED, visited );
+		if(traversable != null) bundle.put( TRAVERSABLE, traversable );
 		bundle.put( MAPPED, mapped );
 		bundle.put( TRANSITIONS, transitions );
 		bundle.put( LOCKED, locked );
@@ -1520,6 +1526,10 @@ public abstract class Level implements Bundlable {
 
 	public Point cellToPoint( int cell ){
 		return new Point(cell % width(), cell / width());
+	}
+
+	public int pointToCell(int x, int y) {
+		return y * width + x;
 	}
 
 	public int pointToCell( Point p ){

@@ -81,6 +81,7 @@ public class AntiMagic extends Armor.Glyph {
 		RESISTS.add( Charm.class );
 		RESISTS.add( Weakness.class );
 		RESISTS.add( Vulnerable.class );
+		//RESISTS.add( Brittle.class );
 		RESISTS.add( Hex.class );
 		RESISTS.add( Degrade.class );
 		

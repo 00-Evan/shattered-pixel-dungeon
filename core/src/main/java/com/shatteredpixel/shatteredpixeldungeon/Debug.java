@@ -1,5 +1,6 @@
 package com.shatteredpixel.shatteredpixeldungeon;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -18,6 +19,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.AquaBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfFeatherFall;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -34,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazin
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampiric;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Glaive;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shortsword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.FishingSpear;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.Reflection;
@@ -72,16 +75,21 @@ public class Debug {
             DebugCollect(itemType);
         }
 
-        DebugCollect(ClothArmor.class, 0, 1, Swiftness.class);
+        //DebugCollect(ClothArmor.class, 0, 1, Swiftness.class);
     }
 
     public static void StartGame() {
         if(!Debug.DEBUG_MODE || !Debug.ActOnStart) return;
 
+        Hero.Polished.Debug_UpdateStats(Starting_HeroLevel);
+
         Starting_Bag();
     }
     public static void LoadGame() {
         if(!Debug.DEBUG_MODE || !Debug.ActOnLoad) return;
+
+        Hero.Polished.Debug_UpdateStats(Starting_HeroLevel);
+        Dungeon.hero.STR = Math.max(Dungeon.hero.STR, Starting_Str);
 
         Starting_Bag();
     }
