@@ -77,7 +77,7 @@ public class SpiritBow extends Weapon {
 
 	private int curCharges = getMaxCharge();
 	private int getMaxCharge() {
-		return level() + 3;
+		return level() + 5;
 	}
 
 	@Override
