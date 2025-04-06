@@ -492,10 +492,10 @@ abstract public class Weapon extends KindOfWeapon {
 	public static abstract class Enchantment implements Bundlable {
 
 		public static final Class<?>[] common = new Class<?>[]{
-				Blazing.class, Chilling.class, Kinetic.class, Shocking.class};
+				Blocking.class, Chilling.class, Kinetic.class, Shocking.class};
 
 		public static final Class<?>[] uncommon = new Class<?>[]{
-				Blocking.class, Blooming.class, Elastic.class,
+				Blazing.class, Blooming.class, Elastic.class,
 				Lucky.class, Projecting.class, Unstable.class};
 
 		public static final Class<?>[] rare = new Class<?>[]{
