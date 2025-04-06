@@ -33,6 +33,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.N
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed;
@@ -46,8 +48,10 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
@@ -70,6 +74,16 @@ public class SpiritBow extends Weapon {
 	
 	public boolean sniperSpecial = false;
 	public float sniperSpecialBonusDamage = 0f;
+
+	private int curCharges = getMaxCharge();
+	private int getMaxCharge() {
+		return level() + 3;
+	}
+
+	@Override
+	public String status() {
+		return curCharges + "/" + getMaxCharge();
+	}
 	
 	@Override
 	public ArrayList<String> actions(Hero hero) {
@@ -369,6 +383,24 @@ public class SpiritBow extends Weapon {
 		@Override
 		public void cast(final Hero user, final int dst) {
 			final int cell = throwPos( user, dst );
+			if (user.pos == cell) {
+				int maxCharge = getMaxCharge();
+				if (curCharges == maxCharge) {
+					GLog.w(Messages.get(Wand.class, "fizzles"));
+				} else {
+					user.spendAndNext(castDelay(user, dst) * 2);
+					curCharges = maxCharge;
+					Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
+					ScrollOfRecharging.charge(curUser);
+					updateQuickslot();
+				}
+				return;
+			}
+			if (curCharges == 0) {
+				GLog.w(Messages.get(this, "fizzles"));
+				return;
+			}
+			curCharges--;
 			SpiritBow.this.targetPos = cell;
 			if (sniperSpecial && SpiritBow.this.augment == Augment.SPEED){
 				if (flurryCount == -1) flurryCount = 3;
@@ -479,4 +511,18 @@ public class SpiritBow extends Weapon {
 			return Messages.get(SpiritBow.class, "prompt");
 		}
 	};
+
+	private static final String CUR_CHARGES = "curCharges";
+
+	@Override
+	public void storeInBundle( Bundle bundle ) {
+		super.storeInBundle( bundle );
+		bundle.put( CUR_CHARGES, curCharges );
+	}
+
+	@Override
+	public void restoreFromBundle( Bundle bundle ) {
+		super.restoreFromBundle( bundle );
+		curCharges = bundle.getInt( CUR_CHARGES );
+	}
 }
