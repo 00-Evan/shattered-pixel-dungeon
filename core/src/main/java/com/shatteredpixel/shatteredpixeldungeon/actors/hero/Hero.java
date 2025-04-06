@@ -256,9 +256,20 @@ public class Hero extends Char {
 		}
 
 		static private ArrayList<Mob> spottedEnemies;
+
 		public static boolean noEnemiesLast = false;
 
 		public static int trampledItemsLast = 0;
+
+		private static boolean interruptsInput(Mob mob) {
+			if(  mob instanceof Necromancer.NecroSkeleton ||
+					mob instanceof Wraith ||
+					(mob instanceof Swarm && ((Swarm)mob).generation > 0) ||
+					mob instanceof YogDzewa.Larva) {
+				return false;
+			}
+			else return true;
+		}
 		public static boolean noEnemiesSeen() {
 			return Dungeon.hero.visibleEnemies.isEmpty();
 		}
@@ -290,7 +301,6 @@ public class Hero extends Char {
 		belongings = new Belongings( this );
 		
 		visibleEnemies = new ArrayList<>();
-		Polished.spottedEnemies = new ArrayList<>();
 	}
 	
 	public void updateHT( boolean boostHP ){
@@ -858,14 +868,23 @@ public class Hero extends Char {
 	
 	@Override
 	public boolean act() {
-		
+		//Do an input block check before updating fov to account for enemies entering the edge of your vision
+		if(fieldOfView != null && fieldOfView.length > 0) {
+			for (Mob m : Dungeon.level.mobs.toArray(new Mob[0])) {
+				if (fieldOfView[ m.pos ] && m.alignment == Alignment.ENEMY) {
+					if(Polished.interruptsInput(m) && !m.polished.onCooldown) {
+						interrupt();
+						GameScene.Polished.blockInput();
+					}
+					m.polished.spot(true);
+				} else {
+					m.polished.spot(false);
+				}
+			}
+		}
+
 		//calls to dungeon.observe will also update hero's local FOV.
 		fieldOfView = Dungeon.level.heroFOV;
-
-		if (buff(Endure.EndureTracker.class) != null){
-			buff(Endure.EndureTracker.class).endEnduring();
-		}
-		
 		if (!ready) {
 			//do a full observe (including fog update) if not resting.
 			if (!resting || buff(MindVision.class) != null || buff(Awareness.class) != null) {
@@ -875,8 +894,13 @@ public class Hero extends Char {
 				Dungeon.level.updateFieldOfView(this, fieldOfView);
 			}
 		}
-
 		checkVisibleMobs();
+
+
+		if (buff(Endure.EndureTracker.class) != null){
+			buff(Endure.EndureTracker.class).endEnduring();
+		}
+
 		BuffIndicator.refreshHero();
 		BuffIndicator.refreshBoss();
 
@@ -1689,20 +1713,10 @@ public class Hero extends Char {
 		}
 	}
 
-	private boolean interruptsInput(Mob mob) {
-		if(  mob instanceof Necromancer.NecroSkeleton ||
-			 mob instanceof Wraith ||
-			(mob instanceof Swarm && ((Swarm)mob).generation > 0) ||
-			 mob instanceof YogDzewa.Larva) {
-			return false;
-		}
-		else return true;
-	}
 	public void checkVisibleMobs() {
 		ArrayList<Mob> visible = new ArrayList<>();
 
 		boolean newMob = false;
-		boolean firstTime = false;
 
 		Mob target = null;
 		for (Mob m : Dungeon.level.mobs.toArray(new Mob[0])) {
@@ -1715,12 +1729,11 @@ public class Hero extends Char {
 				if (!visibleEnemies.contains( m )) {
 					newMob = true;
 
-					if(!Polished.spottedEnemies.contains(m)) {
-						Polished.spottedEnemies.add(m);
-
-						if(interruptsInput(m)) firstTime = true;
+					if(Polished.interruptsInput(m) && !m.polished.onCooldown) {
+						GameScene.Polished.blockInput();
 					}
 				}
+				m.polished.spot(true);
 
 				//only do a simple check for mind visioned enemies, better performance
 				if ((!mindVisionEnemies.contains(m) && QuickSlotButton.autoAim(m) != -1)
@@ -1737,6 +1750,8 @@ public class Hero extends Char {
 						Document.ADVENTURERS_GUIDE.readPage(Document.GUIDE_EXAMINING);
 					}
 				}
+			} else {
+				m.polished.spot(false);
 			}
 		}
 
@@ -1753,10 +1768,6 @@ public class Hero extends Char {
 				Dungeon.observe();
 			}
 			interrupt();
-
-			if(firstTime) {
-				GameScene.Polished.blockInput();
-			}
 		}
 
 		visibleEnemies = visible;

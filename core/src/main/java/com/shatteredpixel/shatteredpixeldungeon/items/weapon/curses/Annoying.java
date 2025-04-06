@@ -41,7 +41,7 @@ public class Annoying extends Weapon.Enchantment {
 	@Override
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
 
-		float procChance = 1/20f * procChanceMultiplier(attacker);
+		float procChance = 1/20f * Polished_procChanceMultiplier(attacker, weapon);
 		if (Random.Float() < procChance) {
 			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
 				mob.beckon(attacker.pos);

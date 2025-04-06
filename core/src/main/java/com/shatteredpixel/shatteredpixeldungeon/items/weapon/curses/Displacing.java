@@ -38,7 +38,7 @@ public class Displacing extends Weapon.Enchantment {
 	@Override
 	public int proc(Weapon weapon, Char attacker, Char defender, int damage ) {
 
-		float procChance = 1/12f * procChanceMultiplier(attacker);
+		float procChance = 1/12f * Polished_procChanceMultiplier(attacker, weapon);
 		if (Random.Float() < procChance && !defender.properties().contains(Char.Property.IMMOVABLE)){
 
 			int oldpos = defender.pos;

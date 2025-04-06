@@ -75,7 +75,7 @@ public class Necromancer extends Mob {
 	public boolean summoning = false;
 	public int summoningPos = -1;
 
-	public class Polished {
+	private class Polished {
 		private static final String SUMMON_COOLDOWN = "summon_cooldown";
 		private static final String ZAP_COOLDOWN = "zap_cooldown";
 		private static final String TP_COOLDOWN = "zap_cooldown";
@@ -83,6 +83,9 @@ public class Necromancer extends Mob {
 		public int summonCooldown = -1;
 		public int zapCooldown = -1;
 		public int tpCooldown = -1;
+
+
+		public boolean alt_pos = false;
 	}
 	Polished polished = new Polished();
 
@@ -246,6 +249,14 @@ public class Necromancer extends Mob {
 	public void summonMinion(){
 		if (Actor.findChar(summoningPos) != null) {
 
+			//cancel if character cannot be moved, except if there's no other summon positions
+			if (Char.hasProp(Actor.findChar(summoningPos), Property.IMMOVABLE) && polished.alt_pos){
+				summoning = false;
+				((NecromancerSprite)sprite).finishSummoning();
+				spend(-TICK);
+				return;
+			}
+
 			int pushPos = pos;
 			for (int c : PathFinder.NEIGHBOURS8) {
 				if (Actor.findChar(summoningPos + c) == null
@@ -342,6 +353,7 @@ public class Necromancer extends Mob {
 			if (enemySeen && Dungeon.level.distance(pos, enemy.pos) <= 4 && mySkeleton == null && polished.summonCooldown <= 0){
 				
 				summoningPos = -1;
+				polished.alt_pos = false;
 
 				//we can summon around blocking terrain, but not through it, except unlocked doors
 				boolean[] passable = BArray.not(Dungeon.level.solid, null);
@@ -349,12 +361,15 @@ public class Necromancer extends Mob {
 				PathFinder.buildDistanceMap(pos, passable, Dungeon.level.distance(pos, enemy.pos)+3);
 
 				for (int c : PathFinder.NEIGHBOURS8){
-					if (Actor.findChar(enemy.pos+c) == null
+					if (
+							Actor.findChar(enemy.pos+c) == null
 							&& PathFinder.distance[enemy.pos+c] != Integer.MAX_VALUE
 							&& Dungeon.level.passable[enemy.pos+c]
 							&& (!hasProp(Necromancer.this, Property.LARGE) || Dungeon.level.openSpace[enemy.pos+c])
 							&& fieldOfView[enemy.pos+c]
-							&& Dungeon.level.trueDistance(pos, enemy.pos+c) < Dungeon.level.trueDistance(pos, summoningPos)){
+							&& Dungeon.level.trueDistance(pos, enemy.pos+c) < Dungeon.level.trueDistance(pos, summoningPos))
+					{
+						polished.alt_pos = summoningPos != -1;
 						summoningPos = enemy.pos+c;
 					}
 				}
@@ -427,7 +442,7 @@ public class Necromancer extends Mob {
 				}
 
 			} else {
-				if(!enemySeen) return super.act(enemyInFOV, justAlerted);
+				if(!enemySeen || Dungeon.level.distance(pos, enemy.pos) > 4) return super.act(enemyInFOV, justAlerted);
 				else {
 					spend(TICK);
 					return true;
