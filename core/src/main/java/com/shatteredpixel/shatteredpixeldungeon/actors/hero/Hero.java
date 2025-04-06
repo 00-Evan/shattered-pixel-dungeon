@@ -255,8 +255,6 @@ public class Hero extends Char {
 			hero.updateHT(true);
 		}
 
-		static private ArrayList<Mob> spottedEnemies;
-
 		public static boolean noEnemiesLast = false;
 
 		public static int trampledItemsLast = 0;
@@ -301,7 +299,6 @@ public class Hero extends Char {
 		belongings = new Belongings( this );
 		
 		visibleEnemies = new ArrayList<>();
-		Polished.spottedEnemies = new ArrayList<>();
 	}
 	
 	public void updateHT( boolean boostHP ){
