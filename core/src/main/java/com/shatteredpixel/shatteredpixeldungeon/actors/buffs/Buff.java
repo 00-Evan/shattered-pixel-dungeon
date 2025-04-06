@@ -158,6 +158,29 @@ public class Buff extends Actor {
 		}
 	}
 
+	public static class Polished {
+		public static<T extends FlavourBuff> T affectAligned(Char target, Class<T> buffClass, float duration) {
+			boolean isNew = target.buff(buffClass) == null;
+
+			T buff = affect(target, buffClass);
+			if(isNew) buff.Polished_alignTurnWheel(target.cooldown());
+			buff.spend( duration * target.resist(buffClass) );
+
+			return buff;
+		}
+
+		//postpones an already active buff, or creates & attaches a new buff and delays that.
+		public static<T extends FlavourBuff> T prolongAligned( Char target, Class<T> buffClass, float duration ) {
+
+			float partial = target.cooldown() % TICK;
+			if(partial < 0) partial++;
+			duration += partial;
+
+			T buff = prolong(target, buffClass, duration);
+			return buff;
+		}
+	}
+
 	//creates a fresh instance of the buff and attaches that, this allows duplication.
 	public static<T extends Buff> T append( Char target, Class<T> buffClass ) {
 		T buff = Reflection.newInstance(buffClass);
@@ -167,6 +190,7 @@ public class Buff extends Actor {
 
 	public static<T extends FlavourBuff> T append( Char target, Class<T> buffClass, float duration ) {
 		T buff = append( target, buffClass );
+
 		buff.spend( duration * target.resist(buffClass) );
 		return buff;
 	}

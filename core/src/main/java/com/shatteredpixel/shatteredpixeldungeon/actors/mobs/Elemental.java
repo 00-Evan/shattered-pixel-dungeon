@@ -493,6 +493,8 @@ public abstract class Elemental extends Mob {
 		
 		@Override
 		protected void rangedProc( Char enemy ) {
+			//Buff.Polished.affectAligned(enemy, Chill.class, 1f);
+			Buff.affect(enemy, Chill.class, 1f);
 			Freezing.freeze( enemy.pos );
 			if (enemy.sprite.visible) Splash.at( enemy.sprite.center(), sprite.blood(), 5);
 		}

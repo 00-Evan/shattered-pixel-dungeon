@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Effects;
@@ -114,7 +115,7 @@ public class WandOfBlastWave extends DamageWand {
 			if ((ch.isAlive() || ch.flying || !Dungeon.level.pit[ch.pos])
 					&& bolt.path.size() > bolt.dist+1 && ch.pos == bolt.collisionPos) {
 				Ballistica trajectory = new Ballistica(ch.pos, bolt.path.get(bolt.dist + 1), Ballistica.MAGIC_BOLT);
-				int strength = buffedLvl() + 3;
+				int strength = buffedLvl() + 2;
 				throwChar(ch, trajectory, strength, false, true, this);
 			}
 		}
@@ -125,6 +126,9 @@ public class WandOfBlastWave extends DamageWand {
 	                             boolean closeDoors, boolean collideDmg, Object cause){
 		if (ch.properties().contains(Char.Property.BOSS)) {
 			power = (power+1)/2;
+		}
+		if(ch.buff(ChampionEnemy.AntiMagic.class) != null) {
+			power = Math.min(power, 1);
 		}
 
 		int dist = Math.min(trajectory.dist, power);

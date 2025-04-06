@@ -700,9 +700,12 @@ public class GameScene extends PixelScene {
 	public synchronized void onPause() {
 		try {
 			if (!Dungeon.hero.ready) waitForActorThread(500, false);
-			Dungeon.saveAll();
-			Badges.saveGlobal();
-			Journal.saveGlobal();
+
+			if(!DeviceCompat.isDebug()) {
+				Dungeon.saveAll();
+				Badges.saveGlobal();
+				Journal.saveGlobal();
+			}
 		} catch (IOException e) {
 			ShatteredPixelDungeon.reportException(e);
 		}
