@@ -707,7 +707,7 @@ public class CursedWand {
 			if (valid(origin, user, bolt, positiveOnly)){
 				Char ch = Actor.findChar( bolt.collisionPos );
 				Sheep sheep = new Sheep();
-				sheep.lifespan = 10;
+				sheep.initialize(10);
 				sheep.pos = ch.pos;
 				ch.destroy();
 				ch.sprite.killAndErase();
