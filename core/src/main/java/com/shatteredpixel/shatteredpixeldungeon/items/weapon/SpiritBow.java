@@ -394,8 +394,6 @@ public class SpiritBow extends Weapon {
 		Actor flurryActor = null;
 
 		public boolean Polished_cast(final Hero user, final int dst) {
-			boolean flurryFollowup = flurryCount == 1 || flurryCount == 2;
-
 			int chargeCost = sniperSpecial && SpiritBow.this.augment != Augment.NONE ? 2 : 1;
 			if (user.pos == dst) {
 				int maxCharge = getMaxCharge();
@@ -410,7 +408,7 @@ public class SpiritBow extends Weapon {
 				}
 				return true;
 			}
-			if(!flurryFollowup) {
+			if(flurryCount == -1) {
 				if (curCharges < chargeCost) {
 					sniperSpecial = false;
 					GLog.w(Messages.get(SpiritBow.class, "empty"));
