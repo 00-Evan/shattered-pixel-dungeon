@@ -417,6 +417,7 @@ public class SpiritBow extends Weapon {
 					return false;
 				}
 				curCharges -= chargeCost;
+				updateQuickslot();
 			}
 
 			final int cell = throwPos( user, dst );
