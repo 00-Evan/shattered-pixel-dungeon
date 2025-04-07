@@ -736,14 +736,13 @@ public class Armor extends EquipableItem {
 	public static abstract class Glyph implements Bundlable {
 		
 		public static final Class<?>[] common = new Class<?>[]{
-				Obfuscation.class, Swiftness.class, Viscosity.class, Potential.class };
+				Viscosity.class, Brimstone.class, Affection.class, Potential.class, Obfuscation.class };
 
 		public static final Class<?>[] uncommon = new Class<?>[]{
-				Brimstone.class, Stone.class, Entanglement.class,
-				Repulsion.class, Camouflage.class, Flow.class };
+				Thorns.class, Repulsion.class, Flow.class, Entanglement.class, Swiftness.class };
 
 		public static final Class<?>[] rare = new Class<?>[]{
-				Affection.class, AntiMagic.class, Thorns.class };
+				Stone.class, Camouflage.class, AntiMagic.class };
 
 		public static final float[] typeChances = new float[]{
 				50, //12.5% each
