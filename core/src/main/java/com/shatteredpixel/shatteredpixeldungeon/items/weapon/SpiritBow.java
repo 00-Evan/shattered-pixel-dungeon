@@ -380,6 +380,11 @@ public class SpiritBow extends Weapon {
 			} else {
 				if (!curUser.shoot( enemy, this )) {
 					Splash.at(cell, 0xCC99FFFF, 1);
+				} else {
+					if(flurryCount == -1) {
+						curCharges -= Polished_chargeCost();
+						updateQuickslot();
+					}
 				}
 				if (sniperSpecial && SpiritBow.this.augment != Augment.SPEED) sniperSpecial = false;
 			}
@@ -393,8 +398,10 @@ public class SpiritBow extends Weapon {
 		int flurryCount = -1;
 		Actor flurryActor = null;
 
+		private int Polished_chargeCost() {
+			return sniperSpecial && SpiritBow.this.augment != Augment.NONE ? 2 : 1;
+		}
 		public boolean Polished_cast(final Hero user, final int dst) {
-			int chargeCost = sniperSpecial && SpiritBow.this.augment != Augment.NONE ? 2 : 1;
 			if (user.pos == dst) {
 				int maxCharge = getMaxCharge();
 				if (curCharges == maxCharge) {
@@ -408,14 +415,10 @@ public class SpiritBow extends Weapon {
 				}
 				return true;
 			}
-			if(flurryCount == -1) {
-				if (curCharges < chargeCost) {
-					sniperSpecial = false;
-					GLog.w(Messages.get(SpiritBow.class, "empty"));
-					return false;
-				}
-				curCharges -= chargeCost;
-				updateQuickslot();
+			if(flurryCount == -1 && curCharges < Polished_chargeCost()) {
+				sniperSpecial = false;
+				GLog.w(Messages.get(SpiritBow.class, "empty"));
+				return false;
 			}
 
 			final int cell = throwPos( user, dst );
