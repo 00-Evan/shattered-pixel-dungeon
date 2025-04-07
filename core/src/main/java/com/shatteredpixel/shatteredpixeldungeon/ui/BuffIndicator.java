@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -259,6 +260,10 @@ public class BuffIndicator extends Component {
 				icon.givePointerPriority();
 				cumulativeAdjust -= leftAdjust;
 			}
+		}
+
+		if (this == heroInstance && buffButtons.size() >= 10){
+			Badges.validateManyBuffs();
 		}
 	}
 

@@ -536,6 +536,8 @@ public class YogDzewa extends Mob {
 		}
 		Statistics.bossScores[4] += 5000 + 1250*Statistics.spawnersAlive;
 
+		Badges.validateTakingTheMick(cause);
+
 		Dungeon.level.unseal();
 		super.die( cause );
 

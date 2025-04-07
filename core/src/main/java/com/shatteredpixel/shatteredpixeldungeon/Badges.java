@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -30,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.remains.RemainsItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
@@ -1027,6 +1029,16 @@ public class Badges {
 		}
 	}
 
+	public static void validateTakingTheMick(Object cause){
+		if (!DeviceCompat.isDebug()) return;
+		if (cause == Dungeon.hero &&
+				Dungeon.hero.belongings.attackingWeapon() instanceof Pickaxe
+				&& Dungeon.hero.belongings.attackingWeapon().buffedLvl() >= 20){
+			local.add( Badge.TAKING_THE_MICK );
+			displayBadge(Badge.TAKING_THE_MICK);
+		}
+	}
+
 	public static void validateNoKilling() {
 		if (!local.contains( Badge.NO_MONSTERS_SLAIN ) && Statistics.completedWithNoKilling) {
 			Badge badge = Badge.NO_MONSTERS_SLAIN;
@@ -1039,6 +1051,15 @@ public class Badges {
 	public static void validateGrimWeapon() {
 		if (!local.contains( Badge.GRIM_WEAPON )) {
 			Badge badge = Badge.GRIM_WEAPON;
+			local.add( badge );
+			displayBadge( badge );
+		}
+	}
+
+	public static void validateManyBuffs(){
+		if (!DeviceCompat.isDebug()) return;
+		if (!local.contains( Badge.MANY_BUFFS )) {
+			Badge badge = Badge.MANY_BUFFS;
 			local.add( badge );
 			displayBadge( badge );
 		}
@@ -1106,6 +1127,12 @@ public class Badges {
 		if( Dungeon.hero.belongings.getItem(RemainsItem.class) != null ){
 			local.add( Badge.HAPPY_END_REMAINS );
 			displayBadge( Badge.HAPPY_END_REMAINS );
+		}
+
+		if (!DeviceCompat.isDebug()) return;
+		if (AscensionChallenge.qualifiedForPacifist()) {
+			local.add( Badge.PACIFIST_ASCENT );
+			displayBadge( Badge.PACIFIST_ASCENT );
 		}
 	}
 
