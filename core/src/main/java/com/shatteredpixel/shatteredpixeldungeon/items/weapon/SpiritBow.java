@@ -89,7 +89,7 @@ public class SpiritBow extends Weapon {
 			default:
 				augFactor = 1;
 		}
-		return (int)((Math.ceil(level() / 2.0) + 5.0) * augFactor);
+		return (int)Math.round((Math.ceil(level() / 2.0) + 5.0) * augFactor);
 	}
 
 	@Override
