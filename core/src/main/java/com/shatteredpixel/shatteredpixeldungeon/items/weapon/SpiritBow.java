@@ -77,7 +77,19 @@ public class SpiritBow extends Weapon {
 
 	private int curCharges = getMaxCharge();
 	private int getMaxCharge() {
-		return level() + 5;
+		double augFactor;
+		switch (augment) {
+			case DAMAGE:
+				augFactor = 2.0 / 3.0;
+				break;
+
+			case SPEED:
+				augFactor = 4.0 / 3.0;
+				break;
+			default:
+				augFactor = 1;
+		}
+		return (int)((Math.ceil(level() / 2.0) + 5.0) * augFactor);
 	}
 
 	@Override
