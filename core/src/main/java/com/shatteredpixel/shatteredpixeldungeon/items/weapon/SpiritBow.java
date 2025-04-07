@@ -394,6 +394,7 @@ public class SpiritBow extends Weapon {
 
 		@Override
 		public void cast(final Hero user, final int dst) {
+			int chargeCost = sniperSpecial ? 2 : 1;
 			if (user.pos == dst) {
 				int maxCharge = getMaxCharge();
 				if (curCharges == maxCharge) {
@@ -407,11 +408,11 @@ public class SpiritBow extends Weapon {
 				}
 				return;
 			}
-			if (curCharges == 0) {
+			if (curCharges < chargeCost) {
 				GLog.w(Messages.get(SpiritBow.class, "empty"));
 				return;
 			}
-			curCharges--;
+			curCharges -= chargeCost;
 			final int cell = throwPos( user, dst );
 			SpiritBow.this.targetPos = cell;
 			if (sniperSpecial && SpiritBow.this.augment == Augment.SPEED){
