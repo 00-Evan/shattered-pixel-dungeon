@@ -81,7 +81,6 @@ public class SpiritBow extends Weapon {
 			case DAMAGE:
 				augFactor = 3.0 / 4.0;
 				break;
-
 			case SPEED:
 				augFactor = 4.0 / 3.0;
 				break;
@@ -89,7 +88,7 @@ public class SpiritBow extends Weapon {
 				augFactor = 1;
 		}
 
-		return (int) Math.ceil((5.0 + 0.35f * level()) * augFactor);
+		return (int) Math.ceil((5.0f + level()/3f) * augFactor);
 	}
 	public void Polished_resetCharges() {
 		curCharges = Math.max(curCharges, Polished_getMaxCharge());
