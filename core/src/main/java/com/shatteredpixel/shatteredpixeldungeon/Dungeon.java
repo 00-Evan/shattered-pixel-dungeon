@@ -99,21 +99,22 @@ import java.util.TimeZone;
 
 public class Dungeon {
 
-	private static void updateNearbyTiles(boolean[] extendedHeroFOV, int pos) {
-		for (int i = 0; i < 3; i++) {
-			int offset = pos + level.pointToCell(-1, -1+i);
-
-			BArray.or( level.visited, level.heroFOV, offset, 3, level.visited );
-		}
-
-		for (int i = 0; i < 5; i++) {
-			int offset = pos + level.pointToCell(-2, -2+i);
-
-			BArray.or( level.traversable, extendedHeroFOV, offset, 5, level.traversable );
-		}
-  }
 	public static class Polished {
 		public static final int DEFAULT_VIEW_DISTANCE = 8;
+
+		private static void updateNearbyTiles(boolean[] extendedHeroFOV, int pos) {
+			for (int i = 0; i < 3; i++) {
+				int offset = pos + level.pointToCell(-1, -1+i);
+
+				BArray.or( level.visited, level.heroFOV, offset, 3, level.visited );
+			}
+
+			for (int i = 0; i < 5; i++) {
+				int offset = pos + level.pointToCell(-2, -2+i);
+
+				BArray.or( level.traversable, extendedHeroFOV, offset, 5, level.traversable );
+			}
+		}
 	}
 
 	//enum of items which have limited spawns, records how many have spawned
@@ -1000,7 +1001,7 @@ public class Dungeon {
 					continue;
 				}
 
-				updateNearbyTiles(extension, m.pos);
+				Polished.updateNearbyTiles(extension, m.pos);
 				//updates adjacent cells too
 				GameScene.updateFog(m.pos, 2);
 			}
@@ -1008,7 +1009,7 @@ public class Dungeon {
 
 		if (hero.buff(Awareness.class) != null){
 			for (Heap h : level.heaps.valueList()){
-				updateNearbyTiles(extension, h.pos);
+				Polished.updateNearbyTiles(extension, h.pos);
 				GameScene.updateFog(h.pos, 2);
 			}
 		}
@@ -1016,19 +1017,19 @@ public class Dungeon {
 		for (TalismanOfForesight.CharAwareness c : hero.buffs(TalismanOfForesight.CharAwareness.class)){
 			Char ch = (Char) Actor.findById(c.charID);
 			if (ch == null || !ch.isAlive()) continue;
-			updateNearbyTiles(extension, ch.pos);
+			Polished.updateNearbyTiles(extension, ch.pos);
 			GameScene.updateFog(ch.pos, 2);
 		}
 
 		for (TalismanOfForesight.HeapAwareness h : hero.buffs(TalismanOfForesight.HeapAwareness.class)){
 			if (Dungeon.depth != h.depth || Dungeon.branch != h.branch) continue;
-			updateNearbyTiles(extension, h.pos);
+			Polished.updateNearbyTiles(extension, h.pos);
 			GameScene.updateFog(h.pos, 2);
 		}
 
 		for (RevealedArea a : hero.buffs(RevealedArea.class)){
 			if (Dungeon.depth != a.depth || Dungeon.branch != a.branch) continue;
-			updateNearbyTiles(extension, a.pos);
+			Polished.updateNearbyTiles(extension, a.pos);
 			GameScene.updateFog(a.pos, 2);
 		}
 
