@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed;
@@ -75,8 +74,8 @@ public class SpiritBow extends Weapon {
 	public boolean sniperSpecial = false;
 	public float sniperSpecialBonusDamage = 0f;
 
-	private int curCharges = getMaxCharge();
-	private int getMaxCharge() {
+	private int curCharges = Polished_getMaxCharge();
+	private int Polished_getMaxCharge() {
 		double augFactor;
 		switch (augment) {
 			case DAMAGE:
@@ -92,10 +91,13 @@ public class SpiritBow extends Weapon {
 
 		return (int) Math.ceil((level() / 2.0 + 5.0) * augFactor);
 	}
+	public void Polished_resetCharges() {
+		curCharges = Math.max(curCharges, Polished_getMaxCharge());
+	}
 
 	@Override
 	public String status() {
-		return curCharges + "/" + getMaxCharge();
+		return curCharges + "/" + Polished_getMaxCharge();
 	}
 	
 	@Override
@@ -403,7 +405,7 @@ public class SpiritBow extends Weapon {
 		}
 		public boolean Polished_cast(final Hero user, final int dst) {
 			if (user.pos == dst) {
-				int maxCharge = getMaxCharge();
+				int maxCharge = Polished_getMaxCharge();
 				if (curCharges == maxCharge) {
 					GLog.w(Messages.get(SpiritBow.class, "max_charges"));
 				} else {
