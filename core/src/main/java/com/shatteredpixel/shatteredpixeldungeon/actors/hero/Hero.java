@@ -879,6 +879,7 @@ public class Hero extends Char {
 						GameScene.Polished.blockInput();
 					}
 					m.polished.spot(true);
+					Polished.noEnemiesLast = false;
 				} else {
 					m.polished.spot(false);
 				}
