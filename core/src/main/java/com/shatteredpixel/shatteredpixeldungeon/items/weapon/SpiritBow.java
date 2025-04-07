@@ -395,7 +395,7 @@ public class SpiritBow extends Weapon {
 
 		@Override
 		public void cast(final Hero user, final int dst) {
-			int chargeCost = sniperSpecial ? 2 : 1;
+			int chargeCost = sniperSpecial && SpiritBow.this.augment != Augment.NONE ? 2 : 1;
 			if (user.pos == dst) {
 				int maxCharge = getMaxCharge();
 				if (curCharges == maxCharge) {
