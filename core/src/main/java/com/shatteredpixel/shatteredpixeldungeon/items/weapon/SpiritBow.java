@@ -381,12 +381,12 @@ public class SpiritBow extends Weapon {
 			} else {
 				if (!curUser.shoot( enemy, this )) {
 					Splash.at(cell, 0xCC99FFFF, 1);
-				} else {
-					if(flurryCount == -1) {
-						curCharges -= Polished_chargeCost();
-						updateQuickslot();
-					}
 				}
+				if(flurryCount == -1) {
+					curCharges -= Polished_chargeCost();
+					updateQuickslot();
+				}
+				
 				if (sniperSpecial && SpiritBow.this.augment != Augment.SPEED) sniperSpecial = false;
 			}
 		}
