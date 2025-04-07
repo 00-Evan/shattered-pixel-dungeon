@@ -89,7 +89,7 @@ public class SpiritBow extends Weapon {
 				augFactor = 1;
 		}
 
-		return (int) Math.ceil((level() / 2.0 + 5.0) * augFactor);
+		return (int) Math.ceil((5.0 + 0.35f * level()) * augFactor);
 	}
 	public void Polished_resetCharges() {
 		curCharges = Math.max(curCharges, Polished_getMaxCharge());
