@@ -80,7 +80,7 @@ public class SpiritBow extends Weapon {
 		double augFactor;
 		switch (augment) {
 			case DAMAGE:
-				augFactor = 2.0 / 3.0;
+				augFactor = 3.0 / 4.0;
 				break;
 
 			case SPEED:
@@ -89,7 +89,8 @@ public class SpiritBow extends Weapon {
 			default:
 				augFactor = 1;
 		}
-		return (int)Math.round((Math.ceil(level() / 2.0) + 5.0) * augFactor);
+
+		return (int) Math.round((level() / 2.0 + 5.0) * augFactor);
 	}
 
 	@Override
