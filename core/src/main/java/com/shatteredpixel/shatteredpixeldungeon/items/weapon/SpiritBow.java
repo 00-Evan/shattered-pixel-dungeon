@@ -393,8 +393,7 @@ public class SpiritBow extends Weapon {
 		int flurryCount = -1;
 		Actor flurryActor = null;
 
-		@Override
-		public void cast(final Hero user, final int dst) {
+		public boolean Polished_cast(final Hero user, final int dst) {
 			int chargeCost = sniperSpecial && SpiritBow.this.augment != Augment.NONE ? 2 : 1;
 			if (user.pos == dst) {
 				int maxCharge = getMaxCharge();
@@ -407,20 +406,21 @@ public class SpiritBow extends Weapon {
 					ScrollOfRecharging.charge(curUser);
 					updateQuickslot();
 				}
-				return;
+				return true;
 			}
 			if (curCharges < chargeCost) {
+				sniperSpecial = false;
 				GLog.w(Messages.get(SpiritBow.class, "empty"));
-				return;
+				return false;
 			}
 			curCharges -= chargeCost;
 			final int cell = throwPos( user, dst );
 			SpiritBow.this.targetPos = cell;
 			if (sniperSpecial && SpiritBow.this.augment == Augment.SPEED){
 				if (flurryCount == -1) flurryCount = 3;
-				
+
 				final Char enemy = Actor.findChar( cell );
-				
+
 				if (enemy == null){
 					if (user.buff(Talent.LethalMomentumTracker.class) != null){
 						user.buff(Talent.LethalMomentumTracker.class).detach();
@@ -435,13 +435,13 @@ public class SpiritBow extends Weapon {
 						flurryActor.next();
 						flurryActor = null;
 					}
-					return;
+					return true;
 				}
 
 				QuickSlotButton.target(enemy);
-				
+
 				user.busy();
-				
+
 				throwSound();
 
 				user.sprite.zap(cell);
@@ -493,7 +493,7 @@ public class SpiritBow extends Weapon {
 										}
 									}
 								});
-				
+
 			} else {
 
 				if (user.hasTalent(Talent.SEER_SHOT)
@@ -510,6 +510,12 @@ public class SpiritBow extends Weapon {
 
 				super.cast(user, dst);
 			}
+			return true;
+		}
+
+		@Override
+		public void cast(final Hero user, final int dst) {
+			Polished_cast(user, dst);
 		}
 	}
 	
