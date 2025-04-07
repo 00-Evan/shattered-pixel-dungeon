@@ -26,7 +26,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
@@ -85,6 +87,9 @@ public class GrimTrap extends Trap {
 				}
 
 				if (target != null) {
+					if (target instanceof Mob){
+						Buff.prolong(target, Trap.HazardAssistTracker.class, HazardAssistTracker.DURATION);
+					}
 					final Char finalTarget = target;
 					//instant kill, use a mix of current HP and max HP, just like psi blast (for resistances)
 					int damage = Math.round(finalTarget.HT/2f + finalTarget.HP/2f);

@@ -36,6 +36,7 @@ public class Statistics {
 	public static int foodEaten;
 	public static int itemsCrafted;
 	public static int piranhasKilled;
+	public static int hazardAssistedKills;
 	public static int ankhsUsed;
 	//tracks every item type 'seen' this run (i.e. would be added to catalogs)
 	public static HashSet<Class> itemTypesDiscovered = new HashSet<>();
@@ -82,6 +83,7 @@ public class Statistics {
 		foodEaten		= 0;
 		itemsCrafted    = 0;
 		piranhasKilled	= 0;
+		hazardAssistedKills = 0;
 		ankhsUsed		= 0;
 		itemTypesDiscovered.clear();
 
@@ -123,6 +125,7 @@ public class Statistics {
 	private static final String FOOD		= "foodEaten";
 	private static final String ALCHEMY		= "potionsCooked";
 	private static final String PIRANHAS	= "priranhas";
+	private static final String HAZARD_ASSISTS	= "hazard_assists";
 	private static final String ANKHS		= "ankhsUsed";
 
 	private static final String PROG_SCORE	    = "prog_score";
@@ -164,6 +167,7 @@ public class Statistics {
 		bundle.put( FOOD,		foodEaten );
 		bundle.put( ALCHEMY,    itemsCrafted );
 		bundle.put( PIRANHAS,	piranhasKilled );
+		bundle.put(HAZARD_ASSISTS, hazardAssistedKills);
 		bundle.put( ANKHS,		ankhsUsed );
 		bundle.put( ITEM_TYPES_DISCOVERED, itemTypesDiscovered.toArray(new Class<?>[0]) );
 
@@ -209,6 +213,7 @@ public class Statistics {
 		foodEaten		= bundle.getInt( FOOD );
 		itemsCrafted    = bundle.getInt( ALCHEMY );
 		piranhasKilled	= bundle.getInt( PIRANHAS );
+		hazardAssistedKills = bundle.getInt( HAZARD_ASSISTS );
 		ankhsUsed		= bundle.getInt( ANKHS );
 
 		if (bundle.contains( ITEM_TYPES_DISCOVERED )) {

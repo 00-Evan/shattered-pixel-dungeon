@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
@@ -95,6 +96,9 @@ public class RockfallTrap extends Trap {
 			Char ch = Actor.findChar( cell );
 
 			if (ch != null && ch.isAlive()){
+				if (ch instanceof Mob) {
+					Buff.prolong(ch, Trap.HazardAssistTracker.class, HazardAssistTracker.DURATION);
+				}
 				int damage = Random.NormalIntRange(5+scalingDepth(), 10+scalingDepth()*2);
 				damage -= ch.drRoll();
 				ch.damage( Math.max(damage, 0) , this);

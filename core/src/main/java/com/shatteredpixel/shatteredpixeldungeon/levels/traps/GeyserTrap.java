@@ -26,7 +26,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -74,6 +76,10 @@ public class GeyserTrap extends Trap {
 			Char ch = Actor.findChar(pos + i);
 			if (ch != null){
 
+				if (source == this && ch instanceof Mob){
+					Buff.prolong(ch, Trap.HazardAssistTracker.class, HazardAssistTracker.DURATION);
+				}
+
 				//does the equivalent of a bomb's damage against fiery enemies.
 				if (Char.hasProp(ch, Char.Property.FIERY)){
 					int dmg = Random.NormalIntRange(5 + scalingDepth(), 10 + scalingDepth()*2);
@@ -100,6 +106,9 @@ public class GeyserTrap extends Trap {
 
 		Char ch = Actor.findChar(pos);
 		if (ch != null){
+			if (source == this && ch instanceof Mob){
+				Buff.prolong(ch, Trap.HazardAssistTracker.class, HazardAssistTracker.DURATION);
+			}
 			int targetpos = -1;
 			if (centerKnockBackDirection != -1){
 				targetpos = centerKnockBackDirection;

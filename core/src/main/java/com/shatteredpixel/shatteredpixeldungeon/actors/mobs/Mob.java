@@ -84,6 +84,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -875,6 +876,11 @@ public abstract class Mob extends Char {
 		}
 
 		if (alignment == Alignment.ENEMY){
+			if (buff(Trap.HazardAssistTracker.class) != null){
+				Statistics.hazardAssistedKills++;
+				Badges.validateHazardAssists();
+			}
+
 			rollToDropLoot();
 
 			if (cause == Dungeon.hero || cause instanceof Weapon || cause instanceof Weapon.Enchantment){
