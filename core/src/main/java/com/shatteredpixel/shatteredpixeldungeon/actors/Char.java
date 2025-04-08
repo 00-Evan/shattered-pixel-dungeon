@@ -962,7 +962,8 @@ public abstract class Char extends Actor {
 			}
 			if (dmg < 0) dmg = 0;
 		}
-		
+
+		int inc_dmg = dmg;
 		if (buff( Paralysis.class ) != null) {
 			buff( Paralysis.class ).processDamage(dmg);
 		}
@@ -990,7 +991,10 @@ public abstract class Char extends Actor {
 			finalChance *= (float)Math.pow( ((HT - HP) / (float)HT), 2);
 
 			if (Random.Float() < finalChance) {
-				int extraDmg = Math.round(HP*resist(Grim.class));
+				boolean isBoss = properties().contains(Property.BOSS);
+
+				int extraDmg = isBoss ? 3*inc_dmg : Math.round(HP*resist(Grim.class));
+
 				dmg += extraDmg;
 				HP -= extraDmg;
 
