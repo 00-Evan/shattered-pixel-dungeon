@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
+import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
@@ -1469,6 +1470,11 @@ public class GameScene extends PixelScene {
 		cellSelector.enabled = Dungeon.hero.ready;
 		if (scene != null) {
 			scene.prompt(listener.prompt());
+		}
+
+		if(QuickSlot.Polished.cellQueued() && listener != defaultCellListener) {
+			GameScene.handleCell(QuickSlot.Polished.bufferedCell);
+			QuickSlot.Polished.bufferedCell = -1;
 		}
 	}
 	

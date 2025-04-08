@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -171,7 +172,8 @@ public class CellSelector extends ScrollArea {
 			GameScene.ready();
 			
 		} else {
-			
+
+			if(GameScene.Polished.canInput() && Dungeon.hero.curAction == null) QuickSlot.Polished.bufferCell(cell);
 			GameScene.cancel();
 			
 		}

@@ -44,18 +44,32 @@ public class QuickSlot {
 	private Item[] slots = new Item[SIZE];
 
 	public static class Polished {
-		public static GameAction bufferedSlot = null;
-		private static long timer = 0;
-		//in millis
-		private static final int bufferDuration = 60;
+		public static GameAction bufferedAction = null;
+		private static long timer_Action = 0;
+		private static final int bufferPeriod_Action = 80;
 
-		public static void bufferAction(GameAction action) {
-			bufferedSlot = action;
-			timer = Game.realTime + bufferDuration;
+		public static void bufferAction(GameAction action, boolean animation) {
+			//if(bufferedAction == null) bufferedAction = action;
+			//else bufferedAction = null;
+
+			bufferedAction = action;
+
+			timer_Action = Game.realTime + (animation ? bufferPeriod_Action : 2*bufferPeriod_Action);
+		}
+		public static boolean actionQueued() {
+			return bufferedAction != null && Game.realTime <= timer_Action;
 		}
 
-		public static boolean actionQueued() {
-			return bufferedSlot != null && Game.realTime <= timer;
+		public static int bufferedCell = -1;
+		private static long timer_Cell = 0;
+		private static final int bufferPeriod_Cell = 60;
+
+		public static void bufferCell(int cell) {
+			bufferedCell = cell;
+			timer_Cell = Game.realTime + bufferPeriod_Cell;
+		}
+		public static boolean cellQueued() {
+			return bufferedCell != -1 && Game.realTime <= timer_Cell;
 		}
 	}
 
