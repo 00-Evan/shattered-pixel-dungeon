@@ -23,12 +23,16 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
@@ -47,11 +51,23 @@ public class ShockingDart extends TippedDart {
 		if (!processingChargedShot || attacker.alignment != defender.alignment) {
 			defender.damage(Random.NormalIntRange(5 + Dungeon.scalingDepth() / 4, 10 + Dungeon.scalingDepth() / 4), new Electricity());
 
+			//3x3 AoE mini-stun
+			ArrayList<Lightning.Arc> arcs = new ArrayList<>();
+			for (int i : PathFinder.NEIGHBOURS9) {
+				Char ch = Actor.findChar(defender.pos + i);
+
+				if(ch != null) {
+					//only para them on next action
+					Buff.Polished.affectAligned(ch, Paralysis.class, 0f);
+					arcs.add(new Lightning.Arc(defender.sprite.center(), ch.sprite.center()));
+				}
+			}
+
 			CharSprite s = defender.sprite;
 			if (s != null && s.parent != null) {
-				ArrayList<Lightning.Arc> arcs = new ArrayList<>();
 				arcs.add(new Lightning.Arc(new PointF(s.x, s.y + s.height / 2), new PointF(s.x + s.width, s.y + s.height / 2)));
 				arcs.add(new Lightning.Arc(new PointF(s.x + s.width / 2, s.y), new PointF(s.x + s.width / 2, s.y + s.height)));
+
 				s.parent.add(new Lightning(arcs, null));
 				Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);
 			}
