@@ -47,7 +47,7 @@ public class QuickSlot {
 		public static GameAction bufferedSlot = null;
 		private static long timer = 0;
 		//in millis
-		private static final int bufferDuration = 50;
+		private static final int bufferDuration = 60;
 
 		public static void bufferAction(GameAction action) {
 			bufferedSlot = action;
