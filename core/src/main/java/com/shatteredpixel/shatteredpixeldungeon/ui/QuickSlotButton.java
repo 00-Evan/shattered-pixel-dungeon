@@ -37,6 +37,9 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndKeyBindings;
 import com.watabou.input.GameAction;
+import com.watabou.input.KeyBindings;
+import com.watabou.input.KeyEvent;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.utils.BArray;
 import com.watabou.utils.PathFinder;
@@ -82,9 +85,14 @@ public class QuickSlotButton extends Button {
 		slot = new ItemSlot() {
 			@Override
 			protected void onClick() {
-				if (!Dungeon.hero.isAlive() || !Dungeon.hero.ready){
+				if (!Dungeon.hero.isAlive()){
 					return;
 				}
+				if(!Dungeon.hero.ready) {
+					QuickSlot.Polished.bufferAction(keyAction());
+					return;
+				}
+
 				if (targetingSlot == slotNum && GameScene.Polished.canInput()) {
 					int cell = autoAim(lastTarget, select(slotNum));
 
@@ -224,7 +232,7 @@ public class QuickSlotButton extends Button {
 	
 	@Override
 	protected void onClick() {
-		if (Dungeon.hero.ready && !GameScene.cancel()) {
+		if (/*Dungeon.hero.ready &&*/ !GameScene.cancel()) {
 			GameScene.selectItem(itemSelector);
 		}
 	}

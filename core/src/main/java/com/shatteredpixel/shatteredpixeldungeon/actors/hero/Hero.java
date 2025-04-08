@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Debug;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
+import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
@@ -179,6 +180,8 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
+import com.watabou.input.KeyBindings;
+import com.watabou.input.KeyEvent;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.Delayer;
@@ -999,6 +1002,12 @@ public class Hero extends Char {
 		AttackIndicator.updateState();
 		
 		GameScene.ready();
+
+		if(QuickSlot.Polished.actionQueued()) {
+			KeyEvent.addKeyEvent(new KeyEvent(KeyBindings.getFirstKeyForAction(QuickSlot.Polished.bufferedSlot, false), true));
+			KeyEvent.addKeyEvent(new KeyEvent(KeyBindings.getFirstKeyForAction(QuickSlot.Polished.bufferedSlot, false), false));
+			QuickSlot.Polished.bufferedSlot = null;
+		}
 	}
 	
 	public void interrupt() {

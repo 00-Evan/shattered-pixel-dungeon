@@ -23,6 +23,8 @@ package com.shatteredpixel.shatteredpixeldungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.watabou.input.GameAction;
+import com.watabou.noosa.Game;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -40,6 +42,22 @@ public class QuickSlot {
 	//note that the current max size is coded at 6, due to UI constraints, but it could be much much bigger with no issue.
 	public static int SIZE = 7;
 	private Item[] slots = new Item[SIZE];
+
+	public static class Polished {
+		public static GameAction bufferedSlot = null;
+		private static long timer = 0;
+		//in millis
+		private static final int bufferDuration = 50;
+
+		public static void bufferAction(GameAction action) {
+			bufferedSlot = action;
+			timer = Game.realTime + bufferDuration;
+		}
+
+		public static boolean actionQueued() {
+			return bufferedSlot != null && Game.realTime <= timer;
+		}
+	}
 
 
 	//direct array interaction methods, everything should build from these methods.

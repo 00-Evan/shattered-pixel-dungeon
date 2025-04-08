@@ -654,8 +654,8 @@ public class Toolbar extends Component {
 	public void update() {
 		super.update();
 		
-		if (lastEnabled != (Dungeon.hero.ready && Dungeon.hero.isAlive())) {
-			lastEnabled = (Dungeon.hero.ready && Dungeon.hero.isAlive());
+		if (lastEnabled != (/*Dungeon.hero.ready &&*/ Dungeon.hero.isAlive())) {
+			lastEnabled = (/*Dungeon.hero.ready &&*/ Dungeon.hero.isAlive());
 			
 			for (Gizmo tool : members.toArray(new Gizmo[0])) {
 				if (tool instanceof Tool) {
