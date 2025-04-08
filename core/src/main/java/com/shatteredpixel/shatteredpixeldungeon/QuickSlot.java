@@ -46,13 +46,14 @@ public class QuickSlot {
 	public static class Polished {
 		public static GameAction bufferedAction = null;
 		private static long timer_Action = 0;
-		private static final int bufferPeriod_Action = 80;
+		//millis
+		private static final int bufferPeriod_Action = 100;
 
 		public static void bufferAction(GameAction action, boolean animation) {
-			//if(bufferedAction == null) bufferedAction = action;
-			//else bufferedAction = null;
+			if(!actionQueued()) bufferedAction = action;
+			else bufferedAction = null;
 
-			bufferedAction = action;
+			//bufferedAction = action;
 
 			timer_Action = Game.realTime + (animation ? bufferPeriod_Action : 2*bufferPeriod_Action);
 		}
@@ -62,7 +63,8 @@ public class QuickSlot {
 
 		public static int bufferedCell = -1;
 		private static long timer_Cell = 0;
-		private static final int bufferPeriod_Cell = 60;
+		//millis
+		private static final int bufferPeriod_Cell = 100;
 
 		public static void bufferCell(int cell) {
 			bufferedCell = cell;
