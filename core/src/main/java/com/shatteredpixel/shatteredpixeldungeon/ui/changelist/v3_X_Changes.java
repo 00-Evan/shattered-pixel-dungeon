@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
-import com.badlogic.gdx.utils.SharedLibraryLoader;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -35,14 +34,13 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TalentIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Image;
-import com.watabou.utils.DeviceCompat;
 
 import java.util.ArrayList;
 
 public class v3_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
-		add_Coming_Soon(changeInfos);
+		add_v3_1_Changes(changeInfos);
 		add_v3_0_Changes(changeInfos);
 	}
 
@@ -79,83 +77,35 @@ public class v3_X_Changes {
 
 	}
 
+	public static void add_v3_1_Changes( ArrayList<ChangeInfo> changeInfos ) {
+
+		ChangeInfo changes = new ChangeInfo("v3.1", true, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
+		changes.hardlight(CharSprite.WARNING);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
+		changes.hardlight(CharSprite.POSITIVE);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
+		changes.hardlight(CharSprite.NEGATIVE);
+		changeInfos.add(changes);
+
+	}
+
 	public static void add_v3_0_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
 		ChangeInfo changes = new ChangeInfo("v3.0", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("v3.0.2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		if (DeviceCompat.isDesktop() && SharedLibraryLoader.isLinux) {
-			changes.addButton(new ChangeButton(Icons.DISPLAY.get(), "A Note for Steam Deck users",
-					"A bug was fixed in this patch which affected display scaling on Steam Deck. Due to a quirk in how the Steam Deck reported display dimensions, the game incorrectly thought Steam Deck's screen was about 4\", instead of 7\".\n" +
-					"\n" +
-					"As a result of this fix, you might notice that the interface appears differently as it now defaults to the 'full' UI mode instead of 'mobile'. If you prefer the previous interface mode, you can swap to it in the settings by using the mobile interface mode and 5x interface scale."));
-		}
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** Music muting while game is in background on desktop now also applies to blacksmith's hammering sfx\n" +
-				"**-** Improved number rounding logic when damage hero takes is affected by several modifiers at once\n" +
-				"**-** Updated translations and translator credits"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by v3.0:**\n" +
-				"**-** Errors with Android golden supporter UI and full interface mode\n" +
-				"**-** Cleric's Recall Glyph spell not working with some runestones while time was frozen\n" +
-				"\n" +
-				"**Existed Prior to v3.0:**\n" +
-				"**-** Game incorrectly thinking it is on a phone screen when played on Steam Deck\n" +
-				"**-** Water of Awareness buff persisting between floors if the hero is very fast\n" +
-				"**-** Various errors when saving/loading custom controller bindings\n" +
-				"**-** Visual errors when Tengu's sprite animations are frozen (e.g. via paralysis)\n" +
-				"**-** Characters still appearing as visible if knocked out of hero FOV in specific cases\n" +
-				"**-** Talisman of Foresight's scry ability not detecting hiding mimics\n" +
-				"**-** Quick-using an item from a bag not using that item's autotarget properties (for real this time)\n"));
-
-		changes = new ChangeInfo("v3.0.1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(Icons.BUFFS.get(), "Balance Changes",
-				"So far the Cleric is doing surprisingly well balance-wise! There are definitely some things to adjust, but nothing that's serious enough to need doing in a patch. I'm just making one change to put a limit on ring of energy shenanigans for the Paladin:\n" +
-				"**- Holy Weapon and Ward** can now be extended to a max of 100 turns at a time.\n" +
-				"\n" +
-				"After v3.0's nerf to the Mossy Clump, I'm going to experiment with scaling back its absurd upgrade cost. Hopefully it's at a power level now where it doesn't need to cost massively more than other trinkets:\n" +
-				"**- Mossy Clump** upgrade energy cost reduced to 10/15/20 from 20/25/30. This is now the same as other 'higher cost' trinkets."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"Firstly, two trinket changes that are meant as QoL, but are effectively mild buffs:\n" +
-				"**-** Salt Cube's regen reduction now automatically disables itself during boss fights, the trinket doesn't need to be dropped.\n" +
-				"**-** Waterskin drinking now more intelligently handles the extra healing from vial of blood, no longer consuming excess dew.\n" +
-				"\n" +
-				"And some other things:\n" +
-				"**-** Updated Translations\n" +
-				"**-** Cursed wand pitfall effect no longer drops items if triggered via wondrous resin\n" +
-				"**-** Feint armor ability no longer autotargets\n" +
-				"**-** Removed support for runs in progress from prior to v2.3.2 (Jan. 2024)\n" +
-				"**-** Removed internal code for old blacksmith quest from prior to v2.2 (Oct. 2023)"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by v3.0:**\n" +
-				"**-** Enemies getting many actions after recovering from transmogrification\n" +
-				"**-** Save/load errors with sniper's mark buff\n" +
-				"**-** Incorrect shielding amount shown when using Warrior's remains item\n" +
-				"**-** Various uncommon crash bugs\n" +
-				"\n" +
-				"**Existed Prior to v3.0:**\n" +
-				"**-** Exploit involving unidentified crossbow and curse infusion\n" +
-				"**-** Exploit involving placing wards on a necromancer's summoning position\n" +
-				"**-** Shocking enchantment missing valid targets in some cases\n" +
-				"**-** Rare cases where bees would refuse to attack near enemies vs. far ones\n" +
-				"**-** quick-using an item from a bag not using that item's autotarget properties\n" +
-				"**-** Alchemy guide items being greyed out in main menu\n" +
-				"**-** Various rare crash bugs\n" +
-				"**-** Various minor visual & textual errors"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -229,7 +179,20 @@ public class v3_X_Changes {
 				"**-** Improved the game's monochrome Android icon\n" +
 				"**-** Added developer commentary for v2.0.0\n" +
 				"**-** Improved text clarity in a few cases\n" +
-				"**-** Updated internal code libraries"));
+				"**-** Updated internal code libraries",
+
+				"**v3.0.1:**\n" +
+				"**-** Salt Cube's regen reduction now automatically disables itself during boss fights, the trinket doesn't need to be dropped.\n" +
+				"**-** Waterskin drinking now more intelligently handles the extra healing from vial of blood, no longer consuming excess dew.\n" +
+				"**-** Cursed wand pitfall effect no longer drops items if triggered via wondrous resin\n" +
+				"**-** Feint armor ability no longer autotargets\n" +
+				"**-** Removed support for runs in progress from prior to v2.3.2 (Jan. 2024)\n" +
+				"**-** Removed internal code for old blacksmith quest from prior to v2.2 (Oct. 2023)\n" +
+				"\n" +
+				"**v3.0.2:**\n" +
+				"**-** Music muting while game is in background on desktop now also applies to blacksmith's hammering sfx\n" +
+				"**-** Improved number rounding logic when damage hero takes is affected by several modifiers at once\n" +
+				"**-** Updated translations and translator credits"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
@@ -274,7 +237,25 @@ public class v3_X_Changes {
 				"**-** Rare cases where game win scene wouldn't trigger immediately\n" +
 				"**-** Ripper demons sometimes losing their target early\n" +
 				"**-** Various minor textual errors\n" +
-				"**-** Various rare crash errors"));
+				"**-** Various rare crash errors",
+
+				"**v3.0.1:**\n" +
+				"**-** Exploit involving unidentified crossbow and curse infusion\n" +
+				"**-** Exploit involving placing wards on a necromancer's summoning position\n" +
+				"**-** Shocking enchantment missing valid targets in some cases\n" +
+				"**-** Rare cases where bees would refuse to attack near enemies vs. far ones\n" +
+				"**-** quick-using an item from a bag not using that item's autotarget properties\n" +
+				"**-** Alchemy guide items being greyed out in main menu\n" +
+				"**-** Various rare crash bugs\n" +
+				"**-** Various minor visual & textual errors",
+
+				"**v3.0.2:**\n" +
+				"**-** Game incorrectly thinking it is on a phone screen when played on Steam Deck\n" +
+				"**-** Water of Awareness buff persisting between floors if the hero is very fast\n" +
+				"**-** Various errors when saving/loading custom controller bindings\n" +
+				"**-** Visual errors when Tengu's sprite animations are frozen (e.g. via paralysis)\n" +
+				"**-** Characters still appearing as visible if knocked out of hero FOV in specific cases\n" +
+				"**-** Talisman of Foresight's scry ability not detecting hiding mimics"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight(CharSprite.POSITIVE);
@@ -302,7 +283,8 @@ public class v3_X_Changes {
 		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.MOSSY_CLUMP), "Trinket Nerfs",
 				"Despite nerfs in v2.5 the Mossy Clump is still far and away the strongest trinket. For now I'm going to experiment with adjusting the ratios on the floors it grants.\n" +
 				"\n" +
-				"**- Mossy Clump** now generates grassy floors 1/3 of the time and water floors 2/3 of the time, instead of 1/2 each. This will usually result in one fewer grassy floor over a whole run."));
+				"**- Mossy Clump** now generates grassy floors 1/3 of the time and water floors 2/3 of the time, instead of 1/2 each. This will usually result in one fewer grassy floor over a whole run.\n" +
+				"**- Mossy Clump** upgrade energy cost reduced to 10/15/20 from 20/25/30. This is now the same as other 'higher cost' trinkets."));
 
 		changes.addButton(new ChangeButton(new TalentIcon(Talent.SHARED_UPGRADES), "Shared Upgrades Nerf",
 				"Thrown weapons aren't an especially popular category of item to upgrade, and I would like to make more extensive changes to them in the future, but for the moment I'm making a targeted adjustment to the Shared Upgrades talent. The bonus damage it provided wasn't tied to the tier of thrown weapon used, which made T2 thrown weapons disproportionally powerful for the Sniper.\n" +
