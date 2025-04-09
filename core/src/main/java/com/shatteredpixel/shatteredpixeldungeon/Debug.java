@@ -1,72 +1,69 @@
 package com.shatteredpixel.shatteredpixeldungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
-import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
+import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Flow;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Swiftness;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Berry;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.SupplyRation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.AquaBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfFeatherFall;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.PhaseShift;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlast;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlink;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfShock;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorrosion;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampiric;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Glaive;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shortsword;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.FishingSpear;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+@SuppressWarnings("PointlessBooleanExpression")
 public class Debug {
 
     //SHOULD ALWAYS BE SET TO FALSE ON OFFICIAL RELEASES.
     public static final boolean DEBUG_MODE = DeviceCompat.isDebug();
 
 
-    public static float Spawn_Multiplier = 1;
-    public static float Respawn_Multiplier = 1;
+    private static final boolean DebuggingStats = false;
+    //                                                                  Debug  /  Default
+    public static final float Spawn_Multiplier = DebuggingStats ?       .6f     : 1f;
+    public static final float Respawn_Multiplier = DebuggingStats ?     0f      : 1f;
 
-    public static final int Starting_Floor = 1;
-    public static final int Starting_HeroLevel = 1;
-    public static final int Starting_Str = 10;
-    public static final int Starting_HP = 20;
+    public static final int Starting_Floor = DebuggingStats ?           6       : 1;
+    public static final int Starting_HeroLevel = DebuggingStats ?       18      : 1;
+    public static final int Starting_Str = DebuggingStats ?             16      : 10;
+    public static final int Starting_HP = DebuggingStats ?              2000    : 20;
 
-    private static final boolean ActOnStart = false;
-    private static final boolean ActOnLoad = false;
+
+    private static final boolean ActOnStart = false || DebuggingStats;
+    private static final boolean ActOnLoad = false || DebuggingStats;
     private static final ArrayList<Class<?extends Item>> Starting_Items;
     static {
+        //Testing items
         Starting_Items = new ArrayList<>(Arrays.asList(
-                /*PotionOfHaste.class, PotionOfMindVision.class, PotionOfInvisibility.class, ElixirOfFeatherFall.class,
-                ScrollOfMagicMapping.class, ScrollOfTeleportation.class, ScrollOfUpgrade.class,
-                TimekeepersHourglass.class*/
+
         ));
+
+        if(DebuggingStats || false) {
+            Starting_Items.addAll(Arrays.asList(
+                PotionOfMindVision.class, PotionOfHaste.class, PotionOfInvisibility.class, ElixirOfFeatherFall.class,
+                ScrollOfMagicMapping.class, PhaseShift.class, ScrollOfUpgrade.class,
+                StoneOfBlast.class, StoneOfBlink.class, StoneOfShock.class,
+                TimekeepersHourglass.class, SupplyRation.class
+            ));
+
+            if(Dungeon.isChallenged(Challenges.DARKNESS))
+                Starting_Items.add(Torch.class);
+        }
     }
     public static void Starting_Bag() {
         if(!Debug.DEBUG_MODE || Starting_Items == null) return;
@@ -76,22 +73,27 @@ public class Debug {
         }
 
         //DebugCollect(ClothArmor.class, 0, 1, Swiftness.class);
+
     }
 
     public static void StartGame() {
         if(!Debug.DEBUG_MODE || !Debug.ActOnStart) return;
+        ClearWaterskin();
 
         Hero.Polished.Debug_UpdateStats(Starting_HeroLevel);
-
         Starting_Bag();
+
+
     }
     public static void LoadGame() {
         if(!Debug.DEBUG_MODE || !Debug.ActOnLoad) return;
 
         Hero.Polished.Debug_UpdateStats(Starting_HeroLevel);
         Dungeon.hero.STR = Math.max(Dungeon.hero.STR, Starting_Str);
+        //Starting_Bag();
 
-        Starting_Bag();
+        //DebugCollect(ClothArmor.class, 0, 1, Swiftness.class);
+
     }
 
 
@@ -131,5 +133,13 @@ public class Debug {
 
         i.collect();
         return i;
+    }
+
+
+    private static void ClearWaterskin() {
+        if(DebuggingStats) {
+            Waterskin waterskin = Dungeon.hero.belongings.getItem(Waterskin.class);
+            if(waterskin != null) waterskin.detachAll(Dungeon.hero.belongings.backpack);
+        }
     }
 }
