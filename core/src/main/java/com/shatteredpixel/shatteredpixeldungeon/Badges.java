@@ -208,7 +208,7 @@ public class Badges {
 
 		//diamond
 		PACIFIST_ASCENT             ( 120 ),
-		TAKING_THE_MICK             ( 121 ),
+		TAKING_THE_MICK             ( 121 ), //This might be the most obscure game reference I've made
 		BOSS_CHALLENGE_5            ( 122 ),
 		RESEARCHER_5                ( 123, BadgeType.JOURNAL ),
 		GAMES_PLAYED_5              ( 124, BadgeType.GLOBAL ),
