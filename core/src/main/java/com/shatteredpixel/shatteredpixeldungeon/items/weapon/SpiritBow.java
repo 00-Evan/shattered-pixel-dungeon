@@ -382,7 +382,7 @@ public class SpiritBow extends Weapon {
 				if (!curUser.shoot( enemy, this )) {
 					Splash.at(cell, 0xCC99FFFF, 1);
 				}
-				if(flurryCount == -1) {
+				if(flurryCount == -1 || flurryCount == 3) {
 					curCharges -= Polished_chargeCost();
 					updateQuickslot();
 				}
