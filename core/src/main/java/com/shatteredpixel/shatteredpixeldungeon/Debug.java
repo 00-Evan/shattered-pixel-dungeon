@@ -34,7 +34,7 @@ public class Debug {
     public static final boolean DEBUG_MODE = DeviceCompat.isDebug();
 
 
-    private static final boolean DebuggingStats = true;
+    private static final boolean DebuggingStats = false;
     //                                                                  Debug  /  Default
     public static final float Spawn_Multiplier = DebuggingStats ?       .635f   : 1f;
     public static final float Respawn_Multiplier = DebuggingStats ?     0f      : 1f;
