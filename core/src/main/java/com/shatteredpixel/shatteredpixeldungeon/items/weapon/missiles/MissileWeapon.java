@@ -214,7 +214,7 @@ abstract public class MissileWeapon extends Weapon {
 			if (owner instanceof Hero){
 				int points = ((Hero) owner).pointsInTalent(Talent.POINT_BLANK);
 				//50, 75, 100, 125
-				return 0.5f * (1 + 0.25f*points);
+				return 0.5f + 0.25f*points;
 			} else {
 				return 2f/3f;
 			}
