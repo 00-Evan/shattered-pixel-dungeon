@@ -27,6 +27,7 @@ import com.watabou.input.GameAction;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -44,15 +45,15 @@ public class QuickSlot {
 	private Item[] slots = new Item[SIZE];
 
 	public static class Polished {
-		public static GameAction bufferedAction = null;
-		private static long timer_Action = 0;
+
 		//millis
 		private static final int bufferPeriod_Action = 100;
 
+		public static GameAction bufferedAction = null;
+		private static long timer_Action = 0;
 		public static void bufferAction(GameAction action, boolean animation) {
 			if(!actionQueued()) bufferedAction = action;
 			else bufferedAction = null;
-
 			//bufferedAction = action;
 
 			timer_Action = Game.realTime + (animation ? bufferPeriod_Action : 2*bufferPeriod_Action);
@@ -61,17 +62,32 @@ public class QuickSlot {
 			return bufferedAction != null && Game.realTime <= timer_Action;
 		}
 
+
+		//millis
+		private static final int bufferPeriod_Cell = bufferPeriod_Action;
+
 		public static int bufferedCell = -1;
 		private static long timer_Cell = 0;
-		//millis
-		private static final int bufferPeriod_Cell = 100;
-
 		public static void bufferCell(int cell) {
 			bufferedCell = cell;
 			timer_Cell = Game.realTime + bufferPeriod_Cell;
 		}
 		public static boolean cellQueued() {
 			return bufferedCell != -1 && Game.realTime <= timer_Cell;
+		}
+
+
+		//millis
+		private static final int bufferPeriod_Movement = 60;
+
+		public static Point bufferedMovement = null;
+		private static long timer_Movement = 0;
+		public static void bufferMovement(Point movement) {
+			bufferedMovement = movement;
+			timer_Movement = Game.realTime + bufferPeriod_Movement;
+		}
+		public static boolean movementQueued() {
+			return bufferedMovement != null && Game.realTime <= timer_Movement;
 		}
 	}
 

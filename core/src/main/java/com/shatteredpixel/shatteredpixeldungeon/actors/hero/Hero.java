@@ -1003,6 +1003,8 @@ public class Hero extends Char {
 		
 		GameScene.ready();
 
+
+
 		if(QuickSlot.Polished.actionQueued()) {
 			KeyEvent.addKeyEvent(new KeyEvent(KeyBindings.getFirstKeyForAction(QuickSlot.Polished.bufferedAction, false), true));
 			KeyEvent.addKeyEvent(new KeyEvent(KeyBindings.getFirstKeyForAction(QuickSlot.Polished.bufferedAction, false), false));
