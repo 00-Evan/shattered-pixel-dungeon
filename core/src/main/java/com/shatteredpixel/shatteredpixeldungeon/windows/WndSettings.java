@@ -845,16 +845,18 @@ public class WndSettings extends WndTabbed {
 			sep1 = new ColorBlock(1, 1, 0xFF000000);
 			add(sep1);
 
-			chkQuickslot = new CheckBox(Messages.get(this, "quickslot")){
-				@Override
-				protected void onClick() {
-					super.onClick();
-					SPDSettings.Polished.quickslot(checked());
-					Toolbar.updateLayout();
-				}
-			};
-			chkQuickslot.checked(SPDSettings.Polished.quickslot());
-			add(chkQuickslot);
+			if(width > 200) {
+				chkQuickslot = new CheckBox(Messages.get(this, "quickslot")){
+					@Override
+					protected void onClick() {
+						super.onClick();
+						SPDSettings.Polished.quickslot(checked());
+						Toolbar.updateLayout();
+					}
+				};
+				chkQuickslot.checked(SPDSettings.Polished.quickslot());
+				add(chkQuickslot);
+			}
 
 			chkQuickTransitions = new CheckBox(Messages.get(this, "quick_transitions")){
 				@Override
@@ -896,12 +898,11 @@ public class WndSettings extends WndTabbed {
 			sep1.size(width, 1);
 			sep1.y = title.bottom() + 3*GAP;
 
-			if (width > 200) {
+			if (width > 200 && chkQuickslot != null) {
 				chkQuickslot.setRect(0, sep1.y + 2*GAP, width/2-1, BTN_HEIGHT);
 				chkQuickTransitions.setRect(width / 2 + 1, sep1.y + 2*GAP, width/2-1, BTN_HEIGHT);
 			} else {
-				chkQuickslot.setRect(0, sep1.y + GAP + GAP, width, BTN_HEIGHT);
-				chkQuickTransitions.setRect(0, chkQuickslot.bottom(), width, BTN_HEIGHT);
+				chkQuickTransitions.setRect(0, sep1.y + 2*GAP, width, BTN_HEIGHT);
 			}
 			height = chkQuickTransitions.bottom();
 
