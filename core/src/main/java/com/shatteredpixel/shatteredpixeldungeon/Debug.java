@@ -7,6 +7,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.SupplyRation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
@@ -61,7 +62,7 @@ public class Debug {
                 PotionOfMindVision.class, PotionOfHaste.class, PotionOfInvisibility.class, ElixirOfFeatherFall.class,
                 ScrollOfMagicMapping.class, PhaseShift.class, ScrollOfUpgrade.class,
                 StoneOfBlast.class, StoneOfBlink.class, StoneOfShock.class,
-                TimekeepersHourglass.class, SupplyRation.class
+                TimekeepersHourglass.class, Food.class
             ));
 
             if(Dungeon.isChallenged(Challenges.DARKNESS))

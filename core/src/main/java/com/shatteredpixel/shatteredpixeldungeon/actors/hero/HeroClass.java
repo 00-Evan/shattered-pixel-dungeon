@@ -112,11 +112,7 @@ public enum HeroClass {
 		new VelvetPouch().collect();
 		Dungeon.LimitedDrops.VELVET_POUCH.drop();
 
-		Waterskin waterskin = null;
-		if(!Dungeon.isChallenged(Challenges.NO_HERBALISM)) {
-			//
-		}
-		waterskin = new Waterskin();
+		Waterskin waterskin = new Waterskin();
 		waterskin.collect();
 
 		new ScrollOfIdentify().identify();
