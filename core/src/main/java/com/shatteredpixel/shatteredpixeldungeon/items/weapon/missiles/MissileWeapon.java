@@ -213,8 +213,8 @@ abstract public class MissileWeapon extends Weapon {
 		if (Dungeon.level.adjacent( owner.pos, target.pos )) {
 			if (owner instanceof Hero){
 				int points = ((Hero) owner).pointsInTalent(Talent.POINT_BLANK);
-				//67, 83, 105, 130
-				return 2f/3f * (1 + 0.2f*points);
+				//50, 75, 100, 125
+				return 0.5f * (1 + 0.25f*points);
 			} else {
 				return 2f/3f;
 			}
