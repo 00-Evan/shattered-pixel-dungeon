@@ -79,7 +79,7 @@ public class v3_X_Changes {
 
 	public static void add_v3_1_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v3.1", true, "");
+		ChangeInfo changes = new ChangeInfo("v3.1-ALPHA-0.1", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
@@ -87,9 +87,81 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
+				"Hey Alpha testers!\n\n" +
+				"This is an early look at v3.1, with the goal of getting some feedback on the Warrior's new broken seal ability.\n\n" +
+				"I'm hopeful that it feels better compared to the more passive ability he used to have, but things are definitely still a bit rough and experimental, so please let me know what you think!\n\n" +
+				"v3.1 will also include other new content and changes when it released, none of which are currently present in the Alpha."));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SEAL), "Warrior's Broken Seal",
+				"**The Warrior has had a mini overhaul to his broken seal ability!** The seal's shielding should now feel more impactful and interactive, while still being easy to use for new players:\n" +
+				"\n" +
+				"**-** Broken Seal shield no longer passively builds, it now triggers all at once just before the Warrior gets damaged to 50% health or lower.\n" +
+				"**-** Max shield is now based on armor tier, scaling from 5-13 (max of 15 with iron will talent)\n" +
+				"**-** This shielding has a 100 turn cooldown, unused shield refunds up to 50% cooldown\n" +
+				"**-** Significantly loosened the criteria for applying broken seal to new armor, it now only needs the new armor to be curse-IDed.",
+
+				"Various other Warrior mechanics have been adjusted to compensate:\n" +
+				"**- Provoked Anger** talent now triggers when any shield buff breaks, and grants +3/+5 bonus damage, up from +2/+3.\n" +
+				"**- Iron Will** talent unchanged, still grants +1 or +2 max shield.\n" +
+				"**- Liquid Willpower** talent now grants regular barrier equal to 6.5%/10% of max HP, instead of recharging 50%/75% of max seal shield.\n" +
+				"**- Lethal Defence** talent now grants 7/13/20 regular barrier, instead of recharging 33%/67%/100% of max seal shield.\n" +
+				"**- Berserker** enrage shield is now its own separate shielding buff, and has its own scaling separate from the seal's max shield."));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
 		changes.hardlight(CharSprite.WARNING);
 		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.RANKINGS), "Exploration and Quest Score",
+				"I've made adjustments to how score is calculated to balance the difficulty of the various score categories a little better:\n" +
+				"\n" +
+				"**Exploration Score** is no longer all-or-nothing for each floor. It is now based on how many rooms were not fully explored. For each floor, score is reduced to 50%/20%/0% for 1/2/3+ missed rooms. The criteria for whether something is 'fully explored' is unchanged.\n" +
+				"\n" +
+				"**Quest Score** can now be reduced in a similar manner to boss score. Make sure to position well to avoid penalties! This reduction includes telegraphed attacks/effects (e.g. crystal spire, gnoll geomancer), and regular attacks that you should be able to always avoid (e.g. rot lashers, fetid rat's ooze). Cases where attacks are sometimes unavoidable (e.g. corpse dust wraiths, gnoll trickster) have some leeway before penalties apply."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**Highlights:**\n" +
+				"**-** All potions now refresh the duration of their specific effects. Previously the duration of some potion effects could stack on themselves.\n" +
+				"**-** The big game hunter badge now requires discovering 10 types of rare enemies, down from all of them.\n" +
+				"**-** Added discovery hints for all catalog entries\n" +
+				"**-** Added landmark entries for lost backpack and beacon of returning\n" +
+				"\n" +
+				"**Characters:**\n" +
+				"**-** Improved Tengu's AI, he can now switch targets if he is unable to attack the hero\n" +
+				"\n" +
+				"**Items:**\n" +
+				"**-** Slightly reduced telekinetic grab's sale/energy value, so that it can't be used to effectively turn high-tier thrown weapons into energy.",
+
+				"**Effects:**\n" +
+				"**-** Smaller shorter-term shielding buffs are now consumed before larger longer-term ones\n" +
+				"**-** The gravity chaos cursed wand effect now has its own debuff icon\n" +
+				"\n" +
+				"**Misc:**\n" +
+				"**-** Rooms with a chasm in the center must now be at least 3x3, up from 2x2.\n" +
+				"**-** Increased the minimum supported iOS version to 12, from 11.\n" +
+				"**-** Moved the notification position to the top-left on the Steam version. It should no longer obscure UI elements."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Highlights:**\n" +
+				"**-** Shocking enchantment triggering its damage twice in many cases since v3.0\n" +
+				"\n" +
+				"**Effects:**\n" +
+				"**-** Allies not waking from magical sleep after it has healed them\n" +
+				"**-** Hallowed ground producing furrowed grass more often than intended in some cases\n" +
+				"**-** Paralysis vfx on enemies sometimes cancelling animations right as it ends\n" +
+				"**-** Mirror images not benefitting from body form or holy weapon if the Cleric was unarmed\n" +
+				"**-** Ascended form ending early if its shielding was reduced to 0\n" +
+				"**-** Boomerangs disappearing if the game was closed during their circle back animation",
+
+				"**Characters:**\n" +
+				"**-** Swapping places with allies not being counted as movement for shuriken's instant attack\n" +
+				"**-** Exploits where sheep could last forever if game was frequently saved/loaded\n" +
+				"\n" +
+				"**Misc:**\n" +
+				"**-** Rare cases of wonky display scaling on Linux systems\n" +
+				"**-** Various minor textual errors\n" +
+				"**-** Various rare crash errors"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight(CharSprite.POSITIVE);
