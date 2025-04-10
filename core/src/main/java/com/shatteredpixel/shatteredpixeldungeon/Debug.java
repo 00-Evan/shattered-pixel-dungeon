@@ -53,6 +53,9 @@ public class Debug {
 
         ));
 
+
+
+
         if(DebuggingStats || false) {
             Starting_Items.addAll(Arrays.asList(
                 PotionOfMindVision.class, PotionOfHaste.class, PotionOfInvisibility.class, ElixirOfFeatherFall.class,
@@ -82,8 +85,6 @@ public class Debug {
 
         Hero.Polished.Debug_UpdateStats(Starting_HeroLevel);
         Starting_Bag();
-
-
     }
     public static void LoadGame() {
         if(!Debug.DEBUG_MODE || !Debug.ActOnLoad) return;
