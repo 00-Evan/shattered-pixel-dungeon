@@ -66,7 +66,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 			freerunCooldown--;
 		}
 
-		if (freerunCooldown == 0 && !freerunning() && target.invisible > 0 && Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH) >= 1){
+		if (freerunCooldown == 0 && !freerunning() && target.isStealthy() && Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH) >= 1){
 			momentumStacks = Math.min(momentumStacks + 2, 10);
 			movedLastTurn = true;
 			ActionIndicator.setAction(this);
@@ -74,7 +74,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 		}
 
 		if (freerunTurns > 0){
-			if (target.invisible == 0 || Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH) < 2) {
+			if (!target.isStealthy() || Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH) < 2) {
 				freerunTurns--;
 			}
 		} else if (!movedLastTurn){
@@ -109,7 +109,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 	public float speedMultiplier(){
 		if (freerunning()){
 			return 2;
-		} else if (target.invisible > 0 && Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH) == 3){
+		} else if (target.isStealthy()&& Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH) == 3){
 			return 2;
 		} else {
 			return 1;

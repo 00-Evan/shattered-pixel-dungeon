@@ -102,7 +102,7 @@ public class TengusMask extends Item {
 		curUser.subClass = way;
 		Talent.initSubclassTalents(curUser);
 
-		if (way == HeroSubClass.ASSASSIN && curUser.invisible > 0){
+		if (way == HeroSubClass.ASSASSIN && curUser.isStealthy()){
 			Buff.affect(curUser, Preparation.class);
 		}
 		

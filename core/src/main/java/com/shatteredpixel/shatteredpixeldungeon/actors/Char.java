@@ -180,6 +180,7 @@ public abstract class Char extends Actor {
 	public boolean rooted		= false;
 	public boolean flying		= false;
 	public int invisible		= 0;
+	public int camouflaged		= 0;
 
 	//these are relative to the hero
 	public enum Alignment{
@@ -194,6 +195,16 @@ public abstract class Char extends Actor {
 	public boolean[] fieldOfView = null;
 	
 	private LinkedHashSet<Buff> buffs = new LinkedHashSet<>();
+
+	public boolean isStealthy() {
+		return invisible > 0 || camouflaged > 0;
+	}
+
+	public boolean isStealthyTo(Char c) {
+		if(invisible > 0) return true;
+		else if (camouflaged > 0) return Dungeon.level.distance(pos, c.pos) > 1;
+		return false;
+	}
 	
 	@Override
 	protected boolean act() {

@@ -279,7 +279,7 @@ public abstract class Mob extends Char {
 		
 		enemy = chooseEnemy();
 		
-		boolean enemyInFOV = enemy != null && enemy.isAlive() && fieldOfView[enemy.pos] && enemy.invisible <= 0;
+		boolean enemyInFOV = enemy != null && enemy.isAlive() && fieldOfView[enemy.pos] && !enemy.isStealthyTo(this);
 
 		//prevents action, but still updates enemy seen status
 		if (buff(Feint.AfterImage.FeintConfusion.class) != null){
@@ -368,7 +368,7 @@ public abstract class Mob extends Char {
 				//try to find an enemy mob to attack first.
 				for (Mob mob : Dungeon.level.mobs)
 					if (mob.alignment == Alignment.ENEMY && mob != this
-							&& fieldOfView[mob.pos] && mob.invisible <= 0) {
+							&& fieldOfView[mob.pos] && !mob.isStealthyTo(this)) {
 						enemies.add(mob);
 					}
 				
@@ -376,13 +376,13 @@ public abstract class Mob extends Char {
 					//try to find ally mobs to attack second.
 					for (Mob mob : Dungeon.level.mobs)
 						if (mob.alignment == Alignment.ALLY && mob != this
-								&& fieldOfView[mob.pos] && mob.invisible <= 0) {
+								&& fieldOfView[mob.pos] && !mob.isStealthyTo(this)) {
 							enemies.add(mob);
 						}
 					
 					if (enemies.isEmpty()) {
 						//try to find the hero third
-						if (fieldOfView[Dungeon.hero.pos] && Dungeon.hero.invisible <= 0) {
+						if (fieldOfView[Dungeon.hero.pos] && !Dungeon.hero.isStealthyTo(this)) {
 							enemies.add(Dungeon.hero);
 						}
 					}
@@ -393,7 +393,7 @@ public abstract class Mob extends Char {
 				//look for hostile mobs to attack
 				for (Mob mob : Dungeon.level.mobs)
 					if (mob.alignment == Alignment.ENEMY && fieldOfView[mob.pos]
-							&& mob.invisible <= 0 && !mob.isInvulnerable(getClass()))
+							&& !mob.isStealthyTo(this) && !mob.isInvulnerable(getClass()))
 						//do not target passive mobs
 						//intelligent allies also don't target mobs which are wandering or asleep
 						if (mob.state != mob.PASSIVE &&
@@ -405,11 +405,11 @@ public abstract class Mob extends Char {
 			} else if (alignment == Alignment.ENEMY) {
 				//look for ally mobs to attack
 				for (Mob mob : Dungeon.level.mobs)
-					if (mob.alignment == Alignment.ALLY && fieldOfView[mob.pos] && mob.invisible <= 0)
+					if (mob.alignment == Alignment.ALLY && fieldOfView[mob.pos] && !mob.isStealthyTo(this))
 						enemies.add(mob);
 
 				//and look for the hero
-				if (fieldOfView[Dungeon.hero.pos] && Dungeon.hero.invisible <= 0) {
+				if (fieldOfView[Dungeon.hero.pos] && !Dungeon.hero.isStealthyTo(this)) {
 					enemies.add(Dungeon.hero);
 				}
 				
@@ -805,7 +805,7 @@ public abstract class Mob extends Char {
 
 	public boolean surprisedBy( Char enemy, boolean attacking ){
 		return enemy == Dungeon.hero
-				&& (enemy.invisible > 0 || !enemySeen || (fieldOfView != null && fieldOfView.length == Dungeon.level.length() && !fieldOfView[enemy.pos]))
+				&& (enemy.isStealthyTo(this) || !enemySeen || (fieldOfView != null && fieldOfView.length == Dungeon.level.length() && !fieldOfView[enemy.pos]))
 				&& (!attacking || enemy.canSurpriseAttack());
 	}
 
@@ -1131,7 +1131,7 @@ public abstract class Mob extends Char {
 			}
 
 			//can be awoken by the least stealthy hostile present, not necessarily just our target
-			if (enemyInFOV || (enemy != null && enemy.invisible > 0)) {
+			if (enemyInFOV || (enemy != null && enemy.isStealthyTo(Mob.this))) {
 
 				float closestHostileDist = Float.POSITIVE_INFINITY;
 
@@ -1283,7 +1283,7 @@ public abstract class Mob extends Char {
 				if (!recentlyAttackedBy.isEmpty()){
 					boolean swapped = false;
 					for (Char ch : recentlyAttackedBy){
-						if (ch != null && ch.isActive() && Actor.chars().contains(ch) && alignment != ch.alignment && fieldOfView[ch.pos] && ch.invisible == 0 && !isCharmedBy(ch)) {
+						if (ch != null && ch.isActive() && Actor.chars().contains(ch) && alignment != ch.alignment && fieldOfView[ch.pos] && !ch.isStealthyTo(Mob.this) && !isCharmedBy(ch)) {
 							if (canAttack(ch) || enemy == null || Dungeon.level.distance(pos, ch.pos) < Dungeon.level.distance(pos, enemy.pos)) {
 								enemy = ch;
 								target = ch.pos;

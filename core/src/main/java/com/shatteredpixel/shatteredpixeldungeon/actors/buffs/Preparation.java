@@ -133,7 +133,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 	
 	@Override
 	public boolean act() {
-		if (target.invisible > 0){
+		if (target.isStealthy()){
 			turnsInvis++;
 			if (AttackLevel.getLvl(turnsInvis).blinkDistance() > 0 && target == Dungeon.hero){
 				ActionIndicator.setAction(this);

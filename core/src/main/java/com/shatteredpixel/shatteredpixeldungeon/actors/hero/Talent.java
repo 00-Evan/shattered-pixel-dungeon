@@ -219,7 +219,7 @@ public enum Talent {
 		@Override
 		public boolean act() {
 			//barrier every 2/1 turns, to a max of 3/5
-			if (((Hero)target).hasTalent(Talent.PROTECTIVE_SHADOWS) && target.invisible > 0){
+			if (((Hero)target).hasTalent(Talent.PROTECTIVE_SHADOWS) && target.isStealthy()){
 				Barrier barrier = Buff.affect(target, Barrier.class);
 				if (barrier.shielding() < 1 + 2*((Hero)target).pointsInTalent(Talent.PROTECTIVE_SHADOWS)) {
 					barrierInc += 0.5f * ((Hero) target).pointsInTalent(Talent.PROTECTIVE_SHADOWS);
@@ -522,7 +522,7 @@ public enum Talent {
 			}
 		}
 
-		if (talent == PROTECTIVE_SHADOWS && hero.invisible > 0){
+		if (talent == PROTECTIVE_SHADOWS && hero.isStealthy()){
 			Buff.affect(hero, Talent.ProtectiveShadowsTracker.class);
 		}
 

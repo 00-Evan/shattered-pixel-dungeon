@@ -1465,7 +1465,7 @@ public class Hero extends Char {
 			return false;
 		}
 
-		if (enemy.isAlive() && canAttack( enemy ) && enemy.invisible == 0) {
+		if (enemy.isAlive() && canAttack( enemy ) && !enemy.isStealthyTo(this)) {
 
 			if (heroClass != HeroClass.DUELIST
 					&& hasTalent(Talent.AGGRESSIVE_BARRIER)

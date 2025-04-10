@@ -65,7 +65,7 @@ public class Corruption extends AllyBuff {
 	@Override
 	public void fx(boolean on) {
 		if (on) target.sprite.add( CharSprite.State.DARKENED );
-		else if (target.invisible == 0) target.sprite.remove( CharSprite.State.DARKENED );
+		else if (!target.isStealthy()) target.sprite.remove( CharSprite.State.DARKENED );
 	}
 
 	@Override
