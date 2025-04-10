@@ -50,7 +50,7 @@ public class Debug {
     static {
         //Testing items
         Starting_Items = new ArrayList<>(Arrays.asList(
-
+                
         ));
 
 
