@@ -835,6 +835,8 @@ public class WndSettings extends WndTabbed {
 		ColorBlock sep2;
 		CheckBox chkInputBlock;
 		CheckBox chkAutoPickUp;
+		ColorBlock sep3;
+		OptionSlider optBuffers;
 
 		@Override
 		protected void createChildren() {
@@ -845,7 +847,7 @@ public class WndSettings extends WndTabbed {
 			sep1 = new ColorBlock(1, 1, 0xFF000000);
 			add(sep1);
 
-			if(width > 200) {
+			if(PixelScene.uiCamera.width > 188) {
 				chkQuickslot = new CheckBox(Messages.get(this, "quickslot")){
 					@Override
 					protected void onClick() {
@@ -890,6 +892,18 @@ public class WndSettings extends WndTabbed {
 			};
 			chkAutoPickUp.checked(SPDSettings.Polished.autoPickup());
 			add(chkAutoPickUp);
+
+			sep3 = new ColorBlock(1, 1, 0xFF000000);
+			add(sep3);
+
+			optBuffers = new OptionSlider(Messages.get(this, "buffers"), "0", "500", 0, 10) {
+				@Override
+				protected void onChange() {
+					SPDSettings.Polished.buffers(getSelectedValue());
+				}
+			};
+			optBuffers.setSelectedValue(SPDSettings.Polished.buffers());
+			add(optBuffers);
 		}
 
 		@Override
@@ -916,8 +930,14 @@ public class WndSettings extends WndTabbed {
 				chkInputBlock.setRect(0, sep2.y + 2*GAP, width, BTN_HEIGHT);
 				chkAutoPickUp.setRect(0, chkInputBlock.bottom()+GAP, width, BTN_HEIGHT);
 			}
+			height=chkAutoPickUp.bottom();
 
-			height = chkAutoPickUp.bottom();
+			sep3.size(width, 1);
+			sep3.y = height+GAP;
+
+			optBuffers.setRect(0, sep3.y + 2*GAP, width, SLIDER_HEIGHT);
+
+			height = optBuffers.bottom();
 		}
 	}
 
