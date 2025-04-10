@@ -224,7 +224,7 @@ public class GameScene extends PixelScene {
 
 
         //millis
-        private static final int bufferPeriod_Action = 100;
+        private static final int bufferPeriod_Action = 50;
         public static GameAction bufferedAction = null;
         private static long timer_Action = 0;
         public static void bufferAction(GameAction action, boolean animation) {
@@ -232,7 +232,7 @@ public class GameScene extends PixelScene {
             else bufferedAction = null;
             //bufferedAction = action;
 
-            timer_Action = Game.realTime + (animation ? bufferPeriod_Action : 2*bufferPeriod_Action);
+            timer_Action = Game.realTime + (animation ? bufferPeriod_Action : 2*bufferPeriod_Action)*(long)SPDSettings.Polished.buffers();
         }
         public static boolean actionQueued() {
             return bufferedAction != null && Game.realTime <= timer_Action;
@@ -244,14 +244,14 @@ public class GameScene extends PixelScene {
         private static long timer_Cell = 0;
         public static void bufferCell(int cell) {
             bufferedCell = cell;
-            timer_Cell = Game.realTime + bufferPeriod_Cell;
+            timer_Cell = Game.realTime + bufferPeriod_Cell*(long)SPDSettings.Polished.buffers();
         }
         public static boolean cellQueued() {
             return bufferedCell != -1 && Game.realTime <= timer_Cell;
         }
 
         //millis
-        //private static final int bufferPeriod_Movement = 60;
+        //private static final int bufferPeriod_Movement = 30;
         private static final int bufferPeriod_Movement = -1;
         public static Point bufferedMovement = null;
         private static long timer_Movement = 0;
