@@ -172,7 +172,8 @@ public class HighGrass {
 				&& Hero.Polished.noEnemiesSeen() && Hero.Polished.noEnemiesLast) {
 			Hero.Polished.trampledItemsLast = trampledItems;
 		} else {
-			Hero.Polished.trampledItemsLast = 0;
+			if(ch instanceof Hero)
+				Hero.Polished.trampledItemsLast = 0;
 		}
 	}
 }
