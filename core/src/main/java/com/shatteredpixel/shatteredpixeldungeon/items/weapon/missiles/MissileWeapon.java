@@ -212,9 +212,11 @@ abstract public class MissileWeapon extends Weapon {
 	protected float adjacentAccFactor(Char owner, Char target){
 		if (Dungeon.level.adjacent( owner.pos, target.pos )) {
 			if (owner instanceof Hero){
-				return (0.5f + 0.2f*((Hero) owner).pointsInTalent(Talent.POINT_BLANK));
+				int points = ((Hero) owner).pointsInTalent(Talent.POINT_BLANK);
+				//67, 83, 105, 130
+				return 2f/3f * (1 + 0.2f*points);
 			} else {
-				return 0.5f;
+				return 2f/3f;
 			}
 		} else {
 			return 1.5f;
