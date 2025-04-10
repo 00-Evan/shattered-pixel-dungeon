@@ -91,7 +91,7 @@ public class QuickSlotButton extends Button {
 				if(!Dungeon.hero.ready) {
 					boolean animation = !GameScene.cancel();
 
-					QuickSlot.Polished.bufferAction(keyAction(), animation);
+					GameScene.Polished.bufferAction(keyAction(), animation);
 					return;
 				}
 
@@ -238,7 +238,7 @@ public class QuickSlotButton extends Button {
 		if (animation && Dungeon.hero.ready) {
 			GameScene.selectItem(itemSelector);
 		} else {
-			QuickSlot.Polished.bufferAction(keyAction(), animation);
+			GameScene.Polished.bufferAction(keyAction(), animation);
 		}
 	}
 

@@ -175,7 +175,7 @@ public class CellSelector extends ScrollArea {
 			
 		} else {
 
-			if(GameScene.Polished.canInput() && Dungeon.hero.curAction == null) QuickSlot.Polished.bufferCell(cell);
+			if(GameScene.Polished.canInput() && Dungeon.hero.curAction == null) GameScene.Polished.bufferCell(cell);
 			GameScene.cancel();
 			
 		}
@@ -412,7 +412,7 @@ public class CellSelector extends ScrollArea {
 		if (Dungeon.hero == null || !Dungeon.hero.ready || !GameScene.Polished.canInput()){
 			//GameAction movement = actionFromDirection(direction);
 			if(GameScene.Polished.canInput() && !direction.isZero())
-				QuickSlot.Polished.bufferMovement(direction);
+				GameScene.Polished.bufferMovement(direction);
 
 			return false;
 		}

@@ -1004,17 +1004,17 @@ public class Hero extends Char {
 		
 		GameScene.ready();
 
-		if(QuickSlot.Polished.movementQueued()) {
-			QuickSlot.Polished.bufferedAction = null;
-			QuickSlot.Polished.bufferedCell = -1;
+		if(GameScene.Polished.movementQueued()) {
+			GameScene.Polished.bufferedAction = null;
+			GameScene.Polished.bufferedCell = -1;
 
-			GameScene.handleCell(pos + Dungeon.level.pointToCell(QuickSlot.Polished.bufferedMovement));
-			QuickSlot.Polished.bufferedMovement = null;
+			GameScene.handleCell(pos + Dungeon.level.pointToCell(GameScene.Polished.bufferedMovement));
+			GameScene.Polished.bufferedMovement = null;
 		}
-		if(QuickSlot.Polished.actionQueued()) {
-			KeyEvent.addKeyEvent(new KeyEvent(KeyBindings.getFirstKeyForAction(QuickSlot.Polished.bufferedAction, false), true));
-			KeyEvent.addKeyEvent(new KeyEvent(KeyBindings.getFirstKeyForAction(QuickSlot.Polished.bufferedAction, false), false));
-			QuickSlot.Polished.bufferedAction = null;
+		if(GameScene.Polished.actionQueued()) {
+			KeyEvent.addKeyEvent(new KeyEvent(KeyBindings.getFirstKeyForAction(GameScene.Polished.bufferedAction, false), true));
+			KeyEvent.addKeyEvent(new KeyEvent(KeyBindings.getFirstKeyForAction(GameScene.Polished.bufferedAction, false), false));
+			GameScene.Polished.bufferedAction = null;
 		}
 	}
 	
