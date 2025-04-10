@@ -53,6 +53,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
+import javax.swing.Icon;
+
 public class WndSettings extends WndTabbed {
 
 	private static final int WIDTH_P	    = 122;
@@ -133,7 +135,11 @@ public class WndSettings extends WndTabbed {
 		height = Math.max(height, data.height());
 		add( data );
 
-		add( new IconTab(Icons.get(Icons.SCROLL_GREY)){
+		Image scroll = Icons.get(Icons.SCROLL_GREY);
+		scroll.hardlight(0xFFFF00);
+		scroll.scale.scale(1.15f);
+
+		add( new IconTab(scroll){
 			@Override
 			protected void select(boolean value) {
 				super.select(value);
@@ -896,7 +902,7 @@ public class WndSettings extends WndTabbed {
 			sep3 = new ColorBlock(1, 1, 0xFF000000);
 			add(sep3);
 
-			optBuffers = new OptionSlider(Messages.get(this, "buffers"), "0", "500", 0, 10) {
+			optBuffers = new OptionSlider(Messages.get(this, "buffers"), "0", "250", 0, 5) {
 				@Override
 				protected void onChange() {
 					SPDSettings.Polished.buffers(getSelectedValue());
