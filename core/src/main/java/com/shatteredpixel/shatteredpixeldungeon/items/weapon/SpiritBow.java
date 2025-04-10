@@ -27,6 +27,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -405,6 +407,22 @@ public class SpiritBow extends Weapon {
 			if(curCharges == 1 && nature > 0)
 				Barkskin.conditionallyAppend(Dungeon.hero, nature+1, 4);
 		}
+		public void Polished_recharge(final Hero user) {
+			//dont punish the player for recharging
+			{
+				Hunger hunger = user.buff(Hunger.class);
+				if(hunger != null) hunger.satisfy(2);
+
+				Light light = user.buff(Light.class);
+				if(light != null) Buff.affect(user, Light.class, 2);
+			}
+			user.spendAndNext(2);
+
+			curCharges = Polished_getMaxCharge();
+			Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
+			ScrollOfRecharging.charge(curUser);
+			updateQuickslot();
+		}
 
 		int flurryCount = -1;
 		Actor flurryActor = null;
@@ -414,11 +432,7 @@ public class SpiritBow extends Weapon {
 				if (curCharges == maxCharge) {
 					GLog.w(Messages.get(SpiritBow.class, "max_charges"));
 				} else {
-					user.spendAndNext(2);
-					curCharges = maxCharge;
-					Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
-					ScrollOfRecharging.charge(curUser);
-					updateQuickslot();
+					Polished_recharge(user);
 				}
 				return true;
 			}
