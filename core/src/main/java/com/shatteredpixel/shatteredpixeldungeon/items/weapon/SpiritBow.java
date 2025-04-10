@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -379,12 +380,9 @@ public class SpiritBow extends Weapon {
 				parent = null;
 				Splash.at( cell, 0xCC99FFFF, 1 );
 			} else {
+				if(flurryCount == -1 || flurryCount == 3) Polished_spendCharges();
 				if (!curUser.shoot( enemy, this )) {
 					Splash.at(cell, 0xCC99FFFF, 1);
-				}
-				if(flurryCount == -1 || flurryCount == 3) {
-					curCharges -= Polished_chargeCost();
-					updateQuickslot();
 				}
 				
 				if (sniperSpecial && SpiritBow.this.augment != Augment.SPEED) sniperSpecial = false;
@@ -401,6 +399,14 @@ public class SpiritBow extends Weapon {
 
 		private int Polished_chargeCost() {
 			return sniperSpecial && SpiritBow.this.augment != Augment.NONE ? 2 : 1;
+		}
+		private void Polished_spendCharges() {
+			curCharges -= Polished_chargeCost();
+			updateQuickslot();
+
+			int nature = Dungeon.hero.pointsInTalent(Talent.NATURES_AID);
+			if(curCharges == 1 && nature > 0)
+				Barkskin.conditionallyAppend(Dungeon.hero, nature+1, 4);
 		}
 		public boolean Polished_cast(final Hero user, final int dst) {
 			if (user.pos == dst) {
