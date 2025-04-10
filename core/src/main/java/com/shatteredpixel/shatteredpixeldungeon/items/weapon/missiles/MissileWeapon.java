@@ -216,7 +216,7 @@ abstract public class MissileWeapon extends Weapon {
 				//50, 75, 100, 125
 				return 0.5f + 0.25f*points;
 			} else {
-				return 2f/3f;
+				return 0.5f;
 			}
 		} else {
 			return 1.5f;
