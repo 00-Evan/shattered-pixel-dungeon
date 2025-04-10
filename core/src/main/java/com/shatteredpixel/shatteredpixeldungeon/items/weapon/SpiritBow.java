@@ -394,9 +394,6 @@ public class SpiritBow extends Weapon {
 			Sample.INSTANCE.play( Assets.Sounds.ATK_SPIRITBOW, 1, Random.Float(0.87f, 1.15f) );
 		}
 
-		int flurryCount = -1;
-		Actor flurryActor = null;
-
 		private int Polished_chargeCost() {
 			return sniperSpecial && SpiritBow.this.augment != Augment.NONE ? 2 : 1;
 		}
@@ -408,6 +405,9 @@ public class SpiritBow extends Weapon {
 			if(curCharges == 1 && nature > 0)
 				Barkskin.conditionallyAppend(Dungeon.hero, nature+1, 4);
 		}
+
+		int flurryCount = -1;
+		Actor flurryActor = null;
 		public boolean Polished_cast(final Hero user, final int dst) {
 			if (user.pos == dst) {
 				int maxCharge = Polished_getMaxCharge();
