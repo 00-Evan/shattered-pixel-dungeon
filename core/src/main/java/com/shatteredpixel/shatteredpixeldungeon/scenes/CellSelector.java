@@ -410,7 +410,10 @@ public class CellSelector extends ScrollArea {
 		}
 
 		if (Dungeon.hero == null || !Dungeon.hero.ready || !GameScene.Polished.canInput()){
-			if(GameScene.Polished.canInput()) QuickSlot.Polished.bufferMovement(direction);
+			//GameAction movement = actionFromDirection(direction);
+			if(GameScene.Polished.canInput() && !direction.isZero())
+				QuickSlot.Polished.bufferMovement(direction);
+
 			return false;
 		}
 		if (GameScene.cancelCellSelector()){

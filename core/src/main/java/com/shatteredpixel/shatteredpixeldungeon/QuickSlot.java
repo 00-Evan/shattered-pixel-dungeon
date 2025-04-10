@@ -78,7 +78,8 @@ public class QuickSlot {
 
 
 		//millis
-		private static final int bufferPeriod_Movement = 60;
+		//private static final int bufferPeriod_Movement = 60;
+		private static final int bufferPeriod_Movement = -1;
 
 		public static Point bufferedMovement = null;
 		private static long timer_Movement = 0;
