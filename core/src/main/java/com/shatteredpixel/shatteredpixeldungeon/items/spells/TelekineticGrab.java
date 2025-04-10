@@ -32,6 +32,8 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.LiquidMetal;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -69,6 +71,7 @@ public class TelekineticGrab extends TargetedSpell {
 			}
 		}
 
+		SpiritBow bow = Dungeon.hero.belongings.getItem(SpiritBow.class);
 		if (ch != null && ch.buff(PinCushion.class) != null){
 
 			while (ch.buff(PinCushion.class) != null) {
@@ -85,6 +88,13 @@ public class TelekineticGrab extends TargetedSpell {
 				}
 
 			}
+
+		} else if (ch != null && ch == Dungeon.hero && bow != null) {
+			bow.Polished_resetCharges();
+			updateQuickslot();
+			
+			ScrollOfRecharging.charge(curUser);
+			Sample.INSTANCE.play( Assets.Sounds.CHARGEUP );
 
 		} else if (Dungeon.level.heaps.get(bolt.collisionPos) != null){
 
