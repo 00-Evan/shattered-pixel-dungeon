@@ -192,6 +192,14 @@ public class Berserk extends ShieldBuff implements ActionIndicator.Action {
 			turnRecovery = 0;
 		}
 
+		int shieldAmount = currentShieldBoost();
+		setShield(shieldAmount);
+		target.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(shieldAmount), FloatingText.SHIELDING );
+
+		BuffIndicator.refreshHero();
+	}
+
+	public int currentShieldBoost(){
 		//base multiplier scales at 1/1.5/2/2.5/3x at 100/37/20/9/0% HP
 		float shieldMultiplier = 1f + 2*(float)Math.pow((1f-(target.HP/(float)target.HT)), 3);
 
@@ -206,11 +214,16 @@ public class Berserk extends ShieldBuff implements ActionIndicator.Action {
 		if (target instanceof Hero && ((Hero) target).belongings.armor() != null){
 			baseShield += 2*((Hero) target).belongings.armor().buffedLvl();
 		}
-		int shieldAmount = Math.round(baseShield * shieldMultiplier);
-		setShield(shieldAmount);
-		target.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(shieldAmount), FloatingText.SHIELDING );
+		return Math.round(baseShield * shieldMultiplier);
+	}
 
-		BuffIndicator.refreshHero();
+	//not accounting for talents
+	public int maxShieldBoost(){
+		int baseShield = 10;
+		if (target instanceof Hero && ((Hero) target).belongings.armor() != null){
+			baseShield += 2*((Hero) target).belongings.armor().buffedLvl();
+		}
+		return baseShield*3;
 	}
 	
 	public void damage(int damage){
@@ -299,20 +312,22 @@ public class Berserk extends ShieldBuff implements ActionIndicator.Action {
 				float maxPower = 1f + 0.1667f*((Hero)target).pointsInTalent(Talent.ENDLESS_RAGE);
 				return (maxPower - power)/maxPower;
 			case BERSERK:
-				return 0f;
+				return 1f - shielding() / (float)maxShieldBoost();
 			case RECOVERING:
 				if (levelRecovery > 0) {
-					return 1f - levelRecovery/(LEVEL_RECOVER_START-Dungeon.hero.pointsInTalent(Talent.DEATHLESS_FURY));
+					return levelRecovery/(LEVEL_RECOVER_START-Dungeon.hero.pointsInTalent(Talent.DEATHLESS_FURY));
 				} else {
-					return 1f - turnRecovery/(float)TURN_RECOVERY_START;
+					return turnRecovery/(float)TURN_RECOVERY_START;
 				}
 		}
 	}
 
 	public String iconTextDisplay(){
 		switch (state){
-			case NORMAL: case BERSERK: default:
+			case NORMAL: default:
 				return (int)(power*100) + "%";
+			case BERSERK:
+				return Integer.toString(shielding());
 			case RECOVERING:
 				if (levelRecovery > 0) {
 					return Messages.decimalFormat("#.##", levelRecovery);
@@ -339,9 +354,9 @@ public class Berserk extends ShieldBuff implements ActionIndicator.Action {
 		float dispDamage = ((int)damageFactor(10000) / 100f) - 100f;
 		switch (state){
 			case NORMAL: default:
-				return Messages.get(this, "angered_desc", Math.floor(power * 100f), dispDamage);
+				return Messages.get(this, "angered_desc", Math.floor(power * 100f), dispDamage, currentShieldBoost());
 			case BERSERK:
-				return Messages.get(this, "berserk_desc");
+				return Messages.get(this, "berserk_desc", shielding());
 			case RECOVERING:
 				if (levelRecovery > 0){
 					return Messages.get(this, "recovering_desc") + "\n\n" + Messages.get(this, "recovering_desc_levels", levelRecovery);
