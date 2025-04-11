@@ -371,11 +371,10 @@ public class BrokenSeal extends Item {
 			if (bundle.contains(COOLDOWN)) {
 				cooldown = bundle.getInt(COOLDOWN);
 				turnsSinceEnemies = bundle.getInt(TURNS_SINCE_ENEMIES);
-			} else {
-				//pre-3.1 shield, normally just clear it, but retain if it's big and possibly from berserking
-				if (shielding() < maxShield()+5 && target.HP > 0){
-					setShield(0);
-				}
+
+			//if we have shield from pre-3.1, have it last a bit
+			} else if (shielding() > 0) {
+				turnsSinceEnemies = -100;
 			}
 		}
 	}
