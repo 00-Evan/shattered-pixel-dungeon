@@ -114,7 +114,7 @@ public class Debug {
 
         i.quantity(i.stackable ? quantity : 1);
         i.identify();
-        i.level(level);
+        i.level(i.isUpgradable() ? level : 0);
 
         if(enchant != null) {
             if(Weapon.Enchantment.class.isAssignableFrom(enchant) && i instanceof Weapon) {
