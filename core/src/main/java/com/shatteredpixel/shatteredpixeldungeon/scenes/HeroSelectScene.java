@@ -129,27 +129,26 @@ public class HeroSelectScene extends PixelScene {
 		add(title);
 
 		//POLISHED
-		//{
-			POLISHED_btn = new StyledButton(Chrome.Type.GREY_BUTTON_TR, ""){
-				public void check() {
-					boolean value = SPDSettings.Polished.huntress();
-					SPDSettings.Polished.huntress(!value);
+		POLISHED_btn = new StyledButton(Chrome.Type.GREY_BUTTON_TR, ""){
+			public void check() {
+				boolean value = SPDSettings.Polished.huntress();
+				SPDSettings.Polished.huntress(!value);
 
-					icon.copy( Icons.get( !value ? Icons.CHECKED : Icons.UNCHECKED ) );
-				}
+				icon.copy( Icons.get( !value ? Icons.CHECKED : Icons.UNCHECKED ) );
+			}
 
-				@Override
-				protected void onClick() {
-					super.onClick();
-					check();
-				}
-			};
-			POLISHED_btn.icon(Icons.get(SPDSettings.Polished.huntress() ? Icons.CHECKED : Icons.UNCHECKED));
-			POLISHED_btn.setSize(80, 18);
-			POLISHED_btn.textColor(Window.POLISHED_COLOR);
-			add(POLISHED_btn);
-			POLISHED_btn.visible = POLISHED_btn.active = false;
-		//}
+			@Override
+			protected void onClick() {
+				super.onClick();
+				check();
+			}
+		};
+		POLISHED_btn.icon(Icons.get(SPDSettings.Polished.huntress() ? Icons.CHECKED : Icons.UNCHECKED));
+		POLISHED_btn.setSize(80, 18);
+		POLISHED_btn.textColor(Window.POLISHED_COLOR);
+		add(POLISHED_btn);
+		POLISHED_btn.visible = POLISHED_btn.active = false;
+		//
 
 		startBtn = new StyledButton(Chrome.Type.GREY_BUTTON_TR, ""){
 			@Override
