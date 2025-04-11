@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
@@ -89,7 +90,7 @@ public class TelekineticGrab extends TargetedSpell {
 
 			}
 
-		} else if (ch != null && ch == Dungeon.hero && bow != null) {
+		} else if (ch != null && ch == Dungeon.hero && bow != null && SPDSettings.Polished.huntress()) {
 			bow.Polished_resetCharges();
 			updateQuickslot();
 			
