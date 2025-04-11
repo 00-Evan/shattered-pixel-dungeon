@@ -69,11 +69,8 @@ public class StoneOfAugmentation extends InventoryStone {
 			Talent.onRunestoneUsed(curUser, curUser.pos, getClass());
 		}
 
-		//POLISHED
-		{
-			if(weapon instanceof SpiritBow) {
-				((SpiritBow) weapon).Polished_resetCharges();
-			}
+		if(weapon instanceof SpiritBow) {
+			((SpiritBow) weapon).Polished_resetCharges();
 		}
 	}
 	
