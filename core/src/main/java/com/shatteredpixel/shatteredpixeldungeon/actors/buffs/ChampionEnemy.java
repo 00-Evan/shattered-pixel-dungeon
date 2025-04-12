@@ -329,12 +329,12 @@ public abstract class ChampionEnemy extends Buff {
 		//Check Char::hit()
 		@Override
 		public float accuracyFactor() {
-			return 4f;
+			return 5f;
 		}
 
 		@Override
 		public float evasionFactor(boolean surpriseAttack) {
-			return 4f;
+			return 3f;
 		}
 	}
 
@@ -353,8 +353,9 @@ public abstract class ChampionEnemy extends Buff {
 
 		@Override
 		public boolean act() {
-			//POLISHED: 1%->1.5%
-			multiplier += 0.015f;
+			//POLISHED: 1%->1.75%
+			//		  .25%->.4375%
+			multiplier += 0.0175f;
 			spend(4*TICK);
 			return true;
 		}
