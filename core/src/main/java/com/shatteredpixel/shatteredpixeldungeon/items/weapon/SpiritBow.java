@@ -29,6 +29,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -414,10 +416,13 @@ public class SpiritBow extends Weapon {
 			//dont punish the player for recharging
 			{
 				Hunger hunger = user.buff(Hunger.class);
-				if(hunger != null) hunger.satisfy(2);
+				if(hunger != null) hunger.POLISHED_delay(2);
 
 				Light light = user.buff(Light.class);
 				if(light != null) Buff.affect(user, Light.class, 2);
+
+				Regeneration regen = user.buff(Regeneration.class);
+				if(regen != null) regen.POLISHED_delay = 2;
 			}
 			user.spendAndNext(2);
 
