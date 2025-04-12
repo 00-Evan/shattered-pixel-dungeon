@@ -47,6 +47,7 @@ import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Music;
+import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.FileUtils;
 
 import java.util.Collections;
@@ -80,7 +81,7 @@ public class WelcomeScene extends PixelScene {
 			return;
 		}
 
-		if (ShatteredPixelDungeon.versionCode == previousVersion && !SPDSettings.intro()) {
+		if ((ShatteredPixelDungeon.versionCode == previousVersion && !SPDSettings.intro()) || DeviceCompat.isDebug()) {
 			ShatteredPixelDungeon.switchNoFade(TitleScene.class);
 			return;
 		}
@@ -193,6 +194,7 @@ public class WelcomeScene extends PixelScene {
 
 		RenderedTextBlock text = PixelScene.renderTextBlock(6);
 		String message;
+
 		if (previousVersion == 0 || SPDSettings.intro()) {
 			message = Document.INTROS.pageBody(0);
 		} else if (previousVersion <= ShatteredPixelDungeon.versionCode) {
@@ -203,9 +205,9 @@ public class WelcomeScene extends PixelScene {
 				//TODO: change the messages here in accordance with the type of patch.
 				message = Messages.get(this, "patch_intro");
 				message += "\n";
-				//message += "\n" + Messages.get(this, "patch_balance");
+				message += "\n" + Messages.get(this, "patch_balance");
 				message += "\n" + Messages.get(this, "patch_bugfixes");
-				message += "\n" + Messages.get(this, "patch_translations");
+				//message += "\n" + Messages.get(this, "patch_translations");
 
 			}
 
