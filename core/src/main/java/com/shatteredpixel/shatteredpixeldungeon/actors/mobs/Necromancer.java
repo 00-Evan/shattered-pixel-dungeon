@@ -75,7 +75,7 @@ public class Necromancer extends Mob {
 	public boolean summoning = false;
 	public int summoningPos = -1;
 
-	private class Polished {
+	protected class Polished {
 		private static final String SUMMON_COOLDOWN = "summon_cooldown";
 		private static final String ZAP_COOLDOWN = "zap_cooldown";
 		private static final String TP_COOLDOWN = "zap_cooldown";
