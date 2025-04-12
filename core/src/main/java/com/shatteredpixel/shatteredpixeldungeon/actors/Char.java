@@ -993,7 +993,7 @@ public abstract class Char extends Actor {
 			if (Random.Float() < finalChance) {
 				boolean isBoss = properties().contains(Property.BOSS);
 
-				int extraDmg = isBoss ? 3*inc_dmg : Math.round(HP*resist(Grim.class));
+				int extraDmg = isBoss ? 2*inc_dmg : Math.round(HP*resist(Grim.class));
 
 				dmg += extraDmg;
 				HP -= extraDmg;
