@@ -246,7 +246,7 @@ public class Tengu extends Mob {
 		}
 		
 		if (enemy == null) enemy = chooseEnemy();
-		if (enemy == null) return;
+		if (enemy == null) enemy = Dungeon.hero; //jump away from hero if nothing else is being targeted
 		
 		int newPos;
 		if (Dungeon.level instanceof PrisonBossLevel){
