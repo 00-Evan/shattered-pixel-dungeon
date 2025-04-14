@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,35 +22,27 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.ParalyticDart;
-import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.TextureFilm;
-import com.watabou.utils.Callback;
 
-public class GnollTricksterSprite extends MobSprite {
+public class GnollExileSprite extends MobSprite {
 
-	private Animation cast;
-
-	public GnollTricksterSprite() {
+	public GnollExileSprite() {
 		super();
 
 		texture( Assets.Sprites.GNOLL );
 
 		TextureFilm frames = new TextureFilm( texture, 12, 15 );
 
-		int c = 42;
+		int c = 21;
 
-		idle = new MovieClip.Animation( 2, true );
+		idle = new Animation( 2, true );
 		idle.frames( frames, 0+c, 0+c, 0+c, 1+c, 0+c, 0+c, 1+c, 1+c );
 
-		run = new MovieClip.Animation( 12, true );
+		run = new Animation( 12, true );
 		run.frames( frames, 4+c, 5+c, 6+c, 7+c );
 
-		attack = new MovieClip.Animation( 12, false );
+		attack = new Animation( 12, false );
 		attack.frames( frames, 2+c, 3+c, 0+c );
-
-		cast = attack.clone();
 
 		die = new Animation( 12, false );
 		die.frames( frames, 8+c, 9+c, 10+c );
@@ -58,25 +50,4 @@ public class GnollTricksterSprite extends MobSprite {
 		play( idle );
 	}
 
-	@Override
-	public void attack( int cell ) {
-		if (!Dungeon.level.adjacent(cell, ch.pos)) {
-
-			((MissileSprite)parent.recycle( MissileSprite.class )).
-					reset( this, cell, new ParalyticDart(), new Callback() {
-						@Override
-						public void call() {
-							ch.onAttackComplete();
-						}
-					} );
-
-			play( cast );
-			turnTo( ch.pos , cell );
-
-		} else {
-
-			super.attack( cell );
-
-		}
-	}
 }
