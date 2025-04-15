@@ -119,6 +119,77 @@ public class BrokenSeal extends Item {
 		}
 	}
 
+	//outgoing is either the seal itself as an item, or an armor the seal is affixed to
+	public void affixToArmor(Armor armor, Item outgoing){
+		if (armor != null) {
+			if (!armor.cursedKnown){
+				GLog.w(Messages.get(BrokenSeal.class, "unknown_armor"));
+
+			}  else if (armor.glyph != null && getGlyph() != null
+					&& armor.glyph.getClass() != getGlyph().getClass()) {
+
+				//cannot apply the seal's non-curse glyph to a curse glyph armor
+				final boolean sealGlyphApplicable = !armor.glyph.curse() || getGlyph().curse();
+				String bodyText = Messages.get(BrokenSeal.class, "choose_desc", armor.glyph.name(), getGlyph().name());
+				if (!sealGlyphApplicable){
+					bodyText += "\n\n" + Messages.get(BrokenSeal.class, "choose_curse_warn");
+				}
+
+				GameScene.show(new WndOptions(new ItemSprite(ItemSpriteSheet.SEAL),
+						Messages.get(BrokenSeal.class, "choose_title"),
+						bodyText,
+						armor.glyph.name(),
+						getGlyph().name()){
+					@Override
+					protected void onSelect(int index) {
+						if (index == -1) return;
+
+						if (outgoing == BrokenSeal.this) {
+							detach(Dungeon.hero.belongings.backpack);
+						} else if (outgoing instanceof Armor){
+							((Armor) outgoing).detachSeal();
+						}
+
+						if (index == 0) setGlyph(null);
+						//if index is 1, then the glyph transfer happens in affixSeal
+
+						GLog.p(Messages.get(BrokenSeal.class, "affix"));
+						Dungeon.hero.sprite.operate(Dungeon.hero.pos);
+						Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
+						armor.affixSeal(BrokenSeal.this);
+					}
+
+					@Override
+					protected boolean enabled(int index) {
+						if (index == 1 && !sealGlyphApplicable){
+							return false;
+						}
+						return super.enabled(index);
+					}
+
+					@Override
+					public void hide() {
+						super.hide();
+						Dungeon.hero.next();
+					}
+				});
+
+			} else {
+				if (outgoing == this) {
+					detach(Dungeon.hero.belongings.backpack);
+				} else if (outgoing instanceof Armor){
+					((Armor) outgoing).detachSeal();
+				}
+
+				GLog.p(Messages.get(BrokenSeal.class, "affix"));
+				Dungeon.hero.sprite.operate(Dungeon.hero.pos);
+				Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
+				armor.affixSeal(this);
+				Dungeon.hero.next();
+			}
+		}
+	}
+
 	@Override
 	public String name() {
 		return glyph != null ? glyph.name( super.name() ) : super.name();
@@ -159,56 +230,9 @@ public class BrokenSeal extends Item {
 
 		@Override
 		public void onSelect( Item item ) {
-			BrokenSeal seal = (BrokenSeal) curItem;
-			if (item != null && item instanceof Armor) {
-				Armor armor = (Armor)item;
-				if (!armor.cursedKnown){
-					GLog.w(Messages.get(BrokenSeal.class, "unknown_armor"));
-
-				}  else if (armor.glyph != null && seal.getGlyph() != null
-						&& armor.glyph.getClass() != seal.getGlyph().getClass()) {
-
-					//cannot apply the seal's non-curse glyph to a curse glyph armor
-					final boolean sealGlyphApplicable = !armor.glyph.curse() || seal.getGlyph().curse();
-					String bodyText = Messages.get(BrokenSeal.class, "choose_desc");
-					if (!sealGlyphApplicable){
-						bodyText += "\n\n" + Messages.get(BrokenSeal.class, "choose_curse_warn");
-					}
-
-					GameScene.show(new WndOptions(new ItemSprite(seal),
-							Messages.get(BrokenSeal.class, "choose_title"),
-							bodyText,
-							armor.glyph.name(),
-							seal.getGlyph().name()){
-						@Override
-						protected void onSelect(int index) {
-							if (index == -1) return;
-							if (index == 0) seal.setGlyph(null);
-							//if index is 1, then the glyph transfer happens in affixSeal
-
-							GLog.p(Messages.get(BrokenSeal.class, "affix"));
-							Dungeon.hero.sprite.operate(Dungeon.hero.pos);
-							Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
-							armor.affixSeal(seal);
-							seal.detach(Dungeon.hero.belongings.backpack);
-						}
-
-						@Override
-						protected boolean enabled(int index) {
-							if (index == 1 && !sealGlyphApplicable){
-								return false;
-							}
-							return super.enabled(index);
-						}
-					});
-
-				} else {
-					GLog.p(Messages.get(BrokenSeal.class, "affix"));
-					Dungeon.hero.sprite.operate(Dungeon.hero.pos);
-					Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
-					armor.affixSeal((BrokenSeal)curItem);
-					curItem.detach(Dungeon.hero.belongings.backpack);
-				}
+			if (item instanceof Armor) {
+				BrokenSeal seal = (BrokenSeal) curItem;
+				seal.affixToArmor((Armor)item, seal);
 			}
 		}
 	};
