@@ -46,7 +46,7 @@ public class Debug {
 
 
     private static final boolean ActOnStart = false || DebuggingStats;
-    private static final boolean ActOnLoad = false || DebuggingStats;
+    private static final boolean ActOnLoad = false;
     private static final ArrayList<Class<?extends Item>> Starting_Items;
     static {
         //Testing items
