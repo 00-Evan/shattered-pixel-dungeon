@@ -629,10 +629,10 @@ public abstract class Char extends Actor {
 		}
 
 		//invisible chars always hit (for the hero this is surprise attacking)
-		if (attacker.invisible > 0 && attacker.canSurpriseAttack() && defender.buff(ChampionEnemy.Blessed.class) == null) {
+		if (attacker.invisible > 0 && attacker.canSurpriseAttack() /*&& defender.buff(ChampionEnemy.Blessed.class) == null*/) {
 			acuStat = INFINITE_ACCURACY;
 		}
-		if(attacker.buff(ChampionEnemy.Blessed.class) != null) acuStat = INFINITE_ACCURACY;
+		//if(attacker.buff(ChampionEnemy.Blessed.class) != null) acuStat = INFINITE_ACCURACY;
 
 		if (defender.buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class) != null){
 			defStat = INFINITE_EVASION;
