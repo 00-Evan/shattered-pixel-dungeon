@@ -57,8 +57,8 @@ public class ShockingDart extends TippedDart {
 				Char ch = Actor.findChar(defender.pos + i);
 
 				if(ch != null) {
-					//only para them on next action
-					Buff.Polished.affectAligned(ch, Paralysis.class, 0f);
+					//<1 turn stun
+					Buff.Polished.affectAligned(ch, Paralysis.class, 0.75f);
 					arcs.add(new Lightning.Arc(defender.sprite.center(), ch.sprite.center()));
 				}
 			}
