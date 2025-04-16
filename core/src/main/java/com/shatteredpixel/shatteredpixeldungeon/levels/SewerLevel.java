@@ -195,6 +195,9 @@ public class SewerLevel extends RegularLevel {
 		switch (tile) {
 			case Terrain.WATER:
 				return Messages.get(SewerLevel.class, "water_name");
+			case Terrain.REGION_DECO:
+			case Terrain.REGION_DECO_SP:
+				return Messages.get(SewerLevel.class, "region_deco_name");
 			default:
 				return super.tileName( tile );
 		}
@@ -207,6 +210,9 @@ public class SewerLevel extends RegularLevel {
 				return Messages.get(SewerLevel.class, "empty_deco_desc");
 			case Terrain.BOOKSHELF:
 				return Messages.get(SewerLevel.class, "bookshelf_desc");
+			case Terrain.REGION_DECO:
+			case Terrain.REGION_DECO_SP:
+				return Messages.get(SewerLevel.class, "region_deco_desc");
 			default:
 				return super.tileDesc( tile );
 		}

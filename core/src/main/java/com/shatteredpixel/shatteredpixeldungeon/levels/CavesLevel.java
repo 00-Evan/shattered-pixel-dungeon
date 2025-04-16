@@ -199,6 +199,9 @@ public class CavesLevel extends RegularLevel {
 				return Messages.get(CavesLevel.class, "high_grass_name");
 			case Terrain.WATER:
 				return Messages.get(CavesLevel.class, "water_name");
+			case Terrain.REGION_DECO:
+			case Terrain.REGION_DECO_SP:
+				return Messages.get(CavesLevel.class, "region_deco_name");
 			default:
 				return super.tileName( tile );
 		}
@@ -218,6 +221,9 @@ public class CavesLevel extends RegularLevel {
 				return Messages.get(CavesLevel.class, "wall_deco_desc");
 			case Terrain.BOOKSHELF:
 				return Messages.get(CavesLevel.class, "bookshelf_desc");
+			case Terrain.REGION_DECO:
+			case Terrain.REGION_DECO_SP:
+				return Messages.get(CavesLevel.class, "region_deco_desc");
 			default:
 				return super.tileDesc( tile );
 		}

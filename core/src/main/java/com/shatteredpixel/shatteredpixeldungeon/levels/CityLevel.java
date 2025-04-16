@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.CityPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BlazingTrap;
@@ -136,6 +137,9 @@ public class CityLevel extends RegularLevel {
 				return Messages.get(CityLevel.class, "water_name");
 			case Terrain.HIGH_GRASS:
 				return Messages.get(CityLevel.class, "high_grass_name");
+			case Terrain.REGION_DECO:
+			case Terrain.REGION_DECO_SP:
+				return Messages.get(CityLevel.class, "region_deco_name");
 			default:
 				return super.tileName( tile );
 		}
@@ -159,6 +163,9 @@ public class CityLevel extends RegularLevel {
 				return Messages.get(CityLevel.class, "statue_desc");
 			case Terrain.BOOKSHELF:
 				return Messages.get(CityLevel.class, "bookshelf_desc");
+			case Terrain.REGION_DECO:
+			case Terrain.REGION_DECO_SP:
+				return Messages.get(CityLevel.class, "region_deco_desc");
 			default:
 				return super.tileDesc( tile );
 		}
@@ -177,6 +184,57 @@ public class CityLevel extends RegularLevel {
 				group.add( new Smoke( i ) );
 			}
 		}
+	}
+
+	@Override
+	public Group addWallVisuals() {
+		super.addWallVisuals();
+		addCityWallVisuals( this, wallVisuals );
+		return wallVisuals;
+	}
+
+	public static void addCityWallVisuals( Level level, Group group ) {
+		for (int i=0; i < level.length(); i++) {
+			if (level.map[i] == Terrain.REGION_DECO || level.map[i] == Terrain.REGION_DECO_SP) {
+				group.add( new GreenFlame( i ) );
+			}
+		}
+	}
+
+	public static class GreenFlame extends Emitter {
+
+		private int pos;
+
+		public static final Emitter.Factory factory = new Factory() {
+			@Override
+			public void emit( Emitter emitter, int index, float x, float y ) {
+				ElmoParticle p = (ElmoParticle)emitter.recycle( ElmoParticle.class );
+				p.reset( x, y );
+			}
+			@Override
+			public boolean lightMode() {
+				return true;
+			}
+		};
+
+		public GreenFlame( int pos ) {
+			super();
+
+			this.pos = pos;
+
+			PointF p = DungeonTilemap.raisedTileCenterToWorld( pos );
+			pos( p.x - 3, p.y - 6, 6, 6 );
+
+			pour( factory, 0.05f );
+		}
+
+		@Override
+		public void update() {
+			if (visible = (pos < Dungeon.level.heroFOV.length && Dungeon.level.heroFOV[pos])) {
+				super.update();
+			}
+		}
+
 	}
 	
 	public static class Smoke extends Emitter {
