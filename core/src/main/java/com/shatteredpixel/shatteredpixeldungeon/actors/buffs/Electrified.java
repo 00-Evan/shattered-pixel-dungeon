@@ -32,7 +32,7 @@ import com.watabou.utils.Random;
 
 public class Electrified extends FlavourBuff {
 
-	public static final float DURATION	= 10f;
+	public static final float DURATION	= 8f;
 
 	{
 		type = buffType.NEGATIVE;

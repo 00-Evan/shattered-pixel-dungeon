@@ -1414,7 +1414,7 @@ public abstract class Char extends Actor {
 		//A character that acts in an unchanging manner. immune to AI state debuffs or stuns/slows
 		STATIC( new HashSet<Class>(),
 				new HashSet<Class>( Arrays.asList(AllyBuff.class, Dread.class, Terror.class, Amok.class, Charm.class, Sleep.class,
-									Paralysis.class, Frost.class, Chill.class, Slow.class) ));
+									Electrified.class, Paralysis.class, Frost.class, Chill.class, Slow.class) ));
 
 		private HashSet<Class> resistances;
 		private HashSet<Class> immunities;
