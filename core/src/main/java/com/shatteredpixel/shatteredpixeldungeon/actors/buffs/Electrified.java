@@ -60,7 +60,8 @@ public class Electrified extends FlavourBuff {
 	}
 	
 	public void processDamage( int damage, Object src ){
-		if(damage > 0 && target != null && !(src instanceof Electricity) && !(src instanceof Buff)) {
+		if (damage > 0 && target != null && !(src instanceof Electricity) &&
+			(!(src instanceof Buff)) || src instanceof Corrosion) {
 			detach();
 
 			if (Dungeon.level.heroFOV[target.pos]) {
