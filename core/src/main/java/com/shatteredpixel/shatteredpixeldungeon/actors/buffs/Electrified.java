@@ -39,15 +39,14 @@ public class Electrified extends FlavourBuff {
 		announced = true;
 	}
 
-	boolean immunityAnnounced = false;
-
 	@Override
 	public boolean attachTo( Char target ) {
-		if(target.buff(ElectricResist.class) != null) {
-			if (Dungeon.level.heroFOV[target.pos] && !immunityAnnounced) {
+		ElectricResist resist = target.buff(ElectricResist.class);
+		if(resist != null) {
+			if (Dungeon.level.heroFOV[target.pos] && !resist.immunityAnnounced) {
 				target.sprite.showStatus(CharSprite.NEUTRAL, Messages.get(this, "immune"));
-				immunityAnnounced=true;
 			}
+			resist.immunityAnnounced = !resist.immunityAnnounced;
 
 			return false;
 		}
@@ -100,6 +99,8 @@ public class Electrified extends FlavourBuff {
 		{
 			type = buffType.POSITIVE;
 		}
+		public boolean immunityAnnounced = true;
+
 
 		public static final float DURATION = 5f;
 		private float left;
