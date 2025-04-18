@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -30,14 +31,21 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
+import java.lang.annotation.Target;
+
 public class Electrified extends FlavourBuff {
 
-	public static final float DURATION	= 8f;
+	public static final float DURATION	= 5f;
+
+	//Dot effects can take up to %40 cur HP (after damage is applied)
+	public static final float MAX_DAMAGE= 0.4f;
+	int damageStack = 0;
 
 	{
 		type = buffType.NEGATIVE;
 		announced = true;
 	}
+
 
 	@Override
 	public boolean attachTo( Char target ) {
@@ -60,15 +68,22 @@ public class Electrified extends FlavourBuff {
 	}
 	
 	public void processDamage( int damage, Object src ){
-		if (damage > 0 && target != null && !(src instanceof Electricity) &&
-			(!(src instanceof Buff)) || src instanceof Corrosion) {
-			detach();
+		if(damage < 0 || target == null) return;
 
-			if (Dungeon.level.heroFOV[target.pos]) {
-				target.sprite.showStatus(CharSprite.NEUTRAL, Messages.get(this, "out"));
-			}
-			ElectricResist resist = Buff.affect(target, ElectricResist.class);
-			resist.left = ElectricResist.DURATION;
+		if(src instanceof Electricity) return;
+		else if(src instanceof Buff || src instanceof Blob) {
+			damageStack += damage;
+			if(damageStack >= target.HP * MAX_DAMAGE) breakOut();
+		}
+		else breakOut();
+	}
+	void breakOut() {
+		detach();
+		ElectricResist resist = Buff.affect(target, ElectricResist.class);
+		resist.left = ElectricResist.DURATION;
+
+		if (Dungeon.level.heroFOV[target.pos]) {
+			target.sprite.showStatus(CharSprite.NEUTRAL, Messages.get(this, "out"));
 		}
 	}
 	
@@ -93,6 +108,19 @@ public class Electrified extends FlavourBuff {
 	public void fx(boolean on) {
 		if (on)                         target.sprite.add(CharSprite.State.PARALYSED);
 		else if (target.paralysed <= 1) target.sprite.remove(CharSprite.State.PARALYSED);
+	}
+
+
+	private static final String DAMAGE_STACK = "damage_stack";
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		damageStack = bundle.getInt(DAMAGE_STACK);
+	}
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		bundle.put( DAMAGE_STACK, damageStack );
 	}
 
 	public static class ElectricResist extends Buff {

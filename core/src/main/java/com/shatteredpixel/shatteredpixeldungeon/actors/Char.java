@@ -967,9 +967,6 @@ public abstract class Char extends Actor {
 		if (buff( Paralysis.class ) != null) {
 			buff( Paralysis.class ).processDamage(dmg);
 		}
-		if (buff( Electrified.class ) != null) {
-			buff( Electrified.class ).processDamage(dmg, src);
-		}
 
 		int shielded = dmg;
 		//FIXME: when I add proper damage properties, should add an IGNORES_SHIELDS property to use here.
@@ -981,6 +978,10 @@ public abstract class Char extends Actor {
 		}
 		shielded -= dmg;
 		HP -= dmg;
+
+		if (buff( Electrified.class ) != null) {
+			buff( Electrified.class ).processDamage(dmg + shielded, src);
+		}
 
 		if (HP > 0 && shielded > 0 && shielding() == 0){
 			if (this instanceof Hero && ((Hero) this).hasTalent(Talent.PROVOKED_ANGER)){
