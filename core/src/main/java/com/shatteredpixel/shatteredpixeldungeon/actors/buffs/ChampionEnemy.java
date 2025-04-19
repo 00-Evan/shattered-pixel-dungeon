@@ -348,7 +348,7 @@ public abstract class ChampionEnemy extends Buff {
 		private float multiplier = 1.3f;
 
 		public boolean Polished_hunt() {
-			return multiplier > 2f;
+			return multiplier >= 2f;
 		}
 
 		@Override
