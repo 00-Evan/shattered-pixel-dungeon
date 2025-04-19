@@ -28,17 +28,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Snake;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.HolyBomb;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.HolyDart;
-import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.BArray;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
@@ -347,14 +342,14 @@ public abstract class ChampionEnemy extends Buff {
 		//POLISHED: base 19%->30%
 		private float multiplier = 1.3f + .00001f;
 
-		public boolean Polished_hunt() {
+		public boolean Polished_huntThreshold() {
 			return multiplier >= 2f;
 		}
 
 		@Override
 		public boolean act() {
 			//POLISHED: .25%->.4%
-			multiplier += 0.02f;
+			if(!Polished_huntThreshold()) multiplier += 0.02f;
 			spend(5*TICK);
 			return true;
 		}
@@ -377,7 +372,7 @@ public abstract class ChampionEnemy extends Buff {
 		@Override
 		public String desc() {
 			String desc = Messages.get(this, "desc", (int)(100*(multiplier-1)), (int)(100*(1 - 1f/multiplier)));
-			if(Polished_hunt()) desc += "\n\n" + Messages.get(this, "hunt_desc");
+			if(Polished_huntThreshold()) desc += "\n\n" + Messages.get(this, "hunt_desc");
 			return desc;
 		}
 

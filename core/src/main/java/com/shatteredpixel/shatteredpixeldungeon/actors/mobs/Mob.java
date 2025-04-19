@@ -1071,7 +1071,7 @@ public abstract class Mob extends Char {
 	private boolean Polished_huntNoti = false;
 	private boolean Polished_growingThreshold() {
 		ChampionEnemy.Growing grow = buff(ChampionEnemy.Growing.class);
-		return (grow != null && grow.Polished_hunt());
+		return (grow != null && grow.Polished_huntThreshold());
 	}
 	private void Polished_growingHunt() {
 		if(Polished_growingThreshold()) {
