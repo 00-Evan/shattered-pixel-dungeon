@@ -96,40 +96,29 @@ public class Burning extends Buff implements Hero.Doom {
 	@Override
 	public boolean act() {
 
+		int brimstoneLevel = target.glyphLevel(Brimstone.class);
+
 		if (acted && Dungeon.level.water[target.pos] && !target.flying){
 			detach();
+		} else if(target.isAlive() && brimstoneLevel >= 0) {
+
+			Buff.detach( target, Chill.class);
+			Brimstone.gainShield(target, brimstoneLevel);
 		} else if (target.isAlive() && !target.isImmune(getClass())) {
 
 			acted = true;
 			int damage = tickDamage();
 			Buff.detach( target, Chill.class);
-			int brimstoneLevel = target.glyphLevel(Brimstone.class);
-			if (brimstoneLevel >= 0){
-				float multi = RingOfArcana.enchantPowerMultiplier(target);
-				//generate avg of 1 shield per turn per 50% boost, to a max of 4x boost
-				float shieldPerTurn = brimstoneLevel * multi / 2.0f;
-				int shieldCap = brimstoneLevel * 2;
-				int shieldGain = (int)shieldPerTurn;
-				if (Random.Float() < shieldPerTurn%1) shieldGain++;
-				if (shieldCap > 0 && shieldGain > 0){
-					Barrier barrier = Buff.affect(target, Barrier.class);
-					if (barrier.shielding() < shieldCap){
-						barrier.incShield(shieldGain);
-					}
-				}
-			}
 			if (target instanceof Hero
 					&& target.buff(TimekeepersHourglass.timeStasis.class) == null
 					&& target.buff(TimeStasis.class) == null) {
 				
 				Hero hero = (Hero)target;
-				if (brimstoneLevel < 0){
-					hero.damage( damage, this );
-				}
+				hero.damage( damage, this );
 				burnIncrement++;
 
 				//at 4+ turns, there is a (turns-3)/3 chance an item burns
-				if (Random.Int(3) < (burnIncrement - 3) && brimstoneLevel < 0){
+				if (Random.Int(3) < (burnIncrement - 3)){
 					burnIncrement = 0;
 
 					ArrayList<Item> burnable = new ArrayList<>();
@@ -154,11 +143,8 @@ public class Burning extends Buff implements Hero.Doom {
 						Heap.burnFX( hero.pos );
 					}
 				}
-				
 			} else {
-				if (brimstoneLevel < 0) {
-					target.damage( damage, this );
-				}
+				target.damage( damage, this );
 			}
 
 			if (target instanceof Thief && ((Thief) target).item != null) {
@@ -176,7 +162,6 @@ public class Burning extends Buff implements Hero.Doom {
 			}
 
 		} else {
-
 			detach();
 		}
 		
@@ -201,21 +186,6 @@ public class Burning extends Buff implements Hero.Doom {
 	}
 	
 	public void reignite( Char ch, float duration ) {
-		if (ch.isImmune(Burning.class)){
-			if (ch.glyphLevel(Brimstone.class) >= 0){
-				//generate avg of 1 shield per turn per 50% boost, to a max of 4x boost
-				float shieldChance = 2*(Armor.Glyph.genericProcChanceMultiplier(ch) - 1f);
-				int shieldCap = Math.round(shieldChance*4f);
-				int shieldGain = (int)shieldChance;
-				if (Random.Float() < shieldChance%1) shieldGain++;
-				if (shieldCap > 0 && shieldGain > 0){
-					Barrier barrier = Buff.affect(ch, Barrier.class);
-					if (barrier.shielding() < shieldCap){
-						barrier.incShield(1);
-					}
-				}
-			}
-		}
 		if (left < duration) left = duration;
 		acted = false;
 	}
