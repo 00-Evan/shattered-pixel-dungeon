@@ -118,8 +118,8 @@ public class Smite extends TargetedClericSpell {
 	}
 
 	public static int bonusDmg( Hero attacker, Char defender){
-		int min = 5 + attacker.lvl/2;
-		int max = 10 + attacker.lvl;
+		int min = 5 + attacker.lvl/4;
+		int max = 10 + attacker.lvl/2;
 		if (Char.hasProp(defender, Char.Property.UNDEAD) || Char.hasProp(defender, Char.Property.DEMONIC)){
 			return max;
 		} else {

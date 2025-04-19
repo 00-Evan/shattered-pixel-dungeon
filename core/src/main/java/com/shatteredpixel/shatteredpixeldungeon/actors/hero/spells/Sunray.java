@@ -56,13 +56,17 @@ public class Sunray extends TargetedClericSpell {
 	public String desc() {
 		int min = Dungeon.hero.pointsInTalent(Talent.SUNRAY) == 2 ? 6 : 4;
 		int max = Dungeon.hero.pointsInTalent(Talent.SUNRAY) == 2 ? 12 : 8;
-		int dur = Dungeon.hero.pointsInTalent(Talent.SUNRAY) == 2 ? 6 : 4;
+		int dur = Dungeon.hero.pointsInTalent(Talent.SUNRAY) == 2 ? 5 : 3;
 		return Messages.get(this, "desc", min, max, dur) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
 	}
 
 	@Override
 	public boolean canCast(Hero hero) {
 		return super.canCast(hero) && hero.hasTalent(Talent.SUNRAY);
+	}
+
+	private static float statusDuration(Hero hero) {
+		return 2f + 2f*hero.pointsInTalent(Talent.SUNRAY);
 	}
 
 	@Override
@@ -111,11 +115,11 @@ public class Sunray extends TargetedClericSpell {
 
 			if (ch.isAlive()) {
 				if (ch.buff(Blindness.class) != null && ch.buff(SunRayRecentlyBlindedTracker.class) != null) {
-					Buff.prolong(ch, Paralysis.class, 2f + 2f*hero.pointsInTalent(Talent.SUNRAY));
+					Buff.prolong(ch, Paralysis.class, Sunray.statusDuration(hero));
 					ch.buff(SunRayRecentlyBlindedTracker.class).detach();
 				} else if (ch.buff(SunRayUsedTracker.class) == null) {
-					Buff.prolong(ch, Blindness.class, 2f + 2f*hero.pointsInTalent(Talent.SUNRAY));
-					Buff.prolong(ch, SunRayRecentlyBlindedTracker.class, 2f + 2f*hero.pointsInTalent(Talent.SUNRAY));
+					Buff.prolong(ch, Blindness.class, Sunray.statusDuration(hero));
+					Buff.prolong(ch, SunRayRecentlyBlindedTracker.class, Sunray.statusDuration(hero));
 					Buff.affect(ch, SunRayUsedTracker.class);
 				}
 			}

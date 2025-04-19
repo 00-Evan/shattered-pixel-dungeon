@@ -536,7 +536,7 @@ abstract public class Weapon extends KindOfWeapon {
 			}
 
 			if (attacker.buff(Smite.SmiteTracker.class) != null){
-				multi += 3f;
+				multi += 1f;
 			}
 
 			if (attacker.buff(ElementalStrike.DirectedPowerTracker.class) != null){
