@@ -545,8 +545,10 @@ public class Hero extends Char {
 		
 		if (wep instanceof MissileWeapon){
 			if (Dungeon.level.adjacent( pos, target.pos )) {
-				accuracy *= (2f/3f * (1 + 0.2f*pointsInTalent(Talent.POINT_BLANK)));
+				//do nothing, throwies already have lower acc on melee
+				//0.67
 			} else {
+				//1.5*1.5 = 2.25
 				accuracy *= 1.5f;
 			}
 		//precise assault and liquid agility
