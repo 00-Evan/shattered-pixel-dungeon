@@ -161,7 +161,7 @@ public class Hunger extends Buff implements Hero.Doom {
 			GLog.w( Messages.get(this, "onhungry") );
 		} else if (oldLevel < STARVING && level >= STARVING){
 			GLog.n( Messages.get(this, "onstarving") );
-			target.damage( 1, this );
+			//target.damage( 1, this );
 		}
 
 		BuffIndicator.refreshHero();

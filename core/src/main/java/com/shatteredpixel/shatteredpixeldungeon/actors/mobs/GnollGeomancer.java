@@ -607,12 +607,16 @@ public class GnollGeomancer extends Mob {
 						}
 
 						Dungeon.hero.interrupt();
+						GameScene.Polished.blockInput(.5f);
+
 						abilityCooldown = Random.NormalIntRange(3, 5);
 						spend(GameMath.gate(TICK, (int)Math.ceil(enemy.cooldown()), 3*TICK));
 						return true;
 					} else if (GnollGeomancer.prepRockFallAttack(enemy, GnollGeomancer.this, 6-2*curbracket, true)) {
 						lastAbilityWasRockfall = true;
 						Dungeon.hero.interrupt();
+						GameScene.Polished.blockInput(.5f);
+
 						spend(GameMath.gate(TICK, (int)Math.ceil(enemy.cooldown()), 3*TICK));
 						abilityCooldown = Random.NormalIntRange(3, 5);
 						return true;
