@@ -369,7 +369,7 @@ public class InventoryPane extends Component {
 					&& (!lostInvent || b.item().keptThroughLostInventory()));
 		}
 		for (BagButton b : bags){
-			b.enable(lastEnabled);
+			b.enable(true);
 		}
 
 		goldTxt.alpha( lastEnabled ? 1f : 0.3f );
@@ -459,7 +459,7 @@ public class InventoryPane extends Component {
 						&& (!lostInvent || b.item().keptThroughLostInventory()));
 			}
 			for (BagButton b : bags){
-				b.enable(lastEnabled);
+				b.enable(true);
 			}
 
 			goldTxt.alpha( lastEnabled ? 1f : 0.3f );
@@ -664,7 +664,7 @@ public class InventoryPane extends Component {
 		@Override
 		protected void onClick() {
 			super.onClick();
-			GameScene.cancel();
+			//GameScene.cancel();
 			lastBag = bag;
 			refresh();
 		}

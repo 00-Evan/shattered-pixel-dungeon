@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
+import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
@@ -123,6 +124,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.watabou.glwrap.Blending;
 import com.watabou.input.ControllerHandler;
+import com.watabou.input.GameAction;
 import com.watabou.input.KeyBindings;
 import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Camera;
@@ -219,6 +221,47 @@ public class GameScene extends PixelScene {
 		public static boolean canInput() {
 			return (Game.realTime > inputBlockTimer || !SPDSettings.Polished.inputBlock());
 		}
+
+
+        //millis
+        private static final int bufferPeriod_Action = 50;
+        public static GameAction bufferedAction = null;
+        private static long timer_Action = 0;
+        public static void bufferAction(GameAction action, boolean animation) {
+            if(!actionQueued()) bufferedAction = action;
+            else bufferedAction = null;
+            //bufferedAction = action;
+
+            timer_Action = Game.realTime + (animation ? bufferPeriod_Action : 2*bufferPeriod_Action)*(long)SPDSettings.Polished.buffers();
+        }
+        public static boolean actionQueued() {
+            return bufferedAction != null && Game.realTime <= timer_Action;
+        }
+
+        //millis
+        private static final int bufferPeriod_Cell = bufferPeriod_Action;
+        public static int bufferedCell = -1;
+        private static long timer_Cell = 0;
+        public static void bufferCell(int cell) {
+            bufferedCell = cell;
+            timer_Cell = Game.realTime + bufferPeriod_Cell*(long)SPDSettings.Polished.buffers();
+        }
+        public static boolean cellQueued() {
+            return bufferedCell != -1 && Game.realTime <= timer_Cell;
+        }
+
+        //millis
+        //private static final int bufferPeriod_Movement = 30;
+        private static final int bufferPeriod_Movement = -1;
+        public static Point bufferedMovement = null;
+        private static long timer_Movement = 0;
+        public static void bufferMovement(Point movement) {
+            bufferedMovement = movement;
+            timer_Movement = Game.realTime + bufferPeriod_Movement;
+        }
+        public static boolean movementQueued() {
+            return bufferedMovement != null && Game.realTime <= timer_Movement;
+        }
 	}
 	
 	@Override
@@ -1469,6 +1512,11 @@ public class GameScene extends PixelScene {
 		cellSelector.enabled = Dungeon.hero.ready;
 		if (scene != null) {
 			scene.prompt(listener.prompt());
+		}
+
+		if(GameScene.Polished.cellQueued() && listener != defaultCellListener) {
+			GameScene.handleCell(GameScene.Polished.bufferedCell);
+			GameScene.Polished.bufferedCell = -1;
 		}
 	}
 	

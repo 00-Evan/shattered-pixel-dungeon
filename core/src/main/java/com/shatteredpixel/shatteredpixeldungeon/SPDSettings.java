@@ -322,6 +322,7 @@ public class SPDSettings extends GameSettings {
 	public static class Polished {
 		public static final String KEY_INPUT_BLOCK		= "input_block";
 		public static final String KEY_AUTO_PICKUP		= "auto_pickup";
+		public static final String KEY_BUFFERS			= "buffers";
 		public static final String KEY_QUICKSLOT		= "quickslot";
 		public static final String KEY_QUICK_TRANSITIONS= "quick_transitions";
 
@@ -332,6 +333,9 @@ public class SPDSettings extends GameSettings {
 
 		public static void autoPickup( boolean value ) { put(KEY_AUTO_PICKUP, value); }
 		public static boolean autoPickup() {return getBoolean(KEY_AUTO_PICKUP, true);}
+
+		public static void buffers( int value ) { put(KEY_BUFFERS, value); }
+		public static int buffers() {return getInt(KEY_BUFFERS, 2);}
 
 
 		public static void quickslot(boolean value){
