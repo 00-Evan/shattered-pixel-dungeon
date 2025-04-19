@@ -257,6 +257,9 @@ public class Hero extends Char {
 
 			hero.lvl = newLvl;
 			hero.updateHT(true);
+
+			SpiritBow bow = Dungeon.hero.belongings.getItem(SpiritBow.class);
+			if(bow != null) bow.Polished_resetCharges();
 		}
 
 		public static boolean noEnemiesLast = false;
@@ -2118,6 +2121,9 @@ public class Hero extends Char {
 				if (buff(ElixirOfMight.HTBoost.class) != null){
 					buff(ElixirOfMight.HTBoost.class).onLevelUp();
 				}
+
+				SpiritBow bow = Dungeon.hero.belongings.getItem(SpiritBow.class);
+				if(bow != null && lvl % 5 == 0) bow.Polished_resetCharges();
 				
 				updateHT( true );
 				attackSkill++;

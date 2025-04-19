@@ -320,6 +320,12 @@ public class SPDSettings extends GameSettings {
 	}
 
 	public static class Polished {
+		public static final String KEY_HUNTRESS= "POLISHED_huntress";
+		public static void huntress( boolean value ) { put(KEY_HUNTRESS, value); }
+		public static boolean huntress(){
+			return getBoolean(KEY_HUNTRESS, false);
+		}
+
 		public static final String KEY_INPUT_BLOCK		= "input_block";
 		public static final String KEY_AUTO_PICKUP		= "auto_pickup";
 		public static final String KEY_BUFFERS			= "buffers";

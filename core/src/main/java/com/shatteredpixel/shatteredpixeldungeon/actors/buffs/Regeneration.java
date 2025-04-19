@@ -42,10 +42,17 @@ public class Regeneration extends Buff {
 	private float partialRegen = 0f;
 
 	private static final float REGENERATION_DELAY = 10; //1HP every 10 turns
-	
+
+	public int POLISHED_delay = 0;
 	@Override
 	public boolean act() {
 		if (target.isAlive()) {
+
+			if(POLISHED_delay > 0) {
+				POLISHED_delay--;
+				spend(TICK);
+				return true;
+			}
 
 			//if other trinkets ever get buffs like this should probably make the buff attaching
 			// behaviour more like wands/rings/artifacts
