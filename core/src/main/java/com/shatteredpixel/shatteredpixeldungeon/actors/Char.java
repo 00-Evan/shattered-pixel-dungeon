@@ -1356,6 +1356,9 @@ public abstract class Char extends Actor {
 		for (Buff b : buffs()){
 			immunes.addAll(b.immunities());
 		}
+		if (glyphLevel(Brimstone.class) >= 0){
+			immunes.add(Burning.class);
+		}
 		
 		for (Class c : immunes){
 			if (c.isAssignableFrom(effect)){
