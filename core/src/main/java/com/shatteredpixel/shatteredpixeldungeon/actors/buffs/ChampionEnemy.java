@@ -345,7 +345,7 @@ public abstract class ChampionEnemy extends Buff {
 		}
 
 		//POLISHED: base 19%->30%
-		private float multiplier = 1.3f;
+		private float multiplier = 1.3f + .00001f;
 
 		public boolean Polished_hunt() {
 			return multiplier >= 2f;
@@ -353,10 +353,9 @@ public abstract class ChampionEnemy extends Buff {
 
 		@Override
 		public boolean act() {
-			//POLISHED: 1%->1.75%
-			//		  .25%->.4375%
-			multiplier += 0.0175f;
-			spend(4*TICK);
+			//POLISHED: .25%->.4%
+			multiplier += 0.02f;
+			spend(5*TICK);
 			return true;
 		}
 
@@ -377,7 +376,9 @@ public abstract class ChampionEnemy extends Buff {
 
 		@Override
 		public String desc() {
-			return Messages.get(this, "desc", (int)(100*(multiplier-1)), (int)(100*(1 - 1f/multiplier)));
+			String desc = Messages.get(this, "desc", (int)(100*(multiplier-1)), (int)(100*(1 - 1f/multiplier)));
+			if(Polished_hunt()) desc += "\n\n" + Messages.get(this, "hunt_desc");
+			return desc;
 		}
 
 		private static final String MULTIPLIER = "multiplier";
