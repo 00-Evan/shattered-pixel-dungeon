@@ -171,7 +171,7 @@ public class Artifact extends KindofMisc {
 				&& Dungeon.hero.hasTalent(Talent.SUNRAY)){
 			// 15/25% chance
 			if (Random.Int(20) < 1 + 2*Dungeon.hero.pointsInTalent(Talent.SUNRAY)){
-				Buff.prolong(target, Blindness.class, 4f);
+				Buff.prolong(target, Blindness.class, 3f);
 			}
 		}
 	}
