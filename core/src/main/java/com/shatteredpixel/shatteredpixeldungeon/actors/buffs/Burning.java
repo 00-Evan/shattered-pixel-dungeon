@@ -103,19 +103,7 @@ public class Burning extends Buff implements Hero.Doom {
 		} else if(target.isAlive() && brimstoneLevel >= 0) {
 
 			Buff.detach( target, Chill.class);
-
-			float multi = RingOfArcana.enchantPowerMultiplier(target);
-			//generate avg of 1 shield per turn per 50% boost, to a max of 4x boost
-			float shieldPerTurn = brimstoneLevel * multi / 2.0f;
-			int shieldCap = brimstoneLevel * 2;
-			int shieldGain = (int)shieldPerTurn;
-			if (Random.Float() < shieldPerTurn%1) shieldGain++;
-			if (shieldCap > 0 && shieldGain > 0){
-				Barrier barrier = Buff.affect(target, Barrier.class);
-				if (barrier.shielding() < shieldCap){
-					barrier.incShield(shieldGain);
-				}
-			}
+			Brimstone.gainShield(target, brimstoneLevel);
 		} else if (target.isAlive() && !target.isImmune(getClass())) {
 
 			acted = true;
