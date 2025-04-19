@@ -100,10 +100,14 @@ public class BlessSpell extends TargetedClericSpell {
 		return 5 + 5*hero.pointsInTalent(Talent.BLESS);
 	}
 
+	private static float blessDuration(Hero hero) {
+		return 2f + 3*hero.pointsInTalent(Talent.BLESS);
+	}
+
 	private void affectChar(Hero hero, Char ch){
 		new Flare(6, 32).color(0xFFFF00, true).show(ch.sprite, 2f);
 		if (ch == hero){
-			Buff.prolong(ch, Bless.class, 2f + 4*hero.pointsInTalent(Talent.BLESS));
+			Buff.prolong(ch, Bless.class, blessDuration(hero));
 			Buff.affect(ch, Barrier.class).setShield(BlessSpell.barrierAmount(hero));
 			ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(BlessSpell.barrierAmount(hero)), FloatingText.SHIELDING );
 		} else {
