@@ -52,7 +52,7 @@ public class Tomahawk extends MissileWeapon {
 	
 	@Override
 	public int proc( Char attacker, Char defender, int damage ) {
-		Buff.affect( defender, Bleeding.class ).set( Math.round(damage*0.45f) );
+		Buff.affect( defender, Bleeding.class ).set( 1f + 0.475f*damage );
 		return super.proc( attacker, defender, damage );
 	}
 }
