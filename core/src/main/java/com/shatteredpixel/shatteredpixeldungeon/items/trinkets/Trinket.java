@@ -68,10 +68,6 @@ public abstract class Trinket extends Item {
 
 	public abstract String statsDesc();
 
-	public int energyVal() {
-		return 5;
-	}
-
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
