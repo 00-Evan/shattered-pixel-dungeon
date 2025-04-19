@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
@@ -99,12 +100,16 @@ public class SpiritBow extends Weapon {
 		return max;
 	}
 	public void Polished_resetCharges() {
-		curCharges = Math.max(curCharges, Polished_getMaxCharge());
+		if(SPDSettings.Polished.huntress())
+			curCharges = Math.max(curCharges, Polished_getMaxCharge());
 	}
 
 	@Override
 	public String status() {
-		return curCharges + "/" + Polished_getMaxCharge();
+		if(SPDSettings.Polished.huntress())
+			return curCharges + "/" + Polished_getMaxCharge();
+		else
+			return super.status();
 	}
 	
 	@Override
@@ -402,9 +407,13 @@ public class SpiritBow extends Weapon {
 		}
 
 		private int Polished_chargeCost() {
+			if(!SPDSettings.Polished.huntress()) return 0;
+
 			return sniperSpecial && SpiritBow.this.augment != Augment.NONE ? 2 : 1;
 		}
 		private void Polished_spendCharges() {
+			if(!SPDSettings.Polished.huntress()) return;
+
 			curCharges -= Polished_chargeCost();
 			updateQuickslot();
 
@@ -413,6 +422,8 @@ public class SpiritBow extends Weapon {
 				Barkskin.conditionallyAppend(Dungeon.hero, nature+1, 4);
 		}
 		public void Polished_recharge(final Hero user) {
+			if(!SPDSettings.Polished.huntress()) return;
+
 			//dont punish the player for recharging
 			{
 				Hunger hunger = user.buff(Hunger.class);
@@ -435,19 +446,21 @@ public class SpiritBow extends Weapon {
 		int flurryCount = -1;
 		Actor flurryActor = null;
 		public boolean Polished_cast(final Hero user, final int dst) {
-			if (user.pos == dst) {
-				int maxCharge = Polished_getMaxCharge();
-				if (curCharges == maxCharge) {
-					GLog.w(Messages.get(SpiritBow.class, "max_charges"));
-				} else {
-					Polished_recharge(user);
+			if(SPDSettings.Polished.huntress()) {
+				if (user.pos == dst) {
+					int maxCharge = Polished_getMaxCharge();
+					if (curCharges == maxCharge) {
+						GLog.w(Messages.get(SpiritBow.class, "max_charges"));
+					} else {
+						Polished_recharge(user);
+					}
+					return true;
 				}
-				return true;
-			}
-			if(flurryCount == -1 && curCharges < Polished_chargeCost()) {
-				sniperSpecial = false;
-				GLog.w(Messages.get(SpiritBow.class, "empty"));
-				return false;
+				if(flurryCount == -1 && curCharges < Polished_chargeCost()) {
+					sniperSpecial = false;
+					GLog.w(Messages.get(SpiritBow.class, "empty"));
+					return false;
+				}
 			}
 
 			final int cell = throwPos( user, dst );
