@@ -58,6 +58,8 @@ public class BuffIcon extends Image {
 			if (largeFilm == null) largeFilm = new TextureFilm(texture, LRG_SIZE, LRG_SIZE);
 			frame(largeFilm.get(icon));
 		} else {
+			if(icon >= BuffIndicator.POLISHED) icon += BuffIndicator.POLISHED_small - BuffIndicator.POLISHED;
+
 			if (smallFilm == null ) smallFilm = new TextureFilm(texture, SML_SIZE, SML_SIZE);
 			frame(smallFilm.get(icon));
 		}
