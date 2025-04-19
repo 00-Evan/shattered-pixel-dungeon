@@ -97,7 +97,7 @@ public class BlessSpell extends TargetedClericSpell {
 	}
 
 	private static int barrierAmount(Hero hero) {
-		return 5 + 5*hero.pointsInTalent(Talent.BLESS);
+		return 4 + 4*hero.pointsInTalent(Talent.BLESS);
 	}
 
 	private static float blessDuration(Hero hero) {
