@@ -503,7 +503,7 @@ public class WndJournal extends WndTabbed {
 						@Override
 						public boolean onClick(float x, float y) {
 							if (inside(x, y)) {
-								GameScene.show(new CustomNoteButton.CustomNoteWindow(rec));
+								GameScene.show(new CustomNoteButton.CustomNoteWindow(rec, WndJournal.INSTANCE));
 								return true;
 							} else {
 								return false;
