@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
-import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
+import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -410,10 +410,10 @@ public class Combo extends Buff implements ActionIndicator.Action {
 							ch.sprite.bloodBurstA(target.sprite.center(), aoeHit);
 							ch.sprite.flash();
 
-							if (!ch.isAlive() && hero.hasTalent(Talent.LETHAL_DEFENSE)) {
-								int shieldToGive = Math.round(6.67f*hero.pointsInTalent(Talent.LETHAL_DEFENSE));
-								hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldToGive), FloatingText.SHIELDING);
-								Buff.affect(hero, Barrier.class).setShield(shieldToGive);
+							if (!ch.isAlive()
+									&& hero.hasTalent(Talent.LETHAL_DEFENSE)
+									&& hero.buff(BrokenSeal.WarriorShield.class) != null) {
+								hero.buff(BrokenSeal.WarriorShield.class).reduceCooldown(hero.pointsInTalent(Talent.LETHAL_DEFENSE)/3f);
 							}
 						}
 					}
@@ -466,9 +466,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 		if (!enemy.isAlive() || (!wasAlly && enemy.alignment == target.alignment)) {
 			if (hero.hasTalent(Talent.LETHAL_DEFENSE)){
-				int shieldToGive = Math.round(6.67f * hero.pointsInTalent(Talent.LETHAL_DEFENSE));
-				hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldToGive), FloatingText.SHIELDING);
-				Buff.affect(hero, Barrier.class).setShield(shieldToGive);
+				hero.buff(BrokenSeal.WarriorShield.class).reduceCooldown(hero.pointsInTalent(Talent.LETHAL_DEFENSE)/3f);
 			}
 		}
 

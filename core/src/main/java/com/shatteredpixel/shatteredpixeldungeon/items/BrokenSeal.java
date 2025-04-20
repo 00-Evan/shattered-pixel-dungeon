@@ -325,7 +325,6 @@ public class BrokenSeal extends Item {
 			if (shielding() > 0){
 				if (Dungeon.hero.visibleEnemies() == 0){
 					turnsSinceEnemies++;
-					//TODO
 					if (turnsSinceEnemies >= 5){
 						float percentLeft = shielding() / (float)maxShield();
 						cooldown -= COOLDOWN_START*(percentLeft/2f); //max of 50% cooldown refund
@@ -345,21 +344,18 @@ public class BrokenSeal extends Item {
 		}
 
 		public synchronized void activate() {
-			setShield(maxShield());
-			cooldown = COOLDOWN_START;
+			incShield(maxShield());
+			cooldown += COOLDOWN_START;
 			turnsSinceEnemies = 0;
 		}
 
 		public boolean coolingDown(){
 			return cooldown > 0;
 		}
-		
-		public synchronized void supercharge(int maxShield){
-			if (maxShield > shielding()){
-				setShield(maxShield);
-			}
-			cooldown = COOLDOWN_START;
-			turnsSinceEnemies = 0;
+
+		public void reduceCooldown(float percentage){
+			cooldown -= Math.round(COOLDOWN_START*percentage);
+			cooldown = Math.max(cooldown, -COOLDOWN_START);
 		}
 
 		public synchronized void setArmor(Armor arm){
