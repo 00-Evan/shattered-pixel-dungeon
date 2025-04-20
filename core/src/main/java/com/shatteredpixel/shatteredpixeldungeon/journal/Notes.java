@@ -377,6 +377,7 @@ public class Notes {
 		DEPTH,
 		ITEM_TYPE,
 		SPECIFIC_ITEM,
+		ITEM //for pre-3.1 save conversion
 	}
 
 	public static class CustomRecord extends Record {
@@ -518,17 +519,12 @@ public class Notes {
 		@Override
 		public void restoreFromBundle(Bundle bundle) {
 			super.restoreFromBundle(bundle);
-			try {
-				type = bundle.getEnum(TYPE, CustomType.class);
-			} catch (Exception e){
-				//prior to v3.1 specific item notes and item type notes were the same
-				type = null;
-			}
+			type = bundle.getEnum(TYPE, CustomType.class);
 			ID = bundle.getInt(ID_NUMBER);
 
 			if (bundle.contains(ITEM_CLASS)) {
 				itemClass = bundle.getClass(ITEM_CLASS);
-				if (type == null){
+				if (type == CustomType.ITEM){
 					//prior to v3.1 specific item notes and item type notes were the same
 					//we assume notes are for a specific item if they're for an equipment
 					if (EquipableItem.class.isAssignableFrom(itemClass)){
