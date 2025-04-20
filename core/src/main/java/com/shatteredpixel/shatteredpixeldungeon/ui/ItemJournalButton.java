@@ -21,16 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.Trinket;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.SupporterScene;
-import com.shatteredpixel.shatteredpixeldungeon.services.payment.Payment;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTextInput;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
@@ -55,24 +52,27 @@ public class ItemJournalButton extends IconButton {
 
 	private void customNote(){
 		Notes.CustomRecord note = null;
-		if (item instanceof EquipableItem){
-			note = Notes.findCustomRecord(((EquipableItem) item).customNoteID);
-		}
-		if (note == null) {
+		if (item instanceof EquipableItem || item instanceof Wand || item instanceof Trinket){
+			note = Notes.findCustomRecord(item.customNoteID);
+		} else {
 			note = Notes.findCustomRecord(item.getClass());
 		}
-		//TODO custom note functionality for rings doesn't really work atm, need to let them have equip-specific notes
 		if (note == null){
 			if (Notes.getRecords(Notes.CustomRecord.class).size() >= Notes.customRecordLimit()){
 				GameScene.show(new WndTitledMessage(Icons.INFO.get(),
 						Messages.get(CustomNoteButton.class, "limit_title"),
 						Messages.get(CustomNoteButton.class, "limit_text")));
 			} else {
-				note = new Notes.CustomRecord(item, "", "");
-				note.assignID();
-				if (item instanceof EquipableItem){
-					((EquipableItem) item).customNoteID = note.ID();
+
+				if (item instanceof EquipableItem || item instanceof Wand || item instanceof Trinket) {
+					note = new Notes.CustomRecord(item, "", "");
+					note.assignID();
+					item.customNoteID = note.ID();
+				} else {
+					note = new Notes.CustomRecord(item.getClass(), "", "");
+					note.assignID();
 				}
+
 				addNote(parentWnd, note, Messages.get(CustomNoteButton.class, "new_inv"),
 						Messages.get(CustomNoteButton.class, "new_item_title", Messages.titleCase(item.name())));
 			}

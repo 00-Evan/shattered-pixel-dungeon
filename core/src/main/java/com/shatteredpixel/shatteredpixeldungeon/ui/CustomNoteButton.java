@@ -28,6 +28,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.Trinket;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -171,8 +173,8 @@ public class CustomNoteButton extends IconButton {
 				if (item instanceof Ring && Notes.findCustomRecord(item.getClass()) != null){
 					return false;
 				}
-				return ((EquipableItem) item).customNoteID == -1
-						|| Notes.findCustomRecord(((EquipableItem) item).customNoteID) == null;
+				return item.customNoteID == -1
+						|| Notes.findCustomRecord(item.customNoteID) == null;
 			} else {
 				return Notes.findCustomRecord(item.getClass()) == null;
 			}
@@ -181,10 +183,14 @@ public class CustomNoteButton extends IconButton {
 		@Override
 		public void onSelect( Item item ) {
 			if (item != null){
-				Notes.CustomRecord custom = new Notes.CustomRecord(item, "", "");
-				custom.assignID();
-				if (item instanceof EquipableItem){
-					((EquipableItem) item).customNoteID = custom.ID();
+				Notes.CustomRecord custom;
+				if (item instanceof EquipableItem || item instanceof Wand || item instanceof Trinket) {
+					custom = new Notes.CustomRecord(item, "", "");
+					custom.assignID();
+					item.customNoteID = custom.ID();
+				} else {
+					custom = new Notes.CustomRecord(item.getClass(), "", "");
+					custom.assignID();
 				}
 
 				addNote(null, custom,
@@ -219,7 +225,7 @@ public class CustomNoteButton extends IconButton {
 				ItemButton itemButton = new ItemButton(){
 					@Override
 					protected void onClick() {
-						addNote(WndItemtypeSelect.this, new Notes.CustomRecord(item, "", ""),
+						addNote(WndItemtypeSelect.this, new Notes.CustomRecord(item.getClass(), "", ""),
 								Messages.get(CustomNoteButton.class, "new_type"),
 								Messages.get(CustomNoteButton.class, "new_item_title", Messages.titleCase(item.name())));
 					}

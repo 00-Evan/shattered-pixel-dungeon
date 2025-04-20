@@ -96,6 +96,8 @@ public class Item implements Bundlable {
 
 	// whether an item can be included in heroes remains
 	public boolean bones = false;
+
+	public int customNoteID = -1;
 	
 	public static final Comparator<Item> itemComparator = new Comparator<Item>() {
 		@Override
@@ -512,15 +514,16 @@ public class Item implements Bundlable {
 	public String info() {
 
 		if (Dungeon.hero != null) {
-			Notes.CustomRecord note;
-			if (this instanceof EquipableItem) {
-				note = Notes.findCustomRecord(((EquipableItem) this).customNoteID);
-			} else {
-				note = Notes.findCustomRecord(getClass());
-			}
-			if (note != null){
+			Notes.CustomRecord note = Notes.findCustomRecord(customNoteID);
+			if (note != null) {
 				//we swap underscore(0x5F) with low macron(0x2CD) here to avoid highlighting in the item window
 				return Messages.get(this, "custom_note", note.title().replace('_', 'ˍ')) + "\n\n" + desc();
+			} else {
+				note = Notes.findCustomRecord(getClass());
+				if (note != null) {
+					//we swap underscore(0x5F) with low macron(0x2CD) here to avoid highlighting in the item window
+					return Messages.get(this, "custom_note_type", note.title().replace('_', 'ˍ')) + "\n\n" + desc();
+				}
 			}
 		}
 
@@ -578,6 +581,7 @@ public class Item implements Bundlable {
 	private static final String CURSED_KNOWN	= "cursedKnown";
 	private static final String QUICKSLOT		= "quickslotpos";
 	private static final String KEPT_LOST       = "kept_lost";
+	private static final String CUSTOM_NOTE_ID = "custom_note_id";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -590,6 +594,7 @@ public class Item implements Bundlable {
 			bundle.put( QUICKSLOT, Dungeon.quickslot.getSlot(this) );
 		}
 		bundle.put( KEPT_LOST, keptThoughLostInvent );
+		if (customNoteID != -1)     bundle.put(CUSTOM_NOTE_ID, customNoteID);
 	}
 	
 	@Override
@@ -615,6 +620,7 @@ public class Item implements Bundlable {
 		}
 
 		keptThoughLostInvent = bundle.getBoolean( KEPT_LOST );
+		if (bundle.contains(CUSTOM_NOTE_ID))    customNoteID = bundle.getInt(CUSTOM_NOTE_ID);
 	}
 
 	public int targetingPos( Hero user, int dst ){
