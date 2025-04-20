@@ -26,7 +26,13 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TenguDartTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -61,10 +67,12 @@ public class ForceCube extends MissileWeapon {
 
 		rangedHit( null, cell );
 		Dungeon.level.pressCell(cell);
-		
+
+
+		Char mainTarget = Actor.findChar(cell);
 		ArrayList<Char> targets = new ArrayList<>();
-		if (Actor.findChar(cell) != null) targets.add(Actor.findChar(cell));
-		
+
+		if (mainTarget != null) targets.add(Actor.findChar(cell));
 		for (int i : PathFinder.NEIGHBOURS8){
 			if (!(Dungeon.level.traps.get(cell+i) instanceof TenguDartTrap)) Dungeon.level.pressCell(cell+i);
 			if (Actor.findChar(cell + i) != null) targets.add(Actor.findChar(cell + i));
@@ -77,6 +85,24 @@ public class ForceCube extends MissileWeapon {
 				Dungeon.fail(this);
 				GLog.n(Messages.get(this, "ondeath"));
 			}
+		}
+
+		//Make sure main target is the one sniper marked
+		if(Dungeon.hero.subClass == HeroSubClass.SNIPER && mainTarget != null && mainTarget.isAlive()) {
+			Actor.add(new Actor() {
+				{
+					actPriority = VFX_PRIO-1;
+				}
+
+				@Override
+				protected boolean act() {
+					SnipersMark mark = Dungeon.hero.buff(SnipersMark.class);
+					if(mark != null) mark.set(mainTarget.id());
+
+					Actor.remove(this);
+					return true;
+				}
+			});
 		}
 		
 		WandOfBlastWave.BlastWave.blast(cell);
