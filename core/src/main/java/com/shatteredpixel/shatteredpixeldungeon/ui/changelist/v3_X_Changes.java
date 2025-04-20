@@ -79,13 +79,37 @@ public class v3_X_Changes {
 
 	public static void add_v3_1_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v3.1-ALPHA-0.1", true, "");
+		ChangeInfo changes = new ChangeInfo("v3.1-ALPHA", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("ALPHA-0.3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new TalentIcon(Talent.LETHAL_DEFENSE), "Lethal Defense changes",
+				"Two of the Warrior's new talent mechanics just grant him a bunch of shielding, which is kind of boring, and also not the best if you're just finishing a fight. I'm changing up lethal defence, which has the more rigid trigger, to instead interact with the Warrior's seal cooldown.\n" +
+				"\n" +
+				"**- Lethal Defense** Now refunds 33/67/100% of broken seal's cooldown, instead of granting barrier. This can reduce the cooldown to as low as -100%, which means the seal shield is immediately available again after it is activated."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**-** Custom notes for items can now be created or edited from the item's info window\n" +
+				"**-** Hero renaming can now be done in the hero info window while a run is in progress\n" +
+				"\n" +
+				"**-** When equipping new armor, the Warrior is now given a prompt to automatically swap his seal\n" +
+				"**-** unidentified wands can now be used with the mage's staff\n" +
+				"**-** partially IDed items can now be used with the dried rose"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by ALPHA:**\n" +
+				"**-** Tengu not jumping when he doesn't see an enemy\n" +
+				"\n" +
+				"**Existed prior to ALPHA:**\n" +
+				"**-** Shattered locking to 60fps on 120hz iOS devices\n" +
+				"**-** metamorphed cleanse clearing lost inventory debuff\n" +
+				"**-** Custom notes not properly applying to specific rings, wands, and trinkets\n" +
+				"**-** Minor visual errors"));
 
 		changes = new ChangeInfo("ALPHA-0.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
