@@ -115,7 +115,12 @@ public class WndInfoItem extends Window {
 			info.maxWidth(width);
 		}
 
-		title.setRect( 0, 0, width, 0 );
+		//leaves some space to add the journal button in WndUseItem. This is messy I know.
+		if (this instanceof WndUseItem){
+			title.setRect( 0, 0, width-16, 0 );
+		} else {
+			title.setRect( 0, 0, width, 0 );
+		}
 		add( title );
 
 		info.setPos(title.left(), title.bottom() + GAP);
