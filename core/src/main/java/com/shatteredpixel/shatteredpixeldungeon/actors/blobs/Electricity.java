@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Electrified;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
@@ -41,7 +42,7 @@ public class Electricity extends Blob {
 	
 	{
 		//acts after mobs, to give them a chance to resist paralysis
-		actPriority = MOB_PRIO - 1;
+		//actPriority = MOB_PRIO - 1;
 	}
 	
 	private boolean[] water;
@@ -67,14 +68,15 @@ public class Electricity extends Blob {
 		for (int i = area.left-1; i <= area.right; i++) {
 			for (int j = area.top-1; j <= area.bottom; j++) {
 				cell = i + j*Dungeon.level.width();
+
 				if (cur[cell] > 0) {
 					Char ch = Actor.findChar( cell );
+
 					if (ch != null && !ch.isImmune(this.getClass())) {
-						if (ch.buff(Paralysis.class) == null){
-							Buff.prolong( ch, Paralysis.class, cur[cell]);
-						}
+						Buff.Polished.prolongAligned( ch, Electrified.class, Electrified.DURATION);
+
 						if (cur[cell] % 2 == 1) {
-							ch.damage(Math.round(Random.Float(2 + Dungeon.scalingDepth() / 5f)), this);
+							ch.damage(Random.NormalIntRange(0, 1 + Dungeon.scalingDepth() / 5), this);
 							if (!ch.isAlive() && ch == Dungeon.hero){
 								Dungeon.fail( this );
 								GLog.n( Messages.get(this, "ondeath") );

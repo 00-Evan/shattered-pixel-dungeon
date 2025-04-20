@@ -44,12 +44,19 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 
 public class BuffIndicator extends Component {
-	
-	//transparent icon
-	public static final int NONE    = 127;
+
+	public static final int POLISHED		= 112;
+	public static final int POLISHED_small	= 144;
+
+	public static final int ELECTRIFIED	= POLISHED + 0;
+	public static final int BRITTLE 	= POLISHED + 1;
+
 
 	//FIXME this is becoming a mess, should do a big cleaning pass on all of these
 	//and think about tinting options
+
+	//transparent icon
+	public static final int NONE    	= POLISHED-1;
 	public static final int MIND_VISION = 0;
 	public static final int LEVITATION  = 1;
 	public static final int FIRE        = 2;

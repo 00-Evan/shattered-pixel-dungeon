@@ -126,6 +126,12 @@ public class Hunger extends Buff implements Hero.Doom {
 		return true;
 	}
 
+	public void POLISHED_delay( float turns ) {
+		if(isStarving()) {
+			partialDamage -= turns*(target.HT/1000f);
+		}
+		else affectHunger( turns, true );
+	}
 	public void satisfy( float energy ) {
 		affectHunger( energy, false );
 	}

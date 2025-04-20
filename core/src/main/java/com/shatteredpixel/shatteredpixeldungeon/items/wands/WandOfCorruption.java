@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Daze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Electrified;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
@@ -121,6 +122,7 @@ public class WandOfCorruption extends Wand {
 		MAJOR_DEBUFFS.put(Roots.class,          0f);
 		MAJOR_DEBUFFS.put(Vertigo.class,        0f);
 		MAJOR_DEBUFFS.put(Paralysis.class,      0f);
+		MAJOR_DEBUFFS.put(Electrified.class,      0f);
 		MAJOR_DEBUFFS.put(Blindness.class,     	0f);
 		MAJOR_DEBUFFS.put(Dread.class,          0f);
 		MAJOR_DEBUFFS.put(MagicalSleep.class,   0f);

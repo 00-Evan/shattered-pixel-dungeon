@@ -23,9 +23,15 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -33,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.N
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed;
@@ -46,8 +53,10 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
@@ -70,6 +79,38 @@ public class SpiritBow extends Weapon {
 	
 	public boolean sniperSpecial = false;
 	public float sniperSpecialBonusDamage = 0f;
+
+	private int curCharges = Polished_getMaxCharge();
+	private int Polished_getMaxCharge() {
+		double augFactor;
+		switch (augment) {
+			case DAMAGE:
+				augFactor = 3.0 / 4.0;
+				break;
+			case SPEED:
+				augFactor = 4.0 / 3.0;
+				break;
+			default:
+				augFactor = 1;
+		}
+
+		int max = (int)Math.ceil((5.0f + level()/3f) * augFactor);
+		if(augment == Augment.DAMAGE) max++;
+
+		return max;
+	}
+	public void Polished_resetCharges() {
+		if(SPDSettings.Polished.huntress())
+			curCharges = Math.max(curCharges, Polished_getMaxCharge());
+	}
+
+	@Override
+	public String status() {
+		if(SPDSettings.Polished.huntress())
+			return curCharges + "/" + Polished_getMaxCharge();
+		else
+			return super.status();
+	}
 	
 	@Override
 	public ArrayList<String> actions(Hero hero) {
@@ -351,9 +392,11 @@ public class SpiritBow extends Weapon {
 				parent = null;
 				Splash.at( cell, 0xCC99FFFF, 1 );
 			} else {
+				if(flurryCount == -1 || flurryCount == 3) Polished_spendCharges();
 				if (!curUser.shoot( enemy, this )) {
 					Splash.at(cell, 0xCC99FFFF, 1);
 				}
+				
 				if (sniperSpecial && SpiritBow.this.augment != Augment.SPEED) sniperSpecial = false;
 			}
 		}
@@ -363,18 +406,70 @@ public class SpiritBow extends Weapon {
 			Sample.INSTANCE.play( Assets.Sounds.ATK_SPIRITBOW, 1, Random.Float(0.87f, 1.15f) );
 		}
 
+		private int Polished_chargeCost() {
+			if(!SPDSettings.Polished.huntress()) return 0;
+
+			return sniperSpecial && SpiritBow.this.augment != Augment.NONE ? 2 : 1;
+		}
+		private void Polished_spendCharges() {
+			if(!SPDSettings.Polished.huntress()) return;
+
+			curCharges -= Polished_chargeCost();
+			updateQuickslot();
+
+			int nature = Dungeon.hero.pointsInTalent(Talent.NATURES_AID);
+			if(curCharges == 1 && nature > 0)
+				Barkskin.conditionallyAppend(Dungeon.hero, nature+1, 4);
+		}
+		public void Polished_recharge(final Hero user) {
+			if(!SPDSettings.Polished.huntress()) return;
+
+			//dont punish the player for recharging
+			{
+				Hunger hunger = user.buff(Hunger.class);
+				if(hunger != null) hunger.POLISHED_delay(2);
+
+				Light light = user.buff(Light.class);
+				if(light != null) Buff.affect(user, Light.class, 2);
+
+				Regeneration regen = user.buff(Regeneration.class);
+				if(regen != null) regen.POLISHED_delay = 2;
+			}
+			user.spendAndNext(2);
+
+			curCharges = Polished_getMaxCharge();
+			Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
+			ScrollOfRecharging.charge(curUser);
+			updateQuickslot();
+		}
+
 		int flurryCount = -1;
 		Actor flurryActor = null;
+		public boolean Polished_cast(final Hero user, final int dst) {
+			if(SPDSettings.Polished.huntress()) {
+				if (user.pos == dst) {
+					int maxCharge = Polished_getMaxCharge();
+					if (curCharges == maxCharge) {
+						GLog.w(Messages.get(SpiritBow.class, "max_charges"));
+					} else {
+						Polished_recharge(user);
+					}
+					return true;
+				}
+				if(flurryCount == -1 && curCharges < Polished_chargeCost()) {
+					sniperSpecial = false;
+					GLog.w(Messages.get(SpiritBow.class, "empty"));
+					return false;
+				}
+			}
 
-		@Override
-		public void cast(final Hero user, final int dst) {
 			final int cell = throwPos( user, dst );
 			SpiritBow.this.targetPos = cell;
 			if (sniperSpecial && SpiritBow.this.augment == Augment.SPEED){
 				if (flurryCount == -1) flurryCount = 3;
-				
+
 				final Char enemy = Actor.findChar( cell );
-				
+
 				if (enemy == null){
 					if (user.buff(Talent.LethalMomentumTracker.class) != null){
 						user.buff(Talent.LethalMomentumTracker.class).detach();
@@ -389,13 +484,13 @@ public class SpiritBow extends Weapon {
 						flurryActor.next();
 						flurryActor = null;
 					}
-					return;
+					return true;
 				}
 
 				QuickSlotButton.target(enemy);
-				
+
 				user.busy();
-				
+
 				throwSound();
 
 				user.sprite.zap(cell);
@@ -447,7 +542,7 @@ public class SpiritBow extends Weapon {
 										}
 									}
 								});
-				
+
 			} else {
 
 				if (user.hasTalent(Talent.SEER_SHOT)
@@ -464,6 +559,12 @@ public class SpiritBow extends Weapon {
 
 				super.cast(user, dst);
 			}
+			return true;
+		}
+
+		@Override
+		public void cast(final Hero user, final int dst) {
+			Polished_cast(user, dst);
 		}
 	}
 	
@@ -479,4 +580,18 @@ public class SpiritBow extends Weapon {
 			return Messages.get(SpiritBow.class, "prompt");
 		}
 	};
+
+	private static final String CUR_CHARGES = "curCharges";
+
+	@Override
+	public void storeInBundle( Bundle bundle ) {
+		super.storeInBundle( bundle );
+		bundle.put( CUR_CHARGES, curCharges );
+	}
+
+	@Override
+	public void restoreFromBundle( Bundle bundle ) {
+		super.restoreFromBundle( bundle );
+		curCharges = bundle.getInt( CUR_CHARGES );
+	}
 }
