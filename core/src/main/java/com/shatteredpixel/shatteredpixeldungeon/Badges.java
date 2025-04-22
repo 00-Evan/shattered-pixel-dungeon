@@ -1041,7 +1041,7 @@ public class Badges {
 		if (!DeviceCompat.isDebug()) return;
 		if (cause == Dungeon.hero &&
 				Dungeon.hero.belongings.attackingWeapon() instanceof Pickaxe
-				&& Dungeon.hero.belongings.attackingWeapon().buffedLvl() >= 20){
+				&& Dungeon.hero.belongings.attackingWeapon().level() >= 20){
 			local.add( Badge.TAKING_THE_MICK );
 			displayBadge(Badge.TAKING_THE_MICK);
 		}
