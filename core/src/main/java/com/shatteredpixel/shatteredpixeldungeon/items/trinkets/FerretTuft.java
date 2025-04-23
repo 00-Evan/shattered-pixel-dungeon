@@ -39,21 +39,27 @@ public class FerretTuft extends Trinket {
 	@Override
 	public String statsDesc() {
 		if (isIdentified()){
-			return Messages.get(this, "stats_desc", Math.round(100 * (evasionMultiplier(buffedLvl())-1f)));
+			return Messages.get(this, "stats_desc",
+					Math.round(100 * (evasionMultiplier(true, buffedLvl())-1f)),
+					Math.round(100 * (evasionMultiplier(false, buffedLvl())-1f)));
 		} else {
-			return Messages.get(this, "typical_stats_desc", Math.round(100 * (evasionMultiplier(0)-1f)));
+			return Messages.get(this, "typical_stats_desc",
+					Math.round(100 * (evasionMultiplier(true, 0)-1f)),
+					Math.round(100 * (evasionMultiplier(false, 0)-1f)));
 		}
 	}
 
-	public static float evasionMultiplier(){
-		return evasionMultiplier(trinketLevel(FerretTuft.class));
+	public static float evasionMultiplier(boolean hero){
+		return evasionMultiplier(hero, trinketLevel(FerretTuft.class));
 	}
 
-	public static float evasionMultiplier(int level ){
+	public static float evasionMultiplier(boolean hero, int level ){
 		if (level <= -1){
 			return 1;
-		} else {
+		} else if (hero) {
 			return 1 + 0.1f*(level+1);
+		} else {
+			return 1 + 0.05f*(level+1);
 		}
 	}
 

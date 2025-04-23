@@ -663,7 +663,7 @@ public abstract class Char extends Actor {
 			// + 3%/5%
 			defRoll *= 1.01f + 0.02f*Dungeon.hero.pointsInTalent(Talent.BLESS);
 		}
-		defRoll *= FerretTuft.evasionMultiplier();
+		defRoll *= FerretTuft.evasionMultiplier(defender == Dungeon.hero);
 		
 		return (acuRoll * accMulti) >= defRoll;
 	}
