@@ -200,6 +200,7 @@ public class EtherealChains extends Artifact {
 					public void call() {
 						enemy.pos = pulledPos;
 						Buff.affect(enemy, Cripple.class, baseCripple + (enemy.cooldown() % TICK) + 3*chargeUse);
+						//Buff.Polished.affectAligned(enemy, Cripple.class, baseCripple + 3*chargeUse);
 
 						charge -= chargeUse;
 						Invisibility.dispel(hero);
@@ -241,7 +242,7 @@ public class EtherealChains extends Artifact {
 		for (int i : PathFinder.NEIGHBOURS8){
 			Mob mob = Dungeon.level.findMob(chain.collisionPos+i);
 			if (mob != null && mob.alignment == Char.Alignment.ENEMY &&
-					Dungeon.hero.fieldOfView[chain.collisionPos+i] && Dungeon.hero.fieldOfView[chain.collisionPos]) {
+					Dungeon.hero.fieldOfView[chain.collisionPos+i]) {
 				enemyFound = true;
 				break;
 			}
