@@ -98,7 +98,7 @@ public abstract class Trap implements Bundlable {
 
 				int points = Dungeon.hero.pointsInTalent(Talent.SMART_ESCAPE);
 				if(points > 0) {
-					float duration = Dungeon.hero.cooldown() + 0.75f*points;
+					float duration = Dungeon.hero.cooldown() + 1f + 0.5f*points;
 					Buff.affect(Dungeon.hero, Haste.class, duration);
 				}
 			}
