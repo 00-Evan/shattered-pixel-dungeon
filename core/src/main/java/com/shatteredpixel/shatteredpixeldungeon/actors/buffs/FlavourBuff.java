@@ -44,6 +44,6 @@ public class FlavourBuff extends Buff {
 
 	@Override
 	public String iconTextDisplay() {
-		return Integer.toString((int)visualcooldown());
+		return Integer.toString((int)Math.ceil(visualcooldown()+0.00001f));
 	}
 }

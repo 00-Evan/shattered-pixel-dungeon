@@ -114,6 +114,12 @@ public class Dungeon {
 
 				BArray.or( level.traversable, extendedHeroFOV, offset, 5, level.traversable );
 			}
+
+			if(Dungeon.hero.pointsInTalent(Talent.ROGUES_EXPERTISE) >= 2) {
+				for (int i : PathFinder.NEIGHBOURS9) {
+					level.revealSecretDoor(pos + i);
+				}
+			}
 		}
 	}
 
@@ -959,13 +965,18 @@ public class Dungeon {
 			}
 		}*/
 
+		boolean reveal = Dungeon.hero.pointsInTalent(Talent.ROGUES_EXPERTISE) >= 2;
 		for (int i = l; i < r; i++) {
 			for (int j = t; j < b; j++) {
 				int cell = level.pointToCell(i, j);
 
-				if (level.passable[cell] && level.heroFOV[cell]) {
-					for(int offset : PathFinder.NEIGHBOURS8) {
-						extension[cell + offset] = true;
+				if(level.heroFOV[cell]) {
+					if (level.passable[cell]) {
+						for(int offset : PathFinder.NEIGHBOURS8) {
+							extension[cell + offset] = true;
+						}
+					} else if(reveal) {
+						level.revealSecretDoor(cell);
 					}
 				}
 			}
@@ -1065,6 +1076,15 @@ public class Dungeon {
 					}
 				}
 				//
+
+				if(reveal) {
+					for (int i = l; i < r; i++) {
+						for (int j = t; j < b; j++) {
+							int cell = level.pointToCell(i, j);
+							if(Dungeon.level.heroFOV[cell]) level.revealSecretDoor(cell);
+						}
+					}
+				}
 
 				GameScene.updateFog(ch.pos, dist);
 			}

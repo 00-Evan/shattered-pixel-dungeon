@@ -139,7 +139,7 @@ public class Buff extends Actor {
 
 	//buffs act after the hero, so it is often useful to use cooldown+1 when display buff time remaining
 	public float visualcooldown(){
-		return cooldown()+1f;
+		return Math.max(cooldown(), 0.01f);
 	}
 
 	private static final String MNEMONIC_EXTENDED    = "mnemonic_extended";
