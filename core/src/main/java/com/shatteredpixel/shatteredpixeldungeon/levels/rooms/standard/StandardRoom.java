@@ -128,7 +128,7 @@ public abstract class StandardRoom extends Room {
 		rooms.add(RingRoom.class);
 		rooms.add(WaterBridgeRoom.class);
 		rooms.add(CircleBasinRoom.class);
-		rooms.add(EmptyRoom.class); //TODO
+		rooms.add(RegionDecoPatchRoom.class);
 
 		rooms.add(SegmentedRoom.class);
 		rooms.add(PillarsRoom.class);
@@ -169,10 +169,10 @@ public abstract class StandardRoom extends Room {
 	
 	private static float[][] chances = new float[27][];
 	static {
-		chances[1] =  new float[]{0,5,0,  10,10,10,5,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0,  1,0,1,0,1,0,1,1,0,0};
-		chances[2] =  new float[]{0,5,0,  10,10,10,5,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0,  1,1,1,1,1,1,1,1,1,1};
+		chances[1] =  new float[]{0,5,0,  15,5,5,5,5,   0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0,  1,0,1,0,1,0,1,1,0,0};
+		chances[2] =  new float[]{0,5,0,  15,5,5,5,5,   0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0,  1,1,1,1,1,1,1,1,1,1};
 		chances[4] =  chances[3] = chances[2];
-		chances[5] =  new float[]{0,5,0,  10,10,10,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0,  0,0,0,0,0,0,0,0,0,0};
+		chances[5] =  new float[]{0,5,0,  15,5,5,0,5,   0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0,  0,0,0,0,0,0,0,0,0,0};
 
 		chances[6] =  new float[]{0,5,0,  0,0,0,0,0, 10,10,10,5,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0,  1,1,1,1,1,1,1,1,1,1};
 		chances[10] = chances[9] = chances[8] = chances[7] = chances[6];

@@ -48,7 +48,7 @@ public class SewerPipeRoom extends StandardRoom {
 
 	@Override
 	public float[] sizeCatProbs() {
-		return new float[]{4, 2, 1};
+		return new float[]{3, 2, 1};
 	}
 
 	@Override

@@ -169,11 +169,17 @@ public abstract class StandardBridgeRoom extends StandardRoom {
 		}
 
 		Painter.fill(level, spaceRect, spaceTile());
-		Painter.fill(level, bridgeRect, Terrain.EMPTY_SP);
+		Painter.fill(level, bridgeRect, bridgeTile());
 
 	}
 
 	protected abstract int maxBridgeWidth( int roomDimension );
 
 	protected abstract int spaceTile();
+
+	//defaults to special terrain
+	protected int bridgeTile(){
+		return Terrain.EMPTY_SP;
+	}
+
 }

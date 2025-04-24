@@ -135,7 +135,7 @@ public class EntranceRoom extends StandardRoom {
 
 		rooms.add(WaterBridgeEntranceRoom.class);
 		rooms.add(CircleBasinEntranceRoom.class);
-		rooms.add(EntranceRoom.class); //TODO
+		rooms.add(RingEntranceRoom.class);
 
 		rooms.add(ChasmBridgeEntranceRoom.class);
 		rooms.add(PillarsEntranceRoom.class);
@@ -156,12 +156,10 @@ public class EntranceRoom extends StandardRoom {
 
 	private static float[][] chances = new float[27][];
 	static {
-		//first 2 floors only use empty room.
-		// First floor is to give a simple start room
-		// 2nd floor for tutorialization
-		chances[1] =  new float[]{1,0,0,  0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0};
+		//first 2 floors only use simpler entrance rooms
+		chances[1] =  new float[]{1,1,0,  1,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0};
 		chances[2] =  chances[1];
-		chances[3] =  new float[]{0,3,0,  6,1,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0};
+		chances[3] =  new float[]{0,4,0,  4,1,1, 0,0,0, 0,0,0, 0,0,0, 0,0,0};
 		chances[5] =  chances[4] = chances[3];
 
 		chances[6] =  new float[]{0,2,0,  0,0,0, 4,4,0, 0,0,0, 0,0,0, 0,0,0};
