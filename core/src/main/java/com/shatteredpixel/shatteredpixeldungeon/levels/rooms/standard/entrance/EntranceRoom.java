@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.exit.CircleWallEntranceRoom;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
@@ -143,7 +144,7 @@ public class EntranceRoom extends StandardRoom {
 
 		rooms.add(CaveEntranceRoom.class);
 		rooms.add(CavesFissureEntranceRoom.class);
-		rooms.add(EntranceRoom.class); //TODO
+		rooms.add(CircleWallEntranceRoom.class);
 
 		rooms.add(HallwayEntranceRoom.class);
 		rooms.add(StatuesEntranceRoom.class);
@@ -165,7 +166,7 @@ public class EntranceRoom extends StandardRoom {
 		chances[6] =  new float[]{0,2,0,  0,0,0, 4,4,0, 0,0,0, 0,0,0, 0,0,0};
 		chances[10] = chances[9] = chances[8] = chances[7] = chances[6];
 
-		chances[11] = new float[]{0,2,0,  0,0,0, 0,0,0, 4,4,0, 0,0,0, 0,0,0};
+		chances[11] = new float[]{0,3,0,  0,0,0, 0,0,0, 3,2,2, 0,0,0, 0,0,0};
 		chances[15] = chances[14] = chances[13] = chances[12] = chances[11];
 
 		chances[16] = new float[]{0,0,2,  0,0,0, 0,0,0, 0,0,0, 4,4,0, 0,0,0};
