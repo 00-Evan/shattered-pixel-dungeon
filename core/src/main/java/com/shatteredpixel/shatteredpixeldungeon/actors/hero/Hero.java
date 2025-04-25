@@ -2227,7 +2227,8 @@ public class Hero extends Char {
 			interrupt();
 
 			if (ankh.isBlessed()) {
-				this.HP = HT / 4;
+				this.HP = HT / 3;
+				Buff.affect(Dungeon.hero, Hunger.class).satisfy(Hunger.STARVING);
 
 				PotionOfHealing.cure(this);
 				Buff.prolong(this, Invulnerability.class, Invulnerability.DURATION);
