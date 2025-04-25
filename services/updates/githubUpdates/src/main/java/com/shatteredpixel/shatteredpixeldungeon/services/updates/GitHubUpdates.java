@@ -68,7 +68,7 @@ public class GitHubUpdates extends UpdateService {
 			public void handleHttpResponse(Net.HttpResponse httpResponse) {
 				try {
 					Bundle latestRelease = null;
-					int latestVersionCode = Game.versionCode;
+					int latestVersionCode = Game.versionCode-10;
 
 					for (Bundle b : Bundle.read( httpResponse.getResultAsStream() ).getBundleArray()){
 						Matcher m = versionCodePattern.matcher(b.getString("body"));
@@ -86,7 +86,7 @@ public class GitHubUpdates extends UpdateService {
 								continue;
 
 							// or that aren't compatible
-							} else if (DeviceCompat.isDesktop()){
+							} else if (DeviceCompat.isAndroid()){
 								Matcher minAndroid = minAndroidPattern.matcher(b.getString("body"));
 								if (minAndroid.find() && DeviceCompat.getPlatformVersion() < Integer.parseInt(minAndroid.group(1))){
 									continue;
