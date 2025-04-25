@@ -1265,14 +1265,16 @@ public abstract class Level implements Bundlable {
 	public void revealSecretDoor(int cell) {
 		if(Dungeon.level.map[cell] == Terrain.SECRET_DOOR) {
 			int oldValue = Dungeon.level.map[cell];
-			GameScene.discoverTile( cell, oldValue );
 
 			Dungeon.level.discover( cell );
 
-			ScrollOfMagicMapping.discover( cell );
-			GLog.w( Messages.get(Hero.class, "noticed_smth") );
-			Sample.INSTANCE.play( Assets.Sounds.SECRET );
-			Dungeon.hero.interrupt();
+			if(Dungeon.level.heroFOV[cell]) {
+				GameScene.discoverTile( cell, oldValue );
+				ScrollOfMagicMapping.discover( cell );
+				GLog.w( Messages.get(Hero.class, "noticed_smth") );
+				Sample.INSTANCE.play( Assets.Sounds.SECRET );
+				Dungeon.hero.interrupt();
+			}
 		}
 	}
 
