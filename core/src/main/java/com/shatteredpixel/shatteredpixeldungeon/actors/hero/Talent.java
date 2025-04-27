@@ -596,20 +596,15 @@ public enum Talent {
 			Buff.affect( hero, WandEmpower.class).set(1 + hero.pointsInTalent(EMPOWERING_MEAL), 3);
 			ScrollOfRecharging.charge( hero );
 		}
+		int wandChargeTurns = 0;
 		if (hero.hasTalent(ENERGIZING_MEAL)){
 			//5/8 turns of recharging
-			Buff.prolong( hero, Recharging.class, 2 + 3*(hero.pointsInTalent(ENERGIZING_MEAL)) );
-			ScrollOfRecharging.charge( hero );
-			SpellSprite.show(hero, SpellSprite.CHARGE);
+			wandChargeTurns += 2 + 3*hero.pointsInTalent(ENERGIZING_MEAL);
 		}
+		int artifactChargeTurns = 0;
 		if (hero.hasTalent(MYSTICAL_MEAL)){
 			//3/5 turns of recharging
-			ArtifactRecharge buff = Buff.affect( hero, ArtifactRecharge.class);
-			if (buff.left() < 1 + 2*(hero.pointsInTalent(MYSTICAL_MEAL))){
-				Buff.affect( hero, ArtifactRecharge.class).set(1 + 2*(hero.pointsInTalent(MYSTICAL_MEAL))).ignoreHornOfPlenty = foodSource instanceof HornOfPlenty;
-			}
-			ScrollOfRecharging.charge( hero );
-			SpellSprite.show(hero, SpellSprite.CHARGE, 0, 1, 1);
+			artifactChargeTurns += 1 + 2*hero.pointsInTalent(MYSTICAL_MEAL);
 		}
 		if (hero.hasTalent(INVIGORATING_MEAL)){
 			//effectively 1/2 turns of haste
@@ -650,15 +645,25 @@ public enum Talent {
 					ScrollOfRecharging.charge(hero);
 				}
 			} else {
-				//2/3 turns of recharging
-				ArtifactRecharge buff = Buff.affect( hero, ArtifactRecharge.class);
-				if (buff.left() < 1 + (hero.pointsInTalent(ENLIGHTENING_MEAL))){
-					Buff.affect( hero, ArtifactRecharge.class).set(1 + (hero.pointsInTalent(ENLIGHTENING_MEAL))).ignoreHornOfPlenty = foodSource instanceof HornOfPlenty;
-				}
-				Buff.prolong( hero, Recharging.class, 1 + (hero.pointsInTalent(ENLIGHTENING_MEAL)) );
-				ScrollOfRecharging.charge( hero );
-				SpellSprite.show(hero, SpellSprite.CHARGE);
+				//2/3 turns of recharging, both kinds
+				wandChargeTurns += 1 + hero.pointsInTalent(ENLIGHTENING_MEAL);
+				artifactChargeTurns += 1 + hero.pointsInTalent(ENLIGHTENING_MEAL);
 			}
+		}
+
+		//we process these at the end as they can stack together from some talents
+		if (wandChargeTurns > 0){
+			Buff.prolong( hero, Recharging.class, wandChargeTurns );
+			ScrollOfRecharging.charge( hero );
+			SpellSprite.show(hero, SpellSprite.CHARGE);
+		}
+		if (artifactChargeTurns > 0){
+			ArtifactRecharge buff = Buff.affect( hero, ArtifactRecharge.class);
+			if (buff.left() < artifactChargeTurns){
+				buff.set(artifactChargeTurns).ignoreHornOfPlenty = foodSource instanceof HornOfPlenty;
+			}
+			ScrollOfRecharging.charge( hero );
+			SpellSprite.show(hero, SpellSprite.CHARGE, 0, 1, 1);
 		}
 	}
 
