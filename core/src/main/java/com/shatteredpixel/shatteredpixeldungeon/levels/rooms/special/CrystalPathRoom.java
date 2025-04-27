@@ -203,7 +203,7 @@ public class CrystalPathRoom extends SpecialRoom {
 					aCls = ExoticPotion.exoToReg.get(aCls);
 				}
 				if (b instanceof ExoticPotion){
-					bCls = ExoticPotion.exoToReg.get(aCls);
+					bCls = ExoticPotion.exoToReg.get(bCls);
 				}
 				for (int i = 0; i < Generator.Category.POTION.classes.length; i++){
 					if (aCls == Generator.Category.POTION.classes[i]) aVal = (int)Generator.Category.POTION.defaultProbsTotal[i];
@@ -221,7 +221,7 @@ public class CrystalPathRoom extends SpecialRoom {
 					aCls = ExoticScroll.exoToReg.get(aCls);
 				}
 				if (b instanceof ExoticScroll){
-					bCls = ExoticScroll.exoToReg.get(aCls);
+					bCls = ExoticScroll.exoToReg.get(bCls);
 				}
 				for (int i = 0; i < Generator.Category.SCROLL.classes.length; i++){
 					if (aCls == Generator.Category.SCROLL.classes[i]) aVal = (int)Generator.Category.SCROLL.defaultProbsTotal[i];
