@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,19 +19,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.exit;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.entrance;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.HallwayRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.LibraryRingRoom;
 import com.watabou.utils.Point;
+import com.watabou.utils.Random;
 
-public class HallwayExitRoom extends HallwayRoom {
+public class LibraryRingEntranceRoom extends LibraryRingRoom {
 
 	@Override
-	public boolean isExit() {
+	public int minWidth() {
+		return Math.max(super.minWidth(), 13);
+	}
+
+	@Override
+	public int minHeight() {
+		return Math.max(super.minHeight(), 13);
+	}
+
+	@Override
+	public float[] sizeCatProbs() {
+		return new float[]{0, 1, 0};
+	}
+
+	@Override
+	public boolean isEntrance() {
 		return true;
 	}
 
@@ -39,17 +55,25 @@ public class HallwayExitRoom extends HallwayRoom {
 	public void paint(Level level) {
 		super.paint(level);
 
-		int exit = -1;
-		for ( Point p : getPoints()){
-			if (level.map[level.pointToCell(p)] == Terrain.STATUE_SP
-					|| level.map[level.pointToCell(p)] == Terrain.REGION_DECO_SP){
-				exit = level.pointToCell(p);
-				break;
-			}
+		Painter.fill(level, this, 5, Terrain.EMPTY_SP);
+
+		Point p = center();
+		Painter.set(level, p, Terrain.ENTRANCE_SP);
+		level.transitions.add(new LevelTransition(level, level.pointToCell(p), LevelTransition.Type.REGULAR_ENTRANCE));
+
+		int dirX = 0, dirY = 0;
+		if (Random.Int(2) == 0){
+			dirX = Random.Int(2) == 0 ? +1 : -1;
+		} else {
+			dirY = Random.Int(2) == 0 ? +1 : -1;
 		}
-		Painter.set( level, exit, Terrain.EXIT );
-		level.transitions.add(new LevelTransition(level, exit, LevelTransition.Type.REGULAR_EXIT));
 
+		p.x += dirX;
+		p.y += dirY;
+		while (level.map[level.pointToCell(p)] != Terrain.EMPTY){
+			Painter.set(level, p, Terrain.EMPTY_SP);
+			p.x += dirX;
+			p.y += dirY;
+		}
 	}
-
 }

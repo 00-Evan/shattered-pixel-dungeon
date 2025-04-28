@@ -41,7 +41,8 @@ public class HallwayEntranceRoom extends HallwayRoom {
 
 		int entrance = -1;
 		for ( Point p : getPoints()){
-			if (level.map[level.pointToCell(p)] == Terrain.STATUE_SP){
+			if (level.map[level.pointToCell(p)] == Terrain.STATUE_SP
+				|| level.map[level.pointToCell(p)] == Terrain.REGION_DECO_SP){
 				entrance = level.pointToCell(p);
 				break;
 			}

@@ -103,7 +103,11 @@ public class HallwayRoom extends StandardRoom {
 		}
 
 		Painter.fill( level, c.left, c.top, 3, 3, Terrain.EMPTY_SP );
-		Painter.fill( level, c.left+1, c.top+1, 1, 1,  Terrain.STATUE_SP );
+		if (Random.Int(2) == 0) {
+			Painter.fill(level, c.left + 1, c.top + 1, 1, 1, Terrain.STATUE_SP);
+		} else {
+			Painter.fill(level, c.left + 1, c.top + 1, 1, 1, Terrain.REGION_DECO_SP);
+		}
 
 		for (Door door : connected.values()) {
 			door.set( Door.Type.REGULAR );
