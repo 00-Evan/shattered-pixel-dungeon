@@ -117,8 +117,8 @@ public class WelcomeScene extends PixelScene {
 			placeTorch(title.x + 30, title.y + 44);
 			placeTorch(title.x + title.width - 30, title.y + 44);
 		} else {
-			placeTorch(title.x + 16, title.y + 64);
-			placeTorch(title.x + title.width - 16, title.y + 64);
+			placeTorch(title.x + 16, title.y + 65);
+			placeTorch(title.x + title.width - 16, title.y + 65);
 		}
 
 		Image signs = new Image(BannerSprites.get( landscape() ? BannerSprites.Type.TITLE_GLOW_LAND : BannerSprites.Type.TITLE_GLOW_PORT)){
