@@ -93,7 +93,7 @@ public abstract class Trap implements Bundlable {
 			if (Dungeon.level.heroFOV[pos]) {
 				Sample.INSTANCE.play(Assets.Sounds.TRAP);
 			}
-			if(Dungeon.hero.pos == pos) {
+			if(Dungeon.hero.pos == pos && !visible) {
 				GameScene.Polished.blockInput();
 			}
 			if (disarmedByActivation) disarm();

@@ -47,6 +47,10 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 		type = buffType.POSITIVE;
 	}
 
+	public void set(int object){
+		this.object = object;
+	}
+
 	public void set(int object, float bonus){
 		this.object = object;
 		this.percentDmgBonus = bonus;
