@@ -182,7 +182,7 @@ public class EtherealChains extends Artifact {
 		
 		final int pulledPos = bestPos;
 		
-		int chargeUse = Dungeon.level.distance(enemy.pos, pulledPos);
+		int chargeUse = Dungeon.level.distance(hero.pos, enemy.pos);
 		if (chargeUse > charge) {
 			GLog.w( Messages.get(this, "no_charge") );
 			return;
