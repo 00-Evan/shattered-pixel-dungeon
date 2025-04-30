@@ -62,7 +62,7 @@ public class Terrain {
 	public static final int STATUE_SP		= 26;
 	//These decorations are environment-specific
 	public static final int REGION_DECO		= 33;
-	public static final int REGION_DECO_SP	= 34;
+	public static final int REGION_DECO_ALT = 34; //alt visual for region deco, sometimes SP, sometimes other
 	public static final int MINE_CRYSTAL    = 35;
 	public static final int MINE_BOULDER    = 36;
 
@@ -118,7 +118,7 @@ public class Terrain {
 		flags[STATUE_SP] = flags[STATUE];
 
 		flags[REGION_DECO] = flags[STATUE];
-		flags[REGION_DECO_SP] = flags[STATUE_SP];
+		flags[REGION_DECO_ALT] = flags[STATUE_SP];
 		flags[MINE_CRYSTAL] = SOLID;
 		flags[MINE_BOULDER] = SOLID;
 

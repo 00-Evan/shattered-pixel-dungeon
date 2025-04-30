@@ -84,7 +84,7 @@ public class StatuesRoom extends StandardRoom {
 					if (h % 2 == 0 && Random.Int(2) == 0){
 						cy--;
 					}
-					Painter.set(level, cx, cy, Terrain.REGION_DECO_SP);
+					Painter.set(level, cx, cy, Terrain.REGION_DECO_ALT);
 				}
 			}
 		}

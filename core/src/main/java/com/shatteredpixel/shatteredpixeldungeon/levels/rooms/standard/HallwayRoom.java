@@ -106,7 +106,7 @@ public class HallwayRoom extends StandardRoom {
 		if (Random.Int(2) == 0) {
 			Painter.fill(level, c.left + 1, c.top + 1, 1, 1, Terrain.STATUE_SP);
 		} else {
-			Painter.fill(level, c.left + 1, c.top + 1, 1, 1, Terrain.REGION_DECO_SP);
+			Painter.fill(level, c.left + 1, c.top + 1, 1, 1, Terrain.REGION_DECO_ALT);
 		}
 
 		for (Door door : connected.values()) {

@@ -59,6 +59,8 @@ public class HallsPainter extends RegularPainter {
 				
 				map[i] = Terrain.WALL_DECO;
 				
+			} else if (map[i] == Terrain.REGION_DECO && Random.Int(2) == 0){
+				map[i] = Terrain.REGION_DECO_ALT;
 			}
 		}
 

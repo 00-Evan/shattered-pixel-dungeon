@@ -94,8 +94,8 @@ public class DungeonWallsTilemap extends DungeonTilemap {
 			return DungeonTileSheet.STATUE_SP_OVERHANG;
 		} else if (pos + mapWidth < size && map[pos+mapWidth] == Terrain.REGION_DECO){
 			return DungeonTileSheet.REGION_DECO_OVERHANG;
-		} else if (pos + mapWidth < size && map[pos+mapWidth] == Terrain.REGION_DECO_SP){
-			return DungeonTileSheet.REGION_DECO_SP_OVERHANG;
+		} else if (pos + mapWidth < size && map[pos+mapWidth] == Terrain.REGION_DECO_ALT){
+			return DungeonTileSheet.REGION_DECO_ALT_OVERHANG;
 		} else if (pos + mapWidth < size && map[pos+mapWidth] == Terrain.MINE_CRYSTAL){
 			return DungeonTileSheet.getVisualWithAlts(DungeonTileSheet.MINE_CRYSTAL_OVERHANG, pos + mapWidth);
 		} else if (pos + mapWidth < size && map[pos+mapWidth] == Terrain.MINE_BOULDER){

@@ -36,7 +36,7 @@ public class CustomDecoBridgeRoom extends StandardBridgeRoom {
 	}
 
 	protected int spaceTile(){
-		return Terrain.REGION_DECO_SP;
+		return Terrain.REGION_DECO_ALT;
 	}
 
 	@Override

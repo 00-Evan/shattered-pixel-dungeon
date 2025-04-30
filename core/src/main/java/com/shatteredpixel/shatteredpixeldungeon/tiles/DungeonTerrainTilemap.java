@@ -72,8 +72,8 @@ public class DungeonTerrainTilemap extends DungeonTilemap {
 				return DungeonTileSheet.RAISED_STATUE_SP;
 			} else if (tile == Terrain.REGION_DECO) {
 				return DungeonTileSheet.RAISED_REGION_DECO;
-			} else if (tile == Terrain.REGION_DECO_SP) {
-				return DungeonTileSheet.RAISED_REGION_DECO_SP;
+			} else if (tile == Terrain.REGION_DECO_ALT) {
+				return DungeonTileSheet.RAISED_REGION_DECO_ALT;
 			} else if (tile == Terrain.MINE_CRYSTAL) {
 				return DungeonTileSheet.getVisualWithAlts(
 						DungeonTileSheet.RAISED_MINE_CRYSTAL,

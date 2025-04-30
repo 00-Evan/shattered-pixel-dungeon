@@ -138,7 +138,7 @@ public class CityLevel extends RegularLevel {
 			case Terrain.HIGH_GRASS:
 				return Messages.get(CityLevel.class, "high_grass_name");
 			case Terrain.REGION_DECO:
-			case Terrain.REGION_DECO_SP:
+			case Terrain.REGION_DECO_ALT:
 				return Messages.get(CityLevel.class, "region_deco_name");
 			default:
 				return super.tileName( tile );
@@ -164,7 +164,7 @@ public class CityLevel extends RegularLevel {
 			case Terrain.BOOKSHELF:
 				return Messages.get(CityLevel.class, "bookshelf_desc");
 			case Terrain.REGION_DECO:
-			case Terrain.REGION_DECO_SP:
+			case Terrain.REGION_DECO_ALT:
 				return Messages.get(CityLevel.class, "region_deco_desc");
 			default:
 				return super.tileDesc( tile );
@@ -195,7 +195,7 @@ public class CityLevel extends RegularLevel {
 
 	public static void addCityWallVisuals( Level level, Group group ) {
 		for (int i=0; i < level.length(); i++) {
-			if (level.map[i] == Terrain.REGION_DECO || level.map[i] == Terrain.REGION_DECO_SP) {
+			if (level.map[i] == Terrain.REGION_DECO || level.map[i] == Terrain.REGION_DECO_ALT) {
 				group.add( new GreenFlame( i ) );
 			}
 		}

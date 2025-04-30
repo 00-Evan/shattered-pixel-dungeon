@@ -76,6 +76,7 @@ public class FissureRoom extends StandardRoom {
 					}
 				}
 			}
+			Painter.fill(level, this, 5, Terrain.REGION_DECO_ALT);
 		}
 	}
 	

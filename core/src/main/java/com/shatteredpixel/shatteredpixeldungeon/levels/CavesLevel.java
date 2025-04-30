@@ -200,7 +200,7 @@ public class CavesLevel extends RegularLevel {
 			case Terrain.WATER:
 				return Messages.get(CavesLevel.class, "water_name");
 			case Terrain.REGION_DECO:
-			case Terrain.REGION_DECO_SP:
+			case Terrain.REGION_DECO_ALT:
 				return Messages.get(CavesLevel.class, "region_deco_name");
 			default:
 				return super.tileName( tile );
@@ -222,7 +222,7 @@ public class CavesLevel extends RegularLevel {
 			case Terrain.BOOKSHELF:
 				return Messages.get(CavesLevel.class, "bookshelf_desc");
 			case Terrain.REGION_DECO:
-			case Terrain.REGION_DECO_SP:
+			case Terrain.REGION_DECO_ALT:
 				return Messages.get(CavesLevel.class, "region_deco_desc");
 			default:
 				return super.tileDesc( tile );
