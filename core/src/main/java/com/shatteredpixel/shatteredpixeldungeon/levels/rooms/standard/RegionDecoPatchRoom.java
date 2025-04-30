@@ -29,6 +29,11 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 public class RegionDecoPatchRoom extends PatchRoom {
 
 	@Override
+	public float[] sizeCatProbs() {
+		return new float[]{4, 1, 0};
+	}
+
+	@Override
 	public int minHeight() {
 		return Math.max(5, super.minHeight());
 	}
@@ -40,14 +45,14 @@ public class RegionDecoPatchRoom extends PatchRoom {
 
 	@Override
 	protected float fill() {
-		//fill scales from ~30% at 4x4, to ~50% at 10x10
+		//fill scales from ~20% at 4x4, to ~40% at 10x10
 		int scale = Math.min(width()*height(), 10*10);
-		return 0.30f + scale/512f;
+		return 0.20f + scale/512f;
 	}
 
 	@Override
 	protected int clustering() {
-		return 2;
+		return 1;
 	}
 
 	@Override

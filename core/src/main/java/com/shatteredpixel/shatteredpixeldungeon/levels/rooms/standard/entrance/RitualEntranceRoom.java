@@ -31,6 +31,11 @@ import com.watabou.utils.Point;
 public class RitualEntranceRoom extends RitualRoom {
 
 	@Override
+	public float[] sizeCatProbs() {
+		return new float[]{0, 1, 0};
+	}
+
+	@Override
 	public boolean isEntrance() {
 		return true;
 	}

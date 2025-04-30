@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,25 +19,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.exit;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.entrance;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StatuesRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.RegionDecoPatchRoom;
 import com.watabou.utils.PathFinder;
-import com.watabou.utils.Point;
 
-public class StatuesExitRoom extends StatuesRoom {
+public class RegionDecoPatchEntranceRoom extends RegionDecoPatchRoom {
 
 	@Override
-	public float[] sizeCatProbs() {
-		return new float[]{3, 1, 0};
+	public int minHeight() {
+		return Math.max(7, super.minHeight());
 	}
 
 	@Override
-	public boolean isExit() {
+	public int minWidth() {
+		return Math.max(7, super.minWidth());
+	}
+
+	@Override
+	public boolean isEntrance() {
 		return true;
 	}
 
@@ -45,26 +49,32 @@ public class StatuesExitRoom extends StatuesRoom {
 	public void paint(Level level) {
 		super.paint(level);
 
-		int exit = level.pointToCell(center());
+		int entrance;
+		int tries = 30;
+		boolean valid;
+		do {
+			entrance = level.pointToCell(random(2));
 
-		if (width() <= 10 && height()<= 10){
-			Painter.fill(level, this, 3, Terrain.EMPTY_SP);
-		}
+			//need extra logic here as these rooms can spawn small and cramped in very rare cases
+			if (tries-- > 0){
+				valid = level.map[entrance] != Terrain.WALL && level.findMob(entrance) == null;
+			} else {
+				valid = false;
+				for (int i : PathFinder.NEIGHBOURS4){
+					if (level.map[entrance+i] != Terrain.WALL){
+						valid = true;
+					}
+				}
+				valid = valid && level.findMob(entrance) == null;
+			}
+		} while (!valid);
+		Painter.set( level, entrance, Terrain.ENTRANCE );
 
 		for (int i : PathFinder.NEIGHBOURS8){
-			if (level.map[exit + i] != Terrain.STATUE_SP) {
-				Painter.set(level, exit + i, Terrain.EMPTY_SP);
-			}
+			Painter.set( level, entrance+i, Terrain.EMPTY );
 		}
 
-		Painter.set( level, exit, Terrain.EXIT );
-		level.transitions.add(new LevelTransition(level, exit, LevelTransition.Type.REGULAR_EXIT));
-
-	}
-
-	@Override
-	public boolean canPlaceCharacter(Point p, Level l) {
-		return super.canPlaceCharacter(p, l) && l.pointToCell(p) != l.exit();
+		level.transitions.add(new LevelTransition(level, entrance, LevelTransition.Type.REGULAR_ENTRANCE));
 	}
 
 }

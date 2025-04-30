@@ -65,7 +65,7 @@ public class HallsPainter extends RegularPainter {
 		for (Room r : rooms) {
 			for (Room n : r.neigbours) {
 				if (!r.connected.containsKey( n )) {
-					mergeRooms(level, r, n, null, Terrain.CHASM);
+					mergeRooms(level, r, n, null, Random.Int(3) == 0 ? Terrain.REGION_DECO : Terrain.CHASM);
 				}
 			}
 		}

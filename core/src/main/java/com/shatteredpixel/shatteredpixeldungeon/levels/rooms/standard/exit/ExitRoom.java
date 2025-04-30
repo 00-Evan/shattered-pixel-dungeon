@@ -94,7 +94,7 @@ public class ExitRoom extends StandardRoom {
 
 		rooms.add(ChasmExitRoom.class);
 		rooms.add(RitualExitRoom.class);
-		rooms.add(ExitRoom.class); //todo
+		rooms.add(RegionDecoPatchExitRoom.class);
 	}
 
 	private static float[][] chances = new float[27][];
@@ -113,7 +113,7 @@ public class ExitRoom extends StandardRoom {
 		chances[16] = new float[]{0,0,3,  0,0,0, 0,0,0, 0,0,0, 3,2,2, 0,0,0};
 		chances[20] = chances[19] = chances[18] = chances[17] = chances[16];
 
-		chances[21] = new float[]{0,0,3,  0,0,0, 0,0,0, 0,0,0, 0,0,0, 6,1,0};
+		chances[21] = new float[]{0,0,2,  0,0,0, 0,0,0, 0,0,0, 0,0,0, 3,2,3};
 		chances[26] = chances[25] = chances[24] = chances[23] = chances[22] = chances[21];
 	}
 

@@ -152,7 +152,7 @@ public abstract class StandardRoom extends Room {
 		rooms.add(ChasmRoom.class);
 		rooms.add(SkullsRoom.class);
 		rooms.add(RitualRoom.class);
-		rooms.add(EmptyRoom.class); //TODO
+		rooms.add(RegionDecoPatchRoom.class);
 
 
 		rooms.add(PlantsRoom.class);
@@ -183,7 +183,7 @@ public abstract class StandardRoom extends Room {
 		chances[16] = new float[]{0,0,5,  0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 10,5,5,5,10, 0,0,0,0,0,  1,1,1,1,1,1,1,1,1,1};
 		chances[20] = chances[19] = chances[18] = chances[17] = chances[16];
 
-		chances[21] = new float[]{0,0,5,  0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 15,10,5,5,0,   1,1,1,1,1,1,1,1,1,1};
+		chances[21] = new float[]{0,0,5,  0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 11,8,5,5,8,   1,1,1,1,1,1,1,1,1,1};
 		chances[26] = chances[25] = chances[24] = chances[23] = chances[22] = chances[21];
 	}
 	

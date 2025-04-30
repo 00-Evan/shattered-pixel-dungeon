@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Point;
+import com.watabou.utils.Random;
 
 public class RuinsRoom extends PatchRoom {
 	
@@ -73,6 +74,27 @@ public class RuinsRoom extends PatchRoom {
 		}
 		
 		setupPatch(level);
-		fillPatch(level, Terrain.WALL);
+		for (int i = top + 1; i < bottom; i++) {
+			for (int j = left + 1; j < right; j++) {
+				if (patch[xyToPatchCoords(j, i)]) {
+
+					//isolated bits of wall are turned into rubble
+					boolean wall;
+					if (i > top+1 && i < bottom-1 && j >left+1 && j<right-1){
+						int adjacent = 0;
+						if (patch[xyToPatchCoords(j-1, i)]) adjacent++;
+						if (patch[xyToPatchCoords(j+1, i)]) adjacent++;
+						if (patch[xyToPatchCoords(j, i-1)]) adjacent++;
+						if (patch[xyToPatchCoords(j, i+1)]) adjacent++;
+						wall = Random.Int(2) < adjacent;
+					} else {
+						wall = true;
+					}
+
+					int cell = i * level.width() + j;
+					level.map[cell] = wall ? Terrain.WALL : Terrain.REGION_DECO;
+				}
+			}
+		}
 	}
 }
