@@ -482,7 +482,7 @@ public enum Talent {
 	public String desc(boolean metamorphed){
 		if (this == NATURES_AID && SPDSettings.Polished.huntress()) {
 			String metaDesc = Messages.get(this, name() + ".polished_meta_desc");
-			return Messages.get(this, name() + ".polished_desc" + (metaDesc.equals(Messages.NO_TEXT_FOUND) ? "\n\n" + metaDesc : ""));
+			return Messages.get(this, name() + ".polished_desc" + (metaDesc.equals(Messages.NO_TEXT_FOUND) ? "" : "\n\n" + metaDesc));
 
 		}
 
