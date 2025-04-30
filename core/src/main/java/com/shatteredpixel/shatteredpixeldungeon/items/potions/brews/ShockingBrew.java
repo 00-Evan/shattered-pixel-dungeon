@@ -52,6 +52,11 @@ public class ShockingBrew extends Brew {
 			}
 		}
 	}
+
+	@Override
+	public int energyVal() {
+		return quantity * 7;
+	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		

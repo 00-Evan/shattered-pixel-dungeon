@@ -100,8 +100,10 @@ public class WandOfFrost extends DamageWand {
 
 			if (ch.isAlive()){
 				if (Dungeon.level.water[ch.pos])
+					//Buff.Polished.affectAligned(ch, Chill.class, 4+buffedLvl());
 					Buff.affect(ch, Chill.class, 4+buffedLvl());
 				else
+					//Buff.Polished.affectAligned(ch, Chill.class, 2+buffedLvl());
 					Buff.affect(ch, Chill.class, 2+buffedLvl());
 			}
 		} else {
@@ -145,6 +147,7 @@ public class WandOfFrost extends DamageWand {
 					}
 
 					public boolean act() {
+						//Buff.Polished.affectAligned(target, Frost.class, Math.round(Frost.DURATION * powerMulti));
 						Buff.affect(target, Frost.class, Math.round(Frost.DURATION * powerMulti));
 						return super.act();
 					}
