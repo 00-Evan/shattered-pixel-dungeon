@@ -86,5 +86,8 @@ public class WaterBridgeEntranceRoom extends WaterBridgeRoom {
 		} else {
 			level.transitions.add(new LevelTransition(level, entrance, LevelTransition.Type.REGULAR_ENTRANCE));
 		}
+
+		EntranceRoom.placeEarlyGuidePages(level, this);
+
 	}
 }

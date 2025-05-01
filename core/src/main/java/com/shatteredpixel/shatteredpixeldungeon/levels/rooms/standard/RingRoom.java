@@ -57,10 +57,24 @@ public class RingRoom extends StandardRoom {
 			Painter.fill(level, this, passageWidth+2, centerDecoTiles());
 			Point center = center();
 			int xDir = 0, yDir = 0;
+
+			//prefer to make the door further away if possible
 			if (Random.Int(2) == 0) {
-				xDir = Random.Int(2) == 0 ? 1 : -1;
+				if (center.x < (left+right)/2f){
+					xDir = 1;
+				} else if (center.x > (left+right)/2f){
+					xDir = -1;
+				} else {
+					xDir = Random.Int(2) == 0 ? 1 : -1;
+				}
 			} else {
-				yDir = Random.Int(2) == 0 ? 1 : -1;
+				if (center.y < (top+bottom)/2f){
+					yDir = 1;
+				} else if (center.y > (top+bottom)/2f){
+					yDir = -1;
+				} else {
+					yDir = Random.Int(2) == 0 ? 1 : -1;
+				}
 			}
 
 			Painter.set(level, center, Terrain.EMPTY_SP);

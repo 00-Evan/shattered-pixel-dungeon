@@ -100,6 +100,9 @@ public class RegionDecoPatchEntranceRoom extends RegionDecoPatchRoom {
 		} else {
 			level.transitions.add(new LevelTransition(level, entrance, LevelTransition.Type.REGULAR_ENTRANCE));
 		}
+
+		EntranceRoom.placeEarlyGuidePages(level, this);
+
 	}
 
 }
