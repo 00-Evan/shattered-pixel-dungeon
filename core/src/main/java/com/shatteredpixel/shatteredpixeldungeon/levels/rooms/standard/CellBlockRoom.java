@@ -73,7 +73,11 @@ public class CellBlockRoom extends StandardRoom {
 				int left = internal.left + 1 + (x * (w + Wspacing));
 				int top = internal.top + 1 + (y * (h + Hspacing));
 
-				Painter.fill(level, left, top, w, h, Terrain.EMPTY_SP);
+				if (Random.Int(w*h) == 0){
+					Painter.fill(level, left, top, w, h, Terrain.REGION_DECO);
+				} else {
+					Painter.fill(level, left, top, w, h, Terrain.EMPTY_SP);
+				}
 
 				if (topBottomDoors == null) {
 					switch (Random.Int(4)){
