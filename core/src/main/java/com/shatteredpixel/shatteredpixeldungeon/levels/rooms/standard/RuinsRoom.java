@@ -42,12 +42,12 @@ public class RuinsRoom extends PatchRoom {
 
 	@Override
 	protected float fill() {
-		//fill scales from ~20% at 4x4, to ~50% at 18x18
-		// normal   ~20% to ~30%
-		// large    ~30% to ~40%
-		// giant    ~40% to ~50%
+		//fill scales from ~30% at 4x4, to ~60% at 18x18
+		// normal   ~30% to ~40%
+		// large    ~40% to ~50%
+		// giant    ~50% to ~60%
 		int scale = Math.min(width()*height(), 18*18);
-		return 0.20f + scale/1024f;
+		return 0.30f + scale/1024f;
 	}
 
 	@Override

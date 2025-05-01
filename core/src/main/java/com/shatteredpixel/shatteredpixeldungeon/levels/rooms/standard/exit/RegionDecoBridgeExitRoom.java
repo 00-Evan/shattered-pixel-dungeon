@@ -25,20 +25,20 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.RegionDecoPatchRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.RegionDecoBridgeRoom;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 
-public class RegionDecoPatchExitRoom extends RegionDecoPatchRoom {
-
-	@Override
-	public int minHeight() {
-		return Math.max(7, super.minHeight());
-	}
+public class RegionDecoBridgeExitRoom extends RegionDecoBridgeRoom {
 
 	@Override
 	public int minWidth() {
-		return Math.max(7, super.minWidth());
+		return Math.max(8, super.minWidth());
+	}
+
+	@Override
+	public int minHeight() {
+		return Math.max(8, super.minHeight());
 	}
 
 	@Override
@@ -51,30 +51,24 @@ public class RegionDecoPatchExitRoom extends RegionDecoPatchRoom {
 		super.paint(level);
 
 		int exit;
-		int tries = 30;
 		boolean valid;
 		do {
+			valid = true;
 			exit = level.pointToCell(random(2));
 
-			//need extra logic here as these rooms can spawn small and cramped in very rare cases
-			if (tries-- > 0){
-				valid = level.map[exit] != Terrain.REGION_DECO && level.findMob(exit) == null;
-			} else {
+			if (spaceRect.inside(level.cellToPoint(exit))){
 				valid = false;
-				for (int i : PathFinder.NEIGHBOURS4){
-					if (level.map[exit+i] != Terrain.REGION_DECO){
-						valid = true;
+			} else {
+				for (int i : PathFinder.NEIGHBOURS8){
+					if (level.map[exit+i] == Terrain.REGION_DECO_ALT){
+						valid = false;
 					}
 				}
-				valid = valid && level.findMob(exit) == null;
 			}
+
 		} while (!valid);
+
 		Painter.set( level, exit, Terrain.EXIT );
-
-		for (int i : PathFinder.NEIGHBOURS8){
-			Painter.set( level, exit+i, Terrain.EMPTY );
-		}
-
 		level.transitions.add(new LevelTransition(level, exit, LevelTransition.Type.REGULAR_EXIT));
 	}
 

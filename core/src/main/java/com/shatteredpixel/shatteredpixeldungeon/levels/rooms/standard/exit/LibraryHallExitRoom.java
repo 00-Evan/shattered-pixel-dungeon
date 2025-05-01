@@ -19,57 +19,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.exit;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.LibraryHallRoom;
+import com.watabou.utils.Point;
 
-public class RegionDecoPatchRoom extends PatchRoom {
-
-	@Override
-	public int minHeight() {
-		return Math.max(5, super.minHeight());
-	}
+public class LibraryHallExitRoom extends LibraryHallRoom {
 
 	@Override
-	public int minWidth() {
-		return Math.max(5, super.minWidth());
-	}
-
-	@Override
-	protected float fill() {
-		//fill scales from ~20% at 4x4, to ~40% at 10x10
-		int scale = Math.min(width()*height(), 10*10);
-		return 0.20f + scale/512f;
-	}
-
-	@Override
-	protected int clustering() {
-		return 1;
-	}
-
-	@Override
-	protected boolean ensurePath() {
-		return connected.size() > 0;
-	}
-
-	@Override
-	protected boolean cleanEdges() {
+	public boolean isExit() {
 		return true;
 	}
 
 	@Override
 	public void paint(Level level) {
-		Painter.fill( level, this, Terrain.WALL );
-		Painter.fill( level, this, 1 , Terrain.EMPTY );
-		for (Room.Door door : connected.values()) {
-			door.set( Room.Door.Type.REGULAR );
+		super.paint(level);
+
+		while (true){
+			Point p = random(2);
+
+			if (level.map[level.pointToCell(p)] == Terrain.REGION_DECO){
+				int exit = level.pointToCell(p);
+				Painter.set( level, exit, Terrain.EXIT );
+
+				level.transitions.add(new LevelTransition(level, exit, LevelTransition.Type.REGULAR_EXIT));
+				return;
+			}
 		}
 
-		setupPatch(level);
-		fillPatch(level, Terrain.REGION_DECO);
+	}
+
+	@Override
+	public boolean canPlaceCharacter(Point p, Level l) {
+		return super.canPlaceCharacter(p, l) && l.pointToCell(p) != l.exit();
 	}
 
 }

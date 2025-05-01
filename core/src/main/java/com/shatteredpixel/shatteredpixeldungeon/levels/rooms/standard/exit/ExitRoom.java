@@ -72,48 +72,49 @@ public class ExitRoom extends StandardRoom {
 
 	private static ArrayList<Class<?extends StandardRoom>> rooms = new ArrayList<>();
 	static {
-		rooms.add(ExitRoom.class);
-		rooms.add(RegionDecoLineExitRoom.class);
-		rooms.add(StatueLineExitRoom.class);
-
+		rooms.add(RegionDecoPatchExitRoom.class);
 		rooms.add(WaterBridgeExitRoom.class);
-		rooms.add(CircleBasinExitRoom.class);
 		rooms.add(RingExitRoom.class);
+		rooms.add(CircleBasinExitRoom.class);
 
+		rooms.add(RegionDecoLineExitRoom.class);
 		rooms.add(ChasmBridgeExitRoom.class);
 		rooms.add(PillarsExitRoom.class);
-		rooms.add(ExitRoom.class); //todo
+		rooms.add(CellBlockExitRoom.class);
 
 		rooms.add(CaveExitRoom.class);
+		rooms.add(RegionDecoBridgeExitRoom.class);
 		rooms.add(CavesFissureExitRoom.class);
 		rooms.add(CircleWallExitRoom.class);
 
 		rooms.add(HallwayExitRoom.class);
 		rooms.add(StatuesExitRoom.class);
+		rooms.add(LibraryHallExitRoom.class);
 		rooms.add(LibraryRingExitRoom.class);
 
+		rooms.add(RegionDecoPatchExitRoom.class);
+		rooms.add(RuinsExitRoom.class);
 		rooms.add(ChasmExitRoom.class);
 		rooms.add(RitualExitRoom.class);
-		rooms.add(RegionDecoPatchExitRoom.class);
 	}
 
 	private static float[][] chances = new float[27][];
 	static {
 		//floor 1 only uses simpler exit rooms
-		chances[1] =  new float[]{1,1,0,  1,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0};
-		chances[2] =  new float[]{0,4,0,  4,1,1, 0,0,0, 0,0,0, 0,0,0, 0,0,0};
+		chances[1] =  new float[]{4,3,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0};
+		chances[2] =  new float[]{4,3,2,1, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0};
 		chances[5] =  chances[4] = chances[3] = chances[2];
 
-		chances[6] =  new float[]{0,2,0,  0,0,0, 4,4,0, 0,0,0, 0,0,0, 0,0,0};
+		chances[6] = new float[]{0,0,0,0,  4,3,2,1, 0,0,0,0, 0,0,0,0, 0,0,0,0};
 		chances[10] = chances[9] = chances[8] = chances[7] = chances[6];
 
-		chances[11] = new float[]{0,2,0,  0,0,0, 0,0,0, 3,3,2, 0,0,0, 0,0,0};
+		chances[11] = new float[]{0,0,0,0, 0,0,0,0, 4,3,2,1, 0,0,0,0, 0,0,0,0};
 		chances[15] = chances[14] = chances[13] = chances[12] = chances[11];
 
-		chances[16] = new float[]{0,0,3,  0,0,0, 0,0,0, 0,0,0, 3,2,2, 0,0,0};
+		chances[16] = new float[]{0,0,0,0, 0,0,0,0, 0,0,0,0, 4,3,2,1, 0,0,0,0};
 		chances[20] = chances[19] = chances[18] = chances[17] = chances[16];
 
-		chances[21] = new float[]{0,0,2,  0,0,0, 0,0,0, 0,0,0, 0,0,0, 3,2,3};
+		chances[21] = new float[]{0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 4,3,2,1};
 		chances[26] = chances[25] = chances[24] = chances[23] = chances[22] = chances[21];
 	}
 

@@ -24,7 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 
 //doesn't look much like a bridge, but can easily use it internally
-public class CustomDecoBridgeRoom extends StandardBridgeRoom {
+public class RegionDecoBridgeRoom extends StandardBridgeRoom {
 
 	//can be large because the line breaks the space up
 	public float[] sizeCatProbs(){

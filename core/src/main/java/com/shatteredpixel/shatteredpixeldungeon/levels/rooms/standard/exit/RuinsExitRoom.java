@@ -25,25 +25,30 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.RegionDecoPatchRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.RuinsRoom;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 
-public class RegionDecoPatchExitRoom extends RegionDecoPatchRoom {
-
-	@Override
-	public int minHeight() {
-		return Math.max(7, super.minHeight());
-	}
+public class RuinsExitRoom extends RuinsRoom {
 
 	@Override
 	public int minWidth() {
-		return Math.max(7, super.minWidth());
+		return Math.max(super.minWidth(), 7);
+	}
+
+	@Override
+	public int minHeight() {
+		return Math.max(super.minHeight(), 7);
 	}
 
 	@Override
 	public boolean isExit() {
 		return true;
+	}
+
+	@Override
+	public float[] sizeCatProbs() {
+		return new float[]{2, 1, 0};
 	}
 
 	@Override
@@ -58,11 +63,11 @@ public class RegionDecoPatchExitRoom extends RegionDecoPatchRoom {
 
 			//need extra logic here as these rooms can spawn small and cramped in very rare cases
 			if (tries-- > 0){
-				valid = level.map[exit] != Terrain.REGION_DECO && level.findMob(exit) == null;
+				valid = level.map[exit] != Terrain.WALL && level.findMob(exit) == null;
 			} else {
 				valid = false;
 				for (int i : PathFinder.NEIGHBOURS4){
-					if (level.map[exit+i] != Terrain.REGION_DECO){
+					if (level.map[exit+i] != Terrain.WALL && level.map[exit+i] != Terrain.REGION_DECO){
 						valid = true;
 					}
 				}

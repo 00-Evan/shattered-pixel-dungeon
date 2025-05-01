@@ -25,20 +25,15 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.RegionDecoPatchRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.CellBlockRoom;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 
-public class RegionDecoPatchExitRoom extends RegionDecoPatchRoom {
+public class CellBlockExitRoom extends CellBlockRoom {
 
 	@Override
-	public int minHeight() {
-		return Math.max(7, super.minHeight());
-	}
-
-	@Override
-	public int minWidth() {
-		return Math.max(7, super.minWidth());
+	public float[] sizeCatProbs() {
+		return new float[]{0, 1, 0};
 	}
 
 	@Override
@@ -50,32 +45,27 @@ public class RegionDecoPatchExitRoom extends RegionDecoPatchRoom {
 	public void paint(Level level) {
 		super.paint(level);
 
-		int exit;
-		int tries = 30;
-		boolean valid;
-		do {
-			exit = level.pointToCell(random(2));
+		while (true){
+			Point p = random(3);
 
-			//need extra logic here as these rooms can spawn small and cramped in very rare cases
-			if (tries-- > 0){
-				valid = level.map[exit] != Terrain.REGION_DECO && level.findMob(exit) == null;
-			} else {
-				valid = false;
-				for (int i : PathFinder.NEIGHBOURS4){
-					if (level.map[exit+i] != Terrain.REGION_DECO){
-						valid = true;
+			if (level.map[level.pointToCell(p)] == Terrain.EMPTY_SP){
+				boolean valid = true;
+				for (int i : PathFinder.NEIGHBOURS8){
+					if (level.map[level.pointToCell(p)+i] == Terrain.DOOR){
+						valid = false;
 					}
 				}
-				valid = valid && level.findMob(exit) == null;
-			}
-		} while (!valid);
-		Painter.set( level, exit, Terrain.EXIT );
 
-		for (int i : PathFinder.NEIGHBOURS8){
-			Painter.set( level, exit+i, Terrain.EMPTY );
+				if (valid){
+					int entrance = level.pointToCell(p);
+					Painter.set( level, entrance, Terrain.EXIT );
+
+					level.transitions.add(new LevelTransition(level, entrance, LevelTransition.Type.REGULAR_EXIT));
+					return;
+				}
+			}
 		}
 
-		level.transitions.add(new LevelTransition(level, exit, LevelTransition.Type.REGULAR_EXIT));
 	}
 
 	@Override
