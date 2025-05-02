@@ -79,7 +79,7 @@ public class AboutScene extends PixelScene {
 		}
 		content.add(zrp);
 
-		CreditsBlock boby = new CreditsBlock(false, Window.POLISHED_COLOR_PURPLE, "Borrowed code",new Image(Icons.BOBY.get()),"Thrashbox\nBobylev","trashboxbobylev.itch.io","https://trashboxbobylev.itch.io");
+		CreditsBlock boby = new CreditsBlock(false, Window.POLISHED_COLOR_PURPLE, "Borrowed code",new Image(Icons.BOBY.get()),"Trashbox\nBobylev","trashboxbobylev.itch.io","https://trashboxbobylev.itch.io");
 		boby.setRect(zrp.right(), zrp.top(), colWidth/2f, 0);
 		content.add(boby);
 
