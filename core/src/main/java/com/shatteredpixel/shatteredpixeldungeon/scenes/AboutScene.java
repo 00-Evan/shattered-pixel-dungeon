@@ -64,6 +64,26 @@ public class AboutScene extends PixelScene {
 		Component content = list.content();
 		content.clear();
 
+		//*** Polished Pixel Dungeon Credits ***
+
+		CreditsBlock ppd = new CreditsBlock(true, Window.POLISHED_COLOR_PURPLE, "Polished Pixel Dungeon", Icons.PPD.get(), "Developed by _Bacalao_, _Len_, and _Violette_\nBased on Shattered Pixel Dungeon", "PPD Source Code", "https://github.com/lordlen/polished-pixel-dungeon");
+		ppd.setRect((w - fullWidth)/2f, 10, 120, 0);
+		content.add(ppd);
+
+		CreditsBlock zrp = new CreditsBlock(false, Window.POLISHED_COLOR_PURPLE,"Borrowed code", new Image(Icons.ZRP200.get()),"Zrp200",null,null);
+		zrp.setSize(colWidth/2, 0);
+		if (landscape()){
+			zrp.setPos(ppd.right(), ppd.top() + (ppd.height() - zrp.height())/2f);
+		} else {
+			zrp.setPos(w/2f - colWidth/2f, ppd.bottom()+5);
+		}
+		content.add(zrp);
+
+		CreditsBlock boby = new CreditsBlock(false, Window.POLISHED_COLOR_PURPLE, "Borrowed code",new Image(Icons.BOBY.get()),"Thrashbox\nBobylev","trashboxbobylev.itch.io","https://trashboxbobylev.itch.io");
+		boby.setRect(zrp.right(), zrp.top(), colWidth/2f, 0);
+		content.add(boby);
+
+
 		//*** Shattered Pixel Dungeon Credits ***
 
 		CreditsBlock shpx = new CreditsBlock(true, Window.SHPX_COLOR,
@@ -72,12 +92,10 @@ public class AboutScene extends PixelScene {
 				"Developed by: _Evan Debenham_\nBased on Pixel Dungeon's open source",
 				"ShatteredPixel.com",
 				"https://ShatteredPixel.com");
-		if (landscape()){
-			shpx.setRect((w - fullWidth)/2f - 6, 10, 120, 0);
-		} else {
-			shpx.setRect((w - fullWidth)/2f, 6, 120, 0);
-		}
+		shpx.setRect(ppd.left(), landscape() ? ppd.bottom()+12 : boby.bottom()+12, 120,0);
 		content.add(shpx);
+
+		addLine(shpx.top() - 4, content);
 
 		CreditsBlock alex = new CreditsBlock(false, Window.SHPX_COLOR,
 				"Splash Art & Design:",
@@ -327,6 +345,8 @@ public class AboutScene extends PixelScene {
 			if (title != null){
 				title.maxWidth((int)width());
 				title.setPos( x + (width() - title.width())/2f, topY);
+				PixelScene.align(title);
+
 				topY += title.height() + (large ? 2 : 1);
 			}
 

@@ -43,6 +43,9 @@ public enum Icons {
 	PREFS,
 	SHPX,
 	JOURNAL,
+	BOBY,
+	ZRP200,
+	PPD,
 
 	//grey icons, mainly used for buttons, spacing for 16x16
 	EXIT,
@@ -170,6 +173,15 @@ public enum Icons {
 				break;
 			case JOURNAL:
 				icon.frame( icon.texture.uvRectBySize( 136, 0, 17, 15 ) );
+				break;
+			case BOBY:
+				icon.frame( icon.texture.uvRectBySize( 154, 0, 14, 16 ) );
+				break;
+			case ZRP200:
+				icon.frame( icon.texture.uvRectBySize( 169, 0, 12, 12 ) );
+				break;
+			case PPD:
+				icon.frame( icon.texture.uvRectBySize( 182, 0, 12, 14 ) );
 				break;
 
 			case EXIT:
