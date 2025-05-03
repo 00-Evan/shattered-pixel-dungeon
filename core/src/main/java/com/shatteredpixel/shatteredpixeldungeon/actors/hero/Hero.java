@@ -2621,9 +2621,9 @@ public class Hero extends Char {
 					searchHunger *= 2;
 				}
 				searchHunger *= SaltCube.hungerGainMultiplier();
-				searchHunger = Math.max(searchHunger-searchTime, 0);
+				searchHunger = Math.min(searchHunger-searchTime, 0);
 
-				Buff.affect(this, Hunger.class).affectHunger(searchTime - searchHunger);
+				Buff.affect(this, Hunger.class).affectHunger(searchHunger);
 			}
 
 			if (cursed) GLog.n(Messages.get(this, "search_distracted"));
