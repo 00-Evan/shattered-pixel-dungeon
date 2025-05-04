@@ -33,6 +33,8 @@ public class Slow extends FlavourBuff {
 	{
 		type = buffType.NEGATIVE;
 		announced = true;
+
+		actPriority = HERO_PRIO+1;
 	}
 
 	public static final float DURATION = 10f;

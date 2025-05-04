@@ -56,7 +56,6 @@ import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -126,10 +125,6 @@ public class TimekeepersHourglass extends Artifact {
 							@Override
 							protected void onSelect(int index) {
 								if (index == 0) {
-									if(charge < 2) {
-										//GLog.i( Messages.get(this, "no_charge") );
-										//return;
-									}
 									GLog.i( Messages.get(TimekeepersHourglass.class, "onstasis") );
 									GameScene.flash(0x80FFFFFF);
 									Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
@@ -328,8 +323,12 @@ public class TimekeepersHourglass extends Artifact {
 	}
 
 	public class timeDebt extends ArtifactBuff {
+		{
+			type = buffType.NEGATIVE;
+			actPriority = HERO_PRIO+1;
+		}
 
-		static final float basePenalty = 0f;
+		static final float baseDebt = 1f;
 		static final float baseDelay = 0f;
 
 		float turnPenalty = 0f;
@@ -344,20 +343,16 @@ public class TimekeepersHourglass extends Artifact {
 		}
 
 		public void endFreeze() {
-			spend(-1f);
-
-			if(turnPenalty <= 0) detach();
-			else slowTimers.add(this);
-		}
-
-		{
-			type = buffType.NEGATIVE;
-			actPriority = BUFF_PRIO-5; //acts after all other buffs
+			actPriority=HERO_PRIO+1;
+			slowTimers.add(this);
 		}
 
 		public void initDelay() {
+			//we do this temporarily so it doesn't instantly detach
+			actPriority = HERO_PRIO-1;
 			spend(baseDelay);
 		}
+
 		@Override
 		public boolean attachTo(Char target) {
 			if (super.attachTo(target)) {
@@ -377,35 +372,24 @@ public class TimekeepersHourglass extends Artifact {
 		@Override
 		public void detach() {
 
-			// do we keep?
-			/*Hunger hunger = Buff.affect(target, Hunger.class);
+			//do we keep?
+			/*
+			Hunger hunger = Buff.affect(target, Hunger.class);
 			if (hunger != null && !hunger.isStarving()) {
 				hunger.satisfy(turnDebt);
-			}*/
+			}
+			 */
 
 			if(turnPenalty > 0) {
 				GameScene.flash(0x80FFFFFF);
 				Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 
-				Slow slow = Buff.affect(target, Slow.class, 2* turnPenalty + basePenalty);
+				Buff.affect(target, Slow.class, 2* (baseDebt + turnPenalty));
 				target.next();
 			}
 
 			super.detach();
 			slowTimers.remove(this);
-			//Dungeon.observe();
-			//updateQuickslot();
-		}
-
-		@Override
-		public void fx(boolean on) {
-			/*
-			if (on) target.sprite.add( CharSprite.State.PARALYSED );
-			else {
-				if (target.paralysed == 0) target.sprite.remove( CharSprite.State.PARALYSED );
-				if (target.invisible == 0) target.sprite.remove( CharSprite.State.INVISIBLE );
-			}
-			 */
 		}
 
 		@Override
@@ -420,21 +404,21 @@ public class TimekeepersHourglass extends Artifact {
 
 		@Override
 		public float iconFadePercent() {
-			return Math.max(0, (5f - cooldown()) / 5f);
+			int nextCap = (int)Math.ceil(turnPenalty/2)*2;
+			nextCap = Math.max(nextCap, 2);
+
+			return (nextCap - cooldown()) / nextCap;
 		}
 
 		@Override
 		public String iconTextDisplay() {
-			int cd = (int)(cooldown()+.0001f);
-			if(target.buff(timeFreeze.class) != null) cd--;
-			return Integer.toString(cd);
+			return Integer.toString((int)Math.ceil(cooldown()));
 		}
 
 		@Override
 		public String desc() {
-			DecimalFormat df = new DecimalFormat("#.##");
-			boolean isSingular = Math.floor(turnPenalty + .0001f) == 1;
-			return Messages.get(this, "desc", df.format(turnPenalty), isSingular ? "turn" : "turns", df.format(2*turnPenalty + basePenalty), df.format(cooldown()));
+			float total = baseDebt + turnPenalty;
+			return Messages.get(this, "desc", dispTurns(total), dispTurns(total).equals("1") ? "turn" : "turns", dispTurns(2*total), dispTurns(cooldown()));
 		}
 
 
@@ -459,7 +443,7 @@ public class TimekeepersHourglass extends Artifact {
 		
 		{
 			type = buffType.POSITIVE;
-			actPriority = BUFF_PRIO-3; //acts after all other buffs, so they are prevented
+			actPriority = HERO_PRIO+1;
 		}
 
 		@Override
@@ -473,24 +457,21 @@ public class TimekeepersHourglass extends Artifact {
 				if(f != null) f.detach();
 
 				for(timeDebt debt : slowTimers) {
-					debt.delay(stasisTime+1);
+					debt.delay(stasisTime);
 				}
 				Slow slow = target.buff(Slow.class);
-				if(slow != null) slow.delay(stasisTime+1);
-
-
-				Invisibility.dispel();
-
-				//buffs always act last, so the stasis buff should end a turn early.
-				spend(stasisTime);
+				if(slow != null) slow.delay(stasisTime);
 
 				//shouldn't punish the player for going into stasis frequently
 				Hunger hunger = Buff.affect(target, Hunger.class);
-				if (hunger != null && !hunger.isStarving()) {
+				if (!hunger.isStarving()) {
 					hunger.satisfy(5 * usedCharge);
 				}
 
+				Invisibility.dispel();
+
 				charge -= usedCharge;
+				spend(stasisTime);
 
 				target.invisible++;
 				target.paralysed++;
