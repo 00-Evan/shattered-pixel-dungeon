@@ -303,7 +303,7 @@ public class CloakOfShadows extends Artifact {
 		@Override
 		public boolean attachTo( Char target ) {
 			if (super.attachTo( target )) {
-				target.camouflaged++;
+				target.invisible++;
 				if (target instanceof Hero && ((Hero) target).subClass == HeroSubClass.ASSASSIN){
 					Buff.affect(target, Preparation.class);
 				}
@@ -375,7 +375,7 @@ public class CloakOfShadows extends Artifact {
 		public void detach() {
 			activeBuff = null;
 
-			if (target.camouflaged > 0)   target.camouflaged--;
+			if (target.invisible > 0)   target.invisible--;
 
 			updateQuickslot();
 			super.detach();
