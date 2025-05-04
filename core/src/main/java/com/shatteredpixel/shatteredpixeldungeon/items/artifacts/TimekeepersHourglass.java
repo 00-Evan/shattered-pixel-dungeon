@@ -415,6 +415,10 @@ public class TimekeepersHourglass extends Artifact {
 			return Integer.toString((int)Math.ceil(cooldown()));
 		}
 
+		public float visualcooldown(){
+			return cooldown();
+		}
+
 		@Override
 		public String desc() {
 			float total = baseDebt + turnPenalty;
