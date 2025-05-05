@@ -21,10 +21,14 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Stamina;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -99,6 +103,14 @@ public abstract class Trap implements Bundlable {
 				int points = Dungeon.hero.pointsInTalent(Talent.SMART_ESCAPE);
 				if(points > 0) {
 					float duration = Dungeon.hero.cooldown() + 1f + 0.5f*points;
+
+					Haste haste = Dungeon.hero.buff(Haste.class);
+					if(haste != null) {
+						float max = 1.5f*duration;
+						float diff = max(max - haste.cooldown(), 0);
+						duration = min(duration, diff);
+					}
+
 					Buff.affect(Dungeon.hero, Haste.class, duration);
 				}
 			}
