@@ -52,6 +52,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Ripple;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
+import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
@@ -126,6 +127,7 @@ import com.watabou.glwrap.Blending;
 import com.watabou.input.ControllerHandler;
 import com.watabou.input.GameAction;
 import com.watabou.input.KeyBindings;
+import com.watabou.input.KeyEvent;
 import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
@@ -150,6 +152,8 @@ import com.watabou.utils.RectF;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 
 public class GameScene extends PixelScene {
@@ -254,7 +258,6 @@ public class GameScene extends PixelScene {
         }
 
         //millis
-        //private static final int bufferPeriod_Movement = 30;
         private static final int bufferPeriod_Movement = -1;
         public static Point bufferedMovement = null;
         private static long timer_Movement = 0;
@@ -265,6 +268,25 @@ public class GameScene extends PixelScene {
         public static boolean movementQueued() {
             return bufferedMovement != null && Game.realTime <= timer_Movement;
         }
+
+
+		private static HashMap<Mob, Integer> indicatorsQueued = new HashMap<>();
+
+		public static void queueIndicator(Mob mob) {
+			indicatorsQueued.put(mob, mob.pos);
+		}
+
+		public static void displayIndicators() {
+			try {
+				for(Mob mob : indicatorsQueued.keySet()) {
+					if(!Dungeon.hero.fieldOfView[mob.pos])
+						GameScene.effectOverFog(new TargetedCell(indicatorsQueued.get(mob), 0xFFFF00, Actor.now(), mob, true));
+				}
+				indicatorsQueued.clear();
+			} catch (Exception e) {
+				indicatorsQueued.clear();
+			}
+		}
 	}
 	
 	@Override
@@ -1576,6 +1598,21 @@ public class GameScene extends PixelScene {
 			tagDisappeared = false;
 			updateTags = true;
 		}
+
+		if(Polished.movementQueued()) {
+			Polished.bufferedAction = null;
+			Polished.bufferedCell = -1;
+
+			handleCell(Dungeon.hero.pos + Dungeon.level.pointToCell(Polished.bufferedMovement));
+			Polished.bufferedMovement = null;
+		}
+		if(Polished.actionQueued()) {
+			KeyEvent.addKeyEvent(new KeyEvent(KeyBindings.getFirstKeyForAction(Polished.bufferedAction, false), true));
+			KeyEvent.addKeyEvent(new KeyEvent(KeyBindings.getFirstKeyForAction(Polished.bufferedAction, false), false));
+			Polished.bufferedAction = null;
+		}
+
+		Polished.displayIndicators();
 	}
 	
 	public static void checkKeyHold(){

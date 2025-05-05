@@ -1014,19 +1014,6 @@ public class Hero extends Char {
 		AttackIndicator.updateState();
 		
 		GameScene.ready();
-
-		if(GameScene.Polished.movementQueued()) {
-			GameScene.Polished.bufferedAction = null;
-			GameScene.Polished.bufferedCell = -1;
-
-			GameScene.handleCell(pos + Dungeon.level.pointToCell(GameScene.Polished.bufferedMovement));
-			GameScene.Polished.bufferedMovement = null;
-		}
-		if(GameScene.Polished.actionQueued()) {
-			KeyEvent.addKeyEvent(new KeyEvent(KeyBindings.getFirstKeyForAction(GameScene.Polished.bufferedAction, false), true));
-			KeyEvent.addKeyEvent(new KeyEvent(KeyBindings.getFirstKeyForAction(GameScene.Polished.bufferedAction, false), false));
-			GameScene.Polished.bufferedAction = null;
-		}
 	}
 	
 	public void interrupt() {
