@@ -33,11 +33,14 @@ public class Brimstone extends Armor.Glyph {
 
 	public static void gainShield(Char target, int brimstoneLevel) {
 		float multi = RingOfArcana.enchantPowerMultiplier(target);
-		//generate avg of 1 shield per turn per 50% boost, to a max of 4x boost
-		float shieldPerTurn = brimstoneLevel * multi / 2.0f;
-		int shieldCap = brimstoneLevel * 2;
+		float basePower = 0.4f + 0.4f * brimstoneLevel;
+
+		float shieldPerTurn = basePower * multi + 0.4f * (multi-1);
+		int shieldCap = (int)Math.ceil(4 * basePower);
+
 		int shieldGain = (int)shieldPerTurn;
 		if (Random.Float() < shieldPerTurn%1) shieldGain++;
+
 		if (shieldCap > 0 && shieldGain > 0){
 			Barrier barrier = Buff.affect(target, Barrier.class);
 			if (barrier.shielding() < shieldCap){
