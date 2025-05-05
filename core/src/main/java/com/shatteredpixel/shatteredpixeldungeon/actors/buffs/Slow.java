@@ -26,9 +26,15 @@ import com.watabou.noosa.Image;
 
 public class Slow extends FlavourBuff {
 
+	public void delay(float time) {
+		spend(time);
+	}
+
 	{
 		type = buffType.NEGATIVE;
 		announced = true;
+
+		actPriority = HERO_PRIO+1;
 	}
 
 	public static final float DURATION = 10f;

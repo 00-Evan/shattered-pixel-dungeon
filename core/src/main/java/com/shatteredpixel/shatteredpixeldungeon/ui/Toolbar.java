@@ -198,7 +198,7 @@ public class Toolbar extends Component {
 		add(btnWait = new Tool(24, 0, 20, 26) {
 			@Override
 			protected void onClick() {
-				if (Dungeon.hero != null &&  Dungeon.hero.ready && !GameScene.cancel() && GameScene.Polished.canInput()) {
+				if (!GameScene.cancel() && Dungeon.hero != null && Dungeon.hero.ready /*&& !GameScene.cancel()*/ && GameScene.Polished.canInput()) {
 					examining = false;
 					Dungeon.hero.rest(false);
 				}
@@ -250,7 +250,7 @@ public class Toolbar extends Component {
 		add(new Button(){
 			@Override
 			protected void onClick() {
-				if (Dungeon.hero != null && Dungeon.hero.ready && !GameScene.cancel() && GameScene.Polished.canInput()) {
+				if (!GameScene.cancel() && Dungeon.hero != null && Dungeon.hero.ready /*&& !GameScene.cancel()*/ && GameScene.Polished.canInput()) {
 					Dungeon.hero.waitOrPickup = true;
 					if ((Dungeon.level.heaps.get(Dungeon.hero.pos) != null || Dungeon.hero.canSelfTrample())
 						&& Dungeon.hero.handle(Dungeon.hero.pos)){
@@ -323,7 +323,7 @@ public class Toolbar extends Component {
 
 			@Override
 			protected void onClick() {
-				if (Dungeon.hero != null && (Dungeon.hero.ready || !Dungeon.hero.isAlive())) {
+				if (Dungeon.hero != null /*&& (Dungeon.hero.ready || !Dungeon.hero.isAlive())*/) {
 					if (SPDSettings.interfaceSize() == 2) {
 						GameScene.toggleInvPane();
 					} else {
@@ -393,7 +393,7 @@ public class Toolbar extends Component {
 		add(new Button(){
 			@Override
 			protected void onClick() {
-				if (Dungeon.hero != null && Dungeon.hero.ready && !GameScene.cancel()) {
+				if (Dungeon.hero != null /*&& Dungeon.hero.ready && !GameScene.cancel()*/) {
 					ArrayList<Bag> bags = Dungeon.hero.belongings.getBags();
 					String[] names = new String[bags.size()];
 					Image[] images = new Image[bags.size()];
@@ -654,8 +654,8 @@ public class Toolbar extends Component {
 	public void update() {
 		super.update();
 		
-		if (lastEnabled != (Dungeon.hero.ready && Dungeon.hero.isAlive())) {
-			lastEnabled = (Dungeon.hero.ready && Dungeon.hero.isAlive());
+		if (lastEnabled != (/*Dungeon.hero.ready &&*/ Dungeon.hero.isAlive())) {
+			lastEnabled = (/*Dungeon.hero.ready &&*/ Dungeon.hero.isAlive());
 			
 			for (Gizmo tool : members.toArray(new Gizmo[0])) {
 				if (tool instanceof Tool) {

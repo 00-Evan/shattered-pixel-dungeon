@@ -985,6 +985,7 @@ public class CursedWand {
 		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
 
 			Buff.affect(user, TimeStasis.class, 100f);
+			//Buff.Polished.affectAligned(user, TimeStasis.class, 100f);
 			Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 
 			user.sprite.emitter().burst(Speck.factory(Speck.STEAM), 10);

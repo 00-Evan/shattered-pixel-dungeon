@@ -22,10 +22,32 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.watabou.utils.Random;
 
 public class Brimstone extends Armor.Glyph {
+
+	public static void gainShield(Char target, int brimstoneLevel) {
+		float multi = RingOfArcana.enchantPowerMultiplier(target);
+		float basePower = 0.4f + 0.4f * brimstoneLevel;
+
+		float shieldPerTurn = basePower * multi + 0.4f * (multi-1);
+		int shieldCap = (int)Math.ceil(4 * basePower);
+
+		int shieldGain = (int)shieldPerTurn;
+		if (Random.Float() < shieldPerTurn%1) shieldGain++;
+
+		if (shieldCap > 0 && shieldGain > 0){
+			Barrier barrier = Buff.affect(target, Barrier.class);
+			if (barrier.shielding() < shieldCap){
+				barrier.incShield(shieldGain);
+			}
+		}
+	}
 
 	private static ItemSprite.Glowing ORANGE = new ItemSprite.Glowing( 0xFF4400 );
 

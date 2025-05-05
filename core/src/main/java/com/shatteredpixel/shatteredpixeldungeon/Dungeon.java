@@ -114,6 +114,12 @@ public class Dungeon {
 
 				BArray.or( level.traversable, extendedHeroFOV, offset, 5, level.traversable );
 			}
+
+			if(Dungeon.hero.pointsInTalent(Talent.ROGUES_EXPERTISE) >= 2) {
+				for (int i : PathFinder.NEIGHBOURS9) {
+					level.revealSecretDoor(pos + i);
+				}
+			}
 		}
 	}
 
@@ -910,7 +916,7 @@ public class Dungeon {
 	//default to recomputing based on max hero vision, in case vision just shrank/grew
 	public static void observe(){
 		int dist = Math.max(Dungeon.hero.viewDistance, 8);
-		dist *= 1f + 0.25f*Dungeon.hero.pointsInTalent(Talent.FARSIGHT);
+		dist *= 1f + 0.18f*Dungeon.hero.pointsInTalent(Talent.FARSIGHT);
 
 		if (Dungeon.hero.buff(MagicalSight.class) != null){
 			dist = Math.max( dist, MagicalSight.DISTANCE );
@@ -951,21 +957,19 @@ public class Dungeon {
 		int height_e = b_e - t_e + 1;
 
 		boolean[] extension = level.heroFOV.clone();
-		/*for (int i = 0; i < level.length(); i++ ) {
-			if (level.passable[i] && level.heroFOV[i]) {
-				for(int offset : PathFinder.NEIGHBOURS9) {
-					extension[i + offset] = true;
-				}
-			}
-		}*/
 
+		boolean reveal = Dungeon.hero.pointsInTalent(Talent.ROGUES_EXPERTISE) >= 2;
 		for (int i = l; i < r; i++) {
 			for (int j = t; j < b; j++) {
 				int cell = level.pointToCell(i, j);
 
-				if (level.passable[cell] && level.heroFOV[cell]) {
-					for(int offset : PathFinder.NEIGHBOURS8) {
-						extension[cell + offset] = true;
+				if(level.heroFOV[cell]) {
+					if (level.passable[cell]) {
+						for(int offset : PathFinder.NEIGHBOURS8) {
+							extension[cell + offset] = true;
+						}
+					} else if(reveal) {
+						level.revealSecretDoor(cell);
 					}
 				}
 			}
@@ -1051,6 +1055,14 @@ public class Dungeon {
 				width = r - l + 1;
 				height = b - t + 1;
 
+				l_e = Math.max( 0, l-1 );
+				r_e = Math.min( r+1, level.width() - 1 );
+				t_e = Math.max( 0, t-1 );
+				b_e = Math.min( b+1, level.height() - 1 );
+
+				width_e = r_e - l_e + 1;
+				height_e = b_e - t_e + 1;
+
 				pos = l + t * level.width();
 				for (int i = t; i <= b; i++) {
 					BArray.or( level.visited, level.heroFOV, pos, width, level.visited );
@@ -1065,6 +1077,15 @@ public class Dungeon {
 					}
 				}
 				//
+
+				if(reveal) {
+					for (int i = l; i < r; i++) {
+						for (int j = t; j < b; j++) {
+							int cell = level.pointToCell(i, j);
+							if(Dungeon.level.heroFOV[cell]) level.revealSecretDoor(cell);
+						}
+					}
+				}
 
 				GameScene.updateFog(ch.pos, dist);
 			}

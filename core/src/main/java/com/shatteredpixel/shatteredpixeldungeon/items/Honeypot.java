@@ -159,6 +159,11 @@ public class Honeypot extends Item {
 		}
 
 		@Override
+		public int energyVal() {
+			return 2 * quantity;
+		}
+
+		@Override
 		public boolean doPickUp(Hero hero, int pos) {
 			if ( super.doPickUp(hero, pos) ){
 				pickupPot( hero );

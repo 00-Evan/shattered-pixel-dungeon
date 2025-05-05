@@ -61,6 +61,11 @@ public class TrinketCatalyst extends Item {
 	}
 
 	@Override
+	public int energyVal() {
+		return 6;
+	}
+
+	@Override
 	public boolean isIdentified() {
 		return true;
 	}

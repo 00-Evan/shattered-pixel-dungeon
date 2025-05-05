@@ -44,6 +44,9 @@ public class FlavourBuff extends Buff {
 
 	@Override
 	public String iconTextDisplay() {
-		return Integer.toString((int)visualcooldown());
+		int left = (int)Math.ceil(cooldown());
+		if(actPriority < HERO_PRIO && cooldown() % 1 == 0) left++;
+
+		return Integer.toString(left);
 	}
 }

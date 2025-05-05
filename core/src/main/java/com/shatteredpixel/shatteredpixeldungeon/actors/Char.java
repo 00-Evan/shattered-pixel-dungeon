@@ -48,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Daze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Electrified;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FireImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FrostImbue;
@@ -105,7 +106,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Bulk;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Flow;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Obfuscation;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
@@ -640,10 +640,10 @@ public abstract class Char extends Actor {
 		}
 
 		//invisible chars always hit (for the hero this is surprise attacking)
-		if (attacker.isStealthyTo(defender) && attacker.canSurpriseAttack() && defender.buff(ChampionEnemy.Blessed.class) == null) {
+		if (attacker.isStealthyTo(defender) && attacker.canSurpriseAttack()) {
 			acuStat = INFINITE_ACCURACY;
 		}
-		if(attacker.buff(ChampionEnemy.Blessed.class) != null) acuStat = INFINITE_ACCURACY;
+		//if(attacker.buff(ChampionEnemy.Blessed.class) != null) acuStat = INFINITE_ACCURACY;
 
 		if (defender.buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class) != null){
 			defStat = INFINITE_EVASION;
@@ -973,7 +973,8 @@ public abstract class Char extends Actor {
 			}
 			if (dmg < 0) dmg = 0;
 		}
-		
+
+		int inc_dmg = dmg;
 		if (buff( Paralysis.class ) != null) {
 			buff( Paralysis.class ).processDamage(dmg);
 		}
@@ -989,6 +990,10 @@ public abstract class Char extends Actor {
 		shielded -= dmg;
 		HP -= dmg;
 
+		if (buff( Electrified.class ) != null) {
+			buff( Electrified.class ).processDamage(dmg + shielded, src);
+		}
+
 		if (HP > 0 && shielded > 0 && shielding() == 0){
 			if (this instanceof Hero && ((Hero) this).hasTalent(Talent.PROVOKED_ANGER)){
 				Buff.affect(this, Talent.ProvokedAngerTracker.class, 5f);
@@ -1001,7 +1006,10 @@ public abstract class Char extends Actor {
 			finalChance *= (float)Math.pow( ((HT - HP) / (float)HT), 2);
 
 			if (Random.Float() < finalChance) {
-				int extraDmg = Math.round(HP*resist(Grim.class));
+				boolean isBoss = properties().contains(Property.BOSS);
+
+				int extraDmg = isBoss ? 2*inc_dmg : Math.round(HP*resist(Grim.class));
+
 				dmg += extraDmg;
 				HP -= extraDmg;
 
@@ -1367,9 +1375,6 @@ public abstract class Char extends Actor {
 		for (Buff b : buffs()){
 			immunes.addAll(b.immunities());
 		}
-		if (glyphLevel(Brimstone.class) >= 0){
-			immunes.add(Burning.class);
-		}
 		
 		for (Class c : immunes){
 			if (c.isAssignableFrom(effect)){
@@ -1421,7 +1426,7 @@ public abstract class Char extends Actor {
 		//A character that acts in an unchanging manner. immune to AI state debuffs or stuns/slows
 		STATIC( new HashSet<Class>(),
 				new HashSet<Class>( Arrays.asList(AllyBuff.class, Dread.class, Terror.class, Amok.class, Charm.class, Sleep.class,
-									Paralysis.class, Frost.class, Chill.class, Slow.class) ));
+									Electrified.class, Paralysis.class, Frost.class, Chill.class, Slow.class) ));
 
 		private HashSet<Class> resistances;
 		private HashSet<Class> immunities;

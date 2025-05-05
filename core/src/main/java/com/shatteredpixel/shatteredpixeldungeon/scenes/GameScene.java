@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
+import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
@@ -51,6 +52,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Ripple;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
+import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
@@ -123,7 +125,9 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.watabou.glwrap.Blending;
 import com.watabou.input.ControllerHandler;
+import com.watabou.input.GameAction;
 import com.watabou.input.KeyBindings;
+import com.watabou.input.KeyEvent;
 import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
@@ -148,6 +152,8 @@ import com.watabou.utils.RectF;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 
 public class GameScene extends PixelScene {
@@ -214,10 +220,72 @@ public class GameScene extends PixelScene {
 		private static long inputBlockTimer = 0;
 
 		public static void blockInput() {
-			inputBlockTimer = Game.realTime + inputBlock;
+			blockInput(1f);
+		}
+		public static void blockInput(float multi) {
+			inputBlockTimer = Game.realTime + Math.round(inputBlock*multi);
 		}
 		public static boolean canInput() {
 			return (Game.realTime > inputBlockTimer || !SPDSettings.Polished.inputBlock());
+		}
+
+
+        //millis
+        private static final int bufferPeriod_Action = 50;
+        public static GameAction bufferedAction = null;
+        private static long timer_Action = 0;
+        public static void bufferAction(GameAction action, boolean animation) {
+            if(!actionQueued()) bufferedAction = action;
+            else bufferedAction = null;
+            //bufferedAction = action;
+
+            timer_Action = Game.realTime + (animation ? bufferPeriod_Action : 2*bufferPeriod_Action)*(long)SPDSettings.Polished.buffers();
+        }
+        public static boolean actionQueued() {
+            return bufferedAction != null && Game.realTime <= timer_Action;
+        }
+
+        //millis
+        private static final int bufferPeriod_Cell = bufferPeriod_Action;
+        public static int bufferedCell = -1;
+        private static long timer_Cell = 0;
+        public static void bufferCell(int cell) {
+            bufferedCell = cell;
+            timer_Cell = Game.realTime + bufferPeriod_Cell*(long)SPDSettings.Polished.buffers();
+        }
+        public static boolean cellQueued() {
+            return bufferedCell != -1 && Game.realTime <= timer_Cell;
+        }
+
+        //millis
+        private static final int bufferPeriod_Movement = -1;
+        public static Point bufferedMovement = null;
+        private static long timer_Movement = 0;
+        public static void bufferMovement(Point movement) {
+            bufferedMovement = movement;
+            timer_Movement = Game.realTime + bufferPeriod_Movement;
+        }
+        public static boolean movementQueued() {
+            return bufferedMovement != null && Game.realTime <= timer_Movement;
+        }
+
+
+		private static HashMap<Mob, Integer> indicatorsQueued = new HashMap<>();
+
+		public static void queueIndicator(Mob mob) {
+			indicatorsQueued.put(mob, mob.pos);
+		}
+
+		public static void displayIndicators() {
+			try {
+				for(Mob mob : indicatorsQueued.keySet()) {
+					if(!Dungeon.hero.fieldOfView[mob.pos])
+						GameScene.effectOverFog(new TargetedCell(indicatorsQueued.get(mob), 0xFFFF00, Actor.now(), mob, true));
+				}
+				indicatorsQueued.clear();
+			} catch (Exception e) {
+				indicatorsQueued.clear();
+			}
 		}
 	}
 	
@@ -516,22 +584,6 @@ public class GameScene extends PixelScene {
 				GLog.h(Messages.get(this, "resurrect"), Dungeon.depth);
 			} else {
 				GLog.h(Messages.get(this, "return"), Dungeon.depth);
-			}
-
-			if (Dungeon.hero.hasTalent(Talent.ROGUES_FORESIGHT)
-					&& Dungeon.level instanceof RegularLevel && Dungeon.branch == 0){
-				int reqSecrets = Dungeon.level.feeling == Level.Feeling.SECRETS ? 2 : 1;
-				for (Room r : ((RegularLevel) Dungeon.level).rooms()){
-					if (r instanceof SecretRoom) reqSecrets--;
-				}
-
-				//75%/100% chance, use level's seed so that we get the same result for the same level
-				//offset seed slightly to avoid output patterns
-				Random.pushGenerator(Dungeon.seedCurDepth()+1);
-					if (reqSecrets <= 0 && Random.Int(4) < 2+Dungeon.hero.pointsInTalent(Talent.ROGUES_FORESIGHT)){
-						GLog.p(Messages.get(this, "secret_hint"));
-					}
-				Random.popGenerator();
 			}
 
 			boolean unspentTalents = false;
@@ -1470,6 +1522,11 @@ public class GameScene extends PixelScene {
 		if (scene != null) {
 			scene.prompt(listener.prompt());
 		}
+
+		if(GameScene.Polished.cellQueued() && listener != defaultCellListener) {
+			GameScene.handleCell(GameScene.Polished.bufferedCell);
+			GameScene.Polished.bufferedCell = -1;
+		}
 	}
 	
 	public static boolean cancelCellSelector() {
@@ -1525,6 +1582,21 @@ public class GameScene extends PixelScene {
 			tagDisappeared = false;
 			updateTags = true;
 		}
+
+		if(Polished.movementQueued()) {
+			Polished.bufferedAction = null;
+			Polished.bufferedCell = -1;
+
+			handleCell(Dungeon.hero.pos + Dungeon.level.pointToCell(Polished.bufferedMovement));
+			Polished.bufferedMovement = null;
+		}
+		if(Polished.actionQueued()) {
+			KeyEvent.addKeyEvent(new KeyEvent(KeyBindings.getFirstKeyForAction(Polished.bufferedAction, false), true));
+			KeyEvent.addKeyEvent(new KeyEvent(KeyBindings.getFirstKeyForAction(Polished.bufferedAction, false), false));
+			Polished.bufferedAction = null;
+		}
+
+		Polished.displayIndicators();
 	}
 	
 	public static void checkKeyHold(){

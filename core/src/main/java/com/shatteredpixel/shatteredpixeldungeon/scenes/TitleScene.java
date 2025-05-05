@@ -87,11 +87,11 @@ public class TitleScene extends PixelScene {
 		align(title);
 
 		if (landscape()){
-			placeTorch(title.x + 30, title.y + 35);
-			placeTorch(title.x + title.width - 30, title.y + 35);
+			placeTorch(title.x + 30, title.y + 44);
+			placeTorch(title.x + title.width - 30, title.y + 44);
 		} else {
-			placeTorch(title.x + 16, title.y + 70);
-			placeTorch(title.x + title.width - 16, title.y + 70);
+			placeTorch(title.x + 16, title.y + 65);
+			placeTorch(title.x + title.width - 16, title.y + 65);
 		}
 
 		Image signs = new Image(BannerSprites.get( landscape() ? BannerSprites.Type.TITLE_GLOW_LAND : BannerSprites.Type.TITLE_GLOW_PORT)){
@@ -181,7 +181,7 @@ public class TitleScene extends PixelScene {
 				ShatteredPixelDungeon.switchScene( AboutScene.class );
 			}
 		};
-		btnAbout.icon(Icons.get(Icons.SHPX));
+		btnAbout.icon(Icons.get(Icons.PPD));
 		add(btnAbout);
 		
 		final int BTN_HEIGHT = 20;

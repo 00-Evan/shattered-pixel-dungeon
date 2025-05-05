@@ -30,7 +30,7 @@ public class TimeStasis extends FlavourBuff {
 
 	{
 		type = Buff.buffType.POSITIVE;
-		actPriority = BUFF_PRIO-3; //acts after all other buffs, so they are prevented
+		actPriority = HERO_PRIO+1;
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class TimeStasis extends FlavourBuff {
 
 		//don't punish the player for going into stasis frequently
 		Hunger hunger = Buff.affect(target, Hunger.class);
-		if (hunger != null && !hunger.isStarving()) {
+		if (!hunger.isStarving()) {
 			hunger.affectHunger(cooldown(), true);
 		}
 	}

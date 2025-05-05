@@ -75,7 +75,7 @@ public class Necromancer extends Mob {
 	public boolean summoning = false;
 	public int summoningPos = -1;
 
-	private class Polished {
+	protected class Polished {
 		private static final String SUMMON_COOLDOWN = "summon_cooldown";
 		private static final String ZAP_COOLDOWN = "zap_cooldown";
 		private static final String TP_COOLDOWN = "zap_cooldown";
@@ -85,6 +85,7 @@ public class Necromancer extends Mob {
 		public int tpCooldown = -1;
 
 
+		private static final String ALT_POS = "alt_pos";
 		public boolean alt_pos = false;
 	}
 	Polished polished = new Polished();
@@ -193,6 +194,7 @@ public class Necromancer extends Mob {
 		if (polished.tpCooldown != -1) {
 			bundle.put(Polished.TP_COOLDOWN, polished.tpCooldown);
 		}
+		bundle.put(Polished.ALT_POS, polished.alt_pos);
 	}
 
 	@Override
@@ -215,6 +217,9 @@ public class Necromancer extends Mob {
 		}
 		if (bundle.contains( Polished.TP_COOLDOWN )){
 			polished.tpCooldown = bundle.getInt( Polished.TP_COOLDOWN );
+		}
+		if (bundle.contains( Polished.ALT_POS )){
+			polished.alt_pos = bundle.getBoolean( Polished.ALT_POS );
 		}
 	}
 	

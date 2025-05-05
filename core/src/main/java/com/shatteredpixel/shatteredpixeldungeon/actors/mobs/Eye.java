@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -218,6 +219,10 @@ public class Eye extends Mob {
 				}
 			} else {
 				ch.sprite.showStatus( CharSprite.NEUTRAL,  ch.defenseVerb() );
+			}
+
+			if(enemy == Dungeon.hero) {
+				GameScene.Polished.queueIndicator(this);
 			}
 		}
 

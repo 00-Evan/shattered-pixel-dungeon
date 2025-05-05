@@ -549,7 +549,7 @@ public abstract class Wand extends Item {
 		int n = 0;
 		if (Random.Int(3) == 0) {
 			n++;
-			if (Random.Int(5) == 0){
+			if (Random.Int(5) == 0) {
 				n++;
 			}
 		}

@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.NecromancerSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SpectralNecromancerSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
@@ -104,6 +105,14 @@ public class SpectralNecromancer extends Necromancer {
 	public void summonMinion() {
 		if (Actor.findChar(summoningPos) != null) {
 
+			//cancel if character cannot be moved, except if there's no other summon positions
+			if (Char.hasProp(Actor.findChar(summoningPos), Property.IMMOVABLE) && polished.alt_pos){
+				summoning = false;
+				((SpectralNecromancerSprite)sprite).finishSummoning();
+				spend(-TICK);
+				return;
+			}
+
 			int pushPos = pos;
 			for (int c : PathFinder.NEIGHBOURS8) {
 				if (Actor.findChar(summoningPos + c) == null
@@ -139,7 +148,6 @@ public class SpectralNecromancer extends Necromancer {
 					}
 				}
 
-				spend(TICK);
 				return;
 			}
 		}
@@ -148,8 +156,13 @@ public class SpectralNecromancer extends Necromancer {
 
 		Wraith wraith = Wraith.spawnAt(summoningPos, Wraith.class);
 		if (wraith == null){
-			spend(TICK);
 			return;
+		}
+		//POLISHED: prevent cheesing
+		{
+			wraith.POLISHED_spend(-1f);
+			wraith.aggro(enemy);
+			wraith.target = target;
 		}
 		wraith.adjustStats(4);
 		Dungeon.level.occupyCell( wraith );

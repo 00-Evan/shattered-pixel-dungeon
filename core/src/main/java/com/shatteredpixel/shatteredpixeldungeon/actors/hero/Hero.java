@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Debug;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
+import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
@@ -138,6 +139,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.SaltCube;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ThirteenLeafClover;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
@@ -167,6 +169,7 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.AlchemyScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -179,6 +182,8 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
+import com.watabou.input.KeyBindings;
+import com.watabou.input.KeyEvent;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.Delayer;
@@ -209,7 +214,7 @@ public class Hero extends Char {
 	
 	private static final float TIME_TO_REST		    = 1f;
 	private static final float TIME_TO_SEARCH	    = 2f;
-	private static final float HUNGER_FOR_SEARCH	= 6f;
+	private static final float HUNGER_FOR_SEARCH	= 5f;
 	
 	public HeroClass heroClass = HeroClass.ROGUE;
 	public HeroSubClass subClass = HeroSubClass.NONE;
@@ -253,6 +258,9 @@ public class Hero extends Char {
 
 			hero.lvl = newLvl;
 			hero.updateHT(true);
+
+			SpiritBow bow = Dungeon.hero.belongings.getItem(SpiritBow.class);
+			if(bow != null) bow.Polished_resetCharges();
 		}
 
 		public static boolean noEnemiesLast = false;
@@ -345,6 +353,8 @@ public class Hero extends Char {
 	private static final String LEVEL		= "lvl";
 	private static final String EXPERIENCE	= "exp";
 	private static final String HTBOOST     = "htboost";
+
+	private static final String JUST_MOVED  = "just_moved";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -365,6 +375,8 @@ public class Hero extends Char {
 		bundle.put( EXPERIENCE, exp );
 		
 		bundle.put( HTBOOST, HTBoost );
+
+		bundle.put( JUST_MOVED, justMoved );
 
 		belongings.storeInBundle( bundle );
 	}
@@ -388,6 +400,8 @@ public class Hero extends Char {
 		defenseSkill = bundle.getInt( DEFENSE );
 		
 		STR = bundle.getInt( STRENGTH );
+
+		justMoved = bundle.getBoolean( JUST_MOVED );
 
 		belongings.restoreFromBundle( bundle );
 	}
@@ -545,8 +559,10 @@ public class Hero extends Char {
 		
 		if (wep instanceof MissileWeapon){
 			if (Dungeon.level.adjacent( pos, target.pos )) {
-				accuracy *= (0.5f + 0.2f*pointsInTalent(Talent.POINT_BLANK));
+				//do nothing, throwies already have lower acc on melee
+				//0.67
 			} else {
+				//1.5*1.5 = 2.25
 				accuracy *= 1.5f;
 			}
 		//precise assault and liquid agility
@@ -911,7 +927,7 @@ public class Hero extends Char {
 			
 			curAction = null;
 			
-			spendAndNext( TICK );
+			spendAndNextConstant( TICK );
 			return false;
 		}
 		
@@ -2099,6 +2115,9 @@ public class Hero extends Char {
 				if (buff(ElixirOfMight.HTBoost.class) != null){
 					buff(ElixirOfMight.HTBoost.class).onLevelUp();
 				}
+
+				SpiritBow bow = Dungeon.hero.belongings.getItem(SpiritBow.class);
+				if(bow != null && lvl % 5 == 0) bow.Polished_resetCharges();
 				
 				updateHT( true );
 				attackSkill++;
@@ -2202,7 +2221,8 @@ public class Hero extends Char {
 			interrupt();
 
 			if (ankh.isBlessed()) {
-				this.HP = HT / 4;
+				this.HP = HT / 3;
+				Buff.affect(Dungeon.hero, Hunger.class).satisfy(Hunger.STARVING);
 
 				PotionOfHealing.cure(this);
 				Buff.prolong(this, Invulnerability.class, Invulnerability.DURATION);
@@ -2470,9 +2490,9 @@ public class Hero extends Char {
 		
 		boolean smthFound = false;
 
-		boolean circular = pointsInTalent(Talent.WIDE_SEARCH) == 1;
+		boolean circular = false;
 		int distance = heroClass == HeroClass.ROGUE ? 2 : 1;
-		if (hasTalent(Talent.WIDE_SEARCH)) distance++;
+		if (hasTalent(Talent.ROGUES_EXPERTISE)) distance++;
 		
 		boolean foresight = buff(Foresight.class) != null;
 		boolean foresightScan = foresight && !Dungeon.level.mapped[pos];
@@ -2587,13 +2607,20 @@ public class Hero extends Char {
 			sprite.showStatus( CharSprite.DEFAULT, Messages.get(this, "search") );
 			sprite.operate( pos );
 			if (!Dungeon.level.locked) {
-				if (cursed) {
-					GLog.n(Messages.get(this, "search_distracted"));
-					Buff.affect(this, Hunger.class).affectHunger(TIME_TO_SEARCH - (2 * HUNGER_FOR_SEARCH));
-				} else {
-					Buff.affect(this, Hunger.class).affectHunger(TIME_TO_SEARCH - HUNGER_FOR_SEARCH);
+				float searchTime = Dungeon.hero.hasTalent(Talent.ROGUES_EXPERTISE) ? 1f : TIME_TO_SEARCH;
+				float searchHunger = Dungeon.hero.hasTalent(Talent.ROGUES_EXPERTISE) ? 1f : HUNGER_FOR_SEARCH;
+
+				if(cursed) {
+					searchTime++;
+					searchHunger *= 2;
 				}
+				searchHunger *= SaltCube.hungerGainMultiplier();
+				searchHunger = Math.min(searchHunger-searchTime, 0);
+
+				Buff.affect(this, Hunger.class).affectHunger(searchHunger);
 			}
+
+			if (cursed) GLog.n(Messages.get(this, "search_distracted"));
 			spendAndNext(TIME_TO_SEARCH);
 			
 		}

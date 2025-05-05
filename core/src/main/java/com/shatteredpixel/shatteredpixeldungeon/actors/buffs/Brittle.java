@@ -34,7 +34,7 @@ public class Brittle extends FlavourBuff {
 
     @Override
     public int icon() {
-        return BuffIndicator.DEGRADE;
+        return BuffIndicator.BRITTLE;
     }
 
     @Override

@@ -404,6 +404,8 @@ public class DM300 extends Mob {
 	public void dropRocks( Char target ) {
 
 		Dungeon.hero.interrupt();
+		GameScene.Polished.blockInput(.5f);
+
 		final int rockCenter;
 
 		//knock back 2 tiles if adjacent

@@ -72,6 +72,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesi
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
@@ -1261,6 +1262,22 @@ public abstract class Level implements Bundlable {
 		}
 	}
 
+	public void revealSecretDoor(int cell) {
+		if(Dungeon.level.map[cell] == Terrain.SECRET_DOOR) {
+			int oldValue = Dungeon.level.map[cell];
+
+			Dungeon.level.discover( cell );
+
+			if(Dungeon.level.heroFOV[cell]) {
+				GameScene.discoverTile( cell, oldValue );
+				ScrollOfMagicMapping.discover( cell );
+				GLog.w( Messages.get(Hero.class, "noticed_smth") );
+				Sample.INSTANCE.play( Assets.Sounds.SECRET );
+				Dungeon.hero.interrupt();
+			}
+		}
+	}
+
 	private static boolean[] heroMindFov;
 
 	private static boolean[] modifiableBlocking;
@@ -1317,7 +1334,7 @@ public abstract class Level implements Bundlable {
 
 			float viewDist = c.viewDistance;
 			if (c instanceof Hero){
-				viewDist *= 1f + 0.25f*((Hero) c).pointsInTalent(Talent.FARSIGHT);
+				viewDist *= 1f + 0.18f*((Hero) c).pointsInTalent(Talent.FARSIGHT);
 				viewDist *= EyeOfNewt.visionRangeMultiplier();
 			}
 			

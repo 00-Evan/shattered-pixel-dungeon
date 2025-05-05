@@ -45,7 +45,6 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndKeyBindings;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTextInput;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndVictoryCongrats;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.input.PointerEvent;
@@ -57,7 +56,6 @@ import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.tweeners.Tweener;
 import com.watabou.noosa.ui.Component;
-import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PointF;
 
@@ -78,6 +76,7 @@ public class HeroSelectScene extends PixelScene {
 	private ArrayList<StyledButton> heroBtns = new ArrayList<>();
 	private RenderedTextBlock heroName; //only on landscape
 	private RenderedTextBlock heroDesc; //only on landscape
+	private StyledButton POLISHED_btn;
 	private StyledButton startBtn;
 	private IconButton infoButton;
 	private IconButton btnOptions;
@@ -128,6 +127,28 @@ public class HeroSelectScene extends PixelScene {
 		title.hardlight(Window.TITLE_COLOR);
 		PixelScene.align(title);
 		add(title);
+
+		//POLISHED
+		POLISHED_btn = new StyledButton(Chrome.Type.GREY_BUTTON_TR, ""){
+			public void check() {
+				boolean value = SPDSettings.Polished.huntress();
+				SPDSettings.Polished.huntress(!value);
+
+				icon.copy( Icons.get( !value ? Icons.CHECKED_GRAY : Icons.UNCHECKED_GRAY) );
+			}
+
+			@Override
+			protected void onClick() {
+				super.onClick();
+				check();
+			}
+		};
+		POLISHED_btn.icon(Icons.get(SPDSettings.Polished.huntress() ? Icons.CHECKED_GRAY : Icons.UNCHECKED_GRAY));
+		POLISHED_btn.setSize(80, 18);
+		POLISHED_btn.textColor(Window.POLISHED_COLOR);
+		add(POLISHED_btn);
+		POLISHED_btn.visible = POLISHED_btn.active = false;
+		//
 
 		startBtn = new StyledButton(Chrome.Type.GREY_BUTTON_TR, ""){
 			@Override
@@ -275,6 +296,11 @@ public class HeroSelectScene extends PixelScene {
 			startBtn.setPos((leftArea - startBtn.width())/2f, title.top() + uiHeight - startBtn.height());
 			align(startBtn);
 
+			POLISHED_btn.text(Messages.titleCase(Messages.get(this, "polished")));
+			POLISHED_btn.setSize(POLISHED_btn.reqWidth()+8, 18);
+			POLISHED_btn.setPos((leftArea - POLISHED_btn.width())/2f, startBtn.top() - 5 - POLISHED_btn.height());
+			align(POLISHED_btn);
+
 			btnFade = new IconButton(Icons.CHEVRON.get()){
 				@Override
 				protected void onClick() {
@@ -413,6 +439,7 @@ public class HeroSelectScene extends PixelScene {
 			btnFade.visible = btnFade.active = true;
 
 			startBtn.visible = startBtn.active = true;
+			POLISHED_btn.visible = POLISHED_btn.active = cl == HeroClass.HUNTRESS;
 
 			infoButton.visible = infoButton.active = true;
 			infoButton.setPos(heroName.right(), heroName.top() + (heroName.height() - infoButton.height())/2f);
@@ -426,9 +453,14 @@ public class HeroSelectScene extends PixelScene {
 			startBtn.visible = startBtn.active = true;
 			startBtn.text(Messages.titleCase(cl.title()));
 			startBtn.setSize(startBtn.reqWidth() + 8, 21);
-
 			startBtn.setPos((Camera.main.width - startBtn.width())/2f, (Camera.main.height - HeroBtn.HEIGHT + 2 - startBtn.height()));
 			PixelScene.align(startBtn);
+
+			POLISHED_btn.visible = POLISHED_btn.active = cl == HeroClass.HUNTRESS;
+			POLISHED_btn.text(Messages.titleCase(Messages.get(this, "polished")));
+			POLISHED_btn.setSize(POLISHED_btn.reqWidth()+8, 18);
+			POLISHED_btn.setPos((Camera.main.width - POLISHED_btn.width())/2f, startBtn.top() - 1 - POLISHED_btn.height());
+			PixelScene.align(POLISHED_btn);
 
 			infoButton.visible = infoButton.active = true;
 			infoButton.setPos(startBtn.right(), startBtn.top());
@@ -479,6 +511,8 @@ public class HeroSelectScene extends PixelScene {
 		}
 		startBtn.enable(alpha != 0);
 		startBtn.alpha(alpha);
+		POLISHED_btn.enable(alpha != 0);
+		POLISHED_btn.alpha(alpha);
 		btnExit.enable(btnExit.visible && alpha != 0);
 		btnExit.icon().alpha(alpha);
 		optionsPane.active = optionsPane.visible && alpha != 0;

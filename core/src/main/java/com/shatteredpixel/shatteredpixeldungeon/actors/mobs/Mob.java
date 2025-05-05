@@ -256,6 +256,8 @@ public abstract class Mob extends Char {
 	protected boolean act() {
 		
 		super.act();
+
+		Polished_growingHunt();
 		
 		boolean justAlerted = alerted;
 		alerted = false;
@@ -1067,13 +1069,17 @@ public abstract class Mob extends Char {
 	}
 
 	private boolean Polished_huntNoti = false;
-	private void Polished_growingHunt() {
+	private boolean Polished_growingThreshold() {
 		ChampionEnemy.Growing grow = buff(ChampionEnemy.Growing.class);
+		return (grow != null && grow.Polished_huntThreshold());
+	}
+	private void Polished_growingHunt() {
+		if(Polished_growingThreshold()) {
+			aggro(Dungeon.hero);
+			target=enemy.pos;
 
-		if(grow != null && grow.Polished_hunt()) {
-			target=Dungeon.hero.pos;
 			if(!Polished_huntNoti) {
-				GLog.w(Messages.get(grow.getClass(), "hunt"));
+				GLog.w(Messages.get(ChampionEnemy.Growing.class, "hunt"));
 				Polished_huntNoti = true;
 			}
 		}
@@ -1183,7 +1189,8 @@ public abstract class Mob extends Char {
 				target = Dungeon.level.randomDestination( Mob.this );
 			}
 
-			if (alignment == Alignment.ENEMY && Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE) && enemy.buff(Corruption.class) == null) {
+			if (alignment == Alignment.ENEMY && Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)
+					&& enemy != null && enemy.buff(Corruption.class) == null) {
 				for (Mob mob : Dungeon.level.mobs) {
 					if (mob.paralysed <= 0
 							&& Dungeon.level.distance(pos, mob.pos) <= 8
@@ -1236,8 +1243,6 @@ public abstract class Mob extends Char {
 		
 		protected boolean continueWandering(){
 			enemySeen = false;
-
-			Polished_growingHunt();
 			
 			int oldPos = pos;
 			if (target != -1 && getCloser( target )) {

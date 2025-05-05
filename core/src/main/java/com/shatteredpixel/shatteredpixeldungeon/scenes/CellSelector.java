@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -43,6 +44,8 @@ import com.watabou.utils.GameMath;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Signal;
+
+import java.util.Objects;
 
 public class CellSelector extends ScrollArea {
 
@@ -171,7 +174,8 @@ public class CellSelector extends ScrollArea {
 			GameScene.ready();
 			
 		} else {
-			
+
+			if(GameScene.Polished.canInput() && Dungeon.hero.curAction == null) GameScene.Polished.bufferCell(cell);
 			GameScene.cancel();
 			
 		}
@@ -400,18 +404,22 @@ public class CellSelector extends ScrollArea {
 	private int lastCellMoved = 0;
 
 	private boolean moveFromActions(GameAction... actions){
-		if (Dungeon.hero == null || !Dungeon.hero.ready || !GameScene.Polished.canInput()){
-			return false;
-		}
-
-		if (GameScene.cancelCellSelector()){
-			return false;
-		}
-
 		Point direction = new Point();
 		for (GameAction action : actions) {
 			direction.offset(directionFromAction(action));
 		}
+
+		if (Dungeon.hero == null || !Dungeon.hero.ready || !GameScene.Polished.canInput()){
+			//GameAction movement = actionFromDirection(direction);
+			if(GameScene.Polished.canInput() && !direction.isZero())
+				GameScene.Polished.bufferMovement(direction);
+
+			return false;
+		}
+		if (GameScene.cancelCellSelector()){
+			return false;
+		}
+
 		int cell = Dungeon.hero.pos;
 		//clamp to adjacent values (-1 to +1)
 		cell += GameMath.gate(-1, direction.x, +1);
@@ -440,6 +448,17 @@ public class CellSelector extends ScrollArea {
 		if (action == SPDAction.W)  return new Point(-1,  0);
 		if (action == SPDAction.NW) return new Point(-1, -1);
 		else                        return new Point();
+	}
+	private GameAction actionFromDirection(Point point){
+		if (Objects.equals(point, new Point(0, -1)))  	return SPDAction.N;
+		if (Objects.equals(point, new Point(+1, -1))) 	return SPDAction.NE;
+		if (Objects.equals(point, new Point(+1, 0))) 		return SPDAction.E;
+		if (Objects.equals(point, new Point(+1, +1))) 	return SPDAction.SE;
+		if (Objects.equals(point, new Point(0, +1))) 		return SPDAction.S;
+		if (Objects.equals(point, new Point(-1, +1))) 	return SPDAction.SW;
+		if (Objects.equals(point, new Point(-1, 0))) 		return SPDAction.W;
+		if (Objects.equals(point, new Point(-1, -1))) 	return SPDAction.NW;
+		else                        							return SPDAction.NONE;
 	}
 
 	//~80% deadzone
