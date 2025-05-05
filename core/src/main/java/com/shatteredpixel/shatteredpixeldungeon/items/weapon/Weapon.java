@@ -87,7 +87,7 @@ abstract public class Weapon extends KindOfWeapon {
 
 	public enum Augment {
 		SPEED   (0.7f, 2/3f),
-		DAMAGE  (1.5f, 5/3f),
+		DAMAGE  (1.45f, 3/2f),
 		NONE	(1.0f, 1f);
 
 		private float damageFactor;
@@ -146,7 +146,7 @@ abstract public class Weapon extends KindOfWeapon {
 				}
 				if (defender.isAlive() && !becameAlly) {
 					int dmg = ((Hero) attacker).subClass == HeroSubClass.PALADIN ? 6 : 2;
-					defender.damage(Math.round(dmg * Enchantment.genericProcChanceMultiplier(attacker)), HolyWeapon.INSTANCE);
+					defender.damage(Math.round(dmg * Enchantment.Polished_procChanceMultiplier(attacker, this)), HolyWeapon.INSTANCE);
 				}
 
 			} else {
@@ -325,7 +325,7 @@ abstract public class Weapon extends KindOfWeapon {
 			reach += 2;
 		}
 		if (hasEnchant(Projecting.class, owner)){
-			return reach + Math.round(enchantment.procChanceMultiplier(owner));
+			return reach + Math.round(Enchantment.Polished_procChanceMultiplier(owner, this));
 		} else {
 			return reach;
 		}
@@ -492,10 +492,10 @@ abstract public class Weapon extends KindOfWeapon {
 	public static abstract class Enchantment implements Bundlable {
 
 		public static final Class<?>[] common = new Class<?>[]{
-				Blazing.class, Chilling.class, Kinetic.class, Shocking.class};
+				Blocking.class, Chilling.class, Kinetic.class, Shocking.class};
 
 		public static final Class<?>[] uncommon = new Class<?>[]{
-				Blocking.class, Blooming.class, Elastic.class,
+				Blazing.class, Blooming.class, Elastic.class,
 				Lucky.class, Projecting.class, Unstable.class};
 
 		public static final Class<?>[] rare = new Class<?>[]{
@@ -515,11 +515,15 @@ abstract public class Weapon extends KindOfWeapon {
 			
 		public abstract int proc( Weapon weapon, Char attacker, Char defender, int damage );
 
+		//Kept to ensure compatibility with SPD
 		protected float procChanceMultiplier( Char attacker ){
 			return genericProcChanceMultiplier( attacker );
 		}
+		public static float genericProcChanceMultiplier( Char attacker ) {
+			return Polished_procChanceMultiplier(attacker, null);
+		}
 
-		public static float genericProcChanceMultiplier( Char attacker ){
+		public static float Polished_procChanceMultiplier(Char attacker, KindOfWeapon weapon ){
 			float multi = RingOfArcana.enchantPowerMultiplier(attacker);
 			Berserk rage = attacker.buff(Berserk.class);
 			if (rage != null) {
@@ -547,6 +551,10 @@ abstract public class Weapon extends KindOfWeapon {
 			if (attacker.buff(Talent.StrikingWaveTracker.class) != null
 					&& ((Hero)attacker).pointsInTalent(Talent.STRIKING_WAVE) == 4){
 				multi += 0.2f;
+			}
+
+			if(weapon instanceof RunicBlade) {
+				multi += ((RunicBlade) weapon).Polished_enchantmentBoost();
 			}
 
 			return multi;

@@ -37,6 +37,9 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndKeyBindings;
 import com.watabou.input.GameAction;
+import com.watabou.input.KeyBindings;
+import com.watabou.input.KeyEvent;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.utils.BArray;
 import com.watabou.utils.PathFinder;
@@ -82,10 +85,17 @@ public class QuickSlotButton extends Button {
 		slot = new ItemSlot() {
 			@Override
 			protected void onClick() {
-				if (!Dungeon.hero.isAlive() || !Dungeon.hero.ready){
+				if (!Dungeon.hero.isAlive()){
 					return;
 				}
-				if (targetingSlot == slotNum) {
+				if(!Dungeon.hero.ready) {
+					boolean animation = !GameScene.cancel();
+
+					GameScene.Polished.bufferAction(keyAction(), animation);
+					return;
+				}
+
+				if (targetingSlot == slotNum && GameScene.Polished.canInput()) {
 					int cell = autoAim(lastTarget, select(slotNum));
 
 					if (cell != -1){
@@ -96,7 +106,7 @@ public class QuickSlotButton extends Button {
 					}
 				} else {
 					Item item = select(slotNum);
-					if (Dungeon.hero.belongings.contains(item) && !GameScene.cancel() && GameScene.Polished.canInput()) {
+					if (Dungeon.hero.belongings.contains(item) && !GameScene.cancel() /*&& GameScene.Polished.canInput()*/) {
 						GameScene.centerNextWndOnInvPane();
 						item.execute(Dungeon.hero);
 						if (item.usesTargeting) {
@@ -224,8 +234,11 @@ public class QuickSlotButton extends Button {
 	
 	@Override
 	protected void onClick() {
-		if (Dungeon.hero.ready && !GameScene.cancel()) {
+		boolean animation = !GameScene.cancel();
+		if (animation && Dungeon.hero.ready) {
 			GameScene.selectItem(itemSelector);
+		} else {
+			GameScene.Polished.bufferAction(keyAction(), animation);
 		}
 	}
 

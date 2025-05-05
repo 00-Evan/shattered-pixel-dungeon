@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Brittle;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
@@ -42,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Daze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Electrified;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
@@ -56,6 +58,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.WildMagic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bee;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
@@ -72,6 +75,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
 
 import java.util.HashMap;
@@ -89,40 +93,55 @@ public class WandOfCorruption extends Wand {
 	private static final float MINOR_DEBUFF_WEAKEN = 1/4f;
 	private static final HashMap<Class<? extends Buff>, Float> MINOR_DEBUFFS = new HashMap<>();
 	static{
-		MINOR_DEBUFFS.put(Weakness.class,       2f);
-		MINOR_DEBUFFS.put(Vulnerable.class,     2f);
-		MINOR_DEBUFFS.put(Cripple.class,        1f);
-		MINOR_DEBUFFS.put(Blindness.class,      1f);
-		MINOR_DEBUFFS.put(Terror.class,         1f);
 
+		MINOR_DEBUFFS.put(Brittle.class,        2f);
+		MINOR_DEBUFFS.put(Hex.class,        	2f);
+		MINOR_DEBUFFS.put(Charm.class,        	1f);
+		MINOR_DEBUFFS.put(Cripple.class,        1f);
+
+		MINOR_DEBUFFS.put(Weakness.class,       0f);
+		MINOR_DEBUFFS.put(Vulnerable.class,     0f);
 		MINOR_DEBUFFS.put(Chill.class,          0f);
 		MINOR_DEBUFFS.put(Ooze.class,           0f);
-		MINOR_DEBUFFS.put(Roots.class,          0f);
-		MINOR_DEBUFFS.put(Vertigo.class,        0f);
 		MINOR_DEBUFFS.put(Drowsy.class,         0f);
 		MINOR_DEBUFFS.put(Bleeding.class,       0f);
 		MINOR_DEBUFFS.put(Burning.class,        0f);
 		MINOR_DEBUFFS.put(Poison.class,         0f);
+		MINOR_DEBUFFS.put(SoulMark.class,       0f);
+		MINOR_DEBUFFS.put(Corrosion.class,      0f);
 	}
 
 	private static final float MAJOR_DEBUFF_WEAKEN = 1/2f;
 	private static final HashMap<Class<? extends Buff>, Float> MAJOR_DEBUFFS = new HashMap<>();
 	static{
 		MAJOR_DEBUFFS.put(Amok.class,           3f);
-		MAJOR_DEBUFFS.put(Slow.class,           2f);
-		MAJOR_DEBUFFS.put(Hex.class,            2f);
-		MAJOR_DEBUFFS.put(Paralysis.class,      1f);
+		MAJOR_DEBUFFS.put(Daze.class,           2f);
+		MAJOR_DEBUFFS.put(Terror.class,         2f);
+		MAJOR_DEBUFFS.put(Slow.class,           1f);
 
-		MAJOR_DEBUFFS.put(Daze.class,           0f);
+		MAJOR_DEBUFFS.put(Roots.class,          0f);
+		MAJOR_DEBUFFS.put(Vertigo.class,        0f);
+		MAJOR_DEBUFFS.put(Paralysis.class,      0f);
+		MAJOR_DEBUFFS.put(Electrified.class,      0f);
+		MAJOR_DEBUFFS.put(Blindness.class,     	0f);
 		MAJOR_DEBUFFS.put(Dread.class,          0f);
-		MAJOR_DEBUFFS.put(Charm.class,          0f);
 		MAJOR_DEBUFFS.put(MagicalSleep.class,   0f);
-		MAJOR_DEBUFFS.put(SoulMark.class,       0f);
-		MAJOR_DEBUFFS.put(Corrosion.class,      0f);
 		MAJOR_DEBUFFS.put(Frost.class,          0f);
 		MAJOR_DEBUFFS.put(Doom.class,           0f);
 	}
-	
+
+	@Override
+	protected int chargesPerCast() {
+		if (cursed ||
+				(charger != null && charger.target != null && charger.target.buff(WildMagic.WildMagicTracker.class) != null)){
+			return 1;
+		}
+		//consumes 35% of current charges instead of the usual 30%
+		//2 charges at 3 (+1)
+		//3 charges at 6 (+4)
+		return (int) GameMath.gate(1, (int)Math.ceil(curCharges*0.35f), 3);
+	}
+
 	@Override
 	public void onZap(Ballistica bolt) {
 		Char ch = Actor.findChar(bolt.collisionPos);
@@ -160,31 +179,39 @@ public class WandOfCorruption extends Wand {
 			
 			//100% health: 5x resist   75%: 3.25x resist   50%: 2x resist   25%: 1.25x resist
 			enemyResist *= 1 + 4*Math.pow(enemy.HP/(float)enemy.HT, 2);
-			
-			//debuffs placed on the enemy reduce their resistance
-			for (Buff buff : enemy.buffs()){
-				if (MAJOR_DEBUFFS.containsKey(buff.getClass()))         enemyResist *= (1f-MAJOR_DEBUFF_WEAKEN);
-				else if (MINOR_DEBUFFS.containsKey(buff.getClass()))    enemyResist *= (1f-MINOR_DEBUFF_WEAKEN);
-				else if (buff.type == Buff.buffType.NEGATIVE)           enemyResist *= (1f-MINOR_DEBUFF_WEAKEN);
-			}
-			
-			//cannot re-corrupt or doom an enemy, so give them a major debuff instead
-			if(enemy.buff(Corruption.class) != null || enemy.buff(Doom.class) != null){
-				corruptingPower = enemyResist - 0.001f;
-			}
-			
-			if (corruptingPower > enemyResist){
-				corruptEnemy( enemy );
-			} else {
-				float debuffChance = corruptingPower / enemyResist;
-				if (Random.Float() < debuffChance){
-					debuffEnemy( enemy, MAJOR_DEBUFFS);
+
+			int chargesUsed = 0;
+			for(int i = 0; i < chargesPerCast(); i++) {
+				chargesUsed++;
+
+				float nerfedResist = enemyResist;
+
+				//debuffs placed on the enemy reduce their resistance
+				for (Buff buff : enemy.buffs()){
+					if (MAJOR_DEBUFFS.containsKey(buff.getClass()))         nerfedResist *= (1f-MAJOR_DEBUFF_WEAKEN);
+					else if (MINOR_DEBUFFS.containsKey(buff.getClass()))    nerfedResist *= (1f-MINOR_DEBUFF_WEAKEN);
+					else if (buff.type == Buff.buffType.NEGATIVE)           nerfedResist *= (1f-MINOR_DEBUFF_WEAKEN);
+				}
+
+				//cannot re-corrupt or doom an enemy, so give them a major debuff instead
+				if(enemy.buff(Corruption.class) != null || enemy.buff(Doom.class) != null){
+					corruptingPower = nerfedResist - 0.001f;
+				}
+
+				if (corruptingPower > nerfedResist){
+					corruptEnemy( enemy );
+					break;
 				} else {
-					debuffEnemy( enemy, MINOR_DEBUFFS);
+					float debuffChance = corruptingPower / nerfedResist;
+					if (Random.Float() < debuffChance){
+						debuffEnemy( enemy, MAJOR_DEBUFFS);
+					} else {
+						debuffEnemy( enemy, MINOR_DEBUFFS);
+					}
 				}
 			}
 
-			wandProc(ch, chargesPerCast());
+			wandProc(ch, chargesUsed);
 			Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, 0.8f * Random.Float(0.87f, 1.15f) );
 			
 		} else {
@@ -211,7 +238,10 @@ public class WandOfCorruption extends Wand {
 		Class<?extends FlavourBuff> debuffCls = (Class<? extends FlavourBuff>) Random.chances(debuffs);
 		
 		if (debuffCls != null){
-			Buff.append(enemy, debuffCls, 6 + buffedLvl()*3);
+			Buff debuff = Buff.append(enemy, debuffCls, 6 + buffedLvl()*3);
+			if(debuff instanceof Charm) {
+				((Charm) debuff).object = Dungeon.hero.id();
+			}
 		} else {
 			//if no debuff can be applied (all are present), then go up one tier
 			if (category == MINOR_DEBUFFS)          debuffEnemy( enemy, MAJOR_DEBUFFS);
@@ -249,6 +279,14 @@ public class WandOfCorruption extends Wand {
 
 			Buff.prolong( defender, Amok.class, Math.round((4+level*2) * powerMulti));
 		}
+	}
+
+	@Override
+	public String statsDesc() {
+		if (isIdentified())
+			return Messages.get(this, "stats_desc", chargesPerCast());
+		else
+			return Messages.get(this, "typical_stats_desc");
 	}
 
 	@Override

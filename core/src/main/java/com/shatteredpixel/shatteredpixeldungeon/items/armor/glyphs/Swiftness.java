@@ -21,6 +21,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs;
 
+import static java.lang.Math.floor;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -43,13 +47,23 @@ public class Swiftness extends Armor.Glyph {
 
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
-		int level = Math.max(0, armor.buffedLvl());
+		int level = max(0, armor.buffedLvl());
 		float procChance = (level+2f)/(level+12f) * procChanceMultiplier(defender);
 
 		if ( attacker.alignment != defender.alignment && Random.Float() < procChance ) {
-			float powerMulti = Math.max(1f, procChance);
+			float powerMulti = max(1f, procChance);
 
-			Buff.affect( defender, Stamina.class, Math.round(powerMulti * (3+level)));
+			float boost = (powerMulti * (3+level));
+
+			Stamina stamina = defender.buff(Stamina.class);
+			if(stamina != null) {
+				//boost up to maxtotal
+				float maxTotal = 1.5f*boost;
+				float diff = max(maxTotal - stamina.cooldown(), 0);
+				boost = min(diff, boost);
+			}
+
+			Buff.affect( defender, Stamina.class, boost);
 
 			//defender.sprite.centerEmitter().start(BloodParticle.BURST, 0.05f, 10);
 			//defender.sprite.centerEmitter().burst(EnergyParticle.FACTORY, 10);

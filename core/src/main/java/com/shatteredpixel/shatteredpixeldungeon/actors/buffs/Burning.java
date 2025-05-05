@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourg
 import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -95,20 +96,24 @@ public class Burning extends Buff implements Hero.Doom {
 	@Override
 	public boolean act() {
 
+		int brimstoneLevel = target.glyphLevel(Brimstone.class);
+
 		if (acted && Dungeon.level.water[target.pos] && !target.flying){
 			detach();
+		} else if(target.isAlive() && brimstoneLevel >= 0) {
+
+			Buff.detach( target, Chill.class);
+			Brimstone.gainShield(target, brimstoneLevel);
 		} else if (target.isAlive() && !target.isImmune(getClass())) {
 
 			acted = true;
 			int damage = tickDamage();
 			Buff.detach( target, Chill.class);
-
 			if (target instanceof Hero
 					&& target.buff(TimekeepersHourglass.timeStasis.class) == null
 					&& target.buff(TimeStasis.class) == null) {
 				
 				Hero hero = (Hero)target;
-
 				hero.damage( damage, this );
 				burnIncrement++;
 
@@ -138,7 +143,6 @@ public class Burning extends Buff implements Hero.Doom {
 						Heap.burnFX( hero.pos );
 					}
 				}
-				
 			} else {
 				target.damage( damage, this );
 			}
@@ -158,7 +162,6 @@ public class Burning extends Buff implements Hero.Doom {
 			}
 
 		} else {
-
 			detach();
 		}
 		
@@ -183,21 +186,6 @@ public class Burning extends Buff implements Hero.Doom {
 	}
 	
 	public void reignite( Char ch, float duration ) {
-		if (ch.isImmune(Burning.class)){
-			if (ch.glyphLevel(Brimstone.class) >= 0){
-				//generate avg of 1 shield per turn per 50% boost, to a max of 4x boost
-				float shieldChance = 2*(Armor.Glyph.genericProcChanceMultiplier(ch) - 1f);
-				int shieldCap = Math.round(shieldChance*4f);
-				int shieldGain = (int)shieldChance;
-				if (Random.Float() < shieldChance%1) shieldGain++;
-				if (shieldCap > 0 && shieldGain > 0){
-					Barrier barrier = Buff.affect(ch, Barrier.class);
-					if (barrier.shielding() < shieldCap){
-						barrier.incShield(1);
-					}
-				}
-			}
-		}
 		if (left < duration) left = duration;
 		acted = false;
 	}

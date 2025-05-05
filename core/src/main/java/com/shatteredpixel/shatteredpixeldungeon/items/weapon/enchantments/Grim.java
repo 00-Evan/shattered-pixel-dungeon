@@ -44,7 +44,7 @@ public class Grim extends Weapon.Enchantment {
 
 		//scales from 0 - 50% based on how low hp the enemy is, plus 0-5% per level
 		float maxChance = 0.5f + .05f*level;
-		maxChance *= procChanceMultiplier(attacker);
+		maxChance *= Polished_procChanceMultiplier(attacker, weapon);
 
 		//we defer logic using an actor here so we can know the true final damage
 		//see Char.damage

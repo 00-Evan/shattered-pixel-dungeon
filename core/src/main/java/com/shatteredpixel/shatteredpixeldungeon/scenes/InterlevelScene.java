@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -205,7 +206,7 @@ public class InterlevelScene extends PixelScene {
 			}
 		Random.popGenerator();
 		
-		if (DeviceCompat.isDebug()){
+		if (DeviceCompat.isDebug() || SPDSettings.Polished.quickTransitions()){
 			fadeTime = 0f;
 		}
 
@@ -262,7 +263,7 @@ public class InterlevelScene extends PixelScene {
 		align(loadingText);
 		add(loadingText);
 
-		if (mode == Mode.DESCEND && lastRegion <= 5 && !DeviceCompat.isDebug()){
+		if (mode == Mode.DESCEND && lastRegion <= 5 && !DeviceCompat.isDebug() && !SPDSettings.Polished.quickTransitions()){
 			if (Dungeon.hero == null || (loadingDepth > Statistics.deepestFloor && loadingDepth % 5 == 1)){
 					storyMessage = PixelScene.renderTextBlock(Document.INTROS.pageBody(region), 6);
 					storyMessage.maxWidth( PixelScene.landscape() ? 180 : 125);

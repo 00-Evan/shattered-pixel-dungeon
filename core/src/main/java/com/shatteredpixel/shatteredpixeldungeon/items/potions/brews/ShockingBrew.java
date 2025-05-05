@@ -52,6 +52,11 @@ public class ShockingBrew extends Brew {
 			}
 		}
 	}
+
+	@Override
+	public int energyVal() {
+		return quantity * 7;
+	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
@@ -59,7 +64,7 @@ public class ShockingBrew extends Brew {
 			inputs =  new Class[]{PotionOfParalyticGas.class};
 			inQuantity = new int[]{1};
 			
-			cost = 10;
+			cost = 1;
 			
 			output = ShockingBrew.class;
 			outQuantity = 1;

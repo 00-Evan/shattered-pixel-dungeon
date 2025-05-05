@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corrosion;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Electrified;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
@@ -76,6 +77,7 @@ public class RingOfElements extends Ring {
 		RESISTS.add( Frost.class );
 		RESISTS.add( Ooze.class );
 		RESISTS.add( Paralysis.class );
+		RESISTS.add( Electrified.class );
 		RESISTS.add( Poison.class );
 		RESISTS.add( Corrosion.class );
 

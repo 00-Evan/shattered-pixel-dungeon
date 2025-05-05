@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -189,7 +190,7 @@ abstract public class MissileWeapon extends Weapon {
 
 		if (projecting
 				&& (Dungeon.level.passable[dst] || Dungeon.level.avoid[dst] || Actor.findChar(dst) != null)
-				&& Dungeon.level.distance(user.pos, dst) <= Math.round(4 * Enchantment.genericProcChanceMultiplier(user))){
+				&& Dungeon.level.distance(user.pos, dst) <= Math.round(4 * Enchantment.Polished_procChanceMultiplier(user, this))){
 			return dst;
 		} else {
 			return super.throwPos(user, dst);
@@ -211,7 +212,9 @@ abstract public class MissileWeapon extends Weapon {
 	protected float adjacentAccFactor(Char owner, Char target){
 		if (Dungeon.level.adjacent( owner.pos, target.pos )) {
 			if (owner instanceof Hero){
-				return (0.5f + 0.2f*((Hero) owner).pointsInTalent(Talent.POINT_BLANK));
+				int points = ((Hero) owner).pointsInTalent(Talent.POINT_BLANK);
+				//50, 75, 100, 125
+				return 0.5f + 0.25f*points;
 			} else {
 				return 0.5f;
 			}
@@ -311,6 +314,8 @@ abstract public class MissileWeapon extends Weapon {
 				}
 			}
 			Dungeon.level.drop( this, cell ).sprite.drop();
+		} else {
+			//Dungeon.quickslot.clearMissile(this);
 		}
 	}
 	

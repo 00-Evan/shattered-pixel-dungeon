@@ -106,35 +106,31 @@ public class WndHeroInfo extends WndTabbed {
 			}
 		});
 
-		if (Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_2) || DeviceCompat.isDebug()) {
-			subclassInfo = new SubclassInfoTab(cl);
-			add(subclassInfo);
-			subclassInfo.setSize(WIDTH, MIN_HEIGHT);
-			finalHeight = (int)Math.max(finalHeight, subclassInfo.height());
+		subclassInfo = new SubclassInfoTab(cl);
+		add(subclassInfo);
+		subclassInfo.setSize(WIDTH, MIN_HEIGHT);
+		finalHeight = (int)Math.max(finalHeight, subclassInfo.height());
 
-			add(new IconTab(new ItemSprite(ItemSpriteSheet.MASK, null)) {
-				@Override
-				protected void select(boolean value) {
-					super.select(value);
-					subclassInfo.visible = subclassInfo.active = value;
-				}
-			});
-		}
+		add(new IconTab(new ItemSprite(ItemSpriteSheet.MASK, null)) {
+			@Override
+			protected void select(boolean value) {
+				super.select(value);
+				subclassInfo.visible = subclassInfo.active = value;
+			}
+		});
 
-		if (Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_4) || DeviceCompat.isDebug()) {
-			abilityInfo = new ArmorAbilityInfoTab(cl);
-			add(abilityInfo);
-			abilityInfo.setSize(WIDTH, MIN_HEIGHT);
-			finalHeight = (int)Math.max(finalHeight, abilityInfo.height());
+		abilityInfo = new ArmorAbilityInfoTab(cl);
+		add(abilityInfo);
+		abilityInfo.setSize(WIDTH, MIN_HEIGHT);
+		finalHeight = (int)Math.max(finalHeight, abilityInfo.height());
 
-			add(new IconTab(new ItemSprite(ItemSpriteSheet.CROWN, null)) {
-				@Override
-				protected void select(boolean value) {
-					super.select(value);
-					abilityInfo.visible = abilityInfo.active = value;
-				}
-			});
-		}
+		add(new IconTab(new ItemSprite(ItemSpriteSheet.CROWN, null)) {
+			@Override
+			protected void select(boolean value) {
+				super.select(value);
+				abilityInfo.visible = abilityInfo.active = value;
+			}
+		});
 
 		resize(WIDTH, finalHeight);
 

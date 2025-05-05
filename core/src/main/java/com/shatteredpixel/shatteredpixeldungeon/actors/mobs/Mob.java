@@ -140,12 +140,44 @@ public abstract class Mob extends Char {
 			HP = Math.round(HT * percent);
 			firstAdded = false;
 		}
-	}
 
-	private void Polished_tickProjCooldown() {
-		ChampionEnemy.Projecting proj = buff(ChampionEnemy.Projecting.class);
-		if(proj != null) proj.Polished_cooldown--;
+
 	}
+	public class Polished {
+		public boolean onCooldown = false;
+		Actor timer = null;
+		int blockCooldown = 20;
+
+		void initTimer() {
+			timer = new Actor() {
+				@Override
+				protected boolean act() {
+					onCooldown = false;
+					killTimer();
+					return true;
+				}
+ 			};
+			Actor.addDelayed(timer, blockCooldown);
+		}
+		void killTimer() {
+			if(timer != null) {
+				Actor.remove(timer);
+				timer = null;
+			}
+		}
+
+		public void spot(boolean spot) {
+			if(spot) {
+				onCooldown = true;
+				killTimer();
+			} else {
+				if(onCooldown && timer == null) {
+					initTimer();
+				}
+			}
+		}
+	}
+	public Polished polished = new Polished();
 
 	private static final String STATE	= "state";
 	private static final String SEEN	= "seen";
@@ -224,6 +256,8 @@ public abstract class Mob extends Char {
 	protected boolean act() {
 		
 		super.act();
+
+		Polished_growingHunt();
 		
 		boolean justAlerted = alerted;
 		alerted = false;
@@ -263,8 +297,6 @@ public abstract class Mob extends Char {
 			Dungeon.level.updateFieldOfView( this, fieldOfView );
 			GameScene.updateFog(pos, viewDistance+(int)Math.ceil(speed()));
 		}
-
-		Polished_tickProjCooldown();
 
 		return result;
 	}
@@ -750,13 +782,14 @@ public abstract class Mob extends Char {
 				restoration = Math.round(restoration * 0.4f*Dungeon.hero.pointsInTalent(Talent.SOUL_SIPHON)/3f);
 			}
 			if (restoration > 0) {
-				Buff.affect(Dungeon.hero, Hunger.class).affectHunger(restoration*Dungeon.hero.pointsInTalent(Talent.SOUL_EATER)/3f);
-
-				if (Dungeon.hero.HP < Dungeon.hero.HT) {
-					int heal = (int)Math.ceil(restoration * 0.4f);
+				if (Dungeon.hero.HP < Dungeon.hero.HT && !Dungeon.hero.isStarving()) {
+					int heal = (int)Math.ceil(restoration * SoulMark.Polished.healRatio);
 					Dungeon.hero.HP = Math.min(Dungeon.hero.HT, Dungeon.hero.HP + heal);
 					Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(heal), FloatingText.HEALING);
 				}
+
+				//we specifically restore hunger after the heal check so starving characters don't heal
+				Buff.affect(Dungeon.hero, Hunger.class).affectHunger(restoration*Dungeon.hero.pointsInTalent(Talent.SOUL_EATER)/3f);
 			}
 		}
 
@@ -1036,13 +1069,17 @@ public abstract class Mob extends Char {
 	}
 
 	private boolean Polished_huntNoti = false;
-	private void Polished_growingHunt() {
+	private boolean Polished_growingThreshold() {
 		ChampionEnemy.Growing grow = buff(ChampionEnemy.Growing.class);
+		return (grow != null && grow.Polished_huntThreshold());
+	}
+	private void Polished_growingHunt() {
+		if(Polished_growingThreshold()) {
+			aggro(Dungeon.hero);
+			target=enemy.pos;
 
-		if(grow != null && grow.Polished_hunt()) {
-			target=Dungeon.hero.pos;
 			if(!Polished_huntNoti) {
-				GLog.w(Messages.get(grow.getClass(), "hunt"));
+				GLog.w(Messages.get(ChampionEnemy.Growing.class, "hunt"));
 				Polished_huntNoti = true;
 			}
 		}
@@ -1152,7 +1189,8 @@ public abstract class Mob extends Char {
 				target = Dungeon.level.randomDestination( Mob.this );
 			}
 
-			if (alignment == Alignment.ENEMY && Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) {
+			if (alignment == Alignment.ENEMY && Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)
+					&& enemy != null && enemy.buff(Corruption.class) == null) {
 				for (Mob mob : Dungeon.level.mobs) {
 					if (mob.paralysed <= 0
 							&& Dungeon.level.distance(pos, mob.pos) <= 8
@@ -1190,7 +1228,7 @@ public abstract class Mob extends Char {
 			state = HUNTING;
 			target = enemy.pos;
 			
-			if (alignment == Alignment.ENEMY && Dungeon.isChallenged( Challenges.SWARM_INTELLIGENCE )) {
+			if (alignment == Alignment.ENEMY && Dungeon.isChallenged( Challenges.SWARM_INTELLIGENCE ) && enemy.buff(Corruption.class) == null) {
 				for (Mob mob : Dungeon.level.mobs) {
 					if (mob.paralysed <= 0
 							&& Dungeon.level.distance(pos, mob.pos) <= 8
@@ -1205,8 +1243,6 @@ public abstract class Mob extends Char {
 		
 		protected boolean continueWandering(){
 			enemySeen = false;
-
-			Polished_growingHunt();
 			
 			int oldPos = pos;
 			if (target != -1 && getCloser( target )) {

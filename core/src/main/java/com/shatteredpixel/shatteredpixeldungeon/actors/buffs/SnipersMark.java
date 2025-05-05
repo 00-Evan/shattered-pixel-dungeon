@@ -47,6 +47,10 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 		type = buffType.POSITIVE;
 	}
 
+	public void set(int object){
+		this.object = object;
+	}
+
 	public void set(int object, float bonus){
 		this.object = object;
 		this.percentDmgBonus = bonus;
@@ -135,8 +139,8 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 		bow.sniperSpecial = true;
 		bow.sniperSpecialBonusDamage = percentDmgBonus;
 		
-		arrow.cast(hero, cell);
-		detach();
+		boolean isSuccessfulCast = arrow.Polished_cast(hero, cell);
+		if(isSuccessfulCast) detach();
 		
 	}
 }

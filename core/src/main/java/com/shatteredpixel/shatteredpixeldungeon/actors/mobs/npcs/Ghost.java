@@ -301,7 +301,7 @@ public class Ghost extends NPC {
 		}
 		
 		public static void spawn( SewerLevel level, Room room ) {
-			int inverseChance = Dungeon.depth == 7 ? 3 : 1;
+			int inverseChance = Dungeon.depth == 2 ? 3 : 1;
 			if (!spawned && Dungeon.depth > 1 && Random.Int( inverseChance ) == 0) {
 				
 				Ghost ghost = new Ghost();
@@ -314,7 +314,12 @@ public class Ghost extends NPC {
 				//dungeon depth determines type of quest.
 				//depth2=fetid rat, 3=gnoll trickster, 4=great crab
 				//POLISHED: 2=fetid rat; 3=gnoll; 1/3 chance great crab instead.
-				type = Random.Float() < 0.33f ? 3 : Dungeon.depth-1;
+
+				if(Dungeon.depth == 2) {
+					type = 1;
+				} else {
+					type = Random.IntRange(2,3);
+				}
 				
 				given = false;
 				processed = false;

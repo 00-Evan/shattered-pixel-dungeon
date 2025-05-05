@@ -42,7 +42,9 @@ public class Blazing extends Weapon.Enchantment {
 		// lvl 0 - 33%
 		// lvl 1 - 50%
 		// lvl 2 - 60%
-		float procChance = (level+1f)/(level+3f) * procChanceMultiplier(attacker);
+		float procChance = (level+1f)/(level+3f) * Polished_procChanceMultiplier(attacker, weapon);
+		//if(Dungeon.level.water[defender.pos]) procChance = 0;
+
 		if (Random.Float() < procChance) {
 
 			float powerMulti = Math.max(1f, procChance);

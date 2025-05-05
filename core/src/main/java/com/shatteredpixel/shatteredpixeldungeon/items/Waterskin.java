@@ -22,6 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -49,7 +51,7 @@ public class Waterskin extends Item {
 	{
 		image = ItemSpriteSheet.WATERSKIN;
 
-		defaultAction = AC_DRINK;
+		defaultAction = Dungeon.isChallenged(Challenges.NO_HERBALISM) ? AC_THROW : AC_DRINK;
 
 		unique = true;
 	}

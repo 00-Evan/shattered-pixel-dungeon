@@ -320,8 +320,17 @@ public class SPDSettings extends GameSettings {
 	}
 
 	public static class Polished {
+		public static final String KEY_HUNTRESS= "POLISHED_huntress";
+		public static void huntress( boolean value ) { put(KEY_HUNTRESS, value); }
+		public static boolean huntress(){
+			return getBoolean(KEY_HUNTRESS, false);
+		}
+
 		public static final String KEY_INPUT_BLOCK		= "input_block";
 		public static final String KEY_AUTO_PICKUP		= "auto_pickup";
+		public static final String KEY_BUFFERS			= "buffers";
+		public static final String KEY_QUICKSLOT		= "quickslot";
+		public static final String KEY_QUICK_TRANSITIONS= "quick_transitions";
 
 		public static void inputBlock( boolean value ) { put(KEY_INPUT_BLOCK, value); }
 		public static boolean inputBlock(){
@@ -330,6 +339,25 @@ public class SPDSettings extends GameSettings {
 
 		public static void autoPickup( boolean value ) { put(KEY_AUTO_PICKUP, value); }
 		public static boolean autoPickup() {return getBoolean(KEY_AUTO_PICKUP, true);}
+
+		public static void buffers( int value ) { put(KEY_BUFFERS, value); }
+		public static int buffers() {return getInt(KEY_BUFFERS, 2);}
+
+
+		public static void quickslot(boolean value){
+			put(KEY_QUICKSLOT, value);
+		}
+
+		public static boolean quickslot(){
+			return getBoolean(KEY_QUICKSLOT, true);
+		}
+
+		public static void quickTransitions(boolean value){
+			put(KEY_QUICK_TRANSITIONS, value);
+		}
+		public static boolean quickTransitions(){
+			return getBoolean(KEY_QUICK_TRANSITIONS, true);
+		}
 	}
 
 	//Connectivity
@@ -338,7 +366,6 @@ public class SPDSettings extends GameSettings {
 	public static final String KEY_UPDATES	= "updates";
 	public static final String KEY_BETAS	= "betas";
 	public static final String KEY_WIFI     = "wifi";
-	public static final String KEY_QUICKSLOT= "quickslot";
 
 	public static final String KEY_NEWS_LAST_READ = "news_last_read";
 
@@ -364,14 +391,6 @@ public class SPDSettings extends GameSettings {
 
 	public static boolean betas(){
 		return getBoolean(KEY_BETAS, true);
-	}
-
-	public static void quickslot(boolean value){
-		put(KEY_QUICKSLOT, value);
-	}
-
-	public static boolean quickslot(){
-		return getBoolean(KEY_QUICKSLOT, true);
 	}
 
 	public static void WiFi(boolean value){

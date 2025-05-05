@@ -96,7 +96,8 @@ public class Hunger extends Buff implements Hero.Doom {
 				if (newLevel >= STARVING) {
 
 					GLog.n( Messages.get(this, "onstarving") );
-					hero.damage( 1, this );
+					//POLISHED: get rid of this so Warlock doesn't constantly take damage from soulmark restoration
+					//hero.damage( 1, this );
 
 					hero.interrupt();
 					newLevel = STARVING;
@@ -125,6 +126,12 @@ public class Hunger extends Buff implements Hero.Doom {
 		return true;
 	}
 
+	public void POLISHED_delay( float turns ) {
+		if(isStarving()) {
+			partialDamage -= turns*(target.HT/1000f);
+		}
+		else affectHunger( turns, true );
+	}
 	public void satisfy( float energy ) {
 		affectHunger( energy, false );
 	}
@@ -160,7 +167,7 @@ public class Hunger extends Buff implements Hero.Doom {
 			GLog.w( Messages.get(this, "onhungry") );
 		} else if (oldLevel < STARVING && level >= STARVING){
 			GLog.n( Messages.get(this, "onstarving") );
-			target.damage( 1, this );
+			//target.damage( 1, this );
 		}
 
 		BuffIndicator.refreshHero();
@@ -172,6 +179,13 @@ public class Hunger extends Buff implements Hero.Doom {
 
 	public int hunger() {
 		return (int)Math.ceil(level);
+	}
+
+	private int turnsLeftToHurt() {
+		if(level < STARVING) return -1;
+
+		float damageTick = target.HT/1000f;
+		return (int)Math.ceil((1f - partialDamage - .001f) / damageTick);
 	}
 
 	@Override
@@ -186,10 +200,17 @@ public class Hunger extends Buff implements Hero.Doom {
 	}
 	@Override
 	public String iconTextDisplay() {
-		return Integer.toString((int)(STARVING-level));
+		return isStarving() ? Integer.toString(turnsLeftToHurt()) : Integer.toString((int)(STARVING-level));
 	}
 
-	public float hungerPercentage() {
+	float percent() {
+		return isStarving() ? 1 - turnsLeftToHurt() * (target.HT / 1000f) : (level-HUNGRY) / (STARVING-HUNGRY);
+	}
+	public float iconFadePercent() {
+		return Math.max(0, percent());
+	}
+
+	private float hungerPercentage() {
 		return (STARVING - level) / (STARVING - HUNGRY);
 	}
 	public float textColor_red() {
@@ -227,8 +248,13 @@ public class Hunger extends Buff implements Hero.Doom {
 		} else {
 			result = Messages.get(this, "desc_intro_starving");
 		}
-
 		result += Messages.get(this, "desc");
+
+		if (level < STARVING) {
+			result += Messages.get(this, "saturation", (int)(STARVING-level));
+		} else {
+			result += Messages.get(this, "starve_damage", turnsLeftToHurt());
+		}
 
 		return result;
 	}

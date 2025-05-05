@@ -172,4 +172,7 @@ public class Wraith extends Mob {
 		}
 	}
 
+	public void POLISHED_spend(float time) {
+		spend(time);
+	}
 }

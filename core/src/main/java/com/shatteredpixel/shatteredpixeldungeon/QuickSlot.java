@@ -21,9 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.watabou.input.GameAction;
+import com.watabou.noosa.Game;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -67,6 +71,23 @@ public class QuickSlot {
 			}
 		}
 		return -1;
+	}
+
+	public void clearMissile(Item item) {
+		//unused for now
+
+		for (int i = 0; i < SIZE; i++) {
+			if (item.isSimilar(getItem(i)) && isPlaceholder(i)) {
+				boolean found = false;
+				for(Heap h : Dungeon.level.heaps.valueList()) {
+					for(Item it : h.items) {
+						if(it.isSimilar(item)) found = true;
+					}
+				}
+
+				if(!found) clearSlot(i);
+			}
+		}
 	}
 
 	public Boolean isPlaceholder(int slot){
