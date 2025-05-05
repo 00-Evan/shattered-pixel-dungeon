@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.BArray;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -50,7 +51,8 @@ public class DisplacingDart extends TippedDart {
 
 		//attempts to teleport the enemy to a position 8-10 cells away from the hero
 		//prioritizes the closest visible cell to the defender, or closest non-visible if no visible are present
-		//grants vision on the defender if teleport goes to non-visible
+		//POLISHED: no priority, randomly picks one
+		//grants vision on the defender
 		if (!defender.properties().contains(Char.Property.IMMOVABLE)){
 			
 			ArrayList<Integer> visiblePositions = new ArrayList<>();
@@ -77,29 +79,38 @@ public class DisplacingDart extends TippedDart {
 			int chosenPos = -1;
 
 			if (!visiblePositions.isEmpty()) {
+				Random.shuffle(visiblePositions);
+				chosenPos = visiblePositions.get(0);
+
+				/*
 				for (int pos : visiblePositions) {
 					if (chosenPos == -1 || Dungeon.level.trueDistance(defender.pos, chosenPos)
 							> Dungeon.level.trueDistance(defender.pos, pos)){
 						chosenPos = pos;
 					}
 				}
+				 */
 			} else {
+				Random.shuffle(nonVisiblePositions);
+				chosenPos = nonVisiblePositions.get(0);
+
+				/*
 				for (int pos : nonVisiblePositions) {
 					if (chosenPos == -1 || Dungeon.level.trueDistance(defender.pos, chosenPos)
 							> Dungeon.level.trueDistance(defender.pos, pos)){
 						chosenPos = pos;
 					}
 				}
+				*/
 			}
-			
+
+			Buff.append(attacker, TalismanOfForesight.CharAwareness.class, 5f).charID = defender.id();
 			if (chosenPos != -1){
 				ScrollOfTeleportation.appear( defender, chosenPos );
 				Dungeon.level.occupyCell(defender );
 				if (defender == Dungeon.hero){
 					Dungeon.observe();
 					GameScene.updateFog();
-				} else if (!Dungeon.level.heroFOV[chosenPos]){
-					Buff.append(attacker, TalismanOfForesight.CharAwareness.class, 5f).charID = defender.id();
 				}
 			}
 		
