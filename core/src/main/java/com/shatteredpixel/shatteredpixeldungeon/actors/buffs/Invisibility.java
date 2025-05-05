@@ -92,6 +92,9 @@ public class Invisibility extends FlavourBuff {
 		for ( Buff invis : ch.buffs( Invisibility.class )){
 			invis.detach();
 		}
+		for ( Buff camo : ch.buffs( Camouflaged.class )){
+			camo.detach();
+		}
 		CloakOfShadows.cloakStealth cloakBuff = ch.buff( CloakOfShadows.cloakStealth.class );
 		if (cloakBuff != null) {
 			cloakBuff.dispel();
