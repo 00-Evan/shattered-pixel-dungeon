@@ -190,12 +190,12 @@ public class DM300 extends Mob {
 			}
 
 			if (state != HUNTING){
-				if (Dungeon.hero.invisible <= 0 && canReach){
+				if (!Dungeon.hero.isStealthyTo(this) && canReach){
 					beckon(Dungeon.hero.pos);
 				}
 			} else {
 
-				if ((enemy == null || !enemy.isAlive()) && Dungeon.hero.invisible <= 0) {
+				if ((enemy == null || !enemy.isAlive()) && !Dungeon.hero.isStealthyTo(this)) {
 					enemy = Dungeon.hero;
 				}
 
@@ -290,7 +290,7 @@ public class DM300 extends Mob {
 				chargeAnnounced = true;
 			}
 
-			if (Dungeon.hero.invisible <= 0){
+			if (!Dungeon.hero.isStealthyTo(this)){
 				beckon(Dungeon.hero.pos);
 				state = HUNTING;
 				enemy = Dungeon.hero;

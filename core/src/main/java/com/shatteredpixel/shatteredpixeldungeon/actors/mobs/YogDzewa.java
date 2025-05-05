@@ -172,7 +172,7 @@ public class YogDzewa extends Mob {
 		//mob logic
 		enemy = chooseEnemy();
 
-		enemySeen = enemy != null && enemy.isAlive() && fieldOfView[enemy.pos] && enemy.invisible <= 0;
+		enemySeen = enemy != null && enemy.isAlive() && fieldOfView[enemy.pos] && !enemy.isStealthyTo(this);
 		//end of char/mob logic
 
 		if (phase == 0){

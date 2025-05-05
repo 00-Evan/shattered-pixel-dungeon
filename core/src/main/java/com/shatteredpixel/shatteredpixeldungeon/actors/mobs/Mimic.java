@@ -160,7 +160,7 @@ public class Mimic extends Mob {
 
 		Dungeon.hero.busy();
 		Dungeon.hero.sprite.operate(pos);
-		if (Dungeon.hero.invisible <= 0
+		if (!Dungeon.hero.isStealthyTo(this)
 				&& Dungeon.hero.buff(Swiftthistle.TimeBubble.class) == null
 				&& Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class) == null){
 			return doAttack(Dungeon.hero);
@@ -246,7 +246,7 @@ public class Mimic extends Mob {
 
 	@Override
 	public int attackSkill( Char target ) {
-		if (target != null && alignment == Alignment.NEUTRAL && target.invisible <= 0){
+		if (target != null && alignment == Alignment.NEUTRAL && !target.isStealthyTo(this)){
 			return INFINITE_ACCURACY;
 		} else {
 			return 6 + level;

@@ -21,31 +21,35 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RoundShield;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 
-public class Invisibility extends FlavourBuff {
-
-	public static final float DURATION	= 20f;
-
-	{
-		type = buffType.POSITIVE;
-		announced = true;
-	}
+public class Camouflaged extends FlavourBuff {
 	
+	@Override
+	public int icon() {
+		return BuffIndicator.SHADOWS;
+	}
+
+	@Override
+	public String desc() {
+		return Messages.get(this, "desc");
+	}
+
 	@Override
 	public boolean attachTo( Char target ) {
 		if (super.attachTo( target )) {
-			target.invisible++;
+			target.camouflaged++;
 			if (target instanceof Hero && ((Hero) target).subClass == HeroSubClass.ASSASSIN){
 				Buff.affect(target, Preparation.class);
 			}
@@ -57,68 +61,17 @@ public class Invisibility extends FlavourBuff {
 			return false;
 		}
 	}
-	
-	@Override
-	public void detach() {
-		if (target.invisible > 0)
-			target.invisible--;
-		super.detach();
-	}
-	
-	@Override
-	public int icon() {
-		return BuffIndicator.INVISIBLE;
-	}
 
 	@Override
-	public float iconFadePercent() {
-		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
+	public void detach() {
+		if (target.camouflaged > 0)
+			target.camouflaged--;
+		super.detach();
 	}
 
 	@Override
 	public void fx(boolean on) {
 		if (on) target.sprite.add( CharSprite.State.INVISIBLE );
 		else if (!target.isStealthy()) target.sprite.remove( CharSprite.State.INVISIBLE );
-	}
-
-	public static void dispel() {
-		if (Dungeon.hero == null) return;
-
-		dispel(Dungeon.hero);
-	}
-
-	public static void dispel(Char ch){
-
-		for ( Buff invis : ch.buffs( Invisibility.class )){
-			invis.detach();
-		}
-		for ( Buff camo : ch.buffs( Camouflaged.class )){
-			camo.detach();
-		}
-		CloakOfShadows.cloakStealth cloakBuff = ch.buff( CloakOfShadows.cloakStealth.class );
-		if (cloakBuff != null) {
-			cloakBuff.dispel();
-		}
-
-		//these aren't forms of invisibility, but do dispel at the same time as it.
-		TimekeepersHourglass.timeFreeze timeFreeze = ch.buff( TimekeepersHourglass.timeFreeze.class );
-		if (timeFreeze != null) {
-			timeFreeze.detach();
-		}
-
-		Preparation prep = ch.buff( Preparation.class );
-		if (prep != null){
-			prep.detach();
-		}
-
-		Swiftthistle.TimeBubble bubble =  ch.buff( Swiftthistle.TimeBubble.class );
-		if (bubble != null){
-			bubble.detach();
-		}
-
-		RoundShield.GuardTracker guard = ch.buff(RoundShield.GuardTracker.class);
-		if (guard != null && guard.hasBlocked){
-			guard.detach();
-		}
 	}
 }

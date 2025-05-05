@@ -75,7 +75,7 @@ public class SmokeBomb extends ArmorAbility {
 
 	@Override
 	public float chargeUse(Hero hero) {
-		if (!hero.hasTalent(Talent.SHADOW_STEP) || hero.invisible <= 0){
+		if (!hero.hasTalent(Talent.SHADOW_STEP) || !hero.isStealthy()){
 			return super.chargeUse(hero);
 		} else {
 			//reduced charge use by 16%/30%/41%/50%
@@ -105,7 +105,7 @@ public class SmokeBomb extends ArmorAbility {
 			armor.charge -= chargeUse(hero);
 			Item.updateQuickslot();
 
-			boolean shadowStepping = hero.invisible > 0 && hero.hasTalent(Talent.SHADOW_STEP);
+			boolean shadowStepping = hero.isStealthy() && hero.hasTalent(Talent.SHADOW_STEP);
 
 			if (!shadowStepping) {
 				for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {

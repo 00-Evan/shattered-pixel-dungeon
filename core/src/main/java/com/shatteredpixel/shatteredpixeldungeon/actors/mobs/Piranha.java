@@ -102,7 +102,7 @@ public class Piranha extends Mob {
 				fieldOfView = new boolean[Dungeon.level.length()];
 				Dungeon.level.updateFieldOfView( this, fieldOfView );
 			}
-			return state == SLEEPING || !fieldOfView[enemy.pos] || enemy.invisible > 0;
+			return state == SLEEPING || !fieldOfView[enemy.pos] || enemy.isStealthyTo(this);
 		}
 		return super.surprisedBy(enemy, attacking);
 	}

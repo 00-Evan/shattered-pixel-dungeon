@@ -292,7 +292,7 @@ public class ScrollOfTeleportation extends Scroll {
 			ch.sprite.place(pos);
 		}
 
-		if (ch.invisible == 0) {
+		if (!ch.isStealthy()) {
 			ch.sprite.alpha( 0 );
 			ch.sprite.parent.add( new AlphaTweener( ch.sprite, 1, 0.4f ) );
 		}
@@ -310,7 +310,7 @@ public class ScrollOfTeleportation extends Scroll {
 
 		Dungeon.level.occupyCell(ch);
 
-		if (ch.invisible == 0) {
+		if (!ch.isStealthy()) {
 			ch.sprite.alpha( 0 );
 			ch.sprite.parent.add( new AlphaTweener( ch.sprite, 1, 0.4f ) );
 		}

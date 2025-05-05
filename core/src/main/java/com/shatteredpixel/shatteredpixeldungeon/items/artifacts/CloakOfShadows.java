@@ -104,7 +104,7 @@ public class CloakOfShadows extends Artifact {
 			} else {
 				activeBuff.detach();
 				activeBuff = null;
-				if (hero.invisible <= 0 && hero.buff(Preparation.class) != null){
+				if (!hero.isStealthy() && hero.buff(Preparation.class) != null){
 					hero.buff(Preparation.class).detach();
 				}
 				hero.sprite.operate( hero.pos );
@@ -368,7 +368,7 @@ public class CloakOfShadows extends Artifact {
 		@Override
 		public void fx(boolean on) {
 			if (on) target.sprite.add( CharSprite.State.INVISIBLE );
-			else if (target.invisible == 0) target.sprite.remove( CharSprite.State.INVISIBLE );
+			else if (!target.isStealthy()) target.sprite.remove( CharSprite.State.INVISIBLE );
 		}
 
 		@Override
