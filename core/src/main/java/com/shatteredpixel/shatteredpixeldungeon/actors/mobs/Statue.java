@@ -143,7 +143,9 @@ public class Statue extends Mob {
 	
 	@Override
 	public void beckon( int cell ) {
-		// Do nothing
+		if (state != PASSIVE){
+			super.beckon(cell);
+		}
 	}
 	
 	@Override

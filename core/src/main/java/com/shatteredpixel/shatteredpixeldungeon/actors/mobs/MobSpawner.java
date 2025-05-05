@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.RatSkull;
-import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -248,7 +247,7 @@ public class MobSpawner extends Actor {
 				Class<? extends Mob> cl = rotation.get(i);
 				if (cl == Rat.class) {
 					cl = Albino.class;
-				} else if (cl == Gnoll.class && DeviceCompat.isDebug()) {
+				} else if (cl == Gnoll.class) {
 					cl = GnollExile.class;
 				} else if (cl == Slime.class) {
 					cl = CausticSlime.class;

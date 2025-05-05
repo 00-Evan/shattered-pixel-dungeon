@@ -241,7 +241,9 @@ public class Mimic extends Mob {
 
 	@Override
 	public void beckon( int cell ) {
-		// Do nothing
+		if (alignment != Alignment.NEUTRAL) {
+			super.beckon(cell);
+		}
 	}
 
 	@Override

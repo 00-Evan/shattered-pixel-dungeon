@@ -24,32 +24,52 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollExileSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.BArray;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class GnollExile extends Gnoll {
+
+	//has 2x HP, +50% other stats, and +1 reach vs. a regular gnoll scout
+	//in exchange, they do not aggro automatically, and drop extra loot
 
 	{
 		spriteClass = GnollExileSprite.class;
 
 		PASSIVE = new Passive();
+		WANDERING = new Wandering();
 		state = PASSIVE;
 
-		loot = Gold.class;
+		defenseSkill = 6;
+		HP = HT = 24;
+
+		loot = Generator.randomUsingDefaults();
 		lootChance = 1f;
 	}
 
-	//TODO higher stats, more detailed behaviour, better loot
+	@Override
+	public int damageRoll() {
+		return Random.NormalIntRange( 1, 10 );
+	}
 
-	//"the spear-wielding gnoll pauses and eyes you suspiciously, but doesn't move to attack"
-	//"After a moment the gnoll nods its head toward you and begins to move on"
+	@Override
+	public int attackSkill( Char target ) {
+		return 15;
+	}
 
-	// offer 1 ration to get all of its drops
+	@Override
+	public int drRoll() {
+		return super.drRoll() + Random.NormalIntRange(0, 3);
+	}
 
-	//has 1 extra reach from their spear
 	@Override
 	protected boolean canAttack( Char enemy ) {
 		if (Dungeon.level.adjacent( pos, enemy.pos )){
@@ -73,6 +93,37 @@ public class GnollExile extends Gnoll {
 	}
 
 	@Override
+	public void rollToDropLoot() {
+		super.rollToDropLoot();
+
+		if (Dungeon.hero.lvl > maxLvl + 2) return;
+
+		//in addition to normal drop drop, also drops 1 or 2 random extras
+		ArrayList<Item> items = new ArrayList<>();
+		items.add(Generator.randomUsingDefaults());
+		if (Random.Int(2) == 0) items.add(Generator.randomUsingDefaults());
+
+		for (Item item : items){
+			int ofs;
+			do {
+				ofs = PathFinder.NEIGHBOURS8[Random.Int(8)];
+			} while (Dungeon.level.solid[pos + ofs] && !Dungeon.level.passable[pos + ofs]);
+			Dungeon.level.drop( item, pos + ofs ).sprite.drop( pos );
+		}
+
+	}
+
+	@Override
+	public void beckon(int cell) {
+		if (state != PASSIVE) {
+			super.beckon(cell);
+		} else {
+			//still attracts if passive, but doesn't remove passive state
+			target = cell;
+		}
+	}
+
+	@Override
 	public String description() {
 		String desc = super.description();
 		if (state == PASSIVE){
@@ -83,14 +134,36 @@ public class GnollExile extends Gnoll {
 		return desc;
 	}
 
-	//while passive gnoll exiles wander around
+	//gnoll exiles wander around while passive
 	private class Passive extends Mob.Wandering {
+
+		private int seenNotifyCooldown = 0;
+
 		@Override
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
+
+			for (Buff b : buffs()){
+				if (b.type == Buff.buffType.NEGATIVE){
+					//swap to aggro if we've been debuffed
+					state = WANDERING;
+					return true;
+				}
+			}
+
+			if (fieldOfView[Dungeon.hero.pos] && Dungeon.level.heroFOV[pos]){
+				if (seenNotifyCooldown <= 0){
+					GLog.p(Messages.get(GnollExile.class, "seen_passive"));
+				}
+				seenNotifyCooldown = 10;
+			} else {
+				seenNotifyCooldown--;
+			}
+
 			if (enemyInFOV && justAlerted) {
 
-				//TODO pause if hero first enters fov?
-
+				if (Dungeon.level.heroFOV[pos]) {
+					GLog.w(Messages.get(GnollExile.class, "seen_aggro"));
+				}
 				return noticeEnemy();
 
 			} else {
@@ -100,4 +173,14 @@ public class GnollExile extends Gnoll {
 			}
 		}
 	}
+
+	//standard wandering but with a warning that the exile is aggroed
+	private class Wandering extends Mob.Wandering {
+		@Override
+		protected boolean noticeEnemy() {
+			GLog.w(Messages.get(GnollExile.class, "seen_aggro"));
+			return super.noticeEnemy();
+		}
+	}
+
 }
