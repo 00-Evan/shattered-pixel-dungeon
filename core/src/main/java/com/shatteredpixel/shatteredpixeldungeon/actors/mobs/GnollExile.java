@@ -51,7 +51,7 @@ public class GnollExile extends Gnoll {
 		defenseSkill = 6;
 		HP = HT = 24;
 
-		loot = Generator.randomUsingDefaults();
+		loot = null;  //see rollToDropLoot
 		lootChance = 1f;
 	}
 
@@ -98,15 +98,16 @@ public class GnollExile extends Gnoll {
 
 		if (Dungeon.hero.lvl > maxLvl + 2) return;
 
-		//in addition to normal drop drop, also drops 1 or 2 random extras
+		//drops 2 or 3 random items
 		ArrayList<Item> items = new ArrayList<>();
+		items.add(Generator.randomUsingDefaults());
 		items.add(Generator.randomUsingDefaults());
 		if (Random.Int(2) == 0) items.add(Generator.randomUsingDefaults());
 
 		for (Item item : items){
 			int ofs;
 			do {
-				ofs = PathFinder.NEIGHBOURS8[Random.Int(8)];
+				ofs = PathFinder.NEIGHBOURS9[Random.Int(9)];
 			} while (Dungeon.level.solid[pos + ofs] && !Dungeon.level.passable[pos + ofs]);
 			Dungeon.level.drop( item, pos + ofs ).sprite.drop( pos );
 		}
