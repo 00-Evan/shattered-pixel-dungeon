@@ -134,7 +134,7 @@ public class HeroSelectScene extends PixelScene {
 				boolean value = SPDSettings.Polished.huntress();
 				SPDSettings.Polished.huntress(!value);
 
-				icon.copy( Icons.get( !value ? Icons.CHECKED : Icons.UNCHECKED ) );
+				icon.copy( Icons.get( !value ? Icons.CHECKED_GRAY : Icons.UNCHECKED_GRAY) );
 			}
 
 			@Override
@@ -143,7 +143,7 @@ public class HeroSelectScene extends PixelScene {
 				check();
 			}
 		};
-		POLISHED_btn.icon(Icons.get(SPDSettings.Polished.huntress() ? Icons.CHECKED : Icons.UNCHECKED));
+		POLISHED_btn.icon(Icons.get(SPDSettings.Polished.huntress() ? Icons.CHECKED_GRAY : Icons.UNCHECKED_GRAY));
 		POLISHED_btn.setSize(80, 18);
 		POLISHED_btn.textColor(Window.POLISHED_COLOR);
 		add(POLISHED_btn);
