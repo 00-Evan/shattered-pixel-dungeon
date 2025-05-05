@@ -42,7 +42,6 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.FileUtils;
 
 import java.io.IOException;
@@ -535,7 +534,6 @@ public class Badges {
 	}
 
 	public static void validateHazardAssists() {
-		if (!DeviceCompat.isDebug()) return;
 		if (!local.contains( Badge.PIRANHAS ) && Statistics.hazardAssistedKills >= 10) {
 			local.add( Badge.ENEMY_HAZARDS );
 			displayBadge( Badge.ENEMY_HAZARDS );
@@ -1038,7 +1036,6 @@ public class Badges {
 	}
 
 	public static void validateTakingTheMick(Object cause){
-		if (!DeviceCompat.isDebug()) return;
 		if (cause == Dungeon.hero &&
 				Dungeon.hero.belongings.attackingWeapon() instanceof Pickaxe
 				&& Dungeon.hero.belongings.attackingWeapon().level() >= 20){
@@ -1065,7 +1062,6 @@ public class Badges {
 	}
 
 	public static void validateManyBuffs(){
-		if (!DeviceCompat.isDebug()) return;
 		if (!local.contains( Badge.MANY_BUFFS )) {
 			Badge badge = Badge.MANY_BUFFS;
 			local.add( badge );
@@ -1137,7 +1133,6 @@ public class Badges {
 			displayBadge( Badge.HAPPY_END_REMAINS );
 		}
 
-		if (!DeviceCompat.isDebug()) return;
 		if (AscensionChallenge.qualifiedForPacifist()) {
 			local.add( Badge.PACIFIST_ASCENT );
 			displayBadge( Badge.PACIFIST_ASCENT );
@@ -1307,13 +1302,6 @@ public class Badges {
 
 		for (Badge[] tierReplace : tierBadgeReplacements){
 			leaveWorst( badges, tierReplace );
-		}
-
-		if (!DeviceCompat.isDebug()){
-			badges.remove(Badge.ENEMY_HAZARDS);
-			badges.remove(Badge.MANY_BUFFS);
-			badges.remove(Badge.PACIFIST_ASCENT);
-			badges.remove(Badge.TAKING_THE_MICK);
 		}
 
 		Collections.sort( badges );
