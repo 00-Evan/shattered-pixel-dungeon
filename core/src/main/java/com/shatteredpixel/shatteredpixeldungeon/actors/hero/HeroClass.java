@@ -124,14 +124,6 @@ public enum HeroClass {
 
 		new ScrollOfIdentify().identify();
 
-		ClothArmor cloth = new ClothArmor();
-		cloth.identify();
-		cloth.inscribe(Reflection.newInstance(Camouflage.class));
-		cloth.collect();
-
-		WandOfRegrowth regrowth = new WandOfRegrowth();
-		regrowth.upgrade(3).identify().collect();
-
 		switch (this) {
 			case WARRIOR:
 				initWarrior( hero );
