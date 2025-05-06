@@ -590,8 +590,13 @@ public abstract class Char extends Actor {
 		} else {
 
 			if (enemy.sprite != null){
-				enemy.sprite.showStatus( CharSprite.NEUTRAL, enemy.defenseVerb() );
+				if (tuftDodged){
+					enemy.sprite.showStatusWithIcon(CharSprite.NEUTRAL, enemy.defenseVerb(), FloatingText.TUFT);
+				} else {
+					enemy.sprite.showStatus(CharSprite.NEUTRAL, enemy.defenseVerb());
+				}
 			}
+			tuftDodged = false;
 			if (visibleFight) {
 				//TODO enemy.defenseSound? currently miss plays for monks/crab even when they parry
 				Sample.INSTANCE.play(Assets.Sounds.MISS);
@@ -648,7 +653,8 @@ public abstract class Char extends Actor {
 			// + 3%/5%
 			acuRoll *= 1.01f + 0.02f*Dungeon.hero.pointsInTalent(Talent.BLESS);
 		}
-		
+		acuRoll *= accMulti;
+
 		float defRoll = Random.Float( defStat );
 		if (defender.buff(Bless.class) != null) defRoll *= 1.25f;
 		if (defender.buff(  Hex.class) != null) defRoll *= 0.8f;
@@ -663,10 +669,17 @@ public abstract class Char extends Actor {
 			// + 3%/5%
 			defRoll *= 1.01f + 0.02f*Dungeon.hero.pointsInTalent(Talent.BLESS);
 		}
+
+		if (defRoll < acuRoll && (defRoll*FerretTuft.evasionMultiplier()) >= acuRoll){
+			tuftDodged = true;
+		}
 		defRoll *= FerretTuft.evasionMultiplier();
-		
-		return (acuRoll * accMulti) >= defRoll;
+
+		return acuRoll >= defRoll;
 	}
+
+	//TODO this is messy and hacky atm, should consider standardizing this so we can have many 'dodge reasons'
+	private static boolean tuftDodged = false;
 
 	public int attackSkill( Char target ) {
 		return 0;
