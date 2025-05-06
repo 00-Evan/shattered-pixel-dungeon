@@ -245,25 +245,22 @@ public class MobSpawner extends Actor {
 		for (int i = 0; i < rotation.size(); i++) {
 			if (Random.Float() < altChance) {
 				Class<? extends Mob> cl = rotation.get(i);
-				if (cl == Rat.class) {
-					cl = Albino.class;
-				} else if (cl == Gnoll.class) {
-					cl = GnollExile.class;
-				} else if (cl == Slime.class) {
-					cl = CausticSlime.class;
-				} else if (cl == Thief.class) {
-					cl = Bandit.class;
-				} else if (cl == Necromancer.class) {
-					cl = SpectralNecromancer.class;
-				} else if (cl == Brute.class) {
-					cl = ArmoredBrute.class;
-				} else if (cl == DM200.class) {
-					cl = DM201.class;
-				} else if (cl == Monk.class) {
-					cl = Senior.class;
-				} else if (cl == Scorpio.class) {
-					cl = Acidic.class;
-				}
+				if (cl == Rat.class)                cl = Albino.class;
+				else if (cl == Gnoll.class)         cl = GnollExile.class;
+				else if (cl == Crab.class)          cl = HermitCrab.class;
+				else if (cl == Slime.class)         cl = CausticSlime.class;
+
+				else if (cl == Thief.class)         cl = Bandit.class;
+				else if (cl == Necromancer.class)   cl = SpectralNecromancer.class;
+
+				else if (cl == Brute.class)         cl = ArmoredBrute.class;
+				else if (cl == DM200.class)         cl = DM201.class;
+
+				else if (cl == Monk.class)          cl = Senior.class;
+				//chaos elemental spawning happens in Elemental.Random
+
+				else if (cl == Scorpio.class)       cl = Acidic.class;
+
 				rotation.set(i, cl);
 			}
 		}
