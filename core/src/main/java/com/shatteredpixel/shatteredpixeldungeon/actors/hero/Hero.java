@@ -489,14 +489,8 @@ public class Hero extends Char {
 		float accuracy = 1;
 		accuracy *= RingOfAccuracy.accuracyMultiplier( this );
 		
-		if (wep instanceof MissileWeapon){
-			if (Dungeon.level.adjacent( pos, target.pos )) {
-				accuracy *= (0.5f + 0.2f*pointsInTalent(Talent.POINT_BLANK));
-			} else {
-				accuracy *= 1.5f;
-			}
 		//precise assault and liquid agility
-		} else {
+		if (!(wep instanceof MissileWeapon)) {
 			if ((hasTalent(Talent.PRECISE_ASSAULT) || hasTalent(Talent.LIQUID_AGILITY))
 					//does not trigger on ability attacks
 					&& belongings.abilityWeapon != wep && buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) == null){
