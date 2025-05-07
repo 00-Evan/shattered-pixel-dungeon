@@ -141,10 +141,7 @@ public class HallowedGround extends TargetedClericSpell {
 	private void affectChar( Char ch ){
 		if (ch.alignment == Char.Alignment.ALLY){
 
-			if (ch == Dungeon.hero || ch.HP == ch.HT){
-				Buff.affect(ch, Barrier.class).incShield(10);
-				ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, "10", FloatingText.SHIELDING );
-			} else {
+			if (ch != Dungeon.hero) {
 				int barrier = 10 - (ch.HT - ch.HP);
 				barrier = Math.max(barrier, 0);
 				ch.HP += 10 - barrier;
@@ -236,8 +233,9 @@ public class HallowedGround extends TargetedClericSpell {
 		}
 
 		private void affectChar( Char ch ){
+			if (ch == Dungeon.hero) return;
 			if (ch.alignment == Char.Alignment.ALLY){
-				if (ch == Dungeon.hero || ch.HP == ch.HT){
+				if (ch.HP == ch.HT){
 					Buff.affect(ch, Barrier.class).incShield(1);
 					ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, "1", FloatingText.SHIELDING );
 				} else {
