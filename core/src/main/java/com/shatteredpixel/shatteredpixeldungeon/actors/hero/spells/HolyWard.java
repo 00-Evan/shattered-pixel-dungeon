@@ -52,8 +52,6 @@ public class HolyWard extends ClericSpell {
 
 		Sample.INSTANCE.play(Assets.Sounds.READ);
 
-		hero.spend( 1f );
-		hero.busy();
 		hero.sprite.operate(hero.pos);
 		if (hero.belongings.armor() != null) Enchanting.show(hero, hero.belongings.armor());
 

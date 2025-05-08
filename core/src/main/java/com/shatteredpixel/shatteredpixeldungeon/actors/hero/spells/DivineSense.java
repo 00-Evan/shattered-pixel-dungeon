@@ -63,8 +63,6 @@ public class DivineSense extends ClericSpell {
 
 		Sample.INSTANCE.play(Assets.Sounds.READ);
 
-		hero.spend( 1f );
-		hero.busy();
 		SpellSprite.show(hero, SpellSprite.VISION);
 		hero.sprite.operate(hero.pos);
 
