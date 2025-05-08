@@ -111,13 +111,11 @@ public class MnemonicPrayer extends TargetedClericSpell {
 		}
 
 		if (ch == hero){
-			hero.busy();
 			hero.sprite.operate(ch.pos);
-			hero.spend( 1f );
 			BuffIndicator.refreshHero();
 		} else {
 			hero.sprite.zap(ch.pos);
-			hero.spendAndNext( 1f );
+			hero.next();
 		}
 
 		onSpellCast(tome, hero);

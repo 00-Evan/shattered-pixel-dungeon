@@ -139,20 +139,21 @@ public class HallowedGround extends TargetedClericSpell {
 		if (ch.alignment == Char.Alignment.ALLY){
 
 			if (ch == Dungeon.hero || ch.HP == ch.HT){
-				Buff.affect(ch, Barrier.class).incShield(10);
-				ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, "10", FloatingText.SHIELDING );
+				int barrierToGive = Math.min(15, 30 - ch.shielding());
+				Buff.affect(ch, Barrier.class).incShield(barrierToGive);
+				ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(barrierToGive), FloatingText.SHIELDING );
 			} else {
-				int barrier = 10 - (ch.HT - ch.HP);
+				int barrier = 15 - (ch.HT - ch.HP);
 				barrier = Math.max(barrier, 0);
-				ch.HP += 10 - barrier;
-				ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(10-barrier), FloatingText.HEALING );
+				ch.HP += 15 - barrier;
+				ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(15-barrier), FloatingText.HEALING );
 				if (barrier > 0){
 					Buff.affect(ch, Barrier.class).incShield(barrier);
 					ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(barrier), FloatingText.SHIELDING );
 				}
 			}
 		} else if (!ch.flying) {
-			Buff.affect(ch, Roots.class, 1f);
+			Buff.affect(ch, Roots.class, 2f);
 		}
 	}
 
