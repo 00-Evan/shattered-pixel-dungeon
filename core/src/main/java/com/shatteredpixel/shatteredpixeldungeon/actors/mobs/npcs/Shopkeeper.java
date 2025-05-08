@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ShopkeeperSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.CurrencyIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
@@ -250,6 +251,7 @@ public class Shopkeeper extends NPC {
 					if (options[i].length() > maxLen) options[i] = options[i].substring(0, maxLen-3) + "...";
 					i++;
 				}
+				CurrencyIndicator.showGold = true;
 				GameScene.show(new WndOptions(sprite(), Messages.titleCase(name()), description(), options){
 					@Override
 					protected void onSelect(int index) {
@@ -289,6 +291,12 @@ public class Shopkeeper extends NPC {
 							return new ItemSprite(buybackItems.get(index-2));
 						}
 						return null;
+					}
+
+					@Override
+					public void hide() {
+						super.hide();
+						CurrencyIndicator.showGold = false;
 					}
 				});
 			}

@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.CurrencyIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 
 public class WndTradeItem extends WndInfoItem {
@@ -121,6 +122,7 @@ public class WndTradeItem extends WndInfoItem {
 		super(heap);
 
 		selling = false;
+		CurrencyIndicator.showGold = true;
 
 		Item item = heap.peek();
 
@@ -207,6 +209,7 @@ public class WndTradeItem extends WndInfoItem {
 	public void hide() {
 		
 		super.hide();
+		CurrencyIndicator.showGold = false;
 		
 		if (owner != null) {
 			owner.hide();
