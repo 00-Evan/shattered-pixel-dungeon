@@ -103,6 +103,7 @@ public class Cleanse extends ClericSpell {
 			new Flare( 6, 32 ).color(0xFF4CD2, true).show( ch.sprite, 2f );
 		}
 
+		hero.spend( 1f );
 		hero.busy();
 		hero.sprite.operate(hero.pos);
 		Sample.INSTANCE.play(Assets.Sounds.READ);
