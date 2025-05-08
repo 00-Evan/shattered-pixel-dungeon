@@ -59,7 +59,7 @@ public class Stasis extends ClericSpell {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", 20 + 20*Dungeon.hero.pointsInTalent(Talent.STASIS)) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
+		return Messages.get(this, "desc", 30 + 30*Dungeon.hero.pointsInTalent(Talent.STASIS)) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class Stasis extends ClericSpell {
 		if (hero.buff(StasisBuff.class) != null){
 			return 0;
 		}
-		return super.chargeUse(hero);
+		return 2;
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class Stasis extends ClericSpell {
 		}
 		ally.clearTime();
 
-		Buff.prolong(hero, StasisBuff.class, 20 + 20*hero.pointsInTalent(Talent.STASIS)).stasisAlly = (Mob)ally;
+		Buff.prolong(hero, StasisBuff.class, 30 + 30*hero.pointsInTalent(Talent.STASIS)).stasisAlly = (Mob)ally;
 		Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 
 		if (hero.buff(LifeLink.class) != null && hero.buff(LifeLink.class).object == ally.id()){
@@ -138,7 +138,7 @@ public class Stasis extends ClericSpell {
 
 		@Override
 		public float iconFadePercent() {
-			int duration = 20 + 20*Dungeon.hero.pointsInTalent(Talent.STASIS);
+			int duration = 30 + 30*Dungeon.hero.pointsInTalent(Talent.STASIS);
 			return Math.max(0, (duration - visualcooldown()) / duration);
 		}
 
