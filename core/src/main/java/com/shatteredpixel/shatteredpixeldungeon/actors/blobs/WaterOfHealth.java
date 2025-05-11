@@ -56,7 +56,6 @@ public class WaterOfHealth extends WellWater {
 
 		PotionOfHealing.cure( hero );
 		hero.belongings.uncurseEquipped();
-		hero.buff( Hunger.class ).satisfy( Hunger.STARVING );
 
 		if (VialOfBlood.delayBurstHealing()){
 			Healing healing = Buff.affect(hero, Healing.class);
@@ -80,7 +79,7 @@ public class WaterOfHealth extends WellWater {
 	@Override
 	protected Item affectItem( Item item, int pos ) {
 		if (item instanceof Waterskin && !((Waterskin)item).isFull()) {
-			((Waterskin)item).fill();
+			((Waterskin)item).fill(0.5f);
 			CellEmitter.get( pos ).start( Speck.factory( Speck.HEALING ), 0.4f, 4 );
 			Sample.INSTANCE.play( Assets.Sounds.DRINK );
 			return item;

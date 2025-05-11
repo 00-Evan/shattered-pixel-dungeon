@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -81,6 +82,74 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 		}
 	}
 
+	public static void replaceTalent(Talent replaced, Talent newTalent) {
+		int tier = 0;
+		for (LinkedHashMap<Talent, Integer> oldTier : Dungeon.hero.talents){
+			tier++;
+			if (oldTier.containsKey(replaced)){
+				LinkedHashMap<Talent, Integer> newTier = new LinkedHashMap<>();
+				for (Talent t : oldTier.keySet()){
+					if (t == replaced){
+						newTier.put(newTalent, oldTier.get(replaced));
+
+						if (!Dungeon.hero.metamorphedTalents.containsValue(replaced)){
+							Dungeon.hero.metamorphedTalents.put(replaced, newTalent);
+
+							//if what we're replacing is already a value, we need to simplify the data structure
+						} else {
+							//a->b->a, we can just remove the entry entirely
+							if (Dungeon.hero.metamorphedTalents.get(newTalent) == replaced){
+								Dungeon.hero.metamorphedTalents.remove(newTalent);
+
+								//a->b->c, we need to simplify to a->c
+							} else {
+								for (Talent t2 : Dungeon.hero.metamorphedTalents.keySet()){
+									if (Dungeon.hero.metamorphedTalents.get(t2) == replaced){
+										Dungeon.hero.metamorphedTalents.put(t2, newTalent);
+									}
+								}
+							}
+						}
+
+					} else {
+						newTier.put(t, oldTier.get(t));
+					}
+				}
+				Dungeon.hero.talents.set(tier-1, newTier);
+				break;
+			}
+		}
+	}
+
+	public static LinkedHashMap<Talent, Integer> getOptions(int tier, Talent replaced) {
+		LinkedHashMap<Talent, Integer> options = new LinkedHashMap<>();
+		Set<Talent> curTalentsAtTier = Dungeon.hero.talents.get(tier-1).keySet();
+
+		for (HeroClass cls : HeroClass.values()){
+
+			ArrayList<LinkedHashMap<Talent, Integer>> clsTalents = new ArrayList<>();
+			Talent.initClassTalents(cls, clsTalents);
+
+			Set<Talent> clsTalentsAtTier = clsTalents.get(tier-1).keySet();
+			boolean replacedIsInSet = false;
+			for (Talent talent : clsTalentsAtTier.toArray(new Talent[0])){
+				if (talent == replaced){
+					replacedIsInSet = true;
+					break;
+				} else {
+					if (curTalentsAtTier.contains(talent)){
+						clsTalentsAtTier.remove(talent);
+					}
+				}
+			}
+			if (!replacedIsInSet && !clsTalentsAtTier.isEmpty()) {
+				options.put(Random.element(clsTalentsAtTier), Dungeon.hero.pointsInTalent(replaced));
+			}
+		}
+
+		return options;
+	}
+
 	private void confirmCancelation( Window chooseWindow, boolean byID ) {
 		GameScene.show( new WndOptions(new ItemSprite(this),
 				Messages.titleCase(name()),
@@ -131,14 +200,7 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 
 			top = text.bottom() + 2;
 
-			ArrayList<LinkedHashMap<Talent, Integer>> talents = new ArrayList<>();
-			Talent.initClassTalents(Dungeon.hero.heroClass, talents, Dungeon.hero.metamorphedTalents);
-
-			for (LinkedHashMap<Talent, Integer> tier : talents){
-				for (Talent talent : tier.keySet()){
-					tier.put(talent, Dungeon.hero.pointsInTalent(talent));
-				}
-			}
+			ArrayList<LinkedHashMap<Talent, Integer>> talents = Hero.Polished.getTalents();
 
 			pane = new TalentsPane(TalentButton.Mode.METAMORPH_CHOOSE, talents);
 			add(pane);
@@ -175,7 +237,7 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 
 		public static WndMetamorphReplace INSTANCE;
 
-		public Talent replacing;
+		public Talent replaced;
 		public int tier;
 		LinkedHashMap<Talent, Integer> replaceOptions;
 
@@ -184,17 +246,17 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 			super();
 
 			if (INSTANCE != null){
-				replacing = INSTANCE.replacing;
+				replaced = INSTANCE.replaced;
 				tier = INSTANCE.tier;
 				replaceOptions = INSTANCE.replaceOptions;
 				INSTANCE = this;
-				setup(replacing, tier, replaceOptions);
+				setup(replaced, tier, replaceOptions);
 			} else {
 				hide();
 			}
 		}
 
-		public WndMetamorphReplace(Talent replacing, int tier){
+		public WndMetamorphReplace(Talent replaced, int tier){
 			super();
 
 			if (!identifiedByUse && curItem instanceof ScrollOfMetamorphosis) {
@@ -204,39 +266,16 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 
 			INSTANCE = this;
 
-			this.replacing = replacing;
+			this.replaced = replaced;
 			this.tier = tier;
 
-			LinkedHashMap<Talent, Integer> options = new LinkedHashMap<>();
-			Set<Talent> curTalentsAtTier = Dungeon.hero.talents.get(tier-1).keySet();
-
-			for (HeroClass cls : HeroClass.values()){
-
-				ArrayList<LinkedHashMap<Talent, Integer>> clsTalents = new ArrayList<>();
-				Talent.initClassTalents(cls, clsTalents);
-
-				Set<Talent> clsTalentsAtTier = clsTalents.get(tier-1).keySet();
-				boolean replacingIsInSet = false;
-				for (Talent talent : clsTalentsAtTier.toArray(new Talent[0])){
-					if (talent == replacing){
-						replacingIsInSet = true;
-						break;
-					} else {
-						if (curTalentsAtTier.contains(talent)){
-							clsTalentsAtTier.remove(talent);
-						}
-					}
-				}
-				if (!replacingIsInSet && !clsTalentsAtTier.isEmpty()) {
-					options.put(Random.element(clsTalentsAtTier), Dungeon.hero.pointsInTalent(replacing));
-				}
-			}
+			LinkedHashMap<Talent, Integer> options = getOptions(tier, replaced);
 
 			replaceOptions = options;
-			setup(replacing, tier, options);
+			setup(replaced, tier, options);
 		}
 
-		private void setup(Talent replacing, int tier, LinkedHashMap<Talent, Integer> replaceOptions){
+		private void setup(Talent replaced, int tier, LinkedHashMap<Talent, Integer> replaceOptions){
 			float top = 0;
 
 			IconTitle title = new IconTitle( curItem );
@@ -262,6 +301,7 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 
 			resize(120, (int)optionsPane.bottom());
 		}
+
 
 		@Override
 		public void hide() {

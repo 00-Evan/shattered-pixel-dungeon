@@ -26,10 +26,13 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Identification;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes.Landmark;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -41,8 +44,11 @@ import com.watabou.noosa.audio.Sample;
 
 public class WaterOfAwareness extends WellWater {
 
+	protected int itemIDS = 2;
+
 	@Override
 	protected boolean affectHero( Hero hero ) {
+		if(itemIDS < 2) return false;
 		
 		Sample.INSTANCE.play( Assets.Sounds.DRINK );
 		emitter.parent.add( new Identification( hero.sprite.center() ) );
@@ -63,6 +69,11 @@ public class WaterOfAwareness extends WellWater {
 		}
 		
 		Buff.affect( hero, Awareness.class, Awareness.DURATION );
+		for(Mob m : Dungeon.level.mobs) {
+			if(m instanceof Mimic) {
+				Buff.affect( hero, TalismanOfForesight.CharAwareness.class, Awareness.DURATION ).charID = m.id();
+			}
+		}
 		Dungeon.observe();
 
 		Dungeon.hero.interrupt();
@@ -81,7 +92,8 @@ public class WaterOfAwareness extends WellWater {
 			
 			Sample.INSTANCE.play( Assets.Sounds.DRINK );
 			emitter.parent.add( new Identification( DungeonTilemap.tileCenterToWorld( pos ) ) );
-			
+
+			itemIDS--;
 			return item;
 		}
 	}

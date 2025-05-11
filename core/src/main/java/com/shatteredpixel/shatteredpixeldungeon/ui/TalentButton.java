@@ -37,8 +37,6 @@ import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 
-import java.util.LinkedHashMap;
-
 public class TalentButton extends Button {
 
 	public static final int WIDTH = 20;
@@ -164,44 +162,10 @@ public class TalentButton extends Button {
 
 				@Override
 				public void call() {
-					Talent replacing = ScrollOfMetamorphosis.WndMetamorphReplace.INSTANCE.replacing;
+					Talent replaced = ScrollOfMetamorphosis.WndMetamorphReplace.INSTANCE.replaced;
 
-					for (LinkedHashMap<Talent, Integer> tier : Dungeon.hero.talents){
-						if (tier.containsKey(replacing)){
-							LinkedHashMap<Talent, Integer> newTier = new LinkedHashMap<>();
-							for (Talent t : tier.keySet()){
-								if (t == replacing){
-									newTier.put(talent, tier.get(replacing));
-
-									if (!Dungeon.hero.metamorphedTalents.containsValue(replacing)){
-										Dungeon.hero.metamorphedTalents.put(replacing, talent);
-
-									//if what we're replacing is already a value, we need to simplify the data structure
-									} else {
-										//a->b->a, we can just remove the entry entirely
-										if (Dungeon.hero.metamorphedTalents.get(talent) == replacing){
-											Dungeon.hero.metamorphedTalents.remove(talent);
-
-										//a->b->c, we need to simplify to a->c
-										} else {
-											for (Talent t2 : Dungeon.hero.metamorphedTalents.keySet()){
-												if (Dungeon.hero.metamorphedTalents.get(t2) == replacing){
-													Dungeon.hero.metamorphedTalents.put(t2, talent);
-												}
-											}
-										}
-									}
-
-								} else {
-									newTier.put(t, tier.get(t));
-								}
-							}
-							Dungeon.hero.talents.set(ScrollOfMetamorphosis.WndMetamorphReplace.INSTANCE.tier-1, newTier);
-							break;
-						}
-					}
-
-					ScrollOfMetamorphosis.onMetamorph(replacing, talent);
+					ScrollOfMetamorphosis.replaceTalent(replaced, talent);
+					ScrollOfMetamorphosis.onMetamorph(replaced, talent);
 
 					if (ScrollOfMetamorphosis.WndMetamorphReplace.INSTANCE != null){
 						ScrollOfMetamorphosis.WndMetamorphReplace.INSTANCE.hide();

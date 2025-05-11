@@ -97,6 +97,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected Callback animCallback;
 	
 	protected PosTweener motion;
+	private Callback motionCallback;
 	
 	protected Emitter burning;
 	protected Emitter chilled;
@@ -127,6 +128,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 
 	//used to prevent the actor associated with this sprite from acting until movement completes
 	public volatile boolean isMoving = false;
+	public volatile boolean isJumping = false;
 	
 	public CharSprite() {
 		super();
@@ -249,7 +251,25 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			motion.stop(false);
 		}
 	}
-	
+
+	public synchronized void doAfterAnim(Callback callback) {
+		Callback current = isJumping ? jumpCallback : (isMoving ? motionCallback : animCallback);
+
+		Callback updated = callback;
+		if(current != null) {
+			updated = () -> {
+				current.call();
+				callback.call();
+			};
+		}
+
+		if(isJumping) jumpCallback = updated;
+		else if(isMoving) motionCallback = updated;
+		else {
+			if(curAnim != idle) animCallback = updated;
+			else callback.call();
+		}
+	}
 	public void attack( int cell ) {
 		attack( cell, null );
 	}
@@ -301,6 +321,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		jumpTweener = new JumpTweener( this, worldToCamera( to ), height, duration );
 		jumpTweener.listener = this;
 		parent.add( jumpTweener );
+
+		isJumping = true;
 
 		turnTo( from, to );
 	}
@@ -778,12 +800,15 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	@Override
 	public void onComplete( Tweener tweener ) {
 		if (tweener == jumpTweener) {
+			isJumping = false;
 
 			if (visible && Dungeon.level.water[ch.pos] && !ch.flying) {
 				GameScene.ripple( ch.pos );
 			}
 			if (jumpCallback != null) {
-				jumpCallback.call();
+				Callback executing = jumpCallback;
+				jumpCallback = null;
+				executing.call();
 			}
 			GameScene.sortMobSprites();
 
@@ -795,6 +820,12 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				motion.killAndErase();
 				motion = null;
 				ch.onMotionComplete();
+
+				if (motionCallback != null) {
+					Callback executing = motionCallback;
+					motionCallback = null;
+					executing.call();
+				}
 
 				GameScene.sortMobSprites();
 				notifyAll();

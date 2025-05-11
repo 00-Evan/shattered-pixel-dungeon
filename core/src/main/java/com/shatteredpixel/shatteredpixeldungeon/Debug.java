@@ -1,6 +1,7 @@
 package com.shatteredpixel.shatteredpixeldungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.EnergyCrystal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
 import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
@@ -83,6 +84,7 @@ public class Debug {
         if(!Debug.DEBUG_MODE || !Debug.ActOnStart) return;
         ClearWaterskin();
 
+        DebugCollect(EnergyCrystal.class);
         Hero.Polished.Debug_UpdateStats(Starting_HeroLevel);
         Starting_Bag();
     }
@@ -111,6 +113,11 @@ public class Debug {
         if(!DEBUG_MODE) return null;
         Item i = Reflection.newInstance(itemType);
         if(i == null) return null;
+
+        if(i instanceof EnergyCrystal) {
+            Dungeon.energy += i.quantity();
+            return null;
+        }
 
         i.quantity(i.stackable ? quantity : 1);
         i.identify();

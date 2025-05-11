@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MagicWellRoom;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -62,7 +63,7 @@ public abstract class WellWater extends Blob {
 			
 			Item oldItem = heap.peek();
 			Item newItem = affectItem( oldItem, pos );
-			
+
 			if (newItem != null) {
 				
 				if (newItem == oldItem) {
@@ -77,16 +78,22 @@ public abstract class WellWater extends Blob {
 				}
 				
 				heap.sprite.link();
+
+				if(this instanceof WaterOfAwareness && ((WaterOfAwareness)this).itemIDS > 0) {
+					return false;
+				}
+
 				clear(pos);
-				
 				return true;
 				
 			} else {
-				
+
 				int newPlace;
+				int tries = 1000;
 				do {
 					newPlace = pos + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
-				} while (!Dungeon.level.passable[newPlace] && !Dungeon.level.avoid[newPlace]);
+					tries--;
+				} while (tries > 0 && (Dungeon.level.solid[newPlace] || Dungeon.level.pit[newPlace]));
 				Dungeon.level.drop( heap.pickUp(), newPlace ).sprite.drop( pos );
 				
 				return false;
@@ -106,7 +113,7 @@ public abstract class WellWater extends Blob {
 	
 	public static void affectCell( int cell ) {
 		
-		Class<?>[] waters = {WaterOfHealth.class, WaterOfAwareness.class};
+		Class<?>[] waters = MagicWellRoom.WATERS;
 		
 		for (Class<?>waterClass : waters) {
 			WellWater water = (WellWater)Dungeon.level.blobs.get( waterClass );

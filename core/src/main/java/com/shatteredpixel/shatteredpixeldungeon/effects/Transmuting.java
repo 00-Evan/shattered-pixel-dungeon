@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.TalentIcon;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.Callback;
 
 public class Transmuting extends Component {
 
@@ -50,6 +51,8 @@ public class Transmuting extends Component {
 	private Phase phase;
 	private float duration;
 	private float passed;
+
+	public Callback callback = null;
 
 	public Transmuting( Item oldItem, Item newItem ){
 		oldSprite = new ItemSprite(oldItem);
@@ -121,6 +124,8 @@ public class Transmuting extends Component {
 					duration = FADE_OUT_TIME;
 					break;
 				case FADE_OUT:
+					if(callback != null) callback.call();
+					callback = null;
 					kill();
 					break;
 			}
@@ -129,26 +134,30 @@ public class Transmuting extends Component {
 		}
 	}
 
-	public static void show( Char ch, Item oldItem, Item newItem ) {
+	public static Transmuting show( Char ch, Item oldItem, Item newItem ) {
 
 		if (!ch.sprite.visible) {
-			return;
+			return null;
 		}
 
 		Transmuting sprite = new Transmuting( oldItem, newItem );
 		sprite.target = ch;
 		ch.sprite.parent.add( sprite );
+
+		return sprite;
 	}
 
-	public static void show( Char ch, Talent oldTalent, Talent newTalent ) {
+	public static Transmuting show( Char ch, Talent oldTalent, Talent newTalent ) {
 
 		if (!ch.sprite.visible) {
-			return;
+			return null;
 		}
 
 		Transmuting sprite = new Transmuting( oldTalent, newTalent );
 		sprite.target = ch;
 		ch.sprite.parent.add( sprite );
+
+		return sprite;
 	}
 
 }

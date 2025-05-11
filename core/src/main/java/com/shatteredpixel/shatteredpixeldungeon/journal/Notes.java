@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Foliage;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SacrificialFire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfAwareness;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfChange;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfHealth;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DemonSpawner;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Statue;
@@ -124,6 +125,7 @@ public class Notes {
 		DISTANT_WELL,
 		WELL_OF_HEALTH,
 		WELL_OF_AWARENESS,
+		WELL_OF_CHANGE,
 		SACRIFICIAL_FIRE,
 		STATUE,
 		
@@ -180,6 +182,8 @@ public class Notes {
 					return Icons.get(Icons.WELL_HEALTH);
 				case WELL_OF_AWARENESS:
 					return Icons.get(Icons.WELL_AWARENESS);
+				case WELL_OF_CHANGE:
+					return Icons.get(Icons.WELL_CHANGE);
 				case SACRIFICIAL_FIRE:
 					return Icons.get(Icons.SACRIFICE_ALTAR);
 				case STATUE:
@@ -236,6 +240,7 @@ public class Notes {
 				case DISTANT_WELL:      return Messages.get(WeakFloorRoom.HiddenWell.class, "desc");
 				case WELL_OF_HEALTH:    return Messages.get(WaterOfHealth.class, "desc");
 				case WELL_OF_AWARENESS: return Messages.get(WaterOfAwareness.class, "desc");
+				case WELL_OF_CHANGE:    return Messages.get(WaterOfChange.class, "desc");
 				case SACRIFICIAL_FIRE:  return Messages.get(SacrificialFire.class, "desc");
 				case STATUE:            return Messages.get(Statue.class, "desc");
 

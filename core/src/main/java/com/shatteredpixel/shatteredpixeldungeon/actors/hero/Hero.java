@@ -292,6 +292,35 @@ public class Hero extends Char {
 
 			return (SPDSettings.Polished.autoPickup() && noEnemiesSeen() && noEnemiesLast);
 		}
+
+
+		public static ArrayList<LinkedHashMap<Talent, Integer>> getTalents() {
+			ArrayList<LinkedHashMap<Talent, Integer>> talents = new ArrayList<>();
+			Talent.initClassTalents(Dungeon.hero.heroClass, talents, Dungeon.hero.metamorphedTalents);
+			for (LinkedHashMap<Talent, Integer> tier : talents){
+				for (Talent talent : tier.keySet()){
+					tier.put(talent, Dungeon.hero.pointsInTalent(talent));
+				}
+			}
+
+			return talents;
+		}
+
+		public static int tiersUnlocked() {
+			int tiersAvailable = 1;
+			while ( tiersAvailable < Talent.MAX_TALENT_TIERS
+					&& Dungeon.hero.lvl+1 >= Talent.tierLevelThresholds[tiersAvailable+1] ) {
+				tiersAvailable++;
+			}
+
+			if (tiersAvailable > 2 && Dungeon.hero.subClass == HeroSubClass.NONE){
+				tiersAvailable = 2;
+			} else if (tiersAvailable > 3 && Dungeon.hero.armorAbility == null){
+				tiersAvailable = 3;
+			}
+
+			return tiersAvailable;
+		}
 	}
 
 	//This list is maintained so that some logic checks can be skipped

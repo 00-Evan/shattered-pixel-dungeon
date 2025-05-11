@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
@@ -54,33 +55,15 @@ public class TalentsPane extends ScrollPane {
 
 		Ratmogrify.useRatroicEnergy = Dungeon.hero != null && Dungeon.hero.armorAbility instanceof Ratmogrify;
 
-		int tiersAvailable = 1;
-
-		if (mode == TalentButton.Mode.INFO){
-			if (!Badges.isUnlocked(Badges.Badge.LEVEL_REACHED_1)){
-				tiersAvailable = 1;
-			} else if (!Badges.isUnlocked(Badges.Badge.LEVEL_REACHED_2) || !Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_2)){
-				tiersAvailable = 2;
-			} else if (!Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_4)){
-				tiersAvailable = 3;
-			} else {
-				tiersAvailable = Talent.MAX_TALENT_TIERS;
-			}
-		} else {
-			while (tiersAvailable < Talent.MAX_TALENT_TIERS
-					&& Dungeon.hero.lvl+1 >= Talent.tierLevelThresholds[tiersAvailable+1]){
-				tiersAvailable++;
-			}
-			if (tiersAvailable > 2 && Dungeon.hero.subClass == HeroSubClass.NONE){
-				tiersAvailable = 2;
-			} else if (tiersAvailable > 3 && Dungeon.hero.armorAbility == null){
-				tiersAvailable = 3;
-			}
-		}
+		int tiersAvailable;
+		if (mode == TalentButton.Mode.INFO)
+			tiersAvailable = Talent.MAX_TALENT_TIERS;
+		else
+			tiersAvailable = Hero.Polished.tiersUnlocked();
 
 		tiersAvailable = Math.min(tiersAvailable, talents.size());
 
-		for (int i = 0; i < Math.min(tiersAvailable, talents.size()); i++){
+		for (int i = 0; i < tiersAvailable; i++){
 			if (talents.get(i).isEmpty()) continue;
 
 			TalentTierPane pane = new TalentTierPane(talents.get(i), i+1, mode);

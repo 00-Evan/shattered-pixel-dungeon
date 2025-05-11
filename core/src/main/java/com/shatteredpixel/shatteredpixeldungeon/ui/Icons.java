@@ -104,6 +104,7 @@ public enum Icons {
 	WELL_AWARENESS,
 	SACRIFICE_ALTAR,
 	DISTANT_WELL,
+	WELL_CHANGE,
 
 	//smaller icons, variable spacing
 	SKULL,
@@ -345,6 +346,9 @@ public enum Icons {
 				break;
 			case DISTANT_WELL:
 				icon.frame( icon.texture.uvRectBySize( 176, 64, 16, 16 ) );
+				break;
+			case WELL_CHANGE:
+				icon.frame( icon.texture.uvRectBySize( 192, 64, 16, 16 ) );
 				break;
 
 			case SKULL:
