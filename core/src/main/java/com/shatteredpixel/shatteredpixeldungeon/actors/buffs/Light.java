@@ -58,6 +58,10 @@ public class Light extends FlavourBuff {
 	public void weaken( int amount ){
 		spend(-amount);
 	}
+
+	public void extend( float amount ){
+		spend(amount);
+	}
 	
 	@Override
 	public int icon() {

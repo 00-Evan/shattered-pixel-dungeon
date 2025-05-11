@@ -83,6 +83,10 @@ public class Shadows extends Invisibility {
 	@Override
 	public boolean act() {
 		if (target.isAlive()) {
+
+			Light light = target.buff(Light.class);
+			//100% -> 66% decay speed
+			if(light != null) light.extend(1/3f);
 			
 			spend( TICK );
 			
