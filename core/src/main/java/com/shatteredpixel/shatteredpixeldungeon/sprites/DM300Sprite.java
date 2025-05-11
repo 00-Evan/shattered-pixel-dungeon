@@ -88,7 +88,7 @@ public class DM300Sprite extends MobSprite {
 		super.zap( cell );
 
 		MagicMissile.boltFromChar( parent,
-				MagicMissile.SPECK + Speck.TOXIC,
+				/*MagicMissile.SPECK + Speck.TOXIC*/ MagicMissile.TOXIC ,
 				this,
 				cell,
 				new Callback() {

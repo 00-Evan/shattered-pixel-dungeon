@@ -51,7 +51,7 @@ public class Pylon extends Mob {
 	{
 		spriteClass = PylonSprite.class;
 
-		HP = HT = Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 80 : 50;
+		HP = HT = Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 100 : 60;
 
 		maxLvl = -2;
 
@@ -199,7 +199,8 @@ public class Pylon extends Mob {
 	public void damage(int dmg, Object src) {
 		if (dmg >= 15){
 			//takes 15/16/17/18/19/20 dmg at 15/17/20/24/29/36 incoming dmg
-			dmg = 14 + (int)(Math.sqrt(8*(dmg - 14) + 1) - 1)/2;
+			//POLISHED: punishes big damage less (sqrt -> pow 0.575)
+			dmg = 14 + (int)(Math.pow(8*(dmg - 14) + 1, 0.575) - 1)/2;
 		}
 
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);

@@ -519,7 +519,7 @@ public abstract class Mob extends Char {
 		return false;
 	}
 
-	private boolean cellIsPathable( int cell ){
+	protected boolean cellIsPathable( int cell ){
 		if (!Dungeon.level.passable[cell]){
 			if (flying || buff(Amok.class) != null){
 				if (!Dungeon.level.avoid[cell]){
@@ -1194,9 +1194,10 @@ public abstract class Mob extends Char {
 				state = WANDERING;
 				target = Dungeon.level.randomDestination( Mob.this );
 			}
-
+      
 			if (alignment == Alignment.ENEMY && Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)
 					&& enemy != null && enemy.buff(Corruption.class) == null) {
+        
 				for (Mob mob : Dungeon.level.mobs) {
 					if (mob.paralysed <= 0
 							&& Dungeon.level.distance(pos, mob.pos) <= 8
