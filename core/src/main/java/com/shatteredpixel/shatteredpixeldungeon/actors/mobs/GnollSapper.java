@@ -206,7 +206,7 @@ public class GnollSapper extends Mob {
 						}
 
 						Dungeon.hero.interrupt();
-            GameScene.Polished.blockInput(.75f);
+						GameScene.Polished.blockInput(.75f);
 						return true;
 					} else if (GnollGeomancer.prepRockFallAttack(enemy, GnollSapper.this, 2, true)) {
 						lastAbilityWasRockfall = true;

@@ -611,7 +611,7 @@ public class GnollGeomancer extends Mob {
 						spend(cooldown);
 
 						Dungeon.hero.interrupt();
-            GameScene.Polished.blockInput(.75f);
+            			GameScene.Polished.blockInput(.75f);
 						return true;
 					} else if (GnollGeomancer.prepRockFallAttack(enemy, GnollGeomancer.this, 6-2*curbracket, true)) {
 						lastAbilityWasRockfall = true;
