@@ -49,7 +49,7 @@ public class Debug {
     private static final boolean ActOnStart = false || DebuggingStats;
     private static final boolean ActOnLoad = false;
     private static final ArrayList<Class<?extends Item>> Starting_Items;
-    static {
+    static {//
         //Testing items
         Starting_Items = new ArrayList<>(Arrays.asList(
                 
