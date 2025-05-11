@@ -251,8 +251,8 @@ public class BuffIndicator extends Component {
 		if (excessWidth > 0) {
 			float leftAdjust = excessWidth/(buffButtons.size()-1);
 			//can't squish by more than 50% on large and 62% on small
-			if (large && leftAdjust >= size*0.48f) leftAdjust = size*0.5f;
-			if (!large && leftAdjust >= size*0.62f) leftAdjust = size*0.65f;
+			if (large && leftAdjust >= size*0.45f) leftAdjust = size*0.45f;
+			if (!large && leftAdjust >= size*0.32f) leftAdjust = size*0.32f;
 			float cumulativeAdjust = leftAdjust * (buffButtons.size()-1);
 
 			ArrayList<BuffButton> buttons = new ArrayList<>(buffButtons.values());

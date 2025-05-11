@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CircleArc;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -46,6 +47,7 @@ public class WndInfoMob extends WndTitledMessage {
 		private RenderedTextBlock name;
 		private HealthBar health;
 		private BuffIndicator buffs;
+		private CircleArc counter;
 		
 		public MobTitle( Mob mob ) {
 			
@@ -62,6 +64,16 @@ public class WndInfoMob extends WndTitledMessage {
 
 			buffs = new BuffIndicator( mob, false );
 			add( buffs );
+
+			counter = new CircleArc(18, 3.5f);
+			counter.color( mob.cooldown() >= 1f ? 0xFF0000 : 0x808080, true );
+
+			float cd = mob.cooldown();
+			if(Math.abs(cd % 1) < 0.01) cd = Math.round(cd);
+			float partial = (1f-cd%1f)%1f;
+
+			counter.setSweep(partial);
+			add(counter);
 		}
 		
 		@Override
@@ -70,15 +82,18 @@ public class WndInfoMob extends WndTitledMessage {
 			image.x = 0;
 			image.y = Math.max( 0, name.height() + health.height() - image.height() );
 
+			counter.x = width() - 3.5f - GAP;
+			counter.y = Math.max( 0, name.height() + health.height() - 3.5f );
+
 			float w = width - image.width() - GAP;
 			int extraBuffSpace = 0;
 
-			//Tries to make space for up to 11 visible buffs
+			//Tries to make space for up to 10 visible buffs
 			do {
 				name.maxWidth((int)w - extraBuffSpace);
-				buffs.setSize(w - name.width() - 8, 8);
+				buffs.setSize(w - name.width() - 3.5f - 14, 8);
 				extraBuffSpace += 8;
-			} while (extraBuffSpace <= 40 && !buffs.allBuffsVisible());
+			} while (extraBuffSpace <= 48 && !buffs.allBuffsVisible());
 
 			name.setPos(x + image.width() + GAP,
 					image.height() > name.height() ? y +(image.height() - name.height()) / 2 : y);
