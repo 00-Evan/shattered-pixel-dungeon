@@ -22,9 +22,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MonkSprite;
@@ -46,9 +48,20 @@ public class Monk extends Mob {
 		maxLvl = 21;
 		
 		loot = Food.class;
-		lootChance = 0.083f;
+		lootChance = 0.125f;
 
 		properties.add(Property.UNDEAD);
+	}
+
+	@Override
+	public float lootChance() {
+		return super.lootChance() * ((6f - Dungeon.LimitedDrops.MONK_RATION.count) / 6f);
+	}
+
+	@Override
+	public Item createLoot(){
+		Dungeon.LimitedDrops.MONK_RATION.count++;
+		return super.createLoot();
 	}
 	
 	@Override

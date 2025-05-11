@@ -135,6 +135,14 @@ public class Dungeon {
 		TRINKET_CATA,
 		LAB_ROOM, //actually a room, but logic is the same
 
+		//Food sources
+		CRAB_MEAT,
+		ALBINO_MEAT,
+		//Piranhas are already limited (except multiplicity, but that's niche anyway)
+		SPINNER_MEAT,
+		MONK_RATION,
+		SENIOR_PASTY,
+
 		//Health potion sources
 		//enemies
 		SWARM_HP,

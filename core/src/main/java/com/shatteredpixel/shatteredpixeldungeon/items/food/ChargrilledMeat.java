@@ -22,13 +22,14 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.food;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
+import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class ChargrilledMeat extends Food {
 
 	{
 		image = ItemSpriteSheet.STEAK;
-		energy = Hunger.HUNGRY/2f;
+		energy = Hunger.HUNGRY/1.25f;
 	}
 	
 	@Override
@@ -40,5 +41,41 @@ public class ChargrilledMeat extends Food {
 		ChargrilledMeat result = new ChargrilledMeat();
 		result.quantity = quantity;
 		return result;
+	}
+
+	public static class oneMeat extends Recipe.SimpleRecipe{
+		{
+			inputs =  new Class[]{MysteryMeat.class};
+			inQuantity = new int[]{1};
+
+			cost = 1;
+
+			output = ChargrilledMeat.class;
+			outQuantity = 1;
+		}
+	}
+
+	public static class twoMeat extends Recipe.SimpleRecipe{
+		{
+			inputs =  new Class[]{MysteryMeat.class};
+			inQuantity = new int[]{2};
+
+			cost = 2;
+
+			output = ChargrilledMeat.class;
+			outQuantity = 2;
+		}
+	}
+
+	public static class threeMeat extends Recipe.SimpleRecipe{
+		{
+			inputs =  new Class[]{MysteryMeat.class};
+			inQuantity = new int[]{3};
+
+			cost = 2;
+
+			output = ChargrilledMeat.class;
+			outQuantity = 3;
+		}
 	}
 }

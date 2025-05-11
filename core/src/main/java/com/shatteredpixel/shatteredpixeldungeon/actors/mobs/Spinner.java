@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -50,10 +51,21 @@ public class Spinner extends Mob {
 		maxLvl = 17;
 
 		loot = MysteryMeat.class;
-		lootChance = 0.125f;
+		lootChance = 0.167f;
 
 		HUNTING = new Hunting();
 		FLEEING = new Fleeing();
+	}
+
+	@Override
+	public float lootChance() {
+		return super.lootChance() * ((6f - Dungeon.LimitedDrops.SPINNER_MEAT.count) / 6f);
+	}
+
+	@Override
+	public Item createLoot(){
+		Dungeon.LimitedDrops.SPINNER_MEAT.count++;
+		return super.createLoot();
 	}
 
 	@Override

@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Pasty;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SeniorSprite;
 import com.watabou.utils.Random;
@@ -32,6 +34,17 @@ public class Senior extends Monk {
 
 		loot = Pasty.class;
 		lootChance = 1f;
+	}
+
+	@Override
+	public float lootChance() {
+		return Dungeon.LimitedDrops.SENIOR_PASTY.count < 6 ? super.lootChance() : 0;
+	}
+
+	@Override
+	public Item createLoot(){
+		Dungeon.LimitedDrops.SENIOR_PASTY.count++;
+		return super.createLoot();
 	}
 	
 	@Override

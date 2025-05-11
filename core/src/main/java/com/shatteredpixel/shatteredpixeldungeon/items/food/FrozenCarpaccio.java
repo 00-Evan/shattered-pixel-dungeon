@@ -22,7 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.food;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fury;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -52,23 +54,23 @@ public class FrozenCarpaccio extends Food {
 	}
 
 	public static void effect(Hero hero){
-		switch (Random.Int( 5 )) {
+		switch (Random.Int( 4 )) {
 			case 0:
 				GLog.i( Messages.get(FrozenCarpaccio.class, "invis") );
 				Buff.affect( hero, Invisibility.class, Invisibility.DURATION );
 				break;
 			case 1:
 				GLog.i( Messages.get(FrozenCarpaccio.class, "hard") );
-				Barkskin.conditionallyAppend( hero, hero.HT / 4, 1 );
+				Barkskin.conditionallyAppend( hero, hero.lvl + 5, 2 );
 				break;
 			case 2:
-				GLog.i( Messages.get(FrozenCarpaccio.class, "refresh") );
-				PotionOfHealing.cure(hero);
+				GLog.i( Messages.get(FrozenCarpaccio.class, "empowered") );
+				Buff.affect( hero, Fury.class, Fury.DURATION );
 				break;
 			case 3:
-				GLog.i( Messages.get(FrozenCarpaccio.class, "better") );
-				hero.HP = Math.min( hero.HP + hero.HT / 4, hero.HT );
-				hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(hero.HT / 4), FloatingText.HEALING );
+				GLog.i( Messages.get(FrozenCarpaccio.class, "protected") );
+				Buff.affect(hero, Barrier.class).setShield(hero.HT / 4);
+				hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(hero.HT / 4), FloatingText.SHIELDING );
 				break;
 		}
 	}

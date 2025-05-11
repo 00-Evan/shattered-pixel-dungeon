@@ -23,9 +23,9 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
-public class Fury extends Buff {
-	
-	public static float LEVEL	= 0.5f;
+public class Fury extends FlavourBuff {
+
+	public static final float DURATION	= 15f;
 
 	{
 		type = buffType.POSITIVE;
@@ -33,18 +33,12 @@ public class Fury extends Buff {
 	}
 	
 	@Override
-	public boolean act() {
-		if (target.HP > target.HT * LEVEL) {
-			detach();
-		}
-		
-		spend( TICK );
-		
-		return true;
-	}
-	
-	@Override
 	public int icon() {
 		return BuffIndicator.FURY;
+	}
+
+	@Override
+	public float iconFadePercent() {
+		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 	}
 }

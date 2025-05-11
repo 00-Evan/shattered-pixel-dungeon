@@ -22,19 +22,48 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.food;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
+import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-public class StewedMeat extends Food {
+public class HoneyedMeat extends Food {
 	
 	{
-		image = ItemSpriteSheet.STEWED;
-		energy = Hunger.HUNGRY/2f;
+		image = ItemSpriteSheet.HONEYED_MEAT;
+		energy = Hunger.HUNGRY;
+	}
+
+	@Override
+	protected void satisfy(Hero hero) {
+		super.satisfy(hero);
+		effect(hero);
+	}
+
+	void effect(Hero hero) {
+		int heal = Math.min( 2 + hero.HT / 20, hero.HT - hero.HP );
+		hero.HP += heal;
+		hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(heal), FloatingText.HEALING );
 	}
 	
 	@Override
 	public int value() {
 		return 8 * quantity;
+	}
+
+	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
+		{
+			inputs =  new Class[]{MysteryMeat.class, Honeypot.ShatteredPot.class};
+			inQuantity = new int[]{1, 1};
+
+			cost = 3;
+
+			output = HoneyedMeat.class;
+			outQuantity = 1;
+		}
 	}
 
 }
