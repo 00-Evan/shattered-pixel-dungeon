@@ -100,8 +100,8 @@ public class SewerLevel extends RegularLevel {
 	@Override
 	protected Painter painter() {
 		return new SewerPainter()
-				.setWater(feeling == Feeling.WATER ? 0.85f : 0.30f, 5)
-				.setGrass(feeling == Feeling.GRASS ? 0.80f : 0.20f, 4)
+				.setWater(feeling == Feeling.WATER ? 0.90f : 0.30f, 5)
+				.setGrass(feeling == Feeling.GRASS ? 0.70f : 0.20f, 4)
 				.setTraps(nTraps(), trapClasses(), trapChances());
 	}
 	

@@ -142,9 +142,9 @@ public class HighGrass {
 				// Dew, scales from 1/6 to 1/4
 				lootChance = 1/(6f -naturalismLevel/2f);
 
-				//grassy levels spawn half as much dew
+				//to balance grassy levels
 				if (Dungeon.level != null && Dungeon.level.feeling == Level.Feeling.GRASS){
-					lootChance /= 2;
+					lootChance /= 3;
 				}
 
 				if (Random.Float() < lootChance) {
