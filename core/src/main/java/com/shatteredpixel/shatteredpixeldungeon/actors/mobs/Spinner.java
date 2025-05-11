@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SpinnerSprite;
@@ -219,7 +220,35 @@ public class Spinner extends Mob {
 	protected void applyWebToCell(int cell){
 		GameScene.add(Blob.seed(cell, 20, Web.class));
 	}
-	
+
+	@Override
+	protected boolean cellIsPathable( int cell ) {
+		Level level = Dungeon.level;
+		boolean oldval = level.openSpace[cell];
+
+		if (level.solid[cell] && Blob.volumeAt(cell, Web.class) == 0){
+			level.openSpace[cell] = false;
+		} else {
+			for (int i = 1; i < PathFinder.CIRCLE8.length; i += 2){
+				if (level.solid[cell+PathFinder.CIRCLE8[i]]
+					&& Blob.volumeAt(cell+PathFinder.CIRCLE8[i], Web.class) == 0) {
+
+					level.openSpace[cell] = false;
+				}
+				else if(( !level.solid[cell+PathFinder.CIRCLE8[(i+1)%8]] || Blob.volumeAt(cell+PathFinder.CIRCLE8[(i+1)%8], Web.class) > 0 )
+					 && ( !level.solid[cell+PathFinder.CIRCLE8[(i+2)%8]] || Blob.volumeAt(cell+PathFinder.CIRCLE8[(i+2)%8], Web.class) > 0 )) {
+
+					level.openSpace[cell] = true;
+					break;
+				}
+			}
+		}
+
+		boolean temp = super.cellIsPathable(cell);
+		level.openSpace[cell] = oldval;
+		return temp;
+	}
+
 	private int left(int direction){
 		return direction == 0 ? 7 : direction-1;
 	}

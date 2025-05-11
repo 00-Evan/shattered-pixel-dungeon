@@ -125,6 +125,11 @@ public class EtherealChains extends Artifact {
 		charge = 5+(level()*2); //sets charge to soft cap
 	}
 
+	@Override
+	public void Polished_maxCharge() {
+		charge = 5+(level()*2);
+	}
+
 	public CellSelector.Listener caster = new CellSelector.Listener(){
 
 		@Override

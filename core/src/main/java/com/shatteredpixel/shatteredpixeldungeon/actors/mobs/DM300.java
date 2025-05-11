@@ -425,7 +425,7 @@ public class DM300 extends Mob {
 		}
 
 		Dungeon.hero.interrupt();
-		GameScene.Polished.blockInput(.5f);
+		GameScene.Polished.blockInput(.75f);
 
 		final int rockCenter;
 

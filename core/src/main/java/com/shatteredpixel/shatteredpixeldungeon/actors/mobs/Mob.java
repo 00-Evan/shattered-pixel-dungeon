@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.GreaterHaste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
@@ -1080,6 +1081,11 @@ public abstract class Mob extends Char {
 		return (grow != null && grow.Polished_huntThreshold());
 	}
 	private void Polished_growingHunt() {
+		if(buff(MagicalSleep.class) != null) {
+			Polished_huntNoti = false;
+			return;
+		}
+
 		if(Polished_growingThreshold()) {
 			aggro(Dungeon.hero);
 			target=enemy.pos;

@@ -57,7 +57,7 @@ public class AquaBrew extends Brew {
 
 	@Override
 	public int energyVal() {
-		return (int)(14 * (quantity/(float)Recipe.OUT_QUANTITY));
+		return (int)(16 * (quantity/(float)Recipe.OUT_QUANTITY));
 	}
 
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {

@@ -233,12 +233,15 @@ public class WandOfCorruption extends Wand {
 			 	debuffs.put(toAssign, 0f);
 			 }
 		}
+
+		Class<?extends Buff> debuffCls = Random.chances(debuffs);
+		Class<?extends FlavourBuff> flvrDebuffCls = null;
+
+		if(debuffCls != null && FlavourBuff.class.isAssignableFrom(debuffCls))
+			flvrDebuffCls = debuffCls.asSubclass(FlavourBuff.class);
 		
-		//all buffs with a > 0 chance are flavor buffs
-		Class<?extends FlavourBuff> debuffCls = (Class<? extends FlavourBuff>) Random.chances(debuffs);
-		
-		if (debuffCls != null){
-			Buff debuff = Buff.append(enemy, debuffCls, 6 + buffedLvl()*3);
+		if (flvrDebuffCls != null){
+			Buff debuff = Buff.Polished.prolongAligned(enemy, flvrDebuffCls, 6 + buffedLvl()*3);
 			if(debuff instanceof Charm) {
 				((Charm) debuff).object = Dungeon.hero.id();
 			}

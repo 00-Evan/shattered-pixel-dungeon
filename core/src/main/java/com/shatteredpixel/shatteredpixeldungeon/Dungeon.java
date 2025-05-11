@@ -112,7 +112,7 @@ public class Dungeon {
 			for (int i = 0; i < 5; i++) {
 				int offset = pos + level.pointToCell(-2, -2+i);
 
-				BArray.or( level.traversable, extendedHeroFOV, offset, 5, level.traversable );
+				if(offset <= level.length() - 5) BArray.or( level.traversable, extendedHeroFOV, offset, 5, level.traversable );
 			}
 
 			if(Dungeon.hero.pointsInTalent(Talent.ROGUES_EXPERTISE) >= 2) {
@@ -956,10 +956,10 @@ public class Dungeon {
 		int pos = l + t * level.width();
 
 		//POLISHED
-		int l_e = Math.max( 0, x - dist-1 );
-		int r_e = Math.min( x + dist+1, level.width() - 1 );
-		int t_e = Math.max( 0, y - dist-1 );
-		int b_e = Math.min( y + dist+1, level.height() - 1 );
+		int l_e = Math.max( 0, l-1 );
+		int r_e = Math.min( r+1, level.width() - 1 );
+		int t_e = Math.max( 0, t-1 );
+		int b_e = Math.min( b+1, level.height() - 1 );
 
 		int width_e = r_e - l_e + 1;
 		int height_e = b_e - t_e + 1;
