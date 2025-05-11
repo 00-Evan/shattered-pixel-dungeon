@@ -42,11 +42,6 @@ public class Camouflaged extends FlavourBuff {
 	}
 
 	@Override
-	public String desc() {
-		return Messages.get(this, "desc");
-	}
-
-	@Override
 	public boolean attachTo( Char target ) {
 		if (super.attachTo( target )) {
 			target.camouflaged++;
