@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
@@ -933,6 +934,11 @@ public abstract class Mob extends Char {
 				}
 			}
 
+			if ((cause == Dungeon.hero || cause instanceof Wand || cause instanceof ClericSpell || cause instanceof ArmorAbility)
+				&& Dungeon.hero.subClass == HeroSubClass.BERSERKER) {
+				Berserk berserk = Dungeon.hero.buff(Berserk.class);
+				if(berserk != null) berserk.continueRampage();
+			}
 		}
 
 		if (Dungeon.hero.isAlive() && !Dungeon.level.heroFOV[pos]) {

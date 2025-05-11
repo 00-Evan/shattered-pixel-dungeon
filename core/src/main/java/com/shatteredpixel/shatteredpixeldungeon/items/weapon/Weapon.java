@@ -525,9 +525,10 @@ abstract public class Weapon extends KindOfWeapon {
 
 		public static float Polished_procChanceMultiplier(Char attacker, KindOfWeapon weapon ){
 			float multi = RingOfArcana.enchantPowerMultiplier(attacker);
-			Berserk rage = attacker.buff(Berserk.class);
-			if (rage != null) {
-				multi = rage.enchantFactor(multi);
+
+			Berserk berserk = attacker.buff(Berserk.class);
+			if (berserk != null) {
+				multi += berserk.enchantBoost(false);
 			}
 
 			if (attacker.buff(RunicBlade.RunicSlashTracker.class) != null){

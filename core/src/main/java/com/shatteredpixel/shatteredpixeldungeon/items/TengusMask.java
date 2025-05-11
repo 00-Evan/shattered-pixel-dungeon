@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -104,6 +105,10 @@ public class TengusMask extends Item {
 
 		if (way == HeroSubClass.ASSASSIN && curUser.isStealthy()){
 			Buff.affect(curUser, Preparation.class);
+		}
+		if (way == HeroSubClass.BERSERKER) {
+			Buff.affect(curUser, Berserk.class);
+			Buff.affect(curUser, Berserk.LastStandIndicator.class);
 		}
 		
 		curUser.sprite.operate( curUser.pos );

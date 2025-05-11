@@ -440,7 +440,7 @@ public abstract class Char extends Actor {
 			}
 
 			Berserk berserk = buff(Berserk.class);
-			if (berserk != null) dmg = berserk.damageFactor(dmg);
+			if (berserk != null) dmg *= berserk.damageFactor();
 
 			if (buff( Fury.class ) != null) {
 				dmg *= 1.5f;
@@ -671,6 +671,9 @@ public abstract class Char extends Actor {
 			// + 3%/5%
 			acuRoll *= 1.01f + 0.02f*Dungeon.hero.pointsInTalent(Talent.BLESS);
 		}
+
+		Berserk berserk = attacker.buff(Berserk.class);
+		if(berserk != null) acuRoll *= berserk.accuracyFactor();
 		
 		float defRoll = Random.Float( defStat );
 		if (defender.buff(Bless.class) != null) defRoll *= 1.25f;

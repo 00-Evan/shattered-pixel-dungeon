@@ -3,6 +3,7 @@ package com.shatteredpixel.shatteredpixeldungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.EnergyCrystal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.TengusMask;
 import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
 import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
@@ -11,6 +12,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourg
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.SupplyRation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfFeatherFall;
@@ -41,7 +43,7 @@ public class Debug {
     public static final float Respawn_Multiplier = DebuggingStats ?     0f      : 1f;
 
     public static final int Starting_Floor = DebuggingStats ?           6       : 1;
-    public static final int Starting_HeroLevel = DebuggingStats ?       18      : 1;
+    public static final int Starting_HeroLevel = DebuggingStats ?       15      : 1;
     public static final int Starting_Str = DebuggingStats ?             16      : 10;
     public static final int Starting_HP = DebuggingStats ?              2000    : 20;
 
@@ -52,7 +54,7 @@ public class Debug {
     static {//
         //Testing items
         Starting_Items = new ArrayList<>(Arrays.asList(
-                
+
         ));
 
 

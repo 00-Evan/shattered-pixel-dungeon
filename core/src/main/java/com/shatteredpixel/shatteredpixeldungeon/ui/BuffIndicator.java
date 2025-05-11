@@ -50,6 +50,7 @@ public class BuffIndicator extends Component {
 
 	public static final int ELECTRIFIED	= POLISHED + 0;
 	public static final int BRITTLE 	= POLISHED + 1;
+	public static final int LAST_STAND 	= POLISHED + 2;
 
 
 	//FIXME this is becoming a mess, should do a big cleaning pass on all of these
