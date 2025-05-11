@@ -897,10 +897,6 @@ public abstract class Mob extends Char {
 					Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(exp), FloatingText.EXPERIENCE);
 				}
 				Dungeon.hero.earnExp(exp, getClass());
-
-				if (Dungeon.hero.subClass == HeroSubClass.MONK){
-					Buff.affect(Dungeon.hero, MonkEnergy.class).gainEnergy(this);
-				}
 			}
 		}
 	}
@@ -915,6 +911,10 @@ public abstract class Mob extends Char {
 			//EXP /= 2;
 
 			EXP = 0;
+		} else {
+			if (Dungeon.hero.subClass == HeroSubClass.MONK){
+				Buff.affect(Dungeon.hero, MonkEnergy.class).gainEnergy(this);
+			}
 		}
 
 		if (alignment == Alignment.ENEMY){

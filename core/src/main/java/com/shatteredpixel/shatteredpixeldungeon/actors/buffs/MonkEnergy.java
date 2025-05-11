@@ -636,12 +636,10 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 				for (int i = 0; i < 5; i++) hero.spendConstant(Actor.TICK);
 
 				if (Buff.affect(hero, MonkEnergy.class).abilitiesEmpowered(hero)){
-					int toHeal = Math.round((hero.HT - hero.HP)/5f);
-					if (toHeal > 0) {
-						Buff.affect(hero, Healing.class).setHeal(toHeal, 0, 1);
-					}
 					Buff.affect(hero, MeditateResistance.class, hero.cooldown());
 				}
+				Hunger hunger = hero.buff(Hunger.class);
+				if(hunger != null) hunger.POLISHED_delay(hero.cooldown());
 
 				Actor.addDelayed(new Actor() {
 
@@ -652,7 +650,6 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 					@Override
 					protected boolean act() {
 						Buff.affect(hero, Recharging.class, 8f);
-						Buff.affect(hero, ArtifactRecharge.class).extend(8f).ignoreHornOfPlenty = false;
 						Actor.remove(this);
 						return true;
 					}

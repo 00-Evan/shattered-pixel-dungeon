@@ -482,7 +482,7 @@ public abstract class Char extends Actor {
 			}
 
 			if (enemy.buff(MonkEnergy.MonkAbility.Meditate.MeditateResistance.class) != null){
-				dmg *= 0.2f;
+				dmg *= 0.0f;
 			}
 
 			//POLISHED: do we let them stack?

@@ -76,7 +76,7 @@ public class Dirk extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		Dagger.sneakAbility(hero, target, 4, 2+buffedLvl(), this);
+		Dagger.sneakAbility(hero, target, 2, 2+buffedLvl(), this);
 	}
 
 	@Override
