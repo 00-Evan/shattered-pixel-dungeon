@@ -165,7 +165,7 @@ public class ShadowClone extends ArmorAbility {
 				HT += hpBonus;
 				HP += hpBonus;
 			}
-			defenseSkill = heroLevel + 5; //equal to base hero defense skill
+			defenseSkill = heroLevel + 4; //equal to base hero defense skill
 		}
 
 		@Override
