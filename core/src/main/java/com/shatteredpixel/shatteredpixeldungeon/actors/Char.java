@@ -141,6 +141,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GeyserTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GnollRockfallTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
@@ -591,7 +592,13 @@ public abstract class Char extends Actor {
 
 			if (enemy.sprite != null){
 				if (tuftDodged){
-					enemy.sprite.showStatusWithIcon(CharSprite.NEUTRAL, enemy.defenseVerb(), FloatingText.TUFT);
+					//dooking is a playful sound Ferrets can make, like low pitched chirping
+					// I doubt this will translate, so it's only in English
+					if (Messages.lang() == Languages.ENGLISH && Random.Int(10) == 0) {
+						enemy.sprite.showStatusWithIcon(CharSprite.NEUTRAL, "dooked", FloatingText.TUFT);
+					} else {
+						enemy.sprite.showStatusWithIcon(CharSprite.NEUTRAL, enemy.defenseVerb(), FloatingText.TUFT);
+					}
 				} else {
 					enemy.sprite.showStatus(CharSprite.NEUTRAL, enemy.defenseVerb());
 				}
