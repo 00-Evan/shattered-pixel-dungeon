@@ -89,12 +89,16 @@ public class InventorySlot extends ItemSlot {
 			if (item.cursed && item.cursedKnown) {
 				bg.ra = +0.3f;
 				bg.ga = -0.15f;
+				bg.ba = -0.15f;
 			} else if (!item.isIdentified()) {
 				if ((item instanceof EquipableItem || item instanceof Wand) && item.cursedKnown){
-					bg.ba = 0.3f;
+					bg.ba = +0.3f;
+					bg.ga = +0.06f;
+					bg.ra = -0.06f;
 				} else {
-					bg.ra = 0.3f;
-					bg.ba = 0.3f;
+					bg.ra = +0.3f;
+					bg.ba = +0.3f;
+					bg.ga = -0.1f;
 				}
 			}
 

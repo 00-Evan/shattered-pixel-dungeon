@@ -373,11 +373,13 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	}
 
 	private int auraColor = 0;
+	private int auraRays = 0;
 
-	//Aura needs color data too
-	public void aura( int color ){
+	//Aura needs color and ray count data too
+	public void aura( int color, int nRays ){
 		add(State.AURA);
 		auraColor = color;
+		auraRays = nRays;
 	}
 
 	protected synchronized void processStateAddition( State state ) {
@@ -450,7 +452,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				if (aura != null)   aura.killAndErase();
 				float size = Math.max(width(), height());
 				size = Math.max(size+4, 16);
-				aura = new Flare(5, size);
+				aura = new Flare(auraRays, size);
 				aura.angularSpeed = 90;
 				aura.color(auraColor, true);
 				aura.visible = visible;
