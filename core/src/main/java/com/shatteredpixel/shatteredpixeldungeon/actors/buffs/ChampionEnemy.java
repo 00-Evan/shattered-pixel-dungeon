@@ -104,7 +104,9 @@ public abstract class ChampionEnemy extends Buff {
 
 		if (Dungeon.mobsToChampion <= 0 && Dungeon.isChallenged(Challenges.CHAMPION_ENEMIES)) {
 			Buff.affect(m, buffCls);
-			m.state = m.WANDERING;
+			if (m.state != m.PASSIVE) {
+				m.state = m.WANDERING;
+			}
 		}
 	}
 
