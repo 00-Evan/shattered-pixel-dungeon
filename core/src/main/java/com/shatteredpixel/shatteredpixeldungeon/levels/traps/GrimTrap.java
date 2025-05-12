@@ -66,7 +66,8 @@ public class GrimTrap extends Trap {
 
 				//find the closest char that can be aimed at
 				//can't target beyond view distance, with a min of 6 (torch range)
-				int range = Math.max(6, Dungeon.level.viewDistance);
+				//add 0.5 for better consistency with vision radius shape
+				float range = Math.max(6, Dungeon.level.viewDistance)+0.5f;
 				if (target == null){
 					float closestDist = Float.MAX_VALUE;
 					for (Char ch : Actor.chars()){
