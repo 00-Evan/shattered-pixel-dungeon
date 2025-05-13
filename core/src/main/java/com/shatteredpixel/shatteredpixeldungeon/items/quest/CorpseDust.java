@@ -184,32 +184,32 @@ public class CorpseDust extends Item {
 
 	public static class DustWraith extends Wraith{
 
-		private int hitCount = 0;
+		private int atkCount = 0;
 
 		@Override
-		public int attackProc(Char enemy, int damage) {
+		public boolean attack(Char enemy, float dmgMulti, float dmgBonus, float accMulti) {
 			if (enemy == Dungeon.hero){
-				hitCount++;
-				//first hit from each wraith is free, max of -200 point penalty per wraith
-				if (hitCount == 2 || hitCount == 3){
+				atkCount++;
+				//first attack from each wraith is free, max of -200 point penalty per wraith
+				if (atkCount == 2 || atkCount == 3){
 					Statistics.questScores[1] -= 100;
 				}
 			}
-			return super.attackProc(enemy, damage);
+			return super.attack(enemy, dmgMulti, dmgBonus, accMulti);
 		}
 
-		private static final String HIT_COUNT = "hit_count";
+		private static final String ATK_COUNT = "atk_count";
 
 		@Override
 		public void storeInBundle(Bundle bundle) {
 			super.storeInBundle(bundle);
-			bundle.put(HIT_COUNT, hitCount);
+			bundle.put(ATK_COUNT, atkCount);
 		}
 
 		@Override
 		public void restoreFromBundle(Bundle bundle) {
 			super.restoreFromBundle(bundle);
-			hitCount = bundle.getInt(HIT_COUNT);
+			atkCount = bundle.getInt(ATK_COUNT);
 		}
 	}
 

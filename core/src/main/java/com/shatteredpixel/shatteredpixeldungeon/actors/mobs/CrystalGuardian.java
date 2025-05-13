@@ -117,7 +117,7 @@ public class CrystalGuardian extends Mob{
 	}
 
 	@Override
-	public int attackProc(Char enemy, int damage) {
+	public boolean attack(Char enemy, float dmgMulti, float dmgBonus, float accMulti) {
 		//if enemy is hero, and they aren't currently fighting the spire, -100 points
 		if (enemy == Dungeon.hero){
 			boolean spireNear = false;
@@ -130,7 +130,7 @@ public class CrystalGuardian extends Mob{
 				Statistics.questScores[2] -= 100;
 			}
 		}
-		return super.attackProc(enemy, damage);
+		return super.attack(enemy, dmgMulti, dmgBonus, accMulti);
 	}
 
 	@Override

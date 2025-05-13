@@ -78,6 +78,7 @@ public class GnollTrickster extends Gnoll {
 		damage = super.attackProc( enemy, damage );
 
 		if (combo >= 1){
+			//score loss is on-hit instead of on-attack as it's tied to combo
 			Statistics.questScores[0] -= 50;
 		}
 
