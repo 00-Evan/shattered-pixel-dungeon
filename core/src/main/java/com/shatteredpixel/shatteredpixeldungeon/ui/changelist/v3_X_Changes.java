@@ -22,11 +22,14 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollExileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -82,69 +85,73 @@ public class v3_X_Changes {
 		ChangeInfo changes = new ChangeInfo("v3.1-ALPHA", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("ALPHA-0.3", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new TalentIcon(Talent.LETHAL_DEFENSE), "Lethal Defense changes",
-				"Two of the Warrior's new talent mechanics just grant him a bunch of shielding, which is kind of boring, and also not the best if you're just finishing a fight. I'm changing up lethal defence, which has the more rigid trigger, to instead interact with the Warrior's seal cooldown.\n" +
-				"\n" +
-				"**- Lethal Defense** Now refunds 33/67/100% of broken seal's cooldown, instead of granting barrier. This can reduce the cooldown to as low as -100%, which means the seal shield is immediately available again after it is activated."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** Custom notes for items can now be created or edited from the item's info window\n" +
-				"**-** Hero renaming can now be done in the hero info window while a run is in progress\n" +
-				"\n" +
-				"**-** When equipping new armor, the Warrior is now given a prompt to automatically swap his seal\n" +
-				"**-** unidentified wands can now be used with the mage's staff\n" +
-				"**-** partially IDed items can now be used with the dried rose"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by ALPHA:**\n" +
-				"**-** Tengu not jumping when he doesn't see an enemy\n" +
-				"\n" +
-				"**Existed prior to ALPHA:**\n" +
-				"**-** Shattered locking to 60fps on 120hz iOS devices\n" +
-				"**-** metamorphed cleanse clearing lost inventory debuff\n" +
-				"**-** Custom notes not properly applying to specific rings, wands, and trinkets\n" +
-				"**-** Minor visual errors"));
-
-		changes = new ChangeInfo("ALPHA-0.2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by ALPHA:**\n" +
-				"**-** Crashes when loading older Warrior runs\n" +
-				"**-** Errors with new Lethal Defense logic"));
-
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
-				"Hey Alpha testers!\n\n" +
-				"This is an early look at v3.1, with the goal of getting some feedback on the Warrior's new broken seal ability.\n\n" +
-				"I'm hopeful that it feels better compared to the more passive ability he used to have, but things are definitely still a bit rough and experimental, so please let me know what you think!\n\n" +
-				"v3.1 will also include other new content and changes when it released, none of which are currently present in the Alpha."));
+				"Hey again Alpha testers!\n" +
+				"\n" +
+				"After a bit of time, v3.1 is now content complete! I expect to release the update to beta in another few days. Please let me know what you think, and if you encounter any issues!\n" +
+				"\n" +
+				"There are a few, mostly visual, things left to do before v3.1 fully releases:\n" +
+				"**-** New terrain (and by extension hermit crabs) are currently using placeholder visuals\n" +
+				"**-** Warrior has a few visual tweaks I'd like to make before release\n" +
+				"**-** Any balance/bug issues that crop up during the alpha/beta will be addressed\n" +
+				"**-** I may make a few more small misc of QoL changes before release"));
 
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SEAL), "Warrior's Broken Seal",
+		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.WARRIOR, 1), "Warrior Mini Rework",
 				"**The Warrior has had a mini overhaul to his broken seal ability!** The seal's shielding should now feel more impactful and interactive, while still being easy to use for new players:\n" +
 				"\n" +
 				"**-** Broken Seal shield no longer passively builds, it now triggers all at once just before the Warrior gets damaged to 50% health or lower.\n" +
-				"**-** Max shield is now based on armor tier, scaling from 5-13 (max of 15 with iron will talent)\n" +
-				"**-** This shielding has a 100 turn cooldown, unused shield refunds up to 50% cooldown\n" +
-				"**-** Significantly loosened the criteria for applying broken seal to new armor, it now only needs the new armor to be curse-IDed.",
+				"**-** Max shield is now based on armor tier, scaling from 5-13 (max of 15 with iron will talent).\n" +
+				"**-** This shielding has a 100 turn cooldown, unused shield refunds up to 50% cooldown.\n" +
+				"**-** Significantly loosened the criteria for applying broken seal to new armor, it now only needs the new armor to be curse-IDed.\n" +
+				"**-** When swapping armor, the Warrior now gets a prompt to swap his seal too.",
 
-				"Various other Warrior mechanics have been adjusted to compensate:\n" +
+				"Various other Warrior mechanics have been adjusted to compensate for the seal changes:\n" +
 				"**- Provoked Anger** talent now triggers when any shield buff breaks, and grants +3/+5 bonus damage, up from +2/+3.\n" +
-				"**- Iron Will** talent unchanged, still grants +1 or +2 max shield.\n" +
+				"**- Iron Will** talent unchanged, still grants 1 or 2 max shield.\n" +
 				"**- Liquid Willpower** talent now grants regular barrier equal to 6.5%/10% of max HP, instead of recharging 50%/75% of max seal shield.\n" +
-				"**- Lethal Defence** talent now grants 7/13/20 regular barrier, instead of recharging 33%/67%/100% of max seal shield.\n" +
+				"**- Lethal Defence** talent now reduces seal cooldown, instead of recharging seal shield.\n" +
 				"**- Berserker** enrage shield is now its own separate shielding buff, and has its own scaling separate from the seal's max shield."));
+
+		changes.addButton( new ChangeButton(Icons.STAIRS.get(), "New Rooms and Terrain Types",
+				"This update includes an **expansion to the dungeon's standard rooms!**\n" +
+				"\n" +
+				"**- New decorative terrain** has been added to each region, largely inspired by details from the region splash arts. \n" +
+				"**- 5 new standard rooms** have been added that use these new terrain objects, one per region.\n" +
+				"**- 8 existing standard rooms** have been modified to use the new terrain objects.\n" +
+				"**- 10 new entrance/exit variants** of standard rooms have been added as well. two per region.\n" +
+				"**- Plain empty rooms** no longer spawn normally.\n" +
+				"\n" +
+				"**Note that the new terrain is currently using placeholder visuals**"));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.FERRET_TUFT), "Ferret Tuft",
+				"**A new trinket has been added to the game!**\n" +
+				"\n" +
+				"The **Ferret Tuft** is a simpler evasion-boosting trinket with more of a cute aesthetic. It's a little reference to a favourite ferret.\n" +
+				"\n" +
+				"Choosing and upgrade the trinket will cause all characters to gain evasion, including enemies! That might sound like a mixed bag, but keep in mind that there are lots of ways to counter enemy evasion."));
+
+		changes.addButton( new ChangeButton(BadgeBanner.image( Badges.Badge.TAKING_THE_MICK.image ), "New Badges",
+				"v3.1 also includes **four new badges**, each themed around a specific challenge:\n" +
+				"\n" +
+				"**- Safety Hazard** is a gold-tier badge that requires using terrain against enemies\n" +
+				"**- So Many Colors** is a platinum-tier badge that requires having a bunch of buffs/debuffs at once\n" +
+				"**- Pacifist Ascent** is a diamond-tier badge that require surviving an ascension without any enemy kills.\n" +
+				"**- Taking the Mick** is a diamond-tier badge that requires defeating the final boss with a VERY high level pickaxe\n" +
+				"\n" +
+				"I've also reduced the difficulty of the **Big Game Hunter** badge. It now requires discovering 10 types of rare enemies, down from all of them."));
+
+		changes.addButton( new ChangeButton(new Image(new GnollExileSprite()), "New Rare Enemies",
+				"**Two new rare enemies** have been added to the sewers:\n" +
+				"\n" +
+				"**Gnoll Exiles** are exceptionally strong, but also wary of combat. They won't attack unprovoked, so you can just let them pass, but maybe you'll be interested in the loot they carry...\n" +
+				"\n" +
+				"**Hermit Crabs** are sturdy but slow crabs that use a broken barrel for extra support. They're a bit tough to fight, but much easier to run away from, and have a good chance to drop some armor for you.\n" +
+				"\n" +
+				"**Note that hermit crabs currently use a placeholder sprite**"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
 		changes.hardlight(CharSprite.WARNING);
@@ -159,55 +166,115 @@ public class v3_X_Changes {
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"**Highlights:**\n" +
-				"**-** All potions now refresh the duration of their specific effects. Previously the duration of some potion effects could stack on themselves.\n" +
-				"**-** The big game hunter badge now requires discovering 10 types of rare enemies, down from all of them.\n" +
-				"**-** Added discovery hints for all catalog entries\n" +
-				"**-** Added landmark entries for lost backpack and beacon of returning\n" +
-				"\n" +
-				"**Characters:**\n" +
-				"**-** Improved Tengu's AI, he can now switch targets if he is unable to attack the hero\n" +
-				"\n" +
-				"**Items:**\n" +
-				"**-** Slightly reduced telekinetic grab's sale/energy value, so that it can't be used to effectively turn high-tier thrown weapons into energy.",
+						"**-** Various small color tweaks to health bars, inventory buttons, and flare vfx to improve the experience for colorblind players\n" +
+						"**-** Custom notes for items can now be created or edited from the item's info window\n" +
+						"**-** Hero renaming can now be done in the hero info window while a run is in progress\n" +
+						"**-** All potions now refresh the duration of their specific effects. Previously the duration of some potion effects could stack on themselves\n" +
+						"**-** Added discovery hints for all catalog entries\n" +
+						"**-** Added landmark entries for lost backpack and beacon of returning",
 
-				"**Effects:**\n" +
-				"**-** Smaller shorter-term shielding buffs are now consumed before larger longer-term ones\n" +
-				"**-** The gravity chaos cursed wand effect now has its own debuff icon\n" +
-				"\n" +
-				"**Misc:**\n" +
-				"**-** Rooms with a chasm in the center must now be at least 3x3, up from 2x2.\n" +
-				"**-** Increased the minimum supported iOS version to 12, from 11.\n" +
-				"**-** Moved the notification position to the top-left on the Steam version. It should no longer obscure UI elements."));
+						"**Items:**\n" +
+						"**-** Slightly reduced telekinetic grab's sale/energy value, so that it can't be used to effectively turn high-tier thrown weapons into energy\n" +
+						"**-** Unidentified wands can now be imbued in the mage's staff\n" +
+						"**-** Partially IDed items can now be used with the dried rose\n" +
+						"\n" +
+						"**Characters:**\n" +
+						"**-** Improved Tengu's AI, he can now switch targets if he is unable to attack the hero\n" +
+						"**-** Defeating Dwarf King now cleanses the player of the degraded debuff\n" +
+						"**-** Light Ally and Shadow Clone having very slightly more accuracy/evasion than the hero at base",
+
+						"**Effects:**\n" +
+						"**-** Smaller shorter-term shielding buffs are now consumed before larger longer-term ones\n" +
+						"**-** The gravity chaos cursed wand effect now has its own debuff icon\n" +
+						"**-** When using metamorph, food talents that grant the same type of recharging can now stack\n" +
+						"**-** Improved VFX for activating or deactivating brawler's stance\n" +
+						"\n" +
+						"**Misc:**\n" +
+						"**-** The inventory button gold indicator on mobile now shows when buying items\n" +
+						"**-** Rooms with a chasm in the center must now be at least 3x3, up from 2x2\n" +
+						"**-** Increased the minimum supported iOS version to 12, from 11\n" +
+						"**-** Moved the notification position to the top-left on the Steam version. It should no longer obscure UI elements"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
 				"**Highlights:**\n" +
+				"**-** Thrown weapons gaining or losing more accuracy than intended based on enemy adjacency\n" +
 				"**-** Shocking enchantment triggering its damage twice in many cases since v3.0\n" +
-				"\n" +
-				"**Effects:**\n" +
+				"**-** Runs in progress older than 2 months showing 'NO TEXT FOUND'\n" +
 				"**-** Allies not waking from magical sleep after it has healed them\n" +
-				"**-** Hallowed ground producing furrowed grass more often than intended in some cases\n" +
-				"**-** Paralysis vfx on enemies sometimes cancelling animations right as it ends\n" +
-				"**-** Mirror images not benefitting from body form or holy weapon if the Cleric was unarmed\n" +
-				"**-** Ascended form ending early if its shielding was reduced to 0\n" +
-				"**-** Boomerangs disappearing if the game was closed during their circle back animation",
-
+				"**-** Desktop versions downloaded via github not notifying when updates are available\n" +
+				"\n" +
 				"**Characters:**\n" +
 				"**-** Swapping places with allies not being counted as movement for shuriken's instant attack\n" +
 				"**-** Exploits where sheep could last forever if game was frequently saved/loaded\n" +
-				"\n" +
+				"**-** Mirror images not benefitting from body form or holy weapon if the Cleric was unarmed\n" +
+				"**-** Light Ally and Shadow Clone having very slightly more accuracy/evasion than the hero at base",
+
+				"**Effects:**\n" +
+				"**-** Glyph of stone not considering some evasion/accuracy buffs when determining damage reduction\n" +
+				"**-** Hallowed ground producing furrowed grass more often than intended in some cases\n" +
+				"**-** Ascended form ending early if its shielding was reduced to 0\n" +
+				"**-** Boomerangs disappearing if the game was closed during their circle back animation\n" +
+				"**-** Metamorphed cleanse clearing lost inventory debuff\n" +
+				"**-** Metamorphed aggressive barrier using incorrect logic\n" +
+				"**-** Lay on Hands sometimes applying 0 barrier to allies\n" +
+				"**-** Death via the Cleric's like link not being recorded in rankings\n" +
+				"**-** Targeting traps having very slightly less range than intended",
+
 				"**Misc:**\n" +
+				"**-** Shattered locking to 60fps on 120hz iOS devices\n" +
+				"**-** Crystal path rooms sometimes sorting items incorrectly when player had the exotic crystals trinket\n" +
+				"**-** Custom notes not properly applying to specific rings, wands, & trinkets\n" +
+				"**-** Paralysis vfx on enemies sometimes cancelling animations as it ends\n" +
 				"**-** Rare cases of wonky display scaling on Linux systems\n" +
-				"**-** Various minor textual errors\n" +
+				"**-** Various minor visual & textual errors\n" +
 				"**-** Various rare crash errors"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight(CharSprite.POSITIVE);
 		changeInfos.add(changes);
 
+		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 6), "Cleric Buffs",
+				"Overall the Cleric is doing well following their initial release. Their winrate is low currently, but they are also very popular so I expect some of that is people still figuring them out. For the moment I'm focusing on multiple targeted buffs to specific Cleric mechanics that are weaker vs. others.\n" +
+				"\n" +
+				"**Base class:**\n" +
+				"**- Guiding light** base damage up to 2-8 from 2-6\n" +
+				"**- Holy Weapon & Ward** are now cast instantly\n" +
+				"**- Shield of Light** duration up to 5 from 4\n" +
+				"**- Divine Sense** is now cast instantly\n" +
+				"\n" +
+				"**Paladin:**\n" +
+				"**- Lay on Hands** healing up to 15/20/25 from 10/15/20\n" +
+				"**- Aura of Protection** dmg resist up to 20%/30%/40% from 15%/23%/30%",
+
+				"**Priest:**\n" +
+				"**- Illuminate** bonus damage up to 5+lvl from lvl\n" +
+				"**- Radiance** now triggers and applies illuminate\n" +
+				"**- Holy Lance** cooldown down to 30 from 50\n" +
+				"**- Hallowed Ground** heal up to 15 from 10\n" +
+				"**- Hallowed Ground** root up to 2 turns from 1\n" +
+				"**- Mnemonic Prayer** is now cast instantly\n" +
+				"\n" +
+				"**Ascended Form:**\n" +
+				"**- Divine Intervention** duration extension up to 3/4/5/6 from 1/2/3/4\n" +
+				"**- Judgement** extra dmg increased to +33% per spell from 5-10 per spell\n" +
+				"\n" +
+				"**Power of Many:**\n" +
+				"**- Life Link** duration up to 10/13/17/20 from 6/8/10/12"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
 		changes.hardlight(CharSprite.NEGATIVE);
 		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 6), "Cleric Nerfs",
+				"A few Cleric mechanics are standouts in terms of power though, so I am scaling some of those back:\n" +
+				"\n" +
+				"**- Searing Light** dmg down to +3/+5 from +4/+6\n" +
+				"**- Enlightening Meal** charge gain down to +0.67/+1 from +1/+1.5\n" +
+				"**- Cleanse** is no longer cast instantly\n" +
+				"**- Hallowed Ground** barrier now caps at 30\n" +
+				"**- Flash** starting charge cost up to 2 from 1\n" +
+				"**- Stasis** charge cost up to 2 from 1, but duration +50%"));
 
 	}
 

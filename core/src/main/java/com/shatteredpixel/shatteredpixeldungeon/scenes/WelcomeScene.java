@@ -209,9 +209,9 @@ public class WelcomeScene extends PixelScene {
 
 			}
 
-			message = "Welcome Alpha testers!\n\n" +
-					"This is an early look at v3.1, with the goal of getting some feedback on the Warrior's new broken seal ability.\n\n" +
-					"I'm hopeful that it feels better compared to the more passive ability he used to have, but things are definitely still a bit rough and experimental, so please let me know what you think!";
+			message = "Hey again Alpha testers!\n" +
+					"\n" +
+					"After a bit of time, v3.1 is now content complete! I expect to release the update to beta in another few days. Please let me know what you think, and if you encounter any issues!";
 
 		} else {
 			message = Messages.get(this, "what_msg");
