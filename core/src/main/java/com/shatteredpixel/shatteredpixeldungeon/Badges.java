@@ -534,7 +534,7 @@ public class Badges {
 	}
 
 	public static void validateHazardAssists() {
-		if (!local.contains( Badge.PIRANHAS ) && Statistics.hazardAssistedKills >= 10) {
+		if (!local.contains( Badge.ENEMY_HAZARDS ) && Statistics.hazardAssistedKills >= 10) {
 			local.add( Badge.ENEMY_HAZARDS );
 			displayBadge( Badge.ENEMY_HAZARDS );
 		}
