@@ -53,7 +53,7 @@ import java.util.Collections;
 
 public class WelcomeScene extends PixelScene {
 
-	private static final int LATEST_UPDATE = 836;
+	private static final int LATEST_UPDATE = 840;
 
 	//used so that the game does not keep showing the window forever if cleaning fails
 	private static boolean triedCleaningTemp = false;
@@ -209,9 +209,9 @@ public class WelcomeScene extends PixelScene {
 
 			}
 
-			message = "Hey again Alpha testers!\n" +
+			message = "Greetings Beta Testers, v3.1 is content-complete (minus some visual polish) and ready for testing!\n" +
 					"\n" +
-					"After a bit of time, v3.1 is now content complete! I expect to release the update to beta in another few days. Please let me know what you think, and if you encounter any issues!";
+					"This update includes a mini Warrior Rework, new terrain/rooms, a new trinket, and a bunch of other smaller changes and additions! Let me know if you run into any issues.";
 
 		} else {
 			message = Messages.get(this, "what_msg");

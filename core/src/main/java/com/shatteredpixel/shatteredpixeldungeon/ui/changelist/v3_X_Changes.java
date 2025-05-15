@@ -82,7 +82,7 @@ public class v3_X_Changes {
 
 	public static void add_v3_1_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v3.1-ALPHA", true, "");
+		ChangeInfo changes = new ChangeInfo("v3.1-BETA", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
