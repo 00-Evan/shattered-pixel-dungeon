@@ -228,9 +228,12 @@ public class Statistics {
 		floorsExplored.clear();
 		for (int i = 1; i < 26; i++){
 			if (bundle.contains( FLR_EXPL+i )){
-				floorsExplored.put(i, bundle.getFloat( FLR_EXPL+i ));
+				//we have this check to reduce an error with bad conversion specifically in v3.1-BETA-1.0
+				if (!Dungeon.bossLevel(i) && i <= deepestFloor){
+					floorsExplored.put(i, bundle.getFloat( FLR_EXPL+i ));
+				}
 			//pre-3.1 saves. The bundle key does have an underscore and is a boolean
-			} else if (bundle.contains( "flr_expl"+1 )){
+			} else if (bundle.contains( "flr_expl"+i )){
 				floorsExplored.put(i, bundle.getBoolean( "flr_expl"+i ) ? 1f : 0f);
 			}
 		}
