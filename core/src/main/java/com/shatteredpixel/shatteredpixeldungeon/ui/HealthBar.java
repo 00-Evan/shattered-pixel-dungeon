@@ -29,7 +29,7 @@ public class HealthBar extends Component {
 
 	private static final int COLOR_BG	= 0xFFCC0000;
 	private static final int COLOR_HP	= 0xFF00EE00;
-	private static final int COLOR_SHLD = 0xFFCCFFCC;
+	private static final int COLOR_SHLD = 0xFFFFFFFF;
 	
 	private static final int HEIGHT	= 2;
 	
