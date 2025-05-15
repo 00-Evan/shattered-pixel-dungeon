@@ -739,11 +739,10 @@ public class Armor extends EquipableItem {
 	}
 
 	public boolean hasGlyph(Class<?extends Glyph> type, Char owner) {
-		if (glyph == null){
+		if (owner.buff(MagicImmune.class) != null) {
 			return false;
-		} else if (owner.buff(MagicImmune.class) != null) {
-			return false;
-		} else if (!glyph.curse()
+		} else if (glyph != null
+				&& !glyph.curse()
 				&& owner instanceof Hero
 				&& isEquipped((Hero) owner)
 				&& owner.buff(HolyWard.HolyArmBuff.class) != null
@@ -753,8 +752,10 @@ public class Armor extends EquipableItem {
 				&& owner.buff(BodyForm.BodyFormBuff.class).glyph() != null
 				&& owner.buff(BodyForm.BodyFormBuff.class).glyph().getClass().equals(type)){
 			return true;
-		} else {
+		} else if (glyph != null) {
 			return glyph.getClass() == type;
+		} else {
+			return false;
 		}
 	}
 
