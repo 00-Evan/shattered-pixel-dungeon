@@ -104,6 +104,9 @@ public abstract class StandardRoom extends Room {
 	}
 
 	public int mobSpawnWeight(){
+		if (isEntrance()){
+			return 1; //entrance rooms don't have higher mob spawns even if they're larger
+		}
 		return sizeFactor();
 	}
 
