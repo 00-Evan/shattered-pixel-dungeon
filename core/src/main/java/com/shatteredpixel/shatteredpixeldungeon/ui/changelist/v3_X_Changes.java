@@ -85,20 +85,42 @@ public class v3_X_Changes {
 		ChangeInfo changes = new ChangeInfo("v3.1-BETA", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-1.1", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Environment.TILES_SEWERS, 160, 64, 16, 16), "Barrels",
+				"The initial beta made the sewers a bit barrel-crazy, so I've scaled that back to make them less omnipresent:\n\n" +
+				"**-** Reduced the number of barrels placed in barrel rooms\n" +
+				"**-** Barrel room spawn chance reduced by 50%\n" +
+				"**-** Barrel entrance/exit room spawn chance reduced by 25%"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by Beta:**\n" +
+				"**-** Blacksmith sometimes not offering a free pickaxe when he should\n" +
+				"**-** Enemies spawning closer to the entrance than intended in some new entrance room variants\n" +
+				"**-** Rankings entries from prior to the beta having higher exploration score than intended\n" +
+				"**-** Crashes when attempting to steal from gnoll exiles\n" +
+				"**-** Transmuting a mage's staff sometimes making it cursed\n" +
+				"\n" +
+				"**Existed Prior to BETA:**\n" +
+				"**-** Duelist being able to stack invisibility using the sneak weapon ability\n" +
+				"**-** Oblivion shard stating an item wasn't ready to be IDed if its manual ID function was cancelled"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
-				"Hey again Alpha testers!\n" +
+				"Hello beta testers!\n" +
 				"\n" +
-				"After a bit of time, v3.1 is now content complete! I expect to release the update to beta in another few days. Please let me know what you think, and if you encounter any issues!\n" +
+				"I expect to release v3.1 in another week to a week and a half. Things are mostly already finished but there's a few little things to finish up.  Please let me know what you think, and if you encounter any issues!\n" +
 				"\n" +
-				"There are a few, mostly visual, things left to do before v3.1 fully releases:\n" +
-				"**-** New terrain (and by extension hermit crabs) are currently using placeholder visuals\n" +
+				"**-** New terrain (and by extension hermit crabs) are currently using placeholder visuals which need to be improved\n" +
 				"**-** Warrior has a few visual tweaks I'd like to make before release\n" +
-				"**-** Any balance/bug issues that crop up during the alpha/beta will be addressed\n" +
-				"**-** I may make a few more small misc of QoL changes before release"));
+				"**-** Any balance/bug issues that crop up during the beta will be addressed"));
 
 		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.WARRIOR, 1), "Warrior Mini Rework",
 				"**The Warrior has had a mini overhaul to his broken seal ability!** The seal's shielding should now feel more impactful and interactive, while still being easy to use for new players:\n" +
@@ -166,34 +188,33 @@ public class v3_X_Changes {
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"**Highlights:**\n" +
-						"**-** Various small color tweaks to health bars, inventory buttons, and flare vfx to improve the experience for colorblind players\n" +
-						"**-** Custom notes for items can now be created or edited from the item's info window\n" +
-						"**-** Hero renaming can now be done in the hero info window while a run is in progress\n" +
-						"**-** All potions now refresh the duration of their specific effects. Previously the duration of some potion effects could stack on themselves\n" +
-						"**-** Added discovery hints for all catalog entries\n" +
-						"**-** Added landmark entries for lost backpack and beacon of returning",
+				"**-** Various small color tweaks to health bars, inventory buttons, and flare vfx to improve the experience for colorblind players\n" +
+				"**-** Custom notes for items can now be created or edited from the item's info window\n" +
+				"**-** Hero renaming can now be done in the hero info window while a run is in progress\n" +
+				"**-** All potions now refresh the duration of their specific effects. Previously the duration of some potion effects could stack on themselves\n" +
+				"**-** Added discovery hints for all catalog entries\n" +
+				"**-** Added landmark entries for lost backpack and beacon of returning",
 
-						"**Items:**\n" +
-						"**-** Slightly reduced telekinetic grab's sale/energy value, so that it can't be used to effectively turn high-tier thrown weapons into energy\n" +
-						"**-** Unidentified wands can now be imbued in the mage's staff\n" +
-						"**-** Partially IDed items can now be used with the dried rose\n" +
-						"\n" +
-						"**Characters:**\n" +
-						"**-** Improved Tengu's AI, he can now switch targets if he is unable to attack the hero\n" +
-						"**-** Defeating Dwarf King now cleanses the player of the degraded debuff\n" +
-						"**-** Light Ally and Shadow Clone having very slightly more accuracy/evasion than the hero at base",
+				"**Items:**\n" +
+				"**-** Slightly reduced telekinetic grab's sale/energy value, so that it can't be used to effectively turn high-tier thrown weapons into energy\n" +
+				"**-** Unidentified wands can now be imbued in the mage's staff\n" +
+				"**-** Partially IDed items can now be used with the dried rose\n" +
+				"\n" +
+				"**Characters:**\n" +
+				"**-** Improved Tengu's AI, he can now switch targets if he is unable to attack the hero\n" +
+				"**-** Defeating Dwarf King now cleanses the player of the degraded debuff",
 
-						"**Effects:**\n" +
-						"**-** Smaller shorter-term shielding buffs are now consumed before larger longer-term ones\n" +
-						"**-** The gravity chaos cursed wand effect now has its own debuff icon\n" +
-						"**-** When using metamorph, food talents that grant the same type of recharging can now stack\n" +
-						"**-** Improved VFX for activating or deactivating brawler's stance\n" +
-						"\n" +
-						"**Misc:**\n" +
-						"**-** The inventory button gold indicator on mobile now shows when buying items\n" +
-						"**-** Rooms with a chasm in the center must now be at least 3x3, up from 2x2\n" +
-						"**-** Increased the minimum supported iOS version to 12, from 11\n" +
-						"**-** Moved the notification position to the top-left on the Steam version. It should no longer obscure UI elements"));
+				"**Effects:**\n" +
+				"**-** Smaller shorter-term shielding buffs are now consumed before larger longer-term ones\n" +
+				"**-** The gravity chaos cursed wand effect now has its own debuff icon\n" +
+				"**-** When using metamorph, food talents that grant the same type of recharging can now stack\n" +
+				"**-** Improved VFX for activating or deactivating brawler's stance\n" +
+				"\n" +
+				"**Misc:**\n" +
+				"**-** The inventory button gold indicator on mobile now shows when buying items\n" +
+				"**-** Rooms with a chasm in the center must now be at least 3x3, up from 2x2\n" +
+				"**-** Increased the minimum supported iOS version to 12, from 11\n" +
+				"**-** Moved the notification position to the top-left on the Steam version. It should no longer obscure UI elements"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
@@ -218,7 +239,7 @@ public class v3_X_Changes {
 				"**-** Metamorphed cleanse clearing lost inventory debuff\n" +
 				"**-** Metamorphed aggressive barrier using incorrect logic\n" +
 				"**-** Lay on Hands sometimes applying 0 barrier to allies\n" +
-				"**-** Death via the Cleric's like link not being recorded in rankings\n" +
+				"**-** Death via the Cleric's life link not being recorded in rankings\n" +
 				"**-** Targeting traps having very slightly less range than intended",
 
 				"**Misc:**\n" +
