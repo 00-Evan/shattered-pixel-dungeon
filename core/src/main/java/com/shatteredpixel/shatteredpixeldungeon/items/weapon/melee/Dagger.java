@@ -125,7 +125,7 @@ public class Dagger extends MeleeWeapon {
 		}
 
 		wep.beforeAbilityUsed(hero, null);
-		Buff.affect(hero, Invisibility.class, invisTurns-1); //1 fewer turns as ability is instant
+		Buff.prolong(hero, Invisibility.class, invisTurns-1); //1 fewer turns as ability is instant
 
 		Dungeon.hero.sprite.turnTo( Dungeon.hero.pos, target);
 		Dungeon.hero.pos = target;
