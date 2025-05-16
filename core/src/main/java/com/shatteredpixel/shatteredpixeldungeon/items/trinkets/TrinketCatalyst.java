@@ -146,7 +146,7 @@ public class TrinketCatalyst extends Item {
 	public static class RandomTrinket extends Item {
 
 		{
-			image = ItemSpriteSheet.TRINKET_HOLDER;
+			image = ItemSpriteSheet.SOMETHING;
 		}
 
 	}
@@ -164,7 +164,7 @@ public class TrinketCatalyst extends Item {
 
 			IconTitle titlebar = new IconTitle();
 			titlebar.icon(new ItemSprite(cata));
-			titlebar.label(Messages.titleCase(cata.name()));
+			titlebar.label(Messages.titleCase(Messages.get(TrinketCatalyst.class, "window_title")));
 			titlebar.setRect(0, 0, WIDTH, 0);
 			add( titlebar );
 
