@@ -49,7 +49,7 @@ public class PlatformRoom extends StandardRoom {
 	
 	@Override
 	public void merge(Level l, Room other, Rect merge, int mergeTerrain) {
-		if (mergeTerrain != Terrain.CHASM
+		if (mergeTerrain != Terrain.CHASM && connected.containsKey(other)
 				&& (other instanceof PlatformRoom || other instanceof ChasmRoom)){
 			super.merge(l, other, merge, Terrain.CHASM);
 			Painter.set(l, connected.get(other), Terrain.EMPTY_SP);
