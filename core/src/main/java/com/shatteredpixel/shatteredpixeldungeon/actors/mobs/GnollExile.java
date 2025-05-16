@@ -51,8 +51,7 @@ public class GnollExile extends Gnoll {
 		defenseSkill = 6;
 		HP = HT = 24;
 
-		loot = null;  //see rollToDropLoot
-		lootChance = 1f;
+		lootChance = 0f; //see rollToDropLoot
 	}
 
 	@Override
