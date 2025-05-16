@@ -98,6 +98,10 @@ public class ShardOfOblivion extends Trinket {
 
 		@Override
 		public void onSelect(Item item) {
+			if (item == null){
+				return;
+			}
+
 			boolean ready = false;
 			if (item instanceof Weapon){
 				ready = ((Weapon) item).readyToIdentify();
