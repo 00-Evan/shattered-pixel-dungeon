@@ -121,9 +121,9 @@ public abstract class StandardRoom extends Room {
 	private static ArrayList<Class<?extends StandardRoom>> rooms = new ArrayList<>();
 	static {
 		rooms.add(SewerPipeRoom.class);
-		rooms.add(RegionDecoPatchRoom.class);
 		rooms.add(RingRoom.class);
 		rooms.add(WaterBridgeRoom.class);
+		rooms.add(RegionDecoPatchRoom.class);
 		rooms.add(CircleBasinRoom.class);
 
 		rooms.add(RegionDecoLineRoom.class);
@@ -165,10 +165,10 @@ public abstract class StandardRoom extends Room {
 	
 	private static float[][] chances = new float[27][];
 	static {
-		chances[1] =  new float[]{12,8,8,8,4,   0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0,  1,0,1,0,1,0,1,1,0,0};
-		chances[2] =  new float[]{12,8,8,8,4,   0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0,  1,1,1,1,1,1,1,1,1,1};
+		chances[1] =  new float[]{16,8,8,4,4,   0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0,  1,0,1,0,1,0,1,1,0,0};
+		chances[2] =  new float[]{16,8,8,4,4,   0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0,  1,1,1,1,1,1,1,1,1,1};
 		chances[4] =  chances[3] = chances[2];
-		chances[5] =  new float[]{12,8,8,8,0,   0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0,  0,0,0,0,0,0,0,0,0,0};
+		chances[5] =  new float[]{16,8,8,4,0,   0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0,  0,0,0,0,0,0,0,0,0,0};
 
 		chances[6] =  new float[]{0,0,0,0,0, 10,10,10,5,5, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0,  1,1,1,1,1,1,1,1,1,1};
 		chances[10] = chances[9] = chances[8] = chances[7] = chances[6];

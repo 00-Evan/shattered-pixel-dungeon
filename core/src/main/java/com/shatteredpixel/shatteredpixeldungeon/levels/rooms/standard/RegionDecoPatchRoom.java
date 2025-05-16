@@ -40,9 +40,9 @@ public class RegionDecoPatchRoom extends PatchRoom {
 
 	@Override
 	protected float fill() {
-		//fill scales from ~20% at 4x4, to ~40% at 10x10
+		//fill scales from ~20% at 4x4, to ~30% at 10x10
 		int scale = Math.min(width()*height(), 10*10);
-		return 0.20f + scale/512f;
+		return 0.20f + scale/1024f;
 	}
 
 	@Override

@@ -72,8 +72,8 @@ public class ExitRoom extends StandardRoom {
 
 	private static ArrayList<Class<?extends StandardRoom>> rooms = new ArrayList<>();
 	static {
-		rooms.add(RegionDecoPatchExitRoom.class);
 		rooms.add(WaterBridgeExitRoom.class);
+		rooms.add(RegionDecoPatchExitRoom.class);
 		rooms.add(RingExitRoom.class);
 		rooms.add(CircleBasinExitRoom.class);
 
