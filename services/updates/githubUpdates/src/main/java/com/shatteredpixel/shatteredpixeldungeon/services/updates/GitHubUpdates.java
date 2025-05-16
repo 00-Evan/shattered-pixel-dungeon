@@ -68,7 +68,7 @@ public class GitHubUpdates extends UpdateService {
 			public void handleHttpResponse(Net.HttpResponse httpResponse) {
 				try {
 					Bundle latestRelease = null;
-					int latestVersionCode = Game.versionCode-10;
+					int latestVersionCode = Game.versionCode;
 
 					for (Bundle b : Bundle.read( httpResponse.getResultAsStream() ).getBundleArray()){
 						Matcher m = versionCodePattern.matcher(b.getString("body"));
