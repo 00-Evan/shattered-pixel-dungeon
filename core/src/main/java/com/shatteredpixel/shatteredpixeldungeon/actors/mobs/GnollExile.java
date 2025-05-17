@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -78,8 +79,10 @@ public class GnollExile extends Gnoll {
 		if (Dungeon.level.distance( pos, enemy.pos ) <= 2){
 			boolean[] passable = BArray.not(Dungeon.level.solid, null);
 
-			//our own tile is always passable
-			passable[pos] = true;
+			for (Char ch : Actor.chars()) {
+				//our own tile is always passable
+				passable[ch.pos] = ch == this;
+			}
 
 			PathFinder.buildDistanceMap(enemy.pos, passable, 2);
 
