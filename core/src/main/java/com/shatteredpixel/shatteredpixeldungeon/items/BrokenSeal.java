@@ -127,6 +127,7 @@ public class BrokenSeal extends Item {
 				GLog.w(Messages.get(BrokenSeal.class, "unknown_armor"));
 
 			}  else if (armor.glyph != null && getGlyph() != null
+					&& canTransferGlyph()
 					&& armor.glyph.getClass() != getGlyph().getClass()) {
 
 				//cannot apply the seal's non-curse glyph to a curse glyph armor
@@ -327,8 +328,11 @@ public class BrokenSeal extends Item {
 				if (Dungeon.hero.visibleEnemies() == 0){
 					turnsSinceEnemies++;
 					if (turnsSinceEnemies >= 5){
-						float percentLeft = shielding() / (float)maxShield();
-						cooldown -= COOLDOWN_START*(percentLeft/2f); //max of 50% cooldown refund
+						if (cooldown > 0) {
+							float percentLeft = shielding() / (float)maxShield();
+							//max of 50% cooldown refund
+							cooldown = Math.max(0, (int)(cooldown - COOLDOWN_START * (percentLeft / 2f)));
+						}
 						decShield(shielding());
 					}
 				} else {
@@ -346,7 +350,7 @@ public class BrokenSeal extends Item {
 
 		public synchronized void activate() {
 			incShield(maxShield());
-			cooldown += COOLDOWN_START;
+			cooldown = Math.max(0, cooldown+COOLDOWN_START);
 			turnsSinceEnemies = 0;
 		}
 
