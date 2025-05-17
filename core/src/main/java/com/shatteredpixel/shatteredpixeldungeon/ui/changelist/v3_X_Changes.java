@@ -86,9 +86,17 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("BETA-1.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by Beta:**\n" +
+				"**-** Broken seal prompting to transfer glyph without runic transference talent in some cases\n" +
+				"**-** Champion Enemies with +reach being able to reach past other enemies\n" +
+				"**-** Wandmaker sometimes spawning inside of doors in new prison entrance room\n" +
+				"**-** Rare cases where cooldown on new Warrior ability wouldn't apply"));
 
 		changes = new ChangeInfo("BETA-1.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
