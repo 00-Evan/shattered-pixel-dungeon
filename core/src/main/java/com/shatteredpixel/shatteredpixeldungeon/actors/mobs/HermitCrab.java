@@ -41,7 +41,7 @@ public class HermitCrab extends Crab {
 	public void rollToDropLoot() {
 		super.rollToDropLoot();
 
-		if (Dungeon.hero.lvl > maxLvl + 2){
+		if (Dungeon.hero.lvl <= maxLvl + 2){
 			Dungeon.level.drop(Generator.randomArmor(), pos).sprite.drop();
 		}
 	}
