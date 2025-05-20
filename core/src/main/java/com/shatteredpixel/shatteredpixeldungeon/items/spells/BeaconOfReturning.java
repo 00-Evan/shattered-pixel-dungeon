@@ -90,17 +90,17 @@ public class BeaconOfReturning extends Spell {
 	
 	@Override
 	protected void onThrow(int cell) {
-		returnDepth = -1;
 		if (Dungeon.hero.belongings.getItem(getClass()) == null){
-			Notes.remove(Notes.Landmark.BEACON_LOCATION);
+			Notes.remove(Notes.Landmark.BEACON_LOCATION, returnDepth);
 		}
+		returnDepth = -1;
 		super.onThrow(cell);
 	}
 	
 	@Override
 	public void doDrop(Hero hero) {
+		Notes.remove(Notes.Landmark.BEACON_LOCATION, returnDepth);
 		returnDepth = -1;
-		Notes.remove(Notes.Landmark.BEACON_LOCATION);
 		super.doDrop(hero);
 	}
 	
@@ -109,7 +109,7 @@ public class BeaconOfReturning extends Spell {
 		returnBranch = Dungeon.branch;
 		returnPos = hero.pos;
 
-		Notes.add(Notes.Landmark.BEACON_LOCATION);
+		Notes.add(Notes.Landmark.BEACON_LOCATION, returnDepth);
 		
 		hero.spend( 1f );
 		hero.busy();
@@ -181,7 +181,7 @@ public class BeaconOfReturning extends Spell {
 			Game.switchScene( InterlevelScene.class );
 		}
 		if (quantity == 1){
-			Notes.remove(Notes.Landmark.BEACON_LOCATION);
+			Notes.remove(Notes.Landmark.BEACON_LOCATION, returnDepth);
 		}
 		detach(hero.belongings.backpack);
 		Catalog.countUse(getClass());

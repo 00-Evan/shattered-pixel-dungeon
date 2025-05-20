@@ -563,11 +563,15 @@ public class Notes {
 			records.add( (Record) rec );
 		}
 	}
-	
+
 	public static boolean add( Landmark landmark ) {
-		LandmarkRecord l = new LandmarkRecord( landmark, Dungeon.depth );
+		return add( landmark, Dungeon.depth );
+	}
+	
+	public static boolean add( Landmark landmark, int depth ) {
+		LandmarkRecord l = new LandmarkRecord( landmark, depth );
 		if (!records.contains(l)) {
-			boolean result = records.add(new LandmarkRecord(landmark, Dungeon.depth));
+			boolean result = records.add(l);
 			Collections.sort(records, comparator);
 			return result;
 		}
@@ -575,11 +579,19 @@ public class Notes {
 	}
 
 	public static boolean contains( Landmark landmark ){
-		return records.contains(new LandmarkRecord( landmark, Dungeon.depth));
+		return contains( landmark, Dungeon.depth );
 	}
-	
+
+	public static boolean contains( Landmark landmark, int depth ){
+		return records.contains(new LandmarkRecord( landmark, depth));
+	}
+
 	public static boolean remove( Landmark landmark ) {
-		return records.remove( new LandmarkRecord(landmark, Dungeon.depth) );
+		return remove( landmark, Dungeon.depth );
+	}
+
+	public static boolean remove( Landmark landmark, int depth ) {
+		return records.remove( new LandmarkRecord(landmark, depth) );
 	}
 	
 	public static boolean add( Key key ){
