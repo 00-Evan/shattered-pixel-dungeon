@@ -485,17 +485,15 @@ public class WndRanking extends WndTabbed {
 			slot.item( item );
 			if (item.cursed && item.cursedKnown) {
 				bg.ra = +0.3f;
-				bg.ga = -0.15f;
-				bg.ba = -0.15f;
+				bg.ga = -0.2f;
+				bg.ba = -0.2f;
 			} else if (!item.isIdentified()) {
 				if ((item instanceof EquipableItem || item instanceof Wand) && item.cursedKnown){
 					bg.ba = +0.3f;
-					bg.ga = +0.06f;
-					bg.ra = -0.06f;
+					bg.ra = -0.1f;
 				} else {
-					bg.ra = +0.3f;
-					bg.ba = +0.3f;
-					bg.ga = -0.1f;
+					bg.ra = +0.35f;
+					bg.ba = +0.35f;
 				}
 			}
 		}
