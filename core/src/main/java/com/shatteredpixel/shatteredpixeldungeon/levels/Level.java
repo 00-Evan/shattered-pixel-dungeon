@@ -930,6 +930,12 @@ public abstract class Level implements Bundlable {
 		level.pit[cell]			    = (flags & Terrain.PIT) != 0;
 		level.water[cell]			= terrain == Terrain.WATER;
 
+		if (level instanceof SewerLevel){
+			if (level.map[cell] == Terrain.REGION_DECO || level.map[cell] == Terrain.REGION_DECO_ALT){
+				level.flamable[cell] = true;
+			}
+		}
+
 		for (int i : PathFinder.NEIGHBOURS9){
 			i = cell + i;
 			if (level.solid[i]){
