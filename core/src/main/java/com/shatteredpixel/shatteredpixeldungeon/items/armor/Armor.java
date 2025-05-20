@@ -228,8 +228,6 @@ public class Armor extends EquipableItem {
 
 	@Override
 	public boolean doEquip( Hero hero ) {
-		
-		detach(hero.belongings.backpack);
 
 		// 15/25% chance
 		if (hero.heroClass != HeroClass.CLERIC && hero.hasTalent(Talent.HOLY_INTUITION)
@@ -239,6 +237,8 @@ public class Armor extends EquipableItem {
 			GLog.p(Messages.get(this, "curse_detected"));
 			return false;
 		}
+
+		detach(hero.belongings.backpack);
 
 		Armor oldArmor = hero.belongings.armor;
 		if (hero.belongings.armor == null || hero.belongings.armor.doUnequip( hero, true, false )) {
