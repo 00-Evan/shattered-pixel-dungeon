@@ -86,6 +86,32 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-1.3", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**-** I've made further adjustments to the new inventory background colors. They should be both more similar to the pre-beta colors, and even easier for colorbind users to tell apart! Thank you for your feedback on this.\n\n" +
+				"**-** Sewer barrels can now be destroyed or burned via all the usual methods\n\n" +
+				"**-** Guiding Light's icon is now brightened if it's free to cast."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by Beta:**\n" +
+				"**-** Hermit Crabs not dropping extra items in many cases\n" +
+				"**-** Wandmaker only being eligible to spawn on floor 7\n" +
+				"**-** Errors with new beacon of returning landmark functionality\n" +
+				"**-** Various rare crash bugs\n" +
+				"**-** Various minor textual errors\n" +
+				"\n" +
+				"**Existed Prior to BETA:**\n" +
+				"**-** Metamorphed holy intuition deleting armor in rare cases\n" +
+				"**-** Exotic potions using the incorrect icon in the catalog sometimes"));
+
 		changes = new ChangeInfo("BETA-1.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
