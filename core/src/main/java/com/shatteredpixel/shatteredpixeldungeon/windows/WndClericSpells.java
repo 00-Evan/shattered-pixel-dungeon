@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ClericSpell;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.GuidingLight;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -145,6 +146,8 @@ public class WndClericSpells extends Window {
 
 			if (!tome.canCast(Dungeon.hero, spell)){
 				icon.alpha( 0.3f );
+			} else if (spell == GuidingLight.INSTANCE && spell.chargeUse(Dungeon.hero) == 0){
+				icon.brightness(3);
 			}
 
 			bg = Chrome.get(Chrome.Type.TOAST);
@@ -152,10 +155,20 @@ public class WndClericSpells extends Window {
 		}
 
 		@Override
+		protected void onPointerDown() {
+			super.onPointerDown();
+			if (spell == GuidingLight.INSTANCE && spell.chargeUse(Dungeon.hero) == 0){
+				icon.brightness(4);
+			}
+		}
+
+		@Override
 		protected void onPointerUp() {
 			super.onPointerUp();
 			if (!tome.canCast(Dungeon.hero, spell)){
 				icon.alpha( 0.3f );
+			} else if (spell == GuidingLight.INSTANCE && spell.chargeUse(Dungeon.hero) == 0){
+				icon.brightness(3);
 			}
 		}
 

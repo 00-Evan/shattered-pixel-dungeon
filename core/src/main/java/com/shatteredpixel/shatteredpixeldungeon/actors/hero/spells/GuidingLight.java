@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
@@ -99,6 +100,7 @@ public class GuidingLight extends TargetedClericSpell {
 				onSpellCast(tome, hero);
 				if (hero.subClass == HeroSubClass.PRIEST && hero.buff(GuidingLightPriestCooldown.class) == null) {
 					Buff.prolong(hero, GuidingLightPriestCooldown.class, 100f);
+					ActionIndicator.refresh();
 				}
 
 			}
@@ -137,6 +139,11 @@ public class GuidingLight extends TargetedClericSpell {
 
 		public float iconFadePercent() { return Math.max(0, visualcooldown() / 100); }
 
+		@Override
+		public void detach() {
+			super.detach();
+			ActionIndicator.refresh();
+		}
 	}
 
 	public static class Illuminated extends Buff {
