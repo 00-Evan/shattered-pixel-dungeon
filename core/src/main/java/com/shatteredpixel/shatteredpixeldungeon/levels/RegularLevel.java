@@ -656,8 +656,10 @@ public abstract class RegularLevel extends Level {
 							candidateCells.add(h.pos);
 						}
 					}
-				} else {
-					if (Random.Int(5) == 0 && findMob(exit()) == null){
+				}
+
+				if (candidateCells.isEmpty()) {
+					if (Random.Int(5) == 0 && findMob(exit()) == null) {
 						candidateCells.add(exit());
 					} else {
 						for (int i = 0; i < length(); i++) {
