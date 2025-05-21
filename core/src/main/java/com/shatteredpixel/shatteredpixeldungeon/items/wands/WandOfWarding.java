@@ -68,6 +68,13 @@ public class WandOfWarding extends Wand {
 		else                                        return Ballistica.STOP_TARGET;
 	}
 
+	@Override
+	public void execute(Hero hero, String action) {
+		//cursed warding does use targeting as it's just doing regular cursed zaps
+		usesTargeting = cursed && cursedKnown;
+		super.execute(hero, action);
+	}
+
 	private boolean wardAvailable = true;
 	
 	@Override
