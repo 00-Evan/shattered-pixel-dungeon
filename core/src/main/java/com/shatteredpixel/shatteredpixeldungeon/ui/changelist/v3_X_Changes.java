@@ -86,9 +86,24 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("BETA-1.4", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
+				"Hello beta testers!\n" +
+				"\n" +
+				"This beta includes some improved visuals, but there are still WIP ones in the caves+ that need to be addressed. I'm going to be away over the weekend, so I expect v3.1 will be ready to release a bit later than anticipated, perhaps in the middle of next week."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"Added final visuals for sewer barrels, prison cages, and hermit crabs."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Existed Prior to BETA:**\n" +
+				"**-** Cursed wand of warding not using autotargering\n" +
+				"**-** Some game versions not properly respecting 'check for beta updates' being disabled\n" +
+				"**-** Brimstone glyph not properly scaling past +50% glyph power"));
 
 		changes = new ChangeInfo("BETA-1.3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -185,7 +200,7 @@ public class v3_X_Changes {
 				"**- 10 new entrance/exit variants** of standard rooms have been added as well. two per region.\n" +
 				"**- Plain empty rooms** no longer spawn normally.\n" +
 				"\n" +
-				"**Note that the new terrain is currently using placeholder visuals**"));
+				"**Note that some of the new terrain is currently using placeholder visuals**"));
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.FERRET_TUFT), "Ferret Tuft",
 				"**A new trinket has been added to the game!**\n" +
@@ -209,9 +224,7 @@ public class v3_X_Changes {
 				"\n" +
 				"**Gnoll Exiles** are exceptionally strong, but also wary of combat. They won't attack unprovoked, so you can just let them pass, but maybe you'll be interested in the loot they carry...\n" +
 				"\n" +
-				"**Hermit Crabs** are sturdy but slow crabs that use a broken barrel for extra support. They're a bit tough to fight, but much easier to run away from, and have a good chance to drop some armor for you.\n" +
-				"\n" +
-				"**Note that hermit crabs currently use a placeholder sprite**"));
+				"**Hermit Crabs** are sturdy but slow crabs that use a broken barrel for extra support. They're a bit tough to fight, but much easier to run away from, and have a good chance to drop some armor for you."));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
 		changes.hardlight(CharSprite.WARNING);
