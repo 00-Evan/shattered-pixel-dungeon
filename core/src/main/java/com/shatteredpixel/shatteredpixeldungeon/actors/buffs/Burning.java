@@ -189,7 +189,7 @@ public class Burning extends Buff implements Hero.Doom {
 				if (shieldCap > 0 && shieldGain > 0){
 					Barrier barrier = Buff.affect(ch, Barrier.class);
 					if (barrier.shielding() < shieldCap){
-						barrier.incShield(1);
+						barrier.incShield(Math.min(shieldGain, shieldCap - barrier.shielding()));
 					}
 				}
 			}
