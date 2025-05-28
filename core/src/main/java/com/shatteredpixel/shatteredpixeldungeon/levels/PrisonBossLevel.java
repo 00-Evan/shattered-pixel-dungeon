@@ -210,6 +210,8 @@ public class PrisonBossLevel extends Level {
 			Painter.set(this, p, Terrain.WALL_DECO);
 		}
 
+		addCagesToCells();
+
 		//we set up the exit for consistently with other levels, even though it's in the walls
 		LevelTransition exit = new LevelTransition(this, pointToCell(levelExit), LevelTransition.Type.REGULAR_EXIT);
 		exit.right+=2;
@@ -232,6 +234,8 @@ public class PrisonBossLevel extends Level {
 		Painter.fill(this, entranceRoom, Terrain.WALL);
 		Painter.set(this, startHallway.left+1, startHallway.top, Terrain.EMPTY);
 		Painter.set(this, startHallway.left+1, startHallway.top+1, Terrain.DOOR);
+
+		addCagesToCells();
 
 	}
 	
@@ -320,6 +324,8 @@ public class PrisonBossLevel extends Level {
 			exit.bottom += 3;
 			transitions.add(exit);
 		}
+
+		addCagesToCells();
 	}
 	
 	//keep track of removed items as the level is changed. Dump them back into the level at the end.
@@ -379,6 +385,25 @@ public class PrisonBossLevel extends Level {
 		
 		GameScene.resetMap();
 		Dungeon.observe();
+	}
+
+	//randomly places up to 5 cages on tiles that are aside walls (but not torches or doors!)
+	public void addCagesToCells(){
+		Random.pushGenerator(Dungeon.seedCurDepth());
+			for (int i = 0; i < 5; i++){
+				int cell = randomPrisonCellPos();
+				boolean valid = false;
+				for (int j : PathFinder.NEIGHBOURS4){
+					if (map[cell+j] == Terrain.WALL){
+						valid = true;
+					}
+				}
+				if (valid){
+					Painter.set(this, cell, Terrain.REGION_DECO);
+				}
+			}
+
+		Random.popGenerator();
 	}
 	
 	@Override
@@ -592,7 +617,11 @@ public class PrisonBossLevel extends Level {
 			}
 		Random.popGenerator();
 
-		drop(new IronKey(10), randomPrisonCellPos());
+		int pos;
+		do {
+			pos = randomPrisonCellPos();
+		} while (solid[pos]);
+		drop(new IronKey(10), pos);
 	}
 
 	@Override
