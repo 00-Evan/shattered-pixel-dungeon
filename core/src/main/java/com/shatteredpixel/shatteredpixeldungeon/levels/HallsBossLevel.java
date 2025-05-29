@@ -181,6 +181,12 @@ public class HallsBossLevel extends Level {
 		vis.pos(ROOM_LEFT, ROOM_TOP);
 		customWalls.add(vis);
 
+		for (int i = 0; i < length(); i++) {
+			if (map[i] == Terrain.REGION_DECO && Random.Int(2) == 0) {
+				map[i] = Terrain.REGION_DECO_ALT;
+			}
+		}
+
 		//basic version of building flag maps for the pathfinder test
 		for (int i = 0; i < length; i++){
 			passable[i]	= ( Terrain.flags[map[i]] & Terrain.PASSABLE) != 0;
