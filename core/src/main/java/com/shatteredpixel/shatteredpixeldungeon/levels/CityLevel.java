@@ -208,7 +208,7 @@ public class CityLevel extends RegularLevel {
 		public static final Emitter.Factory factory = new Factory() {
 			@Override
 			public void emit( Emitter emitter, int index, float x, float y ) {
-				ElmoParticle p = (ElmoParticle)emitter.recycle( ElmoParticle.class );
+				GreenFlameParticle p = (GreenFlameParticle)emitter.recycle( GreenFlameParticle.class );
 				p.reset( x, y );
 			}
 			@Override
@@ -223,9 +223,9 @@ public class CityLevel extends RegularLevel {
 			this.pos = pos;
 
 			PointF p = DungeonTilemap.raisedTileCenterToWorld( pos );
-			pos( p.x - 3, p.y - 6, 6, 6 );
+			pos( p.x - 2, p.y - 5, 4, 4 );
 
-			pour( factory, 0.05f );
+			pour( factory, 0.1f );
 		}
 
 		@Override
@@ -236,6 +236,16 @@ public class CityLevel extends RegularLevel {
 		}
 
 	}
+
+	public static class GreenFlameParticle extends ElmoParticle {
+
+		public GreenFlameParticle(){
+			super();
+			acc.set( 0, -40 );
+		}
+
+	}
+
 	
 	public static class Smoke extends Emitter {
 		
