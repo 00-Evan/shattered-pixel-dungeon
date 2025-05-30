@@ -209,9 +209,9 @@ public class WelcomeScene extends PixelScene {
 
 			}
 
-			message = "Greetings Beta Testers, v3.1 is content-complete (minus some visual polish) and ready for testing!\n" +
+			message = "Greetings Beta Testers, after a slight delay the beta for v3.1 is wrapping up!\n" +
 					"\n" +
-					"This update includes a mini Warrior Rework, new terrain/rooms, a new trinket, and a bunch of other smaller changes and additions! Let me know if you run into any issues.";
+					"There may be one more beta release with fixes and a few small visual tweaks, but otherwise expect v3.1 to release early next week!";
 
 		} else {
 			message = Messages.get(this, "what_msg");

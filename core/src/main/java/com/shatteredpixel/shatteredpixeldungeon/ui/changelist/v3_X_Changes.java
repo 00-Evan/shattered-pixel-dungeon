@@ -86,81 +86,61 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("BETA-1.4", false, null);
+		changes = new ChangeInfo("BETA-2.0", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
-				"Hello beta testers!\n" +
+				"Hello beta testers!\n\n" +
+				"Apologies for the delay, a busy weekend and the decision to make some last minute changes/additions has delayed the beta a little. We're now almost done though, so expect v3.1 to fully release early next week!\n" +
 				"\n" +
-				"This beta includes some improved visuals, but there are still WIP ones in the caves+ that need to be addressed. I'm going to be away over the weekend, so I expect v3.1 will be ready to release a bit later than anticipated, perhaps in the middle of next week."));
+				"Before release I plan to make final visual and bug fix tweaks as needed."));
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.SEAL), "Warrior Changes",
+				"**The Warrior has received a redone splash art and visuals for his seal!** As usual, the splash is from Aleksandar Komitov, and is meant as an improvement on his original work from years ago.\n\n" +
+				"The new Warrior mechanics have also been showing as quite on the strong side! I'm scaling things a bit back for now and will refine further in patches for v3.1:\n" +
+				"**-** Broken Seal shielding cooldown increased to 150 turns from 100.\n" +
+				"**-** Broken Seal transfer now once again requires armor to be uncursed, but still doesn't require full ID anymore.\n" +
+				"\n" +
+				"Also one Gladiator tweak that's largely for QoL:\n" +
+				"**-** Active shielding from the broken seal no longer ends while the Gladiator has combo."));
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"Added final visuals for sewer barrels, prison cages, and hermit crabs."));
+				"**-** Reduced Ferret Tuft evasion boost to +12.5% per level, from +15%.\n\n" +
+				"**-** Added better visuals for new terrain in caves, city, and halls. Halls visuals are final, caves and city may receive further tweaks.\n\n" +
+				"**-** Added a shadow effect to hermit crab sprite to make it easier to notice.\n\n" +
+				"**-** New terrain can now appear in the prison and halls boss levels.\n\n" +
+				"**-** Slightly tweaked the shading on barrels and cages.\n\n" +
+				"**-** Slightly tweaked the inventory BG color for cursed items one last time."));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
-				"**Existed Prior to BETA:**\n" +
-				"**-** Cursed wand of warding not using autotargering\n" +
-				"**-** Some game versions not properly respecting 'check for beta updates' being disabled\n" +
-				"**-** Brimstone glyph not properly scaling past +50% glyph power"));
+				"\n" +
+				"**Caused by BETA:**\n" +
+				"**-** Gnoll exiles spawned by summoning trap being aggressive\n" +
+				"**-** Various minor typos"));
 
-		changes = new ChangeInfo("BETA-1.3", false, null);
+		changes = new ChangeInfo("BETA-1.1 to 1.4", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**-** Added final visuals for sewer barrels, prison cages, and hermit crabs.\n\n" +
 				"**-** I've made further adjustments to the new inventory background colors. They should be both more similar to the pre-beta colors, and even easier for colorbind users to tell apart! Thank you for your feedback on this.\n\n" +
 				"**-** Sewer barrels can now be destroyed or burned via all the usual methods\n\n" +
 				"**-** Guiding Light's icon is now brightened if it's free to cast."));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
-				"**Caused by Beta:**\n" +
-				"**-** Hermit Crabs not dropping extra items in many cases\n" +
-				"**-** Wandmaker only being eligible to spawn on floor 7\n" +
-				"**-** Errors with new beacon of returning landmark functionality\n" +
-				"**-** Various rare crash bugs\n" +
-				"**-** Various minor textual errors\n" +
-				"\n" +
-				"**Existed Prior to BETA:**\n" +
-				"**-** Metamorphed holy intuition deleting armor in rare cases\n" +
-				"**-** Exotic potions using the incorrect icon in the catalog sometimes"));
-
-		changes = new ChangeInfo("BETA-1.2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by Beta:**\n" +
-				"**-** Broken seal prompting to transfer glyph without runic transference talent in some cases\n" +
-				"**-** Champion Enemies with +reach being able to reach past other enemies\n" +
-				"**-** Wandmaker sometimes spawning inside of doors in new prison entrance room\n" +
-				"**-** Rare cases where cooldown on new Warrior ability wouldn't apply"));
-
-		changes = new ChangeInfo("BETA-1.1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Environment.TILES_SEWERS, 160, 64, 16, 16), "Barrels",
-				"The initial beta made the sewers a bit barrel-crazy, so I've scaled that back to make them less omnipresent:\n\n" +
-				"**-** Reduced the number of barrels placed in barrel rooms\n" +
-				"**-** Barrel room spawn chance reduced by 50%\n" +
-				"**-** Barrel entrance/exit room spawn chance reduced by 25%"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by Beta:**\n" +
-				"**-** Blacksmith sometimes not offering a free pickaxe when he should\n" +
-				"**-** Enemies spawning closer to the entrance than intended in some new entrance room variants\n" +
-				"**-** Rankings entries from prior to the beta having higher exploration score than intended\n" +
-				"**-** Crashes when attempting to steal from gnoll exiles\n" +
-				"**-** Transmuting a mage's staff sometimes making it cursed\n" +
 				"\n" +
 				"**Existed Prior to BETA:**\n" +
 				"**-** Duelist being able to stack invisibility using the sneak weapon ability\n" +
-				"**-** Oblivion shard stating an item wasn't ready to be IDed if its manual ID function was cancelled"));
+				"**-** Oblivion shard stating an item wasn't ready to be IDed if its manual ID function was cancelled\n" +
+				"**-** Metamorphed holy intuition deleting armor in rare cases\n" +
+				"**-** Exotic potions using the incorrect icon in the catalog sometimes\n" +
+				"**-** Cursed wand of warding not using autotargeting\n" +
+				"**-** Some game versions not properly respecting 'check for beta updates' being disabled\n" +
+				"**-** Brimstone glyph not properly scaling past +50% glyph power"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
