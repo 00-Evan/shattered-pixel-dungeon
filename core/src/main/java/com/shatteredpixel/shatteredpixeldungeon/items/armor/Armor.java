@@ -258,7 +258,7 @@ public class Armor extends EquipableItem {
 
 			if (Dungeon.hero.heroClass == HeroClass.WARRIOR && checkSeal() == null){
 				BrokenSeal seal = oldArmor != null ? oldArmor.checkSeal() : null;
-				if (seal != null){
+				if (seal != null && (!cursed || (seal.getGlyph() != null && seal.getGlyph().curse()))){
 
 					GameScene.show(new WndOptions(new ItemSprite(ItemSpriteSheet.SEAL),
 							Messages.titleCase(seal.title()),

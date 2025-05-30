@@ -126,20 +126,16 @@ public class BrokenSeal extends Item {
 			if (!armor.cursedKnown){
 				GLog.w(Messages.get(BrokenSeal.class, "unknown_armor"));
 
-			}  else if (armor.glyph != null && getGlyph() != null
+			} else if (armor.cursed && (getGlyph() == null || !getGlyph().curse())){
+				GLog.w(Messages.get(BrokenSeal.class, "cursed_armor"));
+
+			}else if (armor.glyph != null && getGlyph() != null
 					&& canTransferGlyph()
 					&& armor.glyph.getClass() != getGlyph().getClass()) {
 
-				//cannot apply the seal's non-curse glyph to a curse glyph armor
-				final boolean sealGlyphApplicable = !armor.glyph.curse() || getGlyph().curse();
-				String bodyText = Messages.get(BrokenSeal.class, "choose_desc", armor.glyph.name(), getGlyph().name());
-				if (!sealGlyphApplicable){
-					bodyText += "\n\n" + Messages.get(BrokenSeal.class, "choose_curse_warn");
-				}
-
 				GameScene.show(new WndOptions(new ItemSprite(ItemSpriteSheet.SEAL),
 						Messages.get(BrokenSeal.class, "choose_title"),
-						bodyText,
+						Messages.get(BrokenSeal.class, "choose_desc", armor.glyph.name(), getGlyph().name()),
 						armor.glyph.name(),
 						getGlyph().name()){
 					@Override
@@ -159,14 +155,6 @@ public class BrokenSeal extends Item {
 						Dungeon.hero.sprite.operate(Dungeon.hero.pos);
 						Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
 						armor.affixSeal(BrokenSeal.this);
-					}
-
-					@Override
-					protected boolean enabled(int index) {
-						if (index == 1 && !sealGlyphApplicable){
-							return false;
-						}
-						return super.enabled(index);
 					}
 
 					@Override
@@ -267,7 +255,7 @@ public class BrokenSeal extends Item {
 		private int cooldown = 0;
 		private int turnsSinceEnemies = 0;
 
-		private static int COOLDOWN_START = 100;
+		private static int COOLDOWN_START = 150;
 
 		@Override
 		public int icon() {
