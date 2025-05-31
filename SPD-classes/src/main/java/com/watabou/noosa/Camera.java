@@ -269,6 +269,10 @@ public class Camera extends Gizmo {
 		panIntensity = intensity;
 	}
 
+	public synchronized Visual followTarget(){
+		return followTarget;
+	}
+
 	public synchronized void setFollowDeadzone( float deadzone ){
 		followDeadzone = deadzone;
 	}
