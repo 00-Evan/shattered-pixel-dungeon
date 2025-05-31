@@ -342,6 +342,8 @@ public class Blacksmith extends NPC {
 						smithEnchant = (Weapon.Enchantment) node.get(ENCHANT);
 						smithGlyph   = (Armor.Glyph) node.get(GLYPH);
 					}
+				} else {
+					smithRewards = null;
 				}
 
 			} else {
