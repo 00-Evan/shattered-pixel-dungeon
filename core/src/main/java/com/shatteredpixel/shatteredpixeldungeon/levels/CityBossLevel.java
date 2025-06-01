@@ -142,6 +142,9 @@ public class CityBossLevel extends Level {
 		Painter.fill(this, entry.left+3, entry.top+3, 1, 5, Terrain.BOOKSHELF);
 		Painter.fill(this, entry.right-4, entry.top+3, 1, 5, Terrain.BOOKSHELF);
 
+		Painter.set(this, entry.left+5, entry.top+1, Terrain.REGION_DECO);
+		Painter.set(this, entry.left+7, entry.top+1, Terrain.REGION_DECO);
+
 		Point c = entry.center();
 
 		Painter.fill(this, c.x-1, c.y-2, 3, 1, Terrain.STATUE);

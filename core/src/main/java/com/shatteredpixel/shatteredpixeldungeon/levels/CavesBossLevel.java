@@ -142,6 +142,8 @@ public class CavesBossLevel extends Level {
 		//setup exit area above main boss arena
 		Painter.fill(this, 0, 3, width(), 4, Terrain.CHASM);
 		Painter.fill(this, 6, 7, 21, 1, Terrain.CHASM);
+		Painter.fill(this, 9, 3, 1, 6, Terrain.REGION_DECO_ALT);
+		Painter.fill(this, 23, 3, 1, 6, Terrain.REGION_DECO_ALT);
 		Painter.fill(this, 10, 8, 13, 1, Terrain.CHASM);
 		Painter.fill(this, 12, 9, 9, 1, Terrain.CHASM);
 		Painter.fill(this, 13, 10, 7, 1, Terrain.CHASM);
@@ -680,9 +682,18 @@ public class CavesBossLevel extends Level {
 
 				//otherwise check if we are on row 2 or 3, in which case we need to override walls
 				} else {
-					if (i / tileW == 2) data[i] = 13;
-					else if (i / tileW == 3) data[i] = 21;
-					else data[i] = -1;
+					if (i / tileW == 2) {
+						data[i] = 13;
+					} else if (i / tileW == 3) {
+						//except on two columns specifically, where we have metal structures
+						if (i % tileW == 9 || i % tileW == 23){
+							data[i] = -1;
+						} else {
+							data[i] = 21;
+						}
+					} else {
+						data[i] = -1;
+					}
 				}
 			}
 			v.map( data, tileW );
