@@ -43,6 +43,7 @@ import java.util.ArrayList;
 public class v3_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
+		add_Coming_Soon(changeInfos);
 		add_v3_1_Changes(changeInfos);
 		add_v3_0_Changes(changeInfos);
 	}
@@ -54,114 +55,62 @@ public class v3_X_Changes {
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Overview",
-				"The next major update to Shattered will be v3.1, which will mainly focus on followup to v3.0 and some changes to the Warrior!\n" +
+				"The next major update to Shattered will be v3.2, which will include an overhaul to thrown weapons!\n" +
 				"\n" +
-				"I expect v3.1 to be a relatively lightweight update, much like v2.1 was after the Duelist. v2.1 took almost 3 months, and while I'd like to do better than that I also don't want to end up overpromising. Hopefully you'll hear from me with progress on v3.1 sometime in mid April to mid May.\n" +
+				"Due to deadlines relating to supporting old versions of Android, v3.2 has to release relatively quickly. Expect to hear more from me about it sometime probably toward mid or late July.\n" +
 				"\n" +
-				"Please keep in mind that while I always try to keep to the ETAs I provide, they are just estimates. If you don't hear from me by the ETA, it means I'm still busy with the update!"));
+				"**Please keep in mind that while I always try to keep to the ETAs I provide, they are just estimates. If you don't hear from me by the ETA, it means I'm still busy with the update!**"));
 
-		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.WARRIOR, 6), "Warrior Changes",
-				"For a long while now the Warrior has been the least appreciated class among experienced players. This is partly intended because he is meant to be the most simple, but I do think there are some changes that can be made so that the Warrior's class ability is a bit more visible and interactive. This is not going to be a hero rework, but rather some targeted changes to improve the Warrior's game feel without making him much harder for new players to use."));
-
-		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 6), "Cleric Followup",
-				"I'm more confident that the Cleric is releasing in a better initial state than the Duelist, but there will always be needed changes to balance or mechanics, and fixes for bugs. I expect to make those changes in v3.1 after taking a little time to gather feedback and gameplay data from v3.1."));
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Misc. Changes",
-				"I want v3.1 to be a fairly lightweight update, so that it can come out quickly in response to v3.0, but there should be room for a few smaller changes too. In addition to the usual bugfixes and smaller QoL tweaks, I might add a couple of smaller content additions such as new trinkets and other items, a new rare enemy, etc."));
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.WARNING), "Older Device Support",
-				"Unfortunately I will have to make some changes in 2025 that will remove support for very old versions of iOS, Android, and Java:\n" +
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.TRIDENT), "Thrown Weapon Overhaul",
+				"The biggest content change I have planned for v3.2 is something I didn't originally plan for 2025, an overhaul to thrown weapons! I've settled on a design I like, and want v3.2 to be fairly quick, which is why this has taken priority for the moment.\n" +
 				"\n" +
-				"**iOS 11:** Support for this version of iOS is being dropped after v3.0 (this update). There were no Apple devices which got iOS 11 but not 12, so this shouldn't actually affect any users.\n" +
+				"The plan is to make thrown weapons behave a bit more like wands, by having them drop in 'sets' that have a fixed quantity, but which can be upgraded as a unit. This should make investing upgrades in thrown weapons much more appealing, as you'll no longer be limited to upgrading one at a time."));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Misc. and Behind the Scenes Changes",
+				"As always, v3.2 will include some smaller misc. changes and balance tweaks, but I expect it will be lighter on them than usual as I'm working on a deadline in order to ensure old Android and Java users will still get v3.2.\n" +
 				"\n" +
-				"**Android 4.0-4.4:** Due to updates to Shattered's game library (libGDX) and Google Play's billing library, I will sadly have to drop support for these older Android versions toward the end of 2025. These Android versions should still get v3.1 and v3.2 though.\n" +
+				"If there's time, I would also like to make some internal changes in prep for a new city quest toward the end of the year."));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.WARNING), "Old Android and Java Support",
+				"Unfortunately, due to changes to code libraries and build tools that Shattered depends on, I will have to make some changes in the next few months that will remove support for **Android 4.0-4.4** and **Java 8-10**.\n" +
 				"\n" +
-				"**Java 8-10:** This only affects users who play the old desktop JAR distribution, which requires a separate Java install. Support for the Java 8, 9, and 10 targets has been depreciated, at some point in the future Shattered will require Java 11 instead. I'll likely make this change at the same time as the Android change."));
+				"Devices with these platform versions should still receive v3.2 and any immediate patches, but will not receive updates after that. These devices will be able to continue playing v3.2 indefinitely.\n" +
+				"\n" +
+				"Android 4.4 was succeeded by Android 5.0 in 2014, ~1% of Android Shattered players are using Android 4.4-. Java 10 was succeeded by Java 11 in 2018, but can run on computers from 2010 and earlier.\n" +
+				"\n" +
+				"Note that the Java requirement only applies to the plain .JAR desktop builds of Shattered, which require a separate Java install. If you're unsure which desktop build you're using, it probably isn't the Java one."));
 
 	}
 
 	public static void add_v3_1_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v3.1-BETA", true, "");
+		ChangeInfo changes = new ChangeInfo("v3.1", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("BETA-2.0", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
-				"Hello beta testers!\n\n" +
-				"Apologies for the delay, a busy weekend and the decision to make some last minute changes/additions has delayed the beta a little. We're now almost done though, so expect v3.1 to fully release early next week!\n" +
-				"\n" +
-				"Before release I plan to make final visual and bug fix tweaks as needed."));
-
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.SEAL), "Warrior Changes",
-				"**The Warrior has received a redone splash art and visuals for his seal!** As usual, the splash is from Aleksandar Komitov, and is meant as an improvement on his original work from years ago.\n\n" +
-				"The new Warrior mechanics have also been showing as quite on the strong side! I'm scaling things a bit back for now and will refine further in patches for v3.1:\n" +
-				"**-** Broken Seal shielding cooldown increased to 150 turns from 100.\n" +
-				"**-** Broken Seal transfer now once again requires armor to be uncursed, but still doesn't require full ID anymore.\n" +
-				"\n" +
-				"Also one Gladiator tweak that's largely for QoL:\n" +
-				"**-** Active shielding from the broken seal no longer ends while the Gladiator has combo."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** Reduced Ferret Tuft evasion boost to +12.5% per level, from +15%.\n\n" +
-				"**-** Added better visuals for new terrain in caves, city, and halls. Halls visuals are final, caves and city may receive further tweaks.\n\n" +
-				"**-** Added a shadow effect to hermit crab sprite to make it easier to notice.\n\n" +
-				"**-** New terrain can now appear in the prison and halls boss levels.\n\n" +
-				"**-** Slightly tweaked the shading on barrels and cages.\n\n" +
-				"**-** Slightly tweaked the inventory BG color for cursed items one last time."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"\n" +
-				"**Caused by BETA:**\n" +
-				"**-** Gnoll exiles spawned by summoning trap being aggressive\n" +
-				"**-** Various minor typos"));
-
-		changes = new ChangeInfo("BETA-1.1 to 1.4", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** Added final visuals for sewer barrels, prison cages, and hermit crabs.\n\n" +
-				"**-** I've made further adjustments to the new inventory background colors. They should be both more similar to the pre-beta colors, and even easier for colorbind users to tell apart! Thank you for your feedback on this.\n\n" +
-				"**-** Sewer barrels can now be destroyed or burned via all the usual methods\n\n" +
-				"**-** Guiding Light's icon is now brightened if it's free to cast."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"\n" +
-				"**Existed Prior to BETA:**\n" +
-				"**-** Duelist being able to stack invisibility using the sneak weapon ability\n" +
-				"**-** Oblivion shard stating an item wasn't ready to be IDed if its manual ID function was cancelled\n" +
-				"**-** Metamorphed holy intuition deleting armor in rare cases\n" +
-				"**-** Exotic potions using the incorrect icon in the catalog sometimes\n" +
-				"**-** Cursed wand of warding not using autotargeting\n" +
-				"**-** Some game versions not properly respecting 'check for beta updates' being disabled\n" +
-				"**-** Brimstone glyph not properly scaling past +50% glyph power"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
-				"Hello beta testers!\n" +
+				"**-** Released June 2nd, 2025\n" +
+				"**-** 95 days after v3.0.0\n" +
 				"\n" +
-				"I expect to release v3.1 in another week to a week and a half. Things are mostly already finished but there's a few little things to finish up.  Please let me know what you think, and if you encounter any issues!\n" +
-				"\n" +
-				"**-** New terrain (and by extension hermit crabs) are currently using placeholder visuals which need to be improved\n" +
-				"**-** Warrior has a few visual tweaks I'd like to make before release\n" +
-				"**-** Any balance/bug issues that crop up during the beta will be addressed"));
+				"Dev commentary will be added here in the future"));
 
-		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.WARRIOR, 1), "Warrior Mini Rework",
-				"**The Warrior has had a mini overhaul to his broken seal ability!** The seal's shielding should now feel more impactful and interactive, while still being easy to use for new players:\n" +
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SEAL), "Warrior Mini Rework",
+				"**The Warrior has had a mini overhaul to his broken seal ability, and new visuals for his splash art and broken seal!**\n" +
 				"\n" +
+				"The seal's shielding now triggers in bursts with a cooldown, when the Warrior is below 50% HP. It should feel more impactful and interactive while still being easy to use for new players.\n" +
+				"\n" +
+				"The Warrior's new splash art is once again done by Aleksandar Komitov. The original Warrior splash was the first one Aleks did, and so this remake is the most significant of the hero splash art changes. Aleks was keen to make corrections to armor design and proportions to bring the splash up to his current standards.",
+
+				"Here are the detailed changes to the broken seal shielding mechanics:\n" +
 				"**-** Broken Seal shield no longer passively builds, it now triggers all at once just before the Warrior gets damaged to 50% health or lower.\n" +
 				"**-** Max shield is now based on armor tier, scaling from 5-13 (max of 15 with iron will talent).\n" +
-				"**-** This shielding has a 100 turn cooldown, unused shield refunds up to 50% cooldown.\n" +
-				"**-** Significantly loosened the criteria for applying broken seal to new armor, it now only needs the new armor to be curse-IDed.\n" +
+				"**-** This shielding does not decay, but ends shortly after combat\n" +
+				"**-** This shielding has a 150 turn cooldown, unused shield refunds up to 50% cooldown.\n" +
+				"**-** The broken seal can now be applied to known-uncursed armor.\n" +
 				"**-** When swapping armor, the Warrior now gets a prompt to swap his seal too.",
 
 				"Various other Warrior mechanics have been adjusted to compensate for the seal changes:\n" +
@@ -169,6 +118,7 @@ public class v3_X_Changes {
 				"**- Iron Will** talent unchanged, still grants 1 or 2 max shield.\n" +
 				"**- Liquid Willpower** talent now grants regular barrier equal to 6.5%/10% of max HP, instead of recharging 50%/75% of max seal shield.\n" +
 				"**- Lethal Defence** talent now reduces seal cooldown, instead of recharging seal shield.\n" +
+				"**- Gladiator** will retain any active shielding from his broken seal as long as he has combo.\n" +
 				"**- Berserker** enrage shield is now its own separate shielding buff, and has its own scaling separate from the seal's max shield."));
 
 		changes.addButton( new ChangeButton(Icons.STAIRS.get(), "New Rooms and Terrain Types",
@@ -178,16 +128,15 @@ public class v3_X_Changes {
 				"**- 5 new standard rooms** have been added that use these new terrain objects, one per region.\n" +
 				"**- 8 existing standard rooms** have been modified to use the new terrain objects.\n" +
 				"**- 10 new entrance/exit variants** of standard rooms have been added as well. two per region.\n" +
-				"**- Plain empty rooms** no longer spawn normally.\n" +
-				"\n" +
-				"**Note that some of the new terrain is currently using placeholder visuals**"));
+				"**- Boss Arenas** also use these new terrain types in a few places\n" +
+				"**- Plain empty rooms** no longer spawn normally."));
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.FERRET_TUFT), "Ferret Tuft",
 				"**A new trinket has been added to the game!**\n" +
 				"\n" +
-				"The **Ferret Tuft** is a simpler evasion-boosting trinket with more of a cute aesthetic. It's a little reference to a favourite ferret.\n" +
+				"The **Ferret Tuft** is a simpler evasion-boosting trinket with more of a cute aesthetic. It's a little reference to a favourite lime ferret.\n" +
 				"\n" +
-				"Choosing and upgrade the trinket will cause all characters to gain evasion, including enemies! That might sound like a mixed bag, but keep in mind that there are lots of ways to counter enemy evasion."));
+				"Choosing and upgrading the trinket will cause all characters to gain evasion, including enemies! That might sound like a mixed bag, but keep in mind that there are lots of ways to counter enemy evasion."));
 
 		changes.addButton( new ChangeButton(BadgeBanner.image( Badges.Badge.TAKING_THE_MICK.image ), "New Badges",
 				"v3.1 also includes **four new badges**, each themed around a specific challenge:\n" +
@@ -240,6 +189,7 @@ public class v3_X_Changes {
 				"**-** The gravity chaos cursed wand effect now has its own debuff icon\n" +
 				"**-** When using metamorph, food talents that grant the same type of recharging can now stack\n" +
 				"**-** Improved VFX for activating or deactivating brawler's stance\n" +
+				"**-** Guiding Light's spell icon is now brightened when it is free to cast\n" +
 				"\n" +
 				"**Misc:**\n" +
 				"**-** The inventory button gold indicator on mobile now shows when buying items\n" +
@@ -254,33 +204,40 @@ public class v3_X_Changes {
 				"**-** Shocking enchantment triggering its damage twice in many cases since v3.0\n" +
 				"**-** Runs in progress older than 2 months showing 'NO TEXT FOUND'\n" +
 				"**-** Allies not waking from magical sleep after it has healed them\n" +
-				"**-** Desktop versions downloaded via github not notifying when updates are available\n" +
+				"**-** Desktop versions downloaded via github not properly notifying when updates are available\n" +
 				"\n" +
-				"**Characters:**\n" +
-				"**-** Swapping places with allies not being counted as movement for shuriken's instant attack\n" +
-				"**-** Exploits where sheep could last forever if game was frequently saved/loaded\n" +
-				"**-** Mirror images not benefitting from body form or holy weapon if the Cleric was unarmed\n" +
-				"**-** Light Ally and Shadow Clone having very slightly more accuracy/evasion than the hero at base",
+				"**Items:**\n" +
+				"**-** Players being able to take smith rewards multiple times in specific cases\n" +
+				"**-** Stone glyph not considering some evasion/accuracy buffs\n" +
+				"**-** Brimstone glyph not properly scaling past +50% glyph power\n" +
+				"**-** Boomerangs disappearing if the game was closed during their circle back animation\n" +
+				"**-** Crystal path rooms sometimes sorting items incorrectly when player had exotic crystals\n" +
+				"**-** Cursed wand of warding not using autotargeting",
 
 				"**Effects:**\n" +
-				"**-** Glyph of stone not considering some evasion/accuracy buffs when determining damage reduction\n" +
 				"**-** Hallowed ground producing furrowed grass more often than intended in some cases\n" +
 				"**-** Ascended form ending early if its shielding was reduced to 0\n" +
-				"**-** Boomerangs disappearing if the game was closed during their circle back animation\n" +
 				"**-** Metamorphed cleanse clearing lost inventory debuff\n" +
 				"**-** Metamorphed aggressive barrier using incorrect logic\n" +
 				"**-** Lay on Hands sometimes applying 0 barrier to allies\n" +
 				"**-** Death via the Cleric's life link not being recorded in rankings\n" +
-				"**-** Targeting traps having very slightly less range than intended",
+				"**-** Targeting traps having very slightly less range than intended\n" +
+				"**-** Duelist being able to stack invisibility using the sneak weapon ability\n" +
+				"**-** Metamorphed holy intuition deleting armor in rare cases",
 
+				"**Characters:**\n" +
+				"**-** Swapping places with allies not being counted as movement for shuriken's instant attack\n" +
+				"**-** Exploits where sheep could last forever if game was frequently saved/loaded\n" +
+				"**-** Mirror images not benefitting from body form or holy weapon if the Cleric was unarmed\n" +
+				"**-** Light Ally and Shadow Clone having very slightly more accuracy/evasion than the hero at base\n" +
+				"\n" +
 				"**Misc:**\n" +
 				"**-** Shattered locking to 60fps on 120hz iOS devices\n" +
-				"**-** Crystal path rooms sometimes sorting items incorrectly when player had the exotic crystals trinket\n" +
 				"**-** Custom notes not properly applying to specific rings, wands, & trinkets\n" +
 				"**-** Paralysis vfx on enemies sometimes cancelling animations as it ends\n" +
 				"**-** Rare cases of wonky display scaling on Linux systems\n" +
 				"**-** Various minor visual & textual errors\n" +
-				"**-** Various rare crash errors"));
+				"**-** Various rare crash errors\n"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight(CharSprite.POSITIVE);

@@ -53,7 +53,7 @@ import java.util.Collections;
 
 public class WelcomeScene extends PixelScene {
 
-	private static final int LATEST_UPDATE = 843;
+	private static final int LATEST_UPDATE = ShatteredPixelDungeon.v3_1_0;
 
 	//used so that the game does not keep showing the window forever if cleaning fails
 	private static boolean triedCleaningTemp = false;
@@ -208,11 +208,6 @@ public class WelcomeScene extends PixelScene {
 				message += "\n" + Messages.get(this, "patch_translations");
 
 			}
-
-			message = "Greetings Beta Testers, after a slight delay the beta for v3.1 is wrapping up!\n" +
-					"\n" +
-					"There may be one more beta release with fixes and a few small visual tweaks, but otherwise expect v3.1 to release early next week!";
-
 		} else {
 			message = Messages.get(this, "what_msg");
 		}
