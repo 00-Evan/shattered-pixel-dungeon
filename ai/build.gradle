@@ -1,0 +1,127 @@
+plugins {
+    id 'org.beryx.runtime' version '1.12.7'
+}
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+sourceCompatibility = targetCompatibility = appJavaCompatibility
+
+ext.appMainClass = "com.shatteredpixel.shatteredpixeldungeon.ai.AILauncher"
+processResources {
+    from new File(project(':core').projectDir, "/src/main/assets")
+    from new File(project(':ai').projectDir,"/src/main/assets")
+}
+
+def osName = System.getProperty('os.name').toLowerCase(Locale.ROOT)
+
+task run_ai(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    ignoreExitValue = false
+
+    main = appMainClass
+    systemProperty 'Specification-Title', appName
+    systemProperty 'Implementation-Title', appPackageName
+    systemProperty 'Specification-Version', appVersionName + "-INDEV"
+    systemProperty 'Implementation-Version', appVersionCode
+
+    if (osName.contains('mac')) {
+        jvmArgs '-XstartOnFirstThread'
+    }
+}
+
+task release(type: Jar) {
+    //FIXME this is now needed as of gradle 7.0, due to our weird sourceSets setup. Should see if there's a better way to do this
+    setDuplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+    from sourceSets.main.output
+    dependsOn configurations.runtimeClasspath
+    from { configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) } }
+
+    manifest {
+        attributes 'Main-Class': appMainClass
+        attributes 'Specification-Title': appName
+        attributes 'Implementation-Title': appPackageName
+        attributes 'Specification-Version': appVersionName
+        attributes 'Implementation-Version': appVersionCode
+    }
+}
+installDist.dependsOn release
+startScripts.dependsOn release
+jpackageImage.dependsOn release
+
+runtime {
+    modules = ['java.base',
+               'java.desktop',
+               'jdk.unsupported',
+               'jdk.crypto.cryptoki',
+               'jdk.management']
+    options = ['--strip-debug',
+               '--compress', '2',
+               '--no-header-files',
+               '--no-man-pages',
+               '--strip-native-commands',
+               '--vm', 'server']
+
+    jpackage {
+        mainClass = appMainClass
+        appVersion = (appVersionName =~ /\d+\.\d+\.\d+/)[0]
+        imageName = appName
+    }
+
+    if (osName.contains('windows')) {
+        targetPlatform("win") {
+            jdkHome = jdkDownload("https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk-16.0.1%2B9/OpenJDK16U-jdk_x64_windows_hotspot_16.0.1_9.zip")
+            javaHome = file("./build/jdks/win/jdk-16.0.1+9").getAbsolutePath()
+            jpackage {
+                jpackageHome = file("./build/jdks/win/jdk-16.0.1+9")
+                imageOptions = ["--icon", file("./src/main/assets/icons/windows.ico"),
+                                "--java-options", "-XX:+IgnoreUnrecognizedVMOptions"]
+            }
+        }
+    } else if (osName.contains('linux')) {
+        targetPlatform("linux") {
+            jdkHome = jdkDownload("https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk-16.0.1%2B9/OpenJDK16U-jdk_x64_linux_hotspot_16.0.1_9.tar.gz")
+            javaHome = file("./build/jdks/linux/jdk-16.0.1+9").getAbsolutePath()
+            jpackage {
+                jpackageHome = file("./build/jdks/linux/jdk-16.0.1+9")
+                imageOptions = ["--icon", file("./src/main/assets/icons/icon_256.png"),
+                                "--java-options", "-XX:+IgnoreUnrecognizedVMOptions"]
+            }
+        }
+    } else if (osName.contains('mac')) {
+        targetPlatform("mac") {
+            jdkHome = jdkDownload("https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk-16.0.1%2B9/OpenJDK16U-jdk_x64_mac_hotspot_16.0.1_9.tar.gz")
+            javaHome = file("./build/jdks/mac/jdk-16.0.1+9/Contents/Home/").getAbsolutePath()
+            jpackage {
+                jpackageHome = file("./build/jdks/mac/jdk-16.0.1+9/Contents/Home/")
+                imageOptions = ["--icon", file("./src/main/assets/icons/mac.icns"),
+                                "--java-options", "-XstartOnFirstThread",
+                                "--java-options", "-XX:+IgnoreUnrecognizedVMOptions",
+                                //append .apple because com.shatteredpixel.shatteredpixeldungeon was taken =(
+                                "--mac-package-identifier", appPackageName + ".apple",
+                                "--mac-package-name", "ShattererdPD"]
+            }
+        }
+    }
+
+}
+
+dependencies {
+    implementation project(':core')
+    implementation project(':desktop')
+
+    implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+    implementation "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$gdxControllersVersion"
+
+    //we use LWJGL tinyFD directly to display crash messages
+    implementation "org.lwjgl:lwjgl-tinyfd:3.3.3"
+    implementation "org.lwjgl:lwjgl-tinyfd:3.3.3:natives-windows"
+    implementation "org.lwjgl:lwjgl-tinyfd:3.3.3:natives-macos"
+    implementation "org.lwjgl:lwjgl-tinyfd:3.3.3:natives-macos-arm64"
+    implementation "org.lwjgl:lwjgl-tinyfd:3.3.3:natives-linux"
+    implementation "org.lwjgl:lwjgl-tinyfd:3.3.3:natives-linux-arm64"
+
+    implementation project(':services:updates:githubUpdates')
+    implementation project(':services:news:shatteredNews')
+}
