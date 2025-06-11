@@ -63,9 +63,11 @@ public class MovieClip extends Image {
 			while (frameTimer > curAnim.delay) {
 				frameTimer -= curAnim.delay;
 				if (curFrame >= curAnim.frames.length - 1) {
-					curFrame = curAnim.frames.length - 1;
 					if (curAnim.looped) {
 						curFrame = 0;
+					} else {
+						curFrame = curAnim.frames.length - 1;
+						frameTimer = 0;
 					}
 					finished = true;
 					if (listener != null) {

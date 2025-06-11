@@ -48,7 +48,7 @@ public class AssassinsBlade extends MeleeWeapon {
 	public int damageRoll(Char owner) {
 		if (owner instanceof Hero) {
 			Hero hero = (Hero)owner;
-			Char enemy = hero.enemy();
+			Char enemy = hero.attackTarget();
 			if (enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)) {
 				//deals 50% toward max to max on surprise, instead of min to max.
 				int diff = max() - min();
