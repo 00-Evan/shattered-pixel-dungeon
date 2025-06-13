@@ -473,7 +473,7 @@ public class WndUpgrade extends Window {
 	private float fillFields(String title, String msg1, String msg2, float bottom){
 
 		//the ~ symbol is more commonly used in Chinese
-		if (Messages.lang() == Languages.CHINESE){
+		if (Messages.lang() == Languages.CHI_SMPL || Messages.lang() == Languages.CHI_TRAD){
 			msg1 = msg1.replace('-', '~');
 			msg2 = msg2.replace('-', '~');
 		}

@@ -233,7 +233,8 @@ public class RenderedTextBlock extends Component {
 
 				//this is so that words split only by highlighting are still grouped in layout
 				//Chinese/Japanese always render every character separately without spaces however
-				while (Messages.lang() != Languages.CHINESE && Messages.lang() != Languages.JAPANESE
+				while (Messages.lang() != Languages.CHI_SMPL && Messages.lang() != Languages.CHI_TRAD
+						&& Messages.lang() != Languages.JAPANESE
 						&& j < words.size() && words.get(j) != SPACE && words.get(j) != NEWLINE){
 					fullWidth += words.get(j).width() - 0.667f;
 					j++;

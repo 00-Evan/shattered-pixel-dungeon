@@ -177,8 +177,8 @@ public class AndroidPlatformSupport extends PlatformSupport {
 	private static FreeTypeFontGenerator basicFontGenerator;
 	//droid sans / nanum gothic / noto sans, for use with Korean
 	private static FreeTypeFontGenerator KRFontGenerator;
-	//droid sans / noto sans, for use with Simplified Chinese
-	private static FreeTypeFontGenerator SCFontGenerator;
+	//droid sans / noto sans, for use with Chinese
+	private static FreeTypeFontGenerator ZHFontGenerator;
 	//droid sans / noto sans, for use with Japanese
 	private static FreeTypeFontGenerator JPFontGenerator;
 	
@@ -196,7 +196,7 @@ public class AndroidPlatformSupport extends PlatformSupport {
 
 		resetGenerators(false);
 		fonts = new HashMap<>();
-		basicFontGenerator = KRFontGenerator = SCFontGenerator = JPFontGenerator = null;
+		basicFontGenerator = KRFontGenerator = ZHFontGenerator = JPFontGenerator = null;
 		
 		if (systemfont && Gdx.files.absolute("/system/fonts/Roboto-Regular.ttf").exists()) {
 			basicFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/Roboto-Regular.ttf"));
@@ -217,11 +217,15 @@ public class AndroidPlatformSupport extends PlatformSupport {
 				case KOREAN:
 					typeFace = 1;
 					break;
-				case CHINESE:
+				case CHI_SMPL:
 				default:
 					typeFace = 2;
+					break;
+				case CHI_TRAD:
+					typeFace = 3;
+					break;
 			}
-			KRFontGenerator = SCFontGenerator = JPFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansCJK-Regular.ttc"), typeFace);
+			KRFontGenerator = ZHFontGenerator = JPFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansCJK-Regular.ttc"), typeFace);
 			
 		//otherwise we have to go over a few possibilities.
 		} else {
@@ -235,10 +239,13 @@ public class AndroidPlatformSupport extends PlatformSupport {
 			}
 			
 			//Chinese font generators
+			//we don't use a separate generator for traditional chinese because
+			// NotoSansTC-Regular and NotoSansHant-Regular seem to only contain some hant-specific
+			// ways to draw certain symbols, too much messing for old android
 			if (Gdx.files.absolute("/system/fonts/NotoSansSC-Regular.otf").exists()){
-				SCFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansSC-Regular.otf"));
+				ZHFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansSC-Regular.otf"));
 			} else if (Gdx.files.absolute("/system/fonts/NotoSansHans-Regular.otf").exists()){
-				SCFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansHans-Regular.otf"));
+				ZHFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansHans-Regular.otf"));
 			}
 			
 			//Japaneses font generators
@@ -256,14 +263,14 @@ public class AndroidPlatformSupport extends PlatformSupport {
 			}
 			
 			if (KRFontGenerator == null) KRFontGenerator = fallbackGenerator;
-			if (SCFontGenerator == null) SCFontGenerator = fallbackGenerator;
+			if (ZHFontGenerator == null) ZHFontGenerator = fallbackGenerator;
 			if (JPFontGenerator == null) JPFontGenerator = fallbackGenerator;
 			
 		}
 		
 		if (basicFontGenerator != null) fonts.put(basicFontGenerator, new HashMap<>());
 		if (KRFontGenerator != null) fonts.put(KRFontGenerator, new HashMap<>());
-		if (SCFontGenerator != null) fonts.put(SCFontGenerator, new HashMap<>());
+		if (ZHFontGenerator != null) fonts.put(ZHFontGenerator, new HashMap<>());
 		if (JPFontGenerator != null) fonts.put(JPFontGenerator, new HashMap<>());
 		
 		//would be nice to use RGBA4444 to save memory, but this causes problems on some gpus =S
@@ -271,15 +278,15 @@ public class AndroidPlatformSupport extends PlatformSupport {
 	}
 
 	private static Matcher KRMatcher = Pattern.compile("\\p{InHangul_Syllables}").matcher("");
-	private static Matcher SCMatcher = Pattern.compile("\\p{InCJK_Unified_Ideographs}|\\p{InCJK_Symbols_and_Punctuation}|\\p{InHalfwidth_and_Fullwidth_Forms}").matcher("");
+	private static Matcher ZHMatcher = Pattern.compile("\\p{InCJK_Unified_Ideographs}|\\p{InCJK_Symbols_and_Punctuation}|\\p{InHalfwidth_and_Fullwidth_Forms}").matcher("");
 	private static Matcher JPMatcher = Pattern.compile("\\p{InHiragana}|\\p{InKatakana}").matcher("");
 
 	@Override
 	protected FreeTypeFontGenerator getGeneratorForString( String input ){
 		if (KRMatcher.reset(input).find()){
 			return KRFontGenerator;
-		} else if (SCMatcher.reset(input).find()){
-			return SCFontGenerator;
+		} else if (ZHMatcher.reset(input).find()){
+			return ZHFontGenerator;
 		} else if (JPMatcher.reset(input).find()){
 			return JPFontGenerator;
 		} else {
