@@ -208,6 +208,9 @@ public class WelcomeScene extends PixelScene {
 				message += "\n" + Messages.get(this, "patch_translations");
 
 			}
+
+			message = "Hey beta testers! v3.1 ended up being a pretty stable update, so v3.1.1 is going to be a pretty small patch.\n\n" +
+					"That being said, there are some significant technical changes in v3.1.1, so I'm putting the patch to beta for a few days to ensure everything's running smoothly.";
 		} else {
 			message = Messages.get(this, "what_msg");
 		}

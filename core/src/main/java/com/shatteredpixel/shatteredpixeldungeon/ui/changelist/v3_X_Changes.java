@@ -88,6 +88,45 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("v3.1.1-BETA-1", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
+				"Hey beta testers! v3.1 ended up being a pretty stable update, so v3.1.1 is going to be a pretty small patch.\n\n" +
+				"That being said, there are some significant technical changes in v3.1.1, so I'm putting the patch to beta for a few days to ensure everything's running smoothly.\n\n" +
+				"There's also a tiny bit of stuff left to implement before v3.1.1 releases:\n" +
+				"**-** update translator credits (including for new language)\n" +
+				"**-** a few more bugfixes"));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SEAL), "Followup Warrior Tweaks",
+				"Gameplay-wise the Warrior is doing well after his mini-rework. I will likely make some changes in v3.2 but for now I'm just making one buff to an early talent:\n" +
+				"**- Hearty Meal** HP threshold increased to 33% from 30%, healing increased to 4/6 at +1/+2 from 3/5 at +1/+2.\n\n" +
+				"There are also some tweaks to the Warrior's new splash in response to feedback:\n" +
+				"**-** Significantly brightened the broken seal so that new details are easier to see\n" +
+				"**-** Added back in scarring and some muscle definition to the Warrior's arms\n" +
+				"**-** Deepened shadowing along the Warrior's figure\n" +
+				"**-** Added various small details to make the armor appear more worn and the Warrior more rugged"));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**-** Switched Shattered's rendering API on iOS from OpenGL to Metal. This should result in better performance and higher frame rates on supported devices.\n\n" +
+				"**-** Renamed Chinese language to Simplified Chinese\n" +
+				"**-** Added a new language: Traditional Chinese!\n" +
+				"**-** Updated translations\n\n" +
+				"**-** Increased the HP threshold for status pane blinking red to 33% from 30%, for consistency with heart meal change."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Existed Prior to v3.1:**\n" +
+				"**-** Various issues with how the game handles animation logic at very low framerates\n" +
+				"**-** Haptics not working properly on more modern iOS devices\n" +
+				"**-** Website links not working on modern iOS versions\n" +
+				"**-** Indonesian language not working on desktop platforms"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
