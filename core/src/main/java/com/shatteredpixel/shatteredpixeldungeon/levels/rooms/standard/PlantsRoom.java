@@ -107,7 +107,17 @@ public class PlantsRoom extends StandardRoom {
 			door.set( Door.Type.REGULAR );
 		}
 	}
-	
+
+	@Override
+	public boolean canPlaceItem(Point p, Level l) {
+		return super.canPlaceItem(p, l) && l.plants.get(l.pointToCell(p)) == null;
+	}
+
+	@Override
+	public boolean canPlaceCharacter(Point p, Level l) {
+		return super.canPlaceCharacter(p, l) && l.plants.get(l.pointToCell(p)) == null;
+	}
+
 	private static Plant.Seed randomSeed(){
 		Plant.Seed result;
 		do {
