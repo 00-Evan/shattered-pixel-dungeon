@@ -105,6 +105,10 @@ public class BeaconOfReturning extends Spell {
 	}
 	
 	private void setBeacon(Hero hero ){
+		if (returnDepth != -1){
+			Notes.remove(Notes.Landmark.BEACON_LOCATION, returnDepth);
+		}
+
 		returnDepth = Dungeon.depth;
 		returnBranch = Dungeon.branch;
 		returnPos = hero.pos;
