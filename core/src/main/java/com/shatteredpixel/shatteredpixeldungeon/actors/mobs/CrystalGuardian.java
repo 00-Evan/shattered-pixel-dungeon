@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
@@ -69,6 +70,9 @@ public class CrystalGuardian extends Mob{
 	@Override
 	protected boolean act() {
 		if (recovering){
+			if (buff(PinCushion.class) != null){
+				buff(PinCushion.class).detach();
+			}
 			throwItems();
 			HP = Math.min(HT, HP+5);
 			if (Dungeon.level.heroFOV[pos]) {
