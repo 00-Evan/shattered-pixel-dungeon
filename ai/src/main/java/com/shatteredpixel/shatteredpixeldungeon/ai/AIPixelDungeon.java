@@ -1,9 +1,12 @@
 package com.shatteredpixel.shatteredpixeldungeon.ai;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroAction;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.PlatformSupport;
 
@@ -14,6 +17,10 @@ import com.watabou.utils.PlatformSupport;
 public class AIPixelDungeon extends ShatteredPixelDungeon {
     public AIPixelDungeon(PlatformSupport platform) {
         super(platform);
+        GamesInProgress.selectedClass = HeroClass.WARRIOR;
+        InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
+        switchScene(InterlevelScene.class);
+
     }
 
     @Override
