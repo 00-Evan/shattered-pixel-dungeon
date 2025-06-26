@@ -10,6 +10,9 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.HeroSelectScene;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.PlatformSupport;
+import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 import static com.watabou.noosa.Camera.main;
 
@@ -90,37 +93,19 @@ public class AIPixelDungeon extends ShatteredPixelDungeon {
      * errors found
      */
     protected HeroAction act() {
-        // move towards the closest unexplored accessible cell
-        int closestCell = 999999999;
-        // iterate through the visited array to find cells we haven't seen yet
-        // (I don't really know what "visited" means -- just that it's been in our POV before? We've walked on it?
-        for (int target = 0; target < Dungeon.level.visited.length && closestCell == 999999999; target++) {
-            if (!Dungeon.level.visited[target]) {
-                int distance = Dungeon.level.distance(Dungeon.hero.pos, target);
-                if (distance < closestCell) {
-                    // I stole this from the Hero.getCloser function
-                    int len = Dungeon.level.length();
-                    boolean[] p = Dungeon.level.passable;
-                    boolean[] v = Dungeon.level.visited;
-                    boolean[] m = Dungeon.level.mapped;
-                    boolean[] passable = new boolean[len];
-                    for (int i = 0; i < len; i++) {
-                        passable[i] = p[i] && (v[i] || m[i]);
-                    }
-
-                    // make sure the target cell is accessible (also stolen from Hero class)
-                    PathFinder.Path newpath = Dungeon.findPath(Dungeon.hero, target, passable, Dungeon.hero.fieldOfView, true);
-                    if (newpath != null) {
-                        closestCell = target;
-                    }
-                }
-            }
-        }
-        if (closestCell != 999999999) {
-            return new HeroAction.Move(closestCell);
-        }
-        return null;
+        ArrayList<HeroAction> actions = listActions(Dungeon.hero.pos);
+        return actions.get(Random.Int(actions.size()));
      }
+
+    public ArrayList<HeroAction> listActions(int heroPos) {
+        ArrayList<HeroAction> actions = new ArrayList<>();
+        for (int delta : PathFinder.NEIGHBOURS8){
+            int cell = heroPos + delta;
+            actions.add(new HeroAction.Move(cell));
+        }
+
+        return actions;
+    }
 
     // Overrides input listening to simulate a mouse click. Taken from InputHandler class
     // Give an x, y, and button id (from Input.Buttons for mouse buttons)
