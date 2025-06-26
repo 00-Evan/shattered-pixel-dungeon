@@ -74,7 +74,7 @@ public class AIPixelDungeon extends ShatteredPixelDungeon {
 
         super.update();
         if (Dungeon.hero != null && Dungeon.hero.isAlive() && Dungeon.hero.ready && scene.active && scene.alive && scene.getClass().equals(GameScene.class) && Dungeon.hero.curAction == null && Dungeon.level != null) {
-            HeroAction action = null; //act();
+            HeroAction action = act();
             if (action != null) {
                 Dungeon.hero.curAction = action;
                 // stole this from CellSelector.moveFromActions function
