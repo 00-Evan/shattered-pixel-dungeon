@@ -2,9 +2,6 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven {
-            url = uri("https://storage.googleapis.com/r8-releases/raw")
-        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:8.9.1'
@@ -37,7 +34,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url 'https://central.sonatype.com/repository/maven-snapshots/' }
     }
 
 }
