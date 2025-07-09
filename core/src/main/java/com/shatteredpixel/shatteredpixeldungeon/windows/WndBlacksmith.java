@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
@@ -35,7 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -272,13 +273,16 @@ public class WndBlacksmith extends Window {
 					if (second.isEquipped( Dungeon.hero )) {
 						((EquipableItem)second).doUnequip( Dungeon.hero, false );
 					}
-					second.detach( Dungeon.hero.belongings.backpack );
+					second.detachAll( Dungeon.hero.belongings.backpack );
 
 					if (second instanceof Armor){
 						BrokenSeal seal = ((Armor) second).checkSeal();
 						if (seal != null){
 							Dungeon.level.drop( seal, Dungeon.hero.pos );
 						}
+					} else if (second instanceof MissileWeapon){
+						Buff.affect(Dungeon.hero, MissileWeapon.UpgradedSetTracker.class)
+								.levelThresholds.put(((MissileWeapon) second).setID, Integer.MAX_VALUE);
 					}
 
 					//preserves enchant/glyphs if present
@@ -346,8 +350,8 @@ public class WndBlacksmith extends Window {
 					} else if (item1.getClass() != item2.getClass()) {
 						btnReforge.enable(false);
 
-					//and not the literal same item (unless quantity is >1)
-					} else if (item1 == item2 && item1.quantity() == 1) {
+					//and not the literal same item
+					} else if (item1 == item2) {
 						btnReforge.enable(false);
 
 					} else {
@@ -375,7 +379,7 @@ public class WndBlacksmith extends Window {
 		public boolean itemSelectable(Item item) {
 			return item.isUpgradable()
 					&& item.isIdentified() && !item.cursed
-					&& ((item instanceof MeleeWeapon && !((Weapon) item).enchantHardened)
+					&& ((item instanceof Weapon && !((Weapon) item).enchantHardened)
 					|| (item instanceof Armor && !((Armor) item).glyphHardened));
 		}
 

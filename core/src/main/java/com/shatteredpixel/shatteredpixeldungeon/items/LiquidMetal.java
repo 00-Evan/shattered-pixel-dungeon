@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
@@ -128,6 +129,10 @@ public class LiquidMetal extends Item {
 			return item instanceof MissileWeapon && !(item instanceof Dart);
 		}
 
+		//TODO this needs to fix broken thrown weapons too
+		// should also only apply to IDed thrown weapons?
+		// TODO maybe thrown weps and wands can just be known uncursed in order to make recipe?
+
 		@Override
 		public void onSelect( Item item ) {
 			if (item != null && item instanceof MissileWeapon) {
@@ -171,31 +176,24 @@ public class LiquidMetal extends Item {
 
 		@Override
 		public boolean testIngredients(ArrayList<Item> ingredients) {
-			for (Item i : ingredients){
-				if (!(i instanceof MissileWeapon)){
-					return false;
-				}
-			}
-
-			return !ingredients.isEmpty();
+			return ingredients.size() == 1
+					&& ingredients.get(0) instanceof MissileWeapon
+					&& ingredients.get(0).isIdentified()
+					&& !ingredients.get(0).cursed;
 		}
 
 		@Override
 		public int cost(ArrayList<Item> ingredients) {
-			int cost = 1;
-			for (Item i : ingredients){
-				cost += i.quantity();
-			}
-			return cost;
+			return 3;
 		}
 
 		@Override
 		public Item brew(ArrayList<Item> ingredients) {
 			Item result = sampleOutput(ingredients);
 
-			for (Item i : ingredients){
-				i.quantity(0);
-			}
+			MissileWeapon w = (MissileWeapon) ingredients.get(0);
+			w.quantity(0);
+			Buff.affect(Dungeon.hero, MissileWeapon.UpgradedSetTracker.class).levelThresholds.put(w.setID, Integer.MAX_VALUE);
 
 			return result;
 		}

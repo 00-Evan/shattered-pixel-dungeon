@@ -28,13 +28,13 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SmokeParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
-import com.watabou.utils.Random;
 
 public class Explosive extends Weapon.Enchantment {
 
@@ -47,7 +47,7 @@ public class Explosive extends Weapon.Enchantment {
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
 
 		//average value of 5, or 20 hits to an explosion
-		int durToReduce = Math.round(Random.IntRange(0, 10) * procChanceMultiplier(attacker));
+		int durToReduce = Math.round(24 * procChanceMultiplier(attacker));
 		int currentDurability = durability;
 		durability -= durToReduce;
 
@@ -82,7 +82,18 @@ public class Explosive extends Weapon.Enchantment {
 			Item.updateQuickslot();
 		}
 
+		if (weapon instanceof MissileWeapon
+				&& ((MissileWeapon)weapon).parent != null && ((MissileWeapon) weapon).parent.enchantment instanceof Explosive){
+			((Explosive) ((MissileWeapon) weapon).parent.enchantment).durability = durability;
+		}
+
 		return damage;
+	}
+
+	public void merge(Explosive other){
+		if (other.durability < durability){
+			durability = other.durability;
+		}
 	}
 
 	@Override

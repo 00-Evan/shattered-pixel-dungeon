@@ -295,6 +295,13 @@ public class SpiritBow extends Weapon {
 			image = ItemSpriteSheet.SPIRIT_ARROW;
 
 			hitSound = Assets.Sounds.HIT_ARROW;
+
+			setID = 0;
+		}
+
+		@Override
+		public int defaultQuantity() {
+			return 1;
 		}
 
 		@Override
