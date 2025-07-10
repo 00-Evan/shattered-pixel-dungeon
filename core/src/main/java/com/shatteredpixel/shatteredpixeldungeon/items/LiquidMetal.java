@@ -129,9 +129,7 @@ public class LiquidMetal extends Item {
 			return item instanceof MissileWeapon && !(item instanceof Dart);
 		}
 
-		//TODO this needs to fix broken thrown weapons too
-		// should also only apply to IDed thrown weapons?
-		// TODO maybe thrown weps and wands can just be known uncursed in order to make recipe?
+		//TODO should we let this fix broken weapons too?
 
 		@Override
 		public void onSelect( Item item ) {
@@ -178,7 +176,7 @@ public class LiquidMetal extends Item {
 		public boolean testIngredients(ArrayList<Item> ingredients) {
 			return ingredients.size() == 1
 					&& ingredients.get(0) instanceof MissileWeapon
-					&& ingredients.get(0).isIdentified()
+					&& ingredients.get(0).cursedKnown
 					&& !ingredients.get(0).cursed;
 		}
 
@@ -190,27 +188,34 @@ public class LiquidMetal extends Item {
 		@Override
 		public Item brew(ArrayList<Item> ingredients) {
 			Item result = sampleOutput(ingredients);
+			MissileWeapon m = (MissileWeapon) ingredients.get(0);
+			if (!m.levelKnown){
+				result.quantity(metalQuantity(m));
+			}
 
-			MissileWeapon w = (MissileWeapon) ingredients.get(0);
-			w.quantity(0);
-			Buff.affect(Dungeon.hero, MissileWeapon.UpgradedSetTracker.class).levelThresholds.put(w.setID, Integer.MAX_VALUE);
+			m.quantity(0);
+			Buff.affect(Dungeon.hero, MissileWeapon.UpgradedSetTracker.class).levelThresholds.put(m.setID, Integer.MAX_VALUE);
 
 			return result;
 		}
 
 		@Override
 		public Item sampleOutput(ArrayList<Item> ingredients) {
-			int metalQuantity = 0;
+			MissileWeapon m = (MissileWeapon) ingredients.get(0);
 
-			for (Item i : ingredients){
-				MissileWeapon m = (MissileWeapon) i;
-				float quantity = m.quantity()-1;
-				quantity += 0.25f + 0.0075f*m.durabilityLeft();
-				quantity *= Math.pow(2, Math.min(3, m.level()));
-				metalQuantity += Math.round((5*(m.tier+1))*quantity);
+			if (m.levelKnown){
+				return new LiquidMetal().quantity(metalQuantity(m));
+			} else {
+				return new LiquidMetal();
 			}
+		}
 
-			return new LiquidMetal().quantity(metalQuantity);
+		private int metalQuantity(MissileWeapon m){
+			//TODO a smaller quantity set (if one ever exists) should produce more metal per thrown wep?
+			float quantity = m.quantity()-1;
+			quantity += 0.25f + 0.0075f*m.durabilityLeft();
+			quantity *= Math.pow(2, Math.min(3, m.level()));
+			return Math.round((5*(m.tier+1))*quantity);
 		}
 	}
 
