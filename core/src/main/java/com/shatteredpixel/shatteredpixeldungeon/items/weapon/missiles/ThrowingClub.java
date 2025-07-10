@@ -32,7 +32,7 @@ public class ThrowingClub extends MissileWeapon {
 		hitSoundPitch = 1.1f;
 		
 		tier = 2;
-		baseUses = 15;
+		baseUses = 12;
 		sticky = false;
 	}
 	

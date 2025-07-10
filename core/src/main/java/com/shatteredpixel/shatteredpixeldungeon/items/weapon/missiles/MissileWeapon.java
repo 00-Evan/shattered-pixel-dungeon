@@ -77,7 +77,7 @@ abstract public class MissileWeapon extends Weapon {
 	
 	public static final float MAX_DURABILITY = 100;
 	protected float durability = MAX_DURABILITY;
-	protected float baseUses = 10;
+	protected float baseUses = 8;
 	
 	public boolean holster;
 	
@@ -589,7 +589,10 @@ abstract public class MissileWeapon extends Weapon {
 			info += "\n\n" + Messages.get(Weapon.class, "not_cursed");
 		}
 
-		info += "\n\n" + Messages.get(MissileWeapon.class, "distance");
+		info += "\n\n";
+		String statsInfo = Messages.get(this, "stats_desc");
+		if (!statsInfo.equals("")) info += statsInfo + " ";
+		info += Messages.get(MissileWeapon.class, "distance");
 
 		if (levelKnown) {
 			if (durabilityPerUse() > 0) {

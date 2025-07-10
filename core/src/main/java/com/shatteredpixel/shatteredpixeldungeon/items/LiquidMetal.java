@@ -211,11 +211,16 @@ public class LiquidMetal extends Item {
 		}
 
 		private int metalQuantity(MissileWeapon m){
-			//TODO a smaller quantity set (if one ever exists) should produce more metal per thrown wep?
+			float quantityPerWeapon = 5*(m.tier+1);
+			if (m.defaultQuantity() != 3){
+				quantityPerWeapon = 3f / m.defaultQuantity();
+			}
+			quantityPerWeapon += Math.pow(2, Math.min(3, m.level()));
+
 			float quantity = m.quantity()-1;
 			quantity += 0.25f + 0.0075f*m.durabilityLeft();
-			quantity *= Math.pow(2, Math.min(3, m.level()));
-			return Math.round((5*(m.tier+1))*quantity);
+
+			return Math.round(quantity * quantityPerWeapon);
 		}
 	}
 
