@@ -297,6 +297,10 @@ abstract public class MissileWeapon extends Weapon {
 			}
 		}
 
+		if (!isIdentified() && ShardOfOblivion.passiveIDDisabled()){
+			Buff.prolong(curUser, ShardOfOblivion.ThrownUseTracker.class, 50f);
+		}
+
 		return result;
 	}
 
