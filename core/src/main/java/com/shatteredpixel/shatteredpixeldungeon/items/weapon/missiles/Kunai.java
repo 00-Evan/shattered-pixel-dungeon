@@ -37,6 +37,12 @@ public class Kunai extends MissileWeapon {
 		tier = 3;
 		baseUses = 5;
 	}
+
+	@Override
+	public int max(int lvl) {
+		return  4 * tier +                      //12 base, down from 15
+				(tier-1)*lvl;                   //scaling unchanged
+	}
 	
 	@Override
 	public int damageRoll(Char owner) {
