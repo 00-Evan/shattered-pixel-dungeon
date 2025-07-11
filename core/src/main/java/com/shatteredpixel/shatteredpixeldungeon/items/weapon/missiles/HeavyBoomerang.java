@@ -42,6 +42,7 @@ public class HeavyBoomerang extends MissileWeapon {
 		
 		tier = 4;
 		sticky = false;
+		baseUses = 5;
 	}
 	
 	@Override
