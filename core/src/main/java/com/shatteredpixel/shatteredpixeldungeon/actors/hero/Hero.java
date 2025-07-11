@@ -790,7 +790,6 @@ public class Hero extends Char {
 
 	@Override
 	public void spendConstant(float time) {
-		justMoved = false;
 		super.spendConstant(time);
 	}
 
@@ -1725,10 +1724,6 @@ public class Hero extends Char {
 	
 	private boolean walkingToVisibleTrapInFog = false;
 	
-	//FIXME this is a fairly crude way to track this, really it would be nice to have a short
-	//history of hero actions
-	public boolean justMoved = false;
-	
 	private boolean getCloser( final int target ) {
 
 		if (target == pos)
@@ -1828,7 +1823,6 @@ public class Hero extends Char {
 			move(step);
 
 			spend( delay );
-			justMoved = true;
 			
 			search(false);
 
