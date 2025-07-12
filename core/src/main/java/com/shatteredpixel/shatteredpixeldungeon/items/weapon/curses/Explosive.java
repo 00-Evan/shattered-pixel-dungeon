@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 public class Explosive extends Weapon.Enchantment {
 
@@ -47,7 +48,7 @@ public class Explosive extends Weapon.Enchantment {
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
 
 		//average value of 5, or 20 hits to an explosion
-		int durToReduce = Math.round(24 * procChanceMultiplier(attacker));
+		int durToReduce = Math.round(Random.IntRange(0, 10) * procChanceMultiplier(attacker));
 		int currentDurability = durability;
 		durability -= durToReduce;
 
