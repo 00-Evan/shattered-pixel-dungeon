@@ -53,6 +53,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
+import com.shatteredpixel.shatteredpixeldungeon.items.devtools.generator.LazyTest;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
@@ -107,7 +108,7 @@ public enum HeroClass {
 
 		i = new Food();
 		if (!Challenges.isItemBlocked(i)) i.collect();
-
+		new LazyTest().identify();
 		new VelvetPouch().collect();
 		Dungeon.LimitedDrops.VELVET_POUCH.drop();
 
@@ -181,7 +182,7 @@ public enum HeroClass {
 			hero.belongings.armor.affixSeal(new BrokenSeal());
 			Catalog.setSeen(BrokenSeal.class); //as it's not added to the inventory
 		}
-
+		 new LazyTest().collect();;
 		new PotionOfHealing().identify();
 		new ScrollOfRage().identify();
 	}
