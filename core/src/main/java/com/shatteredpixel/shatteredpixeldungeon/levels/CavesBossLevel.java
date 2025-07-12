@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM300;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Pylon;
@@ -43,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.CavesPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -140,6 +142,8 @@ public class CavesBossLevel extends Level {
 		//setup exit area above main boss arena
 		Painter.fill(this, 0, 3, width(), 4, Terrain.CHASM);
 		Painter.fill(this, 6, 7, 21, 1, Terrain.CHASM);
+		Painter.fill(this, 9, 3, 1, 6, Terrain.REGION_DECO_ALT);
+		Painter.fill(this, 23, 3, 1, 6, Terrain.REGION_DECO_ALT);
 		Painter.fill(this, 10, 8, 13, 1, Terrain.CHASM);
 		Painter.fill(this, 12, 9, 9, 1, Terrain.CHASM);
 		Painter.fill(this, 13, 10, 7, 1, Terrain.CHASM);
@@ -429,6 +433,9 @@ public class CavesBossLevel extends Level {
 			case Terrain.STATUE:
 				//city statues are used
 				return Messages.get(CityLevel.class, "statue_name");
+			case Terrain.REGION_DECO:
+			case Terrain.REGION_DECO_ALT:
+				return Messages.get(CavesLevel.class, "region_deco_name");
 			default:
 				return super.tileName( tile );
 		}
@@ -454,6 +461,9 @@ public class CavesBossLevel extends Level {
 			//city statues are used
 			case Terrain.STATUE:
 				return Messages.get(CityLevel.class, "statue_desc");
+			case Terrain.REGION_DECO:
+			case Terrain.REGION_DECO_ALT:
+				return Messages.get(CavesLevel.class, "region_deco_desc");
 			default:
 				return super.tileDesc( tile );
 		}
@@ -672,9 +682,18 @@ public class CavesBossLevel extends Level {
 
 				//otherwise check if we are on row 2 or 3, in which case we need to override walls
 				} else {
-					if (i / tileW == 2) data[i] = 13;
-					else if (i / tileW == 3) data[i] = 21;
-					else data[i] = -1;
+					if (i / tileW == 2) {
+						data[i] = 13;
+					} else if (i / tileW == 3) {
+						//except on two columns specifically, where we have metal structures
+						if (i % tileW == 9 || i % tileW == 23){
+							data[i] = -1;
+						} else {
+							data[i] = 21;
+						}
+					} else {
+						data[i] = -1;
+					}
 				}
 			}
 			v.map( data, tileW );
@@ -841,6 +860,11 @@ public class CavesBossLevel extends Level {
 
 						Char ch = Actor.findChar(cell);
 						if (ch != null && !(ch instanceof DM300) && !ch.flying) {
+							if (ch instanceof Mob){
+								//incredibly specific but I'll 100% get a bug report in a year if I don't add this
+								Buff.prolong(ch, Trap.HazardAssistTracker.class, Trap.HazardAssistTracker.DURATION);
+							}
+
 							Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
 							ch.damage( Random.NormalIntRange(6, 12), new Electricity());
 							ch.sprite.flash();

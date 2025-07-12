@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
@@ -42,6 +44,20 @@ public class GravityChaosTracker extends Buff {
 
 	{
 		actPriority = BUFF_PRIO-10; //acts after other buffs
+	}
+
+	@Override
+	public int icon() {
+		return BuffIndicator.VERTIGO;
+	}
+
+	@Override
+	public void tintIcon(Image icon) {
+		if (positiveOnly){
+			icon.hardlight(0, 1, 0);
+		} else {
+			icon.hardlight(1, 0, 0);
+		}
 	}
 
 	//lasts an average of 100 turns, with high variance
@@ -129,6 +145,16 @@ public class GravityChaosTracker extends Buff {
 		}
 		return true;
 
+	}
+
+	@Override
+	public String desc() {
+		String desc = Messages.get(this, "desc_intro");
+		if (positiveOnly){
+			desc += " " + Messages.get(this, "desc_positive");
+		}
+		desc += "\n\n" + Messages.get(this, "desc_duration");
+		return desc;
 	}
 
 	private static final String LEFT = "left";

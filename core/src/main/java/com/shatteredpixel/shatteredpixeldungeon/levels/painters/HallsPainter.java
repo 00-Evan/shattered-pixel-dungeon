@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,13 +59,15 @@ public class HallsPainter extends RegularPainter {
 				
 				map[i] = Terrain.WALL_DECO;
 				
+			} else if (map[i] == Terrain.REGION_DECO && Random.Int(2) == 0){
+				map[i] = Terrain.REGION_DECO_ALT;
 			}
 		}
 
 		for (Room r : rooms) {
 			for (Room n : r.neigbours) {
 				if (!r.connected.containsKey( n )) {
-					mergeRooms(level, r, n, null, Terrain.CHASM);
+					mergeRooms(level, r, n, null, Random.Int(3) == 0 ? Terrain.REGION_DECO : Terrain.CHASM);
 				}
 			}
 		}

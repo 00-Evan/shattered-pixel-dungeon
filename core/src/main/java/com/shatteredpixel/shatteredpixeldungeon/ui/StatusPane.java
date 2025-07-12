@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -249,7 +249,7 @@ public class StatusPane extends Component {
 
 		if (!Dungeon.hero.isAlive()) {
 			avatar.tint(0x000000, 0.5f);
-		} else if ((health/(float)max) <= 0.3f) {
+		} else if ((health/(float)max) < 0.334f) {
 			warning += Game.elapsed * 5f *(0.4f - (health/(float)max));
 			warning %= 1f;
 			avatar.tint(ColorMath.interpolate(warning, warningColors), 0.5f );

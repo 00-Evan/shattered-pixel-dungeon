@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -769,17 +769,18 @@ public class v2_X_Changes {
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released October 18th, 2023\n" +
-				"_-_ 138 days after Shattered v2.1.0\n\n" +
-				"Dev commentary will be added here in the future."));
+				"_-_ 138 days after Shattered v2.1.0\n" +
+				"\n" +
+				"Dev commentary will be added here in the next major update."));
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.PICKAXE), "New Blacksmith Quest!",
 				"_Shattered Pixel Dungeon's blacksmith quest has been completely redone!_\n" +
-						"\n" +
-						"_The quest now takes place in a new sublevel, with one entirely new environment, and two more on the way in v2.3!_ Each environment has its own set of hazards, level generation logic, and unique enemies.\n" +
-						"\n" +
-						"_The quest area features a new mining mechanic._ In addition to digging out gold, you can tunnel through walls to create new routes and evade hazards.\n" +
-						"\n" +
-						"_The quest rewards are also massively expanded._ The better you do on the quest, the more favor you'll earn in exchange for blacksmithing services. The old reforge option is still available, but there are several new options too."));
+				"\n" +
+				"_The quest now takes place in a new sublevel, with one entirely new environment, and two more on the way in v2.3!_ Each environment has its own set of hazards, level generation logic, and unique enemies.\n" +
+				"\n" +
+				"_The quest area features a new mining mechanic._ In addition to digging out gold, you can tunnel through walls to create new routes and evade hazards.\n" +
+				"\n" +
+				"_The quest rewards are also massively expanded._ The better you do on the quest, the more favor you'll earn in exchange for blacksmithing services. The old reforge option is still available, but there are several new options too."));
 
 		changes.addButton( new ChangeButton(Icons.AUDIO.get(), "New Music!",
 				"_Shattered Pixel Dungeon's soundtrack has been massively expanded!_ The game's soundtrack runtime has doubled in total, with almost 20 minutes of new audio by the game's composer: Kristjan Thomas Haaristo.\n" +
@@ -958,8 +959,13 @@ public class v2_X_Changes {
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released June 2nd, 2023\n" +
-				"_-_ 83 days after Shattered v2.0.0\n\n" +
-				"Dev commentary will be added here in the next major update."));
+				"_-_ 83 days after Shattered v2.0.0\n" +
+				"\n" +
+				"v2.1.0 was meant as a fairly quick followup to v2.0.0, aimed mainly at making followup tweaks to the Duelist.\n" +
+				"\n" +
+				"This was the first major wave of Duelist buffs, aimed mostly at boosting weapon abilities. Many of her abilities had various requirements/downsides, and weren't suitably rewarding to compensate. This led to the basic no-drawbacks cleave ability being the strongest one by quite a bit. The Duelist ended up needing further help, but this update went a long way toward fixing the biggest complaint I had received, that the Duelist felt too dependent on finding specific weapons.\n" +
+				"\n" +
+				"There was also a variety of side content in this update, most of which was varied, but some of it was targeted at more Duelist variety by adding a few more weapons."));
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAR_SCYTHE), "New Weapons!",
 				"Three new weapons have been added to the game!\n" +

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ChasmBridgeRoom;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Point;
 
 public class ChasmBridgeExitRoom extends ChasmBridgeRoom {
 
@@ -61,6 +62,11 @@ public class ChasmBridgeExitRoom extends ChasmBridgeRoom {
 
 		Painter.set( level, exit, Terrain.EXIT );
 		level.transitions.add(new LevelTransition(level, exit, LevelTransition.Type.REGULAR_EXIT));
+	}
+
+	@Override
+	public boolean canPlaceCharacter(Point p, Level l) {
+		return super.canPlaceCharacter(p, l) && l.pointToCell(p) != l.exit();
 	}
 
 }

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -262,7 +262,7 @@ public class PowerOfMany extends ArmorAbility {
 
 		public LightAlly(int heroLevel ){
 			this();
-			defenseSkill = heroLevel + 5; //equal to base hero defense skill
+			defenseSkill = heroLevel + 4; //equal to base hero defense skill
 		}
 
 		@Override

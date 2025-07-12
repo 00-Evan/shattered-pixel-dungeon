@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,9 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ChasmBridgeRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.FissureRoom;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -56,6 +59,31 @@ public class PrisonPainter extends RegularPainter {
 				
 				if (Random.Float() < c) {
 					map[i] = Terrain.EMPTY_DECO;
+				}
+			}
+		}
+
+		for (Room r : rooms){
+			if (r instanceof SpecialRoom){
+				continue;
+			}
+			int chance = 15; //1/15 by default, some rooms can be more common though
+			if (r instanceof FissureRoom){
+				chance = 3;
+			} else if (r instanceof ChasmBridgeRoom){
+				chance = 5;
+			}
+
+			int cell;
+			for (int y = r.bottom-1; y > r.top; y--){
+				cell = r.left+1 + level.width()*y;
+				for (int x = r.left+1; x < r.right; x++){
+					if (level.map[cell] == Terrain.CHASM && level.map[cell-level.width()] == Terrain.CHASM){
+						if (Random.Int(chance) == 0){
+							level.map[cell] = Terrain.REGION_DECO_ALT;
+						}
+					}
+					cell++;
 				}
 			}
 		}

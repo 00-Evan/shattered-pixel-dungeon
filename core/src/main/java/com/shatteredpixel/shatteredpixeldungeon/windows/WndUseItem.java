@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.ui.InventoryPane;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ItemJournalButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
@@ -34,44 +35,54 @@ public class WndUseItem extends WndInfoItem {
 	private static final float BUTTON_HEIGHT	= 16;
 	
 	private static final float GAP	= 2;
-	
+
+	public Window owner;
+	public Item item;
+
 	public WndUseItem( final Window owner, final Item item ) {
 		
 		super(item);
+
+		this.owner = owner;
+		this.item = item;
 
 		float y = height;
 		
 		if (Dungeon.hero.isAlive() && Dungeon.hero.belongings.contains(item)) {
 			y += GAP;
 			ArrayList<RedButton> buttons = new ArrayList<>();
-			for (final String action : item.actions( Dungeon.hero )) {
-				
-				RedButton btn = new RedButton( item.actionName(action, Dungeon.hero), 8 ) {
+			for (final String action : item.actions(Dungeon.hero)) {
+
+				RedButton btn = new RedButton(item.actionName(action, Dungeon.hero), 8) {
 					@Override
 					protected void onClick() {
 						hide();
 						if (owner != null && owner.parent != null) owner.hide();
-						if (Dungeon.hero.isAlive() && Dungeon.hero.belongings.contains(item)){
-							item.execute( Dungeon.hero, action );
+						if (Dungeon.hero.isAlive() && Dungeon.hero.belongings.contains(item)) {
+							item.execute(Dungeon.hero, action);
 						}
 						Item.updateQuickslot();
-						if (action.equals(item.defaultAction()) && item.usesTargeting && owner == null){
+						if (action.equals(item.defaultAction()) && item.usesTargeting && owner == null) {
 							InventoryPane.useTargeting();
 						}
 					}
 				};
-				btn.setSize( btn.reqWidth(), BUTTON_HEIGHT );
+				btn.setSize(btn.reqWidth(), BUTTON_HEIGHT);
 				buttons.add(btn);
-				add( btn );
+				add(btn);
 
 				if (action.equals(item.defaultAction())) {
-					btn.textColor( TITLE_COLOR );
+					btn.textColor(TITLE_COLOR);
 				}
-				
+
 			}
 			y = layoutButtons(buttons, width, y);
+
+			ItemJournalButton btn = new ItemJournalButton(item, this);
+			btn.setRect(width - 16, 0, 16, 16);
+			add(btn);
 		}
-		
+
 		resize( width, (int)(y) );
 	}
 

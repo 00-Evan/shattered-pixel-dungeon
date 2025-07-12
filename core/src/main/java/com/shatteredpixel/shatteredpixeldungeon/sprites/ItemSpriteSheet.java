@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -158,7 +158,7 @@ public class ItemSpriteSheet {
 		assignItemRect(ANKH,            10, 16);
 		assignItemRect(STYLUS,          12, 13);
 		
-		assignItemRect(SEAL,            9,  15);
+		assignItemRect(SEAL,            13, 13);
 		assignItemRect(TORCH,           12, 15);
 		assignItemRect(BEACON,          16, 15);
 		
@@ -174,7 +174,7 @@ public class ItemSpriteSheet {
 		assignItemRect(MASTERY,         13, 16);
 		assignItemRect(KIT,             16, 15);
 
-		assignItemRect(SEAL_SHARD,      11, 11);
+		assignItemRect(SEAL_SHARD,      12, 12);
 		assignItemRect(BROKEN_STAFF,    14, 10);
 		assignItemRect(CLOAK_SCRAP,      9,  9);
 		assignItemRect(BOW_FRAGMENT,    12,  9);
@@ -498,6 +498,7 @@ public class ItemSpriteSheet {
 	public static final int BLOOD_VIAL      = TRINKETS+12;
 	public static final int OBLIVION_SHARD  = TRINKETS+13;
 	public static final int CHAOTIC_CENSER  = TRINKETS+14;
+	public static final int FERRET_TUFT     = TRINKETS+15;
 	static{
 		assignItemRect(RAT_SKULL,       16, 11);
 		assignItemRect(PARCHMENT_SCRAP, 10, 14);
@@ -514,6 +515,7 @@ public class ItemSpriteSheet {
 		assignItemRect(BLOOD_VIAL,      6,  15);
 		assignItemRect(OBLIVION_SHARD,  7,  14);
 		assignItemRect(CHAOTIC_CENSER,  13, 15);
+		assignItemRect(FERRET_TUFT,     16, 15);
 	}
 
 	private static final int SCROLLS        =                               xy(1, 19);  //16 slots

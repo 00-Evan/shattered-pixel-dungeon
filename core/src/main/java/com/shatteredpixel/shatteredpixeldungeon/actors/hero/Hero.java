@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -215,7 +215,8 @@ public class Hero extends Char {
 	public HeroAction curAction = null;
 	public HeroAction lastAction = null;
 
-	private Char enemy;
+	//reference to the enemy the hero is currently in the process of attacking
+	private Char attackTarget;
 	
 	public boolean resting = false;
 	
@@ -460,7 +461,7 @@ public class Hero extends Char {
 	
 	public boolean shoot( Char enemy, MissileWeapon wep ) {
 
-		this.enemy = enemy;
+		attackTarget = enemy;
 		boolean wasEnemy = enemy.alignment == Alignment.ENEMY
 				|| (enemy instanceof Mimic && enemy.alignment == Alignment.NEUTRAL);
 
@@ -479,6 +480,7 @@ public class Hero extends Char {
 			Buff.affect( this, Sai.ComboStrikeTracker.class).addHit();
 		}
 
+		attackTarget = null;
 		return hit;
 	}
 	
@@ -489,14 +491,8 @@ public class Hero extends Char {
 		float accuracy = 1;
 		accuracy *= RingOfAccuracy.accuracyMultiplier( this );
 		
-		if (wep instanceof MissileWeapon){
-			if (Dungeon.level.adjacent( pos, target.pos )) {
-				accuracy *= (0.5f + 0.2f*pointsInTalent(Talent.POINT_BLANK));
-			} else {
-				accuracy *= 1.5f;
-			}
 		//precise assault and liquid agility
-		} else {
+		if (!(wep instanceof MissileWeapon)) {
 			if ((hasTalent(Talent.PRECISE_ASSAULT) || hasTalent(Talent.LIQUID_AGILITY))
 					//does not trigger on ability attacks
 					&& belongings.abilityWeapon != wep && buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) == null){
@@ -1379,45 +1375,49 @@ public class Hero extends Char {
 	
 	private boolean actAttack( HeroAction.Attack action ) {
 
-		enemy = action.target;
+		attackTarget = action.target;
 
-		if (isCharmedBy( enemy )){
+		if (isCharmedBy(attackTarget)){
 			GLog.w( Messages.get(Charm.class, "cant_attack"));
 			ready();
 			return false;
 		}
 
-		if (enemy.isAlive() && canAttack( enemy ) && enemy.invisible == 0) {
+		if (attackTarget.isAlive() && canAttack(attackTarget) && attackTarget.invisible == 0) {
 
 			if (heroClass != HeroClass.DUELIST
 					&& hasTalent(Talent.AGGRESSIVE_BARRIER)
 					&& buff(Talent.AggressiveBarrierCooldown.class) == null
-					&& (HP / (float)HT) < 0.20f*(1+pointsInTalent(Talent.AGGRESSIVE_BARRIER))){
-				Buff.affect(this, Barrier.class).setShield(3);
-				sprite.showStatusWithIcon(CharSprite.POSITIVE, "3", FloatingText.SHIELDING);
+					&& (HP / (float)HT) <= 0.5f){
+				int shieldAmt = 1 + 2*pointsInTalent(Talent.AGGRESSIVE_BARRIER);
+				Buff.affect(this, Barrier.class).setShield(shieldAmt);
+				sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldAmt), FloatingText.SHIELDING);
 				Buff.affect(this, Talent.AggressiveBarrierCooldown.class, 50f);
 
 			}
-			sprite.attack( enemy.pos );
+			//attack target cleared on onAttackComplete
+			sprite.attack( attackTarget.pos );
 
 			return false;
 
 		} else {
 
-			if (fieldOfView[enemy.pos] && getCloser( enemy.pos )) {
+			if (fieldOfView[attackTarget.pos] && getCloser( attackTarget.pos )) {
 
+				attackTarget = null;
 				return true;
 
 			} else {
 				ready();
+				attackTarget = null;
 				return false;
 			}
 
 		}
 	}
 
-	public Char enemy(){
-		return enemy;
+	public Char attackTarget(){
+		return attackTarget;
 	}
 	
 	public void rest( boolean fullRest ) {
@@ -1968,7 +1968,7 @@ public class Hero extends Char {
 				}
 			}
 			if (buff(HallowedGround.HallowedFurrowTracker.class) != null){
-				buff(HallowedGround.HallowedFurrowTracker.class).countDown(percent*5f);
+				buff(HallowedGround.HallowedFurrowTracker.class).countDown(percent*100f);
 				if (buff(HallowedGround.HallowedFurrowTracker.class).count() <= 0){
 					buff(HallowedGround.HallowedFurrowTracker.class).detach();
 				}
@@ -2262,23 +2262,23 @@ public class Hero extends Char {
 	@Override
 	public void onAttackComplete() {
 
-		if (enemy == null){
+		if (attackTarget == null){
 			curAction = null;
 			super.onAttackComplete();
 			return;
 		}
 		
-		AttackIndicator.target(enemy);
-		boolean wasEnemy = enemy.alignment == Alignment.ENEMY
-				|| (enemy instanceof Mimic && enemy.alignment == Alignment.NEUTRAL);
+		AttackIndicator.target(attackTarget);
+		boolean wasEnemy = attackTarget.alignment == Alignment.ENEMY
+				|| (attackTarget instanceof Mimic && attackTarget.alignment == Alignment.NEUTRAL);
 
-		boolean hit = attack( enemy );
+		boolean hit = attack(attackTarget);
 		
 		Invisibility.dispel();
 		spend( attackDelay() );
 
 		if (hit && subClass == HeroSubClass.GLADIATOR && wasEnemy){
-			Buff.affect( this, Combo.class ).hit( enemy );
+			Buff.affect( this, Combo.class ).hit(attackTarget);
 		}
 
 		if (hit && heroClass == HeroClass.DUELIST && wasEnemy){
@@ -2286,6 +2286,7 @@ public class Hero extends Char {
 		}
 
 		curAction = null;
+		attackTarget = null;
 
 		super.onAttackComplete();
 	}

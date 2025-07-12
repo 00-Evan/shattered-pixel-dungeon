@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -212,7 +212,8 @@ public class SPDSettings extends GameSettings {
 
 	public static boolean systemFont(){
 		return getBoolean(KEY_SYSTEMFONT,
-				(language() == Languages.KOREAN || language() == Languages.CHINESE || language() == Languages.JAPANESE));
+				(language() == Languages.CHI_SMPL || language() == Languages.CHI_TRAD
+						|| language() == Languages.KOREAN || language() == Languages.JAPANESE));
 	}
 
 	public static void vibration(boolean value){

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -72,39 +72,49 @@ public class ExitRoom extends StandardRoom {
 
 	private static ArrayList<Class<?extends StandardRoom>> rooms = new ArrayList<>();
 	static {
-		rooms.add(ExitRoom.class);
-
 		rooms.add(WaterBridgeExitRoom.class);
+		rooms.add(RegionDecoPatchExitRoom.class);
+		rooms.add(RingExitRoom.class);
 		rooms.add(CircleBasinExitRoom.class);
 
+		rooms.add(RegionDecoLineExitRoom.class);
 		rooms.add(ChasmBridgeExitRoom.class);
 		rooms.add(PillarsExitRoom.class);
+		rooms.add(CellBlockExitRoom.class);
 
 		rooms.add(CaveExitRoom.class);
+		rooms.add(RegionDecoBridgeExitRoom.class);
 		rooms.add(CavesFissureExitRoom.class);
+		rooms.add(CircleWallExitRoom.class);
 
 		rooms.add(HallwayExitRoom.class);
 		rooms.add(StatuesExitRoom.class);
+		rooms.add(LibraryHallExitRoom.class);
+		rooms.add(LibraryRingExitRoom.class);
 
+		rooms.add(RegionDecoPatchExitRoom.class);
+		rooms.add(RuinsExitRoom.class);
 		rooms.add(ChasmExitRoom.class);
 		rooms.add(RitualExitRoom.class);
 	}
 
 	private static float[][] chances = new float[27][];
 	static {
-		chances[1] =  new float[]{3,  6,1, 0,0, 0,0, 0,0, 0,0};
-		chances[5] =  chances[4] = chances[3] = chances[2] = chances[1];
+		//floor 1 only uses simpler exit rooms
+		chances[1] =  new float[]{4,3,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0};
+		chances[2] =  new float[]{4,3,2,1, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0};
+		chances[5] =  chances[4] = chances[3] = chances[2];
 
-		chances[6] =  new float[]{2,  0,0, 4,4, 0,0, 0,0, 0,0};
+		chances[6] = new float[]{0,0,0,0,  4,3,2,1, 0,0,0,0, 0,0,0,0, 0,0,0,0};
 		chances[10] = chances[9] = chances[8] = chances[7] = chances[6];
 
-		chances[11] = new float[]{2,  0,0, 0,0, 4,4, 0,0, 0,0};
+		chances[11] = new float[]{0,0,0,0, 0,0,0,0, 4,3,2,1, 0,0,0,0, 0,0,0,0};
 		chances[15] = chances[14] = chances[13] = chances[12] = chances[11];
 
-		chances[16] = new float[]{2,  0,0, 0,0, 0,0, 4,4, 0,0};
+		chances[16] = new float[]{0,0,0,0, 0,0,0,0, 0,0,0,0, 4,3,2,1, 0,0,0,0};
 		chances[20] = chances[19] = chances[18] = chances[17] = chances[16];
 
-		chances[21] = new float[]{3,  0,0, 0,0, 0,0, 0,0, 6,1};
+		chances[21] = new float[]{0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 4,3,2,1};
 		chances[26] = chances[25] = chances[24] = chances[23] = chances[22] = chances[21];
 	}
 

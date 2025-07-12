@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -704,6 +705,10 @@ public class GnollGeomancer extends Mob {
 						if (ch != null && !(ch instanceof GnollGeomancer)){
 							ch.damage(Random.NormalIntRange(6, 12), new GnollGeomancer.Boulder());
 
+							if (ch == Dungeon.hero){
+								Statistics.questScores[2] -= 100;
+							}
+
 							if (ch.isAlive()){
 								Buff.prolong( ch, Paralysis.class, ch instanceof GnollGuard ? 10 : 3 );
 							} else if (!ch.isAlive() && ch == Dungeon.hero) {
@@ -806,6 +811,9 @@ public class GnollGeomancer extends Mob {
 		@Override
 		public void affectChar(Char ch) {
 			ch.damage(Random.NormalIntRange(6, 12), this);
+			if (ch == Dungeon.hero){
+				Statistics.questScores[2] -= 100;
+			}
 			if (ch.isAlive()) {
 				Buff.prolong(ch, Paralysis.class, ch instanceof GnollGuard ? 10 : 3);
 			} else if (ch == Dungeon.hero){

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Point;
+import com.watabou.utils.Random;
 
 public class RuinsRoom extends PatchRoom {
 	
@@ -41,12 +42,12 @@ public class RuinsRoom extends PatchRoom {
 
 	@Override
 	protected float fill() {
-		//fill scales from ~20% at 4x4, to ~50% at 18x18
-		// normal   ~20% to ~30%
-		// large    ~30% to ~40%
-		// giant    ~40% to ~50%
+		//fill scales from ~30% at 4x4, to ~60% at 18x18
+		// normal   ~30% to ~40%
+		// large    ~40% to ~50%
+		// giant    ~50% to ~60%
 		int scale = Math.min(width()*height(), 18*18);
-		return 0.20f + scale/1024f;
+		return 0.30f + scale/1024f;
 	}
 
 	@Override
@@ -73,6 +74,27 @@ public class RuinsRoom extends PatchRoom {
 		}
 		
 		setupPatch(level);
-		fillPatch(level, Terrain.WALL);
+		for (int i = top + 1; i < bottom; i++) {
+			for (int j = left + 1; j < right; j++) {
+				if (patch[xyToPatchCoords(j, i)]) {
+
+					//isolated bits of wall are turned into rubble
+					boolean wall;
+					if (i > top+1 && i < bottom-1 && j >left+1 && j<right-1){
+						int adjacent = 0;
+						if (patch[xyToPatchCoords(j-1, i)]) adjacent++;
+						if (patch[xyToPatchCoords(j+1, i)]) adjacent++;
+						if (patch[xyToPatchCoords(j, i-1)]) adjacent++;
+						if (patch[xyToPatchCoords(j, i+1)]) adjacent++;
+						wall = Random.Int(2) < adjacent;
+					} else {
+						wall = true;
+					}
+
+					int cell = i * level.width() + j;
+					level.map[cell] = wall ? Terrain.WALL : Terrain.REGION_DECO;
+				}
+			}
+		}
 	}
 }

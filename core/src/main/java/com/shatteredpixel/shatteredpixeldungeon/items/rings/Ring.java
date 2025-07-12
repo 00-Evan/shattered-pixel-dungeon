@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ShardOfOblivion;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -187,15 +186,6 @@ public class Ring extends KindofMisc {
 		if (anonymous && (handler == null || !handler.isKnown( this ))){
 			desc = desc();
 
-		//otherwise, check for item type note, rings can have either but not both
-		} else if (Notes.findCustomRecord(customNoteID) == null) {
-			Notes.CustomRecord note = Notes.findCustomRecord(getClass());
-			if (note != null){
-				//we swap underscore(0x5F) with low macron(0x2CD) here to avoid highlighting in the item window
-				desc = Messages.get(this, "custom_note", note.title().replace('_', 'ˍ')) + "\n\n" + super.info();
-			} else {
-				desc = super.info();
-			}
 		} else {
 			desc = super.info();
 		}

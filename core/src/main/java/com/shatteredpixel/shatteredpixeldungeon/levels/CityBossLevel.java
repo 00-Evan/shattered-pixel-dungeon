@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -141,6 +141,9 @@ public class CityBossLevel extends Level {
 
 		Painter.fill(this, entry.left+3, entry.top+3, 1, 5, Terrain.BOOKSHELF);
 		Painter.fill(this, entry.right-4, entry.top+3, 1, 5, Terrain.BOOKSHELF);
+
+		Painter.set(this, entry.left+5, entry.top+1, Terrain.REGION_DECO);
+		Painter.set(this, entry.left+7, entry.top+1, Terrain.REGION_DECO);
 
 		Point c = entry.center();
 
@@ -388,6 +391,9 @@ public class CityBossLevel extends Level {
 				return Messages.get(CityLevel.class, "water_name");
 			case Terrain.HIGH_GRASS:
 				return Messages.get(CityLevel.class, "high_grass_name");
+			case Terrain.REGION_DECO:
+			case Terrain.REGION_DECO_ALT:
+				return Messages.get(CityLevel.class, "region_deco_name");
 			default:
 				return super.tileName( tile );
 		}
@@ -411,6 +417,9 @@ public class CityBossLevel extends Level {
 				return Messages.get(CityLevel.class, "statue_desc");
 			case Terrain.BOOKSHELF:
 				return Messages.get(CityLevel.class, "bookshelf_desc");
+			case Terrain.REGION_DECO:
+			case Terrain.REGION_DECO_ALT:
+				return Messages.get(CityLevel.class, "region_deco_desc");
 			default:
 				return super.tileDesc( tile );
 		}
@@ -421,6 +430,13 @@ public class CityBossLevel extends Level {
 		super.addVisuals();
 		CityLevel.addCityVisuals(this, visuals);
 		return visuals;
+	}
+
+	@Override
+	public Group addWallVisuals() {
+		super.addWallVisuals();
+		CityLevel.addCityWallVisuals( this, wallVisuals );
+		return wallVisuals;
 	}
 
 	public static class CustomGroundVisuals extends CustomTilemap {

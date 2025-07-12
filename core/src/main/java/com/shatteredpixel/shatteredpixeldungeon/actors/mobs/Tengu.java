@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -246,7 +246,7 @@ public class Tengu extends Mob {
 		}
 		
 		if (enemy == null) enemy = chooseEnemy();
-		if (enemy == null) return;
+		if (enemy == null) enemy = Dungeon.hero; //jump away from hero if nothing else is being targeted
 		
 		int newPos;
 		if (Dungeon.level instanceof PrisonBossLevel){
@@ -380,11 +380,8 @@ public class Tengu extends Mob {
 		BossHealthBar.assignBoss(this);
 		if (HP <= HT/2) BossHealthBar.bleed(true);
 	}
-	
-	//don't bother bundling this, as its purely cosmetic
-	private boolean yelledCoward = false;
-	
-	//tengu is always hunting
+
+	//tengu is always hunting, and can use simpler rules because he never moves
 	private class Hunting extends Mob.Hunting{
 		
 		@Override
@@ -402,19 +399,22 @@ public class Tengu extends Mob {
 				return doAttack( enemy );
 				
 			} else {
-				
-				if (enemyInFOV) {
-					target = enemy.pos;
-				} else {
-					chooseEnemy();
-					if (enemy == null){
-						//if nothing else can be targeted, target hero
-						enemy = Dungeon.hero;
+
+				//Try to switch targets to another enemy that is closer
+				//unless we have already done that and still can't attack them, then move on.
+				if (!recursing) {
+					Char oldEnemy = enemy;
+					enemy = null;
+					enemy = chooseEnemy();
+					if (enemy != null && enemy != oldEnemy) {
+						recursing = true;
+						boolean result = act(enemyInFOV, justAlerted);
+						recursing = false;
+						return result;
 					}
-					target = enemy.pos;
 				}
 				
-				//if not charmed, attempt to use an ability, even if the enemy can't be seen
+				//attempt to use an ability, even if enemy can't be decided
 				if (canUseAbility()){
 					return useAbility();
 				}
@@ -502,33 +502,35 @@ public class Tengu extends Mob {
 			} else {
 				abilityToUse = Random.Int(3);
 			}
+
+			//all abilities always target the hero, even if something else is taking Tengu's normal attacks
 			
 			//If we roll the same ability as last time, 9/10 chance to reroll
 			if (abilityToUse != lastAbility || Random.Int(10) == 0){
 				switch (abilityToUse){
 					case BOMB_ABILITY : default:
-						abilityUsed = throwBomb(Tengu.this, enemy);
+						abilityUsed = throwBomb(Tengu.this, Dungeon.hero);
 						//if Tengu cannot use his bomb ability first, use fire instead.
 						if (abilitiesUsed == 0 && !abilityUsed){
 							abilityToUse = FIRE_ABILITY;
-							abilityUsed = throwFire(Tengu.this, enemy);
+							abilityUsed = throwFire(Tengu.this, Dungeon.hero);
 						}
 						break;
 					case FIRE_ABILITY:
-						abilityUsed = throwFire(Tengu.this, enemy);
+						abilityUsed = throwFire(Tengu.this, Dungeon.hero);
 						break;
 					case SHOCKER_ABILITY:
-						abilityUsed = throwShocker(Tengu.this, enemy);
+						abilityUsed = throwShocker(Tengu.this, Dungeon.hero);
 						//if Tengu cannot use his shocker ability second, use fire instead.
 						if (abilitiesUsed == 1 && !abilityUsed){
 							abilityToUse = FIRE_ABILITY;
-							abilityUsed = throwFire(Tengu.this, enemy);
+							abilityUsed = throwFire(Tengu.this, Dungeon.hero);
 						}
 						break;
 				}
 				//always use the fire ability with the bosses challenge
 				if (abilityUsed && abilityToUse != FIRE_ABILITY && Dungeon.isChallenged(Challenges.STRONGER_BOSSES)){
-					throwFire(Tengu.this, enemy);
+					throwFire(Tengu.this, Dungeon.hero);
 				}
 			}
 			

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -146,7 +146,7 @@ public class TrinketCatalyst extends Item {
 	public static class RandomTrinket extends Item {
 
 		{
-			image = ItemSpriteSheet.TRINKET_HOLDER;
+			image = ItemSpriteSheet.SOMETHING;
 		}
 
 	}
@@ -164,7 +164,7 @@ public class TrinketCatalyst extends Item {
 
 			IconTitle titlebar = new IconTitle();
 			titlebar.icon(new ItemSprite(cata));
-			titlebar.label(Messages.titleCase(cata.name()));
+			titlebar.label(Messages.titleCase(Messages.get(TrinketCatalyst.class, "window_title")));
 			titlebar.setRect(0, 0, WIDTH, 0);
 			add( titlebar );
 

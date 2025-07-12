@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -103,7 +103,11 @@ public class HallwayRoom extends StandardRoom {
 		}
 
 		Painter.fill( level, c.left, c.top, 3, 3, Terrain.EMPTY_SP );
-		Painter.fill( level, c.left+1, c.top+1, 1, 1,  Terrain.STATUE_SP );
+		if (Random.Int(2) == 0) {
+			Painter.fill(level, c.left + 1, c.top + 1, 1, 1, Terrain.STATUE_SP);
+		} else {
+			Painter.fill(level, c.left + 1, c.top + 1, 1, 1, Terrain.REGION_DECO_ALT);
+		}
 
 		for (Door door : connected.values()) {
 			door.set( Door.Type.REGULAR );

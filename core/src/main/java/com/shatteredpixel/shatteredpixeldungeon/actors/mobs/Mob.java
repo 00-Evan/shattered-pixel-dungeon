@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -84,6 +84,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -875,6 +876,11 @@ public abstract class Mob extends Char {
 		}
 
 		if (alignment == Alignment.ENEMY){
+			if (buff(Trap.HazardAssistTracker.class) != null){
+				Statistics.hazardAssistedKills++;
+				Badges.validateHazardAssists();
+			}
+
 			rollToDropLoot();
 
 			if (cause == Dungeon.hero || cause instanceof Weapon || cause instanceof Weapon.Enchantment){
@@ -1209,7 +1215,7 @@ public abstract class Mob extends Char {
 		public static final String TAG	= "HUNTING";
 
 		//prevents rare infinite loop cases
-		private boolean recursing = false;
+		protected boolean recursing = false;
 
 		@Override
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {

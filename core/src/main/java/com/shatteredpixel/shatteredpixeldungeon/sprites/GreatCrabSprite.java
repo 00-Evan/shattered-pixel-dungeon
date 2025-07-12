@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.TextureFilm;
 
 public class GreatCrabSprite extends MobSprite {
@@ -34,17 +33,19 @@ public class GreatCrabSprite extends MobSprite {
 
 		TextureFilm frames = new TextureFilm( texture, 16, 16 );
 
-		idle = new MovieClip.Animation( 5, true );
-		idle.frames( frames, 16, 17, 16, 18 );
+		int c = 32;
 
-		run = new MovieClip.Animation( 10, true );
-		run.frames( frames, 19, 20, 21, 22 );
+		idle = new Animation( 5, true );
+		idle.frames( frames, 0+c, 1+c, 0+c, 2+c );
 
-		attack = new MovieClip.Animation( 12, false );
-		attack.frames( frames, 23, 24, 25 );
+		run = new Animation( 10, true ); //slower run animation
+		run.frames( frames, 3+c, 4+c, 5+c, 6+c );
 
-		die = new MovieClip.Animation( 12, false );
-		die.frames( frames, 26, 27, 28, 29 );
+		attack = new Animation( 12, false );
+		attack.frames( frames, 7+c, 8+c, 9+c );
+
+		die = new Animation( 12, false );
+		die.frames( frames, 10+c, 11+c, 12+c, 13+c );
 
 		play( idle );
 	}

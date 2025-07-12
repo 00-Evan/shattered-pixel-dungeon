@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -359,18 +359,32 @@ public class Trinity extends ArmorAbility {
 			ArrayList<Item> options = new ArrayList<>();
 			for (Class<?> cls : discoveredClasses){
 				if (Weapon.Enchantment.class.isAssignableFrom(cls)){
-					MeleeWeapon w = new WornShortsword();
+					MeleeWeapon w = new WornShortsword(){
+						@Override
+						public String name() {
+							//for button tooltips
+							return enchantment.name();
+						}
+					};
 					if (Dungeon.hero.belongings.weapon() != null){
 						w.image = Dungeon.hero.belongings.weapon().image;
 					}
 					w.enchant((Weapon.Enchantment) Reflection.newInstance(cls));
+					w.cursedKnown = true;
 					options.add(w);
 				} else if (Armor.Glyph.class.isAssignableFrom(cls)) {
-					Armor a = new ClothArmor();
+					Armor a = new ClothArmor(){
+						@Override
+						public String name() {
+							//for button tooltips
+							return glyph.name();
+						}
+					};
 					if (Dungeon.hero.belongings.armor() != null){
 						a.image = Dungeon.hero.belongings.armor().image;
 					}
 					a.inscribe((Armor.Glyph) Reflection.newInstance(cls));
+					a.cursedKnown = true;
 					options.add(a);
 				} else {
 					options.add((Item) Reflection.newInstance(cls));

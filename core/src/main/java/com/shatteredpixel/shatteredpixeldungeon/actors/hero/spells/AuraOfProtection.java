@@ -46,7 +46,7 @@ public class AuraOfProtection extends ClericSpell {
 
 	@Override
 	public String desc() {
-		int dmgReduction = Math.round(7.5f + 7.5F*Dungeon.hero.pointsInTalent(Talent.AURA_OF_PROTECTION));
+		int dmgReduction = 10 + 10*Dungeon.hero.pointsInTalent(Talent.AURA_OF_PROTECTION);
 		int glyphPow = 25 + 25*Dungeon.hero.pointsInTalent(Talent.AURA_OF_PROTECTION);
 		return Messages.get(this, "desc", dmgReduction, glyphPow) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
 	}

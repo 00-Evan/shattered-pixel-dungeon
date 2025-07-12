@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.SupplyRation;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.DocumentPage;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.GuidePage;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.RegionLorePage;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.CrystalKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MimicTooth;
@@ -61,8 +62,10 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MagicalFireRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.PitRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SacrificeRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.StatueRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.entrance.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.exit.ExitRoom;
@@ -85,6 +88,7 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 
 public abstract class RegularLevel extends Level {
@@ -227,12 +231,24 @@ public abstract class RegularLevel extends Level {
 		Random.shuffle(stdRooms);
 		Iterator<Room> stdRoomIter = stdRooms.iterator();
 
-		//enemies cannot be within an 8-tile FOV of the entrance
-		// or a 6-tile open space distance from the entrance
+		//enemies cannot be within a 8-tile FOV or 8-tile open space walk from the entrance
 		boolean[] entranceFOV = new boolean[length()];
 		Point c = cellToPoint(entrance());
-		ShadowCaster.castShadow(c.x, c.y, width(), entranceFOV, losBlocking, 6);
-		PathFinder.buildDistanceMap(entrance(), BArray.not(solid, null), 8);
+		ShadowCaster.castShadow(c.x, c.y, width(), entranceFOV, losBlocking, 8);
+
+		boolean[] entranceWalkable = BArray.not(solid, null);
+
+		//doors within the entrance room are ignored for this walk, but doors on the edge are not
+		for (int y = roomEntrance.top+1; y < roomEntrance.bottom; y++){
+			for (int x = roomEntrance.left+1; x < roomEntrance.right; x++){
+				int cell = x + y*width();
+				if (passable[cell]){
+					entranceWalkable[cell] = true;
+				}
+			}
+		}
+
+		PathFinder.buildDistanceMap(entrance(), entranceWalkable, 8);
 
 		Mob mob = null;
 		while (mobsToSpawn > 0) {
@@ -640,8 +656,10 @@ public abstract class RegularLevel extends Level {
 							candidateCells.add(h.pos);
 						}
 					}
-				} else {
-					if (Random.Int(5) == 0 && findMob(exit()) == null){
+				}
+
+				if (candidateCells.isEmpty()) {
+					if (Random.Int(5) == 0 && findMob(exit()) == null) {
 						candidateCells.add(exit());
 					} else {
 						for (int i = 0; i < length(); i++) {
@@ -674,11 +692,16 @@ public abstract class RegularLevel extends Level {
 	
 	protected Room randomRoom( Class<?extends Room> type ) {
 		Random.shuffle( rooms );
+		return room( type );
+	}
+
+	public Room room (Class<?extends Room> type){
 		for (Room r : rooms) {
 			if (type.isInstance(r)) {
 				return r;
 			}
 		}
+
 		return null;
 	}
 	
@@ -753,57 +776,98 @@ public abstract class RegularLevel extends Level {
 	}
 
 	@Override
-	public boolean isLevelExplored( int depth ) {
-		//A level is considered fully explored if:
+	public float levelExplorePercent( int depth ) {
+		//A room is considered not explored if:
+		HashSet<Room> missedRooms = new HashSet<>();
 
-		//There are no levelgen heaps which are undiscovered, in an openable container, or which contain keys
+		//There are levelgen heaps which are undiscovered, in an openable container, or which contain keys
 		for (Heap h : heaps.valueList()){
 			if (h.autoExplored) continue;
 
+			//we ignore crystal chests too as not all are openable
 			if (!h.seen || (h.type != Heap.Type.HEAP && h.type != Heap.Type.FOR_SALE && h.type != Heap.Type.CRYSTAL_CHEST)){
-				return false;
-			}
-			for (Item i : h.items){
-				if (i instanceof Key){
-					return false;
+				missedRooms.add(room(h.pos));
+			} else {
+				for (Item i : h.items){
+					if (i instanceof Key){
+						missedRooms.add(room(h.pos));
+						break;
+					}
 				}
 			}
 		}
 
-		//There is no magical fire or sacrificial fire
+		//There is magical fire (blocks items) or sacrificial fire (contains items) in it
 		for (Blob b : blobs.values()){
-			if (b.volume > 0 && (b instanceof MagicalFireRoom.EternalFire || b instanceof SacrificialFire)){
-				return false;
+			if (b.volume > 0) {
+				if (b instanceof MagicalFireRoom.EternalFire) {
+					missedRooms.add(room(MagicalFireRoom.class));
+				} else if (b instanceof SacrificialFire) {
+					missedRooms.add(room(SacrificeRoom.class));
+				}
 			}
 		}
 
-		//There are no statues or mimics (unless they were made allies)
+		//There are undefeated statues or mimics in it
 		for (Mob m : mobs.toArray(new Mob[0])){
 			if (m.alignment != Char.Alignment.ALLY){
 				if (m instanceof Statue && ((Statue) m).levelGenStatue){
-					return false;
+					missedRooms.add(room(StatueRoom.class)); //use room the statue came from
 				} else if (m instanceof Mimic){
-					return false;
+					missedRooms.add(room(m.pos));
 				}
 			}
 		}
 
-		//There are no barricades, locked doors, or hidden doors
+		//it contains a barricade, locked door, or hidden door
 		for (int i = 0; i < length; i++){
 			if (map[i] == Terrain.BARRICADE || map[i] == Terrain.LOCKED_DOOR || map[i] == Terrain.SECRET_DOOR){
-				return false;
+				//we use adjacent cells to find the room this is connected to
+				// we ignore connection rooms and prefer rooms already missed
+				// note that if the tile borders two non-connection rooms, it only counts one
+				Room candidate = null;
+				for (int j : PathFinder.NEIGHBOURS4){
+					if (room(i+j) != null){
+						if (candidate == null || !missedRooms.contains(candidate)){
+							candidate = room(i+j);
+						}
+					}
+				}
+				if (candidate != null) {
+					missedRooms.add(candidate);
+				}
+
 			}
 		}
 
-		//There are no unused keys for this depth in the journal
+		//There are unused crystal keys for this room (only one crystal key room can be on each floor)
+		// we ignore regular and golden keys as earlier checks would have already caught them
 		for (Notes.KeyRecord rec : Notes.getRecords(Notes.KeyRecord.class)){
-			if (rec.depth() == depth){
-				return false;
+			if (rec.depth() == depth && rec.type() == CrystalKey.class){
+				for (Room r : rooms()){
+					if (SpecialRoom.CRYSTAL_KEY_SPECIALS.contains(r.getClass())){
+						missedRooms.add(r);
+					}
+				}
 			}
 		}
 
 		//Note that it is NOT required for the player to see every tile or discover every trap.
-		return true;
+
+		//score is reduced by 50%/30%/20% for each room missed
+		// at 3 rooms missed this gives a score of 0 for the floor.
+		//Yes this is a bit harsh, but it's to preserve balance from older versions
+		// where a single missed room gave a score of 0.
+		switch (missedRooms.size()){
+			case 0:
+				return 1f;
+			case 1:
+				return 0.5f;
+			case 2:
+				return 0.2f;
+			default:
+				return 0f;
+		}
 	}
 
 	@Override

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -200,6 +200,9 @@ public class LastLevel extends Level {
 			case Terrain.STATUE:
 			case Terrain.STATUE_SP:
 				return Messages.get(HallsLevel.class, "statue_name");
+			case Terrain.REGION_DECO:
+			case Terrain.REGION_DECO_ALT:
+				return Messages.get(HallsLevel.class, "region_deco_name");
 			default:
 				return super.tileName( tile );
 		}
@@ -215,6 +218,9 @@ public class LastLevel extends Level {
 				return Messages.get(HallsLevel.class, "statue_desc");
 			case Terrain.BOOKSHELF:
 				return Messages.get(HallsLevel.class, "bookshelf_desc");
+			case Terrain.REGION_DECO:
+			case Terrain.REGION_DECO_ALT:
+				return Messages.get(HallsLevel.class, "region_deco_desc");
 			default:
 				return super.tileDesc( tile );
 		}

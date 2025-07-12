@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ClericSpell;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
@@ -84,6 +85,7 @@ public class GreatCrab extends Crab {
 			GLog.n( Messages.get(this, "noticed") );
 			sprite.showStatus( CharSprite.NEUTRAL, Messages.get(this, "def_verb") );
 			Sample.INSTANCE.play( Assets.Sounds.HIT_PARRY, 1, Random.Float(0.96f, 1.05f));
+			Statistics.questScores[0] -= 50;
 		} else {
 			super.damage( dmg, src );
 		}
@@ -100,6 +102,9 @@ public class GreatCrab extends Crab {
 			if (sprite != null && sprite.visible) {
 				Sample.INSTANCE.play(Assets.Sounds.HIT_PARRY, 1, Random.Float(0.96f, 1.05f));
 				GLog.n( Messages.get(this, "noticed") );
+			}
+			if (enemy == Dungeon.hero){
+				Statistics.questScores[0] -= 50;
 			}
 			return INFINITE_EVASION;
 		}

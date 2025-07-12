@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -133,6 +134,7 @@ public class BuffIndicator extends Component {
 	public static final int ILLUMINATED = 81;
 	public static final int TRINITY_FORM= 82;
 	public static final int MANY_POWER  = 83;
+	public static final int SEAL_SHIELD = 84;
 
 	public static final int SIZE_SMALL  = 7;
 	public static final int SIZE_LARGE  = 16;
@@ -258,6 +260,10 @@ public class BuffIndicator extends Component {
 				icon.givePointerPriority();
 				cumulativeAdjust -= leftAdjust;
 			}
+		}
+
+		if (this == heroInstance && buffButtons.size() >= 10){
+			Badges.validateManyBuffs();
 		}
 	}
 

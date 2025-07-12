@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,8 +63,6 @@ public class DivineSense extends ClericSpell {
 
 		Sample.INSTANCE.play(Assets.Sounds.READ);
 
-		hero.spend( 1f );
-		hero.busy();
 		SpellSprite.show(hero, SpellSprite.VISION);
 		hero.sprite.operate(hero.pos);
 

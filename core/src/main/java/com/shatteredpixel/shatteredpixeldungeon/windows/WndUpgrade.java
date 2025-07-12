@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -473,7 +473,7 @@ public class WndUpgrade extends Window {
 	private float fillFields(String title, String msg1, String msg2, float bottom){
 
 		//the ~ symbol is more commonly used in Chinese
-		if (Messages.lang() == Languages.CHINESE){
+		if (Messages.lang() == Languages.CHI_SMPL || Messages.lang() == Languages.CHI_TRAD){
 			msg1 = msg1.replace('-', '~');
 			msg2 = msg2.replace('-', '~');
 		}

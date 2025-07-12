@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.noosa.Camera;
 import com.watabou.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -299,6 +300,11 @@ public class ScrollOfTeleportation extends Scroll {
 
 		if (Dungeon.level.heroFOV[pos] || ch == Dungeon.hero ) {
 			ch.sprite.emitter().start(Speck.factory(Speck.LIGHT), 0.2f, 3);
+		} else {
+			if (Camera.main.followTarget() == ch.sprite){
+				//clear the follow in this case as the teleport target is going out of vision
+				Camera.main.panFollow(null, 5f);
+			}
 		}
 	}
 

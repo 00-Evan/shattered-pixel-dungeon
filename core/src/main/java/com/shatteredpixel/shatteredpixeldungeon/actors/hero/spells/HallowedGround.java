@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -127,9 +127,6 @@ public class HallowedGround extends TargetedClericSpell {
 			affectChar(ch);
 		}
 
-		//5 casts per hero level before furrowing
-		Buff.affect(hero, HallowedFurrowTracker.class).countUp(1);
-
 		Sample.INSTANCE.play(Assets.Sounds.MELD);
 		hero.sprite.zap(target);
 		hero.spendAndNext( 1f );
@@ -142,20 +139,21 @@ public class HallowedGround extends TargetedClericSpell {
 		if (ch.alignment == Char.Alignment.ALLY){
 
 			if (ch == Dungeon.hero || ch.HP == ch.HT){
-				Buff.affect(ch, Barrier.class).incShield(10);
-				ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, "10", FloatingText.SHIELDING );
+				int barrierToGive = Math.min(15, 30 - ch.shielding());
+				Buff.affect(ch, Barrier.class).incShield(barrierToGive);
+				ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(barrierToGive), FloatingText.SHIELDING );
 			} else {
-				int barrier = 10 - (ch.HT - ch.HP);
+				int barrier = 15 - (ch.HT - ch.HP);
 				barrier = Math.max(barrier, 0);
-				ch.HP += 10 - barrier;
-				ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(10-barrier), FloatingText.HEALING );
+				ch.HP += 15 - barrier;
+				ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(15-barrier), FloatingText.HEALING );
 				if (barrier > 0){
 					Buff.affect(ch, Barrier.class).incShield(barrier);
 					ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(barrier), FloatingText.SHIELDING );
 				}
 			}
 		} else if (!ch.flying) {
-			Buff.affect(ch, Roots.class, 1f);
+			Buff.affect(ch, Roots.class, 2f);
 		}
 	}
 
@@ -193,7 +191,7 @@ public class HallowedGround extends TargetedClericSpell {
 						if (c == Terrain.GRASS && Dungeon.level.plants.get(c) == null) {
 							if (Random.Int(chance) == 0) {
 								if (!Regeneration.regenOn()
-										|| (Dungeon.hero.buff(HallowedFurrowTracker.class) != null && Dungeon.hero.buff(HallowedFurrowTracker.class).count() > 5)){
+										|| (Dungeon.hero.buff(HallowedFurrowTracker.class) != null && Dungeon.hero.buff(HallowedFurrowTracker.class).count() > 100)){
 									Level.set(cell, Terrain.FURROWED_GRASS);
 								} else {
 									Level.set(cell, Terrain.HIGH_GRASS);
@@ -218,6 +216,11 @@ public class HallowedGround extends TargetedClericSpell {
 						off[cell] = 0;
 					}
 				}
+			}
+
+			//max of 100 turns of grass per hero level before it starts to furrow
+			if (volume > 0){
+				Buff.count(Dungeon.hero, HallowedFurrowTracker.class, 1);
 			}
 
 			Char ally = PowerOfMany.getPoweredAlly();

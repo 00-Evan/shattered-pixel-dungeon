@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,13 +39,21 @@ public class CurrencyIndicator extends Component {
 	
 	private float goldTime;
 	private float energyTime;
+
+	public static boolean showGold = false;
 	
 	@Override
 	protected void createChildren() {
 		gold = new BitmapText( PixelScene.pixelFont);
+		gold.text( Integer.toString(lastGold) );
+		gold.measure();
+		gold.hardlight( 0xFFFF00 );
 		add( gold );
 
 		energy = new BitmapText( PixelScene.pixelFont);
+		energy.text( Integer.toString(lastEnergy) );
+		energy.measure();
+		energy.hardlight( 0x44CCFF );
 		add( energy );
 		
 		gold.visible = energy.visible = false;
@@ -96,7 +104,6 @@ public class CurrencyIndicator extends Component {
 			
 			gold.text( Integer.toString(lastGold) );
 			gold.measure();
-			gold.hardlight( 0xFFFF00 );
 			
 			gold.visible = true;
 			goldTime = TIME;
@@ -109,12 +116,20 @@ public class CurrencyIndicator extends Component {
 
 			energy.text( Integer.toString(lastEnergy) );
 			energy.measure();
-			energy.hardlight( 0x44CCFF );
 
 			energy.visible = true;
 			energyTime = TIME;
 
 			layout();
 		}
+
+		if (showGold){
+			if (!gold.visible){
+				gold.visible = true;
+				layout();
+			}
+			goldTime = TIME/2;
+		}
+
 	}
 }

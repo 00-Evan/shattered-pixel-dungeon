@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndWandmaker;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
-import com.watabou.utils.Point;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -305,11 +305,11 @@ public class Wandmaker extends NPC {
 				do {
 					validPos = true;
 					npc.pos = level.pointToCell(room.random((room.width() > 6 && room.height() > 6) ? 2 : 1));
-					if (npc.pos == level.entrance()){
+					if (npc.pos == level.entrance() || level.solid[npc.pos]){
 						validPos = false;
 					}
-					for (Point door : room.connected.values()){
-						if (level.trueDistance( npc.pos, level.pointToCell( door ) ) <= 1){
+					for (int i : PathFinder.NEIGHBOURS4){
+						if (level.map[npc.pos+i] == Terrain.DOOR){
 							validPos = false;
 						}
 					}
@@ -446,7 +446,10 @@ public class Wandmaker extends NPC {
 			wand2 = null;
 			
 			Notes.remove( Notes.Landmark.WANDMAKER );
-			Statistics.questScores[1] = 2000;
+			//other quests award score when their boss is defeated
+			if (Quest.type == 1) {
+				Statistics.questScores[1] += 2000;
+			}
 		}
 	}
 }

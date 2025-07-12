@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
@@ -76,7 +75,7 @@ public class WndBlacksmith extends Window {
 
 		ArrayList<RedButton> buttons = new ArrayList<>();
 
-		int pickaxeCost = Statistics.questScores[2] >= 2500 ? 0 : 250;
+		int pickaxeCost = Blacksmith.Quest.freePickaxe ? 0 : 250;
 		RedButton pickaxe = new RedButton(Messages.get(this, "pickaxe", pickaxeCost), 6){
 			@Override
 			protected void onClick() {

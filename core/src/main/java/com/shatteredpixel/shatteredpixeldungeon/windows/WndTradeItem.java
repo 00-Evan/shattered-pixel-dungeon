@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.CurrencyIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 
 public class WndTradeItem extends WndInfoItem {
@@ -121,6 +122,7 @@ public class WndTradeItem extends WndInfoItem {
 		super(heap);
 
 		selling = false;
+		CurrencyIndicator.showGold = true;
 
 		Item item = heap.peek();
 
@@ -207,6 +209,7 @@ public class WndTradeItem extends WndInfoItem {
 	public void hide() {
 		
 		super.hide();
+		CurrencyIndicator.showGold = false;
 		
 		if (owner != null) {
 			owner.hide();

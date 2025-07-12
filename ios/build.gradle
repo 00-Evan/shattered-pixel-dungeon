@@ -46,7 +46,7 @@ dependencies {
     implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
     implementation "com.mobidevelop.robovm:robovm-rt:$robovmVersion"
     implementation "com.mobidevelop.robovm:robovm-cocoatouch:$robovmVersion"
-    implementation "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-backend-robovm-metalangle:$gdxVersion"
     implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
     implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-ios"
     implementation "com.badlogicgames.gdx-controllers:gdx-controllers-ios:$gdxControllersVersion"

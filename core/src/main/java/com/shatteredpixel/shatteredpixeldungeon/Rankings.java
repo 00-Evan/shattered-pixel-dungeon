@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -180,6 +180,7 @@ public enum Rankings {
 					Statistics.heldItemValue += i.value();
 					if (i instanceof CorpseDust && Statistics.deepestFloor >= 10){
 						// in case player kept the corpse dust, for a necromancer run
+						//we also override the score here, ignoring penalties
 						Statistics.questScores[1] = 2000;
 					}
 				}
@@ -189,8 +190,8 @@ public enum Rankings {
 
 			Statistics.exploreScore = 0;
 			int scorePerFloor = Statistics.floorsExplored.size * 50;
-			for (Boolean b : Statistics.floorsExplored.valueList()){
-				if (b) Statistics.exploreScore += scorePerFloor;
+			for (float percentExplored : Statistics.floorsExplored.valueList()){
+				Statistics.exploreScore += Math.round(percentExplored*scorePerFloor);
 			}
 
 			Statistics.totalBossScore = 0;

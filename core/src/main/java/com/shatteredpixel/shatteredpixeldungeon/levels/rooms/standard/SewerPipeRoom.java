@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ public class SewerPipeRoom extends StandardRoom {
 
 	@Override
 	public float[] sizeCatProbs() {
-		return new float[]{4, 2, 1};
+		return new float[]{3, 2, 1};
 	}
 
 	@Override

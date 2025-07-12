@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.watabou.utils.Random;
 
 public class StatuesRoom extends StandardRoom {
 
@@ -73,8 +74,17 @@ public class StatuesRoom extends StandardRoom {
 				Painter.set(level, left, top + h-1, Terrain.STATUE_SP);
 				Painter.set(level, left + w-1, top + h-1, Terrain.STATUE_SP);
 
+				//place a flaming pedestal in the center
 				if (w >= 5 && h >= 5){
-					Painter.fill(level, left+2, top+2, w-4, h-4, Terrain.STATUE_SP);
+					int cx = left + w/2;
+					if (w % 2 == 0 && Random.Int(2) == 0){
+						cx--;
+					}
+					int cy = top + h/2;
+					if (h % 2 == 0 && Random.Int(2) == 0){
+						cy--;
+					}
+					Painter.set(level, cx, cy, Terrain.REGION_DECO_ALT);
 				}
 			}
 		}

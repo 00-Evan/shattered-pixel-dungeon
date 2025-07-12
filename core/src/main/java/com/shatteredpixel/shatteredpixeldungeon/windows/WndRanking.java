@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,8 +32,10 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.Trinket;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
@@ -482,11 +484,17 @@ public class WndRanking extends WndTabbed {
 			
 			slot.item( item );
 			if (item.cursed && item.cursedKnown) {
-				bg.ra = +0.2f;
-				bg.ga = -0.1f;
+				bg.ra = +0.3f;
+				bg.ga = -0.15f;
+				bg.ba = -0.15f;
 			} else if (!item.isIdentified()) {
-				bg.ra = 0.1f;
-				bg.ba = 0.1f;
+				if ((item instanceof EquipableItem || item instanceof Wand) && item.cursedKnown){
+					bg.ba = +0.3f;
+					bg.ra = -0.1f;
+				} else {
+					bg.ra = +0.35f;
+					bg.ba = +0.35f;
+				}
 			}
 		}
 		

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 
@@ -49,6 +50,9 @@ public class WeakeningTrap extends Trap{
 				Buff.prolong( ch, Weakness.class, Weakness.DURATION/2f );
 			}
 			Buff.prolong( ch, Weakness.class, Weakness.DURATION*3f );
+			if (ch instanceof Mob){
+				Buff.prolong(ch, Trap.HazardAssistTracker.class, HazardAssistTracker.DURATION);
+			}
 		}
 	}
 }

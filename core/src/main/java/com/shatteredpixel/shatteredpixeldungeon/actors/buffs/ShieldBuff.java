@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,12 +22,24 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.watabou.utils.Bundle;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public abstract class ShieldBuff extends Buff {
 	
 	private int shielding;
 
+	//higher priority shielding buffs are consumed first if multiple exist
+	//currently we have the following:
+	// 2: relatively weak and short term shields like blocking buff
+	// 1: larger but still short-term shields from Cleric's ascended form
+	// 0: everything else, mostly the various sources of generic barrier
+	protected int shieldUsePriority = 0;
 	protected boolean detachesAtZero = true;
 	
 	@Override
@@ -92,6 +104,36 @@ public abstract class ShieldBuff extends Buff {
 		}
 		if (target != null) target.needsShieldUpdate = true;
 		return dmg;
+	}
+
+	public static int processDamage( Char target, int damage, Object src ){
+		//hunger damage is not affected by shielding
+		if (src instanceof Hunger){
+			return damage;
+		}
+
+		ArrayList<ShieldBuff> buffs = new ArrayList<>(target.buffs(ShieldBuff.class));
+		if (!buffs.isEmpty()){
+			//sort in descending order based on shield use priority
+			Collections.sort(buffs, new Comparator<ShieldBuff>() {
+				@Override
+				public int compare(ShieldBuff a, ShieldBuff b) {
+					return b.shieldUsePriority - a.shieldUsePriority;
+				}
+			});
+			for (ShieldBuff buff : buffs){
+				if (buff.shielding() <= 0) continue;
+				damage = buff.absorbDamage(damage);
+				if (buff.shielding() <= 0){
+					if (target instanceof Hero && ((Hero) target).hasTalent(Talent.PROVOKED_ANGER)){
+						Buff.affect(target, Talent.ProvokedAngerTracker.class, 5f);
+					}
+				}
+				if (damage == 0) break;
+			}
+		}
+
+		return damage;
 	}
 	
 	private static final String SHIELDING = "shielding";

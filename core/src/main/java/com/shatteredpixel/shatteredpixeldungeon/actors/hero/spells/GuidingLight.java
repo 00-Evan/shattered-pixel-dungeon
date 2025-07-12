@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
@@ -82,7 +83,7 @@ public class GuidingLight extends TargetedClericSpell {
 
 				Char ch = Actor.findChar( aim.collisionPos );
 				if (ch != null) {
-					ch.damage(Random.NormalIntRange(2, 6), GuidingLight.this);
+					ch.damage(Random.NormalIntRange(2, 8), GuidingLight.this);
 					Sample.INSTANCE.play(Assets.Sounds.HIT_MAGIC, 1, Random.Float(0.87f, 1.15f));
 					ch.sprite.burst(0xFFFFFF44, 3);
 					if (ch.isAlive()){
@@ -99,6 +100,7 @@ public class GuidingLight extends TargetedClericSpell {
 				onSpellCast(tome, hero);
 				if (hero.subClass == HeroSubClass.PRIEST && hero.buff(GuidingLightPriestCooldown.class) == null) {
 					Buff.prolong(hero, GuidingLightPriestCooldown.class, 100f);
+					ActionIndicator.refresh();
 				}
 
 			}
@@ -137,6 +139,11 @@ public class GuidingLight extends TargetedClericSpell {
 
 		public float iconFadePercent() { return Math.max(0, visualcooldown() / 100); }
 
+		@Override
+		public void detach() {
+			super.detach();
+			ActionIndicator.refresh();
+		}
 	}
 
 	public static class Illuminated extends Buff {

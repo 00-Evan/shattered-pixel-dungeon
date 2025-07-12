@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,8 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.watabou.utils.Point;
+import com.watabou.utils.Random;
 
 public class CirclePitRoom extends StandardRoom {
 
@@ -58,5 +60,47 @@ public class CirclePitRoom extends StandardRoom {
 		}
 
 		Painter.fillEllipse( level, this, 3 , Terrain.CHASM );
+
+		//50/100% chance based on size
+		if (sizeCat != SizeCategory.NORMAL && Random.Int(4-sizeFactor()) == 0) {
+			while (true){
+				//draw line from center (plus or minus one in each DIR) to side
+				Point center = center();
+				center.x += Random.IntRange(-1, 1);
+				center.y += Random.IntRange(-1, 1);
+
+				Point edge = new Point(center);
+				switch (Random.Int(4)){
+					case 0:
+						edge.x = left;
+						break;
+					case 1:
+						edge.y = top;
+						break;
+					case 2:
+						edge.x  = right;
+						break;
+					case 3:
+						edge.y = bottom;
+						break;
+				}
+
+				boolean valid = true;
+				for (Point door : connected.values()){
+					if (door.equals(edge)){
+						valid = false;
+					}
+				}
+
+				if (valid) {
+					Painter.drawLine(level, edge, center, Terrain.REGION_DECO_ALT);
+					Painter.drawInside(level, this, edge, 1, Terrain.EMPTY_SP);
+					Painter.set(level, edge, Terrain.WALL);
+
+					//TODO pick a random cell to make empty_sp?
+				}
+				break;
+			}
+		}
 	}
 }

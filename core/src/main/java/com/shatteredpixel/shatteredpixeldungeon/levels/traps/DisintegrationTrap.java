@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -53,7 +55,8 @@ public class DisintegrationTrap extends Trap {
 
 		//find the closest char that can be aimed at
 		//can't target beyond view distance, with a min of 6 (torch range)
-		int range = Math.max(6, Dungeon.level.viewDistance);
+		//add 0.5 for better consistency with vision radius shape
+		float range = Math.max(6, Dungeon.level.viewDistance)+0.5f;
 		if (target == null){
 			float closestDist = Float.MAX_VALUE;
 			for (Char ch : Actor.chars()){
@@ -77,6 +80,9 @@ public class DisintegrationTrap extends Trap {
 		if (heap != null) heap.explode();
 		
 		if (target != null) {
+			if (target instanceof Mob){
+				Buff.prolong(target, Trap.HazardAssistTracker.class, HazardAssistTracker.DURATION);
+			}
 			if (Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[target.pos]) {
 				Sample.INSTANCE.play(Assets.Sounds.RAY);
 				ShatteredPixelDungeon.scene().add(new Beam.DeathRay(DungeonTilemap.tileCenterToWorld(pos), target.sprite.center()));

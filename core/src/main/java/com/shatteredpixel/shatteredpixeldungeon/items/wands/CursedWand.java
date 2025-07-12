@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -707,7 +707,7 @@ public class CursedWand {
 			if (valid(origin, user, bolt, positiveOnly)){
 				Char ch = Actor.findChar( bolt.collisionPos );
 				Sheep sheep = new Sheep();
-				sheep.lifespan = 10;
+				sheep.initialize(10);
 				sheep.pos = ch.pos;
 				ch.destroy();
 				ch.sprite.killAndErase();

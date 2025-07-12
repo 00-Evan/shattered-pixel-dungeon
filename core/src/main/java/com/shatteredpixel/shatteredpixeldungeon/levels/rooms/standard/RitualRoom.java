@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
-public class RitualRoom extends StandardRoom {
+public class RitualRoom extends PatchRoom {
 
 	@Override
 	public int minWidth() {
@@ -43,7 +43,33 @@ public class RitualRoom extends StandardRoom {
 
 	@Override
 	public float[] sizeCatProbs() {
-		return new float[]{2, 1, 0};
+		return new float[]{6, 3, 1};
+	}
+
+	@Override
+	protected float fill() {
+		//fill scales from ~30% at 4x4, to ~60% at 18x18
+		// normal   ~30% to ~40%
+		// large    ~40% to ~50%
+		// giant    ~50% to ~60%
+		// however,  the inner 7x7 is overridden, so overall fill is much lower
+		int scale = Math.min(width()*height(), 18*18);
+		return 0.30f + scale/1024f;
+	}
+
+	@Override
+	protected int clustering() {
+		return 0;
+	}
+
+	@Override
+	protected boolean ensurePath() {
+		return connected.size() > 0;
+	}
+
+	@Override
+	protected boolean cleanEdges() {
+		return true;
 	}
 
 	@Override
@@ -52,6 +78,11 @@ public class RitualRoom extends StandardRoom {
 		Painter.fill( level, this, 1 , Terrain.EMPTY );
 
 		Point c = center();
+
+		setupPatch(level);
+		fillPatch(level, Terrain.REGION_DECO);
+
+		Painter.fill(level, c.x - 3, c.y - 3, 7, 7, Terrain.EMPTY);
 
 		Painter.set(level, c.x-2, c.y-1, Terrain.STATUE);
 		Painter.set(level, c.x-1, c.y-2, Terrain.STATUE);
@@ -63,19 +94,6 @@ public class RitualRoom extends StandardRoom {
 		Painter.set(level, c.x+1, c.y+2, Terrain.STATUE);
 		Painter.fill(level, c.x-1, c.y-1, 3, 3, Terrain.EMBERS);
 		Painter.set(level, c, Terrain.PEDESTAL);
-
-		if (width() >= 11 && height() >= 11){
-			Painter.set(level, left+2, top+2, Terrain.STATUE);
-			Painter.set(level, right-2, top+2, Terrain.STATUE);
-			Painter.set(level, left+2, bottom-2, Terrain.STATUE);
-			Painter.set(level, right-2, bottom-2, Terrain.STATUE);
-			if (width() >= 13 && height() >= 13){
-				Painter.set(level, left+3, top+3, Terrain.STATUE);
-				Painter.set(level, right-3, top+3, Terrain.STATUE);
-				Painter.set(level, left+3, bottom-3, Terrain.STATUE);
-				Painter.set(level, right-3, bottom-3, Terrain.STATUE);
-			}
-		}
 
 		placeloot(level, c);
 

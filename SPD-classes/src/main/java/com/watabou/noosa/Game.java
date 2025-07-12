@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -100,15 +100,15 @@ public class Game implements ApplicationListener {
 		if (density == Float.POSITIVE_INFINITY){
 			density = 100f / 160f; //assume 100PPI if density can't be found
 		} else if (DeviceCompat.isDesktop()) {
-			float PpiX = Gdx.graphics.getPpiX();
-			float PpiY = Gdx.graphics.getPpiY();
+			float reportedWidth = dispWidth / Gdx.graphics.getPpiX();
+			float reportedHeight = dispHeight / Gdx.graphics.getPpiY();
 
 			//this exists because Steam deck reports its display size as 4"x6.3" for some reason
 			// as if in portrait, instead of 6.3"x4". This results in incorrect PPI measurements.
-			// So when the PPIs differ, we assume reported display size is flipped and adjust
-			if (PpiX / PpiY > 1.1f || PpiX / PpiY < 0.9f ){
-				float reportedDisplayHeightInches = dispHeight / PpiY; //it's actually the width
-				float realPpiX = dispWidth / reportedDisplayHeightInches;
+			// So we check that the orientation of the resolution and the display dimensions match.
+			// If they don't, re-calculate density assuming reported dimensions are flipped.
+			if (dispWidth > dispHeight != reportedWidth > reportedHeight){
+				float realPpiX = dispWidth / reportedHeight;
 				density = realPpiX / 160f;
 			}
 		}
@@ -283,7 +283,9 @@ public class Game implements ApplicationListener {
 	}
 
 	protected void update() {
-		Game.elapsed = Game.timeScale * Gdx.graphics.getDeltaTime();
+		//game will not process more than 200ms of graphics time per frame
+		float frameDelta = Math.min(0.2f, Gdx.graphics.getDeltaTime());
+		Game.elapsed = Game.timeScale * frameDelta;
 		Game.timeTotal += Game.elapsed;
 		
 		Game.realTime = TimeUtils.millis();

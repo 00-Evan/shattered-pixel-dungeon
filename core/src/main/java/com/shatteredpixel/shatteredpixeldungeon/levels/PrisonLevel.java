@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WindParticle;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.PrisonPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
@@ -177,6 +178,10 @@ public class PrisonLevel extends RegularLevel {
 		switch (tile) {
 			case Terrain.WATER:
 				return Messages.get(PrisonLevel.class, "water_name");
+			case Terrain.REGION_DECO:
+				return Messages.get(PrisonLevel.class, "region_deco_name");
+			case Terrain.REGION_DECO_ALT:
+				return Messages.get(PrisonLevel.class, "region_deco_alt_name");
 			default:
 				return super.tileName( tile );
 		}
@@ -189,6 +194,10 @@ public class PrisonLevel extends RegularLevel {
 				return Messages.get(PrisonLevel.class, "empty_deco_desc");
 			case Terrain.BOOKSHELF:
 				return Messages.get(PrisonLevel.class, "bookshelf_desc");
+			case Terrain.REGION_DECO:
+				return Messages.get(PrisonLevel.class, "region_deco_desc");
+			case Terrain.REGION_DECO_ALT:
+				return Messages.get(PrisonLevel.class, "region_deco_alt_desc");
 			default:
 				return super.tileDesc( tile );
 		}
@@ -205,6 +214,10 @@ public class PrisonLevel extends RegularLevel {
 		for (int i=0; i < level.length(); i++) {
 			if (level.map[i] == Terrain.WALL_DECO) {
 				group.add( new Torch( i ) );
+			}
+			//alt deco is a chasm visual in the prison
+			if (level.map[i] == Terrain.REGION_DECO_ALT) {
+				group.add( new WindParticle.Wind( i ) );
 			}
 		}
 	}

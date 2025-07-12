@@ -49,7 +49,7 @@ public class LayOnHands extends TargetedClericSpell {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", 5 + 5*Dungeon.hero.pointsInTalent(Talent.LAY_ON_HANDS)) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
+		return Messages.get(this, "desc", 10 + 5*Dungeon.hero.pointsInTalent(Talent.LAY_ON_HANDS)) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
 	}
 
 	@Override
@@ -105,10 +105,10 @@ public class LayOnHands extends TargetedClericSpell {
 	}
 
 	private void affectChar(Hero hero, Char ch){
-		Barrier barrier = Buff.affect(ch, Barrier.class);
-		int totalHeal = 5 + 5*hero.pointsInTalent(Talent.LAY_ON_HANDS);
+		int totalHeal = 10 + 5*hero.pointsInTalent(Talent.LAY_ON_HANDS);
 		int totalBarrier = 0;
 		if (ch == hero){
+			Barrier barrier = Buff.affect(ch, Barrier.class);
 			totalBarrier = totalHeal;
 			totalBarrier = Math.min(3*totalHeal - barrier.shielding(), totalBarrier);
 			totalBarrier = Math.max(0, totalBarrier);
@@ -117,15 +117,18 @@ public class LayOnHands extends TargetedClericSpell {
 		} else {
 			if (ch.HT - ch.HP < totalHeal){
 				totalBarrier = totalHeal - (ch.HT - ch.HP);
-				totalBarrier = Math.min(3*totalHeal - barrier.shielding(), totalBarrier);
-				totalBarrier = Math.max(0, totalBarrier);
 				if (ch.HP != ch.HT) {
 					ch.HP = ch.HT;
 					ch.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(totalHeal - totalBarrier), FloatingText.HEALING);
 				}
 				if (totalBarrier > 0) {
-					barrier.incShield(totalBarrier);
-					ch.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(totalBarrier), FloatingText.SHIELDING);
+					Barrier barrier = Buff.affect(ch, Barrier.class);
+					totalBarrier = Math.min(3 * totalHeal - barrier.shielding(), totalBarrier);
+					totalBarrier = Math.max(0, totalBarrier);
+					if (totalBarrier > 0) {
+						barrier.incShield(totalBarrier);
+						ch.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(totalBarrier), FloatingText.SHIELDING);
+					}
 				}
 			} else {
 				ch.HP = ch.HP + totalHeal;

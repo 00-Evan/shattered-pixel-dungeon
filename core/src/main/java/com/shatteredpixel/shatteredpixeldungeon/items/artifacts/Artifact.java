@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -150,7 +150,7 @@ public class Artifact extends KindofMisc {
 	public static void artifactProc(Char target, int artifLevel, int chargesUsed){
 		if (Dungeon.hero.subClass == HeroSubClass.PRIEST && target.buff(GuidingLight.Illuminated.class) != null) {
 			target.buff(GuidingLight.Illuminated.class).detach();
-			target.damage(Dungeon.hero.lvl, GuidingLight.INSTANCE);
+			target.damage(5+Dungeon.hero.lvl, GuidingLight.INSTANCE);
 		}
 
 		if (target.alignment != Char.Alignment.ALLY

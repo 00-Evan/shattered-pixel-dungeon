@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,10 +22,14 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ConfusionGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PathFinder;
 
 public class ConfusionTrap extends Trap {
 
@@ -39,6 +43,12 @@ public class ConfusionTrap extends Trap {
 
 		GameScene.add(Blob.seed(pos, 300 + 20 * scalingDepth(), ConfusionGas.class));
 		Sample.INSTANCE.play(Assets.Sounds.GAS);
+
+		for( int i : PathFinder.NEIGHBOURS9) {
+			if (Actor.findChar(pos+i) instanceof Mob){
+				Buff.prolong(Actor.findChar(pos+i), Trap.HazardAssistTracker.class, HazardAssistTracker.DURATION);
+			}
+		}
 
 	}
 }
