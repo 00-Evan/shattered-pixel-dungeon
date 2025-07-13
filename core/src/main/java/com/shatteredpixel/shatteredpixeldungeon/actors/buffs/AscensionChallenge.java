@@ -192,9 +192,11 @@ public class AscensionChallenge extends Buff {
 		} else {
 			chal.stacks -= 1;
 		}
-		chal.stacksLowered = true;
 		chal.stacks = Math.max(0, chal.stacks);
-		if (chal.stacks < 8f && (int)(chal.stacks/2) != (int)(oldStacks/2f)){
+		if (!chal.stacksLowered) {
+			chal.stacksLowered = true;
+			GLog.p(Messages.get(AscensionChallenge.class, "weaken"));
+		} else if (chal.stacks < 8f && (int)(chal.stacks/2) != (int)(oldStacks/2f)){
 			GLog.p(Messages.get(AscensionChallenge.class, "weaken"));
 		}
 
