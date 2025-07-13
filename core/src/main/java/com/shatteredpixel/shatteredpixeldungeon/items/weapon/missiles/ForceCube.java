@@ -65,8 +65,10 @@ public class ForceCube extends MissileWeapon {
 			return;
 		}
 
-		//TODO ID progress is pretty screwy here
+		//keep the parent reference for things like IDing
+		MissileWeapon parentTemp = parent;
 		rangedHit( null, cell );
+		parent = parentTemp;
 		Dungeon.level.pressCell(cell);
 		
 		ArrayList<Char> targets = new ArrayList<>();
