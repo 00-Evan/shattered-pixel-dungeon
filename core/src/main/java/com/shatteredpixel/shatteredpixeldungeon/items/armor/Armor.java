@@ -403,8 +403,13 @@ public class Armor extends EquipableItem {
 			return lvl;
 		}
 	}
+
+	//This exists so we can test what a char's base evasion would be without armor affecting it
+	//more ugly static vars yaaay~
+	public static boolean testingNoArmDefSkill = false;
 	
 	public float evasionFactor( Char owner, float evasion ){
+		if (testingNoArmDefSkill) return evasion;
 		
 		if (hasGlyph(Stone.class, owner) && !Stone.testingEvasion()){
 			return 0;

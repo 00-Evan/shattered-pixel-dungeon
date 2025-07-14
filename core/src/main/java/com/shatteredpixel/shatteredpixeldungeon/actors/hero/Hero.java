@@ -485,6 +485,20 @@ public class Hero extends Char {
 	}
 	
 	@Override
+	public boolean attack(Char enemy, float dmgMulti, float dmgBonus, float accMulti) {
+		boolean result = super.attack(enemy, dmgMulti, dmgBonus, accMulti);
+		if (!(belongings.attackingWeapon() instanceof MissileWeapon)){
+			if (buff(Talent.PreciseAssaultTracker.class) != null){
+				buff(Talent.PreciseAssaultTracker.class).detach();
+			} else if (buff(Talent.LiquidAgilACCTracker.class) != null
+						&& buff(Talent.LiquidAgilACCTracker.class).uses <= 0){
+				buff(Talent.LiquidAgilACCTracker.class).detach();
+			}
+		}
+		return result;
+	}
+
+	@Override
 	public int attackSkill( Char target ) {
 		KindOfWeapon wep = belongings.attackingWeapon();
 		
@@ -517,16 +531,16 @@ public class Hero extends Char {
 						case 3:
 							accuracy *= Float.POSITIVE_INFINITY; break;
 					}
-					buff(Talent.PreciseAssaultTracker.class).detach();
 				} else if (buff(Talent.LiquidAgilACCTracker.class) != null){
 					// 3x/inf. ACC, depending on talent level
 					accuracy *= pointsInTalent(Talent.LIQUID_AGILITY) == 2 ? Float.POSITIVE_INFINITY : 3f;
 					Talent.LiquidAgilACCTracker buff = buff(Talent.LiquidAgilACCTracker.class);
 					buff.uses--;
-					if (buff.uses <= 0) {
-						buff.detach();
-					}
 				}
+			}
+		} else {
+			if (buff(Momentum.class) != null && buff(Momentum.class).freerunning()){
+				accuracy *= 1f + pointsInTalent(Talent.PROJECTILE_MOMENTUM)/3f;
 			}
 		}
 
@@ -535,9 +549,9 @@ public class Hero extends Char {
 		}
 		
 		if (!RingOfForce.fightingUnarmed(this)) {
-			return (int)(attackSkill * accuracy * wep.accuracyFactor( this, target ));
+			return Math.max(1, Math.round(attackSkill * accuracy * wep.accuracyFactor( this, target )));
 		} else {
-			return (int)(attackSkill * accuracy);
+			return Math.max(1, Math.round(attackSkill * accuracy));
 		}
 	}
 	
@@ -579,7 +593,7 @@ public class Hero extends Char {
 			evasion = belongings.armor().evasionFactor(this, evasion);
 		}
 
-		return Math.round(evasion);
+		return Math.max(1, Math.round(evasion));
 	}
 
 	@Override
