@@ -372,7 +372,7 @@ public class FloatingText extends RenderedTextBlock {
 			if (attacker.buff(Momentum.class) != null
 					&& attacker.buff(Momentum.class).freerunning()
 					&& ((Hero)attacker).hasTalent(Talent.PROJECTILE_MOMENTUM)) {
-				hitReasons.put(HIT_MOMEN, 1f + ((Hero) attacker).pointsInTalent(Talent.PROJECTILE_MOMENTUM) / 3f);
+				hitReasons.put(HIT_MOMEN, 1f + ((Hero) attacker).pointsInTalent(Talent.PROJECTILE_MOMENTUM) / 2f);
 			}
 		}
 
