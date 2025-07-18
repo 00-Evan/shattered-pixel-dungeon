@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -184,17 +183,25 @@ public class SentryRoom extends SpecialRoom {
 		}
 
 		//1 floor set higher in probability, never cursed
-		//1 floor set higher in probability, never cursed
-		if (Random.Int(2) == 0) {
-			prize = Generator.randomWeapon((Dungeon.depth / 5) + 1);
-			if (((Weapon)prize).hasCurseEnchant()){
-				((Weapon) prize).enchant(null);
-			}
-		} else {
-			prize = Generator.randomArmor((Dungeon.depth / 5) + 1);
-			if (((Armor)prize).hasCurseGlyph()){
-				((Armor) prize).inscribe(null);
-			}
+		switch (Random.Int(5)){
+			case 0: case 1: default:
+				prize = Generator.randomWeapon((Dungeon.depth / 5) + 1);
+				if (((Weapon)prize).hasCurseEnchant()){
+					((Weapon) prize).enchant(null);
+				}
+				break;
+			case 2:
+				prize = Generator.randomMissile((Dungeon.depth / 5) + 1);
+				if (((Weapon)prize).hasCurseEnchant()){
+					((Weapon) prize).enchant(null);
+				}
+				break;
+			case 3: case 4:
+				prize = Generator.randomArmor((Dungeon.depth / 5) + 1);
+				if (((Armor)prize).hasCurseGlyph()){
+					((Armor) prize).inscribe(null);
+				}
+				break;
 		}
 		prize.cursed = false;
 		prize.cursedKnown = true;
@@ -354,7 +361,7 @@ public class SentryRoom extends SpecialRoom {
 
 	public static class SentrySprite extends MobSprite {
 
-		private Animation charging;
+		private final Animation charging;
 		private Emitter chargeParticles;
 
 		public SentrySprite(){
