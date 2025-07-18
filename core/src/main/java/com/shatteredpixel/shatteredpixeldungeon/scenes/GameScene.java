@@ -997,7 +997,7 @@ public class GameScene extends PixelScene {
 
 		float offset = Camera.main.centerOffset.y;
 		banner.x = align( uiCamera, (uiCamera.width - banner.width) / 2 );
-		banner.y = align( uiCamera, (uiCamera.height - banner.height) / 2 - banner.height/2 - 16 - offset );
+		banner.y = align( uiCamera, (uiCamera.height - banner.height) / 2 - 32 - offset );
 
 		addToFront( banner );
 	}
@@ -1388,7 +1388,7 @@ public class GameScene extends PixelScene {
 
 			@Override
 			public void update() {
-				alpha(gameOver.am);
+				alpha((float)Math.pow(gameOver.am, 2));
 				super.update();
 			}
 		};
@@ -1399,7 +1399,7 @@ public class GameScene extends PixelScene {
 		restart.setSize(Math.max(80, restart.reqWidth()), 20);
 		restart.setPos(
 				align(uiCamera, (restart.camera.width - restart.width()) / 2),
-				align(uiCamera, (restart.camera.height - restart.height()) / 2 + restart.height()/2 + 16 - offset)
+				align(uiCamera, (restart.camera.height - restart.height()) / 2 + 8 - offset)
 		);
 		scene.add(restart);
 
@@ -1411,7 +1411,7 @@ public class GameScene extends PixelScene {
 
 			@Override
 			public void update() {
-				alpha(gameOver.am);
+				alpha((float)Math.pow(gameOver.am, 2));
 				super.update();
 			}
 		};
