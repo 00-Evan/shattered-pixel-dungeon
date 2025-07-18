@@ -225,7 +225,7 @@ abstract public class MissileWeapon extends Weapon {
 	@Override
 	public void doThrow(Hero hero) {
 		parent = null; //reset parent before throwing, just in case
-		if (((levelKnown && level() >= 0) || hasGoodEnchant() || masteryPotionBonus || enchantHardened)
+		if (((levelKnown && level() > 0) || hasGoodEnchant() || masteryPotionBonus || enchantHardened)
 				&& !extraThrownLeft && quantity() == 1 && durabilityLeft() <= durabilityPerUse()){
 			GameScene.show(new WndOptions(new ItemSprite(this), name(),
 					Messages.get(MissileWeapon.class, "break_upgraded_warn_desc"),
