@@ -43,7 +43,8 @@ import java.util.ArrayList;
 public class v3_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
-		add_Coming_Soon(changeInfos);
+		//add_Coming_Soon(changeInfos);
+		add_v3_2_Changes(changeInfos);
 		add_v3_1_Changes(changeInfos);
 		add_v3_0_Changes(changeInfos);
 	}
@@ -79,6 +80,121 @@ public class v3_X_Changes {
 				"Android 4.4 was succeeded by Android 5.0 in 2014, ~1% of Android Shattered players are using Android 4.4-. Java 10 was succeeded by Java 11 in 2018, but can run on computers from 2010 and earlier.\n" +
 				"\n" +
 				"Note that the Java requirement only applies to the plain .JAR desktop builds of Shattered, which require a separate Java install. If you're unsure which desktop build you're using, it probably isn't the Java one."));
+
+	}
+
+	public static void add_v3_2_Changes( ArrayList<ChangeInfo> changeInfos ) {
+
+		ChangeInfo changes = new ChangeInfo("v3.2", true, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
+				"Hey Alpha testers, welcome to an early look at v3.2!\n" +
+				"\n" +
+				"v3.2 is smaller than most updates, but does come with a major overhaul to thrown weapons and some QoL changes.\n" +
+				"\n" +
+				"The update is mostly content complete, but I do expect to do a bit more before it goes to beta:\n" +
+				"**-** Tweaks to enchantments and curses now that they can appear on thrown weapons much more often\n" +
+				"**-** Followup balance pass on changes from v3.1\n" +
+				"**-** Additional followup balance tweaks to thrown weapon sets as needed\n" +
+				"**-** Additional small fixes and tweaks"));
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.JAVELIN), "Thrown Weapon Sets",
+				"**Thrown weapons have been majorly overhauled to be more worthwhile to upgrade!**\n" +
+				"\n" +
+				"**-** Thrown weapons now spawn in sets of three, sets do not mix.\n" +
+				"**-** Sets are upgraded as a unit (all 3), and upgrading fully repairs the set.\n" +
+				"**-** Upgrades now boost durability by 1.5x, down from 3x.\n" +
+				"**-** Sets can be enchanted, cursed, unidentified, etc.\n" +
+				"**-** Thrown weapons can now spawn with natural upgrades, enchants, or curses.\n" +
+				"**-** A few special rooms now have a chance to spawn higher value thrown weapons.\n" +
+				"\n" +
+				"Note that darts are not affected by these changes, they effectively all belong to the same set and still cannot be upgraded."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.BUFFS), "Hit and Miss Icons",
+				"**Pretty much every effect that changes accuracy or evasion now has an icon that shows up when that effect is the reason an attack hit or missed!**\n" +
+				"\n" +
+				"This is an extension of the green bow icon that was used to make the Ferret Tuft's evasion boost more visible in v3.1. It should make it much easier to tell how much of a difference various buffs/debuffs are making to hit chance.\n" +
+				"\n" +
+				"There are 12 different hit icons and 11 miss icons in total."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.DISPLAY), "Text Banners",
+				"**New visuals have been added for the 'boss slain' and 'game over' text banners!**\n" +
+				"\n" +
+				"They should now match the newer text visuals in the title screen. This also includes some detail adjustments such as centering the sword in 'boss slain' vertically instead of horizontally."));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
+		changes.hardlight(CharSprite.WARNING);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new TalentIcon(Talent.SURVIVALISTS_INTUITION), "Survivalist's Intuition",
+				"Now that thrown weapons can be identified, there is design space for the Huntress to have a non-generic identification talent:\n" +
+				"\n" +
+				"**- Survivalist's Intuition** now lets the Huntress ID thrown weapons at 3x speed at +1 or on-use at +2. Previously it increased ID speed of all items by 1.75x at +1 or 2.5x at +2."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**Highlights:**\n" +
+				"**-** Ascension challenge now always notifies the player the first time the amulet's curse is weakened, which should make tracking the pacifist ascent badge easier.\n" +
+				"**-** Liquid metal's recipe has been adjusted, it now accepts one set of known uncursed thrown weapons and has a standard cost of 3.\n" +
+				"\n" +
+				"**Misc:**\n" +
+				"**-** Rats that are made friendly by the 19th armor ability no longer attack enemies.\n" +
+				"**-** Improved most tutorial/guidebook text to be more concise\n" +
+				"**-** Wands now only need to be known uncursed to be used in making resin\n" +
+				"**-** Made tweaks to tunnel and maze rooms to reduce the chance of them generating certain shapes\n" +
+				"**-** Made piranha description text more helpful\n" +
+				"**-** Updated code libraries on iOS (Android and Desktop lib updates will come in a patch later)"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Misc:**\n" +
+				"**-** Distortion traps always generating mimics when choosing to generate an uncommon enemy\n" +
+				"**-** Cases where status text would stack on itself incorrectly\n" +
+				"**-** Infinity symbol (∞) not being rendered by the game's pixel font"));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
+		changes.hardlight(CharSprite.POSITIVE);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.THROWING_CLUB), "Thrown Weapon Durability",
+				"Base durability per thrown weapon changed from 5/10/15 to 5/8/12, for low/normal/high durability thrown weapons.\n" +
+				"\n" +
+				"Considering that base quantity is up to 3 from 2, this is effectively a boost to total durability. Normal and high durability thrown weapons have +20% total base uses, and low durability thrown weapons have +50% total base uses."));
+
+		changes.addButton(new ChangeButton(new TalentIcon(Talent.PROJECTILE_MOMENTUM), "Talent Buffs",
+				"Some talents that interact with thrown weapons are getting buffs as part of the thrown weapon changes:\n" +
+				"\n" +
+				"**- Projectile Momentum** accuracy boost up substantially, to +50/100/150% at +1/2/3, from +20/40/60% at +1/2/3.\n" +
+				"\n" +
+				"**- Shared Upgrades** no longer prevents multiple enchantment triggers. Both enchants can now trigger if the thrown weapon and the Huntress' bow are both enchanted."));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
+		changes.hardlight(CharSprite.NEGATIVE);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.SHURIKEN), "Thrown Weapon Nerfs",
+				"Various thrown weapons are getting targeted nerfs, mainly focused around compensating for lower durability weapons now effectively having +50% base uses, or certain weapons now being much more spammable.\n" +
+				"\n" +
+				"**- Shuriken** instant-throw condition changed to a simple 20 turn cooldown\n" +
+				"**- Kunai** base damage down to 6-12 from 6-15\n" +
+				"**- Bolas** damage scaling down to 2-2 from 2-3\n" +
+				"**- Heavy Boomerang** durability down to 5 from 8\n" +
+				"**- Tomahawk** damage scaling down to 2-3 from 2-4\n" +
+				"**- Tomahawk** percent damage dealt as bleed down to 50% from 60%\n" +
+				"**- Force Cube** base damage down to 10-20 from 10-25"));
+
+		changes.addButton(new ChangeButton(new TalentIcon(Talent.SHARED_UPGRADES), "Talent Nerfs",
+				"Some talents are also getting nerfed as part of the thrown weapon changes:\n" +
+				"\n" +
+				"**- Projectile Momentum** damage boost down to +10/20/30% at +1/2/3, from +15/20/45% at +1/2/3\n" +
+				"\n" +
+				"**- Durable Projectiles** durability boost down to +33%/+50% at +1/+2, from +50%/+75% at +1/+2\n" +
+				"**- Shared Upgrades** slightly reworked, now grants a flat +16.67% damage boost and +1 duration per thrown weapon level, but caps at +33/67/100% damage and +2/4/6 duration at talent level 1/2/3."));
 
 	}
 
