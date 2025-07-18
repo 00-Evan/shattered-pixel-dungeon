@@ -405,7 +405,7 @@ public class WndUpgrade extends Window {
 			bottom = addMessage(Messages.get(this, "resin"), CharSprite.WARNING, bottom);
 		}
 
-		if (toUpgrade instanceof MissileWeapon && toUpgrade.quantity() < ((MissileWeapon) toUpgrade).fullSetQuantity){
+		if (toUpgrade instanceof MissileWeapon && ((MissileWeapon) toUpgrade).extraThrownLeft){
 			bottom = addMessage("Weapons from this set that aren't in your inventory will crumble to dust.", CharSprite.WARNING, bottom);
 		}
 

@@ -45,8 +45,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Explosive;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projecting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.InventoryPane;
+import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -140,7 +145,8 @@ abstract public class MissileWeapon extends Weapon {
 	public Item upgrade( boolean enchant ) {
 		if (!bundleRestoring) {
 			durability = MAX_DURABILITY;
-			quantity = fullSetQuantity = defaultQuantity();
+			extraThrownLeft = false;
+			quantity = defaultQuantity();
 			Buff.affect(Dungeon.hero, UpgradedSetTracker.class).levelThresholds.put(setID, level()+1);
 		}
 		return super.upgrade( enchant );
@@ -150,7 +156,8 @@ abstract public class MissileWeapon extends Weapon {
 	public Item upgrade() {
 		if (!bundleRestoring) {
 			durability = MAX_DURABILITY;
-			quantity = fullSetQuantity = defaultQuantity();
+			extraThrownLeft = false;
+			quantity = defaultQuantity();
 			Buff.affect(Dungeon.hero, UpgradedSetTracker.class).levelThresholds.put(setID, level()+1);
 		}
 		return super.upgrade();
@@ -217,8 +224,27 @@ abstract public class MissileWeapon extends Weapon {
 
 	@Override
 	public void doThrow(Hero hero) {
-		parent = null; //reset parent before throwing, just incase
-		super.doThrow(hero);
+		parent = null; //reset parent before throwing, just in case
+		if (((levelKnown && level() >= 0) || hasGoodEnchant() || masteryPotionBonus || enchantHardened)
+				&& !extraThrownLeft && quantity() == 1 && durabilityLeft() <= durabilityPerUse()){
+			GameScene.show(new WndOptions(new ItemSprite(this), name(),
+					Messages.get(MissileWeapon.class, "break_upgraded_warn_desc"),
+					Messages.get(MissileWeapon.class, "break_upgraded_warn_yes"),
+					Messages.get(MissileWeapon.class, "break_upgraded_warn_no")){
+				@Override
+				protected void onSelect(int index) {
+					if (index == 0){
+						MissileWeapon.super.doThrow(hero);
+					} else {
+						QuickSlotButton.cancel();
+						InventoryPane.cancelTargeting();
+					}
+				}
+			});
+
+		} else {
+			super.doThrow(hero);
+		}
 	}
 
 	@Override
@@ -307,8 +333,8 @@ abstract public class MissileWeapon extends Weapon {
 		return 3;
 	}
 
-	//this is tracked to show warnings when upgrading and some of the set isn't present
-	public int fullSetQuantity = defaultQuantity();
+	//mainly used to track warnings relating to throwing the last upgraded one, not super accurate
+	public boolean extraThrownLeft = false;
 
 	@Override
 	public Item random() {
@@ -422,7 +448,7 @@ abstract public class MissileWeapon extends Weapon {
 			if (parent.durability <= parent.durabilityPerUse()){
 				durability = 0;
 				parent.durability = MAX_DURABILITY;
-				parent.fullSetQuantity--;
+				parent.extraThrownLeft = false;
 				if (parent.durabilityPerUse() < 100f) {
 					GLog.n(Messages.get(this, "has_broken"));
 				}
@@ -470,6 +496,8 @@ abstract public class MissileWeapon extends Weapon {
 	public Item merge(Item other) {
 		super.merge(other);
 		if (isSimilar(other)) {
+			extraThrownLeft = false;
+
 			durability += ((MissileWeapon)other).durability;
 			durability -= MAX_DURABILITY;
 			while (durability <= 0){
@@ -520,6 +548,7 @@ abstract public class MissileWeapon extends Weapon {
 			MissileWeapon m = (MissileWeapon)split;
 			m.durability = MAX_DURABILITY;
 			m.parent = this;
+			extraThrownLeft = m.extraThrownLeft = true;
 		}
 		
 		return split;
@@ -535,6 +564,7 @@ abstract public class MissileWeapon extends Weapon {
 			quantity(0);
 			return true;
 		} else {
+			extraThrownLeft = false;
 			return super.doPickUp(hero, pos);
 		}
 	}
@@ -608,7 +638,7 @@ abstract public class MissileWeapon extends Weapon {
 
 	private static final String SPAWNED = "spawned";
 	private static final String DURABILITY = "durability";
-	private static final String FULL_QUANTITY = "full_quantity";
+	private static final String EXTRA_LEFT = "extra_left";
 	
 	@Override
 	public void storeInBundle(Bundle bundle) {
@@ -616,7 +646,7 @@ abstract public class MissileWeapon extends Weapon {
 		bundle.put(SET_ID, setID);
 		bundle.put(SPAWNED, spawnedForEffect);
 		bundle.put(DURABILITY, durability);
-		bundle.put(FULL_QUANTITY, fullSetQuantity);
+		bundle.put(EXTRA_LEFT, extraThrownLeft);
 	}
 	
 	private static boolean bundleRestoring = false;
@@ -636,7 +666,6 @@ abstract public class MissileWeapon extends Weapon {
 			if (level() > 0){
 				//set ID will be a random long
 				quantity = defaultQuantity();
-				fullSetQuantity = quantity;
 
 			//otherwise treat all currently spawned thrown weapons of the same class as if they are part of the same set
 			//darts already do this though and need no conversion
@@ -648,7 +677,7 @@ abstract public class MissileWeapon extends Weapon {
 
 		spawnedForEffect = bundle.getBoolean(SPAWNED);
 		durability = bundle.getFloat(DURABILITY);
-		fullSetQuantity = bundle.getInt(FULL_QUANTITY);
+		extraThrownLeft = bundle.getBoolean(EXTRA_LEFT);
 	}
 
 	public static class PlaceHolder extends MissileWeapon {
