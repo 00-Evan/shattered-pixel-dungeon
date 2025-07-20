@@ -631,7 +631,20 @@ abstract public class MissileWeapon extends Weapon {
 	
 	@Override
 	public int value() {
-		return 6 * tier * quantity * (level() + 1);
+		int price = 5 * tier * quantity;
+		if (hasGoodEnchant()) {
+			price *= 1.5;
+		}
+		if (cursedKnown && (cursed || hasCurseEnchant())) {
+			price /= 2;
+		}
+		if (levelKnown && level() > 0) {
+			price *= (level() + 1);
+		}
+		if (price < 1) {
+			price = 1;
+		}
+		return price;
 	}
 
 	private static final String SET_ID = "set_id";

@@ -40,6 +40,6 @@ public class ThrowingStone extends MissileWeapon {
 	
 	@Override
 	public int value() {
-		return super.value()/2; //half normal value
+		return Math.round(super.value()/2f); //half normal value
 	}
 }
