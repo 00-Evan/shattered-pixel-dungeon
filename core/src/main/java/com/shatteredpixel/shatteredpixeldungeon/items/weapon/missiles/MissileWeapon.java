@@ -149,7 +149,13 @@ abstract public class MissileWeapon extends Weapon {
 			quantity = defaultQuantity();
 			Buff.affect(Dungeon.hero, UpgradedSetTracker.class).levelThresholds.put(setID, level()+1);
 		}
-		return super.upgrade( enchant );
+		//thrown weapons don't get curse weakened
+		boolean wasCursed = cursed;
+		super.upgrade( enchant );
+		if (wasCursed && hasCurseEnchant()){
+			cursed = wasCursed;
+		}
+		return this;
 	}
 	
 	@Override

@@ -387,7 +387,7 @@ public class WndUpgrade extends Window {
 					|| (toUpgrade instanceof Armor && ((Armor) toUpgrade).hasCurseGlyph()))
 					&& toUpgrade.cursedKnown) {
 
-				if (toUpgrade.cursed && (toUpgrade instanceof Weapon && ((Weapon) toUpgrade).hasCurseEnchant())
+				if (toUpgrade.cursed && (toUpgrade instanceof MeleeWeapon && ((Weapon) toUpgrade).hasCurseEnchant())
 						|| (toUpgrade instanceof Armor && ((Armor) toUpgrade).hasCurseGlyph())){
 					bottom = addMessage(Messages.get(this, "cursed_weaken"), CharSprite.POSITIVE, bottom);
 				} else {
@@ -406,7 +406,7 @@ public class WndUpgrade extends Window {
 		}
 
 		if (toUpgrade instanceof MissileWeapon && ((MissileWeapon) toUpgrade).extraThrownLeft){
-			bottom = addMessage("Weapons from this set that aren't in your inventory will crumble to dust.", CharSprite.WARNING, bottom);
+			bottom = addMessage(Messages.get(this, "thrown_dust"), CharSprite.WARNING, bottom);
 		}
 
 		// *** Buttons for confirming/cancelling ***
