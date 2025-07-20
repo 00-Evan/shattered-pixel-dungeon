@@ -1081,7 +1081,7 @@ public class Hero extends Char {
 							|| item instanceof DriedRose.Petal
 							|| item instanceof Key
 							|| item instanceof Guidebook
-							|| item.quantity() == 0) {
+							|| (item instanceof MissileWeapon && !MissileWeapon.UpgradedSetTracker.pickupValid(this, (MissileWeapon) item))) {
 						//Do Nothing
 					} else if (item instanceof DarkGold) {
 						DarkGold existing = belongings.getItem(DarkGold.class);
