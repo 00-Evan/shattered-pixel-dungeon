@@ -85,9 +85,29 @@ public class v3_X_Changes {
 
 	public static void add_v3_2_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v3.2", true, "");
+		ChangeInfo changes = new ChangeInfo("v3.2-ALPHA", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes = new ChangeInfo("ALPHA-2", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.JAVELIN), "Thrown Weapon Balance",
+				"Very early feedback from the alpha indicates that thrown weapons are VERY strong right now.\n\n" +
+				"I'm not too keen on making sweeping changes yet, but I do agree that having 3x quantity, the same damage scaling as melee weapons, and a full repair on upgrade is probably too much.\n\n" +
+				"For now I'm just going to pull back damage scaling a bit, and will look into bigger changes later once feedback comes in from the beta:\n" +
+				"**-** Thrown weapon damage scaling per upgrade reduced to 1-tier from 2-tier\n\n" +
+				"And also a tiny change now that quantities are higher:\n" +
+				"**-** Base thrown weapon value per item reduced to 5*tier from 6*tier"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs caused by the ALPHA:\n" +
+				"**-** Darts dropping in quantities of 2 instead of 1 after tips wear off\n" +
+				"**-** Shops selling 2 quantity (instead of 3) thrown weapon sets that can be upgraded\n" +
+				"**-** Thrown weapons not using new properties when determining their shop value\n" +
+				"**-** Thrown weapons getting 'cursed weakened' from upgrades when that has no effect\n" +
+				"**-** Stackable weapons not showing game log messages on pickup"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
