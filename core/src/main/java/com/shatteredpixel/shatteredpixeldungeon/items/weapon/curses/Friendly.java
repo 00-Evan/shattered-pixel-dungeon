@@ -36,6 +36,10 @@ public class Friendly extends Weapon.Enchantment {
 	@Override
 	public int proc(Weapon weapon, Char attacker, Char defender, int damage ) {
 
+		if (attacker.buff(Charm.class) != null && attacker.buff(Charm.class).object == defender.id()){
+			damage = 0;
+		}
+
 		float procChance = 1/10f * procChanceMultiplier(attacker);
 		if (Random.Float() < procChance) {
 			

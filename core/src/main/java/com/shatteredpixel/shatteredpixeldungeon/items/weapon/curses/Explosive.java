@@ -81,6 +81,11 @@ public class Explosive extends Weapon.Enchantment {
 
 			durability = 100;
 			Item.updateQuickslot();
+
+			if (weapon instanceof MissileWeapon){
+				//the explosion damages thrown weapons
+				((MissileWeapon) weapon).damage(9*((MissileWeapon) weapon).durabilityPerUse());
+			}
 		}
 
 		if (weapon instanceof MissileWeapon

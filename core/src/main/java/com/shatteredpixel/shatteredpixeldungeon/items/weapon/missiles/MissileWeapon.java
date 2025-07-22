@@ -189,18 +189,20 @@ abstract public class MissileWeapon extends Weapon {
 	@Override
 	public int throwPos(Hero user, int dst) {
 
-		//TODO do we want to let these stack?
-		boolean projecting = hasEnchant(Projecting.class, user);
+		int projecting = 0;
+		if (hasEnchant(Projecting.class, user)){
+			projecting += 4;
+		}
 		if (Random.Int(3) < user.pointsInTalent(Talent.SHARED_ENCHANTMENT)){
 			SpiritBow bow = Dungeon.hero.belongings.getItem(SpiritBow.class);
 			if (bow != null && bow.hasEnchant(Projecting.class, user)) {
-				projecting = true;
+				projecting += 4;
 			}
 		}
 
-		if (projecting
+		if (projecting > 0
 				&& (Dungeon.level.passable[dst] || Dungeon.level.avoid[dst] || Actor.findChar(dst) != null)
-				&& Dungeon.level.distance(user.pos, dst) <= Math.round(4 * Enchantment.genericProcChanceMultiplier(user))){
+				&& Dungeon.level.distance(user.pos, dst) <= Math.round(projecting * Enchantment.genericProcChanceMultiplier(user))){
 			return dst;
 		} else {
 			return super.throwPos(user, dst);
@@ -419,6 +421,11 @@ abstract public class MissileWeapon extends Weapon {
 	public void repair( float amount ){
 		durability += amount;
 		durability = Math.min(durability, MAX_DURABILITY);
+	}
+
+	public void damage( float amount ){
+		durability -= amount;
+		durability = Math.max(durability, 1); //cannot break from doing this
 	}
 
 	public final float durabilityPerUse(){
