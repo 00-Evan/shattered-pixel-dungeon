@@ -233,7 +233,7 @@ abstract public class MissileWeapon extends Weapon {
 		parent = null; //reset parent before throwing, just in case
 		if (((levelKnown && level() > 0) || hasGoodEnchant() || masteryPotionBonus || enchantHardened)
 				&& !extraThrownLeft && quantity() == 1 && durabilityLeft() <= durabilityPerUse()){
-			GameScene.show(new WndOptions(new ItemSprite(this), name(),
+			GameScene.show(new WndOptions(new ItemSprite(this), Messages.titleCase(title()),
 					Messages.get(MissileWeapon.class, "break_upgraded_warn_desc"),
 					Messages.get(MissileWeapon.class, "break_upgraded_warn_yes"),
 					Messages.get(MissileWeapon.class, "break_upgraded_warn_no")){
@@ -245,6 +245,13 @@ abstract public class MissileWeapon extends Weapon {
 						QuickSlotButton.cancel();
 						InventoryPane.cancelTargeting();
 					}
+				}
+
+				@Override
+				public void onBackPressed() {
+					super.onBackPressed();
+					QuickSlotButton.cancel();
+					InventoryPane.cancelTargeting();
 				}
 			});
 
