@@ -439,6 +439,9 @@ abstract public class MissileWeapon extends Weapon {
 			usages *= MagicalHolster.HOLSTER_DURABILITY_FACTOR;
 		}
 
+		//+50% durability on speed aug, -33% durability on damage aug
+		usages /= augment.delayFactor(1f);
+
 		if (Dungeon.hero != null) usages *= RingOfSharpshooting.durabilityMultiplier( Dungeon.hero );
 
 		//at 100 uses, items just last forever.
@@ -626,6 +629,16 @@ abstract public class MissileWeapon extends Weapon {
 		String statsInfo = Messages.get(this, "stats_desc");
 		if (!statsInfo.equals("")) info += statsInfo + " ";
 		info += Messages.get(MissileWeapon.class, "distance");
+
+		switch (augment) {
+			case SPEED:
+				info += " " + Messages.get(Weapon.class, "faster");
+				break;
+			case DAMAGE:
+				info += " " + Messages.get(Weapon.class, "stronger");
+				break;
+			case NONE:
+		}
 
 		if (levelKnown) {
 			if (durabilityPerUse() > 0) {
