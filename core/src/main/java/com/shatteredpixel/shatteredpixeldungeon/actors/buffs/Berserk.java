@@ -42,6 +42,7 @@ import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
+import com.watabou.utils.Random;
 
 public class Berserk extends ShieldBuff implements ActionIndicator.Action {
 
@@ -102,9 +103,12 @@ public class Berserk extends ShieldBuff implements ActionIndicator.Action {
 		if (state == State.BERSERK){
 			if (target.shielding() > 0) {
 				//lose 2.5% of shielding per turn, but no less than 1
-				int dmg = (int)Math.ceil(target.shielding() * 0.025f);
+				float dmg = (float)Math.ceil(target.shielding() * 0.025f) * HoldFast.buffDecayFactor(target);
+				if (Random.Float() < dmg % 1){
+					dmg++;
+				}
 
-				dmg = ShieldBuff.processDamage(target, dmg, this);
+				ShieldBuff.processDamage(target, (int)dmg, this);
 
 				if (target.shielding() <= 0){
 					state = State.RECOVERING;

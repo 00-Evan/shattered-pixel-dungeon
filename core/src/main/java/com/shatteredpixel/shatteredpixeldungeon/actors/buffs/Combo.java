@@ -123,7 +123,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public boolean act() {
-		comboTime-=TICK;
+		comboTime -= TICK * HoldFast.buffDecayFactor(target);
 		spend(TICK);
 		if (comboTime <= 0) {
 			detach();
