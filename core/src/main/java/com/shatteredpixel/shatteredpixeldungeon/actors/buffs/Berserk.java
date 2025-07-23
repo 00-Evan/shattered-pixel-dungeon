@@ -129,7 +129,7 @@ public class Berserk extends ShieldBuff implements ActionIndicator.Action {
 			if (powerLossBuffer > 0){
 				powerLossBuffer--;
 			} else {
-				power -= GameMath.gate(0.1f, power, 1f) * 0.067f * Math.pow((target.HP / (float) target.HT), 2);
+				power -= GameMath.gate(0.1f, power, 1f) * 0.05f * Math.pow((target.HP / (float) target.HT), 2);
 
 				if (power < 1f){
 					ActionIndicator.clearAction(this);
@@ -210,7 +210,7 @@ public class Berserk extends ShieldBuff implements ActionIndicator.Action {
 			turnRecovery *= 2f - power;
 		}
 
-		int baseShield = 10;
+		int baseShield = 8;
 		if (target instanceof Hero && ((Hero) target).belongings.armor() != null){
 			baseShield += 2*((Hero) target).belongings.armor().buffedLvl();
 		}
@@ -219,7 +219,7 @@ public class Berserk extends ShieldBuff implements ActionIndicator.Action {
 
 	//not accounting for talents
 	public int maxShieldBoost(){
-		int baseShield = 10;
+		int baseShield = 8;
 		if (target instanceof Hero && ((Hero) target).belongings.armor() != null){
 			baseShield += 2*((Hero) target).belongings.armor().buffedLvl();
 		}
@@ -229,7 +229,7 @@ public class Berserk extends ShieldBuff implements ActionIndicator.Action {
 	public void damage(int damage){
 		if (state != State.NORMAL) return;
 		float maxPower = 1f + 0.1667f*((Hero)target).pointsInTalent(Talent.ENDLESS_RAGE);
-		power = Math.min(maxPower, power + (damage/(float)target.HT)/3f );
+		power = Math.min(maxPower, power + (damage/(float)target.HT)/4f );
 		BuffIndicator.refreshHero(); //show new power immediately
 		powerLossBuffer = 3; //2 turns until rage starts dropping
 		if (power >= 1f){
