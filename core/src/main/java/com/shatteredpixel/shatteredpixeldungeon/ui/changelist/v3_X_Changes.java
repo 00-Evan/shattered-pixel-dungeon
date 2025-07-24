@@ -89,6 +89,58 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("ALPHA-3", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
+				"Hey Alpha testers, with this patch the alpha for v3.2 is wrapping up! I expect to release BETA-1 tomorrow.\n" +
+				"\n" +
+				"This patch includes some balance tweaks based on feedback and analytics data. With this the alpha is now content-complete! I do still plan to fix a few more bugs and make necessary balance tweaks during the beta though."));
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.STONE_AUGMENTATION), "Thrown Weapon Enhancements",
+				"I've adjusted augmenting to affect durability on thrown weapons, which should better balance the effects:\n" +
+				"**- Speed** augment now gives thrown weapons +50% durability\n" +
+				"**- Damage** augment now gives thrown weapons -33% durability\n\n" +
+				"I've also tweaked a few enchant/curse effects now that they can apply to thrown weapons directly:\n" +
+				"**- Projecting** enchant can now stack on thrown weapons, giving more reach\n" +
+				"**- Explosive** curse now damages thrown weapons when it triggers\n" +
+				"**- Friendly** curse now sets weapon damage to 0 if charmed by an enemy"));
+
+		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 6), "Cleric Buffs",
+				"I'm making some changes to improve the Priest's synergy with their various spell effects. Hopefully this will help the subclass compete a bit more with Paladin, who already gets great synergy thanks to extending holy weapon and ward:\n\n" +
+				"**- Guiding Light** free use cooldown down to 50 turns from 100.\n\n" +
+				"**-** All spells that directly target enemies now inflict illuminate.\n\n" +
+				"Also, one buff to A base Cleric spell:\n\n" +
+				"**- Divine Sense** duration up to 50 turns from 30."));
+
+		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.WARRIOR, 6), "Warrior Buffs",
+				"The Gladiator was weakened a bit after v3.1's Warrior changes, so I'm giving him some more flexibility to compensate:\n\n" +
+				"**-** Combo now lasts for 15 turns after killing an enemy.\n" +
+				"**- Cleave** combo duration boost increased to 30/45/60 turns at +1/2/3, from 15/20/45 turns.\n\n" +
+				"I'm also making a change to the Warrior in general, to improve tactical flexibility and to make the Hold Fast talent more interesting:\n\n" +
+				"**- Hold Fast** now slows the decay of combo and shielding buffs by 33/67/100% at +1/2/3. This includes the broken seal shield and Berserker's enrage shield!"));
+
+		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.WARRIOR, 5), "Berserker Nerfs",
+				"The Berserker is doing quite well after v3.1, given that the new shield naturally synergizes with him. I'm scaling back the base class power a bit to compensate:\n\n" +
+				"**-** Rate of rage gain and loss reduced by 25%\n" +
+				"**-** Base enrage shield reduced to 8+2*lvl from 10 + 2*lvl (the armor's level)"));
+
+		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.MAGE, 6), "Battlemage Buffs",
+				"Some Battlemage staff on-hit effects have been changed to be more interesting and more powerful:\n\n" +
+				"**- Staff of Fireblast** effect reworked, now has a chance to explode away flames, dealing damage to enemies.\n\n" +
+				"**- Staff of Lightning** effect reworked, now has a chance to charge the Mage, granting lightning immunity and extra arcing reach.\n\n" +
+				"**- Staff of Blast Wave** effect reworked, now consumes paralysis to deal big bonus damage.\n\n" +
+				"**- Staff of Warding** mildly changed, now heals level 2 and 3 wards in addition to sentries."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**-** Characters that are immune to the wand of lightning no longer reduce its overall damage if it arcs though them."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs caused by the ALPHA:\n" +
+				"**-** Thrown weapon last use warning window not clearing autotarget in some cases\n" +
+				"**-** Rats summoned by 19th armor ability not counting as allies"));
+
 		changes = new ChangeInfo("ALPHA-2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
