@@ -99,7 +99,7 @@ public class GuidingLight extends TargetedClericSpell {
 
 				onSpellCast(tome, hero);
 				if (hero.subClass == HeroSubClass.PRIEST && hero.buff(GuidingLightPriestCooldown.class) == null) {
-					Buff.prolong(hero, GuidingLightPriestCooldown.class, 100f);
+					Buff.prolong(hero, GuidingLightPriestCooldown.class, 50f);
 					ActionIndicator.refresh();
 				}
 
@@ -137,7 +137,7 @@ public class GuidingLight extends TargetedClericSpell {
 			icon.brightness(0.5f);
 		}
 
-		public float iconFadePercent() { return Math.max(0, visualcooldown() / 100); }
+		public float iconFadePercent() { return Math.max(0, visualcooldown() / 50); }
 
 		@Override
 		public void detach() {
