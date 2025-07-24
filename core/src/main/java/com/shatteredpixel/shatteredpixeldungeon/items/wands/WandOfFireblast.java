@@ -32,7 +32,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.WildMagic;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SmokeParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -46,6 +49,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -151,8 +155,60 @@ public class WandOfFireblast extends DamageWand {
 
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
-		//acts like blazing enchantment
-		new FireBlastOnHit().proc( staff, attacker, defender, damage);
+
+		//proc chance is initially 0..
+		float procChance = 0;
+		for (int i : PathFinder.NEIGHBOURS9) {
+
+			//+25% proc chance per burning char within 3x3 of target
+			// this includes the attacker and defender
+			if (Actor.findChar(defender.pos + i) != null
+					&& Actor.findChar(defender.pos + i).buff(Burning.class) != null) {
+				procChance += 0.25f;
+
+			//otherwise +5% proc chance per burning tile within 3x3 of target
+			} else if (Fire.volumeAt(defender.pos+i, Fire.class) > 0){
+				procChance += 0.05f;
+			}
+
+		}
+
+		procChance = Math.min(1f, procChance);
+		procChance *= Wand.procChanceMultiplier(attacker);
+
+		if (Random.Float() < procChance){
+
+			float powerMulti = Math.max(1f, procChance);
+
+			Blob fire = Dungeon.level.blobs.get(Fire.class);
+
+			//explode, dealing damage to enemies in 3x3, and clearing all fire
+			CellEmitter.center(defender.pos).burst(BlastParticle.FACTORY, 30);
+			if (fire != null) {
+				for (int i : PathFinder.NEIGHBOURS9) {
+					CellEmitter.get(defender.pos + i).burst(SmokeParticle.FACTORY, 4);
+					if (Fire.volumeAt(defender.pos+i, Fire.class) > 0){
+						Dungeon.level.destroy(defender.pos + i);
+						GameScene.updateMap(defender.pos + i);
+						fire.clear(defender.pos + i);
+					}
+
+					Char ch = Actor.findChar(defender.pos + i);
+					if (ch != null) {
+						if (ch.buff(Burning.class) != null) {
+							ch.buff(Burning.class).detach();
+						}
+						if (ch.alignment == Char.Alignment.ENEMY) {
+							//A 2-charge zap's base dmg with a 1-charge zap's scaling
+							ch.damage(Math.round(powerMulti*Random.NormalIntRange(2 + buffedLvl(), 8 + 2*buffedLvl())), this);
+						}
+					}
+				}
+			}
+
+			Sample.INSTANCE.play( Assets.Sounds.BLAST );
+
+		}
 	}
 
 	public static class FireBlastOnHit extends Blazing {

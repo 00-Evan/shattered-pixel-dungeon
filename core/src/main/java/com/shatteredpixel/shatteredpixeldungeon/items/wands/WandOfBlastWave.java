@@ -27,11 +27,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Effects;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Elastic;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
@@ -195,36 +193,12 @@ public class WandOfBlastWave extends DamageWand {
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
 
-		Talent.EmpoweredStrikeTracker tracker = attacker.buff(Talent.EmpoweredStrikeTracker.class);
-
-		if (tracker != null){
-			tracker.delayedDetach = true;
-		}
-
-		//acts like elastic enchantment
-		//we delay this with an actor to prevent conflicts with regular elastic
-		//so elastic always fully resolves first, then this effect activates
-		Actor.add(new Actor() {
-			{
-				actPriority = VFX_PRIO+9; //act after pushing effects
-			}
-
-			@Override
-			protected boolean act() {
-				Actor.remove(this);
-				if (defender.isAlive()) {
-					new BlastWaveOnHit().proc(staff, attacker, defender, damage);
-				}
-				if (tracker != null) tracker.detach();
-				return true;
-			}
-		});
-	}
-
-	private static class BlastWaveOnHit extends Elastic{
-		@Override
-		protected float procChanceMultiplier(Char attacker) {
-			return Wand.procChanceMultiplier(attacker);
+		if (defender.buff(Paralysis.class) != null){
+			defender.buff(Paralysis.class).detach();
+			int dmg = Random.NormalIntRange(6+buffedLvl(), 12+2*buffedLvl());
+			defender.damage(Math.round(procChanceMultiplier(attacker) * dmg), this);
+			BlastWave.blast(defender.pos);
+			Sample.INSTANCE.play( Assets.Sounds.BLAST );
 		}
 	}
 

@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
@@ -38,6 +39,8 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.Image;
 import com.watabou.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -78,7 +81,10 @@ public class WandOfLightning extends DamageWand {
 			ch.sprite.centerEmitter().burst( SparkParticle.FACTORY, 3 );
 			ch.sprite.flash();
 
+			//TODO these still reduce DMG, perhaps remove earlier?
 			if (ch != curUser && ch.alignment == curUser.alignment && ch.pos != bolt.collisionPos){
+				continue;
+			} else if (ch.buff(LightningCharge.class) != null){
 				continue;
 			}
 			wandProc(ch, chargesPerCast());
@@ -97,8 +103,38 @@ public class WandOfLightning extends DamageWand {
 
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
-		//acts like shocking enchantment
-		new LightningOnHit().proc(staff, attacker, defender, damage);
+
+		// lvl 0 - 25%
+		// lvl 1 - 40%
+		// lvl 2 - 50%
+		float procChance = (buffedLvl()+1f)/(buffedLvl()+4f) * procChanceMultiplier(attacker);
+		if (Random.Float() < procChance) {
+
+			FlavourBuff.prolong(attacker, LightningCharge.class, LightningCharge.DURATION);
+			attacker.sprite.centerEmitter().burst( SparkParticle.FACTORY, 10 );
+			attacker.sprite.flash();
+			Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
+
+		}
+	}
+
+	public static class LightningCharge extends FlavourBuff {
+
+		{
+			type = buffType.POSITIVE;
+		}
+
+		public static float DURATION = 10f;
+
+		@Override
+		public int icon() {
+			return BuffIndicator.IMBUE;
+		}
+
+		@Override
+		public void tintIcon(Image icon) {
+			icon.hardlight(1, 1, 0);
+		}
 	}
 
 	public static class LightningOnHit extends Shocking {
@@ -111,6 +147,10 @@ public class WandOfLightning extends DamageWand {
 	private void arc( Char ch ) {
 
 		int dist = Dungeon.level.water[ch.pos] ? 2 : 1;
+
+		if (curUser.buff(LightningCharge.class) != null){
+			dist++;
+		}
 
 		ArrayList<Char> hitThisArc = new ArrayList<>();
 		PathFinder.buildDistanceMap( ch.pos, BArray.not( Dungeon.level.solid, null ), dist );
