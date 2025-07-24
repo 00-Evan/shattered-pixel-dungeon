@@ -71,6 +71,14 @@ public class WandOfLightning extends DamageWand {
 	@Override
 	public void onZap(Ballistica bolt) {
 
+		for (Char ch : affected.toArray(new Char[0])){
+			if (ch != curUser && ch.alignment == curUser.alignment && ch.pos != bolt.collisionPos){
+				affected.remove(ch);
+			} else if (ch.buff(LightningCharge.class) != null){
+				affected.remove(ch);
+			}
+		}
+
 		//lightning deals less damage per-target, the more targets that are hit.
 		float multiplier = 0.4f + (0.6f/affected.size());
 		//if the main target is in water, all affected take full damage
@@ -81,12 +89,6 @@ public class WandOfLightning extends DamageWand {
 			ch.sprite.centerEmitter().burst( SparkParticle.FACTORY, 3 );
 			ch.sprite.flash();
 
-			//TODO these still reduce DMG, perhaps remove earlier?
-			if (ch != curUser && ch.alignment == curUser.alignment && ch.pos != bolt.collisionPos){
-				continue;
-			} else if (ch.buff(LightningCharge.class) != null){
-				continue;
-			}
 			wandProc(ch, chargesPerCast());
 			if (ch == curUser && ch.isAlive()) {
 				ch.damage(Math.round(damageRoll() * multiplier * 0.5f), this);
