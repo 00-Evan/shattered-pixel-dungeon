@@ -85,106 +85,34 @@ public class v3_X_Changes {
 
 	public static void add_v3_2_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v3.2-ALPHA", true, "");
+		ChangeInfo changes = new ChangeInfo("v3.2-BETA", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("ALPHA-3", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
-				"Hey Alpha testers, with this patch the alpha for v3.2 is wrapping up! I expect to release BETA-1 tomorrow.\n" +
-				"\n" +
-				"This patch includes some balance tweaks based on feedback and analytics data. With this the alpha is now content-complete! I do still plan to fix a few more bugs and make necessary balance tweaks during the beta though."));
-
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.STONE_AUGMENTATION), "Thrown Weapon Enhancements",
-				"I've adjusted augmenting to affect durability on thrown weapons, which should better balance the effects:\n" +
-				"**- Speed** augment now gives thrown weapons +50% durability\n" +
-				"**- Damage** augment now gives thrown weapons -33% durability\n\n" +
-				"I've also tweaked a few enchant/curse effects now that they can apply to thrown weapons directly:\n" +
-				"**- Projecting** enchant can now stack on thrown weapons, giving more reach\n" +
-				"**- Explosive** curse now damages thrown weapons when it triggers\n" +
-				"**- Friendly** curse now sets weapon damage to 0 if charmed by an enemy"));
-
-		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 6), "Cleric Buffs",
-				"I'm making some changes to improve the Priest's synergy with their various spell effects. Hopefully this will help the subclass compete a bit more with Paladin, who already gets great synergy thanks to extending holy weapon and ward:\n\n" +
-				"**- Guiding Light** free use cooldown down to 50 turns from 100.\n\n" +
-				"**-** All spells that directly target enemies now inflict illuminate.\n\n" +
-				"Also, one buff to A base Cleric spell:\n\n" +
-				"**- Divine Sense** duration up to 50 turns from 30."));
-
-		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.WARRIOR, 6), "Warrior Buffs",
-				"The Gladiator was weakened a bit after v3.1's Warrior changes, so I'm giving him some more flexibility to compensate:\n\n" +
-				"**-** Combo now lasts for 15 turns after killing an enemy.\n" +
-				"**- Cleave** combo duration boost increased to 30/45/60 turns at +1/2/3, from 15/20/45 turns.\n\n" +
-				"I'm also making a change to the Warrior in general, to improve tactical flexibility and to make the Hold Fast talent more interesting:\n\n" +
-				"**- Hold Fast** now slows the decay of combo and shielding buffs by 33/67/100% at +1/2/3. This includes the broken seal shield and Berserker's enrage shield!"));
-
-		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.WARRIOR, 5), "Berserker Nerfs",
-				"The Berserker is doing quite well after v3.1, given that the new shield naturally synergizes with him. I'm scaling back the base class power a bit to compensate:\n\n" +
-				"**-** Rate of rage gain and loss reduced by 25%\n" +
-				"**-** Base enrage shield reduced to 8+2*lvl from 10 + 2*lvl (the armor's level)"));
-
-		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.MAGE, 6), "Battlemage Buffs",
-				"Some Battlemage staff on-hit effects have been changed to be more interesting and more powerful:\n\n" +
-				"**- Staff of Fireblast** effect reworked, now has a chance to explode away flames, dealing damage to enemies.\n\n" +
-				"**- Staff of Lightning** effect reworked, now has a chance to charge the Mage, granting lightning immunity and extra arcing reach.\n\n" +
-				"**- Staff of Blast Wave** effect reworked, now consumes paralysis to deal big bonus damage.\n\n" +
-				"**- Staff of Warding** mildly changed, now heals level 2 and 3 wards in addition to sentries."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** Characters that are immune to the wand of lightning no longer reduce its overall damage if it arcs though them."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs caused by the ALPHA:\n" +
-				"**-** Thrown weapon last use warning window not clearing autotarget in some cases\n" +
-				"**-** Rats summoned by 19th armor ability not counting as allies"));
-
-		changes = new ChangeInfo("ALPHA-2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.JAVELIN), "Thrown Weapon Balance",
-				"Very early feedback from the alpha indicates that thrown weapons are VERY strong right now.\n\n" +
-				"I'm not too keen on making sweeping changes yet, but I do agree that having 3x quantity, the same damage scaling as melee weapons, and a full repair on upgrade is probably too much.\n\n" +
-				"For now I'm just going to pull back damage scaling a bit, and will look into bigger changes later once feedback comes in from the beta:\n" +
-				"**-** Thrown weapon damage scaling per upgrade reduced to 1-tier from 2-tier\n\n" +
-				"And also a tiny change now that quantities are higher:\n" +
-				"**-** Base thrown weapon value per item reduced to 5*tier from 6*tier"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs caused by the ALPHA:\n" +
-				"**-** Darts dropping in quantities of 2 instead of 1 after tips wear off\n" +
-				"**-** Shops selling 2 quantity (instead of 3) thrown weapon sets that can be upgraded\n" +
-				"**-** Thrown weapons not using new properties when determining their shop value\n" +
-				"**-** Thrown weapons getting 'cursed weakened' from upgrades when that has no effect\n" +
-				"**-** Stackable weapons not showing game log messages on pickup"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
-				"Hey Alpha testers, welcome to an early look at v3.2!\n" +
+				"Hey Beta testers, thanks for testing v3.2.0!\n" +
 				"\n" +
-				"v3.2 is smaller than most updates, but does come with a major overhaul to thrown weapons and some QoL changes.\n" +
+				"v3.2.0 is smaller than most updates, but comes with a major overhaul to thrown weapons, balance changes to some subclasses, and a major QoL change to accuracy/evasion effects.\n" +
 				"\n" +
-				"The update is mostly content complete, but I do expect to do a bit more before it goes to beta:\n" +
-				"**-** Tweaks to enchantments and curses now that they can appear on thrown weapons much more often\n" +
-				"**-** Followup balance pass on changes from v3.1\n" +
-				"**-** Additional followup balance tweaks to thrown weapon sets as needed\n" +
+				"The update is content complete, but I do expect to do a bit more before it goes live:\n" +
+				"**-** Followup balance tweaks to thrown weapon sets and other stuff as needed\n" +
 				"**-** Additional small fixes and tweaks"));
 
 		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.JAVELIN), "Thrown Weapon Sets",
 				"**Thrown weapons have been majorly overhauled to be more worthwhile to upgrade!**\n" +
 				"\n" +
 				"**-** Thrown weapons now spawn in sets of three, sets do not mix.\n" +
+				"**-** Thrown weapon base durability increased to 3x5/8/12, from 2x5/10/15.\n" +
 				"**-** Sets are upgraded as a unit (all 3), and upgrading fully repairs the set.\n" +
 				"**-** Upgrades now boost durability by 1.5x, down from 3x.\n" +
-				"**-** Sets can be enchanted, cursed, unidentified, etc.\n" +
-				"**-** Thrown weapons can now spawn with natural upgrades, enchants, or curses.\n" +
-				"**-** A few special rooms now have a chance to spawn higher value thrown weapons.\n" +
+				"**-** Thrown weapon default damage scaling per upgrade reduced to 1-tier, down from 2-tier.\n" +
+				"**-** Sets can be enchanted, cursed, augmented, unidentified, etc.\n" +
+				"**-** Sets can spawn with natural upgrades, enchants, or curses.\n" +
+				"**-** A few special rooms now have a chance to spawn higher value thrown weapon sets.\n" +
 				"\n" +
 				"Note that darts are not affected by these changes, they effectively all belong to the same set and still cannot be upgraded."));
 
@@ -213,10 +141,17 @@ public class v3_X_Changes {
 				"**Highlights:**\n" +
 				"**-** Ascension challenge now always notifies the player the first time the amulet's curse is weakened, which should make tracking the pacifist ascent badge easier.\n" +
 				"**-** Liquid metal's recipe has been adjusted, it now accepts one set of known uncursed thrown weapons and has a standard cost of 3.\n" +
+				"**-** Characters that are immune to the wand of lightning no longer reduce its overall damage if it arcs though them.\n" +
 				"\n" +
+				"**Thrown Weapons:**\n" +
+				"**-** Augmentation now affects thrown weapon durability based on how it affects attack speed\n" +
+				"**-** Projecting enchant can now stack on thrown weapons, giving more reach\n" +
+				"**-** Explosive curse now consumes uses on thrown weapons when it triggers\n" +
+				"**-** Friendly curse now sets weapon damage to 0 if charmed by that enemy",
+
 				"**Misc:**\n" +
-				"**-** Rats that are made friendly by the 19th armor ability no longer attack enemies.\n" +
 				"**-** Improved most tutorial/guidebook text to be more concise\n" +
+				"**-** Rats that are made friendly by the 19th armor ability no longer attack enemies\n" +
 				"**-** Wands now only need to be known uncursed to be used in making resin\n" +
 				"**-** Made tweaks to tunnel and maze rooms to reduce the chance of them generating certain shapes\n" +
 				"**-** Made piranha description text more helpful\n" +
@@ -233,40 +168,64 @@ public class v3_X_Changes {
 		changes.hardlight(CharSprite.POSITIVE);
 		changeInfos.add(changes);
 
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.THROWING_CLUB), "Thrown Weapon Durability",
-				"Base durability per thrown weapon changed from 5/10/15 to 5/8/12, for low/normal/high durability thrown weapons.\n" +
-				"\n" +
-				"Considering that base quantity is up to 3 from 2, this is effectively a boost to total durability. Normal and high durability thrown weapons have +20% total base uses, and low durability thrown weapons have +50% total base uses."));
-
-		changes.addButton(new ChangeButton(new TalentIcon(Talent.PROJECTILE_MOMENTUM), "Talent Buffs",
+		changes.addButton(new ChangeButton(new TalentIcon(Talent.PROJECTILE_MOMENTUM), "Thrown Weapon Talent Buffs",
 				"Some talents that interact with thrown weapons are getting buffs as part of the thrown weapon changes:\n" +
 				"\n" +
 				"**- Projectile Momentum** accuracy boost up substantially, to +50/100/150% at +1/2/3, from +20/40/60% at +1/2/3.\n" +
 				"\n" +
 				"**- Shared Upgrades** no longer prevents multiple enchantment triggers. Both enchants can now trigger if the thrown weapon and the Huntress' bow are both enchanted."));
 
+		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 6), "Cleric & Priest Buffs",
+				"Firstly, a quick buff to the Cleric's worst performing T2 spell:\n" +
+				"**- Divine Sense** duration up to 50 turns from 30.\n" +
+				"\n" +
+				"I'm also making some changes to improve the Priest's synergy with their various spell effects. Hopefully this will help the subclass compete a bit more with Paladin, who already gets great synergy thanks to all spells extending holy weapon and ward:\n" +
+				"**- Guiding Light** free use cooldown down to 50 turns from 100.\n" +
+				"**- Illuminate** is now inflicted on directly targeted enemies by all spells."));
+
+		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.WARRIOR, 6), "Warrior & Gladiator Buffs",
+				"Firstly, I'm making a change to the Warrior in general, to improve tactical flexibility and to make the Hold Fast talent more interesting:\n" +
+				"**- Hold Fast** now slows the decay of combo and shielding buffs by 33/67/100% at +1/2/3. This includes the broken seal shield and Berserker's enrage shield!\n" +
+				"\n" +
+				"Next, the Gladiator was weakened a bit after v3.1's Warrior changes, so I'm giving him some more combo flexibility to compensate:\n" +
+				"**- Combo** now lasts for 15 turns after killing an enemy.\n" +
+				"**- Cleave** combo duration boost increased to 30/45/60 turns at +1/2/3, from 15/30/45 turns."));
+
+		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.MAGE, 6), "Battlemage Buffs/Changes",
+				"Some Battlemage staff on-hit effects have been changed to be more interesting and more powerful. Most notably this removes three effects that were previously just copies of enchantments:\n" +
+				"\n" +
+				"**- Staff of Fireblast** effect reworked, now has a chance to explode away flames, dealing damage to enemies.\n" +
+				"**- Staff of Lightning** effect reworked, now has a chance to charge the Mage, granting lightning immunity and extra arcing reach.\n" +
+				"**- Staff of Blast Wave** effect reworked, now consumes paralysis to deal big bonus damage.\n" +
+				"**- Staff of Warding** mildly changed, now heals level 2 and 3 wards in addition to sentries."));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
 		changes.hardlight(CharSprite.NEGATIVE);
 		changeInfos.add(changes);
 
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.SHURIKEN), "Thrown Weapon Nerfs",
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.SHURIKEN), "Targeted Thrown Weapon Nerfs",
 				"Various thrown weapons are getting targeted nerfs, mainly focused around compensating for lower durability weapons now effectively having +50% base uses, or certain weapons now being much more spammable.\n" +
 				"\n" +
 				"**- Shuriken** instant-throw condition changed to a simple 20 turn cooldown\n" +
 				"**- Kunai** base damage down to 6-12 from 6-15\n" +
-				"**- Bolas** damage scaling down to 2-2 from 2-3\n" +
+				"**- Bolas** damage scaling down to 1-2 from 1-3\n" +
 				"**- Heavy Boomerang** durability down to 5 from 8\n" +
-				"**- Tomahawk** damage scaling down to 2-3 from 2-4\n" +
+				"**- Tomahawk** damage scaling down to 1-3 from 1-4\n" +
 				"**- Tomahawk** percent damage dealt as bleed down to 50% from 60%\n" +
 				"**- Force Cube** base damage down to 10-20 from 10-25"));
 
-		changes.addButton(new ChangeButton(new TalentIcon(Talent.SHARED_UPGRADES), "Talent Nerfs",
+		changes.addButton(new ChangeButton(new TalentIcon(Talent.SHARED_UPGRADES), "Thrown Weapon Talent Nerfs",
 				"Some talents are also getting nerfed as part of the thrown weapon changes:\n" +
 				"\n" +
-				"**- Projectile Momentum** damage boost down to +10/20/30% at +1/2/3, from +15/20/45% at +1/2/3\n" +
+				"**- Projectile Momentum** damage boost down to +10/20/30% at +1/2/3, from +15/30/45% at +1/2/3\n" +
 				"\n" +
 				"**- Durable Projectiles** durability boost down to +33%/+50% at +1/+2, from +50%/+75% at +1/+2\n" +
 				"**- Shared Upgrades** slightly reworked, now grants a flat +16.67% damage boost and +1 duration per thrown weapon level, but caps at +33/67/100% damage and +2/4/6 duration at talent level 1/2/3."));
+
+		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.WARRIOR, 6), "Berserker Nerfs",
+				"The Berserker is doing quite well after v3.1, given that the new shield naturally synergizes with him. I'm scaling back the base class power a bit to compensate:\n\n" +
+				"**-** Rate of rage gain and loss reduced by 25%\n" +
+				"**-** Base enrage shield reduced to 8+2*lvl from 10+2*lvl (the armor's level)"));
 
 	}
 
