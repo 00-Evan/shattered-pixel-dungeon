@@ -112,7 +112,9 @@ public class WandOfLightning extends DamageWand {
 		float procChance = (buffedLvl()+1f)/(buffedLvl()+4f) * procChanceMultiplier(attacker);
 		if (Random.Float() < procChance) {
 
-			FlavourBuff.prolong(attacker, LightningCharge.class, LightningCharge.DURATION);
+			float powerMulti = Math.min(1f, procChance);
+
+			FlavourBuff.prolong(attacker, LightningCharge.class, powerMulti*LightningCharge.DURATION);
 			attacker.sprite.centerEmitter().burst( SparkParticle.FACTORY, 10 );
 			attacker.sprite.flash();
 			Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
