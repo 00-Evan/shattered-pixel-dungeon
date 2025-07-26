@@ -656,7 +656,11 @@ abstract public class MissileWeapon extends Weapon {
 				info += "\n\n" + Messages.get(this, "unlimited_uses");
 			}
 		}  else {
-			info += "\n\n" + Messages.get(this, "unknown_uses", (int) Math.ceil(MAX_DURABILITY / durabilityPerUse(0)));
+			if (durabilityPerUse(0) > 0) {
+				info += "\n\n" + Messages.get(this, "unknown_uses", (int) Math.ceil(MAX_DURABILITY / durabilityPerUse(0)));
+			} else {
+				info += "\n\n" + Messages.get(this, "unlimited_uses");
+			}
 		}
 		
 		return info;
