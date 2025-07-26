@@ -136,24 +136,24 @@ public class LiquidMetal extends Item {
 			if (item != null && item instanceof MissileWeapon) {
 				MissileWeapon m = (MissileWeapon)item;
 
-				int maxToUse = 5*(m.tier+1);
-				maxToUse *= Math.pow(2, m.level());
+				float maxToUse = 5*(m.tier+1);
+				maxToUse *= Math.pow(1.35f, m.level());
 
-				float durabilityPerMetal = 100 / (float)maxToUse;
+				float durabilityPerMetal = 100 / maxToUse;
 
 				//we remove a tiny amount here to account for rounding errors
 				float percentDurabilityLost = 0.999f - (m.durabilityLeft()/100f);
-				maxToUse = (int)Math.ceil(maxToUse*percentDurabilityLost);
+				int toUse = (int)Math.ceil(maxToUse*percentDurabilityLost);
 				float durPerUse = m.durabilityPerUse()/100f;
-				if (maxToUse == 0 ||
+				if (toUse == 0 ||
 						Math.ceil(m.durabilityLeft()/ m.durabilityPerUse()) >= Math.ceil(m.MAX_DURABILITY/ m.durabilityPerUse()) ){
 					GLog.w(Messages.get(LiquidMetal.class, "already_fixed"));
 					return;
-				} else if (maxToUse < quantity()) {
-					Catalog.countUses(LiquidMetal.class, maxToUse);
+				} else if (toUse < quantity()) {
+					Catalog.countUses(LiquidMetal.class, toUse);
 					m.repair(maxToUse*durabilityPerMetal);
-					quantity(quantity()-maxToUse);
-					GLog.i(Messages.get(LiquidMetal.class, "apply", maxToUse));
+					quantity(quantity()-toUse);
+					GLog.i(Messages.get(LiquidMetal.class, "apply", toUse));
 
 				} else {
 					Catalog.countUses(LiquidMetal.class, quantity());
@@ -215,7 +215,7 @@ public class LiquidMetal extends Item {
 			if (m.defaultQuantity() != 3){
 				quantityPerWeapon = 3f / m.defaultQuantity();
 			}
-			quantityPerWeapon += Math.pow(2, Math.min(3, m.level()));
+			quantityPerWeapon *= Math.pow(1.33f, Math.min(5, m.level()));
 
 			float quantity = m.quantity()-1;
 			quantity += 0.25f + 0.0075f*m.durabilityLeft();
