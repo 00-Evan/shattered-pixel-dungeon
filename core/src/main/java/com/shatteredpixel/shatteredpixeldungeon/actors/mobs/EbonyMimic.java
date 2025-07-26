@@ -111,7 +111,7 @@ public class EbonyMimic extends Mimic {
 				if (i instanceof Armor && ((Armor) i).hasCurseGlyph()){
 					((Armor) i).inscribe(null);
 				}
-				if (!(i instanceof MissileWeapon || i instanceof Artifact) && i.level() == 0){
+				if (!(i instanceof Artifact) && i.level() == 0){
 					i.upgrade();
 				}
 			}
