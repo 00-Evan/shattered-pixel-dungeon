@@ -89,6 +89,40 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-2", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.LIQUID_METAL), "Liquid Metal",
+				"I've made some improvements to liquid metal to make it more appealing to use with upgraded thrown weapons, now that the durability scaling per upgrade is down to 1.5x from 3x:\n" +
+				"**-** Liquid metal cost scaling per upgrade down to 1.33x from 2x\n" +
+				"**-** Liquid metal can now replace missing thrown weapons from a set (sets still cap at 3!)"));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**-** Blacksmith's smith option now offers a thrown weapon in addition to 2 melee weapons and an armor\n" +
+				"**-** Blacksmith room can no longer spawn next to the depth exit room\n" +
+				"\n" +
+				"**-** Added a new language: Swedish! (credits TBA)\n" +
+				"**-** Updated Translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs\n" +
+				"**Caused by BETA-1:**\n" +
+				"**-** Enchantments and augments being applicable to darts\n" +
+				"**-** Stone of detect magic not working on thrown weapons\n" +
+				"**-** Heavy boomerang description not mentioning its properties\n" +
+				"**-** Golden & Ebony mimic loot bonuses not applying to thrown weapons\n" +
+				"**-** Trickster potentially dropping upgraded or cursed thrown weapons\n" +
+				"**-** Exploits where thrown weapon sets could be partially sold before upgrading\n" +
+				"**-** Various minor textual errors\n" +
+				"\n" +
+				"**Existed prior to BETA:**\n" +
+				"**-** Indonesian language using the wrong name\n"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
@@ -173,7 +207,7 @@ public class v3_X_Changes {
 				"\n" +
 				"**- Projectile Momentum** accuracy boost up substantially, to +50/100/150% at +1/2/3, from +20/40/60% at +1/2/3.\n" +
 				"\n" +
-				"**- Shared Upgrades** no longer prevents multiple enchantment triggers. Both enchants can now trigger if the thrown weapon and the Huntress' bow are both enchanted."));
+				"**- Shared Enchantments** no longer prevents multiple enchantment triggers. Both enchants can now trigger if the thrown weapon and the Huntress' bow are both enchanted."));
 
 		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 6), "Cleric & Priest Buffs",
 				"Firstly, a quick buff to the Cleric's worst performing T2 spell:\n" +

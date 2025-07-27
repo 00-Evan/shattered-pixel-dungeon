@@ -129,8 +129,6 @@ public class LiquidMetal extends Item {
 			return item instanceof MissileWeapon && !(item instanceof Dart);
 		}
 
-		//TODO should we let this fix broken weapons too?
-
 		@Override
 		public void onSelect( Item item ) {
 			if (item != null && item instanceof MissileWeapon) {
