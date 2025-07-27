@@ -380,6 +380,7 @@ public class Blacksmith extends NPC {
 			for (Item i : toUndo){
 				Generator.undoDrop(i);
 			}
+			smithRewards.add(Generator.randomMissile(3, useDecks));
 			smithRewards.add(Generator.randomArmor(3));
 
 			//30%:+0, 45%:+1, 20%:+2, 5%:+3
