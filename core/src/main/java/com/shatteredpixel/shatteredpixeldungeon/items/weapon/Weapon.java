@@ -170,6 +170,14 @@ abstract public class Weapon extends KindOfWeapon {
 				defender.damage(Smite.bonusDmg((Hero) attacker, defender), Smite.INSTANCE);
 			}
 		}
+
+		//do not progress toward ID in the specific case of a missile weapon with no parent using
+		// up it's last shot, as in this case there's nothing left to ID anyway
+		if (this instanceof MissileWeapon
+				&& ((MissileWeapon) this).durabilityLeft() <= ((MissileWeapon) this).durabilityPerUse()
+				&& ((MissileWeapon) this).parent == null){
+			return damage;
+		}
 		
 		if (!levelKnown && attacker == Dungeon.hero) {
 			float uses = Math.min( availableUsesToID, Talent.itemIDSpeedFactor(Dungeon.hero, this) );
