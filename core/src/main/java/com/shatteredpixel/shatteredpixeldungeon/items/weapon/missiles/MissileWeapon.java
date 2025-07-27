@@ -769,7 +769,7 @@ abstract public class MissileWeapon extends Weapon {
 			return true;
 		}
 
-		public static final String SET_IDD = "set_ids";
+		public static final String SET_IDS = "set_ids";
 		public static final String SET_LEVELS = "set_levels";
 
 		@Override
@@ -783,14 +783,14 @@ abstract public class MissileWeapon extends Weapon {
 				levels[i] = levelThresholds.get(ID);
 				i++;
 			}
-			bundle.put(SET_IDD, IDs);
+			bundle.put(SET_IDS, IDs);
 			bundle.put(SET_LEVELS, levels);
 		}
 
 		@Override
 		public void restoreFromBundle(Bundle bundle) {
 			super.restoreFromBundle(bundle);
-			long[] IDs = bundle.getLongArray(SET_IDD);
+			long[] IDs = bundle.getLongArray(SET_IDS);
 			int[] levels = bundle.getIntArray(SET_LEVELS);
 			levelThresholds.clear();
 			for (int i = 0; i <IDs.length; i++){
