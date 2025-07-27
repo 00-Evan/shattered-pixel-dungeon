@@ -144,11 +144,31 @@ public class LiquidMetal extends Item {
 				//we remove a tiny amount here to account for rounding errors
 				float percentDurabilityLost = 0.999f - (m.durabilityLeft()/100f);
 				int toUse = (int)Math.ceil(maxToUse*percentDurabilityLost);
-				float durPerUse = m.durabilityPerUse()/100f;
 				if (toUse == 0 ||
 						Math.ceil(m.durabilityLeft()/ m.durabilityPerUse()) >= Math.ceil(m.MAX_DURABILITY/ m.durabilityPerUse()) ){
-					GLog.w(Messages.get(LiquidMetal.class, "already_fixed"));
-					return;
+
+					if (m.quantity() < m.defaultQuantity()){
+						if (quantity()*durabilityPerMetal >= m.durabilityPerUse()){
+							m.quantity(m.quantity()+1);
+							if (maxToUse < quantity()){
+								Catalog.countUses(LiquidMetal.class, (int)Math.ceil(maxToUse));
+								GLog.i(Messages.get(LiquidMetal.class, "apply", (int)Math.ceil(maxToUse)));
+								quantity -= (int)Math.ceil(maxToUse);
+							} else {
+								Catalog.countUses(LiquidMetal.class, quantity());
+								m.damage(100f);
+								m.repair(quantity()*durabilityPerMetal-1);
+								GLog.i(Messages.get(LiquidMetal.class, "apply", quantity()));
+								detachAll(Dungeon.hero.belongings.backpack);
+							}
+						} else {
+							GLog.w(Messages.get(LiquidMetal.class, "already_fixed"));
+							return;
+						}
+					} else {
+						GLog.w(Messages.get(LiquidMetal.class, "already_fixed"));
+						return;
+					}
 				} else if (toUse < quantity()) {
 					Catalog.countUses(LiquidMetal.class, toUse);
 					m.repair(maxToUse*durabilityPerMetal);
