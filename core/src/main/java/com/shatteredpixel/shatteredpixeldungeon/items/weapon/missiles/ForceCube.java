@@ -59,8 +59,18 @@ public class ForceCube extends MissileWeapon {
 	}
 
 	@Override
+	public float castDelay(Char user, int dst) {
+		//special rules as throwing this onto empty space or yourself does trigger it
+		if (!Dungeon.level.pit[dst] && Actor.findChar(dst) == null){
+			return delayFactor( user );
+		} else {
+			return super.castDelay(user, dst);
+		}
+	}
+
+	@Override
 	protected void onThrow(int cell) {
-		if (Dungeon.level.pit[cell]){
+		if ((Dungeon.level.pit[cell] && Actor.findChar(cell) == null)){
 			super.onThrow(cell);
 			return;
 		}
