@@ -528,8 +528,8 @@ abstract public class MissileWeapon extends Weapon {
 				durability += MAX_DURABILITY;
 			}
 
-			//hashcode check is for pre-3.2 saves
-			if (quantity > defaultQuantity() && setID != getClass().getSimpleName().hashCode()){
+			//hashcode check is for pre-3.2 saves, 0 check is for darts
+			if (quantity > defaultQuantity() && setID != 0 && setID != getClass().getSimpleName().hashCode()){
 				quantity = defaultQuantity();
 				durability = MAX_DURABILITY;
 			}
