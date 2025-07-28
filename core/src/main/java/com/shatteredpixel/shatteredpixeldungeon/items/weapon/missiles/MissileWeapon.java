@@ -310,6 +310,7 @@ abstract public class MissileWeapon extends Weapon {
 		//instant ID with the right talent
 		if (attacker == Dungeon.hero && Dungeon.hero.pointsInTalent(Talent.SURVIVALISTS_INTUITION) == 2){
 			usesLeftToID = Math.min(usesLeftToID, 0);
+			availableUsesToID =  Math.max(usesLeftToID, 0);
 		}
 
 		int result = super.proc(attacker, defender, damage);
