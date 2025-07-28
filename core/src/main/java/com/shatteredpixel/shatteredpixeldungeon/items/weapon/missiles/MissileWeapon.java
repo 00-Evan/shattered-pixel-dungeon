@@ -193,7 +193,7 @@ abstract public class MissileWeapon extends Weapon {
 		if (hasEnchant(Projecting.class, user)){
 			projecting += 4;
 		}
-		if (Random.Int(3) < user.pointsInTalent(Talent.SHARED_ENCHANTMENT)){
+		if ((!(this instanceof SpiritBow.SpiritArrow) && Random.Int(3) < user.pointsInTalent(Talent.SHARED_ENCHANTMENT))){
 			SpiritBow bow = Dungeon.hero.belongings.getItem(SpiritBow.class);
 			if (bow != null && bow.hasEnchant(Projecting.class, user)) {
 				projecting += 4;
