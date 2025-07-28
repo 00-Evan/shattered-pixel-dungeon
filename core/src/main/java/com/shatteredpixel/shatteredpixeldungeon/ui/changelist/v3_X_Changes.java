@@ -89,9 +89,31 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("BETA-3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**-** Thrown weapons (including the bow) now always spend 1 turn if they aren't aimed at a target. This is to prevent turn manipulation exploits with speed augmented weapons.\n" +
+				"\n" +
+				"**-** Added credits for Swedish\n" +
+				"**-** Updated translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs\n" +
+				"**Caused by BETA-2:**\n" +
+				"**-** Darts being incorrect deleted in a bunch of cases\n" +
+				"**-** Alchemize UI not being updated along with shop selling UI in previous beta-1 change for selling thrown weapons\n" +
+				"\n" +
+				"**Caused by BETA-1:**\n" +
+				"**-** Survivalist's Intuition still granting its old benefit to all equipment\n" +
+				"**-** Shard of Oblivion not notifying when thrown weapons are ready to ID in some cases\n" +
+				"**-** Transmuting also repairing thrown weapons\n" +
+				"**-** Projecting from spirit bow stacking twice on its own arrows\n" +
+				"\n" +
+				"**Existed prior to BETA:**\n" +
+				"**-** Rare cases where hero could not regen more than 1hp/turn when they should\n" +
+				"**-** Cleric's body form enchantment/glyph effect also applying to some enemies"));
 
 		changes = new ChangeInfo("BETA-2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -121,7 +143,7 @@ public class v3_X_Changes {
 				"**-** Various minor textual errors\n" +
 				"\n" +
 				"**Existed prior to BETA:**\n" +
-				"**-** Indonesian language using the wrong name\n"));
+				"**-** Indonesian language using the wrong name"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
