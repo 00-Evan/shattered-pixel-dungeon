@@ -391,12 +391,11 @@ abstract public class MissileWeapon extends Weapon {
 	}
 	
 	@Override
-	public float castDelay(Char user, int dst) {
-		if (Actor.findChar(dst) != null && Actor.findChar(dst) != user){
-			//TODO force cube
+	public float castDelay(Char user, int cell) {
+		if (Actor.findChar(cell) != null && Actor.findChar(cell) != user){
 			return delayFactor( user );
 		} else {
-			return super.castDelay(user, dst);
+			return super.castDelay(user, cell);
 		}
 	}
 	
