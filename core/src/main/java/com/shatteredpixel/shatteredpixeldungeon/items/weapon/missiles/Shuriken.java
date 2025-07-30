@@ -55,8 +55,8 @@ public class Shuriken extends MissileWeapon {
 	}
 
 	@Override
-	public float delayFactor(Char owner) {
-		return owner.buff(ShurikenInstantTracker.class) != null ? super.delayFactor(owner) : 0;
+	public float castDelay(Char user, int cell) {
+		return user.buff(ShurikenInstantTracker.class) != null ? super.castDelay(user, cell) : 0;
 	}
 
 	public static class ShurikenInstantTracker extends FlavourBuff {
