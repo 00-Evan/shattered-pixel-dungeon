@@ -118,6 +118,7 @@ public class StoneOfIntuition extends InventoryStone {
 					if (item.getClass() == curGuess){
 						if (item instanceof Ring){
 							((Ring) item).setKnown();
+							Item.updateQuickslot();
 						} else {
 							item.identify();
 						}
