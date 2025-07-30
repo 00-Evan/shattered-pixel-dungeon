@@ -89,6 +89,44 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-4", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**-** Tomahawk Bleed % down to 33% from 50%, but is now its own separate damage roll that ignores enemy armor and bonus dmg from excess str.\n" +
+				"\n" +
+				"**-** Stone of Intuition guess window now shows which item you are guessing for\n" +
+				"\n" +
+				"**-** Updated Translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs\n" +
+				"**Caused by BETA-3:**\n" +
+				"**-** Thrown weapons sometimes taking 1 turn to throw in cases where they shouldn't\n" +
+				"**-** Shurikens not getting an instant throw when aimed at terrain\n" +
+				"\n" +
+				"**Caused by BETA-2:**\n" +
+				"**-** Rare crash bugs when selling thrown weapons to shopkeepers\n" +
+				"\n" +
+				"**Caused by BETA-1:**\n" +
+				"**-** Flail ability bonus damage not applying\n" +
+				"**-** Duplication bug involving incendiary darts\n" +
+				"**-** Spirit bow not being curse-infusable\n" +
+				"**-** Cases where curse infusion and upgrading could cause thrown weapons to incorrectly turn to dust\n" +
+				"**-** Thrown Weapons not including explosive curse state in their description\n" +
+				"**-** Various minor typos\n" +
+				"\n" +
+				"**Existed prior to BETA:**\n" +
+				"**-** Chaotic Censer aiming at passive enemies\n" +
+				"**-** Cases where sacrificial fire would rarely not apply\n" +
+				"**-** Rogue not getting invisibility from some unstable spell effects\n" +
+				"**-** Minor Visual bugs"));
+
 		changes = new ChangeInfo("BETA-3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
