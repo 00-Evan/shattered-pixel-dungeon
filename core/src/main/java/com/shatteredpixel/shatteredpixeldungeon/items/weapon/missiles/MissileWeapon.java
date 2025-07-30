@@ -147,7 +147,7 @@ abstract public class MissileWeapon extends Weapon {
 			durability = MAX_DURABILITY;
 			extraThrownLeft = false;
 			quantity = defaultQuantity();
-			Buff.affect(Dungeon.hero, UpgradedSetTracker.class).levelThresholds.put(setID, level()+1);
+			Buff.affect(Dungeon.hero, UpgradedSetTracker.class).levelThresholds.put(setID, trueLevel()+1);
 		}
 		//thrown weapons don't get curse weakened
 		boolean wasCursed = cursed;
@@ -164,7 +164,7 @@ abstract public class MissileWeapon extends Weapon {
 			durability = MAX_DURABILITY;
 			extraThrownLeft = false;
 			quantity = defaultQuantity();
-			Buff.affect(Dungeon.hero, UpgradedSetTracker.class).levelThresholds.put(setID, level()+1);
+			Buff.affect(Dungeon.hero, UpgradedSetTracker.class).levelThresholds.put(setID, trueLevel()+1);
 		}
 		return super.upgrade();
 	}
@@ -771,10 +771,14 @@ abstract public class MissileWeapon extends Weapon {
 		public HashMap<Long, Integer> levelThresholds = new HashMap<>();
 
 		public static boolean pickupValid(Hero h, MissileWeapon w){
+			if (Dungeon.initialVersion <= 857){
+				//skip this for old earlier beta runs just in case
+				return true;
+			}
 			if (h.buff(UpgradedSetTracker.class) != null){
 				HashMap<Long, Integer> levelThresholds = h.buff(UpgradedSetTracker.class).levelThresholds;
 				if (levelThresholds.containsKey(w.setID)){
-					return w.level() >= levelThresholds.get(w.setID);
+					return w.trueLevel() >= levelThresholds.get(w.setID);
 				}
 				return true;
 			}
