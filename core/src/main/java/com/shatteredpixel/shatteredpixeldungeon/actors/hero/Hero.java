@@ -2052,8 +2052,8 @@ public class Hero extends Char {
 	@Override
 	public boolean add( Buff buff ) {
 
-		if (buff(TimekeepersHourglass.timeStasis.class) != null
-			|| buff(TimeStasis.class) != null) {
+		if (buff.type == Buff.buffType.NEGATIVE &&
+				(buff(TimekeepersHourglass.timeStasis.class) != null || buff(TimeStasis.class) != null)) {
 			return false;
 		}
 
