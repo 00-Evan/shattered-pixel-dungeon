@@ -85,116 +85,19 @@ public class v3_X_Changes {
 
 	public static void add_v3_2_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v3.2-BETA", true, "");
+		ChangeInfo changes = new ChangeInfo("v3.2", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes = new ChangeInfo("BETA-4", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** Tomahawk Bleed % down to 33% from 50%, but is now its own separate damage roll that ignores enemy armor and bonus dmg from excess str.\n" +
-				"\n" +
-				"**-** Stone of Intuition guess window now shows which item you are guessing for\n" +
-				"\n" +
-				"**-** Updated Translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs\n" +
-				"**Caused by BETA-3:**\n" +
-				"**-** Thrown weapons sometimes taking 1 turn to throw in cases where they shouldn't\n" +
-				"**-** Shurikens not getting an instant throw when aimed at terrain\n" +
-				"\n" +
-				"**Caused by BETA-2:**\n" +
-				"**-** Rare crash bugs when selling thrown weapons to shopkeepers\n" +
-				"\n" +
-				"**Caused by BETA-1:**\n" +
-				"**-** Flail ability bonus damage not applying\n" +
-				"**-** Duplication bug involving incendiary darts\n" +
-				"**-** Spirit bow not being curse-infusable\n" +
-				"**-** Cases where curse infusion and upgrading could cause thrown weapons to incorrectly turn to dust\n" +
-				"**-** Thrown Weapons not including explosive curse state in their description\n" +
-				"**-** Various minor typos\n" +
-				"\n" +
-				"**Existed prior to BETA:**\n" +
-				"**-** Chaotic Censer aiming at passive enemies\n" +
-				"**-** Cases where sacrificial fire would rarely not apply\n" +
-				"**-** Rogue not getting invisibility from some unstable spell effects\n" +
-				"**-** Minor Visual bugs"));
-
-		changes = new ChangeInfo("BETA-3", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** Thrown weapons (including the bow) now always spend 1 turn if they aren't aimed at a target. This is to prevent turn manipulation exploits with speed augmented weapons.\n" +
-				"\n" +
-				"**-** Added credits for Swedish\n" +
-				"**-** Updated translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs\n" +
-				"**Caused by BETA-2:**\n" +
-				"**-** Darts being incorrect deleted in a bunch of cases\n" +
-				"**-** Alchemize UI not being updated along with shop selling UI in previous beta-1 change for selling thrown weapons\n" +
-				"\n" +
-				"**Caused by BETA-1:**\n" +
-				"**-** Survivalist's Intuition still granting its old benefit to all equipment\n" +
-				"**-** Shard of Oblivion not notifying when thrown weapons are ready to ID in some cases\n" +
-				"**-** Transmuting also repairing thrown weapons\n" +
-				"**-** Projecting from spirit bow stacking twice on its own arrows\n" +
-				"\n" +
-				"**Existed prior to BETA:**\n" +
-				"**-** Rare cases where hero could not regen more than 1hp/turn when they should\n" +
-				"**-** Cleric's body form enchantment/glyph effect also applying to some enemies"));
-
-		changes = new ChangeInfo("BETA-2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.LIQUID_METAL), "Liquid Metal",
-				"I've made some improvements to liquid metal to make it more appealing to use with upgraded thrown weapons, now that the durability scaling per upgrade is down to 1.5x from 3x:\n" +
-				"**-** Liquid metal cost scaling per upgrade down to 1.33x from 2x\n" +
-				"**-** Liquid metal can now replace missing thrown weapons from a set (sets still cap at 3!)"));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** Blacksmith's smith option now offers a thrown weapon in addition to 2 melee weapons and an armor\n" +
-				"**-** Blacksmith room can no longer spawn next to the depth exit room\n" +
-				"\n" +
-				"**-** Added a new language: Swedish! (credits TBA)\n" +
-				"**-** Updated Translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs\n" +
-				"**Caused by BETA-1:**\n" +
-				"**-** Enchantments and augments being applicable to darts\n" +
-				"**-** Stone of detect magic not working on thrown weapons\n" +
-				"**-** Heavy boomerang description not mentioning its properties\n" +
-				"**-** Golden & Ebony mimic loot bonuses not applying to thrown weapons\n" +
-				"**-** Trickster potentially dropping upgraded or cursed thrown weapons\n" +
-				"**-** Exploits where thrown weapon sets could be partially sold before upgrading\n" +
-				"**-** Various minor textual errors\n" +
-				"\n" +
-				"**Existed prior to BETA:**\n" +
-				"**-** Indonesian language using the wrong name"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
-				"Hey Beta testers, thanks for testing v3.2.0!\n" +
+				"**-** Released August 4th, 2025\n" +
+				"**-** 63 days after Shattered v3.1.0\n" +
 				"\n" +
-				"v3.2.0 is smaller than most updates, but comes with a major overhaul to thrown weapons, balance changes to some subclasses, and a major QoL change to accuracy/evasion effects.\n" +
-				"\n" +
-				"The update is content complete, but I do expect to do a bit more before it goes live:\n" +
-				"**-** Followup balance tweaks to thrown weapon sets and other stuff as needed\n" +
-				"**-** Additional small fixes and tweaks"));
+				"Dev commentary will be added here in the future."));
 
 		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.JAVELIN), "Thrown Weapon Sets",
 				"**Thrown weapons have been majorly overhauled to be more worthwhile to upgrade!**\n" +
@@ -226,6 +129,15 @@ public class v3_X_Changes {
 		changes.hardlight(CharSprite.WARNING);
 		changeInfos.add(changes);
 
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.LIQUID_METAL), "Liquid Metal",
+				"Liquid metal has also been changed to go along with the general changes to thrown weapons:\n" +
+				"\n" +
+				"**-** Recipe adjusted, now takes one known uncursed thrown weapon set and always costs 3 energy.\n" +
+				"**-** Liquid metal can now replace missing/broken thrown weapons from a set (up to the usual cap of 3)\n" +
+				"**-** Liquid metal scaling per upgrade down to 1.33x from 2x.\n" +
+				"\n" +
+				"The upgrade scaling change works out to be a slight nerf, as thrown weapon durability scaling per upgrade was also reduced to 1.5x from 3x. However, I expect durability and repairing to be much more of a factor now, as previously upgraded thrown weapons would reach infinite durability very quickly."));
+
 		changes.addButton(new ChangeButton(new TalentIcon(Talent.SURVIVALISTS_INTUITION), "Survivalist's Intuition",
 				"Now that thrown weapons can be identified, there is design space for the Huntress to have a non-generic identification talent:\n" +
 				"\n" +
@@ -233,9 +145,12 @@ public class v3_X_Changes {
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"**Highlights:**\n" +
-				"**-** Ascension challenge now always notifies the player the first time the amulet's curse is weakened, which should make tracking the pacifist ascent badge easier.\n" +
-				"**-** Liquid metal's recipe has been adjusted, it now accepts one set of known uncursed thrown weapons and has a standard cost of 3.\n" +
-				"**-** Characters that are immune to the wand of lightning no longer reduce its overall damage if it arcs though them.\n" +
+				"**-** Blacksmith's smith option now offers a thrown weapon in addition to 2 melee weapons and an armor\n" +
+				"**-** Thrown weapons (including the bow) now always have a throw delay of 1 turn if they aren't aimed at a target\n" +
+				"**-** Ascension challenge now always notifies the player the first time the amulet's curse is weakened\n" +
+				"**-** Characters that are immune to the wand of lightning no longer reduce its overall damage if it arcs though them\n" +
+				"**-** Chaotic Censer no longer aims at passive enemies\n" +
+				"**-** Added a new language: Swedish!\n" +
 				"\n" +
 				"**Thrown Weapons:**\n" +
 				"**-** Augmentation now affects thrown weapon durability based on how it affects attack speed\n" +
@@ -245,18 +160,28 @@ public class v3_X_Changes {
 
 				"**Misc:**\n" +
 				"**-** Improved most tutorial/guidebook text to be more concise\n" +
+				"**-** Stone of Intuition guess window now shows which item you are guessing for\n" +
+				"**-** Blacksmith room can no longer spawn next to the depth exit room\n" +
 				"**-** Rats that are made friendly by the 19th armor ability no longer attack enemies\n" +
 				"**-** Wands now only need to be known uncursed to be used in making resin\n" +
 				"**-** Made tweaks to tunnel and maze rooms to reduce the chance of them generating certain shapes\n" +
 				"**-** Made piranha description text more helpful\n" +
-				"**-** Updated code libraries on iOS (Android and Desktop lib updates will come in a patch later)"));
+				"**-** Updated code libraries on iOS (Android and Desktop lib updates will come in a patch later)\n" +
+				"**-** Added dev commentary for v2.2.0\n"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
-				"**Misc:**\n" +
+				"**Gameplay:**\n" +
+				"**-** Cases where sacrificial fire would not apply just after a character steps into it\n" +
+				"**-** Rogue's incribed stealth talent not properly triggering from some unstable spell effects\n" +
+				"**-** Rare cases where hero could not regen more than 1hp/turn when they should\n" +
 				"**-** Distortion traps always generating mimics when choosing to generate an uncommon enemy\n" +
+				"**-** Cleric's body form enchantment/glyph effect also applying to some enemies\n" +
+				"\n" +
+				"**Misc:**\n" +
 				"**-** Cases where status text would stack on itself incorrectly\n" +
-				"**-** Infinity symbol (∞) not being rendered by the game's pixel font"));
+				"**-** Language selection menu using thr wrong name for Indonesian\n" +
+				"**-** Minor visual and textual bugs"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight(CharSprite.POSITIVE);
@@ -305,7 +230,7 @@ public class v3_X_Changes {
 				"**- Bolas** damage scaling down to 1-2 from 1-3\n" +
 				"**- Heavy Boomerang** durability down to 5 from 8\n" +
 				"**- Tomahawk** damage scaling down to 1-3 from 1-4\n" +
-				"**- Tomahawk** percent damage dealt as bleed down to 50% from 60%\n" +
+				"**- Tomahawk** bleed % down to 33% from 60%, but it is now a separate roll that ignores enemy armor\n" +
 				"**- Force Cube** base damage down to 10-20 from 10-25"));
 
 		changes.addButton(new ChangeButton(new TalentIcon(Talent.SHARED_UPGRADES), "Thrown Weapon Talent Nerfs",
@@ -317,7 +242,8 @@ public class v3_X_Changes {
 				"**- Shared Upgrades** slightly reworked, now grants a flat +16.67% damage boost and +1 duration per thrown weapon level, but caps at +33/67/100% damage and +2/4/6 duration at talent level 1/2/3."));
 
 		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.WARRIOR, 6), "Berserker Nerfs",
-				"The Berserker is doing quite well after v3.1, given that the new shield naturally synergizes with him. I'm scaling back the base class power a bit to compensate:\n\n" +
+				"The Berserker is doing quite well after v3.1, given that the new shield naturally synergizes with him. I'm scaling back the base subclass power a bit to compensate:\n" +
+				"\n" +
 				"**-** Rate of rage gain and loss reduced by 25%\n" +
 				"**-** Base enrage shield reduced to 8+2*lvl from 10+2*lvl (the armor's level)"));
 
