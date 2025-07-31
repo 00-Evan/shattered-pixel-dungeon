@@ -770,10 +770,6 @@ abstract public class MissileWeapon extends Weapon {
 		public HashMap<Long, Integer> levelThresholds = new HashMap<>();
 
 		public static boolean pickupValid(Hero h, MissileWeapon w){
-			if (Dungeon.initialVersion <= 857){
-				//skip this for old earlier beta runs just in case
-				return true;
-			}
 			if (h.buff(UpgradedSetTracker.class) != null){
 				HashMap<Long, Integer> levelThresholds = h.buff(UpgradedSetTracker.class).levelThresholds;
 				if (levelThresholds.containsKey(w.setID)){
