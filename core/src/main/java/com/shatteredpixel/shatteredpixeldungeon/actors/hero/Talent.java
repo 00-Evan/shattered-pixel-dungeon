@@ -1149,15 +1149,12 @@ public enum Talent {
 
 	private static final HashSet<String> removedTalents = new HashSet<>();
 	static{
-		//v2.4.0
-		removedTalents.add("TEST_SUBJECT");
-		removedTalents.add("TESTED_HYPOTHESIS");
+		//nothing atm
 	}
 
 	private static final HashMap<String, String> renamedTalents = new HashMap<>();
 	static{
-		//v2.4.0
-		renamedTalents.put("SECONDARY_CHARGE",          "VARIED_CHARGE");
+		//nothing atm
 	}
 
 	public static void restoreTalentsFromBundle( Bundle bundle, Hero hero ){

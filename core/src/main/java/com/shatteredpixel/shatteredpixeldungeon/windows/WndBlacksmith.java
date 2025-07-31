@@ -204,8 +204,7 @@ public class WndBlacksmith extends Window {
 
 	}
 
-	//public so that it can be directly called for pre-v2.2.0 quest completions
-	public static class WndReforge extends Window {
+	protected static class WndReforge extends Window {
 
 		private static final int WIDTH		= 120;
 
