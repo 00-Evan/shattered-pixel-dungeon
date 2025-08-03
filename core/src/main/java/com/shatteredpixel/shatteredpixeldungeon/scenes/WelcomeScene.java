@@ -53,7 +53,7 @@ import java.util.Collections;
 
 public class WelcomeScene extends PixelScene {
 
-	private static final int LATEST_UPDATE = 855;
+	private static final int LATEST_UPDATE = 859;
 
 	//used so that the game does not keep showing the window forever if cleaning fails
 	private static boolean triedCleaningTemp = false;
@@ -208,12 +208,6 @@ public class WelcomeScene extends PixelScene {
 				message += "\n" + Messages.get(this, "patch_translations");
 
 			}
-
-			message = "Hey Beta testers, thanks for testing v3.2.0!\n" +
-					"\n" +
-					"v3.2.0 comes with a major overhaul to thrown weapons, balance changes to some subclasses, and a major QoL change to accuracy/evasion effects.\n" +
-					"\n" +
-					"Check out the changes screen for full details.";
 
 		} else {
 			message = Messages.get(this, "what_msg");

@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollExileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ImpSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
@@ -43,7 +44,7 @@ import java.util.ArrayList;
 public class v3_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
-		//add_Coming_Soon(changeInfos);
+		add_Coming_Soon(changeInfos);
 		add_v3_2_Changes(changeInfos);
 		add_v3_1_Changes(changeInfos);
 		add_v3_0_Changes(changeInfos);
@@ -55,32 +56,27 @@ public class v3_X_Changes {
 		changes.hardlight(0xCCCCCC);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Overview",
-				"The next major update to Shattered will be v3.2, which will include an overhaul to thrown weapons!\n" +
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Overview and ETA",
+				"The next major Shattered update will v3.3 (I may change the name to v4.0 but it's unlikely). This update will include an overhaul to the Ambitious Imp quest in the metropolis!\n" +
 				"\n" +
-				"Due to deadlines relating to supporting old versions of Android, v3.2 has to release relatively quickly. Expect to hear more from me about it sometime probably toward mid or late July.\n" +
+				"The blacksmith quest overhaul ended up taking quite a bit of time, and so I expect v3.3 will as well. I will write some blog posts as I make progress though, so hopefully you'll hear from me as things start to take shape in October or November.\n" +
 				"\n" +
 				"**Please keep in mind that while I always try to keep to the ETAs I provide, they are just estimates. If you don't hear from me by the ETA, it means I'm still busy with the update!**"));
 
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.TRIDENT), "Thrown Weapon Overhaul",
-				"The biggest content change I have planned for v3.2 is something I didn't originally plan for 2025, an overhaul to thrown weapons! I've settled on a design I like, and want v3.2 to be fairly quick, which is why this has taken priority for the moment.\n" +
+		changes.addButton( new ChangeButton(Icons.get(Icons.CHANGES), "Patches & Old Android and Java",
+				"There will be a higher than normal number of patches to v3.2. Firstly to address balance concerns arising from all the item changes (rather than waiting and doing them next update), and then to make various game library updates and technical changes.\n" +
 				"\n" +
-				"The plan is to make thrown weapons behave a bit more like wands, by having them drop in 'sets' that have a fixed quantity, but which can be upgraded as a unit. This should make investing upgrades in thrown weapons much more appealing, as you'll no longer be limited to upgrading one at a time."));
+				"As mentioned previously, one of the consequences of these library updates and technical changes will be removing support for Android 4.0-4.4, and Java 8-10. Dropping support for these is unfortunately necessary in order to meet an impending requirement by Google."));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Misc. and Behind the Scenes Changes",
-				"As always, v3.2 will include some smaller misc. changes and balance tweaks, but I expect it will be lighter on them than usual as I'm working on a deadline in order to ensure old Android and Java users will still get v3.2.\n" +
+		changes.addButton( new ChangeButton(new Image(new ImpSprite()), "City Quest Overhaul!",
+				"The major content improvements coming in v3.3 will be an overhaul to the Ambitious Imp's quest in the Metropolis. This quest is one of the last major leftovers from the original Pixel Dungeon and badly needs some modernization.\n" +
 				"\n" +
-				"If there's time, I would also like to make some internal changes in prep for a new city quest toward the end of the year."));
+				"Just like the Blacksmith quest overhaul, this new quest will send you to a new sub-region of the dungeon with some unique gameplay. Rather than digging, you'll be attempting to infiltrate a dwarven vault full of danger and treasure!"));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.WARNING), "Old Android and Java Support",
-				"Unfortunately, due to changes to code libraries and build tools that Shattered depends on, I will have to make some changes in the next few months that will remove support for **Android 4.0-4.4** and **Java 8-10**.\n" +
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Other Changes",
+				"I will want to keep v3.3 mainly focused on the new quest, but there will be room for smaller changes too! Mainly this will be balance changes, but there might be room for a few smaller design improvements or additions too.\n" +
 				"\n" +
-				"Devices with these platform versions should still receive v3.2 and any immediate patches, but will not receive updates after that. These devices will be able to continue playing v3.2 indefinitely.\n" +
-				"\n" +
-				"Android 4.4 was succeeded by Android 5.0 in 2014, ~1% of Android Shattered players are using Android 4.4-. Java 10 was succeeded by Java 11 in 2018, but can run on computers from 2010 and earlier.\n" +
-				"\n" +
-				"Note that the Java requirement only applies to the plain .JAR desktop builds of Shattered, which require a separate Java install. If you're unsure which desktop build you're using, it probably isn't the Java one."));
-
+				"Also, I can't make any promises yet, but I am hoping to move forward with more visual improvements, including in-game spritework improvements, whose development has largely been on hiatus since last year."));
 	}
 
 	public static void add_v3_2_Changes( ArrayList<ChangeInfo> changeInfos ) {
@@ -173,14 +169,14 @@ public class v3_X_Changes {
 				"Fixed the following bugs:\n" +
 				"**Gameplay:**\n" +
 				"**-** Cases where sacrificial fire would not apply just after a character steps into it\n" +
-				"**-** Rogue's incribed stealth talent not properly triggering from some unstable spell effects\n" +
+				"**-** Rogue's inscribed stealth talent not properly triggering from some unstable spell effects\n" +
 				"**-** Rare cases where hero could not regen more than 1hp/turn when they should\n" +
 				"**-** Distortion traps always generating mimics when choosing to generate an uncommon enemy\n" +
 				"**-** Cleric's body form enchantment/glyph effect also applying to some enemies\n" +
 				"\n" +
 				"**Misc:**\n" +
 				"**-** Cases where status text would stack on itself incorrectly\n" +
-				"**-** Language selection menu using thr wrong name for Indonesian\n" +
+				"**-** Language selection menu using the wrong name for Indonesian\n" +
 				"**-** Minor visual and textual bugs"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
@@ -222,7 +218,7 @@ public class v3_X_Changes {
 		changes.hardlight(CharSprite.NEGATIVE);
 		changeInfos.add(changes);
 
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.SHURIKEN), "Targeted Thrown Weapon Nerfs",
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.TOMAHAWK), "Thrown Weapon Nerfs",
 				"Various thrown weapons are getting targeted nerfs, mainly focused around compensating for lower durability weapons now effectively having +50% base uses, or certain weapons now being much more spammable.\n" +
 				"\n" +
 				"**- Shuriken** instant-throw condition changed to a simple 20 turn cooldown\n" +
