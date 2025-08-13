@@ -56,7 +56,6 @@ public class HeavyBoomerang extends MissileWeapon {
 	@Override
 	protected float adjacentAccFactor(Char owner, Char target) {
 		if (circleBackhit){
-			circleBackhit = false;
 			return 1.5f;
 		}
 		return super.adjacentAccFactor(owner, target);
@@ -142,6 +141,7 @@ public class HeavyBoomerang extends MissileWeapon {
 												if (((Hero)target).shoot( returnTarget, boomerang )) {
 													boomerang.decrementDurability();
 												}
+												boomerang.circleBackhit = false;
 												if (!boomerang.spawnedForEffect && boomerang.durability > 0) {
 													Dungeon.level.drop(boomerang, returnPos).sprite.drop();
 												}
