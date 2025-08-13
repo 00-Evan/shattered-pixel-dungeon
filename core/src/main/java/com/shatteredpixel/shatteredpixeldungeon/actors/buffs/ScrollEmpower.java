@@ -33,10 +33,10 @@ public class ScrollEmpower extends Buff {
 		type = buffType.POSITIVE;
 	}
 
-	private int left;
+	private int left = 0;
 
 	public void reset(int left){
-		this.left = left;
+		this.left = Math.max(this.left, left);
 		Item.updateQuickslot();
 	}
 
