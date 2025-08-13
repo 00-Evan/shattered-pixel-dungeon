@@ -295,7 +295,12 @@ public enum Talent {
 		public void tintIcon(Image icon) { icon.hardlight(0.35f, 0f, 0.7f); }
 		public float iconFadePercent() { return Math.max(0, visualcooldown() / 50); }
 	};
-	public static class LiquidAgilEVATracker extends FlavourBuff{};
+	public static class LiquidAgilEVATracker extends FlavourBuff{
+		{
+			//detaches after hero acts, not after mobs act
+			actPriority = HERO_PRIO+1;
+		}
+	};
 	public static class LiquidAgilACCTracker extends FlavourBuff{
 		public int uses;
 
