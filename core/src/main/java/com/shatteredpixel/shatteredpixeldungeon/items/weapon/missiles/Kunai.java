@@ -35,13 +35,13 @@ public class Kunai extends MissileWeapon {
 		hitSoundPitch = 1.1f;
 		
 		tier = 3;
-		baseUses = 5;
+		baseUses = 8;
 	}
 
 	@Override
 	public int max(int lvl) {
 		return  4 * tier +                      //12 base, down from 15
-				(tier-1)*lvl;                   //scaling unchanged
+				tier*lvl;                       //scaling unchanged
 	}
 	
 	@Override

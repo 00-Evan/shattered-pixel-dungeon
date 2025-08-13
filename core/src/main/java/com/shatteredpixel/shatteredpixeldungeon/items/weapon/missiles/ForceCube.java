@@ -48,12 +48,6 @@ public class ForceCube extends MissileWeapon {
 	}
 
 	@Override
-	public int max(int lvl) {
-		return  4 * tier +                  //20 base, down from 25
-				(tier) * lvl;               //scaling unchanged
-	}
-
-	@Override
 	public void hitSound(float pitch) {
 		//no hitsound as it never hits enemies directly
 	}

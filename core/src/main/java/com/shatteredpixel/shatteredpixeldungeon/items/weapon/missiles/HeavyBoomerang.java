@@ -48,7 +48,7 @@ public class HeavyBoomerang extends MissileWeapon {
 	@Override
 	public int max(int lvl) {
 		return  4 * tier +                  //16 base, down from 20
-				(tier) * lvl;               //scaling unchanged
+				(tier-1) * lvl;             //3 scaling, down from 4
 	}
 
 	boolean circleBackhit = false;
@@ -96,7 +96,7 @@ public class HeavyBoomerang extends MissileWeapon {
 			this.returnPos = returnPos;
 			this.returnDepth = returnDepth;
 			this.returnBranch = returnBranch;
-			left = 3;
+			left = 4;
 		}
 		
 		public int returnPos(){
