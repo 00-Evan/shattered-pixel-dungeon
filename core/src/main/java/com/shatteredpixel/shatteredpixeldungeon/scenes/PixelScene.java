@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
@@ -323,8 +324,11 @@ public class PixelScene extends Scene {
 	}
 
 	public static RenderedTextBlock renderTextBlock(String text, int size ){
-		RenderedTextBlock result = new RenderedTextBlock( text, size*defaultZoom);
-		result.zoom(1/(float)defaultZoom);
+		//some systems (macOS mainly) require this back buffer check to ensure
+		// that we're working with real pixels, not logical ones
+		float scale = Game.width / (float)Gdx.graphics.getBackBufferWidth();
+		RenderedTextBlock result = new RenderedTextBlock( text, size*Math.round(defaultZoom*scale));
+		result.zoom(1/(float)Math.round(defaultZoom*scale));
 		return result;
 	}
 
