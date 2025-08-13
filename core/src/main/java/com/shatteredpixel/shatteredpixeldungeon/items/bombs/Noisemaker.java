@@ -139,17 +139,20 @@ public class Noisemaker extends Bomb {
 		}
 
 		private static final String LEFT = "left";
+		private static final String TRIGGERED = "triggered";
 
 		@Override
 		public void storeInBundle(Bundle bundle) {
 			super.storeInBundle(bundle);
 			bundle.put(LEFT, left);
+			bundle.put(TRIGGERED, triggered);
 		}
 
 		@Override
 		public void restoreFromBundle(Bundle bundle) {
 			super.restoreFromBundle(bundle);
 			left = bundle.getInt(LEFT);
+			triggered = bundle.getBoolean(TRIGGERED);
 		}
 	}
 	
