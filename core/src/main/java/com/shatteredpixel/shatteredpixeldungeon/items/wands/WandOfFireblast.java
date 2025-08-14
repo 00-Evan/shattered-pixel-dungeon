@@ -36,7 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SmokeParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -199,8 +198,8 @@ public class WandOfFireblast extends DamageWand {
 							ch.buff(Burning.class).detach();
 						}
 						if (ch.alignment == Char.Alignment.ENEMY) {
-							//A 2-charge zap's base dmg with a 1-charge zap's scaling
-							ch.damage(Math.round(powerMulti*Random.NormalIntRange(2 + buffedLvl(), 8 + 2*buffedLvl())), this);
+							//damage of a 2-charge zap
+							ch.damage(Math.round(powerMulti*Random.NormalIntRange(2 + 2*buffedLvl(), 8 + 4*buffedLvl())), this);
 						}
 					}
 				}
@@ -208,13 +207,6 @@ public class WandOfFireblast extends DamageWand {
 
 			Sample.INSTANCE.play( Assets.Sounds.BLAST );
 
-		}
-	}
-
-	public static class FireBlastOnHit extends Blazing {
-		@Override
-		protected float procChanceMultiplier(Char attacker) {
-			return Wand.procChanceMultiplier(attacker);
 		}
 	}
 

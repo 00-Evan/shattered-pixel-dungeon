@@ -91,7 +91,7 @@ public class WandOfBlastWave extends DamageWand {
 				if ((ch.isAlive() || ch.flying || !Dungeon.level.pit[ch.pos])
 						&& ch.pos == bolt.collisionPos + i) {
 					Ballistica trajectory = new Ballistica(ch.pos, ch.pos + i, Ballistica.MAGIC_BOLT);
-					int strength = 1 + Math.round(buffedLvl() / 2f);
+					int strength = Math.round(1.5f + buffedLvl() / 2f);
 					throwChar(ch, trajectory, strength, false, true, this);
 				}
 
@@ -197,7 +197,7 @@ public class WandOfBlastWave extends DamageWand {
 
 		if (defender.buff(Paralysis.class) != null && defender.buff(BWaveOnHitTracker.class) == null){
 			defender.buff(Paralysis.class).detach();
-			int dmg = Random.NormalIntRange(6+buffedLvl(), 12+2*buffedLvl());
+			int dmg = Random.NormalIntRange(8+2*buffedLvl(), 12+3*buffedLvl());
 			defender.damage(Math.round(procChanceMultiplier(attacker) * dmg), this);
 			BlastWave.blast(defender.pos);
 			Sample.INSTANCE.play( Assets.Sounds.BLAST );
