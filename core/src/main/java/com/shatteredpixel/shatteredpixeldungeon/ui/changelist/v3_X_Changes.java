@@ -139,7 +139,7 @@ public class v3_X_Changes {
 		if (DeviceCompat.isAndroid()){
 
 			//5.0 lollipop
-			if (DeviceCompat.getPlatformVersion() < 51){
+			if (DeviceCompat.getPlatformVersion() < 21){
 				String androidVersion;
 				switch (DeviceCompat.getPlatformVersion()){
 					default: case 14: case 15: androidVersion = "4.0"; break;
