@@ -30,7 +30,6 @@ import com.badlogic.gdx.controllers.ControllerMapping;
 import com.badlogic.gdx.controllers.Controllers;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.ui.Cursor;
-import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.PointF;
 
 public class ControllerHandler implements ControllerListener {
@@ -65,9 +64,7 @@ public class ControllerHandler implements ControllerListener {
 	private static boolean failedInit = false;
 
 	public static boolean controllersSupported() {
-		if (DeviceCompat.isAndroid() && Gdx.app.getVersion() < 16) {
-			return false;
-		} else if (failedInit) {
+		if (failedInit) {
 			return false;
 		} else if (initialized){
 			return true;

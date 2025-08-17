@@ -32,14 +32,15 @@ public class DeviceCompat {
 	public static boolean supportsFullScreen(){
 		switch (Gdx.app.getType()){
 			case Android:
-				//Android 4.4+ supports hiding UI via immersive mode
-				return Gdx.app.getVersion() >= 19;
+				//TODO perhaps have this vary based on status bar type?
+				return true;
 			case iOS:
 				//iOS supports hiding UI via drawing into the gesture safe area
 				return Gdx.graphics.getSafeInsetBottom() != 0;
-			default:
-				//TODO implement functionality for other platforms here
+			case Desktop:
 				return true;
+			default:
+				return false;
 		}
 	}
 

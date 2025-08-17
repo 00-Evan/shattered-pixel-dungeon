@@ -25,7 +25,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.view.View;
@@ -76,10 +75,6 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		
 		float renderWidth = dispRatio > 1 ? PixelScene.MIN_WIDTH_L : PixelScene.MIN_WIDTH_P;
 		float renderHeight = dispRatio > 1 ? PixelScene.MIN_HEIGHT_L : PixelScene.MIN_HEIGHT_P;
-		
-		//force power saver in this case as all devices must run at at least 2x scale.
-		if (Game.dispWidth < renderWidth*2 || Game.dispHeight < renderHeight*2)
-			SPDSettings.put( SPDSettings.KEY_POWER_SAVER, true );
 		
 		if (SPDSettings.powerSaver() && fullscreen){
 			
@@ -132,17 +127,16 @@ public class AndroidPlatformSupport extends PlatformSupport {
 					AndroidLauncher.instance.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
 							WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 				}
-				
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
-					if (SPDSettings.fullscreen()) {
-						AndroidLauncher.instance.getWindow().getDecorView().setSystemUiVisibility(
-								View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-										| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN
-										| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY );
-					} else {
-						AndroidLauncher.instance.getWindow().getDecorView().setSystemUiVisibility(
-								View.SYSTEM_UI_FLAG_LAYOUT_STABLE );
-					}
+
+				//TODO can immersive be handled by libGDX? It's getting quite dated here
+				if (SPDSettings.fullscreen()) {
+					AndroidLauncher.instance.getWindow().getDecorView().setSystemUiVisibility(
+							View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+									| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN
+									| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY );
+				} else {
+					AndroidLauncher.instance.getWindow().getDecorView().setSystemUiVisibility(
+							View.SYSTEM_UI_FLAG_LAYOUT_STABLE );
 				}
 			}
 		});
@@ -150,20 +144,9 @@ public class AndroidPlatformSupport extends PlatformSupport {
 	}
 	
 	@Override
-	@SuppressWarnings("deprecation")
 	public boolean connectedToUnmeteredNetwork() {
-		//Returns true if using unmetered connection, use shortcut method if available
-		ConnectivityManager cm = (ConnectivityManager) AndroidLauncher.instance.getSystemService(Context.CONNECTIVITY_SERVICE);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-			return !cm.isActiveNetworkMetered();
-		} else {
-			NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-			return activeNetwork != null && activeNetwork.isConnectedOrConnecting() &&
-					(activeNetwork.getType() == ConnectivityManager.TYPE_WIFI
-					|| activeNetwork.getType() == ConnectivityManager.TYPE_WIMAX
-					|| activeNetwork.getType() == ConnectivityManager.TYPE_BLUETOOTH
-					|| activeNetwork.getType() == ConnectivityManager.TYPE_ETHERNET);
-		}
+		//Returns true if using unmetered connection
+		return !((ConnectivityManager) AndroidLauncher.instance.getSystemService(Context.CONNECTIVITY_SERVICE)).isActiveNetworkMetered();
 	}
 
 	@Override

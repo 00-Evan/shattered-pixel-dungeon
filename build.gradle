@@ -17,10 +17,10 @@ allprojects {
         appVersionCode = 861
         appVersionName = '3.2.1'
 
-        appJavaCompatibility = JavaVersion.VERSION_1_8
+        appJavaCompatibility = JavaVersion.VERSION_11
 
         appAndroidCompileSDK = 35   //Android 15
-        appAndroidMinSDK = 14       //Android 4.0
+        appAndroidMinSDK = 21       //Android 5.0
         //significant layout management changes required for API 35+ as edge-to-edge is forced on
         //will do this at the same time as dropping support for Android 4.4- (later in 2025)
         appAndroidTargetSDK = 34    //Android 14
