@@ -21,7 +21,6 @@
 
 package com.watabou.noosa;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controllers;
@@ -46,10 +45,6 @@ import java.io.StringWriter;
 public class Game implements ApplicationListener {
 
 	public static Game instance;
-
-	//actual size of the display
-	public static int dispWidth;
-	public static int dispHeight;
 	
 	// Size of the EGL surface view
 	public static int width;
@@ -93,13 +88,12 @@ public class Game implements ApplicationListener {
 	
 	@Override
 	public void create() {
-		dispHeight = Gdx.graphics.getDisplayMode().height;
-		dispWidth = Gdx.graphics.getDisplayMode().width;
-
 		density = Gdx.graphics.getDensity();
 		if (density == Float.POSITIVE_INFINITY){
 			density = 100f / 160f; //assume 100PPI if density can't be found
 		} else if (DeviceCompat.isDesktop()) {
+			int dispWidth = Gdx.graphics.getDisplayMode().width;
+			int dispHeight = Gdx.graphics.getDisplayMode().height;
 			float reportedWidth = dispWidth / Gdx.graphics.getPpiX();
 			float reportedHeight = dispHeight / Gdx.graphics.getPpiY();
 
@@ -147,12 +141,6 @@ public class Game implements ApplicationListener {
 
 			Game.width = width;
 			Game.height = height;
-			
-			//TODO might be better to put this in platform support
-			if (Gdx.app.getType() != Application.ApplicationType.Android){
-				Game.dispWidth = Game.width;
-				Game.dispHeight = Game.height;
-			}
 			
 			resetScene();
 		}

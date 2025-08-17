@@ -51,7 +51,6 @@ public class SPDSettings extends GameSettings {
 	
 	public static final String KEY_FULLSCREEN	= "fullscreen";
 	public static final String KEY_LANDSCAPE	= "landscape";
-	public static final String KEY_POWER_SAVER 	= "power_saver";
 	public static final String KEY_ZOOM			= "zoom";
 	public static final String KEY_BRIGHTNESS	= "brightness";
 	public static final String KEY_GRID 	    = "visual_grid";
@@ -81,15 +80,6 @@ public class SPDSettings extends GameSettings {
 		} else {
 			return null;
 		}
-	}
-	
-	public static void powerSaver( boolean value ){
-		put( KEY_POWER_SAVER, value );
-		((ShatteredPixelDungeon)ShatteredPixelDungeon.instance).updateDisplaySize();
-	}
-	
-	public static boolean powerSaver(){
-		return getBoolean( KEY_POWER_SAVER, false );
 	}
 	
 	public static void zoom( int value ) {

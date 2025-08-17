@@ -74,10 +74,8 @@ public class IOSPlatformSupport extends PlatformSupport {
 			int insetChange = Gdx.graphics.getSafeInsetBottom() - Game.bottomInset;
 			Game.bottomInset = Gdx.graphics.getSafeInsetBottom();
 			Game.height -= insetChange;
-			Game.dispHeight = Game.height;
 		} else {
 			Game.height += Game.bottomInset;
-			Game.dispHeight = Game.height;
 			Game.bottomInset = 0;
 		}
 		Gdx.gl.glViewport(0, Game.bottomInset, Game.width, Game.height);

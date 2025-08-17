@@ -25,19 +25,15 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
-import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.view.View;
 import android.view.WindowManager;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.backends.android.AndroidGraphics;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.watabou.noosa.Game;
 import com.watabou.utils.PlatformSupport;
 
 import java.util.HashMap;
@@ -52,63 +48,7 @@ public class AndroidPlatformSupport extends PlatformSupport {
 					ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
 					ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT );
 		}
-
-		GLSurfaceView view = (GLSurfaceView) ((AndroidGraphics)Gdx.graphics).getView();
-		
-		if (view.getMeasuredWidth() == 0 || view.getMeasuredHeight() == 0)
-			return;
-		
-		Game.dispWidth = view.getMeasuredWidth();
-		Game.dispHeight = view.getMeasuredHeight();
-
-		boolean fullscreen = Build.VERSION.SDK_INT < Build.VERSION_CODES.N
-				|| !AndroidLauncher.instance.isInMultiWindowMode();
-
-		if (fullscreen && SPDSettings.landscape() != null
-				&& (Game.dispWidth >= Game.dispHeight) != SPDSettings.landscape()){
-			int tmp = Game.dispWidth;
-			Game.dispWidth = Game.dispHeight;
-			Game.dispHeight = tmp;
-		}
-		
-		float dispRatio = Game.dispWidth / (float)Game.dispHeight;
-		
-		float renderWidth = dispRatio > 1 ? PixelScene.MIN_WIDTH_L : PixelScene.MIN_WIDTH_P;
-		float renderHeight = dispRatio > 1 ? PixelScene.MIN_HEIGHT_L : PixelScene.MIN_HEIGHT_P;
-		
-		if (SPDSettings.powerSaver() && fullscreen){
-			
-			int maxZoom = (int)Math.min(Game.dispWidth/renderWidth, Game.dispHeight/renderHeight);
-			
-			renderWidth *= Math.max( 2, Math.round(1f + maxZoom*0.4f));
-			renderHeight *= Math.max( 2, Math.round(1f + maxZoom*0.4f));
-			
-			if (dispRatio > renderWidth / renderHeight){
-				renderWidth = renderHeight * dispRatio;
-			} else {
-				renderHeight = renderWidth / dispRatio;
-			}
-			
-			final int finalW = Math.round(renderWidth);
-			final int finalH = Math.round(renderHeight);
-			if (finalW != Game.width || finalH != Game.height){
-				
-				AndroidLauncher.instance.runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						view.getHolder().setFixedSize(finalW, finalH);
-					}
-				});
-				
-			}
-		} else {
-			AndroidLauncher.instance.runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					view.getHolder().setSizeFromLayout();
-				}
-			});
-		}
+		//TODO seem to be existing bugs with handling split screen here, should look into that
 	}
 	
 	public void updateSystemUI() {
