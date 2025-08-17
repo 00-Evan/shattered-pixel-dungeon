@@ -25,7 +25,7 @@ allprojects {
         //will do this at the same time as dropping support for Android 4.4- (later in 2025)
         appAndroidTargetSDK = 34    //Android 14
 
-        gdxVersion = '1.12.1'
+        gdxVersion = '1.13.6-SNAPSHOT' //using snapshot as 1.13.5 has issues with Android R8
         gdxControllersVersion = '2.2.4'
         robovmVersion = '2.3.23'
     }

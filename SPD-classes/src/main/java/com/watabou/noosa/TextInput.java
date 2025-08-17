@@ -23,8 +23,10 @@ package com.watabou.noosa;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
@@ -64,6 +66,9 @@ public class TextInput extends Component {
 		viewport.setWorldSize(Game.width, Game.height);
 		viewport.setScreenBounds(0, Game.bottomInset, Game.width, Game.height);
 		viewport.setCamera(new OrthographicCamera());
+		//TODO this is needed for the moment as Spritebatch switched to using VAOs in libGDX v1.13.1
+		//  This results in HARD crashes atm, whereas old vertex arrays work fine
+		SpriteBatch.overrideVertexType = Mesh.VertexDataType.VertexArray;
 		stage = new Stage(viewport);
 		Game.inputHandler.addInputProcessor(stage);
 
