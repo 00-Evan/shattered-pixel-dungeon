@@ -64,7 +64,7 @@ public class WndSadGhost extends Window {
 			case 2:
 				titlebar.icon( new GnollTricksterSprite() );
 				titlebar.label( Messages.get(this, "gnoll_title") );
-				message = PixelScene.renderTextBlock( Messages.get(this, "gnoll")+"\n\n"+Messages.get(this, "give_item"), 6 );
+				message = PixelScene.renderTextBlock( Messages.get(this, "mutant")+"\n\n"+Messages.get(this, "give_item"), 6 );
 				break;
 			case 3:
 				titlebar.icon( new GreatCrabSprite());

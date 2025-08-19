@@ -116,19 +116,19 @@ public class v2_X_Changes {
 				"\n" +
 				"The game now displays a little congratulations message after your first win, and clarity on what winning the game unlocks has been improved."));
 
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAND_MAGIC_MISSILE), "Cursed Wand Expansion",
-				"Cursed wand effects have been massively expanded! There are now 16 new effects bringing the total number of effects up to 32. These include simple common effects like shooting bubbles and new super rare effects like a giant supernova explosion!\n" +
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAND_MAGIC_MISSILE), "Malware Emitter Expansion",
+				"Malware emitter effects have been massively expanded! There are now 16 new effects bringing the total number of effects up to 32. These include simple common effects like shooting bubbles and new super rare effects like a giant supernova explosion!\n" +
 				"\n" +
-				"A few existing cursed effects have also been changed:\n" +
+				"A few existing malware effects have also been changed:\n" +
 				"_-_ Reduced healing from the uncommon health transfer effect by 50%\n" +
-				"_-_ The uncommon 'shock and recharge' effect is now a lightning bolt, does more damage to a target and grants less wand recharge\n" +
+				"_-_ The uncommon 'shock and recharge' effect is now a lightning bolt, does more damage to a target and grants less emitter recharge\n" +
 				"_-_ The rare inter-floor teleport effect now caps at sending the player back 10 floors"));
 
 		changes.addButton( new ChangeButton(Icons.BACKPACK_LRG.get(), "Inventory Management Improvements",
 				"I've made various smaller changes to make inventory management a bit easier:\n" +
 				"\n" +
-				"_-_ The potion bandolier can now store the waterskin, and the scroll holder can now store arcane styli\n" +
-				"_-_ Converting a potion or scroll into alchemical energy now also identifies it\n" +
+				"_-_ The stimulant bandolier can now store the waterskin, and the data shard holder can now store arcane styli\n" +
+				"_-_ Converting a stimulant or data shard into synthesis energy now also identifies it\n" +
 				"_-_ Reduced the chance for multiple equipment drops from slimes, skeletons, guards, DM-200s, and golems\n" +
 				"_-_ Increased the base drop rate of equipment from DM-200s and golems to compensate\n" +
 				"_-_ Stones of Intuition now always get 2 uses each, even if the first guess is incorrect\n" +
@@ -195,7 +195,7 @@ public class v2_X_Changes {
 				"_-_ Toxic gas rooms can no longer contain extra traps\n" +
 				"_-_ Updated internal code libraries\n" +
 				"_-_ Made slight tweaks to tutorial functionality\n" +
-				"_-_ Added a new buff icon for wand-based buffs\n" +
+				"_-_ Added a new buff icon for emitter-based buffs\n" +
 				"_-_ ShatteredPD is now categorized as a game on Android devices\n" +
 				"_-_ Updated translations and translator credits\n" +
 				"_-_ Added dev commentary for v1.4.0"));
@@ -205,11 +205,11 @@ public class v2_X_Changes {
 				"_Highlights:_\n" +
 				"_-_ Hall of Heroes pages 5-10 not syncing via Google Play Games on Google Play version\n" +
 				"_-_ Incorrect behaviour when game is force-closed from trinket selection window\n" +
-				"_-_ Scroll of remove curse not being consumed when freeing tormented spirits\n" +
+				"_-_ Data shard of remove malware not being consumed when freeing tormented spirits\n" +
 				"_-_ Sleeping enemies not being alerted by allies in many cases\n" +
 				"_-_ Shopkeepers often failing to clear gasses from their shops\n" +
 				"_-_ Ripper Demons refusing to leap onto enemies above chasms\n" +
-				"_-_ Cases where a locked laboratory room could contain the solution potion to a hazard room that contains its key",
+				"_-_ Cases where a locked laboratory room could contain the solution stimulant to a hazard room that contains its key",
 
 				"_Characters:_\n" +
 				"_-_ Final boss not immediately advancing to its final phase in some cases\n" +
@@ -222,8 +222,8 @@ public class v2_X_Changes {
 				"_-_ Statue enemies reverting to being passive when ascending\n" +
 				"_-_ Wards not being targetable if they were in solid terrain\n" +
 				"_-_ Necromancers not being able to summon their minions in unlocked doors\n" +
-				"_-_ Cases where the gnoll geomancer could be awoken via debuff\n" +
-				"_-_ Spawned mimics (e.g. via cursed wand) not scaling with ascension challenge",
+				"_-_ Cases where the mutant geomancer could be awoken via debuff\n" +
+				"_-_ Spawned mimics (e.g. via malware emitter) not scaling with ascension challenge",
 
 				"_Effects:_\n" +
 				"_-_ Warrior being able to gain extra upgrades on his armor via hero armor transfer effect\n" +
@@ -249,8 +249,8 @@ public class v2_X_Changes {
 				"_-_ Helpful darts dealing damage to allies in rare cases\n" +
 				"_-_ Specific cases where beacon of returning could place the hero inside of closed dooors\n" +
 				"_-_ Tipped dart cleaning window showing 'clean all' and 'clean one' even with just 1 dart\n" +
-				"_-_ Specific cases where one scroll of transmutation couldn't be used on another\n" +
-				"_-_ Death via a reclaimed trap not counting as dying to your own magic item",
+				"_-_ Specific cases where one data shard of transmutation couldn't be used on another\n" +
+				"_-_ Death via a reclaimed trap not counting as dying to your own energy item",
 
 				"_Misc:_\n" +
 				"_-_ Various rare crash bugs\n" +
@@ -273,7 +273,7 @@ public class v2_X_Changes {
 				"\n" +
 				"_- 13 Leaf Clover_ upgrade cost up, but it now only affect the hero's damage rolls. It no longer applies to armor or enemy attacks. This should preserve the intended chaos of the effect without making enemies way more dangerous.\n" +
 				"_- Dimensional Sundial_ upgrade cost up, but it now slightly reduces enemy spawn rates during daytime. 'nighttime' has also been adjusted to be 8pm-8am, from 9pm-7am.\n" +
-				"_- Wondrous Resin_'s bonus cursed wand effects are now always neutral or positive.\n" +
+				"_- Wondrous Resin_'s bonus malware emitter effects are now always neutral or positive.\n" +
 				"_- Mimic Tooth_ now boosts loot from all mimics."));
 
 		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 1), "Duelist Buffs",
@@ -296,7 +296,7 @@ public class v2_X_Changes {
 				"\n" +
 				"_-_ Removed ability cooldowns entirely, except for flurry which has a 1 turn cooldown\n" +
 				"_- Flurry_ damage increased by 50%\n" +
-				"_- Focus_ now works on magic attack and has infinite duration\n" +
+				"_- Focus_ now works on energy attack and has infinite duration\n" +
 				"_- Dash_ range increased by 33%\n" +
 				"_- Dragon Kick_ damage doubled\n" +
 				"\n" +
@@ -304,13 +304,13 @@ public class v2_X_Changes {
 				"_- Combined Energy_ is now more permissive and reduces charge use by 1, instead of 50%"));
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.UNSTABLE_SPELL), "Other Buffs",
-				"_- Wand Preservation_ talent now always succeeds, no longer grants arcane resin on failure, and is limited to 1 use at +1, and 1 use per level at +2. \n" +
+				"_- Emitter Preservation_ talent now always succeeds, no longer grants arcane resin on failure, and is limited to 1 use at +1, and 1 use per level at +2. \n" +
 				"_- Rogue's foresight_ talent trigger chance increased to 75% at +1 and 100% at +2, up from 60% and 90%.\n" +
 				"_- Hold Fast_ talent now grants 1-2 armor per level, up from 0-2.\n" +
 				"\n" +
 				"_- Ring of Energy_ charge rate boost up to 17.5% per level, from 15%.\n" +
-				"_- Unstable Brew_ now guarantees an appropriate potion effect when thrown or drank, instead of making it more likely.\n" +
-				"_- Unstable Spell_ now guarantees an appropriate scroll effect based on nearby enemies, instead of making it more likely.\n"));
+				"_- Unstable Brew_ now guarantees an appropriate stimulant effect when thrown or drank, instead of making it more likely.\n" +
+				"_- Unstable Program_ now guarantees an appropriate data shard effect based on nearby enemies, instead of making it more likely.\n"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
 		changes.hardlight(CharSprite.NEGATIVE);
@@ -404,11 +404,11 @@ public class v2_X_Changes {
 				"I've made a bunch of changes to the alchemy system to streamline things and complement the addition of trinkets:\n" +
 				"\n" +
 				"_-_ Catalysts have been removed entirely, recipes that required one now simply cost 8 or 9 more energy.\n" +
-				"_-_ A new unstable brew and spell have been added, which give random potion/scroll effects.\n" +
+				"_-_ A new unstable brew and program have been added, which give random stimulant/data shard effects.\n" +
 				"_-_ Aqua Blast and Featherfall are now a brew and elixir, otherwise unchanged.\n" +
-				"_-_ High value potions/scrolls now grant a little more energy if they are energized.\n" +
-				"_-_ Alchemy pots now always spawn on the 3rd or 4th floor in each region.\n" +
-				"_-_ Various UI improvements have been made to the alchemy screen.\n" +
+				"_-_ High value stimulants/data shards now grant a little more energy if they are energized.\n" +
+				"_-_ Synthesis stations now always spawn on the 3rd or 4th floor in each region.\n" +
+				"_-_ Various UI improvements have been made to the synthesis screen.\n" +
 				"\n" +
 				"Various specific alchemy items have also received changes to their energy cost, output quantity, or mechanics. Check the buffs and nerfs section for more details on those."));
 

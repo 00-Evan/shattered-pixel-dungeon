@@ -12,6 +12,3 @@ include ':services'
     //updates
     include ':services:updates:debugUpdates'
     include ':services:updates:githubUpdates'
-    //news
-    include ':services:news:debugNews'
-    include ':services:news:shatteredNews'

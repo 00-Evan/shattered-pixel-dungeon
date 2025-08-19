@@ -58,9 +58,9 @@ public class v3_X_Changes {
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Overview and ETA",
-				"The next major Shattered update will v3.3 (I may change the name to v4.0 but it's unlikely). This update will include an overhaul to the Ambitious Imp quest in the metropolis!\n" +
+				"The next major Sofia Station update will v3.3 (I may change the name to v4.0 but it's unlikely). This update will include an overhaul to the Ambitious Imp mission in the metropolis!\n" +
 				"\n" +
-				"The blacksmith quest overhaul ended up taking quite a bit of time, and so I expect v3.3 will as well. I will write some blog posts as I make progress though, so hopefully you'll hear from me as things start to take shape in October or November.\n" +
+				"The engineer mission overhaul ended up taking quite a bit of time, and so I expect v3.3 will as well. I will write some blog posts as I make progress though, so hopefully you'll hear from me as things start to take shape in October or November.\n" +
 				"\n" +
 				"**Please keep in mind that while I always try to keep to the ETAs I provide, they are just estimates. If you don't hear from me by the ETA, it means I'm still busy with the update!**"));
 
@@ -70,12 +70,12 @@ public class v3_X_Changes {
 				"As mentioned previously, one of the consequences of these library updates and technical changes will be removing support for Android 4.0-4.4, and Java 8-10. Dropping support for these is unfortunately necessary in order to meet an impending requirement by Google."));
 
 		changes.addButton( new ChangeButton(new Image(new ImpSprite()), "City Quest Overhaul!",
-				"The major content improvements coming in v3.3 will be an overhaul to the Ambitious Imp's quest in the Metropolis. This quest is one of the last major leftovers from the original Pixel Dungeon and badly needs some modernization.\n" +
+				"The major content improvements coming in v3.3 will be an overhaul to the Ambitious Imp's mission in the Metropolis. This mission is one of the last major leftovers from the original Pixel Dungeon and badly needs some modernization.\n" +
 				"\n" +
-				"Just like the Blacksmith quest overhaul, this new quest will send you to a new sub-region of the dungeon with some unique gameplay. Rather than digging, you'll be attempting to infiltrate a dwarven vault full of danger and treasure!"));
+				"Just like the Engineer mission overhaul, this new mission will send you to a new sub-region of the station with some unique gameplay. Rather than digging, you'll be attempting to infiltrate a corporate vault full of danger and treasure!"));
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Other Changes",
-				"I will want to keep v3.3 mainly focused on the new quest, but there will be room for smaller changes too! Mainly this will be balance changes, but there might be room for a few smaller design improvements or additions too.\n" +
+				"I will want to keep v3.3 mainly focused on the new mission, but there will be room for smaller changes too! Mainly this will be balance changes, but there might be room for a few smaller design improvements or additions too.\n" +
 				"\n" +
 				"Also, I can't make any promises yet, but I am hoping to move forward with more visual improvements, including in-game spritework improvements, whose development has largely been on hiatus since last year."));
 	}
@@ -111,7 +111,7 @@ public class v3_X_Changes {
 				"Lastly, I've received quite a few complaints relating to the nerfs to shurikens, tomahawks, and the shared upgrades talent in v3.2.0. I made these nerfs pre-emptively because I expected these three would benefit massively from upgraded thrown weapons having more quantity. Unfortunately that looks to be correct; all three of these are still doing quite well and there is no room to restore some of their previous power."));
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"I've made some changes to two of the new **Battlemage** staff on-hit effects, as they didn't end up as powerful as I wanted:\n" +
+				"I've made some changes to two of the new **Tech Specialist** staff on-hit effects, as they didn't end up as powerful as I wanted:\n" +
 				"**- Fireblast** on-hit damage scaling increased to 2-4 from 1-2\n" +
 				"**- Blast Wave** on-hit base damage up to 8-12 from 6-12\n" +
 				"**- Blast Wave** on-hit damage scaling up to 2-3 from 1-2\n" +
@@ -235,16 +235,16 @@ public class v3_X_Changes {
 				"**Highlights:**\n" +
 				"**-** Blacksmith's smith option now offers a thrown weapon in addition to 2 melee weapons and an armor\n" +
 				"**-** Thrown weapons (including the bow) now always have a throw delay of 1 turn if they aren't aimed at a target\n" +
-				"**-** Ascension challenge now always notifies the player the first time the amulet's curse is weakened\n" +
-				"**-** Characters that are immune to the wand of lightning no longer reduce its overall damage if it arcs though them\n" +
+				"**-** Ascension challenge now always notifies the player the first time the amulet's malware is weakened\n" +
+				"**-** Characters that are immune to the emitter of lightning no longer reduce its overall damage if it arcs though them\n" +
 				"**-** Chaotic Censer no longer aims at passive enemies\n" +
 				"**-** Added a new language: Swedish!\n" +
 				"\n" +
 				"**Thrown Weapons:**\n" +
 				"**-** Augmentation now affects thrown weapon durability based on how it affects attack speed\n" +
-				"**-** Projecting enchant can now stack on thrown weapons, giving more reach\n" +
-				"**-** Explosive curse now consumes uses on thrown weapons when it triggers\n" +
-				"**-** Friendly curse now sets weapon damage to 0 if charmed by that enemy",
+				"**-** Projecting modification can now stack on thrown weapons, giving more reach\n" +
+				"**-** Explosive malware now consumes uses on thrown weapons when it triggers\n" +
+				"**-** Friendly malware now sets weapon damage to 0 if charmed by that enemy",
 
 				"**Misc:**\n" +
 				"**-** Improved most tutorial/guidebook text to be more concise\n" +
@@ -261,7 +261,7 @@ public class v3_X_Changes {
 				"Fixed the following bugs:\n" +
 				"**Gameplay:**\n" +
 				"**-** Cases where sacrificial fire would not apply just after a character steps into it\n" +
-				"**-** Rogue's inscribed stealth talent not properly triggering from some unstable spell effects\n" +
+				"**-** Rogue's inscribed stealth talent not properly triggering from some unstable program effects\n" +
 				"**-** Rare cases where hero could not regen more than 1hp/turn when they should\n" +
 				"**-** Distortion traps always generating mimics when choosing to generate an uncommon enemy\n" +
 				"**-** Cleric's body form enchantment/glyph effect also applying to some enemies\n" +
@@ -283,10 +283,10 @@ public class v3_X_Changes {
 				"**- Shared Enchantments** no longer prevents multiple enchantment triggers. Both enchants can now trigger if the thrown weapon and the Huntress' bow are both enchanted."));
 
 		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 6), "Cleric & Priest Buffs",
-				"Firstly, a quick buff to the Cleric's worst performing T2 spell:\n" +
+				"Firstly, a quick buff to the Cleric's worst performing T2 program:\n" +
 				"**- Divine Sense** duration up to 50 turns from 30.\n" +
 				"\n" +
-				"I'm also making some changes to improve the Priest's synergy with their various spell effects. Hopefully this will help the subclass compete a bit more with Paladin, who already gets great synergy thanks to all spells extending holy weapon and ward:\n" +
+				"I'm also making some changes to improve the Priest's synergy with their various program effects. Hopefully this will help the subclass compete a bit more with Paladin, who already gets great synergy thanks to all programs extending holy weapon and ward:\n" +
 				"**- Guiding Light** free use cooldown down to 50 turns from 100.\n" +
 				"**- Illuminate** is now inflicted on directly targeted enemies by all spells."));
 
@@ -378,7 +378,7 @@ public class v3_X_Changes {
 				"**- Berserker** enrage shield is now its own separate shielding buff, and has its own scaling separate from the seal's max shield."));
 
 		changes.addButton( new ChangeButton(Icons.STAIRS.get(), "New Rooms and Terrain Types",
-				"This update includes an **expansion to the dungeon's standard rooms!**\n" +
+				"This update includes an **expansion to the station's standard rooms!**\n" +
 				"\n" +
 				"**- New decorative terrain** has been added to each region, largely inspired by details from the region splash arts. \n" +
 				"**- 5 new standard rooms** have been added that use these new terrain objects, one per region.\n" +
@@ -397,7 +397,7 @@ public class v3_X_Changes {
 		changes.addButton( new ChangeButton(BadgeBanner.image( Badges.Badge.TAKING_THE_MICK.image ), "New Badges",
 				"v3.1 also includes **four new badges**, each themed around a specific challenge:\n" +
 				"\n" +
-				"**- Safety Hazard** is a gold-tier badge that requires using terrain against enemies\n" +
+				"**- Safety Hazard** is a credits-tier badge that requires using terrain against enemies\n" +
 				"**- So Many Colors** is a platinum-tier badge that requires having a bunch of buffs/debuffs at once\n" +
 				"**- Pacifist Ascent** is a diamond-tier badge that require surviving an ascension without any enemy kills.\n" +
 				"**- Taking the Mick** is a diamond-tier badge that requires defeating the final boss with a VERY high level pickaxe\n" +
@@ -420,20 +420,20 @@ public class v3_X_Changes {
 				"\n" +
 				"**Exploration Score** is no longer all-or-nothing for each floor. It is now based on how many rooms were not fully explored. For each floor, score is reduced to 50%/20%/0% for 1/2/3+ missed rooms. The criteria for whether something is 'fully explored' is unchanged.\n" +
 				"\n" +
-				"**Quest Score** can now be reduced in a similar manner to boss score. Make sure to position well to avoid penalties! This reduction includes telegraphed attacks/effects (e.g. crystal spire, gnoll geomancer), and regular attacks that you should be able to always avoid (e.g. rot lashers, fetid rat's ooze). Cases where attacks are sometimes unavoidable (e.g. corpse dust wraiths, gnoll trickster) have some leeway before penalties apply."));
+				"**Mission Score** can now be reduced in a similar manner to boss score. Make sure to position well to avoid penalties! This reduction includes telegraphed attacks/effects (e.g. crystal spire, mutant geomancer), and regular attacks that you should be able to always avoid (e.g. rot lashers, fetid rat's ooze). Cases where attacks are sometimes unavoidable (e.g. corpse dust wraiths, mutant trickster) have some leeway before penalties apply."));
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"**Highlights:**\n" +
 				"**-** Various small color tweaks to health bars, inventory buttons, and flare vfx to improve the experience for colorblind players\n" +
 				"**-** Custom notes for items can now be created or edited from the item's info window\n" +
 				"**-** Hero renaming can now be done in the hero info window while a run is in progress\n" +
-				"**-** All potions now refresh the duration of their specific effects. Previously the duration of some potion effects could stack on themselves\n" +
+				"**-** All stimulants now refresh the duration of their specific effects. Previously the duration of some stimulant effects could stack on themselves\n" +
 				"**-** Added discovery hints for all catalog entries\n" +
 				"**-** Added landmark entries for lost backpack and beacon of returning",
 
 				"**Items:**\n" +
 				"**-** Slightly reduced telekinetic grab's sale/energy value, so that it can't be used to effectively turn high-tier thrown weapons into energy\n" +
-				"**-** Unidentified wands can now be imbued in the mage's staff\n" +
+				"**-** Unidentified emitters can now be imbued in the technician's staff\n" +
 				"**-** Partially IDed items can now be used with the dried rose\n" +
 				"\n" +
 				"**Characters:**\n" +
@@ -442,13 +442,13 @@ public class v3_X_Changes {
 
 				"**Effects:**\n" +
 				"**-** Smaller shorter-term shielding buffs are now consumed before larger longer-term ones\n" +
-				"**-** The gravity chaos cursed wand effect now has its own debuff icon\n" +
+				"**-** The gravity chaos malware emitter effect now has its own debuff icon\n" +
 				"**-** When using metamorph, food talents that grant the same type of recharging can now stack\n" +
 				"**-** Improved VFX for activating or deactivating brawler's stance\n" +
-				"**-** Guiding Light's spell icon is now brightened when it is free to cast\n" +
+				"**-** Guiding Light's program icon is now brightened when it is free to cast\n" +
 				"\n" +
 				"**Misc:**\n" +
-				"**-** The inventory button gold indicator on mobile now shows when buying items\n" +
+				"**-** The inventory button credits indicator on mobile now shows when buying items\n" +
 				"**-** Rooms with a chasm in the center must now be at least 3x3, up from 2x2\n" +
 				"**-** Increased the minimum supported iOS version to 12, from 11\n" +
 				"**-** Moved the notification position to the top-left on the Steam version. It should no longer obscure UI elements",
@@ -479,7 +479,7 @@ public class v3_X_Changes {
 				"**-** Brimstone glyph not properly scaling past +50% glyph power\n" +
 				"**-** Boomerangs disappearing if the game was closed during their circle back animation\n" +
 				"**-** Crystal path rooms sometimes sorting items incorrectly when player had exotic crystals\n" +
-				"**-** Cursed wand of warding not using autotargeting",
+				"**-** Malware emitter of warding not using autotargeting",
 
 				"**Effects:**\n" +
 				"**-** Hallowed ground producing furrowed grass more often than intended in some cases\n" +
@@ -541,7 +541,7 @@ public class v3_X_Changes {
 				"\n" +
 				"**Ascended Form:**\n" +
 				"**- Divine Intervention** duration extension up to 3/4/5/6 from 1/2/3/4\n" +
-				"**- Judgement** extra dmg increased to +33% per spell from 5-10 per spell\n" +
+				"**- Judgement** extra dmg increased to +33% per program from 5-10 per program\n" +
 				"\n" +
 				"**Power of Many:**\n" +
 				"**- Life Link** duration up to 10/13/17/20 from 6/8/10/12"));
@@ -581,16 +581,16 @@ public class v3_X_Changes {
 		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 1), "The Cleric!",
 				"**Shattered Pixel Dungeon has another new hero, making for six total!!**\n" +
 				"\n" +
-				"The Cleric is an entire new hero class **with a variety of unique spells that they learn via talents!** They can be unlocked by removing the curse on any piece of equipment, but existing players who already have a win will automatically unlock them!\n" +
+				"The Cleric is an entire new hero class **with a variety of unique programs that they learn via talents!** They can be unlocked by removing the malware on any piece of equipment, but existing players who already have a win will automatically unlock them!\n" +
 				"\n" +
 				"Much like how the Duelist can use a bunch of weapon abilities, I want the Cleric to be an ability-centric hero focused on Magic. Unlike the Duelist, these abilities are tied into the hero and their talents, instead of equipment items."));
 
 		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 4), "Cleric Subclasses",
 				"**The Cleric has two subclasses, each with their own emphasis!**\n" +
 				"\n" +
-				"**The Priest** is focused on ranged spell combat, effects that synergize with magical items like wands and artifacts.\n" +
+				"**The Priest** is focused on ranged program combat, effects that synergize with technological items like emitters and artifacts.\n" +
 				"\n" +
-				"**The Paladin** is focused on melee spell combat and defensive power. Their effects most strongly synergize with weapons and armor."));
+				"**The Paladin** is focused on melee program combat and defensive power. Their effects most strongly synergize with weapons and armor."));
 
 		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 6), "Cleric Armor Abilities",
 				"**The Cleric has three lategame armor abilities as well!**\n" +
@@ -618,11 +618,11 @@ public class v3_X_Changes {
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"**Highlights:**\n" +
-				"**-** Turned off auto-targeting in cases where it was almost always wrong (Bless spell, Wand of Warding, etc.)\n" +
+				"**-** Turned off auto-targeting in cases where it was almost always wrong (Bless program, Emitter of Warding, etc.)\n" +
 				"**-** Enemies are now more willing to switch targets if their target is retreating and they are being attacked by something else\n" +
 				"**-** Enemies are now more consistently drawn to the hero's position if they are attacked from out of visible range\n" +
 				"**-** Internal adjustments to hunger and regeneration effects, they should now be more responsive when hunger or regen rate changes.\n" +
-				"**-** Fixed Reclaim trap spell exploits, and allowed it to be dropped while charged\n" +
+				"**-** Fixed Reclaim trap program exploits, and allowed it to be dropped while charged\n" +
 				"**-** Traps triggered by time freeze ending now always resolve after other effects/actions (e.g. teleportation, item pickup)\n" +
 				"**-** Improved visual contrast for symbols on runestones",
 
@@ -645,13 +645,13 @@ public class v3_X_Changes {
 				"**v3.0.1:**\n" +
 				"**-** Salt Cube's regen reduction now automatically disables itself during boss fights, the trinket doesn't need to be dropped.\n" +
 				"**-** Waterskin drinking now more intelligently handles the extra healing from vial of blood, no longer consuming excess dew.\n" +
-				"**-** Cursed wand pitfall effect no longer drops items if triggered via wondrous resin\n" +
+				"**-** Malware emitter pitfall effect no longer drops items if triggered via wondrous resin\n" +
 				"**-** Feint armor ability no longer autotargets\n" +
 				"**-** Removed support for runs in progress from prior to v2.3.2 (Jan. 2024)\n" +
-				"**-** Removed internal code for old blacksmith quest from prior to v2.2 (Oct. 2023)\n" +
+				"**-** Removed internal code for old engineer mission from prior to v2.2 (Oct. 2023)\n" +
 				"\n" +
 				"**v3.0.2:**\n" +
-				"**-** Music muting while game is in background on desktop now also applies to blacksmith's hammering sfx\n" +
+				"**-** Music muting while game is in background on desktop now also applies to engineer's welding sfx\n" +
 				"**-** Improved number rounding logic when damage hero takes is affected by several modifiers at once\n" +
 				"**-** Updated translations and translator credits"));
 
@@ -661,20 +661,20 @@ public class v3_X_Changes {
 				"**-** Various issues with system gestures registering as game inputs on Android and iOS\n" +
 				"**-** Various cases where closing the game inside of the alchemy scene could result in lost progress\n" +
 				"**-** Rare cases where multiple ascension wins could be recorded for one run\n" +
-				"**-** Runestones working while hero is magic immune\n" +
-				"**-** Unstable spell never triggering scroll effects that could apply either in or out of combat\n" +
+				"**-** Runestones working while hero is energy immune\n" +
+				"**-** Unstable program never triggering data shard effects that could apply either in or out of combat\n" +
 				"**-** Exotic crystals trinket not applying to monster drops in many cases",
 
 				"**Items:**\n" +
 				"**-** Rare cases where bomb AOE could be influenced by nearby potions shattering\n" +
 				"**-** Exploits involving juggling salt cube to get slower hunger with full regen\n" +
-				"**-** Cursed armband not updating player gold display on desktop after stealing gold\n" +
+				"**-** Malware armband not updating player credits display on desktop after stealing credits\n" +
 				"**-** Very specific cases where disarming traps could make items unattainable\n" +
 				"**-** Icecap incorrectly being blocked by high grass\n" +
-				"**-** Stone of detect magic incorrectly being usable on thrown weapons\n" +
+				"**-** Stone of detect energy incorrectly being usable on thrown weapons\n" +
 				"**-** Artifact uniqueness being affected by runs from prior game versions\n" +
 				"**-** Crashes when aqua brew is dropped down chasms\n" +
-				"**-** Rare errors when cancelling scroll of enchantment on armor\n" +
+				"**-** Rare errors when cancelling data shard of modification on armor\n" +
 				"**-** Multiplicity glyph not working correctly with ghouls in some cases\n" +
 				"**-** Corrosion gas from chaotic censer always starting at 1 damage",
 
@@ -683,10 +683,10 @@ public class v3_X_Changes {
 				"**-** Damage type not showing when hitting downed crystal guardians\n" +
 				"**-** Very rare cases where spawned high grass could interfere with the floor 20 shop\n" +
 				"**-** Certain effects not having on-death or rankings messages\n" +
-				"**-** Specific cases where cursed wand effects would forget they were spawned by wondrous resin\n" +
+				"**-** Specific cases where malware emitter effects would forget they were spawned by wondrous resin\n" +
 				"**-** Duration of greater haste not being preserved on save/load\n" +
 				"**-** Disarming traps not teleporting the hero's weapon in some cases where they should\n" +
-				"**-** Cursed wand effects potentially applying levitation to immovable characters\n" +
+				"**-** Malware emitter effects potentially applying levitation to immovable characters\n" +
 				"**-** Geomancer rockfall attack being cleared on save/load\n" +
 				"**-** Duelist's block ability not working properly with save/load",
 
@@ -701,7 +701,7 @@ public class v3_X_Changes {
 				"**-** Various rare crash errors",
 
 				"**v3.0.1:**\n" +
-				"**-** Exploit involving unidentified crossbow and curse infusion\n" +
+				"**-** Exploit involving unidentified crossbow and malware infusion\n" +
 				"**-** Exploit involving placing wards on a necromancer's summoning position\n" +
 				"**-** Shocking enchantment missing valid targets in some cases\n" +
 				"**-** Rare cases where bees would refuse to attack near enemies vs. far ones\n" +
@@ -729,7 +729,7 @@ public class v3_X_Changes {
 				"**- 13 Leaf Clover** slightly redesigned, now has a 15% chance to set damage to max and 10% chance to set damage to min per level. This results in ~10% more average damage at +3.\n" +
 				"**- Mimic Tooth** ebony mimics now have normal mimic stats, down from +25%, but still deal full damage on surprise attack.\n" +
 				"**- Trap Mechanism** now also makes 10% of a level's traps spawn visible per level.\n" +
-				"**- Shard of Oblivion** now prevents ID effects such as scroll of ID and wells of knowledge. Items are instead set to be ready to be IDed by the shard."));
+				"**- Shard of Oblivion** now prevents ID effects such as data shard of ID and wells of knowledge. Items are instead set to be ready to be IDed by the shard."));
 
 		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.SAI), "Weapon Ability Buffs",
 				"The Duelist continues to do better following all the changes in v2.X updates. A couple of weapon abilities are still lagging behind though, and so I'm giving them a little help:\n" +

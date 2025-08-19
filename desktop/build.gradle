@@ -97,7 +97,7 @@ runtime {
                                 "--java-options", "-XX:+IgnoreUnrecognizedVMOptions",
                                 //append .apple because com.shatteredpixel.shatteredpixeldungeon was taken =(
                                 "--mac-package-identifier", appPackageName + ".apple",
-                                "--mac-package-name", "ShattererdPD"]
+                                "--mac-package-name", "SofiaStation"]
             }
         }
     }
@@ -123,4 +123,14 @@ dependencies {
 
     implementation project(':services:updates:githubUpdates')
     implementation project(':services:news:shatteredNews')
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.shatteredpixel.shatteredpixeldungeon.desktop.DesktopLauncher',
+                'Implementation-Version': appVersionCode,
+                'Specification-Version': appVersionName
+        )
+    }
 }

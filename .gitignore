@@ -18,3 +18,8 @@ local.properties
 #intellij project files
 *.iml
 *.idea
+
+# Android signing keys - NEVER commit these!
+*.keystore
+*.jks
+keystore.properties

@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gradlew.bat desktop:debug:*)",
+      "Bash(./gradlew.bat desktop:debug:*)",
+      "Bash(git checkout:*)",
+      "Bash(find:*)",
+      "Bash(./gradlew:*)",
+      "Bash(rm:*)",
+      "Bash(.gradlew.bat desktop:run)",
+      "Bash(gradlew.bat desktop:run:*)",
+      "Bash(chmod:*)",
+      "Bash(mkdir:*)",
+      "Bash(mv:*)",
+      "Bash(gh:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

@@ -22,6 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.services.updates;
 
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
+import com.sofiastation.sofiastation.services.updates.UpdateService;
+import com.sofiastation.sofiastation.services.updates.AvailableUpdateData;
 import com.watabou.utils.Callback;
 
 import java.util.Date;

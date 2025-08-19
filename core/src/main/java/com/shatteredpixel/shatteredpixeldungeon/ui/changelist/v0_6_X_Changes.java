@@ -98,11 +98,11 @@ public class v0_6_X_Changes {
 				"Every shop now stocks a runestone of augmentation and an ankh, instead of one or the other."));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARMOR_CLOTH, new Bulk().glowing()), "New Curses",
-				"Added 4 new curses:\n\n" +
-				"_-_ Friendly curse makes weapons sometimes charm both you and the enemy.\n" +
-				"_-_ Elastic curse lets weapons apply knockback, but reduces damage to 0.\n\n" +
-				"_-_ Bulk curse makes armor large, slowing movement through doorways.\n" +
-				"_-_ Overgrowth curse causes random plant effects when you are struck."));
+				"Added 4 new malware types:\n\n" +
+				"_-_ Friendly malware makes weapons sometimes charm both you and the enemy.\n" +
+				"_-_ Elastic malware lets weapons apply knockback, but reduces damage to 0.\n\n" +
+				"_-_ Bulk malware makes armor large, slowing movement through doorways.\n" +
+				"_-_ Overgrowth malware causes random plant effects when you are struck."));
 		
 		changes.addButton( new ChangeButton(BadgeBanner.image(Badges.Badge.CHAMPION_3.image), "New and Changed Badges",
 				"_-_ Added badges for winning with 3 challenges at once and 6 challenges at once.\n\n" +

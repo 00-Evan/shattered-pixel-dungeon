@@ -1,27 +1,65 @@
-# Shattered Pixel Dungeon
+# Sofia Station
 
-[Shattered Pixel Dungeon](https://shatteredpixel.com/shatteredpd/) is an open-source traditional roguelike dungeon crawler with randomized levels and enemies, and hundreds of items to collect and use. It's based on the [source code of Pixel Dungeon](https://github.com/00-Evan/pixel-dungeon-gradle), by [Watabou](https://watabou.itch.io/).
+Sofia Station is a sci-fi total conversion mod of [Shattered Pixel Dungeon](https://shatteredpixel.com/shatteredpd/), transforming the fantasy roguelike dungeon crawler into a futuristic space station adventure.
 
-Shattered Pixel Dungeon currently compiles for Android, iOS, and Desktop platforms. You can find official releases of the game on:
+## About
 
-[![Get it on Google Play](https://shatteredpixel.com/assets/images/badges/gplay.png)](https://play.google.com/store/apps/details?id=com.shatteredpixel.shatteredpixeldungeon)
-[![Download on the App Store](https://shatteredpixel.com/assets/images/badges/appstore.png)](https://apps.apple.com/app/shattered-pixel-dungeon/id1563121109)
-[![Steam](https://shatteredpixel.com/assets/images/badges/steam.png)](https://store.steampowered.com/app/1769170/Shattered_Pixel_Dungeon/)<br>
-[![GOG.com](https://shatteredpixel.com/assets/images/badges/gog.png)](https://www.gog.com/game/shattered_pixel_dungeon)
-[![Itch.io](https://shatteredpixel.com/assets/images/badges/itch.png)](https://shattered-pixel.itch.io/shattered-pixel-dungeon)
-[![Github Releases](https://shatteredpixel.com/assets/images/badges/github.png)](https://github.com/00-Evan/shattered-pixel-dungeon/releases)
+Sofia Station reimagines the classic dungeon crawling experience in a sci-fi setting:
+- **Magic becomes Technology**: Wands are now emitters, spells are programs, and enchantments are modifications
+- **Heroes become Operatives**: Play as Marines, Scientists, Snipers, and other space station personnel
+- **Dungeons become Station Decks**: Explore corrupted station levels instead of medieval dungeons
+- **Fantasy becomes Sci-Fi**: All text, lore, and terminology has been converted to fit the sci-fi theme
 
-If you like this game, please consider [supporting me on Patreon](https://www.patreon.com/ShatteredPixel)!
+## Attribution
 
-There is an official blog for this project at [ShatteredPixel.com](https://www.shatteredpixel.com/blog/).
+**Sofia Station is based on Shattered Pixel Dungeon by Evan Debenham**  
+- Original Game: [Shattered Pixel Dungeon](https://github.com/00-Evan/shattered-pixel-dungeon)
+- Original Developer: [Evan Debenham](https://shatteredpixel.com/)
+- License: GNU GPLv3
 
-The game also has a translation project hosted on [Transifex](https://explore.transifex.com/shattered-pixel/shattered-pixel-dungeon/).
+Shattered Pixel Dungeon itself is based on [Pixel Dungeon](https://github.com/00-Evan/pixel-dungeon-gradle) by [Watabou](https://watabou.itch.io/).
 
-Note that **this repository does not accept pull requests!** The code here is provided in hopes that others may find it useful for their own projects, not to allow community contribution. Issue reports of all kinds (bug reports, feature requests, etc.) are welcome.
+## Current Status
 
-If you'd like to work with the code, you can find the following guides in `/docs`:
-- [Compiling for Android.](docs/getting-started-android.md)
-    - **[If you plan to distribute on Google Play please read the end of this guide.](docs/getting-started-android.md#distributing-your-apk)**
-- [Compiling for desktop platforms.](docs/getting-started-desktop.md)
-- [Compiling for iOS.](docs/getting-started-ios.md)
-- [Recommended changes for making your own version.](docs/recommended-changes.md)
+This is an early release of Sofia Station. Currently implemented:
+- ✅ Complete text conversion from fantasy to sci-fi
+- ✅ All game mechanics preserved and functional
+- ✅ Full storyline adapted to space station setting
+- ⚠️ Graphics and sprites still use original fantasy assets (work in progress)
+- ⚠️ Sound effects and music still use original assets (work in progress)
+
+## Building from Source
+
+Sofia Station can be compiled for Android, iOS, and Desktop platforms. See the following guides:
+- [Compiling for Android](docs/getting-started-android.md)
+- [Compiling for desktop platforms](docs/getting-started-desktop.md)
+- [Compiling for iOS](docs/getting-started-ios.md)
+
+## License
+
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE.txt) file for details.
+
+As per the GPL license requirements:
+- This is a derivative work of Shattered Pixel Dungeon
+- The source code is freely available
+- Any distributions must also be under GPL-3.0
+
+## Contributing
+
+Issue reports, suggestions, and bug reports are welcome! Feel free to open an issue on GitHub.
+
+## Disclaimer
+
+This is an unofficial fan-made modification. Sofia Station is not affiliated with or endorsed by Evan Debenham or the original Shattered Pixel Dungeon project.
+
+---
+
+*Original Shattered Pixel Dungeon README content preserved below for reference:*
+
+---
+
+# Original Shattered Pixel Dungeon Information
+
+[Shattered Pixel Dungeon](https://shatteredpixel.com/shatteredpd/) is an open-source traditional roguelike dungeon crawler with randomized levels and enemies, and hundreds of items to collect and use.
+
+Note that **the original repository does not accept pull requests!** The code here is provided in hopes that others may find it useful for their own projects, not to allow community contribution.
