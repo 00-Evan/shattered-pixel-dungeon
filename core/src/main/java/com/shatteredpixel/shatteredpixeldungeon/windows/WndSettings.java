@@ -220,8 +220,6 @@ public class WndSettings extends WndTabbed {
 		RenderedTextBlock title;
 		ColorBlock sep1;
 		CheckBox chkFullscreen;
-		OptionSlider optScale;
-		RedButton btnOrientation;
 		ColorBlock sep2;
 		OptionSlider optBrightness;
 		OptionSlider optVisGrid;
@@ -251,24 +249,6 @@ public class WndSettings extends WndTabbed {
 				chkFullscreen.enable(false);
 			}
 			add(chkFullscreen);
-
-			//TODO change to respect auto-rotation when updating Android SDK?
-			if (DeviceCompat.isAndroid()) {
-				Boolean landscape = SPDSettings.landscape();
-				if (landscape == null){
-					landscape = Game.width > Game.height;
-				}
-				Boolean finalLandscape = landscape;
-				btnOrientation = new RedButton(finalLandscape ?
-						Messages.get(this, "portrait")
-						: Messages.get(this, "landscape")) {
-					@Override
-					protected void onClick() {
-						SPDSettings.landscape(!finalLandscape);
-					}
-				};
-				add(btnOrientation);
-			}
 
 			sep2 = new ColorBlock(1, 1, 0xFF000000);
 			add(sep2);
@@ -328,16 +308,6 @@ public class WndSettings extends WndTabbed {
 
 			chkFullscreen.setRect(0, bottom + GAP, width, BTN_HEIGHT);
 			bottom = chkFullscreen.bottom();
-
-			if (btnOrientation != null) {
-				btnOrientation.setRect(0, bottom + GAP, width, BTN_HEIGHT);
-				bottom = btnOrientation.bottom();
-			}
-
-			if (optScale != null){
-				optScale.setRect(0, bottom + GAP, width, SLIDER_HEIGHT);
-				bottom = optScale.bottom();
-			}
 
 			sep2.size(width, 1);
 			sep2.y = bottom + GAP;

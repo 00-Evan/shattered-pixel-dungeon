@@ -67,21 +67,6 @@ public class SPDSettings extends GameSettings {
 		return getBoolean( KEY_FULLSCREEN, DeviceCompat.isDesktop() );
 	}
 	
-	public static void landscape( boolean value ){
-		put( KEY_LANDSCAPE, value );
-		((ShatteredPixelDungeon)ShatteredPixelDungeon.instance).updateDisplaySize();
-	}
-	
-	//can return null because we need to directly handle the case of landscape not being set
-	// as there are different defaults for different devices
-	public static Boolean landscape(){
-		if (contains(KEY_LANDSCAPE)){
-			return getBoolean(KEY_LANDSCAPE, false);
-		} else {
-			return null;
-		}
-	}
-	
 	public static void zoom( int value ) {
 		put( KEY_ZOOM, value );
 	}
