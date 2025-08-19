@@ -21,9 +21,10 @@ allprojects {
 
         appAndroidCompileSDK = 35   //Android 15
         appAndroidMinSDK = 21       //Android 5.0
-        //significant layout management changes required for API 35+ as edge-to-edge is forced on
-        //will do this at the same time as dropping support for Android 4.4- (later in 2025)
-        appAndroidTargetSDK = 34    //Android 14
+        // TODO currently we've opted-out of edge-to-edge but it will be required for Android 16
+        //  Need to figure out how the game will handle drawing into notches (and unify with iOS)
+        //  See: https://developer.android.com/about/versions/15/behavior-changes-15#ux
+        appAndroidTargetSDK = 35    //Android 15
 
         gdxVersion = '1.13.6-SNAPSHOT' //using snapshot as 1.13.5 has issues with Android R8
         gdxControllersVersion = '2.2.4'

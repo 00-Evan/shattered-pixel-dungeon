@@ -22,7 +22,7 @@
 	<application
 		android:icon="@mipmap/ic_launcher"
 		android:label="${appName}"
-		android:theme="@android:style/Theme.Black.NoTitleBar"
+		android:theme="@style/Theme"
 		android:appCategory="game"
 		android:isGame="true"
 		android:resizeableActivity="true"
