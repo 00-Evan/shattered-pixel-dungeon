@@ -28,21 +28,6 @@ import com.watabou.noosa.Game;
 
 //TODO migrate to platformSupport class
 public class DeviceCompat {
-	
-	public static boolean supportsFullScreen(){
-		switch (Gdx.app.getType()){
-			case Android:
-				//TODO perhaps have this vary based on status bar type?
-				return true;
-			case iOS:
-				//iOS supports hiding UI via drawing into the gesture safe area
-				return Gdx.graphics.getSafeInsetBottom() != 0;
-			case Desktop:
-				return true;
-			default:
-				return false;
-		}
-	}
 
 	//return APi level on Android, major OS version on iOS, 0 on desktop
 	public static int getPlatformVersion(){

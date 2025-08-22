@@ -68,6 +68,12 @@ public class IOSPlatformSupport extends PlatformSupport {
 	}
 
 	@Override
+	public boolean supportsFullScreen() {
+		//iOS supports hiding UI via drawing into the gesture safe area
+		return Gdx.graphics.getSafeInsetBottom() > 0;
+	}
+
+	@Override
 	public void updateSystemUI() {
 		int prevInset = Game.bottomInset;
 		updateDisplaySize();

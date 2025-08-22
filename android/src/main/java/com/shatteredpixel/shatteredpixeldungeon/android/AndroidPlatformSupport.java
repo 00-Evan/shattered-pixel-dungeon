@@ -45,6 +45,16 @@ public class AndroidPlatformSupport extends PlatformSupport {
 
 		//TODO seem to be existing bugs with handling split screen here, should look into that
 	}
+
+	public boolean supportsFullScreen(){
+		//Android supports hiding the navigation bar or gesture bar, if it is present
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			WindowInsets insets = ((AndroidApplication)Gdx.app).getApplicationWindow().getDecorView().getRootWindowInsets();
+			return insets.getStableInsetBottom() > 0 || insets.getStableInsetRight() > 0 || insets.getStableInsetLeft() > 0;
+		} else {
+			return true;
+		}
+	}
 	
 	public void updateSystemUI() {
 		
@@ -63,7 +73,6 @@ public class AndroidPlatformSupport extends PlatformSupport {
 							WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 				}
 
-				//TODO can immersive be handled by libGDX? It's getting quite dated here
 				if (SPDSettings.fullscreen()) {
 					AndroidLauncher.instance.getWindow().getDecorView().setSystemUiVisibility(
 							View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
