@@ -301,9 +301,12 @@ public class WndRanking extends WndTabbed {
 			RenderedTextBlock txt = PixelScene.renderTextBlock( label, 7 );
 			txt.setPos(0, pos);
 			parent.add( txt );
-			
-			txt = PixelScene.renderTextBlock( value, 7 );
-			txt.setPos(WIDTH * 0.6f, pos);
+
+			int size = 7;
+			if (value.length() >= 14) size -=1;
+			if (value.length() >= 18) size -=1;
+			txt = PixelScene.renderTextBlock( value, size );
+			txt.setPos(WIDTH * 0.55f, pos);
 			PixelScene.align(txt);
 			parent.add( txt );
 			
