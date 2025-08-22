@@ -67,4 +67,15 @@ public class DeviceCompat {
 		return result;
 	}
 
+	//some devices (macOS mainly) report virtual pixels to Shattered, but sometimes we want real pixel precision
+	//this returns the number of real pixels per virtual pixel in the X dimension...
+	public static float getRealPixelScaleX(){
+		return (Gdx.graphics.getBackBufferWidth() / (float)Game.width );
+	}
+
+	//...and in the Y dimension
+	public static float getRealPixelScaleY(){
+		return ((Gdx.graphics.getBackBufferHeight()-Game.bottomInset) / (float)Game.height );
+	}
+
 }
