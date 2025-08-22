@@ -129,6 +129,15 @@ public class IOSPlatformSupport extends PlatformSupport {
 		OALSimpleAudio.sharedInstance().setHonorSilentSwitch(value);
 	}
 
+	public void setOnscreenKeyboardVisible(boolean value, boolean multiline){
+		if (multiline){
+			//iOS needs 'email' input type to display enter/return key for multiline =S
+			Gdx.input.setOnscreenKeyboardVisible(value, Input.OnscreenKeyboardType.Email);
+		} else {
+			super.setOnscreenKeyboardVisible(value, multiline);
+		}
+	}
+
 	/* FONT SUPPORT */
 
 	//custom pixel font, for use with Latin and Cyrillic languages

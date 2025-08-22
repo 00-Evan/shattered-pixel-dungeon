@@ -183,7 +183,7 @@ public class PointerEvent {
 			}
 			if (clearKeyboardThisPress){
 				//most press events should clear the keyboard
-				Game.platform.setOnscreenKeyboardVisible(false);
+				Game.platform.setOnscreenKeyboardVisible(false, false);
 			}
 		}
 		pointerEvents.clear();

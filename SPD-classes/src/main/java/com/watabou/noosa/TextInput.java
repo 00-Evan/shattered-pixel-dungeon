@@ -141,13 +141,13 @@ public class TextInput extends Component {
 		textField.setOnscreenKeyboard(new TextField.OnscreenKeyboard() {
 			@Override
 			public void show(boolean visible) {
-				Game.platform.setOnscreenKeyboardVisible(visible);
+				Game.platform.setOnscreenKeyboardVisible(visible, multiline);
 			}
 		});
 
 		container.setActor(textField);
 		stage.setKeyboardFocus(textField);
-		Game.platform.setOnscreenKeyboardVisible(true);
+		Game.platform.setOnscreenKeyboardVisible(true, multiline);
 	}
 
 	public void enterPressed(){
@@ -258,7 +258,7 @@ public class TextInput extends Component {
 			stage.dispose();
 			skin.dispose();
 			Game.inputHandler.removeInputProcessor(stage);
-			Game.platform.setOnscreenKeyboardVisible(false);
+			Game.platform.setOnscreenKeyboardVisible(false, false);
 			if (!DeviceCompat.isDesktop()) Game.platform.updateSystemUI();
 		}
 	}
