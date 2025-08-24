@@ -40,7 +40,7 @@ public class ThrowingClub extends MissileWeapon {
 	@Override
 	public boolean doPickUp(Hero hero, int pos) {
 		if (super.doPickUp(hero, pos)){
-			hero.spendAndNext( -TIME_TO_PICK_UP );
+			hero.spendAndNext( -hero.cooldown() );
 			return true;
 		}
 		return false;
