@@ -28,7 +28,6 @@ import com.badlogic.gdx.backends.iosrobovm.objectal.OALSimpleAudio;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.watabou.input.ControllerHandler;
 import com.watabou.noosa.Game;
@@ -55,22 +54,12 @@ public class IOSPlatformSupport extends PlatformSupport {
 		} else {
 			UIApplication.getSharedApplication().setStatusBarHidden(true);
 		}
-
-		if (!SPDSettings.fullscreen()) {
-			int insetChange = Gdx.graphics.getSafeInsetBottom() - Game.bottomInset;
-			Game.bottomInset = Gdx.graphics.getSafeInsetBottom();
-			Game.height -= insetChange;
-		} else {
-			Game.height += Game.bottomInset;
-			Game.bottomInset = 0;
-		}
-		Gdx.gl.glViewport(0, Game.bottomInset, Game.width, Game.height);
 	}
 
 	@Override
 	public boolean supportsFullScreen() {
-		//iOS supports hiding UI via drawing into the gesture safe area
-		return Gdx.graphics.getSafeInsetBottom() > 0;
+		//fullscreen is always enabled on iOS
+		return false;
 	}
 
 	@Override

@@ -98,7 +98,7 @@ public class IOSLauncher extends IOSApplication.Delegate {
 		config.depthFormat = MGLDrawableDepthFormat.None;
 		config.hdpiMode = HdpiMode.Pixels;
 
-		config.hideHomeIndicator = SPDSettings.fullscreen();
+		config.hideHomeIndicator = true;
 		config.overrideRingerSwitch = SPDSettings.ignoreSilentMode();
 
 		CGRect statusBarFrame = UIApplication.getSharedApplication().getStatusBarFrame();
