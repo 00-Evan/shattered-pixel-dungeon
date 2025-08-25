@@ -86,9 +86,52 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v3.2.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
+				"Hey folks, this is the first of those 'technical improvements' patches I mentioned previously. Several changes have been made to modernize some aspects of Shattered Pixel Dungeon on Android, as well as a few smaller changes on iOS and internal changes on other platforms.\n" +
+				"\n" +
+				"One more change that I'm delaying for another patch is adjustments to screen layout logic to better support hole punches and small notches. No promises, but I'd like to let devices with smaller cutouts (like hole punches) play the game in true fullscreen. This may also extend to iOS users and the compact dynamic island."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**Android Changes:**\n" +
+				"**-** Removed landscape/portrait setting, game now uses system orientation instead. This is more consistent with the iOS version, and will be required in the future by Google anyway.\n" +
+				"**-** 'Fullscreen' (hiding the nav bar or gesture bar) now defaults to on, and is forced on if no nav or gesture bar is present.\n" +
+				"**-** Shattered Pixel Dungeon now requires Android 5.0+, up from 4.0+.\n" +
+				"**-** Fully removed Power Saver setting, which was already hidden for Android 4.4+ devices anyway.\n" +
+				"**-** Sharing Gameplay Data now requires Android 6.0+, up from 4.1+.\n" +
+				"**-** Updated various Google Play libraries.\n" +
+				"\n" +
+				"**Other Changes:**\n" +
+				"**-** 'Fullscreen' (drawing over the home indicator) is now always on for iOS users, as iOS 26 is about to always auto-hide the home indicator anyway.\n" +
+				"**-** Updated various internal code libraries.\n" +
+				"**-** Desktop JAR build now requires Java 11+, up from 8+.\n" +
+				"**-** Slightly adjusted the visuals at the end of the prison region."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by v3.2.1:**\n" +
+				"**-** Text resolution on mac retina displays being reduced to 0.25x from 0.5x instead of increased to 1x (sorry!)\n" +
+				"**-** Thrown clubs and hammers giving hero extra turns in rare cases\n" +
+				"**-** Rare crash bugs\n" +
+				"\n" +
+				"**Caused by v3.2.0:**\n" +
+				"**-** Potential exploits relating to explosive curse and thrown weapons\n" +
+				"**-** Liquid metal stating upgrades increase cost by 33% when it is actually 35%\n" +
+				"**-** Hero rarely dodging while affected by stone glyph.\n" +
+				"**-** Minor textual errors",
+
+				"**Existed prior to v3.2.0:**\n" +
+				"**-** Upgrade window not accounting for metamorphed runic transference talent\n" +
+				"**-** Keyboard on iOS not showing return key on multiline text windows\n" +
+				"**-** UI layout issues with long custom seeds\n" +
+				"**-** On-equip ID talents not setting items to be ready to be IDed by Oblivion Shard\n" +
+				"**-** 'Taking the Mick' badge not unlocking if the final boss was killed via pickaxe's explosive curse\n" +
+				"**-** Shield of Light not applying to skeleton bone explosion\n" +
+				"**-** Paralysis resist not functioning correctly over multiple applications of paralysis\n" +
+				"**-** Transmogrified statues not always clearing their journal landmark entry on death"));
 
 		changes = new ChangeInfo("v3.2.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
