@@ -77,7 +77,7 @@ public class Explosive extends Weapon.Enchantment {
 				explosionPos = defender.pos;
 			}
 
-			new Bomb.ConjuredBomb().explode(explosionPos);
+			new ExplosiveCurseBomb().explode(explosionPos);
 
 			durability = 100;
 			Item.updateQuickslot();
@@ -146,5 +146,7 @@ public class Explosive extends Weapon.Enchantment {
 	public void storeInBundle( Bundle bundle ) {
 		bundle.put(DURABILITY, durability);
 	}
+
+	public static class ExplosiveCurseBomb extends Bomb.ConjuredBomb {}
 
 }
