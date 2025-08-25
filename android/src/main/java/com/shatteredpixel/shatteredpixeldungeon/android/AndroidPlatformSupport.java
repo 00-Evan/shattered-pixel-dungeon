@@ -30,7 +30,6 @@ import android.view.WindowInsets;
 import android.view.WindowManager;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -51,8 +50,8 @@ public class AndroidPlatformSupport extends PlatformSupport {
 	public boolean supportsFullScreen(){
 		//Android supports hiding the navigation bar or gesture bar, if it is present
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			WindowInsets insets = ((AndroidApplication)Gdx.app).getApplicationWindow().getDecorView().getRootWindowInsets();
-			return insets.getStableInsetBottom() > 0 || insets.getStableInsetRight() > 0 || insets.getStableInsetLeft() > 0;
+			WindowInsets insets = AndroidLauncher.instance.getApplicationWindow().getDecorView().getRootWindowInsets();
+			return insets != null && (insets.getStableInsetBottom() > 0 || insets.getStableInsetRight() > 0 || insets.getStableInsetLeft() > 0);
 		} else {
 			return true;
 		}
