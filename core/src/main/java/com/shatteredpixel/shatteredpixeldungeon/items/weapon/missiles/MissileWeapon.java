@@ -583,6 +583,11 @@ abstract public class MissileWeapon extends Weapon {
 			m.durability = MAX_DURABILITY;
 			m.parent = this;
 			extraThrownLeft = m.extraThrownLeft = true;
+
+			//explosive durability is tracked only in the parent
+			if (m.enchantment instanceof Explosive){
+				((Explosive) m.enchantment).clear();
+			}
 		}
 		
 		return split;
