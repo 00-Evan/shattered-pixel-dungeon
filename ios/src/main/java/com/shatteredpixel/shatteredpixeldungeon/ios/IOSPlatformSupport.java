@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ios;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.backends.iosrobovm.DefaultIOSInput;
 import com.badlogic.gdx.backends.iosrobovm.custom.HWMachine;
 import com.badlogic.gdx.backends.iosrobovm.objectal.OALSimpleAudio;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -119,12 +120,9 @@ public class IOSPlatformSupport extends PlatformSupport {
 	}
 
 	public void setOnscreenKeyboardVisible(boolean value, boolean multiline){
-		if (multiline){
-			//iOS needs 'email' input type to display enter/return key for multiline =S
-			Gdx.input.setOnscreenKeyboardVisible(value, Input.OnscreenKeyboardType.Email);
-		} else {
-			super.setOnscreenKeyboardVisible(value, multiline);
-		}
+		//iOS keyboard says 'done' even with this change, but the behaviour is correct at least
+		((DefaultIOSInput)Gdx.input).setKeyboardCloseOnReturnKey(!multiline);
+		super.setOnscreenKeyboardVisible(value, multiline);
 	}
 
 	/* FONT SUPPORT */
