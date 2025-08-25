@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.PrismaticImage;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Stone;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEvasion;
@@ -342,6 +343,11 @@ public class FloatingText extends RenderedTextBlock {
 		if (defender instanceof PrismaticImage) arm = Dungeon.hero.belongings.armor();
 		if (defender instanceof ArmoredStatue) arm = ((ArmoredStatue)defender).armor();
 		if (defender instanceof DriedRose.GhostHero) arm = ((DriedRose.GhostHero)defender).armor();
+
+		//one last check
+		if (defRoll == 0 && arm != null && arm.hasGlyph(Stone.class, defender)){
+			return HIT_ARM;
+		}
 
 		//accuracy boosts (always > 1)
 		if (wep != null && wep.accuracyFactor(attacker, defender) > 1){
