@@ -437,8 +437,8 @@ public class SPDSettings extends GameSettings {
 	
 	public static Point windowResolution(){
 		return new Point(
-				1920,
-				1080
+				getInt( KEY_WINDOW_WIDTH, 800, 720, Integer.MAX_VALUE ),
+				getInt( KEY_WINDOW_HEIGHT, 600, 400, Integer.MAX_VALUE )
 		);
 	}
 	
