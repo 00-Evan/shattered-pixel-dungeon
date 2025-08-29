@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.watabou.input.ControllerHandler;
 import com.watabou.noosa.Game;
 import com.watabou.utils.PlatformSupport;
+import com.watabou.utils.RectF;
 
 import org.robovm.apple.audiotoolbox.AudioServices;
 import org.robovm.apple.systemconfiguration.SCNetworkReachability;
@@ -61,6 +62,16 @@ public class IOSPlatformSupport extends PlatformSupport {
 	public boolean supportsFullScreen() {
 		//fullscreen is always enabled on iOS
 		return false;
+	}
+
+	@Override
+	public RectF getSafeInsets(int level) {
+		//TODO currently returns all insets all the time. Needs testing based on particular iOS quirks
+		// we roughly want:
+		// ignore bottom home indicator insets in fullsceen
+		// ignore side insets in landscape for side that isn't notch
+		// older notch is large, compact dynamic island is not (maybe? Probably need UI adjustments then)
+		return super.getSafeInsets(level);
 	}
 
 	@Override

@@ -36,6 +36,8 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.Callback;
+import com.watabou.utils.RectF;
 
 public class SupporterScene extends PixelScene {
 
@@ -50,6 +52,7 @@ public class SupporterScene extends PixelScene {
 
 		int w = Camera.main.width;
 		int h = Camera.main.height;
+		RectF insets = getCommonInsets();
 
 		int elementWidth = PixelScene.landscape() ? 202 : 120;
 
@@ -57,15 +60,18 @@ public class SupporterScene extends PixelScene {
 		archs.setSize(w, h);
 		add(archs);
 
+		w -= insets.right + insets.left;
+		h -= insets.top + insets.bottom;
+
 		ExitButton btnExit = new ExitButton();
-		btnExit.setPos(w - btnExit.width(), 0);
+		btnExit.setPos(insets.left + w - btnExit.width(), insets.top);
 		add(btnExit);
 
 		IconTitle title = new IconTitle(Icons.GOLD.get(), Messages.get(this, "title"));
 		title.setSize(200, 0);
 		title.setPos(
-				(w - title.reqWidth()) / 2f,
-				(20 - title.height()) / 2f
+				insets.left + (w - title.reqWidth()) / 2f,
+				insets.top + (20 - title.height()) / 2f
 		);
 		align(title);
 		add(title);
@@ -93,8 +99,8 @@ public class SupporterScene extends PixelScene {
 
 		float elementHeight = msg.height() + BTN_HEIGHT + GAP;
 
-		float top = 16 + (h - 16 - elementHeight)/2f;
-		float left = (w-elementWidth)/2f;
+		float top = insets.top + 16 + (h - 16 - elementHeight)/2f;
+		float left = insets.left + (w-elementWidth)/2f;
 
 		msg.setPos(left, top);
 		align(msg);

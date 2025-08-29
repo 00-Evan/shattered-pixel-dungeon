@@ -43,6 +43,7 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.RectF;
 
 import java.util.ArrayList;
 
@@ -61,34 +62,38 @@ public class NewsScene extends PixelScene {
 
 		int w = Camera.main.width;
 		int h = Camera.main.height;
-
-		int fullWidth = PixelScene.landscape() ? 202 : 100;
-		int left = (w - fullWidth)/2;
+		RectF insets = getCommonInsets();
 
 		Archs archs = new Archs();
 		archs.setSize(w, h);
 		add(archs);
 
+		w -= insets.left + insets.right;
+		h -= insets.top + insets.bottom;
+
+		int fullWidth = PixelScene.landscape() ? 202 : 100;
+		int left = (int)insets.left + (w - fullWidth)/2;
+
 		ExitButton btnExit = new ExitButton();
-		btnExit.setPos(w - btnExit.width(), 0);
+		btnExit.setPos(insets.left + w - btnExit.width(), insets.top);
 		add(btnExit);
 
 		IconTitle title = new IconTitle( Icons.NEWS.get(), Messages.get(this, "title"));
 		title.setSize(200, 0);
 		title.setPos(
-				(w - title.reqWidth()) / 2f,
-				(20 - title.height()) / 2f
+				insets.left + (w - title.reqWidth()) / 2f,
+				insets.top + (20 - title.height()) / 2f
 		);
 		align(title);
 		add(title);
 
-		float top = 18;
+		float top = 18 + insets.top;
 
 		displayingNoArticles = !News.articlesAvailable();
 		if (displayingNoArticles || Messages.lang() != Languages.ENGLISH) {
 
 			Component newsInfo = new NewsInfo();
-			newsInfo.setRect(left, 20, fullWidth, 0);
+			newsInfo.setRect(left, top, fullWidth, 0);
 			add(newsInfo);
 
 			top = newsInfo.bottom();
@@ -98,7 +103,7 @@ public class NewsScene extends PixelScene {
 		if (!displayingNoArticles) {
 			ArrayList<NewsArticle> articles = News.articles();
 
-			float articleSpace = h - top - 2;
+			float articleSpace = h - top - 2 + insets.top;
 			int rows = articles.size();
 			if (PixelScene.landscape()){
 				rows /= 2;

@@ -25,6 +25,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.Build;
+import android.view.DisplayCutout;
 import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowManager;
@@ -35,6 +36,7 @@ import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.watabou.utils.PlatformSupport;
+import com.watabou.utils.RectF;
 
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -45,6 +47,8 @@ public class AndroidPlatformSupport extends PlatformSupport {
 	public void updateDisplaySize(){
 
 		//TODO seem to be existing bugs with handling split screen here, should look into that
+
+		//TODO display isn't refreshing when fullscreen toggled on/off, or on 180 degree rotate
 	}
 
 	public boolean supportsFullScreen(){
@@ -56,7 +60,46 @@ public class AndroidPlatformSupport extends PlatformSupport {
 			return true;
 		}
 	}
-	
+
+	@Override
+	public RectF getSafeInsets( int level ) {
+		RectF insets = new RectF();
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			WindowInsets rootInsets = AndroidLauncher.instance.getApplicationWindow().getDecorView().getRootWindowInsets();
+			if (rootInsets != null) {
+
+				//Navigation bar (never on the top)
+				//Android 14 and below do this for us
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM && supportsFullScreen() && !SPDSettings.fullscreen()) {
+					insets.left = Math.max(insets.left, rootInsets.getStableInsetLeft());
+					insets.right = Math.max(insets.right, rootInsets.getStableInsetRight());
+					insets.bottom = Math.max(insets.bottom, rootInsets.getStableInsetBottom());
+				}
+
+				//display cutout
+				if (level > INSET_BLK && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+					DisplayCutout cutout = rootInsets.getDisplayCutout();
+					//TODO determine if a cutout is large or not based on its size in pixels:
+					// on my OP7P, dev mode not simulations are:
+					//top-left cutout is 0,0,136,136 (136x136 = 18.5k total)
+					//center is 552,0,888,168 (336*168 = 56k total)
+					//top-right corner is 1272,0,1440,168 (x168 = 28k total)
+					//overall screen is 1440x3120 = 4400k pixels
+					// 0.5% of 4400k is 22k
+					//maybe judge a cutout to be large if it's bigger than 0.5% of the display?
+					if (cutout != null) {
+						insets.left = Math.max(insets.left, cutout.getSafeInsetLeft());
+						insets.top = Math.max(insets.top, cutout.getSafeInsetTop());
+						insets.right = Math.max(insets.right, cutout.getSafeInsetRight());
+						insets.bottom = Math.max(insets.bottom, cutout.getSafeInsetBottom());
+					}
+				}
+			}
+		}
+		return insets;
+	}
+
 	public void updateSystemUI() {
 		
 		AndroidLauncher.instance.runOnUiThread(new Runnable() {
@@ -80,8 +123,9 @@ public class AndroidPlatformSupport extends PlatformSupport {
 									| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN
 									| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY );
 				} else {
+					//still want to hide the status bar and cutout void
 					AndroidLauncher.instance.getWindow().getDecorView().setSystemUiVisibility(
-							View.SYSTEM_UI_FLAG_LAYOUT_STABLE );
+							View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN );
 				}
 			}
 		});

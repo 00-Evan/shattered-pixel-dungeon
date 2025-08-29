@@ -39,6 +39,24 @@ public abstract class PlatformSupport {
 	public boolean supportsFullScreen(){
 		return true; //default
 	}
+
+	public static final int INSET_ALL = 3; //All insets, from hole punches to nav bars
+	public static final int INSET_LRG = 2; //Only big insets, full size notches and nav bars
+	public static final int INSET_BLK = 1; //only complete blocker assets like navbars
+
+	public RectF getSafeInsets( int level ){
+		return new RectF(
+				Gdx.graphics.getSafeInsetLeft(),
+				Gdx.graphics.getSafeInsetTop(),
+				Gdx.graphics.getSafeInsetRight(),
+				Gdx.graphics.getSafeInsetBottom()
+		);
+	}
+
+	//returns a display cutout (if one is present) in device pixels, or null is none is present
+	public RectF getDisplayCutout(){
+		return null;
+	}
 	
 	public abstract void updateSystemUI();
 

@@ -48,6 +48,7 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Music;
 import com.watabou.utils.FileUtils;
+import com.watabou.utils.RectF;
 
 import java.util.Collections;
 
@@ -94,6 +95,7 @@ public class WelcomeScene extends PixelScene {
 
 		int w = Camera.main.width;
 		int h = Camera.main.height;
+		RectF insets = getCommonInsets();
 
 		Archs archs = new Archs();
 		archs.setSize( w, h );
@@ -102,13 +104,16 @@ public class WelcomeScene extends PixelScene {
 		//darkens the arches
 		add(new ColorBlock(w, h, 0x88000000));
 
+		w -= insets.left + insets.right;
+		h -= insets.top + insets.bottom;
+
 		Image title = BannerSprites.get( landscape() ? BannerSprites.Type.TITLE_LAND : BannerSprites.Type.TITLE_PORT);
 		add( title );
 
 		float topRegion = Math.max(title.height - 6, h*0.45f);
 
-		title.x = (w - title.width()) / 2f;
-		title.y = 2 + (topRegion - title.height()) / 2f;
+		title.x = insets.left + (w - title.width()) / 2f;
+		title.y = insets.top + 2 + (topRegion - title.height()) / 2f;
 
 		align(title);
 
@@ -165,10 +170,10 @@ public class WelcomeScene extends PixelScene {
 			}
 		};
 
-		float buttonY = Math.min(topRegion + (PixelScene.landscape() ? 60 : 120), h - 24);
+		float buttonY = insets.top + Math.min(topRegion + (PixelScene.landscape() ? 60 : 120), h - 24);
 
 		float buttonAreaWidth = landscape() ? PixelScene.MIN_WIDTH_L-6 : PixelScene.MIN_WIDTH_P-2;
-		float btnAreaLeft = (Camera.main.width - buttonAreaWidth) / 2f;
+		float btnAreaLeft = insets.left + (w - buttonAreaWidth) / 2f;
 		if (previousVersion != 0 && !SPDSettings.intro()){
 			StyledButton changes = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(TitleScene.class, "changes")){
 				@Override
@@ -216,7 +221,7 @@ public class WelcomeScene extends PixelScene {
 		text.text(message, Math.min(w-20, 300));
 		float titleBottom = title.y + title.height();
 		float textSpace = okay.top() - titleBottom - 4;
-		text.setPos((w - text.width()) / 2f, (titleBottom + 2) + (textSpace - text.height())/2);
+		text.setPos(insets.left + (w - text.width()) / 2f, (titleBottom + 2) + (textSpace - text.height())/2);
 		add(text);
 
 		if (SPDSettings.intro() && ControllerHandler.isControllerConnected()){
