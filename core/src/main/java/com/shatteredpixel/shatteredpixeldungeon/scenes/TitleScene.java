@@ -223,8 +223,8 @@ public class TitleScene extends PixelScene {
 		version.measure();
 		version.hardlight( 0x888888 );
 		//TODO perhaps extra check for Android top-right / top-left notches?
-		version.x = insets.left + w - version.width() - 4;
-		version.y = insets.top + h - version.height() - 2;
+		version.x = insets.left + w - version.width() - 8;
+		version.y = insets.top + h - version.height() - 4;
 		add( version );
 
 		if (DeviceCompat.isDesktop()) {

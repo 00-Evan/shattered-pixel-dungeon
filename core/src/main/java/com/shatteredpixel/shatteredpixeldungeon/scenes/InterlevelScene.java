@@ -266,7 +266,7 @@ public class InterlevelScene extends PixelScene {
 		
 		loadingText = PixelScene.renderTextBlock( text, 9 );
 		loadingText.setPos(
-				insets.left + w - loadingText.width() - 8,
+				insets.left + w - loadingText.width() - 12,
 				insets.top + h - loadingText.height() - 6
 		);
 		align(loadingText);

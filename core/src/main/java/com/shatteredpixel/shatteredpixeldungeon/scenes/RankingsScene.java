@@ -150,7 +150,7 @@ public class RankingsScene extends PixelScene {
 		btnExit.setPos( Camera.main.width - btnExit.width() - insets.right, insets.top );
 		add( btnExit );
 
-		float left = insets.left;
+		float left = insets.left + (PixelScene.landscape() ? 10 : 0);
 
 		if (Rankings.INSTANCE.latestDaily != null) {
 			IconButton btnDailies = new IconButton(Icons.CALENDAR.get()) {
