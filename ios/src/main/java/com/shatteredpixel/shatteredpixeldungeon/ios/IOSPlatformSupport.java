@@ -29,17 +29,18 @@ import com.badlogic.gdx.backends.iosrobovm.objectal.OALSimpleAudio;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.watabou.input.ControllerHandler;
 import com.watabou.noosa.Game;
 import com.watabou.utils.PlatformSupport;
 import com.watabou.utils.RectF;
 
 import org.robovm.apple.audiotoolbox.AudioServices;
+import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.systemconfiguration.SCNetworkReachability;
 import org.robovm.apple.systemconfiguration.SCNetworkReachabilityFlags;
 import org.robovm.apple.uikit.UIApplication;
-
+import org.robovm.apple.uikit.UIInterfaceOrientation;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,10 +50,11 @@ public class IOSPlatformSupport extends PlatformSupport {
 	@Override
 	public void updateDisplaySize() {
 		//non-zero safe insets on left/top/right means device has a notch, show status bar
+		//TODO turn this into a setting instead?
 		if (Gdx.graphics.getSafeInsetTop() != 0
 				|| Gdx.graphics.getSafeInsetLeft() != 0
 				|| Gdx.graphics.getSafeInsetRight() != 0){
-			UIApplication.getSharedApplication().setStatusBarHidden(false);
+			//UIApplication.getSharedApplication().setStatusBarHidden(false);
 		} else {
 			UIApplication.getSharedApplication().setStatusBarHidden(true);
 		}
@@ -60,27 +62,54 @@ public class IOSPlatformSupport extends PlatformSupport {
 
 	@Override
 	public boolean supportsFullScreen() {
-		//fullscreen is always enabled on iOS
-		return false;
+		//iOS supports drawing into the gesture safe area
+		//TODO do we want this to control status bar visibility as well, or make that separate?
+		return Gdx.graphics.getSafeInsetBottom() > 0;
 	}
 
 	@Override
 	public RectF getSafeInsets(int level) {
-		//TODO currently returns all insets all the time. Needs testing based on particular iOS quirks
-		// we roughly want:
-		// ignore bottom home indicator insets in fullsceen
-		// ignore side insets in landscape for side that isn't notch
-		// older notch is large, compact dynamic island is not (maybe? Probably need UI adjustments then)
-		return super.getSafeInsets(level);
+		RectF insets = super.getSafeInsets(INSET_ALL);
+
+		//iOS gives us ALL insets by default, and so we need to filter from there:
+
+		//ignore the home indicator if we're in fullscreen
+		if (!supportsFullScreen() || SPDSettings.fullscreen()){
+			insets.bottom = 0;
+		} else {
+			//otherwise bottom inset is pretty big, halve it
+			insets.bottom /= 2;
+		}
+
+		//only cutouts can be on top/left/right, which are never blocking
+		if (level == INSET_BLK){
+			insets.left = insets.top = insets.right = 0;
+		} else if (level == INSET_LRG){
+			//Dynamic Island counts as a 'small cutout', we have to use status bar height to get it =I
+			CGRect statusBarFrame = UIApplication.getSharedApplication().getStatusBarFrame();
+			double statusBarHeight = Math.min(statusBarFrame.getWidth(), statusBarFrame.getHeight());
+			if (statusBarHeight >= 51){ //magic number BS for larger status bar caused by island
+				insets.left = insets.top = insets.right = 0;
+			}
+		}
+
+		//if we are in landscape, the display cutout is only actually on one side, so cancel the other
+		if (Game.width > Game.height){
+			if (UIApplication.getSharedApplication().getStatusBarOrientation().equals(UIInterfaceOrientation.LandscapeLeft)){
+				insets.left = 0;
+			} else {
+				insets.right = 0;
+			}
+		}
+
+		//TODO if we want to support status bar on-off, then we need a check here to set top inset to 0
+
+		return insets;
 	}
 
 	@Override
 	public void updateSystemUI() {
-		int prevInset = Game.bottomInset;
 		updateDisplaySize();
-		if (prevInset != Game.bottomInset) {
-			ShatteredPixelDungeon.seamlessResetScene();
-		}
 	}
 
 	@Override

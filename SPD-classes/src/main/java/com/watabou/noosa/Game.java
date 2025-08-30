@@ -50,9 +50,6 @@ public class Game implements ApplicationListener {
 	public static int width;
 	public static int height;
 
-	//number of pixels from bottom of view before rendering starts
-	public static int bottomInset;
-
 	// Density: mdpi=1, hdpi=1.5, xhdpi=2...
 	public static float density = 1;
 	
@@ -136,7 +133,6 @@ public class Game implements ApplicationListener {
 			Vertexbuffer.reload();
 		}
 
-		height -= bottomInset;
 		if (height != Game.height || width != Game.width) {
 
 			Game.width = width;

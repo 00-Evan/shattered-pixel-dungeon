@@ -64,7 +64,7 @@ public class TextInput extends Component {
 		//use a custom viewport here to ensure stage camera matches game camera
 		Viewport viewport = new Viewport() {};
 		viewport.setWorldSize(Game.width, Game.height);
-		viewport.setScreenBounds(0, Game.bottomInset, Game.width, Game.height);
+		viewport.setScreenBounds(0, 0, Game.width, Game.height);
 		viewport.setCamera(new OrthographicCamera());
 		//TODO this is needed for the moment as Spritebatch switched to using VAOs in libGDX v1.13.1
 		//  This results in HARD crashes atm, whereas old vertex arrays work fine

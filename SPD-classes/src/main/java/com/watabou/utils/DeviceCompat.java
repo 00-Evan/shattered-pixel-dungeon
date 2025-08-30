@@ -66,7 +66,7 @@ public class DeviceCompat {
 
 	//...and in the Y dimension
 	public static float getRealPixelScaleY(){
-		return ((Gdx.graphics.getBackBufferHeight()-Game.bottomInset) / (float)Game.height );
+		return (Gdx.graphics.getBackBufferHeight() / (float)Game.height );
 	}
 
 }
