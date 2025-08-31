@@ -50,7 +50,7 @@ public class SPDSettings extends GameSettings {
 	//Display
 	
 	public static final String KEY_FULLSCREEN	= "fullscreen";
-	public static final String KEY_LANDSCAPE	= "landscape";
+	public static final String KEY_LANDSCAPE	= "force_landscape";
 	public static final String KEY_ZOOM			= "zoom";
 	public static final String KEY_BRIGHTNESS	= "brightness";
 	public static final String KEY_GRID 	    = "visual_grid";
@@ -65,6 +65,15 @@ public class SPDSettings extends GameSettings {
 	
 	public static boolean fullscreen() {
 		return getBoolean( KEY_FULLSCREEN, true );
+	}
+
+	public static void landscape( boolean value ){
+		put( KEY_LANDSCAPE, value );
+		((ShatteredPixelDungeon)ShatteredPixelDungeon.instance).updateDisplaySize();
+	}
+
+	public static boolean landscape(){
+		return getBoolean(KEY_LANDSCAPE, false);
 	}
 	
 	public static void zoom( int value ) {
