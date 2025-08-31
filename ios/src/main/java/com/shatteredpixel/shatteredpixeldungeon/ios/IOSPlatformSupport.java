@@ -49,21 +49,12 @@ public class IOSPlatformSupport extends PlatformSupport {
 
 	@Override
 	public void updateDisplaySize() {
-		//non-zero safe insets on left/top/right means device has a notch, show status bar
-		//TODO turn this into a setting instead?
-		if (Gdx.graphics.getSafeInsetTop() != 0
-				|| Gdx.graphics.getSafeInsetLeft() != 0
-				|| Gdx.graphics.getSafeInsetRight() != 0){
-			//UIApplication.getSharedApplication().setStatusBarHidden(false);
-		} else {
-			UIApplication.getSharedApplication().setStatusBarHidden(true);
-		}
+		UIApplication.getSharedApplication().setStatusBarHidden(true);
 	}
 
 	@Override
 	public boolean supportsFullScreen() {
 		//iOS supports drawing into the gesture safe area
-		//TODO do we want this to control status bar visibility as well, or make that separate?
 		return Gdx.graphics.getSafeInsetBottom() > 0;
 	}
 
@@ -101,8 +92,6 @@ public class IOSPlatformSupport extends PlatformSupport {
 				insets.right = 0;
 			}
 		}
-
-		//TODO if we want to support status bar on-off, then we need a check here to set top inset to 0
 
 		return insets;
 	}
