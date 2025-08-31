@@ -232,7 +232,7 @@ public class GameScene extends PixelScene {
 			case 1:             Camera.main.setFollowDeadzone(0.9f);   break;
 		}
 
-		RectF insets = Game.platform.getSafeInsets(PlatformSupport.INSET_ALL).scale(1f/defaultZoom);
+		RectF insets = getCommonInsets();
 
 		scene = this;
 
@@ -377,9 +377,9 @@ public class GameScene extends PixelScene {
 		add(status);
 
 		if (uiSize < 2 && insets.top > 0) {
-			SkinnedBlock blackBar = new SkinnedBlock(uiCamera.width, insets.top, TextureCache.createSolid(0xFF000000));
-			blackBar.camera = uiCamera;
-			add(blackBar);
+			SkinnedBlock bar = new SkinnedBlock(uiCamera.width, insets.top, TextureCache.createSolid(0xFF000000));
+			bar.camera = uiCamera;
+			add(bar);
 		}
 
 		boss = new BossHealthBar();
@@ -427,12 +427,11 @@ public class GameScene extends PixelScene {
 			toolbar.setRect( insets.left, uiCamera.height - toolbar.height() - insets.bottom, uiCamera.width - insets.right, toolbar.height() );
 		}
 
-		//TODO this is pretty barebones, could be minimized or avoided perhaps?
 		if (insets.bottom > 0){
-			SkinnedBlock blackBar = new SkinnedBlock(uiCamera.width, insets.bottom, TextureCache.createSolid(0xFF000000));
-			blackBar.camera = uiCamera;
-			blackBar.y = uiCamera.height - insets.bottom;
-			add(blackBar);
+			SkinnedBlock bar = new SkinnedBlock(uiCamera.width, insets.bottom, TextureCache.createSolid(0x88000000));
+			bar.camera = uiCamera;
+			bar.y = uiCamera.height - insets.bottom;
+			add(bar);
 		}
 
 		layoutTags();
@@ -857,8 +856,8 @@ public class GameScene extends PixelScene {
 		}
 		//Camera.main.panTo(Dungeon.hero.sprite.center(), 5f);
 
-		//primarily for phones displays with notches
-		//TODO Android never draws into notch atm, perhaps allow it for center notches?
+		//adjust spacing for elements based on display cutouts
+		// We use ALL here as some elements can be a fair but up the side of the screen
 		RectF insets = Game.platform.getSafeInsets( PlatformSupport.INSET_ALL );
 		insets = insets.scale(1f / uiCamera.zoom);
 
