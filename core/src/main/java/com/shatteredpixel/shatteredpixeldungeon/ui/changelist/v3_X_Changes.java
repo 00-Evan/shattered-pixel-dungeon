@@ -86,6 +86,30 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("v3.2.3", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
+				"More tech improvements and modernizations for mobile users!\n" +
+				"\n" +
+				"This patch follows up on the previous one with some bug fixes, responses to feedback, and support for true edge-to-edge fullscreen on most game interfaces!\n" +
+				"\n" +
+				"I expect to be releasing one more major patch for v3.2 with further improvements, plus whatever else is needed for handling tech fixes."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.DISPLAY_PORT), "Mobile Layout Changes",
+				"**-** Shattered now renders in true edge-to-edge fullscreen on Android 9+ and iOS devices, with transparent navigation bars and rendering into display cutout regions!\n" +
+				"**-** All in-game interfaces have been adjusted to better handle true mobile fullscreen, including better insets on various UI elements at display corners.\n" +
+				"**-** Currently the in-game screen makes use of a solid dark bar at the top to handle display cutouts. This is temporary and that UI will be made true fullscreen soon for people with smaller display cutouts (e.g. hole punches).\n" +
+				"**-** Re-added some orientation control on Android in the form of a 'force landscape' setting.  This setting may need to be removed in future Android versions.\n" +
+				"**-** Re-enabled 'fullscreen' setting on iOS (i.e. it can be turned off again), which now lightly raises UI elements to help prevent gesture mistaps"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by v3.2.2:**\n" +
+				"**-** Windowed mode on desktop always defaulting to 1920x1080, instead of last window size\n" +
+				"**-** Various rare Android crashes caused by internal library updates"));
+
 		changes = new ChangeInfo("v3.2.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
