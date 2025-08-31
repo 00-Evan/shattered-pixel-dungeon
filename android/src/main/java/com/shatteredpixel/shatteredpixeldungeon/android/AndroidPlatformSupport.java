@@ -21,9 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.android;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.view.DisplayCutout;
@@ -36,6 +36,8 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.watabou.noosa.Game;
 import com.watabou.utils.PlatformSupport;
 import com.watabou.utils.RectF;
 
@@ -50,9 +52,7 @@ public class AndroidPlatformSupport extends PlatformSupport {
 				ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
 				ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED );
 
-		//TODO seem to be existing bugs with handling split screen here, should look into that
-
-		//TODO display isn't refreshing when fullscreen toggled on/off, or on 180 degree rotate
+		ShatteredPixelDungeon.seamlessResetScene();
 	}
 
 	public boolean supportsFullScreen(){
@@ -69,7 +69,9 @@ public class AndroidPlatformSupport extends PlatformSupport {
 	public RectF getSafeInsets( int level ) {
 		RectF insets = new RectF();
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+		//getting insets technically works down to 6.0 Marshmallow, but we let the device handle all of that prior to 9.0 Pie
+		//TODO test on Android P emulator!
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && !AndroidLauncher.instance.isInMultiWindowMode()) {
 			WindowInsets rootInsets = AndroidLauncher.instance.getApplicationWindow().getDecorView().getRootWindowInsets();
 			if (rootInsets != null) {
 
@@ -82,21 +84,25 @@ public class AndroidPlatformSupport extends PlatformSupport {
 				}
 
 				//display cutout
-				if (level > INSET_BLK && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+				if (level > INSET_BLK) {
 					DisplayCutout cutout = rootInsets.getDisplayCutout();
-					//TODO determine if a cutout is large or not based on its size in pixels:
-					// on my OP7P, dev mode not simulations are:
-					//top-left cutout is 0,0,136,136 (136x136 = 18.5k total)
-					//center is 552,0,888,168 (336*168 = 56k total)
-					//top-right corner is 1272,0,1440,168 (x168 = 28k total)
-					//overall screen is 1440x3120 = 4400k pixels
-					// 0.5% of 4400k is 22k
-					//maybe judge a cutout to be large if it's bigger than 0.5% of the display?
+
 					if (cutout != null) {
-						insets.left = Math.max(insets.left, cutout.getSafeInsetLeft());
-						insets.top = Math.max(insets.top, cutout.getSafeInsetTop());
-						insets.right = Math.max(insets.right, cutout.getSafeInsetRight());
-						insets.bottom = Math.max(insets.bottom, cutout.getSafeInsetBottom());
+						boolean largeCutout = false;
+						int screenSize = Game.width * Game.height;
+						for (Rect r : cutout.getBoundingRects()){
+							int cutoutSize = Math.abs(r.height() * r.width());
+							//display cutouts are considered large if they take up more than 0.5% of the screen
+							if (cutoutSize*200 >= screenSize){
+								largeCutout = true;
+							}
+						}
+						if (largeCutout || level == INSET_ALL) {
+							insets.left = Math.max(insets.left, cutout.getSafeInsetLeft());
+							insets.top = Math.max(insets.top, cutout.getSafeInsetTop());
+							insets.right = Math.max(insets.right, cutout.getSafeInsetRight());
+							insets.bottom = Math.max(insets.bottom, cutout.getSafeInsetBottom());
+						}
 					}
 				}
 			}
@@ -107,7 +113,6 @@ public class AndroidPlatformSupport extends PlatformSupport {
 	public void updateSystemUI() {
 		
 		AndroidLauncher.instance.runOnUiThread(new Runnable() {
-			@SuppressLint("NewApi")
 			@Override
 			public void run() {
 				boolean fullscreen = Build.VERSION.SDK_INT < Build.VERSION_CODES.N
