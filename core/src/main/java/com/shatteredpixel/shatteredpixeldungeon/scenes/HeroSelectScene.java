@@ -600,7 +600,10 @@ public class HeroSelectScene extends PixelScene {
 		@Override
 		protected void layout() {
 			super.layout();
-			icon.y = y + (HEIGHT - icon.height()) / 2f;
+			//if we're super tall (i.e. rendering into display inset) then put hero at the top
+			if (height > 30) {
+				icon.y = y + (HEIGHT - icon.height()) / 2f;
+			}
 		}
 	}
 
