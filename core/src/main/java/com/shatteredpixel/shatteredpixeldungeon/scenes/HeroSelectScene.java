@@ -100,8 +100,8 @@ public class HeroSelectScene extends PixelScene {
 
 		insets = Game.platform.getSafeInsets(PlatformSupport.INSET_BLK).scale(1f/defaultZoom);
 
-		int w = (int)(Camera.main.width - insets.left - insets.right);
-		int h = (int)(Camera.main.height - insets.top - insets.bottom);
+		float w = (Camera.main.width - insets.left - insets.right);
+		float h = (Camera.main.height - insets.top - insets.bottom);
 
 		background = new Image(TextureCache.createSolid(0xFF2d2f31), 0, 0, 800, 450){
 			@Override
@@ -116,10 +116,10 @@ public class HeroSelectScene extends PixelScene {
 				}
 			}
 		};
-		background.scale.set(h/background.height);
+		background.scale.set(Camera.main.height/background.height);
 
-		background.x = insets.left + (w - background.width())/2f;
-		background.y = insets.top + (h - background.height())/2f;
+		background.x = (Camera.main.width - background.width())/2f;
+		background.y = (Camera.main.height - background.height())/2f;
 		PixelScene.align(background);
 		add(background);
 
@@ -169,7 +169,7 @@ public class HeroSelectScene extends PixelScene {
 				if (cls != null) {
 					Window info = new WndHeroInfo(GamesInProgress.selectedClass);
 					if (landscape()) {
-						info.offset(w / 6, 0);
+						info.offset((int)(w / 6), 0);
 					}
 					ShatteredPixelDungeon.scene().addToFront(info);
 				}
@@ -327,13 +327,13 @@ public class HeroSelectScene extends PixelScene {
 			float curY = insets.top + h - HeroBtn.HEIGHT + 3;
 
 			for (StyledButton button : heroBtns) {
-				button.setRect(curX, curY, btnWidth, HeroBtn.HEIGHT);
+				button.setRect(curX, curY, btnWidth, HeroBtn.HEIGHT + insets.bottom);
 				curX += btnWidth;
 			}
 
-			//add a black bar along bottom
+			//add a darkening bar along bottom
 			if (insets.bottom > 0){
-				SkinnedBlock bar = new SkinnedBlock(Camera.main.width, insets.bottom, TextureCache.createSolid(0xFF000000));
+				SkinnedBlock bar = new SkinnedBlock(Camera.main.width, insets.bottom, TextureCache.createSolid(0xAA000000));
 				bar.y = h + insets.top;
 				add(bar);
 			}
@@ -595,6 +595,12 @@ public class HeroSelectScene extends PixelScene {
 			} else {
 				setSelectedHero(cl);
 			}
+		}
+
+		@Override
+		protected void layout() {
+			super.layout();
+			icon.y = y + (HEIGHT - icon.height()) / 2f;
 		}
 	}
 

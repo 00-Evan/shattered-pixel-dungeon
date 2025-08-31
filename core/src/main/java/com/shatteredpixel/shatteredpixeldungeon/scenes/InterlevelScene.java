@@ -220,15 +220,15 @@ public class InterlevelScene extends PixelScene {
 		int h = (int)(Camera.main.height - insets.top - insets.bottom);
 
 		background = new Image(loadingAsset);
-		background.scale.set(h/background.height);
+		background.scale.set(Camera.main.height/background.height);
 
-		if (w >= background.width()){
-			background.x = insets.left + (w - background.width())/2f;
+		if (Camera.main.width >= background.width()){
+			background.x = (Camera.main.width - background.width())/2f;
 		} else {
-			background.x = insets.left + w/2f - loadingCenter*background.scale.x;
-			background.x = GameMath.gate(w - background.width(), background.x, 0);
+			background.x = Camera.main.width/2f - loadingCenter*background.scale.x;
+			background.x = GameMath.gate(Camera.main.width - background.width(), background.x, 0);
 		}
-		background.y = insets.top + (h - background.height())/2f;
+		background.y = (Camera.main.height - background.height())/2f;
 		PixelScene.align(background);
 		add(background);
 
