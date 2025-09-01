@@ -56,8 +56,9 @@ public class AndroidPlatformSupport extends PlatformSupport {
 	}
 
 	public boolean supportsFullScreen(){
-		//Android supports hiding the navigation bar or gesture bar, if it is present
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+		//We support hiding the navigation bar or gesture bar, if it is present
+		// on Android 9+ we check for this, on earlier just assume it's present
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
 			WindowInsets insets = AndroidLauncher.instance.getApplicationWindow().getDecorView().getRootWindowInsets();
 			return insets != null && (insets.getStableInsetBottom() > 0 || insets.getStableInsetRight() > 0 || insets.getStableInsetLeft() > 0);
 		} else {
@@ -70,14 +71,12 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		RectF insets = new RectF();
 
 		//getting insets technically works down to 6.0 Marshmallow, but we let the device handle all of that prior to 9.0 Pie
-		//TODO test on Android P emulator!
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && !AndroidLauncher.instance.isInMultiWindowMode()) {
 			WindowInsets rootInsets = AndroidLauncher.instance.getApplicationWindow().getDecorView().getRootWindowInsets();
 			if (rootInsets != null) {
 
 				//Navigation bar (never on the top)
-				//Android 14 and below do this for us
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM && supportsFullScreen() && !SPDSettings.fullscreen()) {
+				if (supportsFullScreen() && !SPDSettings.fullscreen()) {
 					insets.left = Math.max(insets.left, rootInsets.getStableInsetLeft());
 					insets.right = Math.max(insets.right, rootInsets.getStableInsetRight());
 					insets.bottom = Math.max(insets.bottom, rootInsets.getStableInsetBottom());

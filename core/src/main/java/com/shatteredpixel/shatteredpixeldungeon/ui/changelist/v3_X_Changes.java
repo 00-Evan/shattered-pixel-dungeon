@@ -108,7 +108,8 @@ public class v3_X_Changes {
 				"Fixed the following bugs:\n" +
 				"**Caused by v3.2.2:**\n" +
 				"**-** Windowed mode on desktop always defaulting to 1920x1080, instead of last window size\n" +
-				"**-** Various rare Android crashes caused by internal library updates"));
+				"**-** Various rare Android crashes caused by internal library updates\n" +
+				"**-** Fullscreen being incorrectly forced off on some older Android devices."));
 
 		changes = new ChangeInfo("v3.2.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
