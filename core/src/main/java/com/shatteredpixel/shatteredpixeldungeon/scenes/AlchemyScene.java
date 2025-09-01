@@ -706,7 +706,7 @@ public class AlchemyScene extends PixelScene {
 			energyLeft.text(energyText);
 			energyLeft.setPos(
 					centerW - energyLeft.width()/2,
-					Camera.main.height - 8 - energyLeft.height()
+					energyLeft.top()
 			);
 
 			energyIcon.x = energyLeft.left() - energyIcon.width();
@@ -882,7 +882,7 @@ public class AlchemyScene extends PixelScene {
 		energyLeft.text(energyText);
 		energyLeft.setPos(
 				centerW - energyLeft.width()/2,
-				Camera.main.height - 8 - energyLeft.height()
+				energyLeft.top()
 		);
 
 		energyIcon.x = energyLeft.left() - energyIcon.width();
