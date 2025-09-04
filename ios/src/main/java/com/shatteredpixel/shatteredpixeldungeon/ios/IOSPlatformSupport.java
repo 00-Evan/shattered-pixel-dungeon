@@ -77,8 +77,7 @@ public class IOSPlatformSupport extends PlatformSupport {
 			insets.left = insets.top = insets.right = 0;
 		} else if (level == INSET_LRG){
 			//Dynamic Island counts as a 'small cutout', we have to use status bar height to get it =I
-			CGRect statusBarFrame = UIApplication.getSharedApplication().getStatusBarFrame();
-			double statusBarHeight = Math.min(statusBarFrame.getWidth(), statusBarFrame.getHeight());
+			double statusBarHeight = insets.top / Gdx.graphics.getBackBufferScale();
 			if (statusBarHeight >= 51){ //magic number BS for larger status bar caused by island
 				insets.left = insets.top = insets.right = 0;
 			}
