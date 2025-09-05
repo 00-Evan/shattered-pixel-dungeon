@@ -336,6 +336,9 @@ public class HeroSelectScene extends PixelScene {
 				SkinnedBlock bar = new SkinnedBlock(Camera.main.width, insets.bottom, TextureCache.createSolid(0xAA000000));
 				bar.y = h + insets.top;
 				add(bar);
+
+				PointerArea blocker = new PointerArea(0, Camera.main.width - insets.bottom, Camera.main.width, insets.bottom);
+				add(blocker);
 			}
 
 			title.setPos(insets.left + (w - title.width()) / 2f, insets.top + (h - HeroBtn.HEIGHT - title.height() - 4));
