@@ -233,6 +233,7 @@ public class GameScene extends PixelScene {
 		}
 
 		RectF insets = getCommonInsets();
+		insets.top = Game.platform.getSafeInsets(PlatformSupport.INSET_LRG).scale(1f/defaultZoom).top;
 
 		scene = this;
 
@@ -364,12 +365,15 @@ public class GameScene extends PixelScene {
 
 		int uiSize = SPDSettings.interfaceSize();
 
-		//TODO this is a good start but just emulating black bars is boring. There must be more to do here.
-
 		menu = new MenuPane();
 		menu.camera = uiCamera;
-		menu.setPos( uiCamera.width-MenuPane.WIDTH-insets.right, insets.top + (uiSize > 0 ? 0 : 1));
+		menu.setPos( uiCamera.width-MenuPane.WIDTH-insets.right, insets.top);
 		add(menu);
+
+		//TODO buff indicator and boss HP need to be moved down slightly on iOS devices with dynamic island
+		//TODO buff indicator probably cut off on some Android devices, get display cutout size and check?
+		//TODO need to reject inputs on the bars (just turn then into hotareas?
+		//TODO make top bar transparent and add 1px of top status and menu bar to it?
 
 		status = new StatusPane( SPDSettings.interfaceSize() > 0 );
 		status.camera = uiCamera;
@@ -384,7 +388,7 @@ public class GameScene extends PixelScene {
 
 		boss = new BossHealthBar();
 		boss.camera = uiCamera;
-		boss.setPos( insets.left + 6 + (uiCamera.width - insets.left - insets.right - boss.width())/2, insets.top + 20);
+		boss.setPos( insets.left + 6 + (uiCamera.width - insets.left - insets.right - boss.width())/2, insets.top + 21);
 		add(boss);
 
 		resume = new ResumeIndicator();
