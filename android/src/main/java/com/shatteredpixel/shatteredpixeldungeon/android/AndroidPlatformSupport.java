@@ -91,8 +91,9 @@ public class AndroidPlatformSupport extends PlatformSupport {
 						int screenSize = Game.width * Game.height;
 						for (Rect r : cutout.getBoundingRects()){
 							int cutoutSize = Math.abs(r.height() * r.width());
-							//display cutouts are considered large if they take up more than 0.5% of the screen
-							if (cutoutSize*200 >= screenSize){
+							//display cutouts are considered large if they take up more than 0.605% of the screen
+							//in reality we want less than about 0.5%, but some cutouts over-report their size
+							if (cutoutSize*165 >= screenSize){
 								largeCutout = true;
 							}
 						}
