@@ -67,6 +67,35 @@ public class AndroidPlatformSupport extends PlatformSupport {
 	}
 
 	@Override
+	public RectF getDisplayCutout() {
+		RectF cutoutRect = new RectF();
+
+		//some extra logic here is because cutouts can apparently be returned inverted
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+			DisplayCutout cutout = AndroidLauncher.instance.getApplicationWindow().getDecorView().getRootWindowInsets().getDisplayCutout();
+
+			Rect largest = null;
+			if (cutout != null) {
+				for (Rect r : cutout.getBoundingRects()) {
+					if (largest == null
+							|| Math.abs(r.height() * r.width()) > Math.abs(largest.height() * largest.width())) {
+						largest = r;
+					}
+				}
+			}
+
+			if (largest != null){
+				cutoutRect.left = Math.min(largest.left, largest.right);
+				cutoutRect.right = Math.max(largest.left, largest.right);
+				cutoutRect.top  = Math.min(largest.top, largest.bottom);
+				cutoutRect.bottom  = Math.max(largest.top, largest.bottom);
+			}
+		}
+
+		return cutoutRect;
+	}
+
+	@Override
 	public RectF getSafeInsets( int level ) {
 		RectF insets = new RectF();
 
@@ -90,6 +119,7 @@ public class AndroidPlatformSupport extends PlatformSupport {
 						boolean largeCutout = false;
 						int screenSize = Game.width * Game.height;
 						for (Rect r : cutout.getBoundingRects()){
+							//use abs as some cutouts can apparently be returned inverted
 							int cutoutSize = Math.abs(r.height() * r.width());
 							//display cutouts are considered large if they take up more than 0.605% of the screen
 							//in reality we want less than about 0.5%, but some cutouts over-report their size

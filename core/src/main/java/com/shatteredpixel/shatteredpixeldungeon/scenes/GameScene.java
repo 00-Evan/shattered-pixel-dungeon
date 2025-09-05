@@ -140,6 +140,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.tweeners.Tweener;
 import com.watabou.utils.Callback;
+import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PlatformSupport;
 import com.watabou.utils.Point;
@@ -234,7 +235,8 @@ public class GameScene extends PixelScene {
 		}
 
 		RectF insets = getCommonInsets();
-		insets.top = Game.platform.getSafeInsets(PlatformSupport.INSET_LRG).scale(1f/defaultZoom).top;
+		//we want to check if large is the same as blocking here
+		float largeInsetTop = Game.platform.getSafeInsets(PlatformSupport.INSET_LRG).scale(1f/defaultZoom).top;
 
 		scene = this;
 
@@ -368,32 +370,52 @@ public class GameScene extends PixelScene {
 
 		menu = new MenuPane();
 		menu.camera = uiCamera;
-		menu.setPos( uiCamera.width-MenuPane.WIDTH-insets.right, insets.top);
+		menu.setPos( uiCamera.width-MenuPane.WIDTH-insets.right, largeInsetTop);
 		add(menu);
 
-		//TODO buff indicator and boss HP need to be moved down slightly on iOS devices with dynamic island
-		//TODO buff indicator probably cut off on some Android devices, get display cutout size and check?
-		//TODO need to reject inputs on the bars (just turn then into hotareas?
 		//TODO make top bar transparent and add 1px of top status and menu bar to it?
+
+		//most cutouts supported by the game are small
+		// but some are more 'medium' can can be supported with a little UI offsetting
+		float mediumCutoutOffset = 0;
+		if (largeInsetTop != insets.top){
+			//most notably iOS's Dynamic island, which must exist in this case
+			if (DeviceCompat.isiOS()){
+				//TODO we should handle this logic in platformSupport, not hardcode it here
+				mediumCutoutOffset = 7;
+			} else if (DeviceCompat.isAndroid()) {
+				//some android hole punches can also be big too
+				RectF cutout = Game.platform.getDisplayCutout().scale(1f / defaultZoom);
+				//if the cutout is positioned to obstruct the buff bar
+				//TODO could buff bar just be squished in some cases here?
+				if (cutout.left < 80
+						&& cutout.top < 10
+						&& cutout.right > 32
+						&& cutout.bottom > 11) {
+					mediumCutoutOffset = (int) Math.floor(cutout.bottom - 11);
+				}
+			}
+		}
 
 		status = new StatusPane( SPDSettings.interfaceSize() > 0 );
 		status.camera = uiCamera;
-		status.setRect(insets.left, uiSize > 0 ? uiCamera.height-39-insets.bottom : insets.top, uiCamera.width - insets.left - insets.right, 0 );
+		StatusPane.cutoutOffset = mediumCutoutOffset;
+		status.setRect(insets.left, uiSize > 0 ? uiCamera.height-39-insets.bottom : largeInsetTop, uiCamera.width - insets.left - insets.right, 0 );
 		add(status);
 
-		if (uiSize < 2 && insets.top > 0) {
-			SkinnedBlock bar = new SkinnedBlock(uiCamera.width, insets.top, TextureCache.createSolid(0xFF1C1E18));
+		if (uiSize < 2 && largeInsetTop != 0) {
+			SkinnedBlock bar = new SkinnedBlock(uiCamera.width, largeInsetTop, TextureCache.createSolid(0xFF1C1E18));
 			bar.camera = uiCamera;
 			add(bar);
 
-			PointerArea blocker = new PointerArea(0, 0, uiCamera.width, insets.top);
+			PointerArea blocker = new PointerArea(0, 0, uiCamera.width, largeInsetTop);
 			blocker.camera = uiCamera;
 			add(blocker);
 		}
 
 		boss = new BossHealthBar();
 		boss.camera = uiCamera;
-		boss.setPos( insets.left + 6 + (uiCamera.width - insets.left - insets.right - boss.width())/2, insets.top + 21);
+		boss.setPos( insets.left + 6 + (uiCamera.width - insets.left - insets.right - boss.width())/2, largeInsetTop + 21 + mediumCutoutOffset);
 		add(boss);
 
 		resume = new ResumeIndicator();

@@ -53,9 +53,9 @@ public abstract class PlatformSupport {
 		);
 	}
 
-	//returns a display cutout (if one is present) in device pixels, or null is none is present
+	//returns a display cutout (if one is present) in device pixels, or empty if none is present
 	public RectF getDisplayCutout(){
-		return null;
+		return new RectF();
 	}
 	
 	public abstract void updateSystemUI();
