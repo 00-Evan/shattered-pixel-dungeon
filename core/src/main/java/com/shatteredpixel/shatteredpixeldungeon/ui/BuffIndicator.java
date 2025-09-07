@@ -148,6 +148,8 @@ public class BuffIndicator extends Component {
 	private Char ch;
 
 	private boolean large = false;
+
+	public float firstRowWidth = -1;
 	
 	public BuffIndicator( Char ch, boolean large ) {
 		super();
@@ -225,32 +227,63 @@ public class BuffIndicator extends Component {
 				buffButtons.put( buff, icon );
 			}
 		}
+
+		//TODO several aspects of the layout code have been a bit hackily changed to support 2 rows
+		// should clean this up
 		
 		//layout
+		int row = 0;
 		int pos = 0;
 		float lastIconLeft = 0;
+		int total = 0;
 		for (BuffButton icon : buffButtons.values()){
+			if (total >= 14){ //buff bar supports a max of 14 buffs at once
+				icon.visible = false;
+				continue;
+			}
+			icon.visible = true;
+
+			icon.topOffset = (row > 0 && !large) ? -1 : 0;
 			icon.updateIcon();
 			//button areas are slightly oversized, especially on small buttons
-			icon.setRect(x + pos * (size + 1), y, size + 1, size + (large ? 0 : 5));
+			icon.setRect(x + pos * (size + 1), y + row*(size+1)-icon.topOffset, size + 1, size + (large ? 0 : 5));
 			PixelScene.align(icon);
 			pos++;
 
-			icon.visible = icon.left() <= right();
 			lastIconLeft = icon.left();
+
+			if ((row+1)*(size+1) <= height
+					&& (pos * (size + 1) > width || (row == 0 && firstRowWidth != -1 && pos * (size + 1) > firstRowWidth))){
+				row++;
+				pos = 0;
+			}
+			total++;
 		}
 
 		buffsHidden = false;
 		//squish buff icons together if there isn't enough room
 		float excessWidth = lastIconLeft - right();
-		if (excessWidth > 0) {
-			float leftAdjust = excessWidth/(buffButtons.size()-1);
-			//can't squish by more than 50% on large and 62% on small
-			if (large && leftAdjust >= size*0.48f) leftAdjust = size*0.5f;
-			if (!large && leftAdjust >= size*0.62f) leftAdjust = size*0.65f;
-			float cumulativeAdjust = leftAdjust * (buffButtons.size()-1);
 
-			ArrayList<BuffButton> buttons = new ArrayList<>(buffButtons.values());
+		if (excessWidth > 0) {
+			//if multiple rows, only compress last row
+			ArrayList<BuffButton> buttons = new ArrayList<>();
+			float lastRowY = y + row*(size+1);
+			int i = 1;
+			for (BuffButton button : buffButtons.values()){
+				if (i > 14){
+					button.visible = false;
+					buffsHidden = true;
+					continue;
+				}
+				if (button.top()+button.topOffset == lastRowY){
+					buttons.add(button);
+				}
+				i++;
+			}
+
+			float leftAdjust = excessWidth/(buttons.size()-1);
+			float cumulativeAdjust = leftAdjust * (buttons.size()-1);
+
 			Collections.reverse(buttons);
 			for (BuffButton icon : buttons) {
 				icon.setPos(icon.left() - cumulativeAdjust, icon.top());
@@ -277,6 +310,7 @@ public class BuffIndicator extends Component {
 		private Buff buff;
 
 		private boolean large;
+		private int topOffset = 0;
 
 		public Image grey; //only for small
 		public BitmapText text; //only for large
@@ -329,7 +363,7 @@ public class BuffIndicator extends Component {
 		protected void layout() {
 			super.layout();
 			grey.x = icon.x = this.x + (large ? 0 : 1);
-			grey.y = icon.y = this.y + (large ? 0 : 2);
+			grey.y = icon.y = this.y + (large ? 0 : 2) + topOffset;
 
 			if (text.width > width()){
 				text.scale.set(PixelScene.align(0.5f));

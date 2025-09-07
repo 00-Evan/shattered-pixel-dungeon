@@ -80,6 +80,7 @@ public class StatusPane extends Component {
 
 	//lower the buff indicator to avoid larger cutouts (e.g. iPhone dynamic island)
 	public static float cutoutOffset;
+	public static float buffBarTopRowMaxWidth = 50;
 
 	public StatusPane( boolean large ){
 		super();
@@ -232,7 +233,8 @@ public class StatusPane extends Component {
 
 			heroInfoOnBar.setRect(heroInfo.right(), y, 50, 9);
 
-			buffs.setRect( x + 31, y + 8 + cutoutOffset, 50, 8 );
+			buffs.firstRowWidth = buffBarTopRowMaxWidth;
+			buffs.setRect( x + 31, y + 8 + cutoutOffset, 50, 15 );
 
 			busy.x = x + 1;
 			busy.y = y + 37;

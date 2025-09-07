@@ -368,26 +368,23 @@ public class GameScene extends PixelScene {
 
 		int uiSize = SPDSettings.interfaceSize();
 
-		//TODO make top bar transparent and add 1px of top status and menu bar to it?
-
-		//most cutouts supported by the game are small
-		// but some are more 'medium' can can be supported with a little UI offsetting
-		float mediumCutoutOffset = 0;
+		//Some more medium sized display cutouts can obstruct the buff bar, so we limit the length
+		// of the 1st row in some cases
+		float buffBarTopRowMaxWidth = 50; //default max width
 		if (largeInsetTop != insets.top){
 			//most notably iOS's Dynamic island, which must exist in this case
 			if (DeviceCompat.isiOS()){
-				//TODO we should handle this logic in platformSupport, not hardcode it here
-				mediumCutoutOffset = 7;
+				//TODO bad to hardcode this atm, need to change this so platformsupport returns cutout dimensions
+				buffBarTopRowMaxWidth = 15;
 			} else if (DeviceCompat.isAndroid()) {
 				//some android hole punches can also be big too
 				RectF cutout = Game.platform.getDisplayCutout().scale(1f / defaultZoom);
 				//if the cutout is positioned to obstruct the buff bar
-				//TODO could buff bar just be squished in some cases here?
 				if (cutout.left < 80
 						&& cutout.top < 10
 						&& cutout.right > 32
-						&& cutout.bottom > 11) {
-					mediumCutoutOffset = (int) Math.floor(cutout.bottom - 11);
+						&& cutout.bottom > 12) {
+					buffBarTopRowMaxWidth = cutout.left - 32; //subtract starting position
 				}
 			}
 		}
@@ -404,7 +401,7 @@ public class GameScene extends PixelScene {
 
 		status = new StatusPane( SPDSettings.interfaceSize() > 0 );
 		status.camera = uiCamera;
-		StatusPane.cutoutOffset = mediumCutoutOffset;
+		StatusPane.buffBarTopRowMaxWidth = buffBarTopRowMaxWidth;
 		status.setRect(insets.left, uiSize > 0 ? uiCamera.height-39-insets.bottom : screentop, uiCamera.width - insets.left - insets.right, 0 );
 		add(status);
 
