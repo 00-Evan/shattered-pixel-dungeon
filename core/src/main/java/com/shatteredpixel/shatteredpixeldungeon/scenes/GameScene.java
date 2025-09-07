@@ -368,11 +368,6 @@ public class GameScene extends PixelScene {
 
 		int uiSize = SPDSettings.interfaceSize();
 
-		menu = new MenuPane();
-		menu.camera = uiCamera;
-		menu.setPos( uiCamera.width-MenuPane.WIDTH-insets.right, largeInsetTop);
-		add(menu);
-
 		//TODO make top bar transparent and add 1px of top status and menu bar to it?
 
 		//most cutouts supported by the game are small
@@ -397,14 +392,24 @@ public class GameScene extends PixelScene {
 			}
 		}
 
+		float screentop = largeInsetTop;
+		if (screentop == 0 && uiSize == 0){
+			screentop--; //on mobile UI, if we render in fullscreen, clip the top 1px;
+		}
+
+		menu = new MenuPane();
+		menu.camera = uiCamera;
+		menu.setPos( uiCamera.width-MenuPane.WIDTH-insets.right, screentop);
+		add(menu);
+
 		status = new StatusPane( SPDSettings.interfaceSize() > 0 );
 		status.camera = uiCamera;
 		StatusPane.cutoutOffset = mediumCutoutOffset;
-		status.setRect(insets.left, uiSize > 0 ? uiCamera.height-39-insets.bottom : largeInsetTop, uiCamera.width - insets.left - insets.right, 0 );
+		status.setRect(insets.left, uiSize > 0 ? uiCamera.height-39-insets.bottom : screentop, uiCamera.width - insets.left - insets.right, 0 );
 		add(status);
 
 		if (uiSize < 2 && largeInsetTop != 0) {
-			SkinnedBlock bar = new SkinnedBlock(uiCamera.width, largeInsetTop, TextureCache.createSolid(0xFF1C1E18));
+			SkinnedBlock bar = new SkinnedBlock(uiCamera.width, largeInsetTop, TextureCache.createSolid(0x88000000));
 			bar.camera = uiCamera;
 			add(bar);
 
@@ -415,7 +420,7 @@ public class GameScene extends PixelScene {
 
 		boss = new BossHealthBar();
 		boss.camera = uiCamera;
-		boss.setPos( insets.left + 6 + (uiCamera.width - insets.left - insets.right - boss.width())/2, largeInsetTop + 21 + mediumCutoutOffset);
+		boss.setPos( (uiCamera.width - boss.width())/2, screentop + 26);
 		add(boss);
 
 		resume = new ResumeIndicator();

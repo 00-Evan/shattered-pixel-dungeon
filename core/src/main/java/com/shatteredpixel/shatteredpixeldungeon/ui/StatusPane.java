@@ -90,7 +90,7 @@ public class StatusPane extends Component {
 
 		if (large)  bg = new NinePatch( asset, 0, 64, 41, 39, 33, 0, 4, 0 );
 		//right part is transparent now so Ninepatching doesn't actually do anything
-		else        bg = new NinePatch( asset, 0, 0, 128, 35, 85, 0, 45, 0 );
+		else        bg = new NinePatch( asset, 0, 0, 128, 38, 85, 0, 45, 0 );
 		add( bg );
 
 		heroInfo = new Button(){
@@ -121,16 +121,16 @@ public class StatusPane extends Component {
 		add( compass );
 
 		if (large)  rawShielding = new Image(asset, 0, 112, 128, 9);
-		else        rawShielding = new Image(asset, 0, 40, 50, 4);
+		else        rawShielding = new Image(asset, 0, 44, 50, 4);
 		rawShielding.alpha(0.5f);
 		add(rawShielding);
 
 		if (large)  shieldedHP = new Image(asset, 0, 112, 128, 9);
-		else        shieldedHP = new Image(asset, 0, 40, 50, 4);
+		else        shieldedHP = new Image(asset, 0, 44, 50, 4);
 		add(shieldedHP);
 
 		if (large)  hp = new Image(asset, 0, 103, 128, 9);
-		else        hp = new Image(asset, 0, 36, 50, 4);
+		else        hp = new Image(asset, 0, 40, 50, 4);
 		add( hp );
 
 		hpText = new BitmapText(PixelScene.pixelFont);
@@ -147,7 +147,7 @@ public class StatusPane extends Component {
 		add(heroInfoOnBar);
 
 		if (large)  exp = new Image(asset, 0, 121, 128, 7);
-		else        exp = new Image(asset, 0, 44, 17, 4);
+		else        exp = new Image(asset, 0, 48, 17, 4);
 		add( exp );
 
 		expText = new BitmapText(PixelScene.pixelFont);
@@ -173,7 +173,7 @@ public class StatusPane extends Component {
 	@Override
 	protected void layout() {
 
-		height = large ? 39 : 35;
+		height = large ? 39 : 38;
 
 		bg.x = x;
 		bg.y = y;
@@ -181,10 +181,10 @@ public class StatusPane extends Component {
 		else        bg.size( width, bg.height );
 
 		avatar.x = bg.x - avatar.width / 2f + 15;
-		avatar.y = bg.y - avatar.height / 2f + (large ? 15 : 14);
+		avatar.y = bg.y - avatar.height / 2f + 16;
 		PixelScene.align(avatar);
 
-		heroInfo.setRect( x, y, 30, large ? 40 : 35 );
+		heroInfo.setRect( x, y, 30, large ? 40 : 36 );
 
 		compass.x = avatar.x + avatar.width / 2f - compass.origin.x;
 		compass.y = avatar.y + avatar.height / 2f - compass.origin.y;
@@ -213,10 +213,10 @@ public class StatusPane extends Component {
 			busy.y = y + bg.height - 9;
 		} else {
 			exp.x = x+2;
-			exp.y = y+29;
+			exp.y = y+30;
 
 			hp.x = shieldedHP.x = rawShielding.x = x + 30;
-			hp.y = shieldedHP.y = rawShielding.y = y + 1;
+			hp.y = shieldedHP.y = rawShielding.y = y + 2;
 
 			hpText.scale.set(PixelScene.align(0.5f));
 			hpText.x = hp.x + 1;
@@ -232,7 +232,7 @@ public class StatusPane extends Component {
 
 			heroInfoOnBar.setRect(heroInfo.right(), y, 50, 9);
 
-			buffs.setRect( x + 31, y + 7 + cutoutOffset, 50, 8 );
+			buffs.setRect( x + 31, y + 8 + cutoutOffset, 50, 8 );
 
 			busy.x = x + 1;
 			busy.y = y + 37;
@@ -320,7 +320,7 @@ public class StatusPane extends Component {
 				level.text( Integer.toString( lastLvl ) );
 				level.measure();
 				level.x = x + 25.5f - level.width() / 2f;
-				level.y = y + 28.0f - level.baseLine() / 2f;
+				level.y = y + 31.0f - level.baseLine() / 2f;
 			}
 			PixelScene.align(level);
 		}

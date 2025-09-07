@@ -75,10 +75,10 @@ public class MenuPane extends Component {
 	protected void createChildren() {
 		super.createChildren();
 
-		bg = new Image(Assets.Interfaces.MENU, 1, 0, 31, 20);
+		bg = new Image(Assets.Interfaces.MENU, 1, 0, 31, 21);
 		add(bg);
 
-		versionOverflowBG = new NinePatch(bg.texture, 1, 23, 6, 7, 3, 0, 2, 0);
+		versionOverflowBG = new NinePatch(bg.texture, 1, 22, 6, 8, 3, 0, 2, 0);
 		add(versionOverflowBG);
 
 		version = new BitmapText( "v" + Game.version , PixelScene.pixelFont);
@@ -168,14 +168,14 @@ public class MenuPane extends Component {
 		float overFlow = version.width()-(bg.width()-4-rightMargin);
 		if (overFlow >= 1){
 			version.x = x + 2 - overFlow;
-			versionOverflowBG.size(overFlow+3, 7);
+			versionOverflowBG.size(overFlow+3, 8);
 			versionOverflowBG.x = version.x-3;
 			versionOverflowBG.y = y;
 		} else {
 			version.x = x + 3;
 			versionOverflowBG.visible = false;
 		}
-		version.y = y + 2 - (version.baseLine()*version.scale.y)/2f;
+		version.y = y + 3 - (version.baseLine()*version.scale.y)/2f;
 		version.y -= .001f;
 		PixelScene.align(version);
 
@@ -184,7 +184,7 @@ public class MenuPane extends Component {
 		btnJournal.setPos( btnMenu.left() - btnJournal.width() + 2, y );
 
 		depthIcon.x = btnJournal.left() - 7 + (7 - depthIcon.width())/2f - 0.1f;
-		depthIcon.y = y+7;
+		depthIcon.y = y+8;
 		PixelScene.align(depthIcon);
 
 		depthText.scale.set(PixelScene.align(0.67f));
@@ -239,7 +239,7 @@ public class MenuPane extends Component {
 			super();
 
 			width = bg.width + 4;
-			height = bg.height + 9;
+			height = bg.height + 10;
 		}
 
 		@Override
@@ -267,7 +267,7 @@ public class MenuPane extends Component {
 			super.layout();
 
 			bg.x = x + 2;
-			bg.y = y + 7;
+			bg.y = y + 8;
 
 			journalIcon.x = bg.x + (bg.width() - journalIcon.width())/2f;
 			journalIcon.y = bg.y + (bg.height() - journalIcon.height())/2f;
@@ -372,7 +372,7 @@ public class MenuPane extends Component {
 			super();
 
 			width = image.width + 4;
-			height = image.height + 9;
+			height = image.height + 10;
 		}
 
 		@Override
@@ -388,7 +388,7 @@ public class MenuPane extends Component {
 			super.layout();
 
 			image.x = x + 2;
-			image.y = y + 7;
+			image.y = y + 8;
 		}
 
 		@Override
