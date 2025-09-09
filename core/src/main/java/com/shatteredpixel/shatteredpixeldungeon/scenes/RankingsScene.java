@@ -32,12 +32,12 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Button;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
+import com.shatteredpixel.shatteredpixeldungeon.ui.TitleBackground;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndDailies;
@@ -58,8 +58,6 @@ public class RankingsScene extends PixelScene {
 	private static final float MAX_ROW_WIDTH    = 160;
 
 	private static final float GAP	= 4;
-	
-	private Archs archs;
 
 	@Override
 	public void create() {
@@ -77,9 +75,8 @@ public class RankingsScene extends PixelScene {
 		int h = Camera.main.height;
 		RectF insets = getCommonInsets();
 
-		archs = new Archs();
-		archs.setSize( w, h );
-		add( archs );
+		TitleBackground BG = new TitleBackground(w, h);
+		add( BG );
 
 		w -= insets.left + insets.right;
 		h -= insets.top + insets.bottom;
