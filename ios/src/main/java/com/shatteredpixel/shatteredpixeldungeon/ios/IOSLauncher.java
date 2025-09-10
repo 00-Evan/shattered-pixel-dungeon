@@ -125,6 +125,16 @@ public class IOSLauncher extends IOSApplication.Delegate {
 		config.addIosDevice("IPHONE_15_PLUS",       "iPhone15,5", 460);
 		config.addIosDevice("IPHONE_15_PRO",        "iPhone16,1", 460);
 		config.addIosDevice("IPHONE_15_PRO_MAX",    "iPhone16,2", 460);
+		config.addIosDevice("IPHONE_16_PRO",        "iPhone17,1", 460);
+		config.addIosDevice("IPHONE_16_PRO_MAX",    "iPhone17,2", 458);
+		config.addIosDevice("IPHONE_16",            "iPhone17,3", 460);
+		config.addIosDevice("IPHONE_16_PLUS",       "iPhone17,4", 460);
+		config.addIosDevice("IPHONE_16E",           "iPhone17,5", 460);
+		//TODO these four are guesses, machine strings may be incorrect, PPIs are correct or almost-correct though
+		config.addIosDevice("IPHONE_17_PRO",        "iPhone18,1", 460);
+		config.addIosDevice("IPHONE_17_PRO_MAX",    "iPhone18,2", 460);
+		config.addIosDevice("IPHONE_AIR",           "iPhone18,3", 460);
+		config.addIosDevice("IPHONE_17",            "iPhone18,4", 460);
 
 		config.addIosDevice("IPAD_7G_WIFI",                 "iPad7,11", 264);
 		config.addIosDevice("IPAD_7G_WIFI_CELLULAR",        "iPad7,12", 264);
@@ -144,16 +154,32 @@ public class IOSLauncher extends IOSApplication.Delegate {
 		config.addIosDevice("IPAD_PRO_11_3G",               "iPad13,7", 264);
 		config.addIosDevice("IPAD_PRO_12.9_5G",             "iPad13,8", 264);
 		config.addIosDevice("IPAD_PRO_12.9_5G",             "iPad13,9", 264);
-		config.addIosDevice("IPAD_PRO_12.9_5G",             "iPad13,10", 264);
-		config.addIosDevice("IPAD_PRO_12.9_5G",             "iPad13,11", 264);
-		config.addIosDevice("IPAD_AIR_5G_WIF",              "iPad13,16", 264);
-		config.addIosDevice("IPAD_AIR_5G_WIFI_CELLULAR",    "iPad13,17", 264);
-		config.addIosDevice("IPAD_10G",                     "iPad13,18", 264);
-		config.addIosDevice("IPAD_10G",                     "iPad13,19", 264);
+		config.addIosDevice("IPAD_PRO_12.9_5G",             "iPad13,10",264);
+		config.addIosDevice("IPAD_PRO_12.9_5G",             "iPad13,11",264);
+		config.addIosDevice("IPAD_AIR_5G_WIFI",             "iPad13,16",264);
+		config.addIosDevice("IPAD_AIR_5G_WIFI_CELLULAR",    "iPad13,17",264);
+		config.addIosDevice("IPAD_10G",                     "iPad13,18",264);
+		config.addIosDevice("IPAD_10G",                     "iPad13,19",264);
 		config.addIosDevice("IPAD_PRO_11_4G",               "iPad14,3", 264);
 		config.addIosDevice("IPAD_PRO_11_4G",               "iPad14,4", 264);
 		config.addIosDevice("IPAD_PRO_12.9_6G",             "iPad14,5", 264);
 		config.addIosDevice("IPAD_PRO_12.9_6G",             "iPad14,6", 264);
+		config.addIosDevice("IPAD_AIR_11_6G_WIFI",          "iPad14,8", 264);
+		config.addIosDevice("IPAD_AIR_11_6G_WIFI_CELLULAR", "iPad14,9", 264);
+		config.addIosDevice("IPAD_AIR_13_6G_WIFI",          "iPad14,10",264);
+		config.addIosDevice("IPAD_AIR_13_6G_WIFI_CELLULAR", "iPad14,11",264);
+		config.addIosDevice("IPAD_AIR_11_7G_WIFI",          "iPad15,3", 264);
+		config.addIosDevice("IPAD_AIR_11_7G_WIFI_CELLULAR", "iPad15,4", 264);
+		config.addIosDevice("IPAD_AIR_13_7G_WIFI",          "iPad15,5", 264);
+		config.addIosDevice("IPAD_AIR_13_7G_WIFI_CELLULAR", "iPad15,6", 264);
+		config.addIosDevice("IPAD_11G_WIFI",                "iPad15,7", 264);
+		config.addIosDevice("IPAD_11G_WIFI_CELLULAR",       "iPad15,8", 264);
+		config.addIosDevice("IPAD_MINI_7G_WIFI",            "iPad16,1", 326);
+		config.addIosDevice("IPAD_MINI_7G_WIFI_CELLULAR",   "iPad16,2", 326);
+		config.addIosDevice("IPAD_PRO_11_5G",               "iPad16,3", 264);
+		config.addIosDevice("IPAD_PRO_11_5G",               "iPad16,4", 264);
+		config.addIosDevice("IPAD_PRO_12.9_7G",             "iPad16,5", 264);
+		config.addIosDevice("IPAD_PRO_12.9_7G",             "iPad16,6", 264);
 
 		return new IOSApplication(new ShatteredPixelDungeon(new IOSPlatformSupport()), config);
 	}
