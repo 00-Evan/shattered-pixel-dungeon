@@ -86,6 +86,31 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("v3.2.4", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
+				"Hey Folks, here's what is hopefully the last patch with major changes following v3.2, but it's a doozy!\n" +
+				"\n" +
+				"In addition to more mobile improvements, there's also a just recently finished overhaul to the title screen background!\n" +
+				"\n" +
+				"Note that both of the big new things in this update are likely to have a few quirks. If something seems out of place please let me know! I do expect to do one or two more patches after v3.2.4 to fix any minor issues that crop up."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.DISPLAY_LAND), "New Title Screen Background!",
+				"**Shattered Pixel Dungeon has a new title screen background, with art by Aleksandar Komitov!**\n" +
+				"\n" +
+				"This new background is meant to both extend the classis archs, and tie the title screens more directly to the region splash arts! It features randomly selected floating fully rendered chunks of dungeon in front of an arch back-layer.\n" +
+				"\n" +
+				"Currently the background most strongly ties into the sewers region, but we have plans to add more variants in the future, one for each dungeon region!"));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.DISPLAY_PORT), "Mobile Layout Changes",
+				"**Shattered now renders in true fullscreen on most mobile devices!**\n" +
+				"\n" +
+				"The status bar at the top of the in-game UI has been modified to work around small and medium sized hole punches and rounded corners on modern displays! This includes the dynamic island on modern iPhones. Thanks to these adjustments it's now possible for the UI to move up and for the game to display in true fullscreen during gameplay! Devices with larger cutouts like full-sized notches will unfortunately still have a dark bar on the top, as there isn't room for the UI.\n" +
+				"\n" +
+				"This also comes with a few other benefits for all mobile players. The XP bar has been moved and is now much more visible, and the hero buff bar now supports two rows, rather than compressing as heavily when there are many buffs at once."));
+
 		changes = new ChangeInfo("v3.2.3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
