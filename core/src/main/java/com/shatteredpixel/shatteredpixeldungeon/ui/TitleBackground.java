@@ -33,6 +33,10 @@ import com.watabou.utils.RectF;
 
 import java.util.ArrayList;
 
+//TODO still a couple of refinements here:
+// now that all assets have 2x layers there's a lot of copypasta, surely logic can be shared in more places
+// asset picking isn't ideal, more sophisticated algorithm should help with this
+// back layers are dark, which works well on desktop but may be hard to see on mobile
 public class TitleBackground extends Component {
 
 	public static float SCROLL_SPEED	= 15f;
@@ -49,6 +53,14 @@ public class TitleBackground extends Component {
 	private static ArrayList<Image> clusters;
 	private static Group clusterLayer;
 
+	private static ArrayList<Image> clustersFar;
+	private static Group clustersFarLayer;
+
+	//Small far layer
+	private static TextureFilm SMALL_FILM = new TextureFilm(Assets.Splashes.Title.FRONT_SMALL, 112, 116);
+	private static ArrayList<Image> smallFars;
+	private static Group smallFarLayer;
+
 	//Mixed Item middle layer 1
 	private static TextureFilm MID_FILM = new TextureFilm(Assets.Splashes.Title.MID_MIXED, 273, 242);
 	private static ArrayList<Image> mids1;
@@ -58,9 +70,8 @@ public class TitleBackground extends Component {
 	private static Group mids2Layer;
 
 	//Small Item front layer
-	private static TextureFilm SMALL_FILM = new TextureFilm(Assets.Splashes.Title.FRONT_SMALL, 112, 116);
-	private static ArrayList<Image> smalls;
-	private static Group smallLayer;
+	private static ArrayList<Image> smallCloses;
+	private static Group smallCloseLayer;
 
 	private static boolean wasLandscape;
 	private static float oldBaseScale = 1;
@@ -69,9 +80,10 @@ public class TitleBackground extends Component {
 	public static void reset(){
 		archs = null;
 		clusters = null;
+		smallFars = null;
 		mids1 = null;
 		mids2 = null;
-		smalls = null;
+		smallCloses = null;
 	}
 
 	public TitleBackground(int width, int height){
@@ -91,10 +103,12 @@ public class TitleBackground extends Component {
 		//we reset in this case as scale changes
 		if (archs != null && (landscape != wasLandscape)){
 			archs = null;
+			clustersFar = null;
 			clusters = null;
+			smallFarLayer = null;
 			mids1 = null;
 			mids2 = null;
-			smalls = null;
+			smallCloses = null;
 		}
 		wasLandscape = landscape;
 
@@ -121,6 +135,14 @@ public class TitleBackground extends Component {
 		density = width / (800f * scale);
 		density = (density+0.5f)/1.5f; //pull density 33% of the way toward 1 if it is beyond it
 
+		clustersFarLayer = new Group();
+		if (clustersFar == null) {
+			clustersFar = new ArrayList<>();
+		} else {
+			convertFloatingLayer(clustersFar, clustersFarLayer, scale, oldWidth);
+		}
+		add(clustersFarLayer);
+
 		clusterLayer = new Group();
 		if (clusters == null) {
 			clusters = new ArrayList<>();
@@ -128,6 +150,14 @@ public class TitleBackground extends Component {
 			convertFloatingLayer(clusters, clusterLayer, scale, oldWidth);
 		}
 		add(clusterLayer);
+
+		smallFarLayer = new Group();
+		if (smallFars == null){
+			smallFars = new ArrayList<>();
+		} else {
+			convertFloatingLayer(smallFars, smallFarLayer, scale, oldWidth);
+		}
+		add(smallFarLayer);
 
 		mids1Layer = new Group();
 		if (mids1 == null){
@@ -145,13 +175,13 @@ public class TitleBackground extends Component {
 		}
 		add(mids2Layer);
 
-		smallLayer = new Group();
-		if (smalls == null){
-			smalls = new ArrayList<>();
+		smallCloseLayer = new Group();
+		if (smallCloses == null){
+			smallCloses = new ArrayList<>();
 		} else {
-			convertFloatingLayer(smalls, smallLayer, scale, oldWidth);
+			convertFloatingLayer(smallCloses, smallCloseLayer, scale, oldWidth);
 		}
-		add(smallLayer);
+		add(smallCloseLayer);
 
 		oldWidth = width/scale;
 		if (!landscape){
@@ -180,16 +210,14 @@ public class TitleBackground extends Component {
 	protected void convertArchLayer(ArrayList<Image> layerList, Group layerGroup, float newBaseScale){
 		ArrayList<Image> oldImages = new ArrayList<>(layerList);
 		layerList.clear();
-		float rightMost = 0;
 		for (int i = 0; i < oldImages.size(); i++){
 			Image oldArch = oldImages.get(i);
 			Image newArch = convertImage(oldArch, newBaseScale);
 			layerList.add(newArch);
 			layerGroup.add(newArch);
-			rightMost = Math.max(rightMost, newArch.x + newArch.width());
 			//if we're at the end of a row and haven't hit the end yet, add more archs!
 			while (newArch.x+newArch.width() < width
-					&& (i == oldImages.size()-1 || oldImages.get(i+1).y > oldArch.y)){
+					&& (i == oldImages.size()-1 || oldImages.get(i+1).y != oldArch.y)){
 				Image extraArch = new Image(Assets.Splashes.Title.ARCHS);
 				extraArch.frame(getArchFrame());
 				extraArch.scale.set(newBaseScale);
@@ -228,18 +256,25 @@ public class TitleBackground extends Component {
 		float scale = height / 450f;
 		float shift = Game.elapsed * SCROLL_SPEED * scale;
 
+		if (width <= height){
+			shift /= 1.5f;
+		}
 		updateArchLayer(scale, shift);
 		if (width <= height){
 			scale /= 1.5f;
 		}
-		shift *= 2f;
+		shift *= 1.33f;
+		updateClusterFarLayer(scale, shift);
+		shift *= 1.5f;
 		updateClusterLayer(scale, shift);
-		shift *= 1.5f;
+		shift *= 1.33f;
+		updateFarSmallLayer(scale, shift);
+		shift *= 1.33f;
 		updateMid1Layer(scale, shift);
-		shift *= 1.5f;
+		shift *= 1.33f;
 		updateMid2Layer(scale, shift);
-		shift *= 1.5f;
-		updateFrontLayer(scale, shift);
+		shift *= 1.33f;
+		updateFrontSmallLayer(scale, shift);
 
 	}
 
@@ -286,7 +321,7 @@ public class TitleBackground extends Component {
 
 		//if we aren't low enough, add more arch layers
 		while (bottom < height){
-			float left = archs.isEmpty() ? -Random.IntRange(5, 100) : archs.get(0).x;
+			float left = -5 + (-33.334f * Random.Int(1, 9) * scale);
 			while (left < width){
 				Image arch = new Image(Assets.Splashes.Title.ARCHS);
 				arch.frame(getArchFrame());
@@ -317,6 +352,61 @@ public class TitleBackground extends Component {
 		cluster_chances[tile]--;
 
 		return CLUSTER_FILM.get(tile);
+	}
+
+	private void updateClusterFarLayer(float scale, float shift){
+		float bottom = 0;
+		float lastX = 0;
+
+		for (Image cluster : clustersFar){
+			cluster.y -= shift;
+			if (cluster.y + cluster.height() < -20){
+				toMove.add(cluster);
+			} else if (cluster.y + cluster.height() > bottom){
+				bottom = cluster.y + cluster.height();
+				lastX = cluster.x;
+			}
+		}
+
+		if (!toMove.isEmpty()){
+			for (Image cluster : toMove){
+				cluster.frame(getClusterFrame());
+				float flex = 0;
+				do {
+					cluster.x = Random.Float(-cluster.width()/3f, width - 2*cluster.width()/3f);
+					flex += 1;
+				} while (Math.abs(cluster.x - lastX) < density*(cluster.width()/2f - flex));
+				cluster.y = bottom - cluster.height() + Random.Float(cluster.height()/2f, cluster.height())/density;
+				cluster.angle = Random.Float(-20, 20);
+				bottom = cluster.y + cluster.height();
+				lastX = cluster.x;
+			}
+			toMove.clear();
+		}
+
+		//clusters are 250 tall, add a bit for safety
+		float padding = 300 - (300/2f / density);
+		while (bottom < (height + padding)){
+			Image cluster = new Image(Assets.Splashes.Title.BACK_CLUSTERS);
+			cluster.frame(getClusterFrame());
+			cluster.scale.set(scale * 0.5f);
+
+			float flex = 0;
+			do {
+				cluster.x = Random.Float(-cluster.width()/3f, width - 2*cluster.width()/3f);
+				flex += 1;
+			} while (Math.abs(cluster.x - lastX) < density*(cluster.width()/2f - flex));
+			cluster.y = bottom - cluster.height() + Random.Float(cluster.height()/2f, cluster.height())/density;
+			cluster.angle = Random.Float(-20, 20);
+
+			cluster.brightness(0.5f);
+
+			clustersFar.add(cluster);
+			clustersFarLayer.add(cluster);
+
+			bottom = cluster.y + cluster.height();
+			lastX = cluster.x;
+		}
 	}
 
 	private void updateClusterLayer(float scale, float shift){
@@ -376,17 +466,27 @@ public class TitleBackground extends Component {
 
 	//*** Mid layer (1 and 2) logic ***
 
-	private static final float[] INIT_MID_CHANCES = {1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
+	private static final float[] INIT_MID_CHANCES = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 	private static float[] mid_chances = INIT_MID_CHANCES.clone();
+
+	private static ArrayList<Integer> lastMids = new ArrayList<>();
 
 	public RectF getMidFrame(){
 
-		int tile = Random.chances(mid_chances);
-		if (tile == -1){
-			mid_chances = INIT_MID_CHANCES.clone();
+		int tile = -1;
+		do {
 			tile = Random.chances(mid_chances);
-		}
+			if (tile == -1) {
+				mid_chances = INIT_MID_CHANCES.clone();
+				tile = Random.chances(mid_chances);
+			}
+		} while (lastMids.contains(tile));
 		mid_chances[tile]--;
+
+		lastMids.add(0, tile);
+		if (lastMids.size() >= 20){
+			lastMids.remove(19);
+		}
 
 		return MID_FILM.get(tile);
 	}
@@ -408,6 +508,7 @@ public class TitleBackground extends Component {
 		if (!toMove.isEmpty()){
 			for (Image mid : toMove){
 				mid.frame(getMidFrame());
+				mid.scale.set(scale * Random.Float(0.75f, 1.25f));
 				float flex = 0;
 				do {
 					mid.x = Random.Float(-mid.width()/3f, width - 2*mid.width()/3f);
@@ -427,6 +528,7 @@ public class TitleBackground extends Component {
 			Image mid = new Image(Assets.Splashes.Title.MID_MIXED);
 			mid.frame(getMidFrame());
 			mid.scale.set(scale * Random.Float(0.75f, 1.25f));
+			mid.brightness(0.9f);
 
 			float flex = 0;
 			do {
@@ -461,6 +563,7 @@ public class TitleBackground extends Component {
 		if (!toMove.isEmpty()){
 			for (Image mid : toMove){
 				mid.frame(getMidFrame());
+				mid.scale.set(scale * Random.Float(1.25f, 1.75f));
 				float flex = 0;
 				do {
 					mid.x = Random.Float(-mid.width()/3f, width - 2*mid.width()/3f);
@@ -499,26 +602,91 @@ public class TitleBackground extends Component {
 
 	//*** Small front layer logic ***
 
-	private static final float[] INIT_SMALL_CHANCES = {1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2, 2, 2};
+	private static final float[] INIT_SMALL_CHANCES = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 	private static float[] small_chances = INIT_SMALL_CHANCES.clone();
+
+	private static ArrayList<Integer> lastSmalls = new ArrayList<>();
 
 	public RectF getSmallFrame(){
 
-		int tile = Random.chances(small_chances);
-		if (tile == -1){
-			small_chances = INIT_SMALL_CHANCES.clone();
+		int tile = -1;
+		do {
 			tile = Random.chances(small_chances);
-		}
+			if (tile == -1) {
+				small_chances = INIT_SMALL_CHANCES.clone();
+				tile = Random.chances(small_chances);
+			}
+		} while (lastSmalls.contains(tile));
 		small_chances[tile]--;
+
+		lastSmalls.add(0, tile);
+		if (lastSmalls.size() >= 15){
+			lastSmalls.remove(14);
+		}
 
 		return SMALL_FILM.get(tile);
 	}
 
-	private void updateFrontLayer(float scale, float shift){
+	private void updateFarSmallLayer(float scale, float shift) {
 		float bottom = 0;
 		float lastX = 0;
 
-		for (Image small : smalls){
+		for (Image small : smallFars) {
+			small.y -= shift;
+			if (small.y + small.height() < -20) {
+				toMove.add(small);
+			} else if (small.y + small.height() > bottom) {
+				bottom = small.y + small.height();
+				lastX = small.x;
+			}
+		}
+
+		if (!toMove.isEmpty()) {
+			for (Image small : toMove) {
+				small.frame(getSmallFrame());
+				small.scale.set(scale * Random.Float(0.75f, 1.25f));
+				float flex = 0;
+				do {
+					small.x = Random.Float(small.width() / 3f, width - 4 * small.width() / 3f);
+					flex += 1;
+				} while (Math.abs(small.x - lastX) < density * (small.width() - flex));
+				small.y = bottom - small.height()/2f + Random.Float(small.height() / 2f, small.height()) / density;
+				small.angle = Random.Float(-20, 20);
+				bottom = small.y + small.height();
+				lastX = small.x;
+			}
+			toMove.clear();
+		}
+
+		//smalls are ~115 tall, add a bit for safety
+		float padding = 150 - (150 / 2f / density);
+		while (bottom < (height + padding)) {
+			Image small = new Image(Assets.Splashes.Title.FRONT_SMALL);
+			small.frame(getSmallFrame());
+			small.scale.set(scale * Random.Float(0.75f, 1.25f));
+			small.brightness(0.8f);
+
+			float flex = 0;
+			do {
+				small.x = Random.Float(small.width() / 3f, width - 4 * small.width() / 3f);
+				flex += 1;
+			} while (Math.abs(small.x - lastX) < density * (small.width() - flex));
+			small.y = bottom - small.height()/2f + Random.Float(small.height() / 2f, small.height()) / density;
+			small.angle = Random.Float(-20, 20);
+
+			smallFars.add(small);
+			smallFarLayer.add(small);
+
+			bottom = small.y + small.height();
+			lastX = small.x;
+		}
+	}
+
+	private void updateFrontSmallLayer(float scale, float shift){
+		float bottom = 0;
+		float lastX = 0;
+
+		for (Image small : smallCloses){
 			small.y -= shift;
 			if (small.y + small.height() < -20){
 				toMove.add(small);
@@ -531,6 +699,7 @@ public class TitleBackground extends Component {
 		if (!toMove.isEmpty()){
 			for (Image small : toMove){
 				small.frame(getSmallFrame());
+				small.scale.set(scale * Random.Float(2f, 2.5f));
 				float flex = 0;
 				do {
 					small.x = Random.Float(-small.width()/3f, width - 2*small.width()/3f);
@@ -549,7 +718,7 @@ public class TitleBackground extends Component {
 		while (bottom < (height + padding)){
 			Image small = new Image(Assets.Splashes.Title.FRONT_SMALL);
 			small.frame(getSmallFrame());
-			small.scale.set(scale * Random.Float(1.75f, 2.25f));
+			small.scale.set(scale * Random.Float(2f, 2.5f));
 
 			float flex = 0;
 			do {
@@ -559,8 +728,8 @@ public class TitleBackground extends Component {
 			small.y = bottom - small.height() + Random.Float(small.height()/2f, small.height())/density;
 			small.angle = Random.Float(-20, 20);
 
-			smalls.add(small);
-			smallLayer.add(small);
+			smallCloses.add(small);
+			smallCloseLayer.add(small);
 
 			bottom = small.y + small.height();
 			lastX = small.x;
