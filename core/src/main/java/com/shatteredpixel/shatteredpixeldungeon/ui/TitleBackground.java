@@ -80,6 +80,7 @@ public class TitleBackground extends Component {
 	public static void reset(){
 		archs = null;
 		clusters = null;
+		clustersFar = null;
 		smallFars = null;
 		mids1 = null;
 		mids2 = null;
