@@ -236,7 +236,16 @@ public class WndSettings extends WndTabbed {
 			sep1 = new ColorBlock(1, 1, 0xFF000000);
 			add(sep1);
 
-			chkFullscreen = new CheckBox( Messages.get(this, "fullscreen") ) {
+			String fullscreenText = Messages.get(this, "fullscreen");
+			//TODO English only for now, make sure to translate later
+			if (Messages.lang() == Languages.ENGLISH){
+				if (DeviceCompat.isAndroid()){
+					fullscreenText = Messages.get(this, "hide_navigation");
+				} else if (DeviceCompat.isiOS()){
+					fullscreenText = Messages.get(this, "hide_gesture");
+				}
+			}
+			chkFullscreen = new CheckBox( fullscreenText ) {
 				@Override
 				protected void onClick() {
 					super.onClick();

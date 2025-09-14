@@ -49,7 +49,7 @@ public class SPDSettings extends GameSettings {
 	
 	//Display
 	
-	public static final String KEY_FULLSCREEN	= "fullscreen";
+	public static final String KEY_FULLSCREEN	= "fullscreen"; //used to hide navbars on mobile
 	public static final String KEY_LANDSCAPE	= "force_landscape";
 	public static final String KEY_ZOOM			= "zoom";
 	public static final String KEY_BRIGHTNESS	= "brightness";
