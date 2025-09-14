@@ -368,22 +368,39 @@ public class GameScene extends PixelScene {
 
 		int uiSize = SPDSettings.interfaceSize();
 
-		//Some more medium sized display cutouts can obstruct the buff bar, so we limit the length
-		// of the 1st row in some cases
+		//display cutouts can obstruct various UI elements, so we need to adjust for that sometimes
+		float menuBarMaxLeft = uiCamera.width-insets.right-MenuPane.WIDTH;
+		int hpBarMaxWidth = 50; //default max width
 		float buffBarTopRowMaxWidth = 50; //default max width
 		if (largeInsetTop != insets.top){
-			//most notably iOS's Dynamic island, which must exist in this case
+			//iOS's Dynamic island badly obstructs the first buff bar row
 			if (DeviceCompat.isiOS()){
 				//TODO bad to hardcode this atm, need to change this so platformsupport returns cutout dimensions
 				buffBarTopRowMaxWidth = 15;
 			} else if (DeviceCompat.isAndroid()) {
-				//some android hole punches can also be big too
+				//Android hole punches are of varying size and may obstruct the menu, HP bar, or buff bar
 				RectF cutout = Game.platform.getDisplayCutout().scale(1f / defaultZoom);
+				//if the cutout is positioned to obstruct the menu bar
+				if (cutout.top < 20
+						&& cutout.left < menuBarMaxLeft + MenuPane.WIDTH
+						&& cutout.right > menuBarMaxLeft) {
+					menuBarMaxLeft = Math.min(menuBarMaxLeft, cutout.left - MenuPane.WIDTH);
+					//make sure we have space to actually move it though
+					menuBarMaxLeft = Math.max(menuBarMaxLeft, PixelScene.MIN_WIDTH_P-MenuPane.WIDTH);
+				}
+				//if the cutout is positioned to obstruct the HP bar
+				if (cutout.left < 78
+						&& cutout.top < 4
+						&& cutout.right > 32) {
+					//subtract starting position, but add a bit back due to end of bar
+					hpBarMaxWidth = Math.round(cutout.left - 32 + 4);
+					hpBarMaxWidth = Math.max(hpBarMaxWidth, 21); //cannot go below 21 (30 effective)
+				}
 				//if the cutout is positioned to obstruct the buff bar
 				if (cutout.left < 80
 						&& cutout.top < 10
 						&& cutout.right > 32
-						&& cutout.bottom > 12) {
+						&& cutout.bottom > 11) {
 					buffBarTopRowMaxWidth = cutout.left - 32; //subtract starting position
 				}
 			}
@@ -396,11 +413,24 @@ public class GameScene extends PixelScene {
 
 		menu = new MenuPane();
 		menu.camera = uiCamera;
-		menu.setPos( uiCamera.width-MenuPane.WIDTH-insets.right, screentop);
+		menu.setPos( menuBarMaxLeft, screentop);
 		add(menu);
+
+		float extraRight = uiCamera.width - (menuBarMaxLeft + MenuPane.WIDTH);
+		if (extraRight > 0){
+			SkinnedBlock bar = new SkinnedBlock(extraRight, 20, TextureCache.createSolid(0x88000000));
+			bar.x = uiCamera.width - extraRight;
+			bar.camera = uiCamera;
+			add(bar);
+
+			PointerArea blocker = new PointerArea(uiCamera.width - extraRight, 0, extraRight, 20);
+			blocker.camera = uiCamera;
+			add(blocker);
+		}
 
 		status = new StatusPane( SPDSettings.interfaceSize() > 0 );
 		status.camera = uiCamera;
+		StatusPane.hpBarMaxWidth = hpBarMaxWidth;
 		StatusPane.buffBarTopRowMaxWidth = buffBarTopRowMaxWidth;
 		status.setRect(insets.left, uiSize > 0 ? uiCamera.height-39-insets.bottom : screentop, uiCamera.width - insets.left - insets.right, 0 );
 		add(status);

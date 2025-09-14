@@ -78,8 +78,10 @@ public class StatusPane extends Component {
 
 	private boolean large;
 
-	//lower the buff indicator to avoid larger cutouts (e.g. iPhone dynamic island)
-	public static float cutoutOffset;
+	//potentially shrinks and/or repositions the hp bar to avoid some cutouts
+	public static int hpBarMaxWidth = 50;
+	private Image hpCutout;
+	//potentially cuts off the top row of the the buff indicator to avoid some cutouts
 	public static float buffBarTopRowMaxWidth = 50;
 
 	public StatusPane( boolean large ){
@@ -90,9 +92,12 @@ public class StatusPane extends Component {
 		this.large = large;
 
 		if (large)  bg = new NinePatch( asset, 0, 64, 41, 39, 33, 0, 4, 0 );
-		//right part is transparent now so Ninepatching doesn't actually do anything
-		else        bg = new NinePatch( asset, 0, 0, 128, 38, 85, 0, 45, 0 );
+		else        bg = new NinePatch( asset, 0,  0, 82, 38, 32, 0, 5, 0 );
 		add( bg );
+
+		hpCutout = new Image(asset, 90, 0, 12, 9);
+		hpCutout.visible = false;
+		add(hpCutout);
 
 		heroInfo = new Button(){
 			@Override
@@ -179,7 +184,7 @@ public class StatusPane extends Component {
 		bg.x = x;
 		bg.y = y;
 		if (large)  bg.size( 160, bg.height ); //HP bars must be 128px wide atm
-		else        bg.size( width, bg.height );
+		else        bg.size(hpBarMaxWidth+32, bg.height ); //default max right is 50px health bar + 32
 
 		avatar.x = bg.x - avatar.width / 2f + 15;
 		avatar.y = bg.y - avatar.height / 2f + 16;
@@ -216,7 +221,23 @@ public class StatusPane extends Component {
 			exp.x = x+2;
 			exp.y = y+30;
 
-			hp.x = shieldedHP.x = rawShielding.x = x + 30;
+			float hpleft = x + 30;
+			if (hpBarMaxWidth < 82){
+				//the class variable assumes the left of the bar can't move, but we can inset it 9px
+				int hpWidth = (int)hpBarMaxWidth;
+				if (hpWidth <= 41){
+					hpleft -= 9;
+					hpWidth += 9;
+					hpCutout.visible = true;
+					hpCutout.x = hpleft - 2;
+					hpCutout.y = y;
+				}
+				hp.frame(50-hpWidth, 40, 50, 4);
+				shieldedHP.frame(50-hpWidth, 44, 50, 4);
+				rawShielding.frame(50-hpWidth, 44, 50, 4);
+			}
+
+			hp.x = shieldedHP.x = rawShielding.x = hpleft;
 			hp.y = shieldedHP.y = rawShielding.y = y + 2;
 
 			hpText.scale.set(PixelScene.align(0.5f));
@@ -234,7 +255,7 @@ public class StatusPane extends Component {
 			heroInfoOnBar.setRect(heroInfo.right(), y, 50, 9);
 
 			buffs.firstRowWidth = buffBarTopRowMaxWidth;
-			buffs.setRect( x + 31, y + 8 + cutoutOffset, 50, 15 );
+			buffs.setRect( x + 31, y + 8, 50, 15 );
 
 			busy.x = x + 1;
 			busy.y = y + 37;

@@ -208,6 +208,7 @@ public class MenuPane extends Component {
 		}
 
 		danger.setPos( x + WIDTH - danger.width(), y + bg.height + 1 );
+		danger.setSize( camera.width - danger.width(), danger.height());
 	}
 
 	public void pickup(Item item, int cell) {

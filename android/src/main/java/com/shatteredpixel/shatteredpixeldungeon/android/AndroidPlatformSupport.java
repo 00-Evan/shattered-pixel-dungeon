@@ -121,9 +121,10 @@ public class AndroidPlatformSupport extends PlatformSupport {
 						for (Rect r : cutout.getBoundingRects()){
 							//use abs as some cutouts can apparently be returned inverted
 							int cutoutSize = Math.abs(r.height() * r.width());
-							//display cutouts are considered large if they take up more than 0.605% of the screen
+							//display cutouts are considered large if they take up more than 0.667% of the screen
 							//in reality we want less than about 0.5%, but some cutouts over-report their size
-							if (cutoutSize*165 >= screenSize){
+							//Pixel devices especially =S
+							if (cutoutSize*150 >= screenSize){
 								largeCutout = true;
 							}
 						}
