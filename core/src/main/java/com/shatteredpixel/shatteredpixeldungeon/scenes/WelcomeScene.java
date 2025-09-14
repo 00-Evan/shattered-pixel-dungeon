@@ -81,10 +81,10 @@ public class WelcomeScene extends PixelScene {
 			return;
 		}
 
-		/*if (ShatteredPixelDungeon.versionCode == previousVersion && !SPDSettings.intro()) {
+		if (ShatteredPixelDungeon.versionCode == previousVersion && !SPDSettings.intro()) {
 			ShatteredPixelDungeon.switchNoFade(TitleScene.class);
 			return;
-		}*/
+		}
 
 		Music.INSTANCE.playTracks(
 				new String[]{Assets.Music.THEME_1, Assets.Music.THEME_2},
