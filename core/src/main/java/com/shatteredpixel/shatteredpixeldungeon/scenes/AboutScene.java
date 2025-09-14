@@ -56,7 +56,7 @@ public class AboutScene extends PixelScene {
 		add( BG );
 
 		//darkens the arches
-		add(new ColorBlock(w, h, 0x88000000));
+		add(new ColorBlock(w, h, 0x44000000));
 
 		ScrollPane list = new ScrollPane( new Component() );
 		add( list );
