@@ -375,8 +375,10 @@ public class GameScene extends PixelScene {
 		if (largeInsetTop != insets.top){
 			//iOS's Dynamic island badly obstructs the first buff bar row
 			if (DeviceCompat.isiOS()){
-				//TODO bad to hardcode this atm, need to change this so platformsupport returns cutout dimensions
-				buffBarTopRowMaxWidth = 15;
+				//TODO bad to hardcode and approximate this atm
+				// need to change this so iOS platformsupport returns cutout dimensions
+				float cutoutLeft = (Game.width*0.3f)/defaultZoom;
+				buffBarTopRowMaxWidth = Math.min(50, cutoutLeft - 32);
 			} else if (DeviceCompat.isAndroid()) {
 				//Android hole punches are of varying size and may obstruct the menu, HP bar, or buff bar
 				RectF cutout = Game.platform.getDisplayCutout().scale(1f / defaultZoom);
