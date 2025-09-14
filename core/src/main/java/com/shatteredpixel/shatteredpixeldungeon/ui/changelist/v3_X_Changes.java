@@ -111,6 +111,16 @@ public class v3_X_Changes {
 				"\n" +
 				"This also comes with a few other benefits for all mobile players. The XP bar has been moved and is now much more visible, and the hero buff bar now supports two rows, rather than compressing as heavily when there are many buffs at once."));
 
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), "v3.2.4 Beta Tweaks",
+				"During v3.2.4's short beta I got a lot of good feedback about the new UI, and have made the following tweaks to address feedback before full release:\n" +
+				"\n" +
+				"**-** The HP bar can now shrink and/or reposition slightly if it would otherwise be cut off by a display cutout. The HP bar should shrink by about 20% at most.\n" +
+				"**-** Adjusted buff bar layout logic to reduce cases of top row getting slightly cut off by display cutouts on Android.\n" +
+				"**-** The menu pane on the right will now move to the left if there is room to do so and it would otherwise be cut off by a display cutout.\n" +
+				"**-** Slightly increased the permissiveness for what cutouts the game will try to render into. This should let the game render in true fullscreen on some devices with hole punches that it couldn't previously.\n" +
+				"**-** Improved how buff bar layout handles iOS dynamic island at smaller scale values.\n" +
+				"**-** Renamed the mobile fullscreen setting to 'hide navigation bar' or 'hide gesture bar'"));
+
 		changes = new ChangeInfo("v3.2.3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
