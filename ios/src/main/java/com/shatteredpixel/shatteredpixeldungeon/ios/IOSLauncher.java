@@ -126,15 +126,14 @@ public class IOSLauncher extends IOSApplication.Delegate {
 		config.addIosDevice("IPHONE_15_PRO",        "iPhone16,1", 460);
 		config.addIosDevice("IPHONE_15_PRO_MAX",    "iPhone16,2", 460);
 		config.addIosDevice("IPHONE_16_PRO",        "iPhone17,1", 460);
-		config.addIosDevice("IPHONE_16_PRO_MAX",    "iPhone17,2", 458);
+		config.addIosDevice("IPHONE_16_PRO_MAX",    "iPhone17,2", 460);
 		config.addIosDevice("IPHONE_16",            "iPhone17,3", 460);
 		config.addIosDevice("IPHONE_16_PLUS",       "iPhone17,4", 460);
 		config.addIosDevice("IPHONE_16E",           "iPhone17,5", 460);
-		//TODO these four are guesses, machine strings may be incorrect, PPIs are correct or almost-correct though
 		config.addIosDevice("IPHONE_17_PRO",        "iPhone18,1", 460);
 		config.addIosDevice("IPHONE_17_PRO_MAX",    "iPhone18,2", 460);
-		config.addIosDevice("IPHONE_AIR",           "iPhone18,3", 460);
-		config.addIosDevice("IPHONE_17",            "iPhone18,4", 460);
+		config.addIosDevice("IPHONE_17",            "iPhone18,3", 460);
+		config.addIosDevice("IPHONE_AIR",           "iPhone18,4", 460);
 
 		config.addIosDevice("IPAD_7G_WIFI",                 "iPad7,11", 264);
 		config.addIosDevice("IPAD_7G_WIFI_CELLULAR",        "iPad7,12", 264);
@@ -180,6 +179,11 @@ public class IOSLauncher extends IOSApplication.Delegate {
 		config.addIosDevice("IPAD_PRO_11_5G",               "iPad16,4", 264);
 		config.addIosDevice("IPAD_PRO_12.9_7G",             "iPad16,5", 264);
 		config.addIosDevice("IPAD_PRO_12.9_7G",             "iPad16,6", 264);
+
+		//also override simulator devices for better testing when simulating modern iPhones
+		config.addIosDevice("SIMULATOR_32",     "i386", 460);
+		config.addIosDevice("SIMULATOR_64",     "x86_64", 460);
+		config.addIosDevice("SIMULATOR_ARM64",  "arm64", 460);
 
 		return new IOSApplication(new ShatteredPixelDungeon(new IOSPlatformSupport()), config);
 	}
