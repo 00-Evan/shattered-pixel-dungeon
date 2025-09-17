@@ -78,6 +78,9 @@ public class StatusPane extends Component {
 
 	private boolean large;
 
+	//potentially extends the hero portrait space to avoid some cutouts
+	public static float heroPaneExtraWidth = 0;
+	private NinePatch heroPaneCutout;
 	//potentially shrinks and/or repositions the hp bar to avoid some cutouts
 	public static int hpBarMaxWidth = 50;
 	private Image hpCutout;
@@ -94,6 +97,10 @@ public class StatusPane extends Component {
 		if (large)  bg = new NinePatch( asset, 0, 64, 41, 39, 33, 0, 4, 0 );
 		else        bg = new NinePatch( asset, 0,  0, 82, 38, 32, 0, 5, 0 );
 		add( bg );
+
+		heroPaneCutout = new NinePatch(asset, 0, 0, 5, 36, 4, 0, 0, 0);
+		heroPaneCutout.visible = false;
+		add(heroPaneCutout);
 
 		hpCutout = new Image(asset, 90, 0, 12, 9);
 		hpCutout.visible = false;
@@ -181,7 +188,9 @@ public class StatusPane extends Component {
 
 		height = large ? 39 : 38;
 
-		bg.x = x;
+		float heroPaneWidth = 30 + heroPaneExtraWidth;
+
+		bg.x = x + heroPaneExtraWidth;
 		bg.y = y;
 		if (large)  bg.size( 160, bg.height ); //HP bars must be 128px wide atm
 		else        bg.size(hpBarMaxWidth+32, bg.height ); //default max right is 50px health bar + 32
@@ -190,7 +199,7 @@ public class StatusPane extends Component {
 		avatar.y = bg.y - avatar.height / 2f + 16;
 		PixelScene.align(avatar);
 
-		heroInfo.setRect( x, y, 30, large ? 40 : 36 );
+		heroInfo.setRect( x, y, heroPaneWidth, large ? 40 : 36 );
 
 		compass.x = avatar.x + avatar.width / 2f - compass.origin.x;
 		compass.y = avatar.y + avatar.height / 2f - compass.origin.y;
@@ -221,7 +230,14 @@ public class StatusPane extends Component {
 			exp.x = x+2;
 			exp.y = y+30;
 
-			float hpleft = x + 30;
+			if (heroPaneExtraWidth > 0){
+				heroPaneCutout.visible = true;
+				heroPaneCutout.x = x;
+				heroPaneCutout.y = y;
+				heroPaneCutout.size(heroPaneExtraWidth+4, heroPaneCutout.height);
+			}
+
+			float hpleft = x + heroPaneWidth;
 			if (hpBarMaxWidth < 82){
 				//the class variable assumes the left of the bar can't move, but we can inset it 9px
 				int hpWidth = (int)hpBarMaxWidth;
@@ -255,7 +271,7 @@ public class StatusPane extends Component {
 			heroInfoOnBar.setRect(heroInfo.right(), y, 50, 9);
 
 			buffs.firstRowWidth = buffBarTopRowMaxWidth;
-			buffs.setRect( x + 31, y + 8, 50, 15 );
+			buffs.setRect( x + heroPaneWidth + 1, y + 8, 50, 15 );
 
 			busy.x = x + 1;
 			busy.y = y + 37;
@@ -322,7 +338,7 @@ public class StatusPane extends Component {
 			expText.x = hp.x + (128 - expText.width())/2f;
 
 		} else {
-			exp.scale.x = (17 / exp.width) * Dungeon.hero.exp / Dungeon.hero.maxExp();
+			exp.scale.x = ((17 + heroPaneExtraWidth) / exp.width) * Dungeon.hero.exp / Dungeon.hero.maxExp();
 			expText.text(Dungeon.hero.exp + "/" + Dungeon.hero.maxExp());
 		}
 
@@ -342,7 +358,7 @@ public class StatusPane extends Component {
 			} else {
 				level.text( Integer.toString( lastLvl ) );
 				level.measure();
-				level.x = x + 25.5f - level.width() / 2f;
+				level.x = x + heroPaneExtraWidth + 25.5f - level.width() / 2f;
 				level.y = y + 31.0f - level.baseLine() / 2f;
 			}
 			PixelScene.align(level);
@@ -364,6 +380,8 @@ public class StatusPane extends Component {
 	public void alpha( float value ){
 		value = GameMath.gate(0, value, 1f);
 		bg.alpha(value);
+		heroPaneCutout.alpha(value);
+		hpCutout.alpha(value);
 		avatar.alpha(value);
 		rawShielding.alpha(0.5f*value);
 		shieldedHP.alpha(value);

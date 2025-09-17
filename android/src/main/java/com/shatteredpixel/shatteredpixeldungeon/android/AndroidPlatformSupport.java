@@ -117,17 +117,29 @@ public class AndroidPlatformSupport extends PlatformSupport {
 
 					if (cutout != null) {
 						boolean largeCutout = false;
+						boolean cutoutsPresent = false;
+
 						int screenSize = Game.width * Game.height;
-						for (Rect r : cutout.getBoundingRects()){
+						for (Rect r : cutout.getBoundingRects()) {
 							//use abs as some cutouts can apparently be returned inverted
 							int cutoutSize = Math.abs(r.height() * r.width());
-							//display cutouts are considered large if they take up more than 0.667% of the screen
-							//in reality we want less than about 0.5%, but some cutouts over-report their size
-							//Pixel devices especially =S
-							if (cutoutSize*150 >= screenSize){
-								largeCutout = true;
+							//display cutouts are considered large if they take up more than 0.75%
+							// of the screen/ in reality we want less than about 0.5%,
+							// but some cutouts over-report their size, Pixel devices especially =S
+							if (cutoutSize > 0){
+								cutoutsPresent = true;
+								if (cutoutSize * 133.33f >= screenSize) {
+									largeCutout = true;
+								}
 							}
 						}
+
+						if (!cutoutsPresent){
+							//if we get no cutouts reported, assume the device is lying to us
+							// and there actually is a cutout, which we must assume is large =S
+							largeCutout = true;
+						}
+
 						if (largeCutout || level == INSET_ALL) {
 							insets.left = Math.max(insets.left, cutout.getSafeInsetLeft());
 							insets.top = Math.max(insets.top, cutout.getSafeInsetTop());
