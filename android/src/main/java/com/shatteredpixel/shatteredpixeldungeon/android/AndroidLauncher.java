@@ -66,11 +66,12 @@ public class AndroidLauncher extends AndroidApplication {
 			GdxNativesLoader.load();
 			FreeType.initFreeType();
 		} catch (Exception e){
+			GdxNativesLoader.disableNativesLoading = true;
 			AndroidMissingNativesHandler.error = e;
 			Intent intent = new Intent(this, AndroidMissingNativesHandler.class);
 			startActivity(intent);
 			finish();
-			return;
+			//let initialization continue for a moment so that we can set up things libGDX expects to be set up
 		}
 
 		//there are some things we only need to set up on first launch
