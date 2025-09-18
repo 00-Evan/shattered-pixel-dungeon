@@ -127,6 +127,8 @@ public class Guard extends Mob {
 			Dungeon.hero.interrupt();
 			Dungeon.observe();
 			GameScene.updateFog();
+		} else {
+			enemy.sprite.visible = Dungeon.level.heroFOV[pullPos];
 		}
 	}
 
