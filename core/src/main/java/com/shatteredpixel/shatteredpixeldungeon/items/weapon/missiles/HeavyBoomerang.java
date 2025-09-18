@@ -51,14 +51,20 @@ public class HeavyBoomerang extends MissileWeapon {
 				(tier-1) * lvl;             //3 scaling, down from 4
 	}
 
-	boolean circleBackhit = false;
+	boolean circlingBack = false;
 
 	@Override
 	protected float adjacentAccFactor(Char owner, Char target) {
-		if (circleBackhit){
+		if (circlingBack){
 			return 1.5f;
 		}
 		return super.adjacentAccFactor(owner, target);
+	}
+
+	@Override
+	public float pickupDelay() {
+		//pickup is instant when circling back
+		return circlingBack ? 0f : super.pickupDelay();
 	}
 
 	@Override
@@ -126,22 +132,18 @@ public class HeavyBoomerang extends MissileWeapon {
 										@Override
 										public void call() {
 											detach();
+											boomerang.circlingBack = true;
 											if (returnTarget == target){
 												if (!boomerang.spawnedForEffect) {
-													if (target instanceof Hero && boomerang.doPickUp((Hero) target)) {
-														//grabbing the boomerang takes no time
-														((Hero) target).spend(-TIME_TO_PICK_UP);
-													} else {
+													if (!(target instanceof Hero) || !boomerang.doPickUp((Hero) target)) {
 														Dungeon.level.drop(boomerang, returnPos).sprite.drop();
 													}
 												}
 												
 											} else if (returnTarget != null){
-												boomerang.circleBackhit = true;
 												if (((Hero)target).shoot( returnTarget, boomerang )) {
 													boomerang.decrementDurability();
 												}
-												boomerang.circleBackhit = false;
 												if (!boomerang.spawnedForEffect && boomerang.durability > 0) {
 													Dungeon.level.drop(boomerang, returnPos).sprite.drop();
 												}
@@ -149,6 +151,7 @@ public class HeavyBoomerang extends MissileWeapon {
 											} else if (!boomerang.spawnedForEffect) {
 												Dungeon.level.drop(boomerang, returnPos).sprite.drop();
 											}
+											boomerang.circlingBack = false;
 											CircleBack.this.next();
 										}
 									});

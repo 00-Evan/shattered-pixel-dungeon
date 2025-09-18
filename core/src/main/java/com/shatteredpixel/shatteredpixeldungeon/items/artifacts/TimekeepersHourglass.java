@@ -518,7 +518,7 @@ public class TimekeepersHourglass extends Artifact {
 				else
 					GLog.i( Messages.get(this, "levelup") );
 				GameScene.pickUp(this, pos);
-				hero.spendAndNext(TIME_TO_PICK_UP);
+				hero.spendAndNext(pickupDelay());
 				return true;
 			} else {
 				GLog.w( Messages.get(this, "no_hourglass") );

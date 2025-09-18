@@ -598,7 +598,7 @@ abstract public class MissileWeapon extends Weapon {
 		parent = null;
 		if (!UpgradedSetTracker.pickupValid(hero, this)){
 			Sample.INSTANCE.play( Assets.Sounds.ITEM );
-			hero.spendAndNext( TIME_TO_PICK_UP );
+			hero.spendAndNext( pickupDelay() );
 			GLog.w(Messages.get(this, "dust"));
 			quantity(0);
 			return true;

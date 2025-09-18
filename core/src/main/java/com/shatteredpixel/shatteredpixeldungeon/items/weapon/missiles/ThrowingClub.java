@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class ThrowingClub extends MissileWeapon {
@@ -38,12 +37,8 @@ public class ThrowingClub extends MissileWeapon {
 	}
 
 	@Override
-	public boolean doPickUp(Hero hero, int pos) {
-		if (super.doPickUp(hero, pos)){
-			hero.spendAndNext( -hero.cooldown() );
-			return true;
-		}
-		return false;
+	public float pickupDelay() {
+		return 0; //picked up instantly
 	}
 
 	@Override
