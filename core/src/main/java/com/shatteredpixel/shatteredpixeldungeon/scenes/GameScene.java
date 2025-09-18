@@ -1003,29 +1003,21 @@ public class GameScene extends PixelScene {
 		customWalls.add( visual.create() );
 	}
 	
-	private void addHeapSprite( Heap heap ) {
+	private synchronized void addHeapSprite( Heap heap ) {
 		ItemSprite sprite = heap.sprite = (ItemSprite)heaps.recycle( ItemSprite.class );
 		sprite.revive();
 		sprite.link( heap );
 		heaps.add( sprite );
 	}
 	
-	private void addDiscardedSprite( Heap heap ) {
+	private synchronized void addDiscardedSprite( Heap heap ) {
 		heap.sprite = (DiscardedItemSprite)heaps.recycle( DiscardedItemSprite.class );
 		heap.sprite.revive();
 		heap.sprite.link( heap );
 		heaps.add( heap.sprite );
 	}
 	
-	private void addPlantSprite( Plant plant ) {
-
-	}
-
-	private void addTrapSprite( Trap trap ) {
-
-	}
-	
-	private void addBlobSprite( final Blob gas ) {
+	private synchronized void addBlobSprite( final Blob gas ) {
 		if (gas.emitter == null) {
 			gases.add( new BlobEmitter( gas ) );
 		}
@@ -1100,18 +1092,6 @@ public class GameScene extends PixelScene {
 	}
 	
 	// -------------------------------------------------------
-
-	public static void add( Plant plant ) {
-		if (scene != null) {
-			scene.addPlantSprite( plant );
-		}
-	}
-
-	public static void add( Trap trap ) {
-		if (scene != null) {
-			scene.addTrapSprite( trap );
-		}
-	}
 	
 	public static void add( Blob gas ) {
 		Actor.add( gas );
