@@ -539,9 +539,13 @@ abstract public class MissileWeapon extends Weapon {
 				durability = MAX_DURABILITY;
 			}
 
-			masteryPotionBonus = masteryPotionBonus || ((MissileWeapon) other).masteryPotionBonus;
 			levelKnown = levelKnown || other.levelKnown;
 			cursedKnown = cursedKnown || other.cursedKnown;
+			if (((Weapon)other).readyToIdentify()){
+				setIDReady();
+			}
+
+			masteryPotionBonus = masteryPotionBonus || ((MissileWeapon) other).masteryPotionBonus;
 			enchantHardened = enchantHardened || ((MissileWeapon) other).enchantHardened;
 
 			//if other has a curse/enchant status that's a higher priority, copy it. in the following order:
