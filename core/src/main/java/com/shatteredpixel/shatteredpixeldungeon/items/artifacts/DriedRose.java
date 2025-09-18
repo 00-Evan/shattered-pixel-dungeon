@@ -345,6 +345,7 @@ public class DriedRose extends Artifact {
 		
 		if (ghost != null){
 			ghost.updateRose();
+			ghost.HP = Math.min(ghost.HP+8, ghost.HT);
 		}
 
 		return super.upgrade();
