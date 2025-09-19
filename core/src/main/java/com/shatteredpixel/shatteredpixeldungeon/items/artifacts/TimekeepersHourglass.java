@@ -299,12 +299,6 @@ public class TimekeepersHourglass extends Artifact {
 				//buffs always act last, so the stasis buff should end a turn early.
 				spend(5*usedCharge);
 
-				//shouldn't punish the player for going into stasis frequently
-				Hunger hunger = Buff.affect(target, Hunger.class);
-				if (hunger != null && !hunger.isStarving()) {
-					hunger.satisfy(5 * usedCharge);
-				}
-
 				charge -= usedCharge;
 
 				target.invisible++;

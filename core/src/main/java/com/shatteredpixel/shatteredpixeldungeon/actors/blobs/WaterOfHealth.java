@@ -56,7 +56,6 @@ public class WaterOfHealth extends WellWater {
 
 		PotionOfHealing.cure( hero );
 		hero.belongings.uncurseEquipped();
-		hero.buff( Hunger.class ).satisfy( Hunger.STARVING );
 
 		if (VialOfBlood.delayBurstHealing()){
 			Healing healing = Buff.affect(hero, Healing.class);

@@ -196,7 +196,6 @@ public class MiningLevel extends CavesLevel {
 			map[cell] = Terrain.GRASS;
 			losBlocking[cell] = false;
 		}
-		drop( Generator.randomUsingDefaults(Generator.Category.FOOD), cell );
 		if (Blacksmith.Quest.Type() == Blacksmith.Quest.GNOLL){
 			//drop a second ration for the gnoll quest type, more mining required!
 			cell = randomDropCell();
@@ -204,7 +203,6 @@ public class MiningLevel extends CavesLevel {
 				map[cell] = Terrain.GRASS;
 				losBlocking[cell] = false;
 			}
-			drop( Generator.randomUsingDefaults(Generator.Category.FOOD), cell );
 		}
 
 		if (Dungeon.isChallenged(Challenges.DARKNESS)){

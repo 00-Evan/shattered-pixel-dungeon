@@ -53,17 +53,6 @@ public class TimeStasis extends FlavourBuff {
 	}
 
 	@Override
-	protected void spend(float time) {
-		super.spend(time);
-
-		//don't punish the player for going into stasis frequently
-		Hunger hunger = Buff.affect(target, Hunger.class);
-		if (hunger != null && !hunger.isStarving()) {
-			hunger.affectHunger(cooldown(), true);
-		}
-	}
-
-	@Override
 	public void detach() {
 		if (target.invisible > 0) target.invisible--;
 		if (target.paralysed > 0) target.paralysed--;

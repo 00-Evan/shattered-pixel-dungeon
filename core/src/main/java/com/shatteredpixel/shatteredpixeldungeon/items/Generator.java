@@ -41,16 +41,12 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Pasty;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
@@ -238,9 +234,7 @@ public class Generator {
 		WAND	( 1, 1, Wand.class ),
 		RING	( 1, 0, Ring.class ),
 		ARTIFACT( 0, 1, Artifact.class),
-		
-		FOOD	( 0, 0, Food.class ),
-		
+
 		POTION	( 8, 8, Potion.class ),
 		SEED	( 1, 1, Plant.Seed.class ),
 		
@@ -532,12 +526,12 @@ public class Generator {
 			MIS_T5.defaultProbs = new float[]{ 3, 3, 3 };
 			MIS_T5.probs = MIS_T5.defaultProbs.clone();
 			
-			FOOD.classes = new Class<?>[]{
-					Food.class,
-					Pasty.class,
-					MysteryMeat.class };
-			FOOD.defaultProbs = new float[]{ 4, 1, 0 };
-			FOOD.probs = FOOD.defaultProbs.clone();
+//			FOOD.classes = new Class<?>[]{
+//					Food.class,
+//					Pasty.class,
+//					MysteryMeat.class };
+//			FOOD.defaultProbs = new float[]{ 4, 1, 0 };
+//			FOOD.probs = FOOD.defaultProbs.clone();
 			
 			RING.classes = new Class<?>[]{
 					RingOfAccuracy.class,
@@ -562,7 +556,6 @@ public class Generator {
 					DriedRose.class,
 					EtherealChains.class,
 					HolyTome.class,
-					HornOfPlenty.class,
 					MasterThievesArmband.class,
 					SandalsOfNature.class,
 					TalismanOfForesight.class,

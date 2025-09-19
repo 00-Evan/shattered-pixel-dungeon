@@ -47,7 +47,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.AntiEntropy;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Bulk;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Corrosion;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Displacement;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Metabolism;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Multiplicity;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Overgrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Stench;
@@ -808,7 +807,7 @@ public class Armor extends EquipableItem {
 		};
 
 		public static final Class<?>[] curses = new Class<?>[]{
-				AntiEntropy.class, Corrosion.class, Displacement.class, Metabolism.class,
+				AntiEntropy.class, Corrosion.class, Displacement.class,
 				Multiplicity.class, Stench.class, Overgrowth.class, Bulk.class
 		};
 		

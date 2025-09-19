@@ -1293,7 +1293,6 @@ public class Hero extends Char {
 
 						//4 hunger spent total
 						} else if (Dungeon.level.map[action.dst] == Terrain.WALL){
-							buff(Hunger.class).affectHunger(-3);
 							PixelScene.shake(0.5f, 0.5f);
 							CellEmitter.get( action.dst ).burst( Speck.factory( Speck.ROCK ), 2 );
 							Sample.INSTANCE.play( Assets.Sounds.MINE );
@@ -2050,11 +2049,7 @@ public class Hero extends Char {
 	public static int maxExp( int lvl ){
 		return 5 + lvl * 5;
 	}
-	
-	public boolean isStarving() {
-		return Buff.affect(this, Hunger.class).isStarving();
-	}
-	
+
 	@Override
 	public boolean add( Buff buff ) {
 
@@ -2497,9 +2492,6 @@ public class Hero extends Char {
 			if (!Dungeon.level.locked) {
 				if (cursed) {
 					GLog.n(Messages.get(this, "search_distracted"));
-					Buff.affect(this, Hunger.class).affectHunger(TIME_TO_SEARCH - (2 * HUNGER_FOR_SEARCH));
-				} else {
-					Buff.affect(this, Hunger.class).affectHunger(TIME_TO_SEARCH - HUNGER_FOR_SEARCH);
 				}
 			}
 			spendAndNext(TIME_TO_SEARCH);

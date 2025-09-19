@@ -122,8 +122,6 @@ public class Food extends Item {
 			foodVal *= 0.67f;
 			GLog.n( Messages.get(Hunger.class, "cursedhorn") );
 		}
-
-		Buff.affect(hero, Hunger.class).satisfy(foodVal);
 	}
 	
 	@Override
