@@ -89,17 +89,17 @@ runtime {
             }
         }
     } else if (osName.contains('mac')) {
+        //Adoptium JDK 17 officially supports MacOS 12+, but internals suggest support for 10.12+
         targetPlatform("mac") {
-            jdkHome = jdkDownload("https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk-16.0.1%2B9/OpenJDK16U-jdk_x64_mac_hotspot_16.0.1_9.tar.gz")
-            javaHome = file("./build/jdks/mac/jdk-16.0.1+9/Contents/Home/").getAbsolutePath()
+            jdkHome = jdkDownload("https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.16%2B8/OpenJDK17U-jdk_x64_mac_hotspot_17.0.16_8.tar.gz")
+            javaHome = file("./build/jdks/mac/jdk-17.0.16+8/Contents/Home/").getAbsolutePath()
             jpackage {
-                jpackageHome = file("./build/jdks/mac/jdk-16.0.1+9/Contents/Home/")
+                jpackageHome = file("./build/jdks/mac/jdk-17.0.16+8/Contents/Home/")
                 imageOptions = ["--icon", file("./src/main/assets/icons/mac.icns"),
                                 "--java-options", "-XstartOnFirstThread",
                                 "--java-options", "-XX:+IgnoreUnrecognizedVMOptions",
                                 //append .apple because com.shatteredpixel.shatteredpixeldungeon was taken =(
-                                "--mac-package-identifier", appPackageName + ".apple",
-                                "--mac-package-name", "ShattererdPD"]
+                                "--mac-package-identifier", appPackageName + ".apple"]
             }
         }
     }
