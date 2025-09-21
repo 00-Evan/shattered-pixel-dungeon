@@ -266,10 +266,7 @@ public class TitleScene extends PixelScene {
 		};
 		btnFade.icon().originToCenter();
 		btnFade.icon().angle = 180f;
-		btnFade.setRect(btnAreaLeft + (buttonAreaWidth-16)/2, btnAbout.bottom() + GAP/2 + 2, 16, 10);
-		if (btnFade.bottom() > camera.main.height){
-			btnFade.setPos(btnFade.left(), btnFade.top() - (btnFade.bottom()-camera.main.height));
-		}
+		btnFade.setRect(btnAreaLeft + (buttonAreaWidth-16)/2, camera.main.height - 16, 16, 16);
 		add(btnFade);
 
 		PointerArea fadeResetter = new PointerArea(0, 0, Camera.main.width, Camera.main.height){
