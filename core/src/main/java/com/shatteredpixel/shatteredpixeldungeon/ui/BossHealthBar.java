@@ -154,10 +154,12 @@ public class BossHealthBar extends Component {
 		bossInfo.setRect(x, y, bar.width, bar.height);
 
 		if (buffs != null) {
+			buffs.maxBuffs = 12;
 			if (large) {
-				buffs.setRect(hp.x+1, hp.y + 12, 80, 16);
+				//little extra width here for a 6th column
+				buffs.setRect(hp.x+1, hp.y + 12, 102, 34);
 			} else {
-				buffs.setRect(hp.x, hp.y + 5, 40, 7);
+				buffs.setRect(hp.x, hp.y + 5, 47, 16);
 			}
 		}
 

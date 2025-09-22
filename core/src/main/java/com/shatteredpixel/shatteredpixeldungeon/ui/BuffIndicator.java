@@ -180,6 +180,7 @@ public class BuffIndicator extends Component {
 	}
 
 	private boolean buffsHidden = false;
+	public int maxBuffs = 14; //by default
 
 	@Override
 	protected void layout() {
@@ -228,32 +229,29 @@ public class BuffIndicator extends Component {
 			}
 		}
 
-		//TODO several aspects of the layout code have been a bit hackily changed to support 2 rows
-		// should clean this up
-		
 		//layout
-		int row = 0;
+		int row = 1;
 		int pos = 0;
-		float lastIconLeft = 0;
+		float lastIconRight = 0;
 		int total = 0;
 		for (BuffButton icon : buffButtons.values()){
-			if (total >= 14){ //buff bar supports a max of 14 buffs at once
+			if (total >= maxBuffs){
 				icon.visible = false;
 				continue;
 			}
 			icon.visible = true;
 
-			icon.topOffset = (row > 0 && !large) ? -1 : 0;
+			icon.topOffset = (row > 1 && !large) ? -1 : 0;
 			icon.updateIcon();
 			//button areas are slightly oversized, especially on small buttons
-			icon.setRect(x + pos * (size + 1), y + row*(size+1)-icon.topOffset, size + 1, size + (large ? 0 : 5));
+			icon.setRect(x + pos * (size + 1), y + (row-1)*(size+1)-icon.topOffset, size + 1, size + (large ? 0 : 5));
 			PixelScene.align(icon);
 			pos++;
 
-			lastIconLeft = icon.left();
+			lastIconRight = icon.right()-1;
 
 			if ((row+1)*(size+1) <= height
-					&& (pos * (size + 1) > width || (row == 0 && firstRowWidth != -1 && pos * (size + 1) > firstRowWidth))){
+					&& (pos * (size + 1) + size > width || (row == 1 && firstRowWidth != -1 && pos * (size + 1) + size > firstRowWidth))){
 				row++;
 				pos = 0;
 			}
@@ -262,15 +260,15 @@ public class BuffIndicator extends Component {
 
 		buffsHidden = false;
 		//squish buff icons together if there isn't enough room
-		float excessWidth = lastIconLeft - right();
+		float excessWidth = lastIconRight - right();
 
 		if (excessWidth > 0) {
 			//if multiple rows, only compress last row
 			ArrayList<BuffButton> buttons = new ArrayList<>();
-			float lastRowY = y + row*(size+1);
+			float lastRowY = PixelScene.align(y + (row-1)*(size+1));
 			int i = 1;
 			for (BuffButton button : buffButtons.values()){
-				if (i > 14){
+				if (i > maxBuffs){
 					button.visible = false;
 					buffsHidden = true;
 					continue;
@@ -282,12 +280,14 @@ public class BuffIndicator extends Component {
 			}
 
 			float leftAdjust = excessWidth/(buttons.size()-1);
+			//can't squish by more than 50%
+			if (leftAdjust >= size*0.48f) leftAdjust = size*0.5f;
 			float cumulativeAdjust = leftAdjust * (buttons.size()-1);
 
 			Collections.reverse(buttons);
 			for (BuffButton icon : buttons) {
 				icon.setPos(icon.left() - cumulativeAdjust, icon.top());
-				icon.visible = icon.left() <= right();
+				icon.visible = icon.right() <= right()+1;
 				if (!icon.visible) buffsHidden = true;
 				PixelScene.align(icon);
 				bringToFront(icon);

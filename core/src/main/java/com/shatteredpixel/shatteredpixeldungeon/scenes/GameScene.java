@@ -372,14 +372,14 @@ public class GameScene extends PixelScene {
 		float heroPaneExtraWidth = insets.left;
 		float menuBarMaxLeft = uiCamera.width-insets.right-MenuPane.WIDTH;
 		int hpBarMaxWidth = 50; //default max width
-		float buffBarTopRowMaxWidth = 50; //default max width
+		float buffBarTopRowMaxWidth = 55; //default max width
 		if (largeInsetTop == 0){
 			//iOS's Dynamic island badly obstructs the first buff bar row
 			if (DeviceCompat.isiOS()){
 				//TODO bad to hardcode and approximate this atm
 				// need to change this so iOS platformsupport returns cutout dimensions
 				float cutoutLeft = (Game.width*0.3f)/defaultZoom;
-				buffBarTopRowMaxWidth = Math.min(50, cutoutLeft - 32);
+				buffBarTopRowMaxWidth = Math.min(55, cutoutLeft - 32);
 			} else if (DeviceCompat.isAndroid()) {
 				//Android hole punches are of varying size and may obstruct various UI elements
 				RectF cutout = Game.platform.getDisplayCutout().scale(1f / defaultZoom);
@@ -408,11 +408,12 @@ public class GameScene extends PixelScene {
 					hpBarMaxWidth = Math.max(hpBarMaxWidth, 21); //cannot go below 21 (30 effective)
 				}
 				//if the cutout is positioned to obstruct the buff bar
-				if (cutout.left < 80
+				if (cutout.left < 84
 						&& cutout.top < 10
 						&& cutout.right > 32
 						&& cutout.bottom > 11) {
-					buffBarTopRowMaxWidth = cutout.left - 32; //subtract starting position
+					//subtract starting position, add a bit back to allow slight overlap
+					buffBarTopRowMaxWidth = cutout.left - 32 + 3;
 				}
 			}
 		}
