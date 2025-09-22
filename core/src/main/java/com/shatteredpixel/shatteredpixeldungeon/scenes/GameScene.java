@@ -459,7 +459,7 @@ public class GameScene extends PixelScene {
 
 		boss = new BossHealthBar();
 		boss.camera = uiCamera;
-		boss.setPos( (uiCamera.width - boss.width())/2, screentop + 26);
+		boss.setPos( (uiCamera.width - boss.width())/2, screentop + uiSize == 0 ? 26 : 7);
 		add(boss);
 
 		resume = new ResumeIndicator();
