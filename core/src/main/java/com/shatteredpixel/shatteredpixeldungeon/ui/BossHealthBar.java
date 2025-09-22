@@ -40,8 +40,7 @@ public class BossHealthBar extends Component {
 
 	private Image bar;
 
-	private Image rawShielding;
-	private Image shieldedHP;
+	private Image shieldHP;
 	private Image hp;
 	private BitmapText hpText;
 
@@ -83,12 +82,8 @@ public class BossHealthBar extends Component {
 		width = bar.width;
 		height = bar.height;
 
-		rawShielding = large ? new Image(asset, 0, 55, 96, 9) : new Image(asset, 71, 5, 47, 4);
-		rawShielding.alpha(0.5f);
-		add(rawShielding);
-
-		shieldedHP = large ? new Image(asset, 0, 55, 96, 9) : new Image(asset, 71, 5, 47, 4);
-		add(shieldedHP);
+		shieldHP = large ? new Image(asset, 0, 55, 96, 9) : new Image(asset, 71, 5, 47, 4);
+		add(shieldHP);
 
 		hp =  large ? new Image(asset, 0, 46, 96, 9) : new Image(asset, 71, 0, 47, 4);
 		add(hp);
@@ -142,8 +137,8 @@ public class BossHealthBar extends Component {
 		bar.x = x;
 		bar.y = y;
 
-		hp.x = shieldedHP.x = rawShielding.x = bar.x+(large ? 30 : 15);
-		hp.y = shieldedHP.y = rawShielding.y = bar.y+(large ? 2 : 3);
+		hp.x = shieldHP.x = bar.x+(large ? 30 : 15);
+		hp.y = shieldHP.y = bar.y+(large ? 2 : 3);
 
 		if (!large) hpText.scale.set(PixelScene.align(0.5f));
 		hpText.x = hp.x + (large ? (96-hpText.width())/2f : 1);
@@ -187,9 +182,17 @@ public class BossHealthBar extends Component {
 				int shield = boss.shielding();
 				int max = boss.HT;
 
-				hp.scale.x = Math.max( 0, (health-shield)/(float)max);
-				shieldedHP.scale.x = health/(float)max;
-				rawShielding.scale.x = shield/(float)max;
+				float healthPercent = health/(float)max;
+				float shieldPercent = shield/(float)max;
+
+				if (healthPercent + shieldPercent > 1f){
+					float excess = healthPercent + shieldPercent;
+					healthPercent /= excess;
+					shieldPercent /= excess;
+				}
+
+				hp.scale.x = healthPercent;
+				shieldHP.scale.x = healthPercent + shieldPercent;
 
 				if (bleeding != blood.on){
 					if (bleeding)   skull.tint( 0xcc0000, large ? 0.3f : 0.6f );
@@ -204,6 +207,7 @@ public class BossHealthBar extends Component {
 				} else {
 					hpText.text(health + "+" + shield +  "/" + max);
 				}
+				hpText.measure();
 				hpText.x = hp.x + (large ? (96-hpText.width())/2f : 1);
 
 			}

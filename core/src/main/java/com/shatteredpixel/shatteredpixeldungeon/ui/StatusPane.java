@@ -57,8 +57,7 @@ public class StatusPane extends Component {
 
 	private int lastTier = 0;
 
-	private Image rawShielding;
-	private Image shieldedHP;
+	private Image shieldHP;
 	private Image hp;
 	private BitmapText hpText;
 	private Button heroInfoOnBar;
@@ -133,14 +132,9 @@ public class StatusPane extends Component {
 		compass = new Compass( Statistics.amuletObtained ? Dungeon.level.entrance() : Dungeon.level.exit() );
 		add( compass );
 
-		if (large)  rawShielding = new Image(asset, 0, 112, 128, 9);
-		else        rawShielding = new Image(asset, 0, 44, 50, 4);
-		rawShielding.alpha(0.5f);
-		add(rawShielding);
-
-		if (large)  shieldedHP = new Image(asset, 0, 112, 128, 9);
-		else        shieldedHP = new Image(asset, 0, 44, 50, 4);
-		add(shieldedHP);
+		if (large)  shieldHP = new Image(asset, 0, 112, 128, 9);
+		else        shieldHP = new Image(asset, 0, 44, 50, 4);
+		add(shieldHP);
 
 		if (large)  hp = new Image(asset, 0, 103, 128, 9);
 		else        hp = new Image(asset, 0, 40, 50, 4);
@@ -209,8 +203,8 @@ public class StatusPane extends Component {
 			exp.x = x + 30;
 			exp.y = y + 30;
 
-			hp.x = shieldedHP.x = rawShielding.x = x + 30;
-			hp.y = shieldedHP.y = rawShielding.y = y + 19;
+			hp.x = shieldHP.x = x + 30;
+			hp.y = shieldHP.y = y + 19;
 
 			hpText.x = hp.x + (128 - hpText.width())/2f;
 			hpText.y = hp.y + 1;
@@ -250,12 +244,11 @@ public class StatusPane extends Component {
 					hpCutout.y = y;
 				}
 				hp.frame(50-hpWidth, 40, 50, 4);
-				shieldedHP.frame(50-hpWidth, 44, 50, 4);
-				rawShielding.frame(50-hpWidth, 44, 50, 4);
+				shieldHP.frame(50-hpWidth, 44, 50, 4);
 			}
 
-			hp.x = shieldedHP.x = rawShielding.x = hpleft;
-			hp.y = shieldedHP.y = rawShielding.y = y + 2;
+			hp.x = shieldHP.x = hpleft;
+			hp.y = shieldHP.y = y + 2;
 
 			hpText.scale.set(PixelScene.align(0.5f));
 			hpText.x = hp.x + 1;
@@ -308,14 +301,17 @@ public class StatusPane extends Component {
 			avatar.resetColor();
 		}
 
-		hp.scale.x = Math.max( 0, (health-shield)/(float)max);
-		shieldedHP.scale.x = health/(float)max;
+		float healthPercent = health/(float)max;
+		float shieldPercent = shield/(float)max;
 
-		if (shield > health) {
-			rawShielding.scale.x = Math.min(1, shield / (float) max);
-		} else {
-			rawShielding.scale.x = 0;
+		if (healthPercent + shieldPercent > 1f){
+			float excess = healthPercent + shieldPercent;
+			healthPercent /= excess;
+			shieldPercent /= excess;
 		}
+
+		hp.scale.x = healthPercent;
+		shieldHP.scale.x = healthPercent + shieldPercent;
 
 		if (oldHP != health || oldShield != shield || oldMax != max){
 			if (shield <= 0) {
@@ -384,8 +380,7 @@ public class StatusPane extends Component {
 		heroPaneCutout.alpha(value);
 		hpCutout.alpha(value);
 		avatar.alpha(value);
-		rawShielding.alpha(0.5f*value);
-		shieldedHP.alpha(value);
+		shieldHP.alpha(value);
 		hp.alpha(value);
 		hpText.alpha(0.6f*value);
 		exp.alpha(value);
