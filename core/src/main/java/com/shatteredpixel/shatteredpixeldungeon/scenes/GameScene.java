@@ -378,8 +378,11 @@ public class GameScene extends PixelScene {
 			if (DeviceCompat.isiOS()){
 				//TODO bad to hardcode and approximate this atm
 				// need to change this so iOS platformsupport returns cutout dimensions
-				float cutoutLeft = (Game.width*0.3f)/defaultZoom;
-				buffBarTopRowMaxWidth = Math.min(55, cutoutLeft - 32);
+				// which would also help with detecting if the cutout is big enough to put into 2nd row =S
+				//note that the island is a bit smaller in terms of screen % on bigger iPhones
+				// we try to average that a bit here
+				float cutoutLeft = (Game.width*0.34f)/defaultZoom;
+				buffBarTopRowMaxWidth = Math.min(55, cutoutLeft - 32 + 3);
 			} else if (DeviceCompat.isAndroid()) {
 				//Android hole punches are of varying size and may obstruct various UI elements
 				RectF cutout = Game.platform.getDisplayCutout().scale(1f / defaultZoom);
