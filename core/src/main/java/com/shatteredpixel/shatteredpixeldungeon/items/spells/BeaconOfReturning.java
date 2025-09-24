@@ -131,7 +131,7 @@ public class BeaconOfReturning extends Spell {
 
 			Char existing = Actor.findChar(returnPos);
 			if (existing != null && existing != hero){
-				Char toPush = !Char.hasProp(existing, Char.Property.IMMOVABLE) ? hero : existing;
+				Char toPush = Char.hasProp(existing, Char.Property.IMMOVABLE) ? hero : existing;
 
 				ArrayList<Integer> candidates = new ArrayList<>();
 				for (int n : PathFinder.NEIGHBOURS8) {
