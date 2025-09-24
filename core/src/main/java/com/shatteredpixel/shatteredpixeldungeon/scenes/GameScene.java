@@ -373,7 +373,7 @@ public class GameScene extends PixelScene {
 		float menuBarMaxLeft = uiCamera.width-insets.right-MenuPane.WIDTH;
 		int hpBarMaxWidth = 50; //default max width
 		float buffBarTopRowMaxWidth = 55; //default max width
-		if (largeInsetTop == 0){
+		if (largeInsetTop == 0 && insets.top > 0){
 			//iOS's Dynamic island badly obstructs the first buff bar row
 			if (DeviceCompat.isiOS()){
 				//TODO bad to hardcode and approximate this atm
