@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BeeSprite;
 import com.watabou.utils.Bundle;
@@ -167,7 +168,9 @@ public class Bee extends Mob {
 							&& mob.alignment != Alignment.NEUTRAL
 							&& !mob.isInvulnerable(getClass())
 							&& !(alignment == Alignment.ALLY && mob.alignment == Alignment.ALLY)) {
-						if (closest == null || Dungeon.level.distance(closest.pos, pos) > Dungeon.level.distance(mob.pos, pos)){
+						//prefers char affected by aggression
+						if (closest == null || mob.buff(StoneOfAggression.Aggression.class) != null
+								|| Dungeon.level.distance(closest.pos, pos) > Dungeon.level.distance(mob.pos, pos)){
 							closest = mob;
 						}
 					}
