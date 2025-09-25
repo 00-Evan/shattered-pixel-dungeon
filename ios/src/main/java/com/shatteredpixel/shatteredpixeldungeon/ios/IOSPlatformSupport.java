@@ -59,6 +59,30 @@ public class IOSPlatformSupport extends PlatformSupport {
 	}
 
 	@Override
+	public RectF getDisplayCutout() {
+		int topInset = Gdx.graphics.getSafeInsetTop();
+
+		//older device with no cutout, or landscape (we ignore cutouts in this case)
+		if (topInset == 0){
+			return new RectF();
+		}
+
+		//magic number BS for larger status bar caused by dynamic island
+		boolean hasDynamicIsland = topInset / Gdx.graphics.getBackBufferScale() >= 51;
+
+		if (!hasDynamicIsland){
+			//classic notch, just shrink for the oversized safe are and then return all top.
+			// this is inaccurate, as there's space left and right, but we don't care
+			return new RectF(0, 0, Game.width, topInset / 1.2f);
+		} else {
+			//we estimate dynamic island as being 130x390 px, 35px from top.
+			// this is mostly accurate, slightly oversized
+			RectF cutout = new RectF( Game.width/2 - 195, 35, Game.width/2 + 195, 165);
+			return cutout;
+		}
+	}
+
+	@Override
 	public RectF getSafeInsets(int level) {
 		RectF insets = super.getSafeInsets(INSET_ALL);
 

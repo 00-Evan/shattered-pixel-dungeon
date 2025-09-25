@@ -374,17 +374,8 @@ public class GameScene extends PixelScene {
 		int hpBarMaxWidth = 50; //default max width
 		float buffBarTopRowMaxWidth = 55; //default max width
 		if (largeInsetTop == 0 && insets.top > 0){
-			//iOS's Dynamic island badly obstructs the first buff bar row
-			if (DeviceCompat.isiOS()){
-				//TODO bad to hardcode and approximate this atm
-				// need to change this so iOS platformsupport returns cutout dimensions
-				// which would also help with detecting if the cutout is big enough to put into 2nd row =S
-				//note that the island is a bit smaller in terms of screen % on bigger iPhones
-				// we try to average that a bit here
-				float cutoutLeft = (Game.width*0.34f)/defaultZoom;
-				buffBarTopRowMaxWidth = Math.min(55, cutoutLeft - 32 + 3);
-			} else if (DeviceCompat.isAndroid()) {
-				//Android hole punches are of varying size and may obstruct various UI elements
+				//smaller non-notch cutouts are of varying size and may obstruct various UI elements
+				// some are small hole punches, some are huge dynamic islands
 				RectF cutout = Game.platform.getDisplayCutout().scale(1f / defaultZoom);
 				//if the cutout is positioned to obstruct the hero portrait in the status pane
 				if (cutout.top < 30
@@ -417,8 +408,8 @@ public class GameScene extends PixelScene {
 						&& cutout.bottom > 11) {
 					//subtract starting position, add a bit back to allow slight overlap
 					buffBarTopRowMaxWidth = cutout.left - 32 + 3;
+					//TODO dynamic island can block 2nd row too =S
 				}
-			}
 		}
 
 		float screentop = largeInsetTop;
