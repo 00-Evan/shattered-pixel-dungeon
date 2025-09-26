@@ -36,7 +36,6 @@ import com.watabou.utils.PlatformSupport;
 import com.watabou.utils.RectF;
 
 import org.robovm.apple.audiotoolbox.AudioServices;
-import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.systemconfiguration.SCNetworkReachability;
 import org.robovm.apple.systemconfiguration.SCNetworkReachabilityFlags;
 import org.robovm.apple.uikit.UIApplication;
@@ -75,9 +74,17 @@ public class IOSPlatformSupport extends PlatformSupport {
 			// this is inaccurate, as there's space left and right, but we don't care
 			return new RectF(0, 0, Game.width, topInset / 1.2f);
 		} else {
-			//we estimate dynamic island as being 130x390 px, 35px from top.
+			//we estimate dynamic island as being 390x120 px, 40px from top.
 			// this is mostly accurate, slightly oversized
-			RectF cutout = new RectF( Game.width/2 - 195, 35, Game.width/2 + 195, 165);
+			RectF cutout = new RectF( Game.width/2 - 195, 40, Game.width/2 + 195, 160);
+
+			//iPhone air specifically has its island a bit lower
+			// so we check for its machine string and also simulator with same width
+			String machineString = HWMachine.getMachineString();
+			if (machineString.equals("iPhone18,4")
+					|| (machineString.equals("arm64") && Game.width == 1260)){
+				cutout.shift(0, 15);
+			}
 			return cutout;
 		}
 	}

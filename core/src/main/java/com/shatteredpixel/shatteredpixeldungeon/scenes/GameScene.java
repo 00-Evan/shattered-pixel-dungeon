@@ -372,7 +372,9 @@ public class GameScene extends PixelScene {
 		float heroPaneExtraWidth = insets.left;
 		float menuBarMaxLeft = uiCamera.width-insets.right-MenuPane.WIDTH;
 		int hpBarMaxWidth = 50; //default max width
-		float buffBarTopRowMaxWidth = 55; //default max width
+		float[] buffBarRowLimits = new float[9];
+		float[] buffBarRowAdjusts = new float[9];
+
 		if (largeInsetTop == 0 && insets.top > 0){
 				//smaller non-notch cutouts are of varying size and may obstruct various UI elements
 				// some are small hole punches, some are huge dynamic islands
@@ -406,9 +408,21 @@ public class GameScene extends PixelScene {
 						&& cutout.top < 10
 						&& cutout.right > 32
 						&& cutout.bottom > 11) {
-					//subtract starting position, add a bit back to allow slight overlap
-					buffBarTopRowMaxWidth = cutout.left - 32 + 3;
-					//TODO dynamic island can block 2nd row too =S
+					int i = 1;
+					int rowTop = 11;
+					//in most cases this just obstructs one row, but dynamic island can block more =S
+					while (cutout.bottom > rowTop){
+						if (i == 1 || cutout.bottom > rowTop+2 ) { //always shorten first row
+							//subtract starting position, add a bit back to allow slight overlap
+							buffBarRowLimits[i] = cutout.left - 32 + 3;
+						} else {
+							//if row is only slightly cut off, lower it instead of limiting width
+							buffBarRowAdjusts[i] = cutout.bottom - rowTop + 1;
+							rowTop += buffBarRowAdjusts[i];
+						}
+						i++;
+						rowTop += 8;
+					}
 				}
 		}
 
@@ -438,7 +452,8 @@ public class GameScene extends PixelScene {
 		status.camera = uiCamera;
 		StatusPane.heroPaneExtraWidth = heroPaneExtraWidth;
 		StatusPane.hpBarMaxWidth = hpBarMaxWidth;
-		StatusPane.buffBarTopRowMaxWidth = buffBarTopRowMaxWidth;
+		StatusPane.buffBarRowMaxWidths = buffBarRowLimits;
+		StatusPane.buffBarRowAdjusts = buffBarRowAdjusts;
 		status.setRect(insets.left, uiSize > 0 ? uiCamera.height-39-insets.bottom : screentop, uiCamera.width - insets.left - insets.right, 0 );
 		add(status);
 
@@ -455,6 +470,13 @@ public class GameScene extends PixelScene {
 		boss = new BossHealthBar();
 		boss.camera = uiCamera;
 		boss.setPos( (uiCamera.width - boss.width())/2, screentop + (landscape() ? 7 : 26));
+		if (buffBarRowLimits[2] != 0){
+			//if we potentially have a 3rd buff bar row, lower by 7px
+			boss.setPos(boss.left(), boss.top() + 7);
+		} else if (buffBarRowAdjusts[2] != 0){
+			//
+			boss.setPos(boss.left(), boss.top() + buffBarRowAdjusts[2]);
+		}
 		add(boss);
 
 		resume = new ResumeIndicator();

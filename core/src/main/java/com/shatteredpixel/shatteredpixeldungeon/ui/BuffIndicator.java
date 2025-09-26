@@ -149,7 +149,10 @@ public class BuffIndicator extends Component {
 
 	private boolean large = false;
 
-	public float firstRowWidth = -1;
+	//in some cases we want to limit some rows but not all by just reducing width
+	public float[] rowWidthLimits = new float[9]; //0 = no limit
+	//sometimes we also need to slightly lower a row, to avoid having to cut off width
+	public float[] rowHeightAdjusts = new float[9]; //0 = default adjust of 1
 	
 	public BuffIndicator( Char ch, boolean large ) {
 		super();
@@ -231,6 +234,7 @@ public class BuffIndicator extends Component {
 
 		//layout
 		int row = 1;
+		float rowTop = 0;
 		int pos = 0;
 		float lastIconRight = 0;
 		int total = 0;
@@ -241,18 +245,21 @@ public class BuffIndicator extends Component {
 			}
 			icon.visible = true;
 
+			//offset is needed to handle adjusting oversized click boxes on multiple rows
 			icon.topOffset = (row > 1 && !large) ? -1 : 0;
 			icon.updateIcon();
 			//button areas are slightly oversized, especially on small buttons
-			icon.setRect(x + pos * (size + 1), y + (row-1)*(size+1)-icon.topOffset, size + 1, size + (large ? 0 : 5));
+			icon.setRect(x + pos * (size + 1), y + rowTop-icon.topOffset, size + 1, size + (large ? 0 : 5));
 			PixelScene.align(icon);
 			pos++;
 
 			lastIconRight = icon.right()-1;
 
-			if ((row+1)*(size+1) <= height
-					&& (pos * (size + 1) + size > width || (row == 1 && firstRowWidth != -1 && pos * (size + 1) + size > firstRowWidth))){
+			//if we're out of overall width but have more height, or this row has hits its limit
+			if ((rowTop+2*size+2 <= height && (pos * (size + 1) + size > width))
+					|| (rowWidthLimits[row] != 0 && pos * (size + 1) + size > rowWidthLimits[row])){
 				row++;
+				rowTop += size+1 + rowHeightAdjusts[row];
 				pos = 0;
 			}
 			total++;
@@ -265,7 +272,7 @@ public class BuffIndicator extends Component {
 		if (excessWidth > 0) {
 			//if multiple rows, only compress last row
 			ArrayList<BuffButton> buttons = new ArrayList<>();
-			float lastRowY = PixelScene.align(y + (row-1)*(size+1));
+			float lastRowY = PixelScene.align(y + rowTop);
 			int i = 1;
 			for (BuffButton button : buffButtons.values()){
 				if (i > maxBuffs){

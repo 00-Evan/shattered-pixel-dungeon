@@ -83,8 +83,9 @@ public class StatusPane extends Component {
 	//potentially shrinks and/or repositions the hp bar to avoid some cutouts
 	public static int hpBarMaxWidth = 50;
 	private Image hpCutout;
-	//potentially cuts off the top row of the the buff indicator to avoid some cutouts
-	public static float buffBarTopRowMaxWidth = 50;
+	//potentially adjusts the row(s) of the the buff indicator to avoid some cutouts
+	public static float[] buffBarRowMaxWidths;
+	public static float[] buffBarRowAdjusts;
 
 	public StatusPane( boolean large ){
 		super();
@@ -264,7 +265,12 @@ public class StatusPane extends Component {
 
 			heroInfoOnBar.setRect(heroInfo.right(), y, 50, 9);
 
-			buffs.firstRowWidth = buffBarTopRowMaxWidth;
+			if (buffBarRowMaxWidths != null){
+				buffs.rowWidthLimits = buffBarRowMaxWidths;
+			}
+			if (buffBarRowAdjusts != null){
+				buffs.rowHeightAdjusts = buffBarRowAdjusts;
+			}
 			buffs.setRect( x + heroPaneWidth + 1, y + 8, 55, 16 );
 
 			busy.x = x + 1;
