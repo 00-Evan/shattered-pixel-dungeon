@@ -140,7 +140,6 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.tweeners.Tweener;
 import com.watabou.utils.Callback;
-import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PlatformSupport;
 import com.watabou.utils.Point;
@@ -1465,10 +1464,12 @@ public class GameScene extends PixelScene {
 				@Override
 				public void call() {
 					//greater than 0 to account for negative values (which have the first bit set to 1)
-					if (color > 0 && color < 0x01000000) {
-						scene.fadeIn(0xFF000000 | color, lightmode);
-					} else {
-						scene.fadeIn(color, lightmode);
+					if (scene != null) {
+						if (color > 0 && color < 0x01000000) {
+							scene.fadeIn(0xFF000000 | color, lightmode);
+						} else {
+							scene.fadeIn(color, lightmode);
+						}
 					}
 				}
 			});
