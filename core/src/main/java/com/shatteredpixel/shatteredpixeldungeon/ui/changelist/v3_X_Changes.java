@@ -91,7 +91,7 @@ public class v3_X_Changes {
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
-				"..."));
+				"v3.2.5 has a couple more small interface improvements and a bunch of little fixes. This should hopefully be the final patch for v3.2 as I move on to early work on the next update!"));
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.DISPLAY), "Interface Changes",
 				"Two additions have been made to the game's UI:\n" +
