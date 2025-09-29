@@ -152,7 +152,24 @@ public class Bee extends Mob {
 			return (Char) Actor.findById(potHolder);
 			
 		//if the pot is on the ground
-		}else {
+		} else {
+
+			//copypasta from regular mob logic for aggression with added limit for pot distance
+			if ((alignment == Alignment.ENEMY || buff(Amok.class) != null ) && state != PASSIVE && state != SLEEPING) {
+				if (enemy != null
+						&& enemy.buff(StoneOfAggression.Aggression.class) != null
+						&& Dungeon.level.distance(enemy.pos, potPos) <= 3){
+					state = HUNTING;
+					return enemy;
+				}
+				for (Char ch : Actor.chars()) {
+					if (ch != this && fieldOfView[ch.pos] && Dungeon.level.distance(ch.pos, potPos) <= 3
+							&& ch.buff(StoneOfAggression.Aggression.class) != null) {
+						state = HUNTING;
+						return ch;
+					}
+				}
+			}
 			
 			//try to find a new enemy in these circumstances
 			if (enemy == null || !enemy.isAlive() || !Actor.chars().contains(enemy) || state == WANDERING
@@ -168,9 +185,7 @@ public class Bee extends Mob {
 							&& mob.alignment != Alignment.NEUTRAL
 							&& !mob.isInvulnerable(getClass())
 							&& !(alignment == Alignment.ALLY && mob.alignment == Alignment.ALLY)) {
-						//prefers char affected by aggression
-						if (closest == null || mob.buff(StoneOfAggression.Aggression.class) != null
-								|| Dungeon.level.distance(closest.pos, pos) > Dungeon.level.distance(mob.pos, pos)){
+						if (closest == null || Dungeon.level.distance(closest.pos, pos) > Dungeon.level.distance(mob.pos, pos)){
 							closest = mob;
 						}
 					}
