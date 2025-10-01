@@ -14,7 +14,6 @@ android {
         versionCode appVersionCode
         versionName appVersionName
 
-        //noinspection MinSdkTooLow
         minSdkVersion appAndroidMinSDK
         targetSdkVersion appAndroidTargetSDK
         resourceConfigurations += ['en_US', 'cs', 'de', 'el', 'es', 'fr', 'hu', 'in', 'it', 'ja', 'ko', 'nl', 'pl', 'pt', 'ru', 'tr', 'uk', 'vi', 'zh_CN']
