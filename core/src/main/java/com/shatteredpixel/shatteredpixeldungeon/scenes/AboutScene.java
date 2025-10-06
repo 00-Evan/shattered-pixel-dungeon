@@ -83,8 +83,8 @@ public class AboutScene extends PixelScene {
 				"Splash Art & Design:",
 				Icons.ALEKS.get(),
 				"Aleksandar Komitov",
-				"akomitov.artstation.com",
-				"https://akomitov.artstation.com/");
+				"alekskomitov.com",
+				"https://www.alekskomitov.com/");
 		alex.setSize(colWidth/2f, 0);
 		if (landscape()){
 			alex.setPos(shpx.right(), shpx.top() + (shpx.height() - alex.height()*2)/2f);
@@ -93,14 +93,14 @@ public class AboutScene extends PixelScene {
 		}
 		content.add(alex);
 
-		CreditsBlock charlie = new CreditsBlock(false, Window.SHPX_COLOR,
+		CreditsBlock celesti = new CreditsBlock(false, Window.SHPX_COLOR,
 				"Sound Effects:",
 				Icons.CELESTI.get(),
 				"Celesti",
-				"s9menine.itch.io",
-				"https://s9menine.itch.io");
-		charlie.setRect(alex.right(), alex.top(), colWidth/2f, 0);
-		content.add(charlie);
+				"celesti-whispers.itch.io",
+				"https://celesti-whispers.itch.io/");
+		celesti.setRect(alex.right(), alex.top(), colWidth/2f, 0);
+		content.add(celesti);
 
 		CreditsBlock kristjan = new CreditsBlock(false, Window.SHPX_COLOR,
 				"Music:",
@@ -229,7 +229,7 @@ public class AboutScene extends PixelScene {
 				"_Sheep bleating_ by _zachrau_\n" +
 				"_Lemon,Juicy,Squeeze,Fruit.wav_ by _Filipe Chagas_\n" +
 				"_Lemon,Squeeze,Squishy,Fruit.wav_ by _Filipe Chagas_",
-				"www.freesound.org",
+				"freesound.org",
 				"https://www.freesound.org");
 		freesound.setRect(transifex.left()-10, transifex.bottom() + 8, colWidth+20, 0);
 		content.add(freesound);
