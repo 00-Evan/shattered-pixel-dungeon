@@ -48,7 +48,7 @@ public class MineSecretRoom extends SecretRoom {
 			Painter.fill(level, this, 1, Terrain.MINE_CRYSTAL);
 		} else if (Blacksmith.Quest.Type() == Blacksmith.Quest.GNOLL) {
 			Painter.fill( level, this, 1, Terrain.EMPTY_SP );
-			level.drop(new DarkGold().quantity(Random.NormalIntRange(3, 5)), level.pointToCell(center())).type = Heap.Type.CHEST;
+			level.drop(new DarkGold().quantity(Random.NormalIntRange(4, 5)), level.pointToCell(center())).type = Heap.Type.CHEST;
 			return;
 		} else if (Blacksmith.Quest.Type() == Blacksmith.Quest.FUNGI) {
 			Painter.fill(level, this, 1, Terrain.HIGH_GRASS);
@@ -59,7 +59,7 @@ public class MineSecretRoom extends SecretRoom {
 			Painter.fill(level, this, 1, Terrain.EMPTY);
 		}
 
-		int goldAmount = Random.NormalIntRange(3, 5);
+		int goldAmount = Random.NormalIntRange(4, 5);
 
 		for (int i = 0; i < goldAmount; i++){
 			int cell;

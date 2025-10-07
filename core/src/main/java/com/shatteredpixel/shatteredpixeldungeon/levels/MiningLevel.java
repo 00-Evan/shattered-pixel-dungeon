@@ -92,7 +92,7 @@ public class MiningLevel extends CavesLevel {
 		ArrayList<Room> initRooms = new ArrayList<>();
 		initRooms.add ( roomEntrance = new MineEntrance());
 
-		//spawns 1 giant, 3 large, 6-8 small, and 1-2 secret cave rooms
+		//spawns 1 giant, 3 large, 6-8 small, and 2 secret cave rooms
 		StandardRoom s;
 		s = new MineGiantRoom();
 		s.setSizeCat();
@@ -112,7 +112,7 @@ public class MiningLevel extends CavesLevel {
 			initRooms.add(s);
 		}
 
-		rooms = Random.NormalIntRange(1, 2);
+		rooms = 2;
 		for (int i = 0; i < rooms; i++){
 			initRooms.add(new MineSecretRoom());
 		}
@@ -144,7 +144,7 @@ public class MiningLevel extends CavesLevel {
 	@Override
 	protected Painter painter() {
 		return new MiningLevelPainter()
-				.setGold(Random.NormalIntRange(42, 46))
+				.setGold(Random.NormalIntRange(45, 47))
 				.setWater(Blacksmith.Quest.Type() == Blacksmith.Quest.FUNGI ? 0.1f : 0.35f, 6)
 				.setGrass(Blacksmith.Quest.Type() == Blacksmith.Quest.FUNGI ? 0.65f : 0.10f, 3);
 	}
