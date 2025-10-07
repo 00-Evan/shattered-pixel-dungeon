@@ -373,26 +373,31 @@ public class DM300 extends Mob {
 	public void ventGas( Char target ){
 		Dungeon.hero.interrupt();
 
-		int gasVented = 0;
-
 		Ballistica trajectory = new Ballistica(pos, target.pos, Ballistica.STOP_TARGET);
 
 		int gasMulti = Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 2 : 1;
 
-		for (int i : trajectory.subPath(0, trajectory.dist)){
-			GameScene.add(Blob.seed(i, 20*gasMulti, ToxicGas.class));
-			gasVented += 20*gasMulti;
-		}
-
-		GameScene.add(Blob.seed(trajectory.collisionPos, 100*gasMulti, ToxicGas.class));
-
-		if (gasVented < 250*gasMulti){
-			int toVentAround = (int)Math.ceil(((250*gasMulti) - gasVented)/8f);
-			for (int i : PathFinder.NEIGHBOURS8){
-				GameScene.add(Blob.seed(pos+i, toVentAround, ToxicGas.class));
+		//we delay the gas generation to just before the target acts, to prevent cases where partial turns can result in instant gas damage
+		Actor.addDelayed(new Actor() {
+			{ actPriority = VFX_PRIO; } //add the gas before any other actor at that time
+			@Override
+			protected boolean act() {
+				int gasVented = 0;
+				GameScene.add(Blob.seed(trajectory.collisionPos, 100*gasMulti, ToxicGas.class));
+				for (int i : trajectory.subPath(0, trajectory.dist)){
+					GameScene.add(Blob.seed(i, 20*gasMulti, ToxicGas.class));
+					gasVented += 20*gasMulti;
+				}
+				if (gasVented < 250*gasMulti){
+					int toVentAround = (int)Math.ceil(((250*gasMulti) - gasVented)/8f);
+					for (int i : PathFinder.NEIGHBOURS8){
+						GameScene.add(Blob.seed(pos+i, toVentAround, ToxicGas.class));
+					}
+				}
+				Actor.remove(this);
+				return true;
 			}
-
-		}
+		}, target.cooldown());
 
 	}
 
@@ -537,7 +542,7 @@ public class DM300 extends Mob {
 		((DM300Sprite)sprite).updateChargeState(false);
 
 		//adjust turns since last ability to prevent DM immediately using an ability when charge ends
-		turnsSinceLastAbility = Math.max(turnsSinceLastAbility, MIN_COOLDOWN-3);
+		turnsSinceLastAbility = Math.min(turnsSinceLastAbility, MIN_COOLDOWN-3);
 
 		if (pylonsActivated < totalPylonsToActivate()){
 			yell(Messages.get(this, "charge_lost"));
