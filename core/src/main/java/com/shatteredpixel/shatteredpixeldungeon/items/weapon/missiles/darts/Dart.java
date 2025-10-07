@@ -84,12 +84,12 @@ public class Dart extends MissileWeapon {
 	public int min(int lvl) {
 		if (bow != null){
 			if (!(this instanceof TippedDart) && Dungeon.hero.buff(Crossbow.ChargedShot.class) != null){
-				//ability increases base dmg by 50%, scaling by 50%
-				return  8 +                     //8 base
-						2*bow.buffedLvl() + lvl;//+2 per bow level, +1 per level
+				return bow.dartMin()            //crossbow dart damage
+						+ 4 + bow.buffedLvl()   //ability increases base dmg by 50%, scaling by 50%
+						+ lvl;                  //another +1 per level (ring of sharpshooting)
 			} else {
-				return  4 +                     //4 base
-						bow.buffedLvl() + lvl;  //+1 per level or bow level
+				return bow.dartMin()            //crossbow dart damage
+						+ lvl;                  //another +1 per level (ring of sharpshooting)
 			}
 		} else {
 			return  1 +     //1 base, down from 2
@@ -101,12 +101,12 @@ public class Dart extends MissileWeapon {
 	public int max(int lvl) {
 		if (bow != null){
 			if (!(this instanceof TippedDart) && Dungeon.hero.buff(Crossbow.ChargedShot.class) != null){
-				//ability increases base dmg by 50%, scaling by 50%
-				return  16 +                       //16 base
-						4*bow.buffedLvl() + 2*lvl; //+4 per bow level, +2 per level
+				return bow.dartMax()            //crossbow dart damage
+						+ 4 + bow.buffedLvl()   //ability increases base dmg by 50%, scaling by 50%
+						+ 2*lvl;                //another +2 per level (ring of sharpshooting)
 			} else {
-				return  12 +                       //12 base
-						3*bow.buffedLvl() + 2*lvl; //+3 per bow level, +2 per level
+				return bow.dartMax()            //crossbow dart damage
+						+ 2*lvl;                //another +2 per level (ring of sharpshooting)
 			}
 		} else {
 			return  2 +     //2 base, down from 5

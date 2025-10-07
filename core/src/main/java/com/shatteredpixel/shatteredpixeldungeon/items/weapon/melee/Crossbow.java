@@ -112,6 +112,32 @@ public class Crossbow extends MeleeWeapon {
 				lvl*(tier);     //+4 per level, down from +5
 	}
 
+	public int dartMin(){
+		return dartMin(buffedLvl());
+	}
+
+	public int dartMin(int lvl){
+		return  4 +     //4 base, up from dart base of 1
+				lvl;    //+1 per level
+	}
+
+	public int dartMax(){
+		return dartMax(buffedLvl());
+	}
+
+	public int dartMax(int lvl){
+		return  12 +    //12 base, up from dart base of 2
+				3*lvl;  //+3 per crossbow level
+	}
+
+	public String statsInfo(){
+		if (isIdentified()){
+			return Messages.get(this, "stats_desc", dartMin(), dartMax());
+		} else {
+			return Messages.get(this, "typical_stats_desc", dartMin(0), dartMax(0));
+		}
+	}
+
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
 		if (hero.buff(ChargedShot.class) != null){
