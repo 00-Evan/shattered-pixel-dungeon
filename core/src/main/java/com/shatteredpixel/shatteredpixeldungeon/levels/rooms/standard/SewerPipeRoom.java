@@ -70,7 +70,8 @@ public class SewerPipeRoom extends StandardRoom {
 
 		Rect c = getConnectionSpace();
 
-		if (connected.size() <= 2) {
+		//connect via center with 1 door or 2 doors on standard size, otherwise use edges
+		if (connected.size() == 1 || (connected.size() == 2 && sizeCat == SizeCategory.NORMAL)) {
 			for (Door door : connected.values()) {
 				
 				Point start;
@@ -110,8 +111,36 @@ public class SewerPipeRoom extends StandardRoom {
 				
 			}
 		} else {
+			ArrayList<Point> doorPoints = new ArrayList<>(connected.values());
+
+			//if we only have two doors, add a phantom 3rd door along an empty wall
+			//This guarantees a minimum open space for larger pipe rooms
+			if (doorPoints.size() == 2){
+				Point p = new Point();
+				boolean valid;
+
+				do {
+					valid = true;
+					if (Random.Int(2) == 0){
+						p.x = Random.Int(2) == 0 ? left : right;
+						p.y = Random.IntRange(top+2, bottom-2);
+					} else {
+						p.x = Random.IntRange(left+2, right-2);
+						p.y = Random.Int(2) == 0 ? top : bottom;
+					}
+
+					for (Point door : connected.values()) {
+						if (door.x == p.x || door.y == p.y){
+							valid = false;
+						}
+					}
+
+				} while (!valid);
+				doorPoints.add(p);
+			}
+
 			ArrayList<Point> pointsToFill = new ArrayList<>();
-			for (Point door : connected.values()) {
+			for (Point door : doorPoints) {
 				Point p = new Point(door);
 				if (p.y == top){
 					p.y+=2;
