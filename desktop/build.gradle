@@ -1,6 +1,5 @@
 plugins {
-    //TODO temporary, 2.0 should release proper soon
-    id 'org.beryx.runtime' version '2.0.0-rc.1'
+    id 'org.beryx.runtime' version '2.0.0'
 }
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
