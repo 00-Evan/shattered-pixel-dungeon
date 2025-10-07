@@ -139,6 +139,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RoundShield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sai;
@@ -2091,6 +2092,18 @@ public class Hero extends Char {
 		return false;
 	}
 	
+	@Override
+	protected synchronized void onRemove() {
+		//same as super, except we retain charger for rankings purposes
+		for (Buff buff : buffs()) {
+			if (buff instanceof MeleeWeapon.Charger){
+				Actor.remove(buff);
+			} else {
+				buff.detach();
+			}
+		}
+	}
+
 	@Override
 	public void die( Object cause ) {
 		
