@@ -180,17 +180,17 @@ public class ScrollPane extends Component {
 
 		@Override
 		protected void onPointerUp( PointerEvent event ) {
-			if (dragging) {
-
+			if (event == curEvent && dragging) {
 				dragging = false;
 				thumb.am = THUMB_ALPHA;
-
-			} else {
-
-				PointF p = content.camera.screenToCamera( (int) event.current.x, (int) event.current.y );
-				ScrollPane.this.onClick( p.x, p.y );
-
+				curEvent = null; //cancel here so onClick is skipped
 			}
+		}
+
+		@Override
+		protected void onClick(PointerEvent event) {
+			PointF p = content.camera.screenToCamera((int) event.current.x, (int) event.current.y);
+			ScrollPane.this.onClick(p.x, p.y);
 		}
 
 		private boolean dragging = false;
