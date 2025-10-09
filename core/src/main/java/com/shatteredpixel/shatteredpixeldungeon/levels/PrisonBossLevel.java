@@ -448,7 +448,7 @@ public class PrisonBossLevel extends Level {
 				
 				tengu.state = tengu.HUNTING;
 				tengu.pos = tenguPos;
-				GameScene.add( tengu );
+				GameScene.add( tengu, 1 );
 				tengu.notice();
 
 				CellEmitter.get( tengu.pos ).burst( Speck.factory( Speck.WOOL ), 6 );
@@ -474,6 +474,7 @@ public class PrisonBossLevel extends Level {
 				Doom d = tengu.buff(Doom.class);
 				Actor.remove(tengu);
 				mobs.remove(tengu);
+				tengu.clearTime();
 				TargetHealthIndicator.instance.target(null);
 				tengu.sprite.kill();
 				if (d != null) tengu.add(d);
@@ -495,8 +496,7 @@ public class PrisonBossLevel extends Level {
 				
 				tengu.state = tengu.HUNTING;
 				tengu.pos = (arena.left + arena.width()/2) + width()*(arena.top+2);
-				GameScene.add(tengu);
-				tengu.timeToNow();
+				GameScene.add( tengu, 1 );
 				tengu.notice();
 
 				CellEmitter.get( tengu.pos ).burst( Speck.factory( Speck.WOOL ), 6 );
