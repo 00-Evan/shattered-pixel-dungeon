@@ -1812,14 +1812,14 @@ public class Hero extends Char {
 
 		if (step != -1) {
 
-			float delay = 1 / speed();
+			float delay = 1;
 
 			if (buff(GreaterHaste.class) != null){
 				delay = 0;
 			}
 
 			if (Dungeon.level.pit[step] && !Dungeon.level.solid[step]
-					&& (!flying || buff(Levitation.class) != null && buff(Levitation.class).detachesWithinDelay(delay))){
+					&& (!flying || buff(Levitation.class) != null && buff(Levitation.class).detachesWithinDelay(delay / speed()))){
 				if (!Chasm.jumpConfirmed){
 					Chasm.heroJump(this);
 					interrupt();
@@ -1843,7 +1843,7 @@ public class Hero extends Char {
 			sprite.move(pos, step);
 			move(step);
 
-			spend( delay );
+			spend( delay / speed() );
 			
 			search(false);
 

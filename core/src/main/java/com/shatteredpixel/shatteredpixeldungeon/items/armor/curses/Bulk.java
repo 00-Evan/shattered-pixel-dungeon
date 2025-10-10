@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.armor.curses;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -43,6 +44,9 @@ public class Bulk extends Armor.Glyph {
 				(Dungeon.level.map[owner.pos] != Terrain.DOOR && Dungeon.level.map[owner.pos] != Terrain.OPEN_DOOR )) {
 			return 1;
 		} else {
+			if (owner.sprite != null){
+				owner.sprite.emitter().startDelayed(ShadowParticle.UP, 0.02f, 5, 0.05f);
+			}
 			return 1/3f * genericProcChanceMultiplier(owner);
 		}
 	}

@@ -88,16 +88,20 @@ public class Emitter extends Group {
 	}
 
 	public void start( Factory factory, float interval, int quantity ) {
+		//by default the delay is random, up to the interval
+		startDelayed( factory, interval, quantity, Random.Float(interval));
+	}
 
+	public void startDelayed( Factory factory, float interval, int quantity, float delay ) {
 		this.factory = factory;
 		this.lightMode = factory.lightMode();
-		
+
 		this.interval = interval;
 		this.quantity = quantity;
-		
+
 		count = 0;
-		time = Random.Float( interval );
-		
+		time = interval - delay;
+
 		on = true;
 		started = true;
 	}
