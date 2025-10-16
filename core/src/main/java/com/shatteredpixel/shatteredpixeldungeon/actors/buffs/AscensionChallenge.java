@@ -302,7 +302,9 @@ public class AscensionChallenge extends Buff {
 			} else if (stacks >= 2f){
 				GLog.n(Messages.get(this, "beckon"));
 			}
-			if (stacks > 8 || stacks > 4 && Dungeon.depth > 20){
+			if (stacks > 4 && !stacksLowered){
+				GLog.h(Messages.get(this, "weaken_info_no_kills"));
+			} else if (stacks > 8){
 				GLog.h(Messages.get(this, "weaken_info"));
 			}
 		}
