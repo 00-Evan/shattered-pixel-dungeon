@@ -80,15 +80,23 @@ public class Brute extends Mob {
 		}
 	}
 
+	//cache this buff to prevent having to call buff(...) a bunch.
+	private BruteRage rage;
+
 	@Override
-	public synchronized boolean isAlive() {
+	public boolean isAlive() {
 		if (super.isAlive()){
 			return true;
 		} else {
 			if (!hasRaged){
 				triggerEnrage();
 			}
-			return !buffs(BruteRage.class).isEmpty();
+			if (rage == null){
+				for (BruteRage b : buffs(BruteRage.class)){
+					rage = b;
+				}
+			}
+			return rage != null && rage.shielding() > 0;
 		}
 	}
 	
