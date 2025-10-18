@@ -92,9 +92,9 @@ public abstract class Scroll extends Item {
 	protected String rune;
 
 	//affects how strongly on-scroll talents trigger from this scroll
-	protected float talentFactor = 1;
+	public float talentFactor = 1;
 	//the chance (0-1) of whether on-scroll talents trigger from this potion
-	protected float talentChance = 1;
+	public float talentChance = 1;
 	
 	{
 		stackable = true;
@@ -194,17 +194,16 @@ public abstract class Scroll extends Item {
 	public abstract void doRead();
 
 	public void readAnimation() {
-		//if scroll is being created for its effect, depend on creating item to dispel
-		if (!anonymous) Invisibility.dispel();
+		Invisibility.dispel();
 		curUser.spend( TIME_TO_READ );
 		curUser.busy();
 		((HeroSprite)curUser.sprite).read();
 
 		if (!anonymous) {
 			Catalog.countUse(getClass());
-			if (Random.Float() < talentChance) {
-				Talent.onScrollUsed(curUser, curUser.pos, talentFactor, getClass());
-			}
+		}
+		if (Random.Float() < talentChance) {
+			Talent.onScrollUsed(curUser, curUser.pos, talentFactor, getClass());
 		}
 
 	}

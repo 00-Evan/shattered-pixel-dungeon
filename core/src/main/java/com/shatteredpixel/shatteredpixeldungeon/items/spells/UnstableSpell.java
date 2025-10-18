@@ -21,9 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
@@ -111,14 +109,12 @@ public class UnstableSpell extends Spell {
 		}
 
 		s.anonymize();
+		s.talentChance = s.talentFactor = 1;
 		curItem = s;
 		s.doRead();
-		Invisibility.dispel();
 
 		Catalog.countUse(getClass());
-		if (Random.Float() < talentChance){
-			Talent.onScrollUsed(curUser, curUser.pos, talentFactor, getClass());
-		}
+		//don't trigger talents, as they'll be triggered by the scroll
 	}
 
 	//lower values, as it's cheaper to make
