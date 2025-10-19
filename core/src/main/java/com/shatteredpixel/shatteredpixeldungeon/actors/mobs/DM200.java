@@ -144,6 +144,11 @@ public class DM200 extends Mob {
 			if (!enemyInFOV || canAttack(enemy)) {
 				return super.act(enemyInFOV, justAlerted);
 			} else {
+
+				if (handleRecentAttackers()){
+					return act( true, justAlerted );
+				}
+
 				enemySeen = true;
 				target = enemy.pos;
 
@@ -172,6 +177,18 @@ public class DM200 extends Mob {
 					}
 
 				} else {
+					//attempt to swap targets if the current one can't be reached or vented at
+					if (!recursing) {
+						Char oldEnemy = enemy;
+						enemy = null;
+						enemy = chooseEnemy();
+						if (enemy != null && enemy != oldEnemy) {
+							recursing = true;
+							boolean result = act(enemyInFOV, justAlerted);
+							recursing = false;
+							return result;
+						}
+					}
 					spend( TICK );
 					return true;
 				}
