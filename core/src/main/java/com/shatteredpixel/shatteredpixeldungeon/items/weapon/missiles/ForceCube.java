@@ -35,6 +35,8 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class ForceCube extends MissileWeapon {
 	
@@ -82,6 +84,14 @@ public class ForceCube extends MissileWeapon {
 			if (!(Dungeon.level.traps.get(cell+i) instanceof TenguDartTrap)) Dungeon.level.pressCell(cell+i);
 			if (Actor.findChar(cell + i) != null) targets.add(Actor.findChar(cell + i));
 		}
+
+		//furthest to closest, mainly for elastic
+		Collections.sort(targets, new Comparator<Char>() {
+			@Override
+			public int compare(Char a, Char b) {
+				return Float.compare(Dungeon.level.trueDistance(b.pos, curUser.pos), Dungeon.level.trueDistance(a.pos, curUser.pos));
+			}
+		});
 		
 		for (Char target : targets){
 			curUser.shoot(target, this);
