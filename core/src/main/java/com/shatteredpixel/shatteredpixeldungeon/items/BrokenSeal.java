@@ -261,7 +261,7 @@ public class BrokenSeal extends Item {
 
 		@Override
 		public int icon() {
-			if (coolingDown() || shielding() > 0){
+			if (coolingDown() || shielding() > 0 || cooldown < 0){
 				return BuffIndicator.SEAL_SHIELD;
 			} else {
 				return BuffIndicator.NONE;
@@ -270,10 +270,11 @@ public class BrokenSeal extends Item {
 
 		@Override
 		public void tintIcon(Image icon) {
+			icon.resetColor();
 			if (coolingDown() && shielding() == 0){
 				icon.brightness(0.3f);
-			} else {
-				icon.resetColor();
+			} else if (cooldown < 0) {
+				icon.invert();
 			}
 		}
 
@@ -283,6 +284,8 @@ public class BrokenSeal extends Item {
 				return GameMath.gate(0, 1f - shielding()/(float)maxShield(), 1);
 			} else if (coolingDown()){
 				return GameMath.gate(0, cooldown / (float)COOLDOWN_START, 1);
+			} else if (cooldown < 0) {
+				return GameMath.gate(0, (COOLDOWN_START+cooldown) / (float)COOLDOWN_START, 1);
 			} else {
 				return 0;
 			}
@@ -292,7 +295,7 @@ public class BrokenSeal extends Item {
 		public String iconTextDisplay() {
 			if (shielding() > 0){
 				return Integer.toString(shielding());
-			} else if (coolingDown()){
+			} else if (coolingDown() || cooldown < 0){
 				return Integer.toString(cooldown);
 			} else {
 				return "";
@@ -301,8 +304,10 @@ public class BrokenSeal extends Item {
 
 		@Override
 		public String desc() {
-			if (shielding() > 0){
+			if (shielding() > 0) {
 				return Messages.get(this, "desc_active", shielding(), cooldown);
+			} else if (cooldown < 0) {
+				return Messages.get(this, "desc_negative_cooldown", cooldown);
 			} else {
 				return Messages.get(this, "desc_cooldown", cooldown);
 			}
