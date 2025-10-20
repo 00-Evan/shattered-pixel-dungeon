@@ -400,29 +400,31 @@ public class Tengu extends Mob {
 				
 			} else {
 
-				//Try to switch targets to another enemy that is closer
-				//unless we have already done that and still can't attack them, then move on.
-				if (!recursing) {
-					Char oldEnemy = enemy;
-					enemy = null;
-					enemy = chooseEnemy();
-					if (enemy != null && enemy != oldEnemy) {
-						recursing = true;
-						boolean result = act(enemyInFOV, justAlerted);
-						recursing = false;
-						return result;
-					}
-				}
-				
-				//attempt to use an ability, even if enemy can't be decided
-				if (canUseAbility()){
-					return useAbility();
-				}
-				
-				spend( TICK );
-				return true;
-				
+				return handleUnreachableTarget(enemyInFOV, justAlerted);
 			}
+		}
+
+		@Override
+		protected boolean handleUnreachableTarget(boolean enemyInFOV, boolean justAlerted) {
+			Char oldEnemy = enemy;
+			enemy = null;
+			enemy = chooseEnemy();
+			if (enemy != null && enemy != oldEnemy) {
+				recursing = true;
+				boolean result = act(enemyInFOV, justAlerted);
+				recursing = false;
+				return result;
+			}
+
+			//attempt to use an ability, even if enemy can't be decided
+			//Tengu is always hunting, so we don't lose enemy in this case
+			if (canUseAbility()){
+				return useAbility();
+			}
+
+			spend( TICK );
+			return true;
+
 		}
 	}
 	

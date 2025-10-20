@@ -1214,9 +1214,6 @@ public abstract class Mob extends Char {
 
 		public static final String TAG	= "HUNTING";
 
-		//prevents rare infinite loop cases
-		protected boolean recursing = false;
-
 		@Override
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
 			enemySeen = enemyInFOV;
@@ -1252,27 +1249,7 @@ public abstract class Mob extends Char {
 
 				} else {
 
-					//if moving towards an enemy isn't possible, try to switch targets to another enemy that is closer
-					//unless we have already done that and still can't move toward them, then move on.
-					if (!recursing) {
-						Char oldEnemy = enemy;
-						enemy = null;
-						enemy = chooseEnemy();
-						if (enemy != null && enemy != oldEnemy) {
-							recursing = true;
-							boolean result = act(enemyInFOV, justAlerted);
-							recursing = false;
-							return result;
-						}
-					}
-
-					spend( TICK );
-					if (!enemyInFOV) {
-						sprite.showLost();
-						state = WANDERING;
-						target = ((Mob.Wandering)WANDERING).randomDestination();
-					}
-					return true;
+					return handleUnreachableTarget(enemyInFOV, justAlerted);
 				}
 			}
 		}
@@ -1292,6 +1269,33 @@ public abstract class Mob extends Char {
 				recentlyAttackedBy.clear();
 			}
 			return swapped;
+		}
+
+		//prevents rare infinite loop cases
+		protected boolean recursing = false;
+
+		//Try to switch targets to another enemy that is closer or reachable
+		//unless we have already done that and still can't move toward them, then move on.
+		protected boolean handleUnreachableTarget(boolean enemyInFOV, boolean justAlerted){
+			if (!recursing) {
+				Char oldEnemy = enemy;
+				enemy = null;
+				enemy = chooseEnemy();
+				if (enemy != null && enemy != oldEnemy) {
+					recursing = true;
+					boolean result = act(enemyInFOV, justAlerted);
+					recursing = false;
+					return result;
+				}
+			}
+
+			spend( TICK );
+			if (!enemyInFOV) {
+				sprite.showLost();
+				state = WANDERING;
+				target = ((Mob.Wandering)WANDERING).randomDestination();
+			}
+			return true;
 		}
 	}
 
