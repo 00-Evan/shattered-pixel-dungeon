@@ -23,7 +23,7 @@ allprojects {
         appAndroidMinSDK = 21       //Android 5.0
         appAndroidTargetSDK = 35    //Android 15
 
-        gdxVersion = '1.13.6-SNAPSHOT' //using snapshot as 1.13.5 has issues with Android R8
+        gdxVersion = '1.14.0'
         gdxControllersVersion = '2.2.4'
         robovmVersion = '2.3.23'
     }
