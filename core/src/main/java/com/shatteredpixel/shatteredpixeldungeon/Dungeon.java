@@ -179,7 +179,7 @@ public class Dungeon {
 	}
 
 	public static int challenges;
-	public static int mobsToChampion;
+	public static float mobsToChampion;
 
 	public static Hero hero;
 	public static Level level;
@@ -733,7 +733,7 @@ public class Dungeon {
 		Toolbar.swappedQuickslots = false;
 
 		Dungeon.challenges = bundle.getInt( CHALLENGES );
-		Dungeon.mobsToChampion = bundle.getInt( MOBS_TO_CHAMPION );
+		Dungeon.mobsToChampion = bundle.getFloat( MOBS_TO_CHAMPION );
 		
 		Dungeon.level = null;
 		Dungeon.depth = -1;
