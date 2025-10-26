@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.desktop;
 
+import com.badlogic.gdx.utils.Os;
 import com.badlogic.gdx.utils.SharedLibraryLoader;
 
 import java.io.BufferedReader;
@@ -36,7 +37,7 @@ public class DesktopLaunchValidator {
 	public static boolean verifyValidJVMState(String[] args){
 
 		//mac computers require the -XstartOnFirstThread JVM argument
-		if (SharedLibraryLoader.isMac){
+		if (SharedLibraryLoader.os == Os.MacOsX){
 
 			// If XstartOnFirstThread is present and enabled, we can return true
 			if ("1".equals(System.getenv("JAVA_STARTED_ON_FIRST_THREAD_" +
