@@ -233,7 +233,7 @@ public class Dungeon {
 
 		initialVersion = version = Game.versionCode;
 		challenges = SPDSettings.challenges();
-		mobsToChampion = -1;
+		mobsToChampion = 1;
 
 		Actor.clear();
 		Actor.resetNextID();
