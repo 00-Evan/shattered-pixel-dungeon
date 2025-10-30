@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.Tilemap;
@@ -49,7 +50,7 @@ public class AmbitiousImpRoom extends SpecialRoom {
 	@Override
 	public void paint(Level level) {
 
-		Painter.fill( level, this, Terrain.WALL );
+		Painter.fill( level, this, Terrain.WALL_DECO );
 		Painter.fill( level, this, 1, Terrain.EMPTY );
 
 		Point c = center();
@@ -119,12 +120,12 @@ public class AmbitiousImpRoom extends SpecialRoom {
 
 	@Override
 	public boolean canPlaceGrass(Point p) {
-		return false;
+		return Point.distance(p, center()) >= 3;
 	}
 
 	@Override
 	public boolean canPlaceWater(Point p) {
-		return false;
+		return Point.distance(p, center()) >= 3;
 	}
 
 	public static class QuestEntrance extends CustomTilemap {
@@ -154,6 +155,15 @@ public class AmbitiousImpRoom extends SpecialRoom {
 			return Messages.get(this, "desc");
 		}
 
+		@Override
+		public Image image(int tileX, int tileY) {
+			//only center 3x3 gives custom image/message
+			if (tileX >= 1 && tileX < 4 && tileY >= 1 && tileY < 4){
+				return super.image(tileX, tileY);
+			} else {
+				return null;
+			}
+		}
 	}
 
 	public static class EntranceBarrier extends CustomTilemap {
@@ -188,5 +198,9 @@ public class AmbitiousImpRoom extends SpecialRoom {
 			return vis;
 		}
 
+		@Override
+		public Image image(int tileX, int tileY) {
+			return null;
+		}
 	}
 }

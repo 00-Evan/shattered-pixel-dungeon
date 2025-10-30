@@ -50,8 +50,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WarpingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WeakeningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ImpSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -137,25 +137,23 @@ public class CityLevel extends RegularLevel {
 	public boolean activateTransition(Hero hero, LevelTransition transition) {
 		if (transition.type == LevelTransition.Type.BRANCH_EXIT) {
 
-			if (Imp.Quest.given()){
-				Game.runOnRenderThread(new Callback() {
-					@Override
-					public void call() {
-						GameScene.show( new WndOptions( new ImpSprite(),
-								Messages.titleCase(Messages.get(Imp.class, "name")),
-								"Want to go down?",
-								"yes",
-								"no"){
-							@Override
-							protected void onSelect(int index) {
-								if (index == 0){
-									CityLevel.super.activateTransition(hero, transition);
-								}
+			Game.runOnRenderThread(new Callback() {
+				@Override
+				public void call() {
+					GameScene.show( new WndOptions( Icons.SHPX.get(),
+							Messages.titleCase(Messages.get(CityLevel.class, "upcoming_quest_intro_title")),
+							Messages.get(CityLevel.class, "upcoming_quest_intro_body"),
+							Messages.get(CityLevel.class, "upcoming_quest_intro_yes"),
+							Messages.get(CityLevel.class, "upcoming_quest_intro_no")){
+						@Override
+						protected void onSelect(int index) {
+							if (index == 0){
+								CityLevel.super.activateTransition(hero, transition);
 							}
-						} );
-					}
-				});
-			}
+						}
+					} );
+				}
+			});
 			return false;
 
 		} else {
