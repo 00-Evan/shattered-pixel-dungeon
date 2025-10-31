@@ -47,6 +47,17 @@ public class CheckBox extends RedButton {
 		icon.x = x + width - margin - icon.width;
 		icon.y = y + margin;
 		PixelScene.align(icon);
+
+		int size = 9;
+		while (width > 0 && text.right() > icon.x){
+			size--;
+			remove(text);
+			text = PixelScene.renderTextBlock(text.text, size);
+			margin = (height - text.height()) / 2;
+			text.setPos( x + margin, y + margin);
+			PixelScene.align(text);
+			add(text);
+		}
 	}
 	
 	public boolean checked() {

@@ -144,7 +144,7 @@ public abstract class OptionSlider extends Component {
 	@Override
 	protected void layout() {
 
-		if (title.width() > 0.7f*width){
+		if (title.width() > 0.6f*width){
 			String titleText = title.text;
 			remove(title);
 			title = PixelScene.renderTextBlock(6);
