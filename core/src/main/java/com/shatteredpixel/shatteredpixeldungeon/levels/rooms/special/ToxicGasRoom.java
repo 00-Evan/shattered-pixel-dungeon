@@ -105,7 +105,7 @@ public class ToxicGasRoom extends SpecialRoom {
 
 		level.addItemToSpawn(new PotionOfPurity());
 
-		entrance().set( Door.Type.UNLOCKED );
+		entrance().set( Door.Type.REGULAR );
 
 	}
 

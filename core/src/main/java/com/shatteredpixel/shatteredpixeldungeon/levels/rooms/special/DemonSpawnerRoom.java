@@ -45,7 +45,7 @@ public class DemonSpawnerRoom extends SpecialRoom {
 		int cy = c.y;
 
 		Door door = entrance();
-		door.set(Door.Type.UNLOCKED);
+		door.set(Door.Type.UNLOCKED); //cannot be hidden randomly under any circumstance
 
 		DemonSpawner spawner = new DemonSpawner();
 		spawner.pos = cx + cy * level.width();
