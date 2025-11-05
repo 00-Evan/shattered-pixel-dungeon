@@ -87,6 +87,14 @@ public abstract class OptionSlider extends Component {
 		PixelScene.align(sliderNode);
 	}
 
+	public void enable( boolean value ) {
+		active = value;
+		title.alpha( value ? 1.0f : 0.3f );
+		minTxt.alpha( value ? 1.0f : 0.3f );
+		maxTxt.alpha( value ? 1.0f : 0.3f );
+		sliderNode.alpha( value ? 1.0f : 0.3f );
+	}
+
 	@Override
 	protected void createChildren() {
 		super.createChildren();

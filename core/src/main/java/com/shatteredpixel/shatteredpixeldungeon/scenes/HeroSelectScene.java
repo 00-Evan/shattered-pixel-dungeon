@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
@@ -32,9 +33,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.CheckBox;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.ui.OptionSlider;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
@@ -62,6 +66,7 @@ import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PlatformSupport;
 import com.watabou.utils.PointF;
+import com.watabou.utils.Random;
 import com.watabou.utils.RectF;
 
 import java.text.SimpleDateFormat;
@@ -810,11 +815,124 @@ public class HeroSelectScene extends PixelScene {
 			add(challengeButton);
 			buttons.add(challengeButton);
 
+			int unlockedCount = 0;
+			for (HeroClass cls : HeroClass.values()){
+				if (cls.isUnlocked()) unlockedCount++;
+			}
+
+			if (unlockedCount >= 2) {
+				StyledButton randomButton = new StyledButton(Chrome.Type.BLANK, Messages.get(HeroSelectScene.class, "randomize"), 6) {
+					@Override
+					protected void onClick() {
+
+						if (Badges.isUnlocked(Badges.Badge.VICTORY) || DeviceCompat.isDebug()){
+							ShatteredPixelDungeon.scene().addToFront(new WndRandomize());
+							//add window
+						} else {
+
+							HeroClass randomCls;
+							do {
+								randomCls = Random.oneOf(HeroClass.values());
+							} while (!randomCls.isUnlocked());
+							setSelectedHero(randomCls);
+						}
+					}
+				};
+				randomButton.leftJustify = true;
+				randomButton.icon(Icons.SHUFFLE.get());
+				buttons.add(randomButton);
+				add(randomButton);
+			}
+
 			for (int i = 1; i < buttons.size(); i++){
 				ColorBlock spc = new ColorBlock(1, 1, 0xFF000000);
 				add(spc);
 				spacers.add(spc);
 			}
+		}
+
+		private class WndRandomize extends Window {
+
+			CheckBox chkHero;
+			CheckBox chkChals;
+			OptionSlider optChals;
+
+			public WndRandomize(){
+				super();
+
+				chkHero = new CheckBox(Messages.get(HeroSelectScene.class, "randomize_hero"));
+				chkHero.setRect(0, 0, 120, 16);
+				chkHero.checked(true);
+				add(chkHero);
+
+				chkChals = new CheckBox(Messages.get(HeroSelectScene.class, "randomize_chals")){
+					@Override
+					public void checked(boolean value) {
+						super.checked(value);
+						optChals.enable(value);
+					}
+				};
+				chkChals.setRect(0, 20, 120, 16);
+				add(chkChals);
+
+				int max = Challenges.MAX_CHALS;
+				optChals = new OptionSlider(Messages.get(HeroSelectScene.class, "randomize_chals_title"), "0", Integer.toString(max), 0, max) {
+					@Override
+					protected void onChange() {
+						//do nothing immediately
+					}
+				};
+				optChals.enable(false);
+				optChals.setSelectedValue(Challenges.activeChallenges(SPDSettings.challenges()));
+				optChals.setRect(0, 38, 120, 22);
+				add(optChals);
+
+				RedButton btnCancel = new RedButton(Messages.get(HeroSelectScene.class, "randomize_cancel")){
+					@Override
+					protected void onClick() {
+						super.onClick();
+						hide();
+					}
+				};
+				btnCancel.setRect(61, 64, 60, 16);
+				add(btnCancel);
+
+				RedButton btnConfirm = new RedButton(Messages.get(HeroSelectScene.class, "randomize_confirm")){
+					@Override
+					protected void onClick() {
+						super.onClick();
+						hide();
+						if (chkHero.checked()){
+							HeroClass randomCls;
+							do {
+								randomCls = Random.oneOf(HeroClass.values());
+							} while (!randomCls.isUnlocked());
+							setSelectedHero(randomCls);
+						}
+
+						if (chkChals.checked()){
+							int chals = optChals.getSelectedValue();
+							ArrayList<Integer> chalMasks = new ArrayList<>();
+							for (int i = 0; i < Challenges.MAX_CHALS; i++){
+								chalMasks.add((int)Math.pow(2, i));
+							}
+							Random.shuffle(chalMasks);
+							int mask = 0;
+							for (int i = 0; i < chals; i++){
+								mask += chalMasks.remove(0);
+							}
+							SPDSettings.challenges(mask);
+							ShatteredPixelDungeon.scene().addToFront(new WndChallenges(mask, false));
+						}
+					}
+				};
+				btnConfirm.setRect(0, 64, 60, 16);
+				add(btnConfirm);
+
+				resize(120, (int)btnConfirm.bottom());
+
+			}
+
 		}
 
 		@Override
