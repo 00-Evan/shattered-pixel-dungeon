@@ -66,7 +66,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.quest.MetalShard;
 import com.shatteredpixel.shatteredpixeldungeon.items.remains.BowFragment;
 import com.shatteredpixel.shatteredpixeldungeon.items.remains.BrokenHilt;
 import com.shatteredpixel.shatteredpixeldungeon.items.remains.BrokenStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.remains.CloakScrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.remains.SealShard;
+import com.shatteredpixel.shatteredpixeldungeon.items.remains.TornPage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
@@ -201,11 +203,16 @@ public class TestPotion extends TestGenerator {
     }
 
     @Override
+    // 从Bundle中恢复数据
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
+        // 从Bundle中获取item_quantity的值
         item_quantity = bundle.getInt("item_quantity");
+        // 从Bundle中获取selected的值
         selected = bundle.getInt("selected");
+        // 从Bundle中获取multiply的值
         multiply = bundle.getBoolean("multiply");
+        // 从Bundle中获取cateSelected的值
         cateSelected = bundle.getInt("cate_selected");
     }
 
@@ -476,9 +483,10 @@ public class TestPotion extends TestGenerator {
         switch (id){
             case 0: default:return SealShard.class;
             case 1: return BrokenStaff.class;
-
+            case 2: return CloakScrap.class;
             case 3: return BowFragment.class;
             case 4: return BrokenHilt.class;
+            case 5: return TornPage.class;
 
         }
     }
@@ -488,7 +496,7 @@ public class TestPotion extends TestGenerator {
         if(cate == 9) return 12;
         if(cate == 10) return 9;
         if(cate == 11) return 13;
-        if(cate == 12) return 4;
+        if(cate == 12) return 5;
         return 11;
     }
 

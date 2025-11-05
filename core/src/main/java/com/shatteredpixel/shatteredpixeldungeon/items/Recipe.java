@@ -84,7 +84,6 @@ public abstract class Recipe {
 		
 		protected Class<?extends Item> output;
 		protected int outQuantity;
-		//***
 		
 		//gets a simple list of items based on inputs
 		public ArrayList<Item> getIngredients() {
