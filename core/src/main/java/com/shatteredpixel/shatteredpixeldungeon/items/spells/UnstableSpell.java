@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -112,6 +113,7 @@ public class UnstableSpell extends Spell {
 		s.anonymize();
 		curItem = s;
 		s.doRead();
+		Invisibility.dispel();
 
 		Catalog.countUse(getClass());
 		if (Random.Float() < talentChance){

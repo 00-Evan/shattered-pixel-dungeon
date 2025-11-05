@@ -23,8 +23,10 @@ package com.watabou.noosa;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
@@ -62,8 +64,11 @@ public class TextInput extends Component {
 		//use a custom viewport here to ensure stage camera matches game camera
 		Viewport viewport = new Viewport() {};
 		viewport.setWorldSize(Game.width, Game.height);
-		viewport.setScreenBounds(0, Game.bottomInset, Game.width, Game.height);
+		viewport.setScreenBounds(0, 0, Game.width, Game.height);
 		viewport.setCamera(new OrthographicCamera());
+		//TODO this is needed for the moment as Spritebatch switched to using VAOs in libGDX v1.13.1
+		//  This results in HARD crashes atm, whereas old vertex arrays work fine
+		SpriteBatch.overrideVertexType = Mesh.VertexDataType.VertexArray;
 		stage = new Stage(viewport);
 		Game.inputHandler.addInputProcessor(stage);
 
@@ -136,13 +141,13 @@ public class TextInput extends Component {
 		textField.setOnscreenKeyboard(new TextField.OnscreenKeyboard() {
 			@Override
 			public void show(boolean visible) {
-				Game.platform.setOnscreenKeyboardVisible(visible);
+				Game.platform.setOnscreenKeyboardVisible(visible, multiline);
 			}
 		});
 
 		container.setActor(textField);
 		stage.setKeyboardFocus(textField);
-		Game.platform.setOnscreenKeyboardVisible(true);
+		Game.platform.setOnscreenKeyboardVisible(true, multiline);
 	}
 
 	public void enterPressed(){
@@ -253,7 +258,7 @@ public class TextInput extends Component {
 			stage.dispose();
 			skin.dispose();
 			Game.inputHandler.removeInputProcessor(stage);
-			Game.platform.setOnscreenKeyboardVisible(false);
+			Game.platform.setOnscreenKeyboardVisible(false, false);
 			if (!DeviceCompat.isDesktop()) Game.platform.updateSystemUI();
 		}
 	}

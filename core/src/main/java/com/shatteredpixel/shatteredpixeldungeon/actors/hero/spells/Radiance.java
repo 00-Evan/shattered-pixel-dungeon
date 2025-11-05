@@ -74,7 +74,9 @@ public class Radiance extends ClericSpell {
 					Buff.affect(mob, GuidingLight.Illuminated.class);
 					Buff.affect(mob, GuidingLight.WasIlluminatedTracker.class);
 				}
-				Buff.affect(mob, Paralysis.class, 3f);
+				if (mob.isActive()) {
+					Buff.affect(mob, Paralysis.class, 3f);
+				}
 			}
 		}
 

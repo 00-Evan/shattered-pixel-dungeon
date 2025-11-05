@@ -32,10 +32,15 @@ public class ThrowingHammer extends MissileWeapon {
 		hitSoundPitch = 0.8f;
 		
 		tier = 5;
-		baseUses = 15;
+		baseUses = 12;
 		sticky = false;
 	}
-	
+
+	@Override
+	public float pickupDelay() {
+		return 0; //picked up instantly
+	}
+
 	@Override
 	public int max(int lvl) {
 		return  4 * tier +                  //20 base, down from 25

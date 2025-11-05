@@ -61,14 +61,14 @@ public class CurrencyIndicator extends Component {
 	
 	@Override
 	protected void layout() {
-		energy.x = x + (width - energy.width()) / 2;
-		energy.y = bottom() - energy.height();
+		gold.x = x+1;
+		gold.y = top() + 1;
 
-		gold.x = x + (width - gold.width()) / 2;
-		if (energy.visible) {
-			gold.y = bottom() - gold.height()- gold.height() + 2;
+		energy.x = x+1;
+		if (gold.visible) {
+			energy.y = top() + energy.height() - 1;
 		} else {
-			gold.y = bottom() - gold.height();
+			energy.y = top() + 1;
 		}
 	}
 	

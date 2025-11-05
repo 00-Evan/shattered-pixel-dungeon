@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.remains.RemainsItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Explosive;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
@@ -1036,8 +1037,8 @@ public class Badges {
 	}
 
 	public static void validateTakingTheMick(Object cause){
-		if (cause == Dungeon.hero &&
-				Dungeon.hero.belongings.attackingWeapon() instanceof Pickaxe
+		if ((cause == Dungeon.hero || cause instanceof Explosive.ExplosiveCurseBomb)
+				&& Dungeon.hero.belongings.attackingWeapon() instanceof Pickaxe
 				&& Dungeon.hero.belongings.attackingWeapon().level() >= 20){
 			local.add( Badge.TAKING_THE_MICK );
 			displayBadge(Badge.TAKING_THE_MICK);

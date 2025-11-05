@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
@@ -245,12 +246,24 @@ public class WndUpgrade extends Window {
 		//durability
 		if (toUpgrade instanceof MissileWeapon){
 			//missile weapons are always IDed currently, so we always use true level
-			int uses1 = (int)Math.ceil(100f/((MissileWeapon) toUpgrade).durabilityPerUse());
-			int uses2 = (int)Math.ceil(300f/((MissileWeapon) toUpgrade).durabilityPerUse());
+			int uses1, uses2;
+			if (toUpgrade.levelKnown) {
+				uses1 = (int) Math.ceil(100f / ((MissileWeapon) toUpgrade).durabilityPerUse(toUpgrade.level()));
+				uses2 = (int) Math.ceil(100f / ((MissileWeapon) toUpgrade).durabilityPerUse(toUpgrade.level()+1));
+			} else {
+				uses1 = (int) Math.ceil(100f / ((MissileWeapon) toUpgrade).durabilityPerUse(0));
+				uses2 = (int) Math.ceil(100f / ((MissileWeapon) toUpgrade).durabilityPerUse(1));
+			}
 			bottom = fillFields(Messages.get(this, "durability"),
 					uses1 >= 100 ? "∞" : Integer.toString(uses1),
 					uses2 >= 100 ? "∞" : Integer.toString(uses2),
 					bottom);
+
+			bottom = fillFields(Messages.get(this, "quantity"),
+					Integer.toString(toUpgrade.quantity()),
+					Integer.toString(((MissileWeapon) toUpgrade).defaultQuantity()),
+					bottom);
+
 		}
 
 		//we use a separate reference for wand properties so that mage's staff can include them
@@ -349,6 +362,11 @@ public class WndUpgrade extends Window {
 					lossChance = Math.min(100, 10 * (int) Math.pow(2, levelFrom - 6));
 				} else {
 					lossChance = Math.min(100, 10 * (int) Math.pow(2, levelFrom - 4));
+					if (Dungeon.hero != null && Dungeon.hero.heroClass != HeroClass.WARRIOR && Dungeon.hero.hasTalent(Talent.RUNIC_TRANSFERENCE)){
+						if (levelFrom < 5+Dungeon.hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE)){
+							lossChance = 0;
+						}
+					}
 				}
 
 				if (lossChance >= 10) {
@@ -375,7 +393,7 @@ public class WndUpgrade extends Window {
 					|| (toUpgrade instanceof Armor && ((Armor) toUpgrade).hasCurseGlyph()))
 					&& toUpgrade.cursedKnown) {
 
-				if (toUpgrade.cursed && (toUpgrade instanceof Weapon && ((Weapon) toUpgrade).hasCurseEnchant())
+				if (toUpgrade.cursed && (toUpgrade instanceof MeleeWeapon && ((Weapon) toUpgrade).hasCurseEnchant())
 						|| (toUpgrade instanceof Armor && ((Armor) toUpgrade).hasCurseGlyph())){
 					bottom = addMessage(Messages.get(this, "cursed_weaken"), CharSprite.POSITIVE, bottom);
 				} else {
@@ -391,6 +409,10 @@ public class WndUpgrade extends Window {
 		//warning relating to arcane resin
 		if (toUpgrade instanceof Wand && ((Wand) toUpgrade).resinBonus > 0){
 			bottom = addMessage(Messages.get(this, "resin"), CharSprite.WARNING, bottom);
+		}
+
+		if (toUpgrade instanceof MissileWeapon && ((MissileWeapon) toUpgrade).extraThrownLeft){
+			bottom = addMessage(Messages.get(this, "thrown_dust"), CharSprite.WARNING, bottom);
 		}
 
 		// *** Buttons for confirming/cancelling ***

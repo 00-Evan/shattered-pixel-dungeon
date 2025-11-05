@@ -1,11 +1,13 @@
 plugins {
-    id 'org.beryx.runtime' version '1.12.7'
+    //TODO currently breaks on Gradle 9+, but is being worked on. Update when I can
+    id 'org.beryx.runtime' version '1.13.1'
 }
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-sourceCompatibility = targetCompatibility = appJavaCompatibility
+java.sourceCompatibility = java.targetCompatibility = appJavaCompatibility
 
 ext.appMainClass = "com.shatteredpixel.shatteredpixeldungeon.desktop.DesktopLauncher"
+application.mainClass = appMainClass
 processResources {
     from new File(project(':core').projectDir, "/src/main/assets")
     from new File(project(':desktop').projectDir,"/src/main/assets")
@@ -13,11 +15,11 @@ processResources {
 
 def osName = System.getProperty('os.name').toLowerCase(Locale.ROOT)
 
-task debug(type: JavaExec) {
+tasks.register('debug', JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     ignoreExitValue = true
 
-    main = appMainClass
+    mainClass = appMainClass
     systemProperty 'Specification-Title', appName
     systemProperty 'Implementation-Title', appPackageName
     systemProperty 'Specification-Version', appVersionName + "-INDEV"
@@ -28,7 +30,7 @@ task debug(type: JavaExec) {
     }
 }
 
-task release(type: Jar) {
+tasks.register('release', Jar) {
     //FIXME this is now needed as of gradle 7.0, due to our weird sourceSets setup. Should see if there's a better way to do this
     setDuplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     from sourceSets.main.output
@@ -87,17 +89,17 @@ runtime {
             }
         }
     } else if (osName.contains('mac')) {
+        //Adoptium JDK 17 officially supports MacOS 12+, but internals suggest support for 10.12+
         targetPlatform("mac") {
-            jdkHome = jdkDownload("https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk-16.0.1%2B9/OpenJDK16U-jdk_x64_mac_hotspot_16.0.1_9.tar.gz")
-            javaHome = file("./build/jdks/mac/jdk-16.0.1+9/Contents/Home/").getAbsolutePath()
+            jdkHome = jdkDownload("https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.16%2B8/OpenJDK17U-jdk_x64_mac_hotspot_17.0.16_8.tar.gz")
+            javaHome = file("./build/jdks/mac/jdk-17.0.16+8/Contents/Home/").getAbsolutePath()
             jpackage {
-                jpackageHome = file("./build/jdks/mac/jdk-16.0.1+9/Contents/Home/")
+                jpackageHome = file("./build/jdks/mac/jdk-17.0.16+8/Contents/Home/")
                 imageOptions = ["--icon", file("./src/main/assets/icons/mac.icns"),
                                 "--java-options", "-XstartOnFirstThread",
                                 "--java-options", "-XX:+IgnoreUnrecognizedVMOptions",
                                 //append .apple because com.shatteredpixel.shatteredpixeldungeon was taken =(
-                                "--mac-package-identifier", appPackageName + ".apple",
-                                "--mac-package-name", "ShattererdPD"]
+                                "--mac-package-identifier", appPackageName + ".apple"]
             }
         }
     }

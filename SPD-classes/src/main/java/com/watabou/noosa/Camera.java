@@ -177,7 +177,7 @@ public class Camera extends Gizmo {
 
 		float deadX = 0;
 		float deadY = 0;
-		if (followTarget != null){
+		if (followTarget != null && followTarget.visible){
 			//manually assign here to avoid an allocation from sprite.center()
 			panTarget.x = followTarget.x + followTarget.width()/2;
 			panTarget.y = followTarget.y + followTarget.height()/2;

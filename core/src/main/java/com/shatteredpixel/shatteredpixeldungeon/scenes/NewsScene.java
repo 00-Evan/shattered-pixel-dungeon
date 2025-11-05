@@ -29,9 +29,9 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.services.news.News;
 import com.shatteredpixel.shatteredpixeldungeon.services.news.NewsArticle;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.ui.TitleBackground;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
@@ -43,6 +43,7 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.RectF;
 
 import java.util.ArrayList;
 
@@ -61,34 +62,37 @@ public class NewsScene extends PixelScene {
 
 		int w = Camera.main.width;
 		int h = Camera.main.height;
+		RectF insets = getCommonInsets();
+
+		TitleBackground BG = new TitleBackground(w, h);
+		add(BG);
+
+		w -= insets.left + insets.right;
+		h -= insets.top + insets.bottom;
 
 		int fullWidth = PixelScene.landscape() ? 202 : 100;
-		int left = (w - fullWidth)/2;
-
-		Archs archs = new Archs();
-		archs.setSize(w, h);
-		add(archs);
+		int left = (int)insets.left + (w - fullWidth)/2;
 
 		ExitButton btnExit = new ExitButton();
-		btnExit.setPos(w - btnExit.width(), 0);
+		btnExit.setPos(insets.left + w - btnExit.width(), insets.top);
 		add(btnExit);
 
 		IconTitle title = new IconTitle( Icons.NEWS.get(), Messages.get(this, "title"));
 		title.setSize(200, 0);
 		title.setPos(
-				(w - title.reqWidth()) / 2f,
-				(20 - title.height()) / 2f
+				insets.left + (w - title.reqWidth()) / 2f,
+				insets.top + (20 - title.height()) / 2f
 		);
 		align(title);
 		add(title);
 
-		float top = 18;
+		float top = 18 + insets.top;
 
 		displayingNoArticles = !News.articlesAvailable();
 		if (displayingNoArticles || Messages.lang() != Languages.ENGLISH) {
 
 			Component newsInfo = new NewsInfo();
-			newsInfo.setRect(left, 20, fullWidth, 0);
+			newsInfo.setRect(left, top, fullWidth, 0);
 			add(newsInfo);
 
 			top = newsInfo.bottom();
@@ -98,7 +102,7 @@ public class NewsScene extends PixelScene {
 		if (!displayingNoArticles) {
 			ArrayList<NewsArticle> articles = News.articles();
 
-			float articleSpace = h - top - 2;
+			float articleSpace = h - top - 2 + insets.top;
 			int rows = articles.size();
 			if (PixelScene.landscape()){
 				rows /= 2;

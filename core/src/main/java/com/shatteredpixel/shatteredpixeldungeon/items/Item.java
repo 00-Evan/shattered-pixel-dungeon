@@ -126,7 +126,7 @@ public class Item implements Bundlable {
 			
 			GameScene.pickUp( this, pos );
 			Sample.INSTANCE.play( Assets.Sounds.ITEM );
-			hero.spendAndNext( TIME_TO_PICK_UP );
+			hero.spendAndNext( pickupDelay() );
 			return true;
 			
 		} else {
@@ -646,7 +646,7 @@ public class Item implements Bundlable {
 		Char enemy = Actor.findChar( cell );
 		QuickSlotButton.target(enemy);
 		
-		final float delay = castDelay(user, dst);
+		final float delay = castDelay(user, cell);
 
 		if (enemy != null) {
 			((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).
@@ -694,8 +694,12 @@ public class Item implements Bundlable {
 		}
 	}
 	
-	public float castDelay( Char user, int dst ){
+	public float castDelay( Char user, int cell ){
 		return TIME_TO_THROW;
+	}
+
+	public float pickupDelay(){
+		return TIME_TO_PICK_UP;
 	}
 	
 	protected static Hero curUser = null;

@@ -58,7 +58,7 @@ public class DivineSense extends ClericSpell {
 
 	@Override
 	public void onCast(HolyTome tome, Hero hero) {
-		Buff.prolong(hero, DivineSenseTracker.class, 30f);
+		Buff.prolong(hero, DivineSenseTracker.class, DivineSenseTracker.DURATION);
 		Dungeon.observe();
 
 		Sample.INSTANCE.play(Assets.Sounds.READ);
@@ -68,7 +68,7 @@ public class DivineSense extends ClericSpell {
 
 		Char ally = PowerOfMany.getPoweredAlly();
 		if (ally != null && ally.buff(LifeLinkSpell.LifeLinkSpellBuff.class) != null){
-			Buff.prolong(ally, DivineSenseTracker.class, 30f);
+			Buff.prolong(ally, DivineSenseTracker.class, DivineSenseTracker.DURATION);
 			SpellSprite.show(ally, SpellSprite.VISION);
 		}
 
@@ -81,7 +81,7 @@ public class DivineSense extends ClericSpell {
 
 	public static class DivineSenseTracker extends FlavourBuff {
 
-		public static final float DURATION = 30f;
+		public static final float DURATION = 50f;
 
 		{
 			type = buffType.POSITIVE;

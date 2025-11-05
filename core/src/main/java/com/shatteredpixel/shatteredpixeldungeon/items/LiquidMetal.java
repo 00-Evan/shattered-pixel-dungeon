@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
@@ -133,24 +134,44 @@ public class LiquidMetal extends Item {
 			if (item != null && item instanceof MissileWeapon) {
 				MissileWeapon m = (MissileWeapon)item;
 
-				int maxToUse = 5*(m.tier+1);
-				maxToUse *= Math.pow(2, m.level());
+				float maxToUse = 5*(m.tier+1);
+				maxToUse *= Math.pow(1.35f, m.level());
 
-				float durabilityPerMetal = 100 / (float)maxToUse;
+				float durabilityPerMetal = 100 / maxToUse;
 
 				//we remove a tiny amount here to account for rounding errors
 				float percentDurabilityLost = 0.999f - (m.durabilityLeft()/100f);
-				maxToUse = (int)Math.ceil(maxToUse*percentDurabilityLost);
-				float durPerUse = m.durabilityPerUse()/100f;
-				if (maxToUse == 0 ||
+				int toUse = (int)Math.ceil(maxToUse*percentDurabilityLost);
+				if (toUse == 0 ||
 						Math.ceil(m.durabilityLeft()/ m.durabilityPerUse()) >= Math.ceil(m.MAX_DURABILITY/ m.durabilityPerUse()) ){
-					GLog.w(Messages.get(LiquidMetal.class, "already_fixed"));
-					return;
-				} else if (maxToUse < quantity()) {
-					Catalog.countUses(LiquidMetal.class, maxToUse);
+
+					if (m.quantity() < m.defaultQuantity()){
+						if (quantity()*durabilityPerMetal >= m.durabilityPerUse()){
+							m.quantity(m.quantity()+1);
+							if (maxToUse < quantity()){
+								Catalog.countUses(LiquidMetal.class, (int)Math.ceil(maxToUse));
+								GLog.i(Messages.get(LiquidMetal.class, "apply", (int)Math.ceil(maxToUse)));
+								quantity -= (int)Math.ceil(maxToUse);
+							} else {
+								Catalog.countUses(LiquidMetal.class, quantity());
+								m.damage(100f);
+								m.repair(quantity()*durabilityPerMetal-1);
+								GLog.i(Messages.get(LiquidMetal.class, "apply", quantity()));
+								detachAll(Dungeon.hero.belongings.backpack);
+							}
+						} else {
+							GLog.w(Messages.get(LiquidMetal.class, "already_fixed"));
+							return;
+						}
+					} else {
+						GLog.w(Messages.get(LiquidMetal.class, "already_fixed"));
+						return;
+					}
+				} else if (toUse < quantity()) {
+					Catalog.countUses(LiquidMetal.class, toUse);
 					m.repair(maxToUse*durabilityPerMetal);
-					quantity(quantity()-maxToUse);
-					GLog.i(Messages.get(LiquidMetal.class, "apply", maxToUse));
+					quantity(quantity()-toUse);
+					GLog.i(Messages.get(LiquidMetal.class, "apply", toUse));
 
 				} else {
 					Catalog.countUses(LiquidMetal.class, quantity());
@@ -171,48 +192,53 @@ public class LiquidMetal extends Item {
 
 		@Override
 		public boolean testIngredients(ArrayList<Item> ingredients) {
-			for (Item i : ingredients){
-				if (!(i instanceof MissileWeapon)){
-					return false;
-				}
-			}
-
-			return !ingredients.isEmpty();
+			return ingredients.size() == 1
+					&& ingredients.get(0) instanceof MissileWeapon
+					&& ingredients.get(0).cursedKnown
+					&& !ingredients.get(0).cursed;
 		}
 
 		@Override
 		public int cost(ArrayList<Item> ingredients) {
-			int cost = 1;
-			for (Item i : ingredients){
-				cost += i.quantity();
-			}
-			return cost;
+			return 3;
 		}
 
 		@Override
 		public Item brew(ArrayList<Item> ingredients) {
 			Item result = sampleOutput(ingredients);
-
-			for (Item i : ingredients){
-				i.quantity(0);
+			MissileWeapon m = (MissileWeapon) ingredients.get(0);
+			if (!m.levelKnown){
+				result.quantity(metalQuantity(m));
 			}
+
+			m.quantity(0);
+			Buff.affect(Dungeon.hero, MissileWeapon.UpgradedSetTracker.class).levelThresholds.put(m.setID, Integer.MAX_VALUE);
 
 			return result;
 		}
 
 		@Override
 		public Item sampleOutput(ArrayList<Item> ingredients) {
-			int metalQuantity = 0;
+			MissileWeapon m = (MissileWeapon) ingredients.get(0);
 
-			for (Item i : ingredients){
-				MissileWeapon m = (MissileWeapon) i;
-				float quantity = m.quantity()-1;
-				quantity += 0.25f + 0.0075f*m.durabilityLeft();
-				quantity *= Math.pow(2, Math.min(3, m.level()));
-				metalQuantity += Math.round((5*(m.tier+1))*quantity);
+			if (m.levelKnown){
+				return new LiquidMetal().quantity(metalQuantity(m));
+			} else {
+				return new LiquidMetal();
 			}
+		}
 
-			return new LiquidMetal().quantity(metalQuantity);
+		private int metalQuantity(MissileWeapon m){
+			float quantityPerWeapon = 5*(m.tier+1);
+			if (m.defaultQuantity() != 3){
+				quantityPerWeapon = 3f / m.defaultQuantity();
+			}
+			quantityPerWeapon *= Math.pow(1.35f, Math.min(5, m.level()));
+
+			float quantity = m.quantity()-1;
+			quantity += 0.25f + 0.0075f*m.durabilityLeft();
+
+			return Math.round(quantity * quantityPerWeapon);
 		}
 	}
 

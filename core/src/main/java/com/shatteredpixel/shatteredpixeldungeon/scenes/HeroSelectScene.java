@@ -55,11 +55,14 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.PointerArea;
+import com.watabou.noosa.SkinnedBlock;
 import com.watabou.noosa.tweeners.Tweener;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
+import com.watabou.utils.PlatformSupport;
 import com.watabou.utils.PointF;
+import com.watabou.utils.RectF;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -84,6 +87,8 @@ public class HeroSelectScene extends PixelScene {
 	private GameOptions optionsPane;
 	private IconButton btnExit;
 
+	private RectF insets;
+
 	@Override
 	public void create() {
 		super.create();
@@ -92,6 +97,11 @@ public class HeroSelectScene extends PixelScene {
 
 		Badges.loadGlobal();
 		Journal.loadGlobal();
+
+		insets = Game.platform.getSafeInsets(PlatformSupport.INSET_BLK).scale(1f/defaultZoom);
+
+		float w = (Camera.main.width - insets.left - insets.right);
+		float h = (Camera.main.height - insets.top - insets.bottom);
 
 		background = new Image(TextureCache.createSolid(0xFF2d2f31), 0, 0, 800, 450){
 			@Override
@@ -157,11 +167,11 @@ public class HeroSelectScene extends PixelScene {
 				super.onClick();
 				HeroClass cls = GamesInProgress.selectedClass;
 				if (cls != null) {
-					Window w = new WndHeroInfo(GamesInProgress.selectedClass);
+					Window info = new WndHeroInfo(GamesInProgress.selectedClass);
 					if (landscape()) {
-						w.offset(Camera.main.width / 6, 0);
+						info.offset((int)(w / 6), 0);
 					}
-					ShatteredPixelDungeon.scene().addToFront(w);
+					ShatteredPixelDungeon.scene().addToFront(info);
 				}
 			}
 
@@ -222,19 +232,19 @@ public class HeroSelectScene extends PixelScene {
 		}
 
 		if (landscape()){
-			float leftArea = Math.max(100, Camera.main.width/3f);
-			float uiHeight = Math.min(Camera.main.height-20, 300);
+			float leftArea = Math.max(100, w/3f);
+			float uiHeight = Math.min(h-20, 300);
 			float uiSpacing = (uiHeight-120)/2f;
 
 			if (uiHeight >= 160) uiSpacing -= 5;
 			if (uiHeight >= 180) uiSpacing -= 6;
 
-			background.x += leftArea/6f;
+			background.x += insets.left + leftArea/6f;
 
 			float fadeLeftScale = 47 * (leftArea - background.x)/leftArea;
 			fadeLeft.scale = new PointF(3 + Math.max(0, fadeLeftScale), background.height());
 
-			title.setPos( (leftArea - title.width())/2f, (Camera.main.height-uiHeight)/2f);
+			title.setPos(insets.left + (leftArea - title.width())/2f, (h-uiHeight)/2f);
 			align(title);
 
 			int btnWidth = HeroBtn.MIN_WIDTH + 15;
@@ -244,7 +254,7 @@ public class HeroSelectScene extends PixelScene {
 			}
 
 			int cols = (int)Math.ceil(heroBtns.size()/2f);
-			float curX = (leftArea - btnWidth * cols + (cols-1))/2f;
+			float curX = insets.left + (leftArea - btnWidth * cols + (cols-1))/2f;
 			float curY = title.bottom() + uiSpacing;
 
 			int count = 0;
@@ -264,7 +274,7 @@ public class HeroSelectScene extends PixelScene {
 			}
 
 			heroName = renderTextBlock(9);
-			heroName.setPos(0, heroBtns.get(heroBtns.size()-1).bottom()+5);
+			heroName.setPos(insets.left, heroBtns.get(heroBtns.size()-1).bottom()+5);
 			add(heroName);
 
 			if (uiHeight >= 160){
@@ -273,12 +283,12 @@ public class HeroSelectScene extends PixelScene {
 				heroDesc = renderTextBlock(5);
 			}
 			heroDesc.align(RenderedTextBlock.CENTER_ALIGN);
-			heroDesc.setPos(0, heroName.bottom()+5);
+			heroDesc.setPos(insets.left, heroName.bottom()+5);
 			add(heroDesc);
 
 			startBtn.text(Messages.titleCase(Messages.get(this, "start")));
 			startBtn.setSize(startBtn.reqWidth()+8, 21);
-			startBtn.setPos((leftArea - startBtn.width())/2f, title.top() + uiHeight - startBtn.height());
+			startBtn.setPos(insets.left + (leftArea - startBtn.width())/2f, title.top() + uiHeight - startBtn.height());
 			align(startBtn);
 
 			btnFade = new IconButton(Icons.CHEVRON.get()){
@@ -309,26 +319,37 @@ public class HeroSelectScene extends PixelScene {
 
 			int btnWidth = HeroBtn.MIN_WIDTH;
 
-			float curX = (Camera.main.width - btnWidth * heroBtns.size()) / 2f;
+			float curX = insets.left + (w - btnWidth * heroBtns.size()) / 2f;
 			if (curX > 0) {
 				btnWidth += Math.min(curX / (heroBtns.size() / 2f), 15);
-				curX = (Camera.main.width - btnWidth * heroBtns.size()) / 2f;
+				curX = insets.left + (w - btnWidth * heroBtns.size()) / 2f;
 			}
-			float curY = Camera.main.height - HeroBtn.HEIGHT + 3;
+			float curY = insets.top + h - HeroBtn.HEIGHT + 3;
 
 			for (StyledButton button : heroBtns) {
-				button.setRect(curX, curY, btnWidth, HeroBtn.HEIGHT);
+				button.setRect(curX, curY, btnWidth, HeroBtn.HEIGHT + insets.bottom);
 				curX += btnWidth;
 			}
 
-			title.setPos((Camera.main.width - title.width()) / 2f, (Camera.main.height - HeroBtn.HEIGHT - title.height() - 4));
+			//add a darkening bar along bottom
+			if (insets.bottom > 0){
+				SkinnedBlock bar = new SkinnedBlock(Camera.main.width, insets.bottom, TextureCache.createSolid(0xAA000000));
+				bar.y = h + insets.top;
+				add(bar);
+
+				PointerArea blocker = new PointerArea(0, Camera.main.width - insets.bottom, Camera.main.width, insets.bottom);
+				add(blocker);
+			}
+
+			title.setPos(insets.left + (w - title.width()) / 2f, insets.top + (h - HeroBtn.HEIGHT - title.height() - 4));
 
 			btnOptions.setRect(heroBtns.get(0).left() + 16, Camera.main.height-HeroBtn.HEIGHT-16, 20, 21);
 			optionsPane.setPos(heroBtns.get(0).left(), 0);
 		}
 
 		btnExit = new ExitButton();
-		btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
+		int ofs = PixelScene.landscape() ? 0 : 4;
+		btnExit.setPos( Camera.main.width - btnExit.width() - ofs, ofs );
 		add( btnExit );
 		btnExit.visible = btnExit.active = !SPDSettings.intro();
 
@@ -396,23 +417,23 @@ public class HeroSelectScene extends PixelScene {
 		background.visible = true;
 		background.hardlight(1.5f,1.5f,1.5f);
 
-		float leftPortion = Math.max(100, Camera.main.width/3f);
+		float leftPortion = Math.max(100, (Camera.main.width - insets.left - insets.right)/3f);
 
 		if (landscape()) {
 
 			heroName.text(Messages.titleCase(cl.title()));
 			heroName.hardlight(Window.TITLE_COLOR);
-			heroName.setPos((leftPortion - heroName.width() - 20)/2f, heroName.top());
+			heroName.setPos(insets.left + (leftPortion - heroName.width() - 20)/2f, heroName.top());
 			align(heroName);
 
 			heroDesc.text(cl.shortDesc());
 			heroDesc.maxWidth(80);
-			heroDesc.setPos((leftPortion - heroDesc.width())/2f, heroName.bottom() + 5);
+			heroDesc.setPos(insets.left +(leftPortion - heroDesc.width())/2f, heroName.bottom() + 5);
 			align(heroDesc);
 
 			while(startBtn.top() < heroDesc.bottom()){
 				heroDesc.maxWidth(heroDesc.maxWidth()+10);
-				heroDesc.setPos(Math.max(0, (leftPortion - heroDesc.width())/2f), heroName.bottom() + 5);
+				heroDesc.setPos(Math.max(insets.left, (leftPortion - heroDesc.width())/2f), heroName.bottom() + 5);
 				align(heroDesc);
 			}
 
@@ -433,7 +454,7 @@ public class HeroSelectScene extends PixelScene {
 			startBtn.text(Messages.titleCase(cl.title()));
 			startBtn.setSize(startBtn.reqWidth() + 8, 21);
 
-			startBtn.setPos((Camera.main.width - startBtn.width())/2f, (Camera.main.height - HeroBtn.HEIGHT + 2 - startBtn.height()));
+			startBtn.setPos((Camera.main.width - startBtn.width())/2f, (Camera.main.height - insets.bottom - HeroBtn.HEIGHT + 2 - startBtn.height()));
 			PixelScene.align(startBtn);
 
 			infoButton.visible = infoButton.active = true;
@@ -496,13 +517,15 @@ public class HeroSelectScene extends PixelScene {
 
 		if (landscape()){
 
-			background.x = (Camera.main.width - background.width())/2f;
+			int w = (int)(Camera.main.width - insets.left - insets.right);
 
-			float leftPortion = Math.max(100, Camera.main.width/3f);
+			background.x = insets.left + (w - background.width())/2f;
+
+			float leftPortion = Math.max(100, w/3f);
 
 			background.x += (leftPortion/2f)*alpha;
 
-			float fadeLeftScale = 47 * (leftPortion - background.x)/leftPortion;
+			float fadeLeftScale = 47 * (leftPortion - (background.x - insets.left))/leftPortion;
 			fadeLeft.scale.x = 3 + Math.max(fadeLeftScale, 0)*alpha;
 			fadeLeft.x = background.x-4;
 			fadeRight.x = background.x + background.width() + 4;
@@ -574,6 +597,15 @@ public class HeroSelectScene extends PixelScene {
 				ShatteredPixelDungeon.scene().addToFront(w);
 			} else {
 				setSelectedHero(cl);
+			}
+		}
+
+		@Override
+		protected void layout() {
+			super.layout();
+			//if we're super tall (i.e. rendering into display inset) then put hero at the top
+			if (height > 30) {
+				icon.y = y + (HEIGHT - icon.height()) / 2f;
 			}
 		}
 	}

@@ -584,7 +584,7 @@ public class v2_X_Changes {
 				"_-_ Released January 18th, 2024\n" +
 				"_-_ 92 days after Shattered v2.2.0\n\n" +
 				"v2.3.0 was originally going to contain two new variants for the caves quest, but after a longer than expected dev cycle plus the holidays, I opted to release v2.3.0 with just one more variant and move on to other content for a while, instead of spending even more time on the caves quest.\n\n" +
-				"More Dev commentary will be added here in the future."));
+				"More dev commentary will be added here in the next major update."));
 
 		changes.addButton(new ChangeButton(new Image(new GnollGuardSprite()), "Gnoll Caves Quest",
 				"_A second variant has been added to the caves quest!_\n" +
@@ -771,7 +771,11 @@ public class v2_X_Changes {
 				"_-_ Released October 18th, 2023\n" +
 				"_-_ 138 days after Shattered v2.1.0\n" +
 				"\n" +
-				"Dev commentary will be added here in the next major update."));
+				"v2.2.0 was the first quest overhaul update since v0.3.2 in 2015!\n" +
+				"\n" +
+				"This highlights just how much Shattered has grown since those days. A quest overhaul has gone from adding a couple rooms and enemy types to an entire new sub-region of the game with its own unique gameplay. It ended up taking me a lot longer to make this new quest than I initially expected though, as I had trouble settling on a design.\n" +
+				"\n" +
+				"Originally this quest was going to be much more focused on mining and ores, like Motherlode, Dome Keeper, or Miner Disturbance. In early testing this just wasn't fun though. I eventually realized that I was trying to jam a different game into the middle of Shattered, but instead I needed to use mining to enhance Shattered's existing gameplay. That led to the current quest design, which I think works quite well!"));
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.PICKAXE), "New Blacksmith Quest!",
 				"_Shattered Pixel Dungeon's blacksmith quest has been completely redone!_\n" +

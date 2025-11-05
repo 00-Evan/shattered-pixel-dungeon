@@ -64,7 +64,7 @@ public class EnergyCrystal extends Item {
 
 		GameScene.pickUp( this, pos );
 		hero.sprite.showStatusWithIcon( 0x44CCFF, Integer.toString(quantity), FloatingText.ENERGY );
-		hero.spendAndNext( TIME_TO_PICK_UP );
+		hero.spendAndNext( pickupDelay() );
 
 		Sample.INSTANCE.play( Assets.Sounds.ITEM );
 

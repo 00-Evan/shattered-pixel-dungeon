@@ -166,12 +166,9 @@ public class MnemonicPrayer extends TargetedClericSpell {
 			Sample.INSTANCE.play(Assets.Sounds.DEBUFF);
 			ch.sprite.emitter().start(Speck.factory(Speck.DOWN), 0.15f, 4);
 
-			for (Buff b : ch.buffs()){
-				if (b instanceof GuidingLight.WasIlluminatedTracker){
-					Buff.affect(ch, GuidingLight.Illuminated.class);
-					continue;
-				}
+			Buff.affect(ch, GuidingLight.Illuminated.class);
 
+			for (Buff b : ch.buffs()){
 				if (b.type != Buff.buffType.NEGATIVE || b.mnemonicExtended){
 					continue;
 				}

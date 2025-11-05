@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HoldFast;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -33,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class Blocking extends Weapon.Enchantment {
@@ -65,7 +67,7 @@ public class Blocking extends Weapon.Enchantment {
 	public ItemSprite.Glowing glowing() {
 		return BLUE;
 	}
-	
+
 	public static class BlockBuff extends ShieldBuff {
 
 		{
@@ -74,16 +76,23 @@ public class Blocking extends Weapon.Enchantment {
 			shieldUsePriority = 2;
 		}
 
+		private float left = 5f;
+
 		@Override
 		public boolean act() {
-			detach();
+			left -= HoldFast.buffDecayFactor(target);
+			if (left <= 0) {
+				detach();
+			} else {
+				spend(TICK);
+			}
 			return true;
 		}
 
 		@Override
 		public void setShield(int shield) {
 			super.setShield(shield);
-			postpone(5f);
+			left = 5f;
 		}
 
 		@Override
@@ -107,18 +116,31 @@ public class Blocking extends Weapon.Enchantment {
 
 		@Override
 		public float iconFadePercent() {
-			return Math.max(0, (5f - visualcooldown()) / 5f);
+			return Math.max(0, (5f - left) / 5f);
 		}
 
 		@Override
 		public String iconTextDisplay() {
-			return Integer.toString((int)visualcooldown());
+			return Integer.toString((int)left);
 		}
 
 		@Override
 		public String desc() {
-			return Messages.get(this, "desc", shielding(), dispTurns(visualcooldown()));
+			return Messages.get(this, "desc", shielding(), dispTurns(left));
 		}
-	
+
+		public static String LEFT = "left";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(LEFT, left);
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			left = bundle.getFloat(LEFT);
+		}
 	}
 }

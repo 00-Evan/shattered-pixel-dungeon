@@ -33,7 +33,9 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.PointerArea;
+import com.watabou.utils.PlatformSupport;
 import com.watabou.utils.Point;
+import com.watabou.utils.RectF;
 import com.watabou.utils.Signal;
 
 public class Window extends Group implements Signal.Listener<KeyEvent> {
@@ -94,13 +96,17 @@ public class Window extends Group implements Signal.Listener<KeyEvent> {
 			width - chrome.x + chrome.marginRight(),
 			height - chrome.y + chrome.marginBottom() );
 		add( chrome );
+
+		RectF insets = Game.platform.getSafeInsets(PlatformSupport.INSET_BLK);
+		int screenW = (int)(Game.width - insets.left - insets.right);
+		int screenH = (int)(Game.height - insets.top - insets.bottom);
 		
 		camera = new Camera( 0, 0,
 			(int)chrome.width,
 			(int)chrome.height,
 			PixelScene.defaultZoom );
-		camera.x = (int)(Game.width - camera.width * camera.zoom) / 2;
-		camera.y = (int)(Game.height - camera.height * camera.zoom) / 2;
+		camera.x = (int)(insets.left + (screenW - camera.width * camera.zoom) / 2);
+		camera.y = (int)(insets.top + (screenH - camera.height * camera.zoom) / 2);
 		camera.y -= yOffset * camera.zoom;
 		camera.scroll.set( chrome.x, chrome.y );
 		Camera.add( camera );
@@ -123,10 +129,16 @@ public class Window extends Group implements Signal.Listener<KeyEvent> {
 		
 		camera.resize( (int)chrome.width, (int)chrome.height );
 
-		camera.x = (int)(Game.width - camera.screenWidth()) / 2;
+		RectF insets = Game.platform.getSafeInsets(PlatformSupport.INSET_BLK);
+		int screenW = (int)(Game.width - insets.left - insets.right);
+		int screenH = (int)(Game.height - insets.top - insets.bottom);
+
+		camera.x = (int)(screenW - camera.screenWidth()) / 2;
+		camera.x += insets.left;
 		camera.x += xOffset * camera.zoom;
 
-		camera.y = (int)(Game.height - camera.screenHeight()) / 2;
+		camera.y = (int)(screenH - camera.screenHeight()) / 2;
+		camera.y += insets.top;
 		camera.y += yOffset * camera.zoom;
 
 		shadow.boxRect( camera.x / camera.zoom, camera.y / camera.zoom, chrome.width(), chrome.height );

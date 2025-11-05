@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
     android:installLocation="auto"
-	android:targetSandboxVersion="2"
-	xmlns:dist="http://schemas.android.com/apk/distribution">
+	android:targetSandboxVersion="2">
 
-	<dist:module dist:instant="true" />
 	<uses-feature android:glEsVersion="0x00020000"/>
 
 	<uses-permission android:name="android.permission.VIBRATE" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-	<!-- We perform a runtime check to ensure controllers are disabled on API 14 & 15 -->
-	<uses-sdk tools:overrideLibrary="com.badlogicgames.gdx.controllers" />
-
-	<!-- Note that the game doesn't truly support small screen resolutions,
-		it instead forces downscaling to work on these displays.-->
+	<!-- Hilariously small screens still exist but are usually high enough DPI to work now -->
 	<supports-screens
 		android:smallScreens="true"
 		android:normalScreens="true"
@@ -26,7 +19,7 @@
 	<application
 		android:icon="@mipmap/ic_launcher"
 		android:label="${appName}"
-		android:theme="@android:style/Theme.Black.NoTitleBar"
+		android:theme="@style/GameTheme"
 		android:appCategory="game"
 		android:isGame="true"
 		android:resizeableActivity="true"
@@ -35,7 +28,6 @@
 		android:backupAgent=".AndroidBackupHandler">
 		<activity
 			android:name=".AndroidLauncher"
-			android:screenOrientation="nosensor"
 			android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
 			android:exported="true">
 			<intent-filter>

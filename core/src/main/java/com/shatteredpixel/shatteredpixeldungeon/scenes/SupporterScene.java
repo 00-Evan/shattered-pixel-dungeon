@@ -25,9 +25,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.ui.TitleBackground;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
@@ -36,6 +36,8 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.Callback;
+import com.watabou.utils.RectF;
 
 public class SupporterScene extends PixelScene {
 
@@ -50,22 +52,25 @@ public class SupporterScene extends PixelScene {
 
 		int w = Camera.main.width;
 		int h = Camera.main.height;
+		RectF insets = getCommonInsets();
 
 		int elementWidth = PixelScene.landscape() ? 202 : 120;
 
-		Archs archs = new Archs();
-		archs.setSize(w, h);
-		add(archs);
+		TitleBackground BG = new TitleBackground(w, h);
+		add(BG);
+
+		w -= insets.right + insets.left;
+		h -= insets.top + insets.bottom;
 
 		ExitButton btnExit = new ExitButton();
-		btnExit.setPos(w - btnExit.width(), 0);
+		btnExit.setPos(insets.left + w - btnExit.width(), insets.top);
 		add(btnExit);
 
 		IconTitle title = new IconTitle(Icons.GOLD.get(), Messages.get(this, "title"));
 		title.setSize(200, 0);
 		title.setPos(
-				(w - title.reqWidth()) / 2f,
-				(20 - title.height()) / 2f
+				insets.left + (w - title.reqWidth()) / 2f,
+				insets.top + (20 - title.height()) / 2f
 		);
 		align(title);
 		add(title);
@@ -93,8 +98,8 @@ public class SupporterScene extends PixelScene {
 
 		float elementHeight = msg.height() + BTN_HEIGHT + GAP;
 
-		float top = 16 + (h - 16 - elementHeight)/2f;
-		float left = (w-elementWidth)/2f;
+		float top = insets.top + 16 + (h - 16 - elementHeight)/2f;
+		float left = insets.left + (w-elementWidth)/2f;
 
 		msg.setPos(left, top);
 		align(msg);

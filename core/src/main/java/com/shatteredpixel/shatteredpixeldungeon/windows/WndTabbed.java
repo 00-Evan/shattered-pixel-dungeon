@@ -57,7 +57,7 @@ public class WndTabbed extends Window {
 					int idx = tabs.indexOf(selected);
 					idx++;
 					if (idx >= tabs.size()) idx = 0;
-					select(idx);
+					tabs.get(idx).onClick();
 
 					return true;
 				}

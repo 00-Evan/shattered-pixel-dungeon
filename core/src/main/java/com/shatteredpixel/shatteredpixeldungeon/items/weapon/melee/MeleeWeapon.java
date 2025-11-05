@@ -411,6 +411,11 @@ public class MeleeWeapon extends Weapon {
 
 	public static class Charger extends Buff implements ActionIndicator.Action {
 
+		{
+			//so that duelist keeps weapon charge on ankh revive
+			revivePersists = true;
+		}
+
 		public int charges = 2;
 		public float partialCharge;
 

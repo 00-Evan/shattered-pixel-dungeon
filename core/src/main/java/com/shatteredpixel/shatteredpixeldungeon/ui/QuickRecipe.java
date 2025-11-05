@@ -345,14 +345,6 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe( new LiquidMetal.Recipe(),
 						new ArrayList<Item>(Arrays.asList(new MissileWeapon.PlaceHolder())),
 						new LiquidMetal()));
-				result.add(new QuickRecipe( new LiquidMetal.Recipe(),
-						new ArrayList<Item>(Arrays.asList(new MissileWeapon.PlaceHolder().quantity(2))),
-						new LiquidMetal()));
-				result.add(new QuickRecipe( new LiquidMetal.Recipe(),
-						new ArrayList<Item>(Arrays.asList(new MissileWeapon.PlaceHolder().quantity(3))),
-						new LiquidMetal()));
-				result.add(null);
-				result.add(null);
 				result.add(new QuickRecipe( new ArcaneResin.Recipe(),
 						new ArrayList<Item>(Arrays.asList(new Wand.PlaceHolder())),
 						new ArcaneResin()));

@@ -218,8 +218,11 @@ public class WndHero extends WndTabbed {
 			RenderedTextBlock txt = PixelScene.renderTextBlock( label, 8 );
 			txt.setPos(0, pos);
 			add( txt );
-			
-			txt = PixelScene.renderTextBlock( value, 8 );
+
+			int size = 8;
+			if (value.length() >= 14) size -=2;
+			if (value.length() >= 18) size -=1;
+			txt = PixelScene.renderTextBlock( value, size );
 			txt.setPos(WIDTH * 0.55f, pos);
 			PixelScene.align(txt);
 			add( txt );

@@ -31,18 +31,27 @@ public class MazeConnectionRoom extends ConnectionRoom {
 	@Override
 	public void paint(Level level) {
 		Painter.fill(level, this, 1, Terrain.EMPTY);
-		
+
 		//true = space, false = wall
 		Maze.allowDiagonals = false;
 		boolean[][] maze = Maze.generate(this);
-		
+
+		//if we're a small maze, ensure we generated a pattern with a filled center
+		// this increases the likelihood of things looking mazey
+		while (width() >= 5 && height() >= 5
+				&& (width() <= 7 || height() <= 7)
+				&& maze[width() / 2][height() / 2] == Maze.EMPTY) {
+			maze = Maze.generate(this);
+		}
+
 		Painter.fill(level, this, 1, Terrain.EMPTY);
-		for (int x = 0; x < maze.length; x++)
+		for (int x = 0; x < maze.length; x++){
 			for (int y = 0; y < maze[0].length; y++) {
 				if (maze[x][y] == Maze.FILLED) {
 					Painter.fill(level, x + left, y + top, 1, 1, Terrain.WALL);
 				}
 			}
+		}
 		
 		for (Door door : connected.values()) {
 			door.set( Door.Type.HIDDEN );

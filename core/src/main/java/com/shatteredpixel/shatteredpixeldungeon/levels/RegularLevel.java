@@ -525,7 +525,7 @@ public abstract class RegularLevel extends Level {
 		Random.popGenerator();
 
 		//cached rations try to drop in a special room on floors 2/4/7, to a max of 2/3
-		//we incremented dropped by 2 for compatibility with pre-v2.4 saves (when the talent dropped 4/6 items)
+		//we increment dropped by 2 for compatibility with old saves, when the talent dropped 4/6 items
 		Random.pushGenerator( Random.Long() );
 			if (Dungeon.hero.hasTalent(Talent.CACHED_RATIONS)){
 				Talent.CachedRationsDropped dropped = Buff.affect(Dungeon.hero, Talent.CachedRationsDropped.class);

@@ -38,10 +38,11 @@ public class PinCushion extends Buff {
 	private ArrayList<MissileWeapon> items = new ArrayList<>();
 
 	public void stick(MissileWeapon projectile){
-		for (Item item : items){
-			if (item.isSimilar(projectile)){
-				item.merge(projectile);
-				if (TippedDart.lostDarts > 0){
+		for (int i = 0; i < items.size(); i++) {
+			if (projectile.isSimilar(items.get(i))) {
+				projectile.merge(items.get(i));
+				items.set(i, projectile);
+				if (TippedDart.lostDarts > 0) {
 					Dart d = new Dart();
 					d.quantity(TippedDart.lostDarts);
 					TippedDart.lostDarts = 0;

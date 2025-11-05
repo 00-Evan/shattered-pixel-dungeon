@@ -295,7 +295,12 @@ public enum Talent {
 		public void tintIcon(Image icon) { icon.hardlight(0.35f, 0f, 0.7f); }
 		public float iconFadePercent() { return Math.max(0, visualcooldown() / 50); }
 	};
-	public static class LiquidAgilEVATracker extends FlavourBuff{};
+	public static class LiquidAgilEVATracker extends FlavourBuff{
+		{
+			//detaches after hero acts, not after mobs act
+			actPriority = HERO_PRIO+1;
+		}
+	};
 	public static class LiquidAgilACCTracker extends FlavourBuff{
 		public int uses;
 
@@ -673,8 +678,7 @@ public enum Talent {
 	}
 
 	public static float itemIDSpeedFactor( Hero hero, Item item ){
-		// 1.75x/2.5x speed with Huntress talent
-		float factor = 1f + 0.75f*hero.pointsInTalent(SURVIVALISTS_INTUITION);
+		float factor = 1f;
 
 		// Affected by both Warrior(1.75x/2.5x) and Duelist(2.5x/inst.) talents
 		if (item instanceof MeleeWeapon){
@@ -689,6 +693,10 @@ public enum Talent {
 		// 3x/instant for Mage (see Wand.wandUsed())
 		if (item instanceof Wand){
 			factor *= 1f + 2.0f*hero.pointsInTalent(SCHOLARS_INTUITION);
+		}
+		// 3x/instant speed with Huntress talent (see MissileWeapon.proc)
+		if (item instanceof MissileWeapon){
+			factor *= 1f + 2.0f*hero.pointsInTalent(SURVIVALISTS_INTUITION);
 		}
 		// 2x/instant for Rogue (see onItemEqupped), also id's type on equip/on pickup
 		if (item instanceof Ring){
@@ -765,7 +773,7 @@ public enum Talent {
 				// 10/15%
 				if (Random.Int(20) < 1 + hero.pointsInTalent(RECALL_INSCRIPTION)){
 					Reflection.newInstance(cls).collect();
-					GLog.p("refunded!");
+					GLog.p(Messages.get(Talent.class, RECALL_INSCRIPTION.name() + ".refunded"));
 				}
 			}
 		}
@@ -784,7 +792,7 @@ public enum Talent {
 				// 10/15%
 				if (Random.Int(20) < 1 + hero.pointsInTalent(RECALL_INSCRIPTION)){
 					Reflection.newInstance(cls).collect();
-					GLog.p("refunded!");
+					GLog.p(Messages.get(Talent.class, RECALL_INSCRIPTION.name() + ".refunded"));
 				}
 			}
 		}
@@ -833,8 +841,18 @@ public enum Talent {
 			identify = true;
 		}
 
-		if (identify && !ShardOfOblivion.passiveIDDisabled()){
-			item.identify();
+		if (identify) {
+			if (ShardOfOblivion.passiveIDDisabled()) {
+				if (item instanceof Weapon){
+					((Weapon) item).setIDReady();
+				} else if (item instanceof Armor){
+					((Armor) item).setIDReady();
+				} else if (item instanceof Ring){
+					((Ring) item).setIDReady();
+				}
+			} else {
+				item.identify();
+			}
 		}
 	}
 
@@ -1146,15 +1164,12 @@ public enum Talent {
 
 	private static final HashSet<String> removedTalents = new HashSet<>();
 	static{
-		//v2.4.0
-		removedTalents.add("TEST_SUBJECT");
-		removedTalents.add("TESTED_HYPOTHESIS");
+		//nothing atm
 	}
 
 	private static final HashMap<String, String> renamedTalents = new HashMap<>();
 	static{
-		//v2.4.0
-		renamedTalents.put("SECONDARY_CHARGE",          "VARIED_CHARGE");
+		//nothing atm
 	}
 
 	public static void restoreTalentsFromBundle( Bundle bundle, Hero hero ){

@@ -32,9 +32,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.AscendedForm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.ElementalStrike;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.ShadowClone;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.BodyForm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.HolyWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.Smite;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
@@ -67,6 +69,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampir
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -108,10 +111,12 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 	
 	public Augment augment = Augment.NONE;
-	
-	private static final int USES_TO_ID = 20;
-	private float usesLeftToID = USES_TO_ID;
-	private float availableUsesToID = USES_TO_ID/2f;
+
+	protected int usesToID(){
+		return 20;
+	}
+	protected float usesLeftToID = usesToID();
+	protected float availableUsesToID = usesToID()/2f;
 	
 	public Enchantment enchantment;
 	public boolean enchantHardened = false;
@@ -125,7 +130,9 @@ abstract public class Weapon extends KindOfWeapon {
 		boolean wasAlly = defender.alignment == Char.Alignment.ALLY;
 		if (attacker.buff(MagicImmune.class) == null) {
 			Enchantment trinityEnchant = null;
-			if (Dungeon.hero.buff(BodyForm.BodyFormBuff.class) != null && this instanceof MeleeWeapon){
+			//only when it's the hero or a char that uses the hero's weapon
+			if (Dungeon.hero.buff(BodyForm.BodyFormBuff.class) != null && this instanceof MeleeWeapon
+					&& (attacker == Dungeon.hero || attacker instanceof MirrorImage || attacker instanceof ShadowClone.ShadowAlly)){
 				trinityEnchant = Dungeon.hero.buff(BodyForm.BodyFormBuff.class).enchant();
 				if (enchantment != null && trinityEnchant != null && trinityEnchant.getClass() == enchantment.getClass()){
 					trinityEnchant = null;
@@ -167,6 +174,14 @@ abstract public class Weapon extends KindOfWeapon {
 				defender.damage(Smite.bonusDmg((Hero) attacker, defender), Smite.INSTANCE);
 			}
 		}
+
+		//do not progress toward ID in the specific case of a missile weapon with no parent using
+		// up it's last shot, as in this case there's nothing left to ID anyway
+		if (this instanceof MissileWeapon
+				&& ((MissileWeapon) this).durabilityLeft() <= ((MissileWeapon) this).durabilityPerUse()
+				&& ((MissileWeapon) this).parent == null){
+			return damage;
+		}
 		
 		if (!levelKnown && attacker == Dungeon.hero) {
 			float uses = Math.min( availableUsesToID, Talent.itemIDSpeedFactor(Dungeon.hero, this) );
@@ -191,9 +206,10 @@ abstract public class Weapon extends KindOfWeapon {
 	
 	public void onHeroGainExp( float levelPercent, Hero hero ){
 		levelPercent *= Talent.itemIDSpeedFactor(hero, this);
-		if (!levelKnown && isEquipped(hero) && availableUsesToID <= USES_TO_ID/2f) {
+		if (!levelKnown && (isEquipped(hero) || this instanceof MissileWeapon)
+				&& availableUsesToID <= usesToID()/2f) {
 			//gains enough uses to ID over 0.5 levels
-			availableUsesToID = Math.min(USES_TO_ID/2f, availableUsesToID + levelPercent * USES_TO_ID);
+			availableUsesToID = Math.min(usesToID()/2f, availableUsesToID + levelPercent * usesToID());
 		}
 	}
 	
@@ -233,8 +249,8 @@ abstract public class Weapon extends KindOfWeapon {
 	@Override
 	public void reset() {
 		super.reset();
-		usesLeftToID = USES_TO_ID;
-		availableUsesToID = USES_TO_ID/2f;
+		usesLeftToID = usesToID();
+		availableUsesToID = usesToID()/2f;
 	}
 
 	@Override

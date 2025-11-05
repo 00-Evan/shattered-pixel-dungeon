@@ -502,7 +502,7 @@ public abstract class Mob extends Char {
 
 	protected boolean getCloser( int target ) {
 		
-		if (rooted || target == pos) {
+		if (rooted || target == pos || !Dungeon.level.insideMap(target)) {
 			return false;
 		}
 

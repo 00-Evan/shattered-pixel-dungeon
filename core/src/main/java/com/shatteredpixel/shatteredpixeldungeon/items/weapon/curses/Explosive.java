@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SmokeParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -45,6 +46,11 @@ public class Explosive extends Weapon.Enchantment {
 
 	@Override
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
+
+		if (weapon instanceof MissileWeapon
+				&& ((MissileWeapon)weapon).parent != null && ((MissileWeapon) weapon).parent.enchantment instanceof Explosive){
+			durability = ((Explosive) ((MissileWeapon) weapon).parent.enchantment).durability;
+		}
 
 		//average value of 5, or 20 hits to an explosion
 		int durToReduce = Math.round(Random.IntRange(0, 10) * procChanceMultiplier(attacker));
@@ -76,13 +82,34 @@ public class Explosive extends Weapon.Enchantment {
 				explosionPos = defender.pos;
 			}
 
-			new Bomb.ConjuredBomb().explode(explosionPos);
+			new ExplosiveCurseBomb().explode(explosionPos);
 
-			durability = 100;
+			durability += 100;
 			Item.updateQuickslot();
+
+			if (weapon instanceof MissileWeapon){
+				//the explosion damages thrown weapons
+				((MissileWeapon) weapon).damage(9*((MissileWeapon) weapon).durabilityPerUse());
+			}
+		}
+
+		if (weapon instanceof MissileWeapon
+				&& ((MissileWeapon)weapon).parent != null && ((MissileWeapon) weapon).parent.enchantment instanceof Explosive){
+			((Explosive) ((MissileWeapon) weapon).parent.enchantment).durability = durability;
+			durability = 100;
 		}
 
 		return damage;
+	}
+
+	public void merge(Explosive other){
+		int diff = 100 - other.durability;
+		durability -= diff;
+		//this can make durability negative, in which case many explosions can happen in succession.
+	}
+
+	public void clear(){
+		durability = 100;
 	}
 
 	@Override
@@ -129,5 +156,7 @@ public class Explosive extends Weapon.Enchantment {
 	public void storeInBundle( Bundle bundle ) {
 		bundle.put(DURABILITY, durability);
 	}
+
+	public static class ExplosiveCurseBomb extends Bomb.ConjuredBomb {}
 
 }

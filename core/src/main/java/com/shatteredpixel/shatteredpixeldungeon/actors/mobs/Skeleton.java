@@ -25,6 +25,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ShieldOfLight;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
@@ -32,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SkeletonSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
@@ -89,6 +93,22 @@ public class Skeleton extends Mob {
 					int preDmg = damage;
 					damage = armor.absorb( damage );
 					damage -= (preDmg - damage); //apply the flat reduction twice
+				}
+
+				ShieldOfLight.ShieldOfLightTracker shield = ch.buff( ShieldOfLight.ShieldOfLightTracker.class);
+				if (shield != null && shield.object == id()){
+					int min = 1 + Dungeon.hero.pointsInTalent(Talent.SHIELD_OF_LIGHT);
+					damage -= Random.NormalIntRange(min, 2*min);
+					damage -= Random.NormalIntRange(min, 2*min); //apply twice
+					damage = Math.max(damage, 0);
+				} else if (ch == Dungeon.hero
+						&& Dungeon.hero.heroClass != HeroClass.CLERIC
+						&& Dungeon.hero.hasTalent(Talent.SHIELD_OF_LIGHT)
+						&& TargetHealthIndicator.instance.target() == this){
+					//33/50%
+					if (Random.Int(6) < 1+Dungeon.hero.pointsInTalent(Talent.SHIELD_OF_LIGHT)){
+						damage -= 2; //doubled
+					}
 				}
 
 				//apply DR twice (with 2 rolls for more consistency)

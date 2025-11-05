@@ -49,9 +49,8 @@ public class SPDSettings extends GameSettings {
 	
 	//Display
 	
-	public static final String KEY_FULLSCREEN	= "fullscreen";
-	public static final String KEY_LANDSCAPE	= "landscape";
-	public static final String KEY_POWER_SAVER 	= "power_saver";
+	public static final String KEY_FULLSCREEN	= "fullscreen"; //used to hide navbars on mobile
+	public static final String KEY_LANDSCAPE	= "force_landscape";
 	public static final String KEY_ZOOM			= "zoom";
 	public static final String KEY_BRIGHTNESS	= "brightness";
 	public static final String KEY_GRID 	    = "visual_grid";
@@ -65,31 +64,16 @@ public class SPDSettings extends GameSettings {
 	}
 	
 	public static boolean fullscreen() {
-		return getBoolean( KEY_FULLSCREEN, DeviceCompat.isDesktop() );
+		return getBoolean( KEY_FULLSCREEN, true );
 	}
-	
+
 	public static void landscape( boolean value ){
 		put( KEY_LANDSCAPE, value );
 		((ShatteredPixelDungeon)ShatteredPixelDungeon.instance).updateDisplaySize();
 	}
-	
-	//can return null because we need to directly handle the case of landscape not being set
-	// as there are different defaults for different devices
-	public static Boolean landscape(){
-		if (contains(KEY_LANDSCAPE)){
-			return getBoolean(KEY_LANDSCAPE, false);
-		} else {
-			return null;
-		}
-	}
-	
-	public static void powerSaver( boolean value ){
-		put( KEY_POWER_SAVER, value );
-		((ShatteredPixelDungeon)ShatteredPixelDungeon.instance).updateDisplaySize();
-	}
-	
-	public static boolean powerSaver(){
-		return getBoolean( KEY_POWER_SAVER, false );
+
+	public static boolean landscape(){
+		return getBoolean(KEY_LANDSCAPE, false);
 	}
 	
 	public static void zoom( int value ) {

@@ -294,6 +294,9 @@ public class Ghoul extends Mob {
 				Dungeon.level.occupyCell( ghoul );
 				ghoul.sprite.idle();
 				ghoul.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(Math.round(ghoul.HT/10f)), FloatingText.HEALING);
+				if (ghoul.enemy != null && ghoul.enemy.alignment == ghoul.alignment){
+					ghoul.enemy = null; //reset enemy
+				}
 				super.detach();
 				return true;
 			}
