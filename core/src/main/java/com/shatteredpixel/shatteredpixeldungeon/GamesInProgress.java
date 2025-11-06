@@ -42,6 +42,7 @@ public class GamesInProgress {
 	public static int curSlot;
 	
 	public static HeroClass selectedClass;
+	public static boolean randomizedClass = false;
 	
 	private static final String GAME_FOLDER = "game%d";
 	private static final String GAME_FILE	= "game.dat";

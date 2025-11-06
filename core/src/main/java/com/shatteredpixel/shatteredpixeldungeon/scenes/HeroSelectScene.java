@@ -410,6 +410,7 @@ public class HeroSelectScene extends PixelScene {
 
 	private void setSelectedHero(HeroClass cl){
 		GamesInProgress.selectedClass = cl;
+		GamesInProgress.randomizedClass = false;
 
 		try {
 			//loading these big jpgs fails sometimes, so we have a catch for it
@@ -827,7 +828,6 @@ public class HeroSelectScene extends PixelScene {
 
 						if (Badges.isUnlocked(Badges.Badge.VICTORY) || DeviceCompat.isDebug()){
 							ShatteredPixelDungeon.scene().addToFront(new WndRandomize());
-							//add window
 						} else {
 
 							HeroClass randomCls;
@@ -835,6 +835,7 @@ public class HeroSelectScene extends PixelScene {
 								randomCls = Random.oneOf(HeroClass.values());
 							} while (!randomCls.isUnlocked());
 							setSelectedHero(randomCls);
+							GamesInProgress.randomizedClass = true;
 						}
 					}
 				};
@@ -908,6 +909,7 @@ public class HeroSelectScene extends PixelScene {
 								randomCls = Random.oneOf(HeroClass.values());
 							} while (!randomCls.isUnlocked());
 							setSelectedHero(randomCls);
+							GamesInProgress.randomizedClass = true;
 						}
 
 						if (chkChals.checked()){
