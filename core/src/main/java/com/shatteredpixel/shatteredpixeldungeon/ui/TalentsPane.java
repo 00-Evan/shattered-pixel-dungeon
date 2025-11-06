@@ -28,10 +28,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -162,6 +165,7 @@ public class TalentsPane extends ScrollPane {
 		ArrayList<TalentButton> buttons;
 
 		ArrayList<Image> stars = new ArrayList<>();
+		IconButton random;
 
 		public TalentTierPane(LinkedHashMap<Talent, Integer> talents, int tier, TalentButton.Mode mode){
 			super();
@@ -172,7 +176,44 @@ public class TalentsPane extends ScrollPane {
 			title.hardlight(Window.TITLE_COLOR);
 			add(title);
 
-			if (mode == TalentButton.Mode.UPGRADE) setupStars();
+			if (mode == TalentButton.Mode.UPGRADE) {
+				setupStars();
+				if (Dungeon.hero.talentPointsAvailable(tier) > 0){
+
+					random = new IconButton(Icons.SHUFFLE.get()){
+						@Override
+						protected void onClick() {
+							super.onClick();
+							GameScene.show(new WndOptions(
+									Icons.SHUFFLE.get(),
+									Messages.get(TalentsPane.class, "random_title"),
+									Messages.get(TalentsPane.class, "random_sure"),
+									Messages.get(TalentsPane.class, "random_yes"),
+									Messages.get(TalentsPane.class, "random_one"),
+									Messages.get(TalentsPane.class, "random_no")) {
+								@Override
+								protected void onSelect(int index) {
+									super.onSelect(index);
+									if (index == 0 || index == 1){
+										while (Dungeon.hero.talentPointsAvailable(tier) > 0){
+											TalentButton button = Random.element(buttons);
+											if (Dungeon.hero.pointsInTalent(button.talent) < button.talent.maxPoints()){
+												button.upgradeTalent();
+												if (index == 1){
+													break;
+												}
+											}
+										};
+										setupStars();
+										TalentTierPane.this.layout();
+									}
+								}
+							});
+						};
+					};
+					add(random);
+				}
+			}
 
 			buttons = new ArrayList<>();
 			for (Talent talent : talents.keySet()){
@@ -213,6 +254,12 @@ public class TalentsPane extends ScrollPane {
 					im.tint(0f, 0f, 0f, 0.9f);
 				}
 			}
+
+			if (random != null && openStars == 0){
+				random.killAndErase();
+				random.destroy();
+				random = null;
+			}
 		}
 
 		@Override
@@ -240,6 +287,10 @@ public class TalentsPane extends ScrollPane {
 					starTop += 6;
 					left = title.right() + 2;
 				}
+			}
+
+			if (random != null){
+				random.setRect(width - 16, y-2, 16, 14);
 			}
 
 			float gap = (width - buttons.size()*TalentButton.WIDTH)/(buttons.size()+1);

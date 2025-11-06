@@ -226,7 +226,7 @@ public enum Icons {
 				icon.frame( icon.texture.uvRectBySize( 240, 16, 13, 10 ) );
 				break;
 			case SHUFFLE:
-				icon.frame(icon.texture.uvRectBySize( 240, 32, 16, 15 ) );
+				icon.frame(icon.texture.uvRectBySize( 240, 32, 15, 12 ) );
 				break;
 
 			case TARGET:
