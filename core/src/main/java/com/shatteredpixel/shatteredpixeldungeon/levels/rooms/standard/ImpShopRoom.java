@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.ImpShopkeeper;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -32,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Point;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -98,6 +100,31 @@ public class ImpShopRoom extends ShopRoom {
 		impSpawned = true;
 		placeShopkeeper(level);
 		placeItems(level);
+	}
+
+	@Override
+	protected void placeItems(Level level) {
+		ArrayList<Item> existing = new ArrayList<>();
+
+		//check if there are existing items and remove them
+		for (Heap h : level.heaps.valueList()){
+			if (inside(level.cellToPoint(h.pos))){
+				existing.addAll(h.items);
+				level.heaps.remove(h.pos);
+				if (h.sprite != null) h.sprite.kill();
+			}
+		}
+
+		super.placeItems(level);
+
+		//place any existing items below the room
+		if (!existing.isEmpty()){
+			int pos = level.pointToCell(new Point(left+2, bottom+2));
+			for (Item i :existing){
+				level.drop(i, pos + Random.Int(5));
+			}
+		}
+
 	}
 
 	public boolean shopSpawned(){
