@@ -50,6 +50,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.journal.RegionLorePage;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.CrystalKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.CrackedSpyglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MimicTooth;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrinketCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
@@ -672,6 +673,19 @@ public abstract class RegularLevel extends Level {
 
 				int pos = Random.element(candidateCells);
 				mobs.add(Mimic.spawnAt(pos, EbonyMimic.class, false));
+			}
+		Random.popGenerator();
+
+		//extra spyglass loot
+		Random.pushGenerator(Random.Long());
+			int items = (int)(Random.Float() + CrackedSpyglass.extraLootChance());
+			for (int i = 0; i < items; i++){
+				int cell = randomDropCell();
+				if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
+					map[cell] = Terrain.GRASS;
+					losBlocking[cell] = false;
+				}
+				drop( Generator.randomUsingDefaults(), cell).hidden = true;
 			}
 		Random.popGenerator();
 

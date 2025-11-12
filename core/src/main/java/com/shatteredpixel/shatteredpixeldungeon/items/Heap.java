@@ -77,6 +77,7 @@ public class Heap implements Bundlable {
 	public boolean seen = false;
 	public boolean haunted = false;
 	public boolean autoExplored = false; //used to determine if this heap should count for exploration bonus
+	public boolean hidden = false; //sets alpha to 15%
 	
 	public LinkedList<Item> items = new LinkedList<>();
 	
@@ -150,6 +151,7 @@ public class Heap implements Bundlable {
 	}
 	
 	public void drop( Item item ) {
+		hidden = false;
 		
 		if (item.stackable && type != Type.FOR_SALE) {
 			
@@ -183,6 +185,7 @@ public class Heap implements Bundlable {
 	}
 	
 	public void replace( Item a, Item b ) {
+		hidden = false;
 		int index = items.indexOf( a );
 		if (index != -1) {
 			items.remove( index );
@@ -197,6 +200,7 @@ public class Heap implements Bundlable {
 	}
 	
 	public void remove( Item a ){
+		hidden = false;
 		items.remove(a);
 		if (items.isEmpty()){
 			destroy();
@@ -206,6 +210,7 @@ public class Heap implements Bundlable {
 	}
 	
 	public void burn() {
+		hidden = false;
 
 		if (type != Type.HEAP) {
 			return;
@@ -257,6 +262,7 @@ public class Heap implements Bundlable {
 
 	//Note: should not be called to initiate an explosion, but rather by an explosion that is happening.
 	public void explode() {
+		hidden = false;
 
 		//breaks open most standard containers, mimics die.
 		if (type == Type.CHEST || type == Type.SKELETON) {
@@ -415,6 +421,7 @@ public class Heap implements Bundlable {
 	private static final String ITEMS	= "items";
 	private static final String HAUNTED	= "haunted";
 	private static final String AUTO_EXPLORED	= "auto_explored";
+	private static final String HIDDEN	= "hidden";
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -440,6 +447,7 @@ public class Heap implements Bundlable {
 		
 		haunted = bundle.getBoolean( HAUNTED );
 		autoExplored = bundle.getBoolean( AUTO_EXPLORED );
+		hidden = bundle.getBoolean( HIDDEN );
 	}
 
 	@Override
@@ -450,6 +458,7 @@ public class Heap implements Bundlable {
 		bundle.put( ITEMS, items );
 		bundle.put( HAUNTED, haunted );
 		bundle.put( AUTO_EXPLORED, autoExplored );
+		bundle.put( HIDDEN, hidden );
 	}
 	
 }
