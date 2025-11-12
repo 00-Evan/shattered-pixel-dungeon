@@ -57,7 +57,7 @@ public class CrackedSpyglass extends Trinket{
 		if (level <= -1){
 			return 0;
 		} else {
-			return 0.4f*(level+1);
+			return 0.375f*(level+1);
 		}
 	}
 
