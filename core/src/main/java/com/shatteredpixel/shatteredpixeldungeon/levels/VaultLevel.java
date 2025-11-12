@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.items.quest.EscapeCrystal;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 
 public class VaultLevel extends DeadEndLevel { //for now
@@ -49,8 +48,6 @@ public class VaultLevel extends DeadEndLevel { //for now
 
 		int entrance = 5 * width() + 5 / 2 + 1;
 		map[entrance] = Terrain.WATER; //override entrance tile
-
-		drop(new EscapeCrystal(), entrance - 2*width);
 		return true;
 	}
 

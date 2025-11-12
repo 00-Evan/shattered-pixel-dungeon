@@ -30,8 +30,10 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 
@@ -65,6 +67,8 @@ public class EscapeCrystal extends Item {
 
 				Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 
+				restoreHeroBelongings(hero);
+
 				Level.beforeTransition();
 				InterlevelScene.curTransition = new LevelTransition(Dungeon.level,
 						hero.pos,
@@ -82,6 +86,46 @@ public class EscapeCrystal extends Item {
 
 	}
 
+	public static String BELONGINGS = "belongings";
+	public static String QUICKSLOTS = "quickslots";
+	public static String GOLD       = "gold";
+	public static String ENERGY     = "energy";
+
+	public void storeHeroBelongings( Hero hero ){
+		storedItems = new Bundle();
+
+		Bundle belongings = new Bundle();
+		hero.belongings.storeInBundle(belongings);
+		storedItems.put(BELONGINGS, belongings);
+
+		Bundle quickslots = new Bundle();
+		Dungeon.quickslot.storePlaceholders(quickslots);
+		storedItems.put(QUICKSLOTS, quickslots);
+
+		storedItems.put(GOLD, Dungeon.gold);
+		storedItems.put(ENERGY, Dungeon.energy);
+
+		Dungeon.quickslot.reset();
+		QuickSlotButton.reset();
+		Dungeon.gold = Dungeon.energy = 0;
+		hero.belongings.clear();
+	}
+
+	public void restoreHeroBelongings( Hero hero ){
+		hero.belongings.clear();
+
+		Dungeon.quickslot.reset();
+		Dungeon.quickslot.restorePlaceholders(storedItems.getBundle(QUICKSLOTS));
+		QuickSlotButton.reset();
+
+		Dungeon.hero.belongings.restoreFromBundle(storedItems.getBundle(BELONGINGS));
+
+		Dungeon.gold = storedItems.getInt(GOLD);
+		Dungeon.energy = storedItems.getInt(ENERGY);
+
+		storedItems = null;
+	}
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
@@ -92,4 +136,19 @@ public class EscapeCrystal extends Item {
 		return true;
 	}
 
+	public Bundle storedItems;
+
+	public static String STORED_ITEMS = "stored_items";
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put(STORED_ITEMS, storedItems);
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		storedItems = bundle.getBundle(STORED_ITEMS);
+	}
 }
