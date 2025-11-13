@@ -776,6 +776,10 @@ abstract public class MissileWeapon extends Weapon {
 	//also used by liquid metal crafting to track when a set is consumed
 	public static class UpgradedSetTracker extends Buff {
 
+		{
+			revivePersists = true;
+		}
+
 		public HashMap<Long, Integer> levelThresholds = new HashMap<>();
 
 		public static boolean pickupValid(Hero h, MissileWeapon w){
