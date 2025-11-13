@@ -144,7 +144,7 @@ public class ItemSpriteSheet {
 	public static final int IRON_KEY        = MISC_CONSUMABLE +7;
 	public static final int GOLDEN_KEY      = MISC_CONSUMABLE +8;
 	public static final int CRYSTAL_KEY     = MISC_CONSUMABLE +9;
-	public static final int SKELETON_KEY    = MISC_CONSUMABLE +10;
+	public static final int WORN_KEY        = MISC_CONSUMABLE +10;
 	public static final int MASK            = MISC_CONSUMABLE +11;
 	public static final int CROWN           = MISC_CONSUMABLE +12;
 	public static final int AMULET          = MISC_CONSUMABLE +13;
@@ -171,7 +171,7 @@ public class ItemSpriteSheet {
 		assignItemRect(IRON_KEY,        8,  14);
 		assignItemRect(GOLDEN_KEY,      8,  14);
 		assignItemRect(CRYSTAL_KEY,     8,  14);
-		assignItemRect(SKELETON_KEY,    8,  14);
+		assignItemRect(WORN_KEY,        8,  14);
 		assignItemRect(MASK,            11,  9);
 		assignItemRect(CROWN,           13,  7);
 		assignItemRect(AMULET,          16, 16);

@@ -47,6 +47,11 @@ public class ShatteredPixelDungeon extends Game {
 	public ShatteredPixelDungeon( PlatformSupport platform ) {
 		super( sceneClass == null ? WelcomeScene.class : sceneClass, platform );
 
+		//pre-v3.3.0
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.keys.WornKey.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey" );
+
 		//pre-v2.5.3
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDetectMagic.class,

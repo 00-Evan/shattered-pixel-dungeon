@@ -113,7 +113,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.CrystalKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.WornKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
@@ -1219,7 +1219,7 @@ public class Hero extends Char {
 				hasKey = true;
 
 			} else if (door == Terrain.LOCKED_EXIT
-					&& Notes.keyCount(new SkeletonKey(Dungeon.depth)) > 0) {
+					&& Notes.keyCount(new WornKey(Dungeon.depth)) > 0) {
 
 				hasKey = true;
 				
@@ -2345,7 +2345,7 @@ public class Hero extends Char {
 						CellEmitter.get( doorCell ).start( Speck.factory( Speck.DISCOVER ), 0.025f, 20 );
 					}
 				} else {
-					hasKey = Notes.remove(new SkeletonKey(Dungeon.depth));
+					hasKey = Notes.remove(new WornKey(Dungeon.depth));
 					if (hasKey) Level.set(doorCell, Terrain.UNLOCKED_EXIT);
 				}
 				
