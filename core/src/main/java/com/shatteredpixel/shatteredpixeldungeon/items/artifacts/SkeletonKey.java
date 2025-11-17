@@ -1,0 +1,475 @@
+/*
+ * Pixel Dungeon
+ * Copyright (C) 2012-2015 Oleg Dolya
+ *
+ * Shattered Pixel Dungeon
+ * Copyright (C) 2014-2025 Evan Debenham
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ */
+
+package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
+
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.WornKey;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
+
+import java.util.ArrayList;
+
+//TODO needs a way to handle the excess keys it can general
+public class SkeletonKey extends Artifact {
+
+	{
+		image = ItemSpriteSheet.ARTIFACT_KEY;
+
+		levelCap = 5;
+
+		charge = 3+level();
+		partialCharge = 0;
+		chargeCap = 3+level();
+
+		defaultAction = AC_INSERT;
+	}
+
+	public static final String AC_INSERT = "INSERT";
+
+	@Override
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions(hero);
+		if (isEquipped(hero)
+				&& charge > 0
+				&& hero.buff(MagicImmune.class) == null
+				&& !cursed) {
+			actions.add(AC_INSERT);
+		}
+		return actions;
+	}
+
+	@Override
+	public void execute(Hero hero, String action) {
+		super.execute(hero, action);
+
+		if (hero.buff(MagicImmune.class) != null) return;
+
+		if (action.equals(AC_INSERT)){
+
+			curUser = hero;
+
+			if (!isEquipped( hero )) {
+				GLog.i( Messages.get(Artifact.class, "need_to_equip") );
+
+			} else if (charge < 1) {
+				GLog.i( Messages.get(this, "no_charge") );
+
+			} else if (cursed) {
+				GLog.w( Messages.get(this, "cursed") );
+
+			} else {
+				GameScene.selectCell(targeter);
+			}
+
+		}
+	}
+
+	public CellSelector.Listener targeter = new CellSelector.Listener(){
+
+		@Override
+		public void onSelect(Integer target) {
+
+			if (target != null && (Dungeon.level.visited[target] || Dungeon.level.mapped[target])){
+
+				if (target == curUser.pos){
+					GLog.w(Messages.get(SkeletonKey.class, "invalid_target"));
+					return;
+				}
+
+				if (Dungeon.level.adjacent(target, curUser.pos)) {
+					if (Dungeon.level.map[target] == Terrain.LOCKED_EXIT){
+						GLog.w(Messages.get(SkeletonKey.class, "wont_open"));
+						return;
+					}
+					if (Dungeon.level.map[target] == Terrain.LOCKED_DOOR){
+						if (Dungeon.level.locked){
+							GLog.w(Messages.get(SkeletonKey.class, "wont_open"));
+							return;
+						}
+						Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
+						curUser.sprite.operate(target, new Callback() {
+							@Override
+							public void call() {
+								Level.set(target, Terrain.DOOR);
+								GameScene.updateMap(target);
+								charge -= 1;
+								curUser.spendAndNext(Actor.TICK);
+								curUser.sprite.idle();
+							}
+						});
+						curUser.busy();
+						return;
+
+					} else if (Dungeon.level.map[target] == Terrain.CRYSTAL_DOOR) {
+
+						if (charge < 4) {
+							GLog.w(Messages.get(SkeletonKey.class, "crystal_charges"));
+							return;
+						}
+						Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
+						curUser.sprite.operate(target, new Callback() {
+							@Override
+							public void call() {
+								Level.set(target, Terrain.EMPTY);
+								GameScene.updateMap(target);
+								charge -= 4;
+								Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+								CellEmitter.get( target ).start( Speck.factory( Speck.DISCOVER ), 0.025f, 20 );
+								curUser.spendAndNext(Actor.TICK);
+								curUser.sprite.idle();
+							}
+						});
+						curUser.busy();
+						return;
+					} else if (Dungeon.level.map[target] == Terrain.DOOR || Dungeon.level.map[target] == Terrain.OPEN_DOOR){
+
+						if (charge < 2) {
+							GLog.w(Messages.get(SkeletonKey.class, "lock_charges"));
+							return;
+						}
+
+						//attempt to knock back char
+						if (Actor.findChar(target) != null){
+							int pushDIR = target - curUser.pos;
+							Ballistica push = new Ballistica(target, target + pushDIR, Ballistica.PROJECTILE);
+							WandOfBlastWave.throwChar(Actor.findChar(target), push, 1, false, false, this);
+							//TODO what about pushing to the side?
+							//TODO fail if there's no push DIR?
+						}
+
+						Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
+						curUser.sprite.operate(target, new Callback() {
+							@Override
+							public void call() {
+								Level.set(target, Terrain.LOCKED_DOOR);
+								GameScene.updateMap(target);
+								charge -= 2;
+								curUser.spendAndNext(Actor.TICK);
+								curUser.sprite.idle();
+							}
+						});
+						curUser.busy();
+						return;
+
+					} else if (Dungeon.level.heaps.get(target) != null && Dungeon.level.heaps.get(target).type == Heap.Type.LOCKED_CHEST){
+						if (charge < 2) {
+							GLog.w(Messages.get(SkeletonKey.class, "gold_charges"));
+							return;
+						}
+						Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
+						curUser.sprite.operate(target, new Callback() {
+							@Override
+							public void call() {
+								Dungeon.level.heaps.get(target).open(curUser);
+								charge -= 2;
+								curUser.spendAndNext(Actor.TICK);
+								curUser.sprite.idle();
+							}
+						});
+						curUser.busy();
+						return;
+
+					} else if (Dungeon.level.heaps.get(target) != null && Dungeon.level.heaps.get(target).type == Heap.Type.CRYSTAL_CHEST){
+						if (charge < 4) {
+							GLog.w(Messages.get(SkeletonKey.class, "crystal_charges"));
+							return;
+						}
+						Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
+						curUser.sprite.operate(target, new Callback() {
+							@Override
+							public void call() {
+								Dungeon.level.heaps.get(target).open(curUser);
+								charge -= 4;
+								curUser.spendAndNext(Actor.TICK);
+								curUser.sprite.idle();
+							}
+						});
+						curUser.busy();
+						return;
+
+					}
+				}
+
+				if (charge < 2){
+					GLog.w(Messages.get(SkeletonKey.class, "wall_charges"));
+					return;
+				}
+
+				int closest = curUser.pos;
+				int closestIdx = -1;
+
+				for (int i = 0; i < PathFinder.CIRCLE8.length; i++){
+					int ofs = PathFinder.CIRCLE8[i];
+					if (Dungeon.level.trueDistance(target, curUser.pos+ofs) < Dungeon.level.trueDistance(target, closest)){
+						closest = curUser.pos+ofs;
+						closestIdx = i;
+					}
+				}
+
+				int knockBackDir = PathFinder.CIRCLE8[closestIdx];
+
+				if (Dungeon.level.solid[closest]){
+					GLog.w(Messages.get(SkeletonKey.class, "invalid_target"));
+					return;
+				}
+
+				int finalClosestIdx = closestIdx;
+				Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
+				curUser.sprite.operate(target, new Callback() {
+					@Override
+					public void call() {
+						placeWall(curUser.pos+PathFinder.CIRCLE8[finalClosestIdx], knockBackDir);
+						placeWall(curUser.pos+PathFinder.CIRCLE8[(finalClosestIdx +7)%8], knockBackDir);
+						placeWall(curUser.pos+PathFinder.CIRCLE8[(finalClosestIdx +1)%8], knockBackDir);
+
+						//if we're in a diagonal direction
+						if (finalClosestIdx % 2 == 0){
+							placeWall(curUser.pos+2*PathFinder.CIRCLE8[(finalClosestIdx +7)%8], knockBackDir);
+							placeWall(curUser.pos+2*PathFinder.CIRCLE8[(finalClosestIdx +1)%8], knockBackDir);
+						}
+
+						charge -= 2;
+
+						Dungeon.observe();
+						GameScene.updateFog();
+						Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+
+						curUser.spendAndNext(Actor.TICK);
+						curUser.sprite.idle();
+					}
+				});
+				curUser.busy();
+
+			}
+
+		}
+
+		@Override
+		public String prompt() {
+			return Messages.get(SkeletonKey.class, "prompt");
+		}
+	};
+
+	@Override
+	protected ArtifactBuff passiveBuff() {
+		return new keyRecharge();
+	}
+
+	@Override
+	public void charge(Hero target, float amount) {
+		super.charge(target, amount); //TODO
+	}
+
+	@Override
+	public String desc() {
+		String desc = super.desc();
+
+		if ( isEquipped (Dungeon.hero) ){
+			if (cursed){
+				desc += "\n\n" + Messages.get(this, "desc_cursed");
+			} else {
+				desc += "\n\n" + Messages.get(this, "desc_worn"); //TODO probably want more info on making walls
+			}
+		}
+
+		return desc;
+	}
+
+	public class keyRecharge extends ArtifactBuff {
+		@Override
+		public boolean act() {
+			if (charge < chargeCap
+					&& !cursed
+					&& target.buff(MagicImmune.class) == null
+					&& Regeneration.regenOn()) {
+				//120 turns to charge at full, 60 turns to charge at 0/8
+				float chargeGain = 1 / (120f - (chargeCap - charge)*7.5f);
+				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
+				partialCharge += chargeGain;
+
+				while (partialCharge >= 1) {
+					partialCharge --;
+					charge ++;
+
+					if (charge == chargeCap){
+						partialCharge = 0;
+					}
+				}
+			}
+
+			updateQuickslot();
+
+			spend( TICK );
+
+			return true;
+		}
+
+		//TODO either finish this or think of a different levelling mechanic
+		public void keyUsed(Key key ){
+			if (level() == levelCap){
+				return;
+			}
+
+			if (key instanceof IronKey){
+				exp += 3;
+			} else if (key instanceof WornKey){
+				exp += 5;
+			} else {
+				exp += 2;
+			}
+
+			if (exp >= 5 + 5*level()){
+				exp -= 5 + 5*level();
+				upgrade();
+			}
+
+		}
+	}
+
+	private void placeWall( int pos, int knockbackDIR ){
+		if (!Dungeon.level.solid[pos]) { //TODO this prevents wall stacking
+			//TODO 10 or 20 turns?
+			GameScene.add(Blob.seed(pos, 20, KeyWall.class));
+
+			Char ch = Actor.findChar(pos);
+			if (ch != null && ch.alignment == Char.Alignment.ENEMY){
+				WandOfBlastWave.throwChar(ch, new Ballistica(pos, pos+knockbackDIR, Ballistica.PROJECTILE), 1, false, false, this);
+			}
+		}
+	}
+
+	public static class KeyWall extends Blob {
+
+		{
+			alwaysVisible = true;
+		}
+
+		@Override
+		protected void evolve() {
+
+			int cell;
+			boolean cellEnded = false;
+
+			Level l = Dungeon.level;
+			for (int i = area.left; i < area.right; i++){
+				for (int j = area.top; j < area.bottom; j++){
+					cell = i + j*l.width();
+					off[cell] = cur[cell] > 0 ? cur[cell] - 1 : 0;
+
+					if (cur[cell] > 0 && off[cell] == 0){
+						cellEnded = true;
+					}
+
+					//caps at 20
+					//TODO or just one wall at a time?
+					off[cell] = Math.min(off[cell], 19);
+
+					volume += off[cell];
+
+					l.losBlocking[cell] = off[cell] > 0 || (Terrain.flags[l.map[cell]] & Terrain.LOS_BLOCKING) != 0;
+					l.solid[cell] = off[cell] > 0 || (Terrain.flags[l.map[cell]] & Terrain.SOLID) != 0;
+					l.passable[cell] = off[cell] == 0 && (Terrain.flags[l.map[cell]] & Terrain.PASSABLE) != 0;
+					l.avoid[cell] = off[cell] == 0 && (Terrain.flags[l.map[cell]] & Terrain.AVOID) != 0;
+				}
+			}
+
+			if (cellEnded){
+				Dungeon.observe();
+			}
+		}
+
+		@Override
+		public void seed(Level level, int cell, int amount) {
+			super.seed(level, cell, amount);
+			level.losBlocking[cell] = cur[cell] > 0 || (Terrain.flags[level.map[cell]] & Terrain.LOS_BLOCKING) != 0;
+			level.solid[cell] = cur[cell] > 0 || (Terrain.flags[level.map[cell]] & Terrain.SOLID) != 0;
+			level.passable[cell] = cur[cell] == 0 && (Terrain.flags[level.map[cell]] & Terrain.PASSABLE) != 0;
+			level.avoid[cell] = cur[cell] == 0 && (Terrain.flags[level.map[cell]] & Terrain.AVOID) != 0;
+		}
+
+		@Override
+		public void clear(int cell) {
+			super.clear(cell);
+			if (cur == null) return;
+			Level l = Dungeon.level;
+			l.losBlocking[cell] = cur[cell] > 0 || (Terrain.flags[l.map[cell]] & Terrain.LOS_BLOCKING) != 0;
+			l.solid[cell] = cur[cell] > 0 || (Terrain.flags[l.map[cell]] & Terrain.SOLID) != 0;
+			l.passable[cell] = cur[cell] == 0 && (Terrain.flags[l.map[cell]] & Terrain.PASSABLE) != 0;
+			l.avoid[cell] = cur[cell] == 0 && (Terrain.flags[l.map[cell]] & Terrain.AVOID) != 0;
+		}
+
+		@Override
+		public void fullyClear() {
+			super.fullyClear();
+			Dungeon.level.buildFlagMaps();
+		}
+
+		@Override
+		public void onBuildFlagMaps(Level l) {
+			if (volume > 0){
+				for (int i=0; i < l.length(); i++) {
+					l.losBlocking[i] = l.losBlocking[i] || cur[i] > 0;
+					l.solid[i] = l.solid[i] || cur[i] > 0;
+					l.passable[i] = l.passable[i] && cur[i] == 0;
+					l.avoid[i] = l.avoid[i] && cur[i] == 0;
+				}
+			}
+		}
+
+		@Override
+		public void use(BlobEmitter emitter) {
+			super.use( emitter );
+			emitter.pour( MagicMissile.WhiteParticle.WALL, 0.02f ); //TODO
+		}
+
+		@Override
+		public String tileDesc() {
+			return Messages.get(this, "desc");
+		}
+
+	}
+}
