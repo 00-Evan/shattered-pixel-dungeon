@@ -1970,6 +1970,15 @@ public class Hero extends Char {
 			for (Item i : belongings) {
 				i.onHeroGainExp(percent, this);
 			}
+
+            // -------------------------------------------------------
+            // [NEW] 在這裡加入武器熟練度邏輯 (Mastery Logic)
+            // 只有當獲得經驗值的來源不是喝藥水時 (即殺怪時)
+            if (belongings.weapon instanceof Weapon) {
+                ((Weapon)belongings.weapon).incrementKillCount();
+            }
+            // -------------------------------------------------------
+
 			if (buff(Talent.RejuvenatingStepsFurrow.class) != null){
 				buff(Talent.RejuvenatingStepsFurrow.class).countDown(percent*200f);
 				if (buff(Talent.RejuvenatingStepsFurrow.class).count() <= 0){

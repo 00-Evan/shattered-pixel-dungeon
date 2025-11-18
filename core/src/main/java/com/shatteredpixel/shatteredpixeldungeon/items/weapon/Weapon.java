@@ -78,6 +78,9 @@ import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
+// 加入在 import 區域
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -111,6 +114,10 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 	
 	public Augment augment = Augment.NONE;
+    // --- [NEW] 熟練度系統變數 ---
+    public int masteryLevel = 0; // 當前熟練等級
+    public int killCount = 0;    // 當前擊殺數
+    // --------------------------
 
 	protected int usesToID(){
 		return 20;
@@ -220,6 +227,10 @@ abstract public class Weapon extends KindOfWeapon {
 	private static final String CURSE_INFUSION_BONUS = "curse_infusion_bonus";
 	private static final String MASTERY_POTION_BONUS = "mastery_potion_bonus";
 	private static final String AUGMENT	        = "augment";
+    // --- [NEW] 存檔 Key ---
+    private static final String MASTERY_LEVEL = "mastery_level";
+    private static final String KILL_COUNT = "kill_count";
+    // ---------------------
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -231,6 +242,10 @@ abstract public class Weapon extends KindOfWeapon {
 		bundle.put( CURSE_INFUSION_BONUS, curseInfusionBonus );
 		bundle.put( MASTERY_POTION_BONUS, masteryPotionBonus );
 		bundle.put( AUGMENT, augment );
+        // --- [NEW] 儲存熟練度 ---
+        bundle.put( MASTERY_LEVEL, masteryLevel );
+        bundle.put( KILL_COUNT, killCount );
+        // ----------------------
 	}
 	
 	@Override
@@ -244,6 +259,10 @@ abstract public class Weapon extends KindOfWeapon {
 		masteryPotionBonus = bundle.getBoolean( MASTERY_POTION_BONUS );
 
 		augment = bundle.getEnum(AUGMENT, Augment.class);
+        // --- [NEW] 讀取熟練度 ---
+        masteryLevel = bundle.getInt( MASTERY_LEVEL );
+        killCount = bundle.getInt( KILL_COUNT );
+        // ----------------------
 	}
 	
 	@Override
@@ -505,6 +524,96 @@ abstract public class Weapon extends KindOfWeapon {
 			return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.glowing() : null;
 		}
 	}
+    // --- [NEW] 判斷是否啟用熟練度 ---
+    // 只有「近戰武器 (MeleeWeapon)」且「不是法師之杖 (MagesStaff)」才啟用
+    public boolean usesMasterySystem() {
+        return (this instanceof MeleeWeapon) && !(this instanceof MagesStaff);
+    }
+    // ------------------------------
+
+    // --- [NEW] 熟練度核心邏輯 ---
+
+    // 1. 計算下一級需要的擊殺數
+    public int killsNeededForMastery() {
+        int baseKills;
+
+        // [修正] tier 變數在 Weapon 類別中不存在，我們改用 STRReq(0) 來反推。
+        // STRReq(0) 代表這把武器在 +0 狀態下的力量需求。
+        // 公式：Tier = (基礎力量 - 8) / 2
+        int estimatedTier = (STRReq(0) - 8) / 2;
+
+        // 防呆：確保 Tier 最小為 1 (避免某些特殊武器計算出負數)
+        if (estimatedTier < 1) estimatedTier = 1;
+
+        if (estimatedTier <= 2) {
+            baseKills = 5; // T1, T2
+        } else if (estimatedTier <= 4) {
+            baseKills = 15; // T3, T4
+        } else {
+            baseKills = 30; // T5
+        }
+
+        // 公式：初始值 * (1.2 ^ 當前熟練度等級)
+        return (int) (baseKills * Math.pow(1.2, masteryLevel));
+    }
+
+    // 2. 增加擊殺數 (這要在 Hero.java 裡呼叫)
+    public void incrementKillCount() {
+        // [修改] 如果不適用熟練度系統，直接離開
+        if (!usesMasterySystem()) return;
+
+        killCount++;
+        if (killCount >= killsNeededForMastery()) {
+            levelUpMastery();
+        }
+    }
+
+    // 3. 升級執行
+    public void levelUpMastery() {
+        killCount = 0; // 歸零 (或者你可以設計保留溢出的擊殺數)
+        masteryLevel++;
+        // 可以在這裡加入 GLog.p("你的武器變得更順手了！");
+        GLog.p( "Weapon mastery increased to level " + masteryLevel + "!" );
+    }
+
+    // 4. 傷害加成 (覆寫 max 方法)
+    // 這裡我們簡單設定：每 1 級熟練度 +1 最大傷害 (你可以改強一點)
+    @Override
+    public int min() {
+        int damage = super.min();
+        // 每 2 級熟練度 +1 最小傷害 (避免最小傷害超過最大傷害)
+        damage += masteryLevel / 2;
+        return damage;
+    }
+
+    @Override
+    public int max() {
+        int damage = super.max();
+        // [修改] 只有適用系統的武器才加傷害
+        if (usesMasterySystem()) {
+            damage += masteryLevel * 1;
+        }
+        return damage;
+    }
+
+    // 5. 修改描述 (讓玩家看得到進度)
+    @Override
+    public String desc() {
+        String originalDesc = super.desc();
+        // [修改] 如果不適用熟練度系統，直接回傳原版描述，不加文字
+        if (!usesMasterySystem()) return originalDesc;
+        StringBuilder sb = new StringBuilder(originalDesc);
+
+        sb.append("\n\n");
+        // 使用黃色或亮青色來強調
+        sb.append("Mastery Level: ").append(masteryLevel).append("\n");
+
+        // 如果快升級了，可以改變進度條顏色
+        sb.append("Progress: ").append(killCount).append(" / ").append(killsNeededForMastery());
+
+        return sb.toString();
+    }
+    // --------------------------
 
 	public static abstract class Enchantment implements Bundlable {
 
