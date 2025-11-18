@@ -586,18 +586,26 @@ abstract public class Weapon extends KindOfWeapon {
     @Override
     public int min() {
         int damage = super.min();
-        // 每 2 級熟練度 +1 最小傷害 (避免最小傷害超過最大傷害)
-        damage += masteryLevel / 2;
+
+        // [修正] 這裡也要加上判斷，確保只有近戰武器生效
+        if (usesMasterySystem()) {
+            // 每 2 級熟練度 +1 最小傷害
+            damage += masteryLevel / 2;
+        }
+
         return damage;
     }
 
     @Override
     public int max() {
         int damage = super.max();
-        // [修改] 只有適用系統的武器才加傷害
+
+        // 只有適用系統的武器才加傷害
         if (usesMasterySystem()) {
-            damage += masteryLevel * 1;
+            // 每 1 級熟練度 +1 最大傷害
+            damage += masteryLevel;
         }
+
         return damage;
     }
 
