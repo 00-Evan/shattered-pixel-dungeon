@@ -561,7 +561,12 @@ abstract public class Weapon extends KindOfWeapon {
     public void incrementKillCount() {
         // [修改] 如果不適用熟練度系統，直接離開
         if (!usesMasterySystem()) return;
-
+        // --- [NEW] 防刷怪限制：樓層上限 ---
+        // 如果熟練度等級已經 >= 當前樓層數，就不再增加擊殺數
+        // Dungeon.depth 是當前樓層 (1, 2, 3...)
+        if (masteryLevel >= Dungeon.depth) {
+            return;
+        }
         killCount++;
         if (killCount >= killsNeededForMastery()) {
             levelUpMastery();

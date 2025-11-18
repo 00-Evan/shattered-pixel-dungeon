@@ -1974,7 +1974,7 @@ public class Hero extends Char {
             // -------------------------------------------------------
             // [NEW] 在這裡加入武器熟練度邏輯 (Mastery Logic)
             // 只有當獲得經驗值的來源不是喝藥水時 (即殺怪時)
-            if (belongings.weapon instanceof Weapon) {
+            if (exp > 0 && belongings.weapon instanceof Weapon) {
                 ((Weapon)belongings.weapon).incrementKillCount();
             }
             // -------------------------------------------------------
