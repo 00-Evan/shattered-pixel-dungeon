@@ -231,7 +231,12 @@ public class Hero extends Char {
 	public int exp = 0;
 	
 	public int HTBoost = 0;
-	
+    public int t3ComboCounter = 0;
+    public float t3CooldownTime = 0f;
+
+    private static final String T3_COMBO = "t3_combo";
+    private static final String T3_COOLDOWN = "t3_cooldown";
+
 	private ArrayList<Mob> visibleEnemies;
 
 	//This list is maintained so that some logic checks can be skipped
@@ -313,6 +318,9 @@ public class Hero extends Char {
 		bundle.put( EXPERIENCE, exp );
 		
 		bundle.put( HTBOOST, HTBoost );
+        // [NEW] 儲存 T3 數據
+        bundle.put( T3_COMBO, t3ComboCounter );
+        bundle.put( T3_COOLDOWN, t3CooldownTime );
 
 		belongings.storeInBundle( bundle );
 	}
@@ -336,6 +344,9 @@ public class Hero extends Char {
 		defenseSkill = bundle.getInt( DEFENSE );
 		
 		STR = bundle.getInt( STRENGTH );
+        // [NEW] 讀取 T3 數據
+        t3ComboCounter = bundle.getInt( T3_COMBO );
+        t3CooldownTime = bundle.getFloat( T3_COOLDOWN );
 
 		belongings.restoreFromBundle( bundle );
 	}
@@ -1458,6 +1469,38 @@ public class Hero extends Char {
 	
 	@Override
 	public int attackProc( final Char enemy, int damage ) {
+
+        // --- [NEW] T3 連擊計數邏輯 (Combo Counter) ---
+        // 只有當拿著武器時才計算
+        if (belongings.weapon instanceof Weapon) {
+            Weapon w = (Weapon) belongings.weapon;
+
+            // 判斷：是否為適用熟練度的 T3 武器
+            // 注意：這裡我們呼叫 getWeaponTier()，這依賴你剛剛在 Weapon.java 加的方法
+            if (w.usesMasterySystem() && w.getWeaponTier() == 3) {
+                t3ComboCounter++;
+
+                // 設定上限 10
+                if (t3ComboCounter > 10) {
+                    t3ComboCounter = 10;
+                }
+
+                // (選用) 當集滿時給個提示
+                if (t3ComboCounter == 10) {
+                    GLog.p("Combo Ready!");
+                    Sample.INSTANCE.play(Assets.Sounds.CLICK); // 或是其他提示音
+                }
+
+            } else {
+                // 如果拿的不是 T3 武器 (例如換成了 T4)，連擊中斷歸零
+                t3ComboCounter = 0;
+            }
+        } else {
+            // 空手攻擊，連擊歸零
+            t3ComboCounter = 0;
+        }
+        // ---------------------------------------------
+
 		damage = super.attackProc( enemy, damage );
 
 		KindOfWeapon wep;

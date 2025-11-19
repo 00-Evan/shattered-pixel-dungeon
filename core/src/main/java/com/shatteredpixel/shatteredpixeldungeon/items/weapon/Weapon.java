@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
@@ -74,6 +75,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -84,6 +86,15 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import com.watabou.noosa.Game;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+// 特效與文字相關
+import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+// T3 Buff 檢查 (用於觸發特效)
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.T3MasteryBuff;
 
 abstract public class Weapon extends KindOfWeapon {
 
@@ -132,6 +143,52 @@ abstract public class Weapon extends KindOfWeapon {
 	
 	@Override
 	public int proc( Char attacker, Char defender, int damage ) {
+
+        // --- [NEW] 熟練度特效與爆擊系統 ---
+        if (usesMasterySystem() && attacker == Dungeon.hero) {
+            int tier = getWeaponTier();
+            boolean triggerVisuals = false;
+            String hitText = "";
+            int textColor = 0xFFFFFF; // 預設白色
+
+            // 1. T1/T2 爆擊邏輯 (機率觸發)
+            if (tier <= 2 && masteryLevel >= 6) {
+                // 機率: (等級 - 5) * 1% (例如 Lv10 = 5%)
+                float chance = (masteryLevel - 5) * 0.01f;
+                if (Random.Float() < chance) {
+                    damage = (int)(damage * 1.5f); // 傷害 1.5 倍
+                    triggerVisuals = true;
+                    hitText = "CRITICAL!";
+                    textColor = 0xFF4444; // 紅色
+                }
+            }
+            // 2. T3 穿透邏輯 (檢查是否有 Buff)
+            else if (tier == 3 && attacker.buff(T3MasteryBuff.class) != null) {
+                // 傷害邏輯已經在 Char.java 處理了(降防)，這裡只處理特效
+                triggerVisuals = true;
+                hitText = "PIERCE!";
+                textColor = 0xFFAA00; // 金黃色
+            }
+            // 3. T4/T5 邏輯 (可以在此擴充)
+
+            // --- 播放特效 ---
+            if (triggerVisuals) {
+                // A. 畫面震動 (強度 2, 時間 0.2秒)
+                PixelScene.shake(2, 0.2f);
+
+                // B. 播放重擊音效
+                Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG, 1.2f, 1.2f);
+
+                // C. 飄出文字 (在怪物頭頂)
+                if (defender.sprite != null) {
+                    FloatingText.show(defender.sprite.x, defender.sprite.y - 4, hitText, textColor);
+                }
+
+                // D. 噴出粒子特效 (星星)
+                CellEmitter.center(defender.pos).burst(Speck.factory(Speck.STAR), 5);
+            }
+        }
+        // ---------------------------------------------
 
 		boolean becameAlly = false;
 		boolean wasAlly = defender.alignment == Char.Alignment.ALLY;
@@ -529,31 +586,34 @@ abstract public class Weapon extends KindOfWeapon {
     public boolean usesMasterySystem() {
         return (this instanceof MeleeWeapon) && !(this instanceof MagesStaff);
     }
+    // --- [NEW] 取得武器階級 (Tier) ---
+    public int getWeaponTier() {
+        // 利用基礎力量需求反推 Tier
+        // T1=10, T2=12, T3=14, T4=16, T5=18
+        int baseStr = STRReq(0);
+        int tier = (baseStr - 8) / 2;
+
+        // 限制範圍在 1~5 之間 (防呆)
+        if (tier < 1) return 1;
+        if (tier > 5) return 5;
+        return tier;
+    }
     // ------------------------------
 
     // --- [NEW] 熟練度核心邏輯 ---
-
     // 1. 計算下一級需要的擊殺數
     public int killsNeededForMastery() {
         int baseKills;
+        int tier = getWeaponTier(); // 呼叫上面的新方法
 
-        // [修正] tier 變數在 Weapon 類別中不存在，我們改用 STRReq(0) 來反推。
-        // STRReq(0) 代表這把武器在 +0 狀態下的力量需求。
-        // 公式：Tier = (基礎力量 - 8) / 2
-        int estimatedTier = (STRReq(0) - 8) / 2;
-
-        // 防呆：確保 Tier 最小為 1 (避免某些特殊武器計算出負數)
-        if (estimatedTier < 1) estimatedTier = 1;
-
-        if (estimatedTier <= 2) {
+        if (tier <= 2) {
             baseKills = 5; // T1, T2
-        } else if (estimatedTier <= 4) {
+        } else if (tier <= 4) {
             baseKills = 15; // T3, T4
         } else {
             baseKills = 30; // T5
         }
 
-        // 公式：初始值 * (1.2 ^ 當前熟練度等級)
         return (int) (baseKills * Math.pow(1.2, masteryLevel));
     }
 
@@ -609,24 +669,93 @@ abstract public class Weapon extends KindOfWeapon {
         return damage;
     }
 
-    // 5. 修改描述 (讓玩家看得到進度)
+    // 5. 修改描述 (讓玩家看得到進度 + T3 狀態)
     @Override
     public String desc() {
         String originalDesc = super.desc();
-        // [修改] 如果不適用熟練度系統，直接回傳原版描述，不加文字
         if (!usesMasterySystem()) return originalDesc;
+
         StringBuilder sb = new StringBuilder(originalDesc);
 
         sb.append("\n\n");
-        // 使用黃色或亮青色來強調
         sb.append("Mastery Level: ").append(masteryLevel).append("\n");
-
-        // 如果快升級了，可以改變進度條顏色
         sb.append("Progress: ").append(killCount).append(" / ").append(killsNeededForMastery());
 
+        // --- [NEW] T3 專屬顯示邏輯 ---
+        if (getWeaponTier() == 3) {
+            sb.append("\n"); // 換行
+
+            // 檢查冷卻時間
+            // 注意：這裡假設你在 Hero.java 已經定義了 t3CooldownTime 和 t3ComboCounter
+            if (Dungeon.hero.t3CooldownTime > Actor.now()) {
+                int turnsLeft = (int)(Dungeon.hero.t3CooldownTime - Actor.now());
+                sb.append("Cooldown: ").append(turnsLeft).append(" turns");
+            } else {
+                // 顯示連擊數
+                sb.append("Combo: ");
+                if (Dungeon.hero.t3ComboCounter >= 10) {
+                    sb.append("READY (Use weapon to activate)");
+                } else {
+                    sb.append(Dungeon.hero.t3ComboCounter).append(" / 10");
+                }
+            }
+        }
         return sb.toString();
     }
     // --------------------------
+
+    // --- [NEW] 自訂按鈕系統 ---
+
+    // 1. 定義按鈕名稱
+    public static final String AC_ACTIVATE = "ACTIVATE";
+
+    // 2. 告訴遊戲：這把武器有哪些操作選項？
+    @Override
+    public ArrayList<String> actions(Hero hero) {
+        ArrayList<String> actions = super.actions(hero);
+
+        // 只有當：是 T3 武器 + 已裝備 + 連擊滿了 + 沒有冷卻
+        if (getWeaponTier() == 3 && isEquipped(hero)
+                && hero.t3ComboCounter >= 10
+                && hero.t3CooldownTime <= Actor.now()) {
+
+            // 在選單中加入 "ACTIVATE" 按鈕
+            actions.add(AC_ACTIVATE);
+        }
+
+        return actions;
+    }
+
+    // 3. 當玩家點擊按鈕時，執行什麼？
+    @Override
+    public void execute(Hero hero, String action) {
+
+        if (action.equals(AC_ACTIVATE)) {
+            // --- 執行 T3 技能邏輯 ---
+
+            // A. 設定冷卻 (60回合)
+            hero.t3CooldownTime = Actor.now() + 60;
+
+            // B. 重置連擊
+            hero.t3ComboCounter = 0;
+
+            // C. 顯示訊息 (測試用)
+            GLog.p("Controlled Fury Activated!");
+
+            // D. 播放音效
+            // Sample.INSTANCE.play(Assets.Sounds.CLICK);
+
+            // E. 施加 Buff (等你寫好 T3MasteryBuff 後再取消註解下面這行)
+            com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(hero, T3MasteryBuff.class).setup(hero, masteryLevel);
+
+            // 關閉背包視窗，回到遊戲
+            hero.spendAndNext(1f); // 花費 1 回合時間
+
+        } else {
+            // 如果不是我們的按鈕，就執行預設動作 (例如裝備/卸下)
+            super.execute(hero, action);
+        }
+    }
 
 	public static abstract class Enchantment implements Bundlable {
 

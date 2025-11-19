@@ -161,6 +161,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.T3MasteryBuff;
 
 public abstract class Char extends Actor {
 	
@@ -397,6 +398,22 @@ public abstract class Char extends Actor {
 					dr = 0;
 				}
 			}
+
+            // -------------------------------------------------------------
+            // [NEW] T3 熟練度：護甲穿透邏輯 (Armor Penetration)
+            // -------------------------------------------------------------
+            // 檢查攻擊者 (this) 身上是否有 T3 爆發狀態
+            if (this.buff(T3MasteryBuff.class) != null) {
+                // 取得穿透係數 (需確保 CRIT_PENETRATION 在 T3MasteryBuff 是 public 的)
+                float penetration = T3MasteryBuff.CRIT_PENETRATION;
+
+                // 減少敵人的防禦力 (例如: DR 10 * (1-0.5) = DR 5)
+                dr = Math.round(dr * (1f - penetration));
+
+                // (選用) 可以在這裡加個 Log 測試是否有觸發
+                GLog.i("Penetrated!");
+            }
+            // -------------------------------------------------------------
 
 			//we use a float here briefly so that we don't have to constantly round while
 			// potentially applying various multiplier effects
