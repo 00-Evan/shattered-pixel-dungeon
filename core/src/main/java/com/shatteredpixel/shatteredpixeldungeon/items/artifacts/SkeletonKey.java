@@ -74,7 +74,6 @@ public class SkeletonKey extends Artifact {
 	public ArrayList<String> actions(Hero hero) {
 		ArrayList<String> actions = super.actions(hero);
 		if (isEquipped(hero)
-				&& charge > 0
 				&& hero.buff(MagicImmune.class) == null
 				&& !cursed) {
 			actions.add(AC_INSERT);
@@ -94,9 +93,6 @@ public class SkeletonKey extends Artifact {
 
 			if (!isEquipped( hero )) {
 				GLog.i( Messages.get(Artifact.class, "need_to_equip") );
-
-			} else if (charge < 1) {
-				GLog.i( Messages.get(this, "no_charge") );
 
 			} else if (cursed) {
 				GLog.w( Messages.get(this, "cursed") );
@@ -130,6 +126,10 @@ public class SkeletonKey extends Artifact {
 							GLog.w(Messages.get(SkeletonKey.class, "wont_open"));
 							return;
 						}
+						if (charge < 1){
+							GLog.i( Messages.get(this, "iron_charge") );
+							return;
+						}
 						Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
 						curUser.sprite.operate(target, new Callback() {
 							@Override
@@ -144,10 +144,25 @@ public class SkeletonKey extends Artifact {
 						curUser.busy();
 						return;
 
+					} else if (Dungeon.level.map[target] == Terrain.HERO_LKD_DR) {
+
+						Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
+						curUser.sprite.operate(target, new Callback() {
+							@Override
+							public void call() {
+								Level.set(target, Terrain.DOOR);
+								GameScene.updateMap(target);
+								//no charge cost
+								curUser.spendAndNext(Actor.TICK);
+								curUser.sprite.idle();
+							}
+						});
+						curUser.busy();
+						return;
 					} else if (Dungeon.level.map[target] == Terrain.CRYSTAL_DOOR) {
 
-						if (charge < 4) {
-							GLog.w(Messages.get(SkeletonKey.class, "crystal_charges"));
+						if (charge < 5) {
+							GLog.i(Messages.get(SkeletonKey.class, "crystal_charges"));
 							return;
 						}
 						Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
@@ -156,7 +171,7 @@ public class SkeletonKey extends Artifact {
 							public void call() {
 								Level.set(target, Terrain.EMPTY);
 								GameScene.updateMap(target);
-								charge -= 4;
+								charge -= 5;
 								Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 								CellEmitter.get( target ).start( Speck.factory( Speck.DISCOVER ), 0.025f, 20 );
 								curUser.spendAndNext(Actor.TICK);
@@ -168,7 +183,7 @@ public class SkeletonKey extends Artifact {
 					} else if (Dungeon.level.map[target] == Terrain.DOOR || Dungeon.level.map[target] == Terrain.OPEN_DOOR){
 
 						if (charge < 2) {
-							GLog.w(Messages.get(SkeletonKey.class, "lock_charges"));
+							GLog.i(Messages.get(SkeletonKey.class, "lock_charges"));
 							return;
 						}
 
@@ -185,7 +200,7 @@ public class SkeletonKey extends Artifact {
 						curUser.sprite.operate(target, new Callback() {
 							@Override
 							public void call() {
-								Level.set(target, Terrain.LOCKED_DOOR);
+								Level.set(target, Terrain.HERO_LKD_DR);
 								GameScene.updateMap(target);
 								charge -= 2;
 								curUser.spendAndNext(Actor.TICK);
@@ -197,7 +212,7 @@ public class SkeletonKey extends Artifact {
 
 					} else if (Dungeon.level.heaps.get(target) != null && Dungeon.level.heaps.get(target).type == Heap.Type.LOCKED_CHEST){
 						if (charge < 2) {
-							GLog.w(Messages.get(SkeletonKey.class, "gold_charges"));
+							GLog.i(Messages.get(SkeletonKey.class, "gold_charges"));
 							return;
 						}
 						Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
@@ -214,8 +229,8 @@ public class SkeletonKey extends Artifact {
 						return;
 
 					} else if (Dungeon.level.heaps.get(target) != null && Dungeon.level.heaps.get(target).type == Heap.Type.CRYSTAL_CHEST){
-						if (charge < 4) {
-							GLog.w(Messages.get(SkeletonKey.class, "crystal_charges"));
+						if (charge < 5) {
+							GLog.i(Messages.get(SkeletonKey.class, "crystal_charges"));
 							return;
 						}
 						Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
@@ -223,7 +238,7 @@ public class SkeletonKey extends Artifact {
 							@Override
 							public void call() {
 								Dungeon.level.heaps.get(target).open(curUser);
-								charge -= 4;
+								charge -= 5;
 								curUser.spendAndNext(Actor.TICK);
 								curUser.sprite.idle();
 							}
@@ -235,7 +250,7 @@ public class SkeletonKey extends Artifact {
 				}
 
 				if (charge < 2){
-					GLog.w(Messages.get(SkeletonKey.class, "wall_charges"));
+					GLog.i(Messages.get(SkeletonKey.class, "wall_charges"));
 					return;
 				}
 

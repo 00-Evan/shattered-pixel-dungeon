@@ -1568,6 +1568,7 @@ public abstract class Level implements Bundlable {
 			case Terrain.FURROWED_GRASS:
 				return Messages.get(Level.class, "furrowed_grass_name");
 			case Terrain.LOCKED_DOOR:
+			case Terrain.HERO_LKD_DR:
 				return Messages.get(Level.class, "locked_door_name");
 			case Terrain.CRYSTAL_DOOR:
 				return Messages.get(Level.class, "crystal_door_name");
@@ -1618,6 +1619,7 @@ public abstract class Level implements Bundlable {
 			case Terrain.FURROWED_GRASS:
 				return Messages.get(Level.class, "high_grass_desc");
 			case Terrain.LOCKED_DOOR:
+			case Terrain.HERO_LKD_DR:
 				return Messages.get(Level.class, "locked_door_desc");
 			case Terrain.CRYSTAL_DOOR:
 				return Messages.get(Level.class, "crystal_door_desc");

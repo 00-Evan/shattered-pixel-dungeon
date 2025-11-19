@@ -833,7 +833,7 @@ public abstract class RegularLevel extends Level {
 			}
 		}
 
-		//it contains a barricade, locked door, or hidden door
+		//it contains a barricade, locked door (player locked doors are fine though), or hidden door
 		for (int i = 0; i < length; i++){
 			if (map[i] == Terrain.BARRICADE || map[i] == Terrain.LOCKED_DOOR || map[i] == Terrain.SECRET_DOOR){
 				//we use adjacent cells to find the room this is connected to
