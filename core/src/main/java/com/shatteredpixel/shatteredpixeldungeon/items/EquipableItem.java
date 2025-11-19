@@ -33,7 +33,8 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
-
+// [NEW] 加入這行
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import java.util.ArrayList;
 
 public abstract class EquipableItem extends Item {
@@ -77,6 +78,13 @@ public abstract class EquipableItem extends Item {
 			int slot = Dungeon.quickslot.getSlot( this );
 			slotOfUnequipped = -1;
 			doEquip(hero);
+            // --- [NEW] 換武器時重置 T3 連擊數 ---
+            // 判斷：如果這個被裝備的物品是「武器」，則重置連擊
+            if (this instanceof Weapon) {
+                hero.t3ComboCounter = 0;
+                // hero.t3CooldownTime = 0; // 如果你希望換武器也重置冷卻，可以把這行取消註解(通常不建議，防止規避冷卻)
+            }
+            // ----------------------------------
 			if (slot != -1) {
 				Dungeon.quickslot.setSlot( slot, this );
 				updateQuickslot();

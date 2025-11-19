@@ -152,9 +152,10 @@ abstract public class Weapon extends KindOfWeapon {
             int textColor = 0xFFFFFF; // 預設白色
 
             // 1. T1/T2 爆擊邏輯 (機率觸發)
-            if (tier <= 2 && masteryLevel >= 6) {
-                // 機率: (等級 - 5) * 1% (例如 Lv10 = 5%)
-                float chance = (masteryLevel - 5) * 0.01f;
+            if (tier <= 2 && masteryLevel >= 5) {
+                // 機率: (等級 - 3) * 2% (例如 Lv5 = 4%, Lv10 = 14%)
+                float chance = (masteryLevel - 3) * 0.02f;
+                if (chance > 0.5f) chance = 0.5f;
                 if (Random.Float() < chance) {
                     damage = (int)(damage * 1.5f); // 傷害 1.5 倍
                     triggerVisuals = true;
