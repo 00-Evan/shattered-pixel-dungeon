@@ -105,6 +105,10 @@ abstract public class Weapon extends KindOfWeapon {
 			return Math.round(dmg * damageFactor);
 		}
 
+		public float damageFactor(float dmg){
+			return dmg * damageFactor;
+		}
+
 		public float delayFactor(float dly){
 			return dly * delayFactor;
 		}
