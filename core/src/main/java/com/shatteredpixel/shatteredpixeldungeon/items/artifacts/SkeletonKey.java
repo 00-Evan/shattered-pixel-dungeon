@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -34,11 +35,15 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.CrystalKey;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.WornKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -48,10 +53,12 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 //TODO needs a way to handle the excess keys it can general
 public class SkeletonKey extends Artifact {
@@ -134,6 +141,7 @@ public class SkeletonKey extends Artifact {
 						curUser.sprite.operate(target, new Callback() {
 							@Override
 							public void call() {
+								Buff.affect(curUser, KeyReplacementTracker.class).processIronLockOpened();
 								Level.set(target, Terrain.DOOR);
 								GameScene.updateMap(target);
 								charge -= 1;
@@ -169,6 +177,7 @@ public class SkeletonKey extends Artifact {
 						curUser.sprite.operate(target, new Callback() {
 							@Override
 							public void call() {
+								Buff.affect(curUser, KeyReplacementTracker.class).processCrystalLockOpened();
 								Level.set(target, Terrain.EMPTY);
 								GameScene.updateMap(target);
 								charge -= 5;
@@ -219,6 +228,7 @@ public class SkeletonKey extends Artifact {
 						curUser.sprite.operate(target, new Callback() {
 							@Override
 							public void call() {
+								Buff.affect(curUser, KeyReplacementTracker.class).processGoldLockOpened();
 								Dungeon.level.heaps.get(target).open(curUser);
 								charge -= 2;
 								curUser.spendAndNext(Actor.TICK);
@@ -237,6 +247,7 @@ public class SkeletonKey extends Artifact {
 						curUser.sprite.operate(target, new Callback() {
 							@Override
 							public void call() {
+								Buff.affect(curUser, KeyReplacementTracker.class).processCrystalLockOpened();
 								Dungeon.level.heaps.get(target).open(curUser);
 								charge -= 5;
 								curUser.spendAndNext(Actor.TICK);
@@ -385,7 +396,7 @@ public class SkeletonKey extends Artifact {
 		}
 	}
 
-	private void placeWall( int pos, int knockbackDIR ){
+	private void placeWall(int pos, int knockbackDIR ){
 		if (!Dungeon.level.solid[pos]) { //TODO this prevents wall stacking
 			//TODO 10 or 20 turns?
 			GameScene.add(Blob.seed(pos, 20, KeyWall.class));
@@ -484,6 +495,111 @@ public class SkeletonKey extends Artifact {
 		@Override
 		public String tileDesc() {
 			return Messages.get(this, "desc");
+		}
+
+	}
+
+	public static class KeyReplacementTracker extends Buff {
+
+		public int[] ironKeysNeeded, goldenKeysNeeded, crystalKeysNeeded;
+
+		{
+			revivePersists = true;
+			ironKeysNeeded = new int[26];
+			Arrays.fill(ironKeysNeeded, -1);
+			goldenKeysNeeded = new int[26];
+			Arrays.fill(goldenKeysNeeded, -1);
+			crystalKeysNeeded = new int[26];
+			Arrays.fill(crystalKeysNeeded, -1);
+		}
+
+		public void setupKeysForDepth(){
+			ironKeysNeeded[Dungeon.depth] = 0;
+			goldenKeysNeeded[Dungeon.depth] = 0;
+			crystalKeysNeeded[Dungeon.depth] = 0;
+
+			for (Heap h : Dungeon.level.heaps.valueList()){
+				if (h.type == Heap.Type.LOCKED_CHEST){
+					goldenKeysNeeded[Dungeon.depth]++;
+				} else if (h.type == Heap.Type.CRYSTAL_CHEST){
+					crystalKeysNeeded[Dungeon.depth]++;
+				}
+			}
+
+			for (int i = 0; i < Dungeon.level.length(); i++){
+				if (Dungeon.level.map[i] == Terrain.LOCKED_DOOR){
+					ironKeysNeeded[Dungeon.depth]++;
+				} else if (Dungeon.level.map[i] == Terrain.CRYSTAL_DOOR){
+					crystalKeysNeeded[Dungeon.depth]++;
+				}
+			}
+		}
+
+		public void processIronLockOpened(){
+			if (ironKeysNeeded[Dungeon.depth] == -1){
+				setupKeysForDepth();
+			}
+			ironKeysNeeded[Dungeon.depth] -= 1;
+			processExcessKeys();
+		}
+
+		public void processGoldLockOpened(){
+			if (goldenKeysNeeded[Dungeon.depth] == -1){
+				setupKeysForDepth();
+			}
+			goldenKeysNeeded[Dungeon.depth] -= 1;
+			processExcessKeys();
+		}
+
+		public void processCrystalLockOpened(){
+			if (crystalKeysNeeded[Dungeon.depth] == -1){
+				setupKeysForDepth();
+			}
+			crystalKeysNeeded[Dungeon.depth] -= 1;
+			processExcessKeys();
+		}
+
+		public void processExcessKeys(){
+			int keysNeeded = Math.max(0, ironKeysNeeded[Dungeon.depth]);
+			boolean removed = false;
+			while (Notes.keyCount(new IronKey(Dungeon.depth)) > keysNeeded){
+				Notes.remove(new IronKey(Dungeon.depth));
+				removed = true;
+			}
+			keysNeeded = Math.max(0, goldenKeysNeeded[Dungeon.depth]);
+			while (Notes.keyCount(new GoldenKey(Dungeon.depth)) > keysNeeded){
+				Notes.remove(new GoldenKey(Dungeon.depth));
+				removed = true;
+			}
+			keysNeeded = Math.max(0, crystalKeysNeeded[Dungeon.depth]);
+			while (Notes.keyCount(new CrystalKey(Dungeon.depth)) > keysNeeded){
+				Notes.remove(new CrystalKey(Dungeon.depth));
+				removed = true;
+			}
+			if (removed){
+				GameScene.updateKeyDisplay();
+				GLog.i("You discard your excess keys.");
+			}
+		}
+
+		public static String IRON_NEEDED = "iron_needed";
+		public static String GOLDEN_NEEDED = "golden_needed";
+		public static String CRYSTAL_NEEDED = "crystal_needed";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(IRON_NEEDED, ironKeysNeeded);
+			bundle.put(GOLDEN_NEEDED, goldenKeysNeeded);
+			bundle.put(CRYSTAL_NEEDED, crystalKeysNeeded);
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			ironKeysNeeded = bundle.getIntArray(IRON_NEEDED);
+			goldenKeysNeeded = bundle.getIntArray(GOLDEN_NEEDED);
+			crystalKeysNeeded = bundle.getIntArray(CRYSTAL_NEEDED);
 		}
 
 	}

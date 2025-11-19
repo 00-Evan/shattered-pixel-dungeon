@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -59,6 +60,11 @@ public abstract class Key extends Item {
 		Sample.INSTANCE.play( Assets.Sounds.ITEM );
 		hero.spendAndNext( pickupDelay() );
 		GameScene.updateKeyDisplay();
+
+		if (hero.buff(SkeletonKey.KeyReplacementTracker.class) != null){
+			hero.buff(SkeletonKey.KeyReplacementTracker.class).processExcessKeys();
+		}
+
 		return true;
 	}
 
