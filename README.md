@@ -6,7 +6,7 @@
 
 ---
 
-## 🌟 Core Feature: Stratified Weapon Mastery System
+## Core Feature: Stratified Weapon Mastery System
 
 This mod introduces the **Weapon Mastery System** to solve the over-reliance on Tier-5 weapons and give every weapon type a distinct late-game identity.
 
