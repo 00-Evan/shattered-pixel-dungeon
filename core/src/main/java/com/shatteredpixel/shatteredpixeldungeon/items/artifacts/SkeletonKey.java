@@ -32,15 +32,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SpectralWallParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.CrystalKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.WornKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
@@ -60,17 +58,16 @@ import com.watabou.utils.PathFinder;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-//TODO needs a way to handle the excess keys it can general
 public class SkeletonKey extends Artifact {
 
 	{
 		image = ItemSpriteSheet.ARTIFACT_KEY;
 
-		levelCap = 5;
+		levelCap = 10;
 
-		charge = 3+level();
+		charge = 3+level()/2;
 		partialCharge = 0;
-		chargeCap = 3+level();
+		chargeCap = 3+level()/2;
 
 		defaultAction = AC_INSERT;
 	}
@@ -111,6 +108,21 @@ public class SkeletonKey extends Artifact {
 		}
 	}
 
+	//levels when used, with bonus xp for opening locks that could be opened with keys
+	public void gainExp( int xpGain ){
+		if (level() == levelCap){
+			return;
+		}
+
+		exp += xpGain;
+		if (exp > 4+level()){
+			exp -= 4+level();
+			upgrade();
+			GLog.p(Messages.get(this, "levelup"));
+		}
+
+	}
+
 	public CellSelector.Listener targeter = new CellSelector.Listener(){
 
 		@Override
@@ -145,6 +157,7 @@ public class SkeletonKey extends Artifact {
 								Level.set(target, Terrain.DOOR);
 								GameScene.updateMap(target);
 								charge -= 1;
+								gainExp(2 + 1);
 								curUser.spendAndNext(Actor.TICK);
 								curUser.sprite.idle();
 							}
@@ -181,6 +194,7 @@ public class SkeletonKey extends Artifact {
 								Level.set(target, Terrain.EMPTY);
 								GameScene.updateMap(target);
 								charge -= 5;
+								gainExp(2 + 5);
 								Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 								CellEmitter.get( target ).start( Speck.factory( Speck.DISCOVER ), 0.025f, 20 );
 								curUser.spendAndNext(Actor.TICK);
@@ -198,11 +212,26 @@ public class SkeletonKey extends Artifact {
 
 						//attempt to knock back char
 						if (Actor.findChar(target) != null){
-							int pushDIR = target - curUser.pos;
-							Ballistica push = new Ballistica(target, target + pushDIR, Ballistica.PROJECTILE);
-							WandOfBlastWave.throwChar(Actor.findChar(target), push, 1, false, false, this);
-							//TODO what about pushing to the side?
-							//TODO fail if there's no push DIR?
+
+							int pushCell = -1;
+							//push to the closest open cell that's further than the door
+							for (int i : PathFinder.NEIGHBOURS8){
+								if (!Dungeon.level.solid[target+i] && Actor.findChar(target+i) == null){
+									if (Dungeon.level.trueDistance(curUser.pos, target+i) > Dungeon.level.trueDistance(curUser.pos, target)) {
+										if (pushCell == -1 || Dungeon.level.trueDistance(curUser.pos, pushCell) > Dungeon.level.trueDistance(curUser.pos, target + i)){
+											pushCell = target + i;
+										}
+									}
+								}
+							}
+
+							if (pushCell != -1){
+								Ballistica push = new Ballistica(target, pushCell, Ballistica.PROJECTILE);
+								WandOfBlastWave.throwChar(Actor.findChar(target), push, 1, false, false, this);
+							} else {
+								GLog.w(Messages.get(SkeletonKey.class, "lock_no_space"));
+								return;
+							}
 						}
 
 						Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
@@ -212,6 +241,7 @@ public class SkeletonKey extends Artifact {
 								Level.set(target, Terrain.HERO_LKD_DR);
 								GameScene.updateMap(target);
 								charge -= 2;
+								gainExp(2);
 								curUser.spendAndNext(Actor.TICK);
 								curUser.sprite.idle();
 							}
@@ -231,6 +261,7 @@ public class SkeletonKey extends Artifact {
 								Buff.affect(curUser, KeyReplacementTracker.class).processGoldLockOpened();
 								Dungeon.level.heaps.get(target).open(curUser);
 								charge -= 2;
+								gainExp(2 + 2);
 								curUser.spendAndNext(Actor.TICK);
 								curUser.sprite.idle();
 							}
@@ -250,6 +281,7 @@ public class SkeletonKey extends Artifact {
 								Buff.affect(curUser, KeyReplacementTracker.class).processCrystalLockOpened();
 								Dungeon.level.heaps.get(target).open(curUser);
 								charge -= 5;
+								gainExp(2 + 5);
 								curUser.spendAndNext(Actor.TICK);
 								curUser.sprite.idle();
 							}
@@ -299,6 +331,7 @@ public class SkeletonKey extends Artifact {
 						}
 
 						charge -= 2;
+						gainExp(2);
 
 						Dungeon.observe();
 						GameScene.updateFog();
@@ -327,7 +360,17 @@ public class SkeletonKey extends Artifact {
 
 	@Override
 	public void charge(Hero target, float amount) {
-		super.charge(target, amount); //TODO
+		if (charge < chargeCap && !cursed && target.buff(MagicImmune.class) == null){
+			partialCharge += 0.133f*amount;
+			while (partialCharge >= 1){
+				partialCharge--;
+				charge++;
+			}
+			if (charge >= chargeCap){
+				partialCharge = 0;
+			}
+			updateQuickslot();
+		}
 	}
 
 	@Override
@@ -338,7 +381,7 @@ public class SkeletonKey extends Artifact {
 			if (cursed){
 				desc += "\n\n" + Messages.get(this, "desc_cursed");
 			} else {
-				desc += "\n\n" + Messages.get(this, "desc_worn"); //TODO probably want more info on making walls
+				desc += "\n\n" + Messages.get(this, "desc_worn");
 			}
 		}
 
@@ -373,33 +416,18 @@ public class SkeletonKey extends Artifact {
 
 			return true;
 		}
+	}
 
-		//TODO either finish this or think of a different levelling mechanic
-		public void keyUsed(Key key ){
-			if (level() == levelCap){
-				return;
-			}
-
-			if (key instanceof IronKey){
-				exp += 3;
-			} else if (key instanceof WornKey){
-				exp += 5;
-			} else {
-				exp += 2;
-			}
-
-			if (exp >= 5 + 5*level()){
-				exp -= 5 + 5*level();
-				upgrade();
-			}
-
-		}
+	@Override
+	public Item upgrade() {
+		chargeCap = 3 + (level()+1)/2;
+		return super.upgrade();
 	}
 
 	private void placeWall(int pos, int knockbackDIR ){
-		if (!Dungeon.level.solid[pos]) { //TODO this prevents wall stacking
-			//TODO 10 or 20 turns?
-			GameScene.add(Blob.seed(pos, 20, KeyWall.class));
+		Blob wall = Dungeon.level.blobs.get(KeyWall.class);
+		if (!Dungeon.level.solid[pos] || (wall != null && wall.cur[pos] > 0)) {
+			GameScene.add(Blob.seed(pos, 10, KeyWall.class));
 
 			Char ch = Actor.findChar(pos);
 			if (ch != null && ch.alignment == Char.Alignment.ENEMY){
@@ -430,9 +458,8 @@ public class SkeletonKey extends Artifact {
 						cellEnded = true;
 					}
 
-					//caps at 20
-					//TODO or just one wall at a time?
-					off[cell] = Math.min(off[cell], 19);
+					//caps at 10 turns
+					off[cell] = Math.min(off[cell], 9);
 
 					volume += off[cell];
 
@@ -489,7 +516,7 @@ public class SkeletonKey extends Artifact {
 		@Override
 		public void use(BlobEmitter emitter) {
 			super.use( emitter );
-			emitter.pour( MagicMissile.WhiteParticle.WALL, 0.02f ); //TODO
+			emitter.pour(SpectralWallParticle.FACTORY, 0.02f );
 		}
 
 		@Override

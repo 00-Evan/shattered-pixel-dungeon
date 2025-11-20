@@ -2359,9 +2359,6 @@ public class Hero extends Char {
 					hasKey = Notes.remove(new IronKey(Dungeon.depth));
 					if (hasKey) {
 						Level.set(doorCell, Terrain.DOOR);
-						if (skele != null && !skele.isCursed()){
-							skele.keyUsed(new IronKey(Dungeon.depth));
-						}
 					}
 				} else if (door == Terrain.HERO_LKD_DR) {
 					hasKey = true;
@@ -2373,17 +2370,11 @@ public class Hero extends Char {
 						Level.set(doorCell, Terrain.EMPTY);
 						Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 						CellEmitter.get( doorCell ).start( Speck.factory( Speck.DISCOVER ), 0.025f, 20 );
-						if (skele != null && !skele.isCursed()){
-							skele.keyUsed(new CrystalKey(Dungeon.depth));
-						}
 					}
 				} else {
 					hasKey = Notes.remove(new WornKey(Dungeon.depth));
 					if (hasKey) {
 						Level.set(doorCell, Terrain.UNLOCKED_EXIT);
-						if (skele != null && !skele.isCursed()){
-							skele.keyUsed(new WornKey(Dungeon.depth));
-						}
 					}
 				}
 				
@@ -2411,14 +2402,8 @@ public class Hero extends Char {
 					Sample.INSTANCE.play( Assets.Sounds.BONES );
 				} else if (heap.type == Type.LOCKED_CHEST){
 					hasKey = Notes.remove(new GoldenKey(Dungeon.depth));
-					if (hasKey && skele != null && !skele.isCursed()){
-						skele.keyUsed(new GoldenKey(Dungeon.depth));
-					}
 				} else if (heap.type == Type.CRYSTAL_CHEST){
 					hasKey = Notes.remove(new CrystalKey(Dungeon.depth));
-					if (hasKey && skele != null && !skele.isCursed()){
-						skele.keyUsed(new CrystalKey(Dungeon.depth));
-					}
 				}
 
 				if (hasKey) {
