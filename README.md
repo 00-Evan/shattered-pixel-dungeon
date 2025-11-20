@@ -1,6 +1,42 @@
-# Shattered Pixel Dungeon
+# ⚔️ Mastery-System Pixel Dungeon
 
 [Shattered Pixel Dungeon](https://shatteredpixel.com/shatteredpd/) is an open-source traditional roguelike dungeon crawler with randomized levels and enemies, and hundreds of items to collect and use. It's based on the [source code of Pixel Dungeon](https://github.com/00-Evan/pixel-dungeon-gradle), by [Watabou](https://watabou.itch.io/).
+
+**Mastery-System Pixel Dungeon** is a highly refined fork of Shattered Pixel Dungeon, focusing on **deepening combat strategy** through a unique, tiered weapon progression system. It retains Evan's clean UI and robust core while introducing meaningful player choice.
+
+---
+
+## 🌟 Core Feature: Stratified Weapon Mastery System
+
+This mod introduces the **Weapon Mastery System** to solve the over-reliance on Tier-5 weapons and give every weapon type a distinct late-game identity.
+
+### I. Tiered Progression & Combat Stability
+
+* **Weapon Mastery Levels:** Killing enemies with a specific weapon grants Mastery XP. Each level subtly increases the weapon's **Min and Max Damage** (Min damage increases faster), drastically improving damage stability in the late game.
+* **Anti-Grinding Mechanic:** Mastery progression is capped by the current Dungeon Depth, forcing players to explore new levels to unlock higher potential.
+
+### II. Unique Tier Mechanics (The Mastery Specialization)
+
+We assign distinct roles to each weapon tier, turning each tier into a specialized tool:
+
+#### T3 - The Tactical Burst (Controlled Fury)
+
+* **Mechanic:** Landing 10 consecutive hits charges the **Controlled Fury** skill.
+* **Player Choice:** The skill is activated **manually** by tapping the weapon's quickslot button, granting the Hero **Armor Penetration (Pierce)** for a short duration before entering a long cooldown.
+* **Goal:** Converts mechanical skill (landing hits) into a controlled, tactical power spike, perfect for breaking heavy defenses.
+
+#### T1 & T2 - The Late Bloomers
+
+* **Mechanic:** Low base Crit Chance that only unlocks at Mastery Level +6. This chance gradually increases with every subsequent Mastery level.
+* **Goal:** Rewards early-game resource investment and creates high-Mastery **T1/T2 "Swiftness" builds** that are reliable crit-machines, competing with T5's raw damage through speed and frequency.
+
+#### T4 & T5 (Future Expansion): The Heavy Hitters
+
+* (This section is for future proofing your mod and showing future potential)
+* **T4:** Focuses on a guaranteed **High-Damage Single-Hit** followed by a lengthy cooldown, ideal for quick threats.
+* **T5:** Focuses on **High-Frequency Damage** with a significant **Time Cost** penalty, ensuring the ultimate power comes at the cost of combat pace.
+
+---
 
 Shattered Pixel Dungeon currently compiles for Android, iOS, and Desktop platforms. You can find official releases of the game on:
 
