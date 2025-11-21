@@ -24,11 +24,16 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.EscapeCrystal;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.CityPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -150,6 +155,17 @@ public class CityLevel extends RegularLevel {
 						@Override
 						protected void onSelect(int index) {
 							if (index == 0){
+
+								//for full release this will remove any non revive persists buff, but for now just do item buffs
+								for (Buff b : hero.buffs()){
+									if (b instanceof Wand.Charger
+											|| b instanceof Artifact.ArtifactBuff
+											|| b instanceof MeleeWeapon.Charger
+											|| b instanceof ClassArmor.Charger){
+										b.detach();
+									}
+								}
+
 								EscapeCrystal crystal = new EscapeCrystal();
 								crystal.storeHeroBelongings(Dungeon.hero);
 								crystal.collect();

@@ -23,8 +23,13 @@ package com.shatteredpixel.shatteredpixeldungeon.items.quest;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
@@ -66,6 +71,16 @@ public class EscapeCrystal extends Item {
 			if (Dungeon.depth > 15 && Dungeon.depth < 20 && Dungeon.branch == 1 && Dungeon.level instanceof VaultLevel){
 
 				Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+
+				//for full release this will remove any non revive persists buff, but for now just do item buffs
+				for (Buff b : hero.buffs()){
+					if (b instanceof Wand.Charger
+							|| b instanceof Artifact.ArtifactBuff
+							|| b instanceof MeleeWeapon.Charger
+							|| b instanceof ClassArmor.Charger){
+						b.detach();
+					}
+				}
 
 				restoreHeroBelongings(hero);
 
