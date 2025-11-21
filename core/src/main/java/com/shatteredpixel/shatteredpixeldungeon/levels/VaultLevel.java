@@ -22,10 +22,29 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Bones;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.RegionDecoLineRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.SegmentedRoom;
+import com.watabou.utils.Point;
+import com.watabou.utils.Random;
+import com.watabou.utils.Rect;
 
-public class VaultLevel extends DeadEndLevel { //for now
+import java.util.ArrayList;
+
+public class VaultLevel extends Level { //for now
 
 	{
 		color1 = 0x4b6636;
@@ -44,10 +63,130 @@ public class VaultLevel extends DeadEndLevel { //for now
 
 	@Override
 	protected boolean build() {
-		super.build();
+		setSize(34, 34);
 
-		int entrance = 5 * width() + 5 / 2 + 1;
-		map[entrance] = Terrain.WATER; //override entrance tile
+		ArrayList<Room> rooms = new ArrayList<>();
+
+		Room finalRoom = null;
+		Room entryRoom = null;
+
+		for (int x = 0; x < 4; x++){
+			for (int y = 0; y < 4; y++){
+
+				if (x == 3 && y <= 1){
+					if (y == 1) {
+						continue;
+					} else {
+						Room r = new RegionDecoLineRoom();
+						r.set(1+8*x, 1+8*y, 9+8*x, 17);
+						rooms.add(r);
+						finalRoom = r;
+						continue;
+					}
+				}
+				Room r = new SegmentedRoom();
+				r.set(1+8*x, 1+8*y, 9+8*x, 9+8*y);
+				rooms.add(r);
+
+				if (x == 0 && y == 3){
+					entryRoom = r;
+				}
+			}
+		}
+
+		//builder.findneighbnours
+		Room[] ra = rooms.toArray( new Room[0] );
+		for (int i=0; i < ra.length-1; i++) {
+			for (int j=i+1; j < ra.length; j++) {
+				ra[i].addNeigbour( ra[j] );
+			}
+		}
+
+		for (Room n : rooms){
+			for (Room p : rooms){
+				if (p.height() > 10){
+					continue;
+				}
+				if (n.height() > 10){
+					if (n.canConnect(p)){
+						if (n.bottom == p.top){
+							n.connect(p);
+						}
+					}
+				} else if (n.canConnect(p)) {
+					n.connect(p);
+				}
+			}
+		}
+
+		//Painter.placedoors
+		for (Room r : rooms){
+			for (Room n : r.connected.keySet()) {
+				Room.Door door = r.connected.get( n );
+				if (door == null) {
+
+					Rect i = r.intersect( n );
+					ArrayList<Point> doorSpots = new ArrayList<>();
+					for (Point p : i.getPoints()){
+						if (r.canConnect(p) && n.canConnect(p))
+							doorSpots.add(p);
+					}
+					if (doorSpots.isEmpty()){
+						ShatteredPixelDungeon.reportException(
+								new RuntimeException("Could not place a door! " +
+										"r=" + r.getClass().getSimpleName() +
+										" n=" + n.getClass().getSimpleName()));
+						continue;
+					}
+					door = new Room.Door(Random.element(doorSpots));
+
+					r.connected.put( n, door );
+					n.connected.put( r, door );
+				}
+			}
+		}
+
+		for (Room n : rooms){
+			n.paint(this);
+			if (n instanceof RegionDecoLineRoom){
+				Painter.fill(this, n, 1, Terrain.EMPTY_SP);
+				Painter.fill(this, n.left+1, n.top+1, 7, 1, Terrain.REGION_DECO_ALT);
+				Painter.fill(this, n.left+1, n.top+1, 1, 14, Terrain.REGION_DECO_ALT);
+				Painter.fill(this, n.right-1, n.top+1, 1, 14, Terrain.REGION_DECO_ALT);
+			}
+			for (Point door : n.connected.values()){
+				Level.set(pointToCell(door), Terrain.DOOR, this);
+			}
+		}
+
+		entrance = pointToCell(entryRoom.random());
+		transitions.add(new LevelTransition(this,
+				entrance,
+				LevelTransition.Type.BRANCH_ENTRANCE,
+				Dungeon.depth,
+				0,
+				LevelTransition.Type.BRANCH_EXIT));
+		drop(new ScrollOfMagicMapping(), pointToCell(entryRoom.random()));
+
+		rooms.remove(entryRoom);
+		rooms.remove(finalRoom);
+
+		for (Room n : rooms){
+			if (Random.Int(5) != 0){
+				Item item = Generator.randomUsingDefaults(Random.oneOf(
+						Generator.Category.WEAPON, Generator.Category.WEAPON,
+						Generator.Category.ARMOR,
+						Generator.Category.WAND,
+						Generator.Category.RING));
+				int pos;
+				do {
+					pos = pointToCell(n.random());
+				} while (map[pos] != Terrain.EMPTY);
+				item.identify();
+				drop(item, pos);
+			}
+		}
+
 		return true;
 	}
 
@@ -55,5 +194,35 @@ public class VaultLevel extends DeadEndLevel { //for now
 	public boolean activateTransition(Hero hero, LevelTransition transition) {
 		//walking onto transitions does nothing, need to use crystal
 		return false;
+	}
+
+	@Override
+	public Mob createMob() {
+		return null;
+	}
+
+	@Override
+	protected void createMobs() {
+	}
+
+	public Actor addRespawner() {
+		return null;
+	}
+
+	@Override
+	protected void createItems() {
+		Random.pushGenerator(Random.Long());
+		ArrayList<Item> bonesItems = Bones.get();
+		if (bonesItems != null) {
+			for (Item i : bonesItems) {
+				drop(i, entrance()-width()).setHauntedIfCursed().type = Heap.Type.REMAINS;
+			}
+		}
+		Random.popGenerator();
+	}
+
+	@Override
+	public int randomRespawnCell( Char ch ) {
+		return entrance()-width();
 	}
 }

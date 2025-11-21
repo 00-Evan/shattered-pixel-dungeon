@@ -93,9 +93,9 @@ public class EscapeCrystal extends Item {
 						LevelTransition.Type.BRANCH_EXIT);
 				InterlevelScene.mode = InterlevelScene.Mode.ASCEND;
 				Game.switchScene( InterlevelScene.class );
+				detach(hero.belongings.backpack);
 
 			}
-			detach(hero.belongings.backpack);
 
 		}
 

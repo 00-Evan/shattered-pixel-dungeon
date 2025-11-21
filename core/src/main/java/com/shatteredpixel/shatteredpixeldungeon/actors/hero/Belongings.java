@@ -214,7 +214,6 @@ public class Belongings implements Iterable<Item> {
 	}
 
 	public void clear(){
-		//TODO probably more needed here, what about buffs from these items? e.g. chargers
 		backpack.clear();
 		weapon = secondWep = null;
 		armor = null;

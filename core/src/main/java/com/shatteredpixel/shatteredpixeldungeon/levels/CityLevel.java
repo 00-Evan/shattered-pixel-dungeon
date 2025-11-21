@@ -166,9 +166,13 @@ public class CityLevel extends RegularLevel {
 									}
 								}
 
-								EscapeCrystal crystal = new EscapeCrystal();
-								crystal.storeHeroBelongings(Dungeon.hero);
-								crystal.collect();
+								//not ideal handler for a crash, should improve this
+								EscapeCrystal crystal = hero.belongings.getItem(EscapeCrystal.class);
+								if (crystal == null) {
+									crystal = new EscapeCrystal();
+									crystal.storeHeroBelongings(Dungeon.hero);
+									crystal.collect();
+								}
 								Dungeon.hero.belongings.armor = new ClothArmor();
 								Dungeon.hero.belongings.armor.identify();
 								CityLevel.super.activateTransition(hero, transition);
