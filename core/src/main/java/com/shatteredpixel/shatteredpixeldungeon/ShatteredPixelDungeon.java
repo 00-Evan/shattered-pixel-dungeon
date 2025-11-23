@@ -36,8 +36,7 @@ public class ShatteredPixelDungeon extends Game {
 	//rankings from v1.2.3 and older use a different score formula, so this reference is kept
 	public static final int v1_2_3 = 628;
 
-	//savegames from versions older than v2.4.2 are no longer supported, and data from them is ignored
-	public static final int v2_4_2 = 782;
+	//savegames from versions older than v2.5.4 are no longer supported, and data from them is ignored
 	public static final int v2_5_4 = 802;
 
 	public static final int v3_0_2 = 833;
@@ -52,26 +51,6 @@ public class ShatteredPixelDungeon extends Game {
 				com.shatteredpixel.shatteredpixeldungeon.items.keys.WornKey.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey" );
 
-		//pre-v2.5.3
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDetectMagic.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDisarming" );
-
-		//pre-v2.5.2
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.bombs.FlashBangBomb.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.bombs.ShockBomb" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.bombs.SmokeBomb.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.bombs.Flashbang" );
-
-		//pre-v2.5.0
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.MobSpawner.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.Level$Respawner" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invulnerability.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AnkhInvulnerability" );
 	}
 	
 	@Override
