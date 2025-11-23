@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.AlbinoSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollExileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
@@ -45,6 +46,7 @@ public class v3_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
 		//add_Coming_Soon(changeInfos);
+		add_v3_3_Changes(changeInfos);
 		add_v3_2_Changes(changeInfos);
 		add_v3_1_Changes(changeInfos);
 		add_v3_0_Changes(changeInfos);
@@ -67,6 +69,161 @@ public class v3_X_Changes {
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "...",
 				"..."));
+	}
+
+	public static void add_v3_3_Changes( ArrayList<ChangeInfo> changeInfos ) {
+
+		ChangeInfo changes = new ChangeInfo("v3.3-ALPHA", true, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
+				"Hey Alpha testers!\n" +
+				"\n" +
+				"Aside from any major bugs that might pop up v3.3 is already content-complete. I plan to put it to beta soon after a little bit of testing time, and after I've written the blog post.\n" +
+				"\n" +
+				"Over the beta and following the release I plan to keep improving on the new quest tester area, bringing it closer to what it'll eventually look like when the quest is complete."));
+
+		changes.addButton( new ChangeButton(new Image(new ImpSprite()), "Initial Imp Quest Tester Area",
+				"**While v3.3 does not include the new quest, it does include a tester area for it, similar to the tester area that existed before the new caves quest!**\n" +
+				"\n" +
+				"This tester area can be accessed from a new room that spawns in the city, this room also contains the Imp who gives his old quest. Simply walk onto the large vault entrance to be offered a teleport into the new area." +
+				"\n" +
+				"Currently the new area has fully functional storage of your current items, very basic level generation, and no quest hazards. **I intend to continue iterating on and improving this tester area during the release of v3.3 and in followup patches. The quest itself isn't coming in a patch however.**"));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_KEY), "New Artifact and Trinket!",
+				"**Two new equipment items have been added to the game!**\n" +
+				"\n" +
+				"The **Skeleton Key** is a new Artifact that grants the player new ways to control the dungeon environment! It can be used to open almost any lock in the dungeon, lock doors that weren't previously locked, and create temporary magical walls! The existing skeleton key item (dropped by Goo) has been renamed to 'worn key',\n" +
+				"\n" +
+				"The **Cracked Spyglass** is a new Trinket that's a sort of milder version of the Mimic's Tooth. It generates extra items in the dungeon, but those items are very hard to see, so keep your eyes peeled!"));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHUFFLE), "Randomize Options",
+				"**It's now possible to play runs with randomly selected game options!**\n" +
+				"\n" +
+				"This includes a random class and challenges (optionally) in hero select, and random talents, subclass, and armor ability within the game! This add some replayability for experienced players, or just another option for people who aren't sure about what they want.\n" +
+				"\n" +
+				"There's also a **new badge** to earn! To get it you need to win a run with a random hero, talents, subclass, and armor ability."));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
+		changes.hardlight(CharSprite.WARNING);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(new AlbinoSprite()), "Hostile Champions and Albino Rats",
+				"I'm making a few early game tweaks, mainly meant at smoothing out difficulty spikes caused by hostile champions and floor 1 albino rats. In exchange though, the hostile champs challenge is getting a bit harsher later in the game.\n" +
+				"\n" +
+				"**Hostile Champions:**\n" +
+				"**-** The following enemies can no longer spawn as champions: Crabs on F3, Thieves on F4, Guards on F7, and Bats on F9.\n" +
+				"**-** Champion enemy spawn rate now scales up to 1/6 as dungeon depth increases, instead of always being 1/8.\n" +
+				"\n" +
+				"**Albino Rats:**\n" +
+				"**-** HP down to 12 from 15\n" +
+				"**-** Bleed damage now always starts at 2-3 if the rat did damage, instead of being based on damage dealt. This means it no longer benefits excessively from bonus damage effects."));
+
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_CHALICE3), "Chalice of Blood Upgrading",
+				"The Chalice of Blood has received significant changes to how its upgrade mechanics work. Previously the player was given no direct info about the damage it would deal when upgraded, which led to most people just looking the numbers up on the internet.\n" +
+				"\n" +
+				"The player is now told the damage the chalice will deal, but the chalice deals a range of ~83% to ~117% of its current static damage. The player is told the exact % chance this damage has of killing them before damage-reducing effects are considered.\n" +
+				"\n" +
+				"Additionally, damage from the chalice is now reduced by ALL damage-reducing effects, instead of just ones that apply to physical damage."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**Highlights:**\n" +
+				"**-** The 4th trinket option is no longer hidden until selected.\n" +
+				"**-** Damage-dealing Cleric spells (holy lance, most notably) now disqualify for the \"No Weapons in His Presence\" badge.\n" +
+				"**-** Hitting an enemy no longer resets Gladiator's combo time down to 5 if it was above 5 already.\n" +
+				"**-** Hero movespeed is now calculated based on the terrain the hero is moving toward, not moving from.\n" +
+				"\n" +
+				"**Levels:**\n" +
+				"**-** Slightly tweaked gold generation in the caves quest. The player now always must find 1/2 secret rooms to reach 40 gold. This eliminates cases where the player had to find 1/1 or 2/2 secret rooms, which could be excessively frustrating.\n" +
+				"**-** Gardens and magic well rooms are now locked and require an iron key.\n" +
+				"**-** Large or giant sewer pipe rooms with only two doors now lay themselves out with a 3rd phantom door to ensure they aren't overly tiny."
+				,
+				"**Characters:**\n" +
+				"**-** Tengu now has a one-turn delay before he starts attacking\n" +
+				"**-** Warrior's shielding buff now has a dedicated icon and description if cooldown is negative\n" +
+				"**-** DM-200s and Golems are now more willing to swap targets if they can't reach their current one\n" +
+				"**-** Characters spawned due to an action occuring on a partial turn now have their time moved forward to the next whole turn\n" +
+				"\n" +
+				"**Items:**\n" +
+				"**-** Added vfx to movement-speed influencing glyphs to show when they are active\n" +
+				"**-** Heavy Crossbow now more directly shows the damage it grants to darts\n" +
+				"**-** Elixir of Honeyed Healing recipe cost down to 2 from 4, energy value down to 8 from 12\n" +
+				"\n" +
+				"**Misc:**\n" +
+				"**-** Removed support for runs in progress from prior to v2.5.4 (Oct. 2024)\n" +
+				"**-** Added a warning when the player attempts to energize their trinket\n" +
+				"**-** Adjusted ascension challenge text to make it more clear whether the player has killed any enemies so far\n" +
+				"**-** Updated various internal code libraries\n" +
+				"**-** Shattered's Windows version now requires Windows 10, up from 7\n" +
+				"**-** Sharing gameplay data on iOS now requires iOS 15+, up from 12+"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Highlights:**\n" +
+				"**-** Freezes caused by enemies dieing to DOT effects while thrown weapons were attached to them\n" +
+				"**-** Exploits that could result in certain Imp shop items being free\n" +
+				"**-** Rare cases where thrown weapons would not disintegrate when they should\n" +
+				"\n" +
+				"**Characters:**\n" +
+				"**-** Cleric's holy ward not applying to damage from bone explosions or Chalice of Blood\n" +
+				"**-** Characters being able to wander into the entryway of toxic gas rooms\n" +
+				"**-** Monk not gaining energy back if she kills with an ability while at full energy\n" +
+				"**-** Mimics being susceptible to surprise attacks after they surprise the hero\n" +
+				"**-** DM-200s and Golems not switching from targets they can't reach\n" +
+				"**-** DM-300 still sometimes using abilities right out of supercharge\n" +
+				"**-** DM-300's gas shot dealing damage instantly in specific situations"
+				,
+				"**Items:**\n" +
+				"**-** Transmuting tipped darts destroying the original dart stack\n" +
+				"**-** Unstable Spellbook not triggering Siren's Song effect properly if the hero is also under time freeze\n" +
+				"**-** Charge count on Duelist's weapons being always set to 2 in rankings\n" +
+				"\n" +
+				"**Misc.:**\n" +
+				"**-** Compass pointing to exit staying visible if exit becomes hidden\n" +
+				"**-** Very rare cases where doors would not properly hide and then reveal in the tutorial\n" +
+				"**-** Extremely rare cases where the game could hang while generating the wandmaker's quest\n" +
+				"**-** Specific cases where Goo's pump up warning vfx could be in incorrect positions\n" +
+				"**-** Very rare cases where tunnel rooms could generate tiny tunnels to nowhere\n" +
+				"**-** Various minor errors with multi-touch and scrolling panes\n" +
+				"**-** Various cases where translations did not fit in the UI and could be shrunken or repositioned\n" +
+				"**-** Various minor visual and textual errors"));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
+		changes.hardlight(CharSprite.POSITIVE);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new TalentIcon(Talent.PROJECTILE_MOMENTUM), "Thrown Weapon Talents",
+				"A lot more data has come in after v3.2 increased thrown weapon usage, and there's room to buff up some of the changed talents after that update:\n" +
+				"\n" +
+				"**- Projectile Momentum** bonus damage nerf reverted, damage bonus up to 15/30/45% at +1/2/3, from 10/20/30% at +1/2/3\n" +
+				"\n" +
+				"**- Durable Projectiles** nerf reverted, bonus durability up to +50%/+75% at +1/+2, from +33%/+50% at +1/+2\n" +
+				"**- Point Blank Shot** Accuracy boost up to +25/50/75% at +1/2/3, from +20/40/60% at +1/2/3\n"));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.TOMAHAWK), "Thrown Weapon Buffs",
+				"Thrown weapons are mostly in a pretty good place balance-wise since the patches to v3.2, but I'm making two targeted buffs regardless:\n" +
+				"\n" +
+				"**- Telekinetic Grab** is now cast instantly if the only items it picks up can be instantly collected (i.e. throwing clubs and throwing hammers)\n" +
+				"**- Tomahawk** bleed now has its own damage range, instead of being directly tied to damage dealt. Bleed amount increased by ~20% on average."));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
+		changes.hardlight(CharSprite.NEGATIVE);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.BOLAS), "Bolas and Boomerangs",
+				"There are also a few targeted nerfs to specific thrown weapons:\n" +
+				"\n" +
+				"**Bolas** continue to do really well despite their nerfs in v3.2. Clearly the cripple effect they have is almost worth it on its own, so I'm scaling back the damage further:\n" +
+				"**- Bolas** base damage down to 4-9 from 6-9, damage scaling down to 0-2 from 1-2.\n" +
+				"\n" +
+				"**Boomerangs** also continue to do extremely well, especially for the Huntress. I'm holding off on larger changes here for now, but in general it seems like the circle back effect is so strong because of how dependant thrown weapons can be on the telekinetic grab spell.\n" +
+				"**- Boomerang** circle back delay increased to 5 turns from 4."));
+
 	}
 
 	public static void add_v3_2_Changes( ArrayList<ChangeInfo> changeInfos ) {
