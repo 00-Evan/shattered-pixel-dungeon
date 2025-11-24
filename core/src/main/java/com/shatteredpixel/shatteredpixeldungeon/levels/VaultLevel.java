@@ -32,12 +32,15 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.RegionDecoLineRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.SegmentedRoom;
+import com.watabou.noosa.audio.Music;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
@@ -49,6 +52,11 @@ public class VaultLevel extends Level { //for now
 	{
 		color1 = 0x4b6636;
 		color2 = 0xf2f2f2;
+	}
+
+	@Override
+	public void playLevelMusic() {
+		Music.INSTANCE.playTracks(CityLevel.CITY_TRACK_LIST, CityLevel.CITY_TRACK_CHANCES, false);
 	}
 
 	@Override
@@ -84,12 +92,16 @@ public class VaultLevel extends Level { //for now
 						continue;
 					}
 				}
-				Room r = new SegmentedRoom();
-				r.set(1+8*x, 1+8*y, 9+8*x, 9+8*y);
-				rooms.add(r);
 
 				if (x == 0 && y == 3){
+					Room r = new EmptyRoom();
+					r.set(1+8*x, 1+8*y, 9+8*x, 9+8*y);
+					rooms.add(r);
 					entryRoom = r;
+				} else {
+					Room r = new SegmentedRoom();
+					r.set(1+8*x, 1+8*y, 9+8*x, 9+8*y);
+					rooms.add(r);
 				}
 			}
 		}
@@ -103,7 +115,7 @@ public class VaultLevel extends Level { //for now
 		}
 
 		for (Room n : rooms){
-			for (Room p : rooms){
+			for (Room p : n.neigbours){
 				if (p.height() > 10){
 					continue;
 				}
@@ -155,7 +167,7 @@ public class VaultLevel extends Level { //for now
 				Painter.fill(this, n.right-1, n.top+1, 1, 14, Terrain.REGION_DECO_ALT);
 			}
 			for (Point door : n.connected.values()){
-				Level.set(pointToCell(door), Terrain.DOOR, this);
+				Painter.set(this, door, Terrain.DOOR);
 			}
 		}
 
@@ -166,7 +178,6 @@ public class VaultLevel extends Level { //for now
 				Dungeon.depth,
 				0,
 				LevelTransition.Type.BRANCH_EXIT));
-		drop(new ScrollOfMagicMapping(), pointToCell(entryRoom.random()));
 
 		rooms.remove(entryRoom);
 		rooms.remove(finalRoom);
@@ -182,6 +193,14 @@ public class VaultLevel extends Level { //for now
 				do {
 					pos = pointToCell(n.random());
 				} while (map[pos] != Terrain.EMPTY);
+				if (item.cursed){
+					item.cursed = false;
+					if (item instanceof MeleeWeapon && ((MeleeWeapon) item).hasCurseEnchant()){
+						((MeleeWeapon) item).enchant(null);
+					} else if (item instanceof Armor && ((Armor) item).hasCurseGlyph()){
+						((Armor) item).inscribe(null);
+					}
+				}
 				item.identify();
 				drop(item, pos);
 			}
