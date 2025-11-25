@@ -1,0 +1,19 @@
+// ==============================================================================
+// API MODULE - Pure Java Interfaces & DTOs
+// ==============================================================================
+// This module contains only interfaces, abstractions, and data transfer objects.
+// It has NO dependencies on LibGDX or any platform-specific libraries.
+// All code must be GWT-compatible (Java 11).
+
+plugins {
+    id 'java-library'
+}
+
+// Inherited from root:
+// - sourceCompatibility = JavaVersion.VERSION_11
+// - targetCompatibility = JavaVersion.VERSION_11
+// - testImplementation 'junit:junit:4.13.2'
+
+dependencies {
+    // No dependencies - this is the foundation layer
+}

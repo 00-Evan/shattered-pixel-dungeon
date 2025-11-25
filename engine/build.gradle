@@ -1,0 +1,20 @@
+// ==============================================================================
+// ENGINE MODULE - Headless Game Logic
+// ==============================================================================
+// This module contains the core game simulation and logic.
+// It depends ONLY on :api and has NO LibGDX or platform dependencies.
+// All code must be GWT-compatible (Java 11) and deterministic.
+
+plugins {
+    id 'java-library'
+}
+
+// Inherited from root:
+// - sourceCompatibility = JavaVersion.VERSION_11
+// - targetCompatibility = JavaVersion.VERSION_11
+// - testImplementation 'junit:junit:4.13.2'
+
+dependencies {
+    // ONLY dependency: the API layer
+    api project(':api')
+}
