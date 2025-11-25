@@ -213,7 +213,7 @@ public class WelcomeScene extends PixelScene {
 
 			}
 
-			message = "Greeting Alpha Testers, welcome to an early look at v3.3!\n\nv3.3 includes a tester area for the upcoming city quest, and a bunch of smaller additions and improvements.\n\nThe update is content-complete, so I expect things will go to beta very soon. Let me know if you encounter any bugs!";
+			message = "Greeting Beta Testers!\n\nv3.3 includes a tester area for the upcoming overhaul to the city quest, new items, and a bunch of smaller tweaks and improvements.\n\nThe update is content-complete, so I expect this beta to go by fairly quickly. Let me know if you encounter any bugs!";
 
 		} else {
 			message = Messages.get(this, "what_msg");

@@ -73,7 +73,7 @@ public class v3_X_Changes {
 
 	public static void add_v3_3_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v3.3-ALPHA", true, "");
+		ChangeInfo changes = new ChangeInfo("v3.3-BETA", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
@@ -82,18 +82,18 @@ public class v3_X_Changes {
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
-				"Hey Alpha testers!\n" +
+				"Hey Beta testers!\n" +
 				"\n" +
-				"Aside from any major bugs that might pop up v3.3 is already content-complete. I plan to put it to beta soon after a little bit of testing time, and after I've written the blog post.\n" +
+				"Aside from any major bugs that might pop up v3.3 is already content-complete! I plan to release it in a little under a week, once any bugs are fixed and translators have had a little time with the new text.\n" +
 				"\n" +
-				"Over the beta and following the release I plan to keep improving on the new quest tester area, bringing it closer to what it'll eventually look like when the quest is complete."));
+				"Over the beta and following the release I also plan to keep improving on the new quest tester area, bringing it closer to what it'll eventually look like when the quest is complete."));
 
 		changes.addButton( new ChangeButton(new Image(new ImpSprite()), "Initial Imp Quest Tester Area",
 				"**While v3.3 does not include the new quest, it does include a tester area for it, similar to the tester area that existed before the new caves quest!**\n" +
 				"\n" +
 				"This tester area can be accessed from a new room that spawns in the city, this room also contains the Imp who gives his old quest. Simply walk onto the large vault entrance to be offered a teleport into the new area." +
 				"\n" +
-				"Currently the new area has fully functional storage of your current items, very basic level generation, and no quest hazards. **I intend to continue iterating on and improving this tester area during the release of v3.3 and in followup patches. The quest itself isn't coming in a patch however.**"));
+				"Currently the new area has fully functional storage of your current items, very basic level generation, and no quest hazards. **I intend to continue iterating on and improving this tester area during the release of v3.3 and in followup patches. The quest itself don't release in a patch however.**"));
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_KEY), "New Artifact and Trinket!",
 				"**Two new equipment items have been added to the game!**\n" +
