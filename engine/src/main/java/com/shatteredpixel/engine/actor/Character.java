@@ -2,6 +2,10 @@ package com.shatteredpixel.engine.actor;
 
 import com.shatteredpixel.engine.EngineContext;
 import com.shatteredpixel.engine.buff.BuffContainer;
+import com.shatteredpixel.engine.combat.AttackRequest;
+import com.shatteredpixel.engine.combat.AttackResult;
+import com.shatteredpixel.engine.combat.CombatFormula;
+import com.shatteredpixel.engine.combat.DamageType;
 import com.shatteredpixel.engine.geom.Point;
 import com.shatteredpixel.engine.stats.Health;
 import com.shatteredpixel.engine.stats.Stats;
@@ -129,6 +133,29 @@ public abstract class Character extends Actor {
      */
     public void fullRestore() {
         health.fullRestore();
+    }
+
+    /**
+     * Attack another character using the given combat formula.
+     *
+     * This is a convenience method that creates an AttackRequest and resolves it
+     * through the provided CombatFormula.
+     *
+     * The attack flow:
+     * 1. Creates AttackRequest (this -> target, damageType, base damage from stats)
+     * 2. Delegates to CombatFormula.resolveAttack()
+     * 3. Formula computes hit result, damage, and applies it to target
+     * 4. Returns complete AttackResult
+     *
+     * @param target The character to attack
+     * @param damageType The type of damage
+     * @param formula The combat formula to use
+     * @param context Engine context
+     * @return The attack result (hit/miss/crit, damage dealt, target died)
+     */
+    public AttackResult attack(Character target, DamageType damageType, CombatFormula formula, EngineContext context) {
+        AttackRequest request = new AttackRequest(this, target, damageType);
+        return formula.resolveAttack(request, context);
     }
 
     // ===== Lifecycle Hooks =====
