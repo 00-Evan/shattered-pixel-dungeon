@@ -1,0 +1,29 @@
+// ==============================================================================
+// CLIENT-WEB MODULE - GWT/Web Launcher
+// ==============================================================================
+// Web application launcher using GWT compilation.
+// Note: This is a minimal configuration for scaffolding.
+// Full GWT configuration (including gwt plugin) will be added during migration.
+
+plugins {
+    id 'java'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+dependencies {
+    implementation project(':client-common')
+
+    // LibGDX GWT backend (dependencies only, GWT plugin not yet configured)
+    implementation "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
+    implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
+}
+
+// TODO: Add GWT plugin configuration during migration phase:
+// - Apply gwt plugin
+// - Configure gwt.modules, minHeapSize, maxHeapSize
+// - Set up war directory and webapp configuration

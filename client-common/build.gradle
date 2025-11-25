@@ -1,0 +1,18 @@
+// ==============================================================================
+// CLIENT-COMMON MODULE - LibGDX Bridge Layer
+// ==============================================================================
+// This is the ONLY module where engine meets LibGDX.
+// It provides the platform abstraction and rendering layer.
+// Platform-specific clients (desktop, android, web) depend on this.
+
+plugins {
+    id 'java-library'
+}
+
+dependencies {
+    // Engine integration
+    api project(':engine')
+
+    // LibGDX core (first LibGDX dependency in the new architecture)
+    api "com.badlogicgames.gdx:gdx:$gdxVersion"
+}

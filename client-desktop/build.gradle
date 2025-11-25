@@ -1,0 +1,26 @@
+// ==============================================================================
+// CLIENT-DESKTOP MODULE - Desktop Launcher (LWJGL)
+// ==============================================================================
+// Desktop application launcher using LWJGL3 backend.
+
+plugins {
+    id 'java'
+    id 'application'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+application {
+    mainClassName = 'com.shatteredpixel.shatteredpixeldungeon.desktop.DesktopLauncher'
+}
+
+dependencies {
+    implementation project(':client-common')
+
+    // LibGDX desktop backend (LWJGL3)
+    implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+}

@@ -1,0 +1,15 @@
+// ==============================================================================
+// MOD-LOADER MODULE - Mod System & Extension Hooks
+// ==============================================================================
+// This module provides modding capabilities for the engine.
+// It depends on :engine but remains headless (no LibGDX).
+// All code must be GWT-compatible (Java 11).
+
+plugins {
+    id 'java-library'
+}
+
+dependencies {
+    // Depends on engine to inject mod hooks
+    api project(':engine')
+}

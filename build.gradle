@@ -49,8 +49,9 @@ allprojects {
 // ==============================================================================
 // Apply common settings to new modular architecture
 
+// Configure library modules (api, engine, mod-loader, client-common)
 configure(subprojects.findAll {
-    it.name in ['api', 'engine', 'mod-loader', 'client-common', 'client-desktop', 'client-android', 'client-web']
+    it.name in ['api', 'engine', 'mod-loader', 'client-common']
 }) {
 
     apply plugin: 'java-library'
@@ -64,5 +65,18 @@ configure(subprojects.findAll {
     dependencies {
         // JUnit for testing (applies to all modules)
         testImplementation 'junit:junit:4.13.2'
+    }
+}
+
+// Configure platform-specific client modules
+// (These use different plugins: application, com.android.application, gwt)
+// Their specific configurations are in their own build.gradle files
+configure(subprojects.findAll {
+    it.name in ['client-desktop', 'client-android', 'client-web']
+}) {
+    // Common settings only - plugins applied in individual build.gradle files
+    repositories {
+        google()
+        mavenCentral()
     }
 }
