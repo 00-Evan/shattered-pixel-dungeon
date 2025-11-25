@@ -1,6 +1,7 @@
 package com.shatteredpixel.engine.actor;
 
 import com.shatteredpixel.engine.EngineContext;
+import com.shatteredpixel.engine.buff.BuffContainer;
 import com.shatteredpixel.engine.geom.Point;
 import com.shatteredpixel.engine.stats.Health;
 import com.shatteredpixel.engine.stats.Stats;
@@ -26,6 +27,7 @@ public abstract class Character extends Actor {
 
     private final Stats stats;
     private final Health health;
+    private final BuffContainer buffs;
 
     /**
      * Create a new character with the given stats.
@@ -35,6 +37,7 @@ public abstract class Character extends Actor {
         super(type, position);
         this.stats = stats;
         this.health = new Health(stats.getMaxHealth());
+        this.buffs = new BuffContainer();
     }
 
     /**
@@ -45,6 +48,7 @@ public abstract class Character extends Actor {
         super(type, position);
         this.stats = stats;
         this.health = new Health(currentHealth, stats.getMaxHealth());
+        this.buffs = new BuffContainer();
     }
 
     // ===== Stats Access =====
@@ -71,6 +75,10 @@ public abstract class Character extends Actor {
 
     public boolean isDead() {
         return health.isDead();
+    }
+
+    public BuffContainer getBuffs() {
+        return buffs;
     }
 
     // ===== Combat Methods =====
@@ -157,6 +165,28 @@ public abstract class Character extends Actor {
      */
     protected void onLevelUp(EngineContext context) {
         // TODO: Level-up behavior for concrete character types
+    }
+
+    /**
+     * Called at the start of this character's turn.
+     * Processes all buff turn-start effects.
+     *
+     * Subclasses may override to add additional turn-start behavior,
+     * but should call super.onTurnStart(context) to ensure buffs are processed.
+     */
+    public void onTurnStart(EngineContext context) {
+        buffs.onTurnStart(this, context);
+    }
+
+    /**
+     * Called at the end of this character's turn.
+     * Processes all buff turn-end effects and removes expired buffs.
+     *
+     * Subclasses may override to add additional turn-end behavior,
+     * but should call super.onTurnEnd(context) to ensure buffs are processed.
+     */
+    public void onTurnEnd(EngineContext context) {
+        buffs.onTurnEnd(this, context);
     }
 
     // ===== Abstract Methods =====
