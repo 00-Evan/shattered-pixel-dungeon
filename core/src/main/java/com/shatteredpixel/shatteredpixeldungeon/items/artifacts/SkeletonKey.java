@@ -587,21 +587,27 @@ public class SkeletonKey extends Artifact {
 		}
 
 		public void processExcessKeys(){
-			int keysNeeded = Math.max(0, ironKeysNeeded[Dungeon.depth]);
+			int keysNeeded = ironKeysNeeded[Dungeon.depth];
 			boolean removed = false;
-			while (Notes.keyCount(new IronKey(Dungeon.depth)) > keysNeeded){
-				Notes.remove(new IronKey(Dungeon.depth));
-				removed = true;
+			if (keysNeeded >= 0) {
+				while (Notes.keyCount(new IronKey(Dungeon.depth)) > keysNeeded) {
+					Notes.remove(new IronKey(Dungeon.depth));
+					removed = true;
+				}
 			}
-			keysNeeded = Math.max(0, goldenKeysNeeded[Dungeon.depth]);
-			while (Notes.keyCount(new GoldenKey(Dungeon.depth)) > keysNeeded){
-				Notes.remove(new GoldenKey(Dungeon.depth));
-				removed = true;
+			keysNeeded = goldenKeysNeeded[Dungeon.depth];
+			if (keysNeeded >= 0) {
+				while (Notes.keyCount(new GoldenKey(Dungeon.depth)) > keysNeeded) {
+					Notes.remove(new GoldenKey(Dungeon.depth));
+					removed = true;
+				}
 			}
-			keysNeeded = Math.max(0, crystalKeysNeeded[Dungeon.depth]);
-			while (Notes.keyCount(new CrystalKey(Dungeon.depth)) > keysNeeded){
-				Notes.remove(new CrystalKey(Dungeon.depth));
-				removed = true;
+			keysNeeded = crystalKeysNeeded[Dungeon.depth];
+			if (keysNeeded >= 0) {
+				while (Notes.keyCount(new CrystalKey(Dungeon.depth)) > keysNeeded) {
+					Notes.remove(new CrystalKey(Dungeon.depth));
+					removed = true;
+				}
 			}
 			if (removed){
 				GameScene.updateKeyDisplay();
