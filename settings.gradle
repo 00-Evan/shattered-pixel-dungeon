@@ -1,3 +1,23 @@
+// ==============================================================================
+// NEW ARCHITECTURE - Modular Headless Engine
+// ==============================================================================
+// Target structure for refactored SPD with clean module boundaries
+
+include(
+    ":api",
+    ":engine",
+    ":mod-loader",
+    ":client-common",
+    ":client-desktop",
+    ":client-android",
+    ":client-web"
+)
+
+// ==============================================================================
+// LEGACY MODULES (for reference during migration - will be removed later)
+// ==============================================================================
+// Original SPD structure - kept temporarily for code reference and validation
+
 //core game code modules
 include ':SPD-classes'
 include ':core'
