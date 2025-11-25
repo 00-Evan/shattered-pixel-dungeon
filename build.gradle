@@ -4,6 +4,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
+        // Required for legacy Android modules
         classpath 'com.android.tools.build:gradle:8.13.1'
     }
 }
@@ -11,6 +12,9 @@ buildscript {
 allprojects {
 
     ext {
+        // ==============================================================================
+        // LEGACY APP METADATA (used by old modules)
+        // ==============================================================================
         appName = 'Shattered Pixel Dungeon'
         appPackageName = 'com.shatteredpixel.shatteredpixeldungeon'
 
@@ -23,6 +27,9 @@ allprojects {
         appAndroidMinSDK = 21       //Android 5.0
         appAndroidTargetSDK = 35    //Android 15
 
+        // ==============================================================================
+        // SHARED DEPENDENCIES (used by legacy AND new architecture)
+        // ==============================================================================
         gdxVersion = '1.13.6-SNAPSHOT' //using snapshot as 1.13.5 has issues with Android R8
         gdxControllersVersion = '2.2.4'
         robovmVersion = '2.3.23'
@@ -35,4 +42,27 @@ allprojects {
         maven { url 'https://central.sonatype.com/repository/maven-snapshots/' }
     }
 
+}
+
+// ==============================================================================
+// CONFIGURE NEW ARCHITECTURE MODULES
+// ==============================================================================
+// Apply common settings to new modular architecture
+
+configure(subprojects.findAll {
+    it.name in ['api', 'engine', 'mod-loader', 'client-common', 'client-desktop', 'client-android', 'client-web']
+}) {
+
+    apply plugin: 'java-library'
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    // Default dependencies for all new modules
+    dependencies {
+        // JUnit for testing (applies to all modules)
+        testImplementation 'junit:junit:4.13.2'
+    }
 }
