@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -76,6 +77,7 @@ public class EscapeCrystal extends Item {
 				for (Buff b : hero.buffs()){
 					if (b instanceof Wand.Charger
 							|| b instanceof Artifact.ArtifactBuff
+							|| b instanceof Ring.RingBuff
 							|| b instanceof MeleeWeapon.Charger
 							|| b instanceof ClassArmor.Charger){
 						b.detach();
