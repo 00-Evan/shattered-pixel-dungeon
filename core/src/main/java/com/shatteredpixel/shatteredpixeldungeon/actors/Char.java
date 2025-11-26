@@ -524,7 +524,7 @@ public abstract class Char extends Actor {
 			if (enemy.isAlive() && enemy.alignment != alignment && prep != null && prep.canKO(enemy)){
 				enemy.HP = 0;
 				if (enemy.buff(Brute.BruteRage.class) != null){
-					enemy.buff(Brute.BruteRage.class).detach();
+					enemy.buff(Brute.BruteRage.class).decShield(enemy.buff(Brute.BruteRage.class).shielding());
 				}
 				if (!enemy.isAlive()) {
 					enemy.die(this);
@@ -545,7 +545,7 @@ public abstract class Char extends Actor {
 						(enemy.HP/(float)enemy.HT) <= 0.4f*((Hero)this).pointsInTalent(Talent.COMBINED_LETHALITY)/3f) {
 					enemy.HP = 0;
 					if (enemy.buff(Brute.BruteRage.class) != null){
-						enemy.buff(Brute.BruteRage.class).detach();
+						enemy.buff(Brute.BruteRage.class).decShield(enemy.buff(Brute.BruteRage.class).shielding());
 					}
 					if (!enemy.isAlive()) {
 						enemy.die(this);
