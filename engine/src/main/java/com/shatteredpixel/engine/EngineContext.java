@@ -1,5 +1,6 @@
 package com.shatteredpixel.engine;
 
+import com.shatteredpixel.engine.dungeon.LevelState;
 import com.shatteredpixel.engine.event.EventCollector;
 
 /**
@@ -19,6 +20,7 @@ public class EngineContext {
     private final TickLoop tickLoop;
     private final EventCollector eventCollector;
     private GameState gameState;
+    private LevelState currentLevel;
 
     /**
      * Create a new engine context with the specified seed.
@@ -31,6 +33,7 @@ public class EngineContext {
         this.tickLoop = new TickLoop(this);
         this.eventCollector = new EventCollector();
         this.gameState = new GameState();
+        this.currentLevel = null; // No level loaded initially
     }
 
     /**
@@ -76,6 +79,20 @@ public class EngineContext {
     }
 
     /**
+     * Get the current level (dungeon/map state).
+     */
+    public LevelState getLevel() {
+        return currentLevel;
+    }
+
+    /**
+     * Set the current level (used for level transitions, loading, etc.).
+     */
+    public void setLevel(LevelState level) {
+        this.currentLevel = level;
+    }
+
+    /**
      * Reset the engine to a fresh state with a new seed.
      */
     public void reset(long newSeed) {
@@ -83,5 +100,6 @@ public class EngineContext {
         this.gameState = new GameState();
         this.eventBus.clear();
         this.eventCollector.clear();
+        this.currentLevel = null;
     }
 }
