@@ -1,7 +1,13 @@
 package com.shatteredpixel.engine;
 
+import com.shatteredpixel.engine.actor.Actor;
+import com.shatteredpixel.engine.actor.ActorId;
 import com.shatteredpixel.engine.dungeon.LevelState;
 import com.shatteredpixel.engine.event.EventCollector;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Central context for the game engine.
@@ -19,6 +25,7 @@ public class EngineContext {
     private final EventBus eventBus;
     private final TickLoop tickLoop;
     private final EventCollector eventCollector;
+    private final Map<ActorId, Actor> actors;
     private GameState gameState;
     private LevelState currentLevel;
 
@@ -32,6 +39,7 @@ public class EngineContext {
         this.eventBus = new EventBus();
         this.tickLoop = new TickLoop(this);
         this.eventCollector = new EventCollector();
+        this.actors = new HashMap<>();
         this.gameState = new GameState();
         this.currentLevel = null; // No level loaded initially
     }
@@ -93,6 +101,34 @@ public class EngineContext {
     }
 
     /**
+     * Get all actors (immutable view).
+     */
+    public Map<ActorId, Actor> getActors() {
+        return Collections.unmodifiableMap(actors);
+    }
+
+    /**
+     * Add an actor to the registry.
+     */
+    public void addActor(Actor actor) {
+        actors.put(actor.getId(), actor);
+    }
+
+    /**
+     * Remove an actor from the registry.
+     */
+    public void removeActor(ActorId id) {
+        actors.remove(id);
+    }
+
+    /**
+     * Get an actor by ID.
+     */
+    public Actor getActor(ActorId id) {
+        return actors.get(id);
+    }
+
+    /**
      * Reset the engine to a fresh state with a new seed.
      */
     public void reset(long newSeed) {
@@ -100,6 +136,7 @@ public class EngineContext {
         this.gameState = new GameState();
         this.eventBus.clear();
         this.eventCollector.clear();
+        this.actors.clear();
         this.currentLevel = null;
     }
 }

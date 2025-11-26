@@ -139,6 +139,35 @@ public class LevelGrid {
         return isHazardous(p.x, p.y);
     }
 
+    // ===== Occupancy Helpers =====
+
+    /**
+     * Check if a tile is occupied by an actor.
+     */
+    public boolean isOccupied(int x, int y) {
+        if (!isInBounds(x, y)) {
+            return false;
+        }
+        return getFlags(x, y).isOccupied();
+    }
+
+    public boolean isOccupied(Point p) {
+        return isOccupied(p.x, p.y);
+    }
+
+    /**
+     * Set the OCCUPIED flag for a tile.
+     */
+    public void setOccupied(int x, int y, boolean occupied) {
+        if (isInBounds(x, y)) {
+            getFlags(x, y).setOccupied(occupied);
+        }
+    }
+
+    public void setOccupied(Point p, boolean occupied) {
+        setOccupied(p.x, p.y, occupied);
+    }
+
     // ===== Utility =====
 
     /**

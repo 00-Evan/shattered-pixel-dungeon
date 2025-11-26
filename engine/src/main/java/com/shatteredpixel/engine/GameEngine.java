@@ -135,30 +135,21 @@ public class GameEngine {
     }
 
     /**
-     * Process a single command (placeholder implementation).
+     * Process a single command.
      *
-     * TODO: Implement full command processing:
-     * - MOVE: Move actor to target position, check collision, publish ACTOR_MOVED event
+     * IMPLEMENTED:
+     * - MOVE: Validates and executes actor movement with collision detection
+     *
+     * TODO: Implement remaining command types:
      * - ATTACK: Resolve combat using CombatFormula, publish DAMAGE_APPLIED/ACTOR_DIED events
      * - USE_ABILITY: Look up ability, execute it, publish relevant events
      * - WAIT: Pass turn, publish TURN_ENDED event
      * - SYSTEM: Handle system commands (save, quit, etc.)
-     *
-     * For now, this creates placeholder events to demonstrate the pipeline.
      */
     private void processCommand(GameCommand command) {
         switch (command.getType()) {
             case MOVE:
-                // TODO: Implement movement logic
-                // - Look up actor by actorId
-                // - Check if target position is valid (pathfinding, collision)
-                // - Update actor position
-                // - Publish ACTOR_MOVED event
-                if (command.getTargetPosition() != null) {
-                    context.getEventCollector().publish(
-                        GameEvent.actorMoved(command.getActorId(), command.getTargetPosition())
-                    );
-                }
+                processMoveCommand(command);
                 break;
 
             case ATTACK:
@@ -212,6 +203,98 @@ public class GameEngine {
                 );
                 break;
         }
+    }
+
+    /**
+     * Process a MOVE command.
+     *
+     * Flow:
+     * 1. Look up actor from registry
+     * 2. Get current level
+     * 3. Validate target position (bounds, passability, not occupied)
+     * 4. If valid: clear old OCCUPIED, update actor position, set new OCCUPIED, publish ACTOR_MOVED
+     * 5. If invalid: publish LOG_MESSAGE with reason
+     */
+    private void processMoveCommand(GameCommand command) {
+        // Validate command has required fields
+        if (command.getActorId() == null || command.getTargetPosition() == null) {
+            context.getEventCollector().publish(
+                GameEvent.logMessage("Invalid MOVE command: missing actorId or targetPosition")
+            );
+            return;
+        }
+
+        // Look up actor
+        com.shatteredpixel.engine.actor.Actor actor = context.getActor(command.getActorId());
+        if (actor == null) {
+            context.getEventCollector().publish(
+                GameEvent.logMessage("MOVE failed: actor " + command.getActorId() + " not found")
+            );
+            return;
+        }
+
+        // Get current level
+        com.shatteredpixel.engine.dungeon.LevelState level = context.getLevel();
+        if (level == null) {
+            context.getEventCollector().publish(
+                GameEvent.logMessage("MOVE failed: no level loaded")
+            );
+            return;
+        }
+
+        com.shatteredpixel.engine.dungeon.LevelGrid grid = level.getGrid();
+        com.shatteredpixel.engine.geom.Point targetPos = command.getTargetPosition();
+
+        // Validate target position
+        // 1. Check bounds
+        if (!grid.isInBounds(targetPos)) {
+            context.getEventCollector().publish(
+                GameEvent.logMessage("MOVE failed: target " + targetPos + " out of bounds")
+            );
+            return;
+        }
+
+        // 2. Check passability
+        if (!grid.isPassable(targetPos)) {
+            context.getEventCollector().publish(
+                GameEvent.logMessage("MOVE failed: target " + targetPos + " is not passable")
+            );
+            return;
+        }
+
+        // 3. Check if occupied (don't allow moving into occupied tiles)
+        if (grid.isOccupied(targetPos)) {
+            context.getEventCollector().publish(
+                GameEvent.logMessage("MOVE failed: target " + targetPos + " is occupied")
+            );
+            return;
+        }
+
+        // Execute move
+        com.shatteredpixel.engine.geom.Point oldPos = actor.getPosition();
+
+        // Clear old position OCCUPIED flag (if actor was on the grid)
+        if (oldPos != null && grid.isInBounds(oldPos)) {
+            grid.setOccupied(oldPos, false);
+        }
+
+        // Update actor position
+        actor.setPosition(targetPos);
+
+        // Set new position OCCUPIED flag
+        grid.setOccupied(targetPos, true);
+
+        // Publish ACTOR_MOVED event
+        context.getEventCollector().publish(
+            GameEvent.actorMoved(command.getActorId(), targetPos)
+        );
+
+        // TODO: Future enhancements:
+        // - Check for hazardous terrain and apply damage
+        // - Update FOV/visibility
+        // - Trigger traps
+        // - Use pathfinding for multi-step movement
+        // - Check line-of-sight for diagonal movement
     }
 
     /**
