@@ -28,6 +28,8 @@ public class GameEngine {
 
     private final GamePlatform platform;
     private final EngineContext context;
+    private final com.shatteredpixel.engine.serialization.EngineStateSerializer stateSerializer;
+    private final com.shatteredpixel.engine.serialization.EngineSnapshotCodec snapshotCodec;
     private boolean initialized;
 
     /**
@@ -39,6 +41,8 @@ public class GameEngine {
     public GameEngine(GamePlatform platform, long seed) {
         this.platform = platform;
         this.context = new EngineContext(seed);
+        this.stateSerializer = new com.shatteredpixel.engine.serialization.DefaultEngineStateSerializer();
+        this.snapshotCodec = new com.shatteredpixel.engine.serialization.DefaultEngineSnapshotCodec();
         this.initialized = false;
     }
 
@@ -668,34 +672,63 @@ public class GameEngine {
      * Serialize the current game state to bytes.
      * Used for save files and multiplayer synchronization.
      *
-     * @return Serialized game state
+     * This captures the complete engine state including:
+     * - RNG seed (for deterministic replay)
+     * - Level terrain and flags
+     * - All actors (position, stats, health, buffs)
+     * - Scheduler state (turn order)
+     *
+     * The returned byte[] can be:
+     * - Saved to disk (save files)
+     * - Transmitted over network (multiplayer sync)
+     * - Stored in memory (undo/redo)
+     *
+     * @return Serialized engine state
      */
     public byte[] saveState() {
         if (!initialized) {
             throw new IllegalStateException("Engine not initialized. Nothing to save.");
         }
 
-        // Future: Serialize entire game world
-        // For now, just delegate to GameState
-        return context.getGameState().serialize();
+        // Capture snapshot of engine state
+        com.shatteredpixel.engine.serialization.dto.EngineSnapshot snapshot =
+            stateSerializer.captureSnapshot(context);
+
+        // Encode snapshot to bytes
+        return snapshotCodec.encode(snapshot);
     }
 
     /**
      * Load a game state from serialized bytes.
      * Used for loading save files and multiplayer synchronization.
      *
-     * @param data Serialized game state
+     * This restores the complete engine state including:
+     * - RNG seed (deterministic state)
+     * - Level terrain and flags
+     * - All actors (position, stats, health, buffs)
+     * - Scheduler state (turn order)
+     *
+     * After loading, the engine will be in the exact same state as when
+     * the snapshot was captured.
+     *
+     * Note: This clears existing state before restoration.
+     *
+     * @param data Serialized engine state
      */
     public void loadState(byte[] data) {
         if (!initialized) {
             throw new IllegalStateException("Engine not initialized. Call initialize() first.");
         }
 
-        // Future: Deserialize entire game world
-        GameState loadedState = GameState.deserialize(data);
-        context.setGameState(loadedState);
+        // Decode snapshot from bytes
+        com.shatteredpixel.engine.serialization.dto.EngineSnapshot snapshot =
+            snapshotCodec.decode(data);
 
-        System.out.println("GameState loaded. Depth: " + loadedState.getDepth());
+        // Restore engine state from snapshot
+        stateSerializer.restoreFromSnapshot(context, snapshot);
+
+        System.out.println("Engine state loaded. Seed: " + context.getRNG().getSeed() +
+            ", Actors: " + context.getActors().size());
     }
 
     /**
