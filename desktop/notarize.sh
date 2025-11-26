@@ -16,7 +16,19 @@ PASS="$5"
 TEAM="${CERT#*(}"
 TEAM="${TEAM%)}"
 
-#first sign the naked dylib in /Contents/runtime/Contents/MacOS/libjli.dylib
+#first sign the naked dylibs
+codesign --force --options runtime --timestamp --sign "$CERT" \
+      --entitlements "$PLIST" "${APP}/Contents/runtime/Contents/Home/lib/jspawnhelper"
+codesign --force --options runtime --timestamp --sign "$CERT" \
+      --entitlements "$PLIST" "${APP}/Contents/runtime/Contents/Home/lib/server/libjvm.dylib"
+codesign --force --options runtime --timestamp --sign "$CERT" \
+      --entitlements "$PLIST" "${APP}/Contents/runtime/Contents/Home/lib/server/libjsig.dylib"
+pushd "${APP}/Contents/runtime/Contents/Home/lib/"
+  for LIB in `find . -name '*.dylib'`; do
+    codesign --force --options runtime --timestamp --sign "$CERT" \
+      --entitlements "$PLIST" "${LIB}"
+  done
+popd
 codesign --force --options runtime --timestamp --sign "$CERT" \
       --entitlements "$PLIST" "${APP}/Contents/runtime/Contents/MacOS/libjli.dylib"
 
