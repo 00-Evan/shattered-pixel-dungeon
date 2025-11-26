@@ -1,6 +1,11 @@
 package com.shatteredpixel.engine;
 
 import com.shatteredpixel.api.GamePlatform;
+import com.shatteredpixel.engine.command.GameCommand;
+import com.shatteredpixel.engine.event.GameEvent;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Core headless game engine - main orchestrator for all game systems.
@@ -87,6 +92,126 @@ public class GameEngine {
         }
 
         context.getTickLoop().tick();
+    }
+
+    /**
+     * Execute a single simulation tick with command input.
+     * This is the command/event pipeline entry point.
+     *
+     * Flow:
+     * 1. Clear previous events from EventCollector
+     * 2. Process each command in order
+     * 3. Advance tick count
+     * 4. Return all events generated during this tick
+     *
+     * This method is designed for:
+     * - Deterministic replay (same commands + same state = same events)
+     * - Multiplayer sync (commands from all players processed together)
+     * - Testing (inject commands, observe events)
+     *
+     * @param commands List of commands to process this tick
+     * @return List of events generated this tick
+     */
+    public List<GameEvent> tick(List<GameCommand> commands) {
+        if (!initialized) {
+            throw new IllegalStateException("Engine not initialized. Call initialize() first.");
+        }
+
+        // Clear previous events
+        context.getEventCollector().clear();
+
+        // Process commands (placeholder implementation for now)
+        if (commands != null) {
+            for (GameCommand command : commands) {
+                processCommand(command);
+            }
+        }
+
+        // Advance tick
+        context.getTickLoop().tick();
+
+        // Return all events generated this tick
+        return context.getEventCollector().drainAll();
+    }
+
+    /**
+     * Process a single command (placeholder implementation).
+     *
+     * TODO: Implement full command processing:
+     * - MOVE: Move actor to target position, check collision, publish ACTOR_MOVED event
+     * - ATTACK: Resolve combat using CombatFormula, publish DAMAGE_APPLIED/ACTOR_DIED events
+     * - USE_ABILITY: Look up ability, execute it, publish relevant events
+     * - WAIT: Pass turn, publish TURN_ENDED event
+     * - SYSTEM: Handle system commands (save, quit, etc.)
+     *
+     * For now, this creates placeholder events to demonstrate the pipeline.
+     */
+    private void processCommand(GameCommand command) {
+        switch (command.getType()) {
+            case MOVE:
+                // TODO: Implement movement logic
+                // - Look up actor by actorId
+                // - Check if target position is valid (pathfinding, collision)
+                // - Update actor position
+                // - Publish ACTOR_MOVED event
+                if (command.getTargetPosition() != null) {
+                    context.getEventCollector().publish(
+                        GameEvent.actorMoved(command.getActorId(), command.getTargetPosition())
+                    );
+                }
+                break;
+
+            case ATTACK:
+                // TODO: Implement attack logic
+                // - Look up attacker and target by actorId
+                // - Create AttackRequest
+                // - Resolve using CombatFormula
+                // - Publish DAMAGE_APPLIED event
+                // - If target died, publish ACTOR_DIED event
+                if (command.getTargetActorId() != null) {
+                    context.getEventCollector().publish(
+                        GameEvent.logMessage("Attack placeholder: " + command.getActorId() + " -> " + command.getTargetActorId())
+                    );
+                }
+                break;
+
+            case USE_ABILITY:
+                // TODO: Implement ability logic
+                // - Look up actor by actorId
+                // - Look up ability by actionId
+                // - Execute ability
+                // - Publish relevant events (damage, healing, buffs, etc.)
+                context.getEventCollector().publish(
+                    GameEvent.logMessage("Ability placeholder: " + command.getActionId())
+                );
+                break;
+
+            case WAIT:
+                // TODO: Implement wait logic
+                // - Look up actor by actorId
+                // - Pass turn (advance actor's time)
+                // - Publish TURN_ENDED event
+                context.getEventCollector().publish(
+                    GameEvent.turnEnded(command.getActorId())
+                );
+                break;
+
+            case SYSTEM:
+                // TODO: Implement system commands
+                // - Handle save, load, quit, etc.
+                context.getEventCollector().publish(
+                    GameEvent.system("System command: " + command.getActionId())
+                );
+                break;
+
+            case DEBUG:
+                // TODO: Implement debug commands
+                // - Teleport, spawn items, give XP, etc.
+                context.getEventCollector().publish(
+                    GameEvent.system("Debug command: " + command.getActionId())
+                );
+                break;
+        }
     }
 
     /**
