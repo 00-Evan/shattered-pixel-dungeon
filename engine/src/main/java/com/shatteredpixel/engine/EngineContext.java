@@ -2,6 +2,7 @@ package com.shatteredpixel.engine;
 
 import com.shatteredpixel.engine.actor.Actor;
 import com.shatteredpixel.engine.actor.ActorId;
+import com.shatteredpixel.engine.actor.ActorScheduler;
 import com.shatteredpixel.engine.dungeon.LevelState;
 import com.shatteredpixel.engine.event.EventCollector;
 
@@ -25,6 +26,7 @@ public class EngineContext {
     private final EventBus eventBus;
     private final TickLoop tickLoop;
     private final EventCollector eventCollector;
+    private final ActorScheduler scheduler;
     private final Map<ActorId, Actor> actors;
     private GameState gameState;
     private LevelState currentLevel;
@@ -40,6 +42,7 @@ public class EngineContext {
         this.eventBus = new EventBus();
         this.tickLoop = new TickLoop(this);
         this.eventCollector = new EventCollector();
+        this.scheduler = new ActorScheduler();
         this.actors = new HashMap<>();
         this.gameState = new GameState();
         this.currentLevel = null; // No level loaded initially
@@ -72,6 +75,13 @@ public class EngineContext {
      */
     public EventCollector getEventCollector() {
         return eventCollector;
+    }
+
+    /**
+     * Get the actor scheduler for turn-based gameplay.
+     */
+    public ActorScheduler getScheduler() {
+        return scheduler;
     }
 
     /**
@@ -131,6 +141,34 @@ public class EngineContext {
     }
 
     /**
+     * Register an actor for turn-based scheduling.
+     * The actor will participate in the scheduler's turn order.
+     *
+     * Note: This does NOT add the actor to the actor registry.
+     * You must call addActor() separately if needed.
+     *
+     * @param actor Actor to register
+     * @param initialTime Initial time value (typically 0.0f for new actors)
+     */
+    public void registerActorForScheduling(Actor actor, float initialTime) {
+        actor.setTime(initialTime);
+        scheduler.addActor(actor, this);
+    }
+
+    /**
+     * Unregister an actor from turn-based scheduling.
+     * The actor will no longer receive turns from the scheduler.
+     *
+     * Note: This does NOT remove the actor from the actor registry.
+     * You must call removeActor() separately if needed.
+     *
+     * @param actorId ID of actor to unregister
+     */
+    public void unregisterActorFromScheduling(ActorId actorId) {
+        scheduler.removeActor(actorId, this);
+    }
+
+    /**
      * Get the primary vision actor ID (actor whose position determines FOV).
      * This is typically the player character or main hero.
      * Can be null if no vision source is set.
@@ -164,6 +202,7 @@ public class EngineContext {
         this.gameState = new GameState();
         this.eventBus.clear();
         this.eventCollector.clear();
+        this.scheduler.clear(this); // Clear all scheduled actors
         this.actors.clear();
         this.currentLevel = null;
         this.visionActorId = null; // Clear vision source on reset

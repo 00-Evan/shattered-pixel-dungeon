@@ -135,6 +135,128 @@ public class GameEngine {
     }
 
     /**
+     * Process the next actor's turn using the ActorScheduler.
+     *
+     * This method drives turn-based gameplay by:
+     * 1. Selecting the next actor from the scheduler
+     * 2. Deciding what command that actor will execute
+     *    - Heroes: use external command from externalCommands list
+     *    - Mobs: use AI decision from decideNextAction()
+     * 3. Executing the command via the existing tick() pipeline
+     * 4. Advancing the actor's time in the scheduler
+     * 5. Removing dead actors from the scheduler
+     *
+     * Command resolution:
+     * - For HERO actors: looks for a matching command in externalCommands by actorId
+     * - For MOB actors: calls decideNextAction() to get AI-decided command
+     * - If no command available: treats as "wait" (returns empty events)
+     *
+     * Time management:
+     * - Uses fixed time cost of 1.0f per turn for now
+     * - Future: variable costs based on action type and actor speed
+     *
+     * Dead actor cleanup:
+     * - Actors that die during their turn are removed from scheduler
+     * - Also removed from actor registry for garbage collection
+     *
+     * @param externalCommands Commands provided externally (typically player input for heroes)
+     * @return List of GameEvents produced during this turn
+     */
+    public List<GameEvent> processNextTurn(List<GameCommand> externalCommands) {
+        // Get next actor from scheduler
+        com.shatteredpixel.engine.actor.Actor nextActor = context.getScheduler().getNextActor();
+
+        // No actors scheduled → no-op
+        if (nextActor == null) {
+            return java.util.Collections.emptyList();
+        }
+
+        // Verify actor still exists in registry (may have been removed/killed)
+        com.shatteredpixel.engine.actor.ActorId actorId = nextActor.getId();
+        com.shatteredpixel.engine.actor.Actor actor = context.getActor(actorId);
+        if (actor == null) {
+            // Actor was removed but still in scheduler - clean up and try next
+            context.unregisterActorFromScheduling(actorId);
+            return processNextTurn(externalCommands); // Recursive call for next actor
+        }
+
+        // Only process Character actors (skip other types for now)
+        if (!(actor instanceof com.shatteredpixel.engine.actor.Character)) {
+            // Skip non-Character actors, advance their time, and move to next
+            actor.spendTime(1.0f);
+            return processNextTurn(externalCommands); // Recursive call for next actor
+        }
+
+        // Decide what command this actor will execute
+        GameCommand command = null;
+
+        if (actor.getType() == com.shatteredpixel.engine.actor.ActorType.HERO) {
+            // Hero: look for external command matching this actor's ID
+            if (externalCommands != null) {
+                for (GameCommand cmd : externalCommands) {
+                    if (cmd.getActorId() != null && cmd.getActorId().equals(actorId)) {
+                        command = cmd;
+                        break;
+                    }
+                }
+            }
+            // If no command found, hero "waits" (command remains null)
+
+        } else if (actor.getType() == com.shatteredpixel.engine.actor.ActorType.MOB) {
+            // Mob: use AI to decide next action
+            if (actor instanceof com.shatteredpixel.engine.actor.mob.SimpleMeleeMob) {
+                com.shatteredpixel.engine.actor.mob.SimpleMeleeMob mob =
+                    (com.shatteredpixel.engine.actor.mob.SimpleMeleeMob) actor;
+                command = mob.decideNextAction(context);
+            }
+            // If AI returns null, mob "waits" (command remains null)
+
+        } else {
+            // Other actor types: just wait (no action)
+            // TODO: Implement behavior for NPC, PROJECTILE, etc.
+        }
+
+        // Execute the command (if any) via existing pipeline
+        List<GameEvent> events;
+        if (command != null) {
+            events = tick(java.util.Collections.singletonList(command));
+        } else {
+            // No command (wait) - just clear events and advance tick
+            context.getEventCollector().clear();
+            context.getTickLoop().tick();
+            events = context.getEventCollector().drainAll();
+        }
+
+        // Normalize time: subtract minimum time from all actors
+        // This keeps time values manageable and prevents overflow
+        float minTime = nextActor.getTime();
+        if (minTime > 0) {
+            for (com.shatteredpixel.engine.actor.Actor a : context.getScheduler().getAllActors()) {
+                a.setTime(a.getTime() - minTime);
+            }
+        }
+
+        // Advance this actor's time by fixed cost
+        // TODO: Make time cost configurable (based on action type, actor speed, etc.)
+        final float TIME_COST = 1.0f;
+        nextActor.spendTime(TIME_COST);
+
+        // Clean up dead actors
+        if (actor instanceof com.shatteredpixel.engine.actor.Character) {
+            com.shatteredpixel.engine.actor.Character character =
+                (com.shatteredpixel.engine.actor.Character) actor;
+            if (character.isDead()) {
+                // Remove from scheduler
+                context.unregisterActorFromScheduling(actorId);
+                // Remove from actor registry
+                context.removeActor(actorId);
+            }
+        }
+
+        return events;
+    }
+
+    /**
      * Process a single command.
      *
      * IMPLEMENTED:
