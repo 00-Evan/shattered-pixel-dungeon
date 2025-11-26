@@ -77,6 +77,29 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-2", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**-** Randomize menu in hero select now remembers which options were just used.\n\n" +
+				"**-** Updated translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by BETA-1:**\n" +
+				"**-** Boosts provided by rings not being properly cleared by the new quest area\n" +
+				"**-** Gnoll brutes becoming immortal if killed via assassination\n" +
+				"**-** Crashes at the end of Tengu phase 1 (hopefully)\n" +
+				"**-** Beacon of Returning not functioning properly when returning to the same floor\n" +
+				"**-** Bolas inflicting 3 turns of cripple instead of 5\n" +
+				"**-** Disabled buttons in options windows not showing as disabled\n" +
+				"**-** Minor textual errors"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
