@@ -139,9 +139,9 @@ public class GameEngine {
      *
      * IMPLEMENTED:
      * - MOVE: Validates and executes actor movement with collision detection
+     * - ATTACK: Resolves combat using CombatFormula, publishes DAMAGE_APPLIED/ACTOR_DIED events
      *
      * TODO: Implement remaining command types:
-     * - ATTACK: Resolve combat using CombatFormula, publish DAMAGE_APPLIED/ACTOR_DIED events
      * - USE_ABILITY: Look up ability, execute it, publish relevant events
      * - WAIT: Pass turn, publish TURN_ENDED event
      * - SYSTEM: Handle system commands (save, quit, etc.)
@@ -153,17 +153,7 @@ public class GameEngine {
                 break;
 
             case ATTACK:
-                // TODO: Implement attack logic
-                // - Look up attacker and target by actorId
-                // - Create AttackRequest
-                // - Resolve using CombatFormula
-                // - Publish DAMAGE_APPLIED event
-                // - If target died, publish ACTOR_DIED event
-                if (command.getTargetActorId() != null) {
-                    context.getEventCollector().publish(
-                        GameEvent.logMessage("Attack placeholder: " + command.getActorId() + " -> " + command.getTargetActorId())
-                    );
-                }
+                processAttackCommand(command);
                 break;
 
             case USE_ABILITY:
@@ -295,6 +285,140 @@ public class GameEngine {
         // - Trigger traps
         // - Use pathfinding for multi-step movement
         // - Check line-of-sight for diagonal movement
+    }
+
+    /**
+     * Process an ATTACK command.
+     *
+     * Flow:
+     * 1. Validate command has required fields (actorId, targetActorId)
+     * 2. Look up attacker and defender from registry
+     * 3. Validate both are Characters (combat participants)
+     * 4. Validate attacker != defender (can't attack self)
+     * 5. Create AttackRequest and resolve using CombatFormula
+     * 6. Emit events: DAMAGE_APPLIED (if hit), ACTOR_DIED (if killed), LOG_MESSAGE (summary)
+     * 7. On validation failure: emit LOG_MESSAGE, do not apply damage
+     */
+    private void processAttackCommand(GameCommand command) {
+        // Validate command has required fields
+        if (command.getActorId() == null) {
+            context.getEventCollector().publish(
+                GameEvent.logMessage("ATTACK failed: missing actorId")
+            );
+            return;
+        }
+
+        if (command.getTargetActorId() == null) {
+            context.getEventCollector().publish(
+                GameEvent.logMessage("ATTACK failed: missing targetActorId")
+            );
+            return;
+        }
+
+        // Look up attacker
+        com.shatteredpixel.engine.actor.Actor attackerActor = context.getActor(command.getActorId());
+        if (attackerActor == null) {
+            context.getEventCollector().publish(
+                GameEvent.logMessage("ATTACK failed: attacker " + command.getActorId() + " not found")
+            );
+            return;
+        }
+
+        // Look up defender
+        com.shatteredpixel.engine.actor.Actor defenderActor = context.getActor(command.getTargetActorId());
+        if (defenderActor == null) {
+            context.getEventCollector().publish(
+                GameEvent.logMessage("ATTACK failed: defender " + command.getTargetActorId() + " not found")
+            );
+            return;
+        }
+
+        // Validate attacker is a Character
+        if (!(attackerActor instanceof com.shatteredpixel.engine.actor.Character)) {
+            context.getEventCollector().publish(
+                GameEvent.logMessage("ATTACK failed: attacker " + command.getActorId() + " is not a Character")
+            );
+            return;
+        }
+
+        // Validate defender is a Character
+        if (!(defenderActor instanceof com.shatteredpixel.engine.actor.Character)) {
+            context.getEventCollector().publish(
+                GameEvent.logMessage("ATTACK failed: defender " + command.getTargetActorId() + " is not a Character")
+            );
+            return;
+        }
+
+        // Validate attacker != defender
+        if (command.getActorId().equals(command.getTargetActorId())) {
+            context.getEventCollector().publish(
+                GameEvent.logMessage("ATTACK failed: attacker and defender are the same")
+            );
+            return;
+        }
+
+        // Cast to Character
+        com.shatteredpixel.engine.actor.Character attacker = (com.shatteredpixel.engine.actor.Character) attackerActor;
+        com.shatteredpixel.engine.actor.Character defender = (com.shatteredpixel.engine.actor.Character) defenderActor;
+
+        // Create AttackRequest with generic PHYSICAL damage type
+        // Uses attacker's attackPower stat as base damage
+        com.shatteredpixel.engine.combat.AttackRequest request =
+            new com.shatteredpixel.engine.combat.AttackRequest(
+                attacker,
+                defender,
+                com.shatteredpixel.engine.combat.DamageType.PHYSICAL
+            );
+
+        // Resolve attack using DefaultCombatFormula
+        com.shatteredpixel.engine.combat.CombatFormula formula =
+            new com.shatteredpixel.engine.combat.DefaultCombatFormula();
+        com.shatteredpixel.engine.combat.AttackResult result =
+            formula.resolveAttack(request, context);
+
+        // Emit events based on result
+        if (result.getHitResult().isHit()) {
+            // Emit DAMAGE_APPLIED event
+            context.getEventCollector().publish(
+                GameEvent.damageApplied(
+                    command.getActorId(),
+                    command.getTargetActorId(),
+                    result.getFinalDamage()
+                )
+            );
+
+            // If defender died, emit ACTOR_DIED event
+            if (result.defenderDied()) {
+                context.getEventCollector().publish(
+                    GameEvent.actorDied(command.getTargetActorId())
+                );
+            }
+
+            // Emit LOG_MESSAGE summary
+            String hitType = result.getHitResult().isCritical() ? "critical hit" : "hit";
+            String deathNote = result.defenderDied() ? " (killed)" : "";
+            context.getEventCollector().publish(
+                GameEvent.logMessage(
+                    String.format("%s attacks %s: %s for %d damage%s",
+                        command.getActorId(),
+                        command.getTargetActorId(),
+                        hitType,
+                        result.getFinalDamage(),
+                        deathNote
+                    )
+                )
+            );
+        } else {
+            // Attack missed
+            context.getEventCollector().publish(
+                GameEvent.logMessage(
+                    String.format("%s attacks %s: miss",
+                        command.getActorId(),
+                        command.getTargetActorId()
+                    )
+                )
+            );
+        }
     }
 
     /**
