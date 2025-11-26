@@ -279,12 +279,77 @@ public class GameEngine {
             GameEvent.actorMoved(command.getActorId(), targetPos)
         );
 
+        // Update FOV if this actor is the vision source
+        updateFovIfNeeded(command.getActorId());
+
         // TODO: Future enhancements:
         // - Check for hazardous terrain and apply damage
-        // - Update FOV/visibility
         // - Trigger traps
         // - Use pathfinding for multi-step movement
         // - Check line-of-sight for diagonal movement
+    }
+
+    /**
+     * Update FOV if the given actor is the vision source.
+     *
+     * This method is called after successful movement to recompute the field of view
+     * from the vision actor's new position. It updates VISIBLE and DISCOVERED flags
+     * on the level grid.
+     *
+     * If no vision actor is set, or if the given actor is not the vision source,
+     * or if no level is loaded, this method does nothing.
+     *
+     * @param movedActorId The actor that just moved
+     */
+    private void updateFovIfNeeded(com.shatteredpixel.engine.actor.ActorId movedActorId) {
+        // Check if we have a vision actor configured
+        com.shatteredpixel.engine.actor.ActorId visionActorId = context.getVisionActorId();
+        if (visionActorId == null) {
+            return; // No vision source configured
+        }
+
+        // Only update FOV if the moved actor is the vision source
+        if (!movedActorId.equals(visionActorId)) {
+            return; // Different actor moved, no FOV update needed
+        }
+
+        // Get the level
+        com.shatteredpixel.engine.dungeon.LevelState level = context.getLevel();
+        if (level == null) {
+            return; // No level loaded
+        }
+
+        // Get the vision actor
+        com.shatteredpixel.engine.actor.Actor visionActor = context.getActor(visionActorId);
+        if (visionActor == null) {
+            return; // Vision actor not found (shouldn't happen, but be safe)
+        }
+
+        // Get actor's position
+        com.shatteredpixel.engine.geom.Point visionPos = visionActor.getPosition();
+        if (visionPos == null) {
+            return; // Actor has no position
+        }
+
+        // Recompute FOV from the vision actor's position
+        // Use fixed radius of 8 tiles for now (will be made configurable later)
+        // TODO: Make vision radius configurable per-actor or per-game-mode
+        // TODO: Consider light sources, darkness, special vision abilities
+        final int VISION_RADIUS = 8;
+
+        com.shatteredpixel.engine.dungeon.LevelGrid grid = level.getGrid();
+        com.shatteredpixel.engine.dungeon.fov.FovCalculator fovCalculator =
+            new com.shatteredpixel.engine.dungeon.fov.FovCalculator();
+
+        // This clears VISIBLE flags and recomputes them, also updates DISCOVERED
+        fovCalculator.computeAndApply(grid, visionPos, VISION_RADIUS);
+
+        // TODO: Future enhancements:
+        // - Emit FOV_CHANGED or VISIBILITY_CHANGED events for UI updates
+        // - Support multiple vision sources (party members)
+        // - Per-actor vision radius based on stats/abilities
+        // - Light sources and torch mechanics
+        // - Darkness/blindness status effects
     }
 
     /**

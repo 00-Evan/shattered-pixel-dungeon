@@ -28,6 +28,7 @@ public class EngineContext {
     private final Map<ActorId, Actor> actors;
     private GameState gameState;
     private LevelState currentLevel;
+    private ActorId visionActorId; // Primary actor providing field of view (e.g., player character)
 
     /**
      * Create a new engine context with the specified seed.
@@ -42,6 +43,7 @@ public class EngineContext {
         this.actors = new HashMap<>();
         this.gameState = new GameState();
         this.currentLevel = null; // No level loaded initially
+        this.visionActorId = null; // No vision source initially
     }
 
     /**
@@ -129,6 +131,32 @@ public class EngineContext {
     }
 
     /**
+     * Get the primary vision actor ID (actor whose position determines FOV).
+     * This is typically the player character or main hero.
+     * Can be null if no vision source is set.
+     *
+     * @return ActorId of the vision source, or null if none
+     */
+    public ActorId getVisionActorId() {
+        return visionActorId;
+    }
+
+    /**
+     * Set the primary vision actor ID.
+     * When this actor moves, FOV will be recomputed from their position.
+     *
+     * Future enhancements could include:
+     * - Multiple vision sources (party members)
+     * - Per-actor vision radii
+     * - Light sources and darkness
+     *
+     * @param visionActorId ActorId of the vision source, or null to disable FOV updates
+     */
+    public void setVisionActorId(ActorId visionActorId) {
+        this.visionActorId = visionActorId;
+    }
+
+    /**
      * Reset the engine to a fresh state with a new seed.
      */
     public void reset(long newSeed) {
@@ -138,5 +166,6 @@ public class EngineContext {
         this.eventCollector.clear();
         this.actors.clear();
         this.currentLevel = null;
+        this.visionActorId = null; // Clear vision source on reset
     }
 }
