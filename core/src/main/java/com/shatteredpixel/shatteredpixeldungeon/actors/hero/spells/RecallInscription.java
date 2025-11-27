@@ -75,6 +75,7 @@ public class RecallInscription extends ClericSpell {
 
 		if (item instanceof Scroll){
 			((Scroll) item).anonymize();
+			((Scroll) item).talentChance = 0; //does not trigger on-scroll effects
 			((Scroll) item).doRead();
 		} else if (item instanceof Runestone){
 			((Runestone) item).anonymize();
