@@ -106,7 +106,7 @@ public abstract class SecretRoom extends SpecialRoom {
 	public static void restoreRoomsFromBundle( Bundle bundle ) {
 		runSecrets.clear();
 		if (bundle.contains( ROOMS )) {
-			for (Class<? extends SecretRoom> type : bundle.getClassArray(ROOMS)) {
+			for (Class<? extends SecretRoom> type : (Class<? extends SecretRoom>[]) bundle.getClassArray(ROOMS)) {
 				if (type != null) runSecrets.add(type);
 			}
 			regionSecretsThisRun = bundle.getIntArray(REGIONS);

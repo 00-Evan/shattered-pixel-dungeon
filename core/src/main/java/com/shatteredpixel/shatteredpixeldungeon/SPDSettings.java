@@ -322,28 +322,32 @@ public class SPDSettings extends GameSettings {
 
 	//Connectivity
 
-	public static final String KEY_NEWS     = "news";
-	public static final String KEY_UPDATES	= "updates";
+//	public static final String KEY_NEWS     = "news";
+//	public static final String KEY_UPDATES	= "updates";
 	public static final String KEY_BETAS	= "betas";
 	public static final String KEY_WIFI     = "wifi";
 
-	public static final String KEY_NEWS_LAST_READ = "news_last_read";
+//	public static final String KEY_NEWS_LAST_READ = "news_last_read";
 
-	public static void news(boolean value){
-		put(KEY_NEWS, value);
-	}
-
-	public static boolean news(){
-		return getBoolean(KEY_NEWS, true);
-	}
-
-	public static void updates(boolean value){
-		put(KEY_UPDATES, value);
-	}
-
-	public static boolean updates(){
-		return getBoolean(KEY_UPDATES, true);
-	}
+//	public static void news(boolean value){
+//		//put(KEY_NEWS, value);
+//        put(KEY_NEWS, false);
+//	}
+//
+//	public static boolean news(){
+//		//return getBoolean(KEY_NEWS, true);
+//        return getBoolean(KEY_NEWS, false);
+//	}
+//
+//	public static void updates(boolean value){
+//		//put(KEY_UPDATES, value);
+//        put(KEY_UPDATES, value);
+//	}
+//
+//	public static boolean updates(){
+//		//return getBoolean(KEY_UPDATES, true);
+//        return getBoolean(KEY_UPDATES, false);
+//	}
 
 	public static void betas(boolean value){
 		put(KEY_BETAS, value);
@@ -361,13 +365,13 @@ public class SPDSettings extends GameSettings {
 		return getBoolean(KEY_WIFI, true);
 	}
 
-	public static void newsLastRead(long lastRead){
-		put(KEY_NEWS_LAST_READ, lastRead);
-	}
-
-	public static long newsLastRead(){
-		return getLong(KEY_NEWS_LAST_READ, 0);
-	}
+//	public static void newsLastRead(long lastRead){
+//		put(KEY_NEWS_LAST_READ, lastRead);
+//	}
+//
+//	public static long newsLastRead(){
+//		return getLong(KEY_NEWS_LAST_READ, 0);
+//	}
 
 	//Audio
 	

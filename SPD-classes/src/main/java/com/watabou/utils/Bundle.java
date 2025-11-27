@@ -127,7 +127,7 @@ public class Bundle {
 
 	public Class getClass( String key ) {
 		String clName =  getString(key).replace("class ", "");
-		if (!clName.equals("")){
+		if (!clName.isEmpty()){
 			if (aliases.containsKey( clName )) {
 				clName = aliases.get( clName );
 			}
@@ -170,14 +170,11 @@ public class Bundle {
 	public <E extends Enum<E>> E getEnum( String key, Class<E> enumClass ) {
 		try {
 			return Enum.valueOf( enumClass, data.getString( key ) );
-		} catch (JSONException e) {
-			Game.reportException(e);
-			return enumClass.getEnumConstants()[0];
-		} catch (IllegalArgumentException e) {
+		} catch (JSONException | IllegalArgumentException e) {
 			Game.reportException(e);
 			return enumClass.getEnumConstants()[0];
 		}
-	}
+    }
 
 	public int[] getIntArray( String key ) {
 		try {

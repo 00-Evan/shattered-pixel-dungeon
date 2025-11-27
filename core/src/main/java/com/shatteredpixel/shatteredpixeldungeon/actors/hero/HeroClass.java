@@ -91,7 +91,7 @@ public enum HeroClass {
 	DUELIST( HeroSubClass.CHAMPION, HeroSubClass.MONK ),
 	CLERIC( HeroSubClass.PRIEST, HeroSubClass.PALADIN );
 
-	private HeroSubClass[] subClasses;
+	private final HeroSubClass[] subClasses;
 
 	HeroClass( HeroSubClass...subClasses ) {
 		this.subClasses = subClasses;

@@ -3,7 +3,7 @@ plugins {
 }
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-sourceCompatibility = targetCompatibility = appJavaCompatibility
+java.sourceCompatibility = java.targetCompatibility = appJavaCompatibility
 
 ext.appMainClass = "com.shatteredpixel.shatteredpixeldungeon.desktop.DesktopLauncher"
 processResources {
@@ -13,7 +13,7 @@ processResources {
 
 def osName = System.getProperty('os.name').toLowerCase(Locale.ROOT)
 
-task debug(type: JavaExec) {
+tasks.register('debug', JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     ignoreExitValue = true
 
@@ -28,7 +28,7 @@ task debug(type: JavaExec) {
     }
 }
 
-task release(type: Jar) {
+tasks.register('release', Jar) {
     //FIXME this is now needed as of gradle 7.0, due to our weird sourceSets setup. Should see if there's a better way to do this
     setDuplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     from sourceSets.main.output
@@ -47,6 +47,7 @@ installDist.dependsOn release
 startScripts.dependsOn release
 jpackageImage.dependsOn release
 
+// We'll remove this plugin `org.beryx.runtime` later.
 runtime {
     modules = ['java.base',
                'java.desktop',

@@ -1,10 +1,18 @@
-//core game code modules
+pluginManagement {
+    plugins {
+        id 'org.jetbrains.kotlin.jvm' version '2.1.21'
+    }
+}
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
+}//core game code modules
 include ':SPD-classes'
 include ':core'
 
 //platform modules
 include ':android'
-include ':ios'
+// we do not the plan to support ios platform.
+//include ':ios'
 include ':desktop'
 
 //service modules

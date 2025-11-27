@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Newer Material translucent theme for Android 9+ that lets them go true fullscreen -->
+    <style name="GameTheme" parent="@android:style/Theme.Material.NoActionBar.TranslucentDecor">
+        <item name="android:windowLayoutInDisplayCutoutMode">
+            shortEdges <!-- For Android 14- devices. Edge-to-edge is automatic for Android 15+ -->
+        </item>
+    </style>
+</resources>

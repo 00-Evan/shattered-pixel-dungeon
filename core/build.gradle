@@ -1,9 +1,37 @@
+buildscript {
+    ext.kotlin_version = '2.1.21'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+plugins {
+    id "org.jetbrains.kotlin.jvm" version "2.2.21"
+}
 apply plugin: 'java-library'
+apply plugin: 'kotlin'
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-sourceCompatibility = targetCompatibility = appJavaCompatibility
+tasks.withType(JavaCompile).configureEach {
+    it.options.release = 21
+}
 
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = 21
+    }
+}
 dependencies {
     api project(':SPD-classes')
     implementation project(':services')
+   // implementation project(':core')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+}
+repositories {
+    mavenCentral()
+}
+kotlin {
+    jvmToolchain(21)
 }
