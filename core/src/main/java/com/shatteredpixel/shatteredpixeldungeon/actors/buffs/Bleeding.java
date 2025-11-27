@@ -118,9 +118,9 @@ public class Bleeding extends Buff {
 					GLog.n( Messages.get(this, "ondeath") );
 				}
 
-				if (source == Sickle.HarvestBleedTracker.class && !target.isAlive()){
-					MeleeWeapon.onAbilityKill(Dungeon.hero, target);
-				}
+//				if (source == Sickle.HarvestBleedTracker.class && !target.isAlive()){
+//					MeleeWeapon.onAbilityKill(Dungeon.hero, target);
+//				}
 				
 				spend( TICK );
 			} else {

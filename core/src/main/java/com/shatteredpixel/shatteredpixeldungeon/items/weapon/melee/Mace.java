@@ -59,22 +59,6 @@ public class Mace extends MeleeWeapon {
 		return Messages.get(this, "prompt");
 	}
 
-	@Override
-	protected void duelistAbility(Hero hero, Integer target) {
-		//+(5+1.5*lvl) damage, roughly +55% base dmg, +60% scaling
-		int dmgBoost = augment.damageFactor(5 + Math.round(1.5f*buffedLvl()));
-		Mace.heavyBlowAbility(hero, target, 1, dmgBoost, this);
-	}
-
-	@Override
-	public String abilityInfo() {
-		int dmgBoost = levelKnown ? 5 + Math.round(1.5f*buffedLvl()) : 5;
-		if (levelKnown){
-			return Messages.get(this, "ability_desc", augment.damageFactor(min()+dmgBoost), augment.damageFactor(max()+dmgBoost));
-		} else {
-			return Messages.get(this, "typical_ability_desc", min(0)+dmgBoost, max(0)+dmgBoost);
-		}
-	}
 
 	public String upgradeAbilityStat(int level){
 		int dmgBoost = 5 + Math.round(1.5f*level);
@@ -92,13 +76,13 @@ public class Mace extends MeleeWeapon {
 			return;
 		}
 
-		hero.belongings.abilityWeapon = wep;
-		if (!hero.canAttack(enemy)){
-			GLog.w(Messages.get(wep, "ability_target_range"));
-			hero.belongings.abilityWeapon = null;
-			return;
-		}
-		hero.belongings.abilityWeapon = null;
+//		hero.belongings.abilityWeapon = wep;
+//		if (!hero.canAttack(enemy)){
+//			GLog.w(Messages.get(wep, "ability_target_range"));
+//			hero.belongings.abilityWeapon = null;
+//			return;
+//		}
+//		hero.belongings.abilityWeapon = null;
 
 		//no bonus damage if attack isn't a surprise
 		if (enemy instanceof Mob && !((Mob) enemy).surprisedBy(hero)){
@@ -111,19 +95,19 @@ public class Mace extends MeleeWeapon {
 		hero.sprite.attack(enemy.pos, new Callback() {
 			@Override
 			public void call() {
-				wep.beforeAbilityUsed(hero, enemy);
+				//wep.beforeAbilityUsed(hero, enemy);
 				AttackIndicator.target(enemy);
 				if (hero.attack(enemy, finalDmgMulti, finalDmgBoost, Char.INFINITE_ACCURACY)) {
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 					if (enemy.isAlive()){
 						Buff.affect(enemy, Daze.class, Daze.DURATION);
 					} else {
-						wep.onAbilityKill(hero, enemy);
+					//	wep.onAbilityKill(hero, enemy);
 					}
 				}
 				Invisibility.dispel();
 				hero.spendAndNext(hero.attackDelay());
-				wep.afterAbilityUsed(hero);
+				//wep.afterAbilityUsed(hero);
 			}
 		});
 	}

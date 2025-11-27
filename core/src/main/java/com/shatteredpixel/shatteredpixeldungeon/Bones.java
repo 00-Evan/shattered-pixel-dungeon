@@ -97,11 +97,11 @@ public class Bones {
 				case 0:
 					item = hero.belongings.weapon;
 					//if the hero has two weapons (champion), pick the stronger one
-					if (hero.belongings.secondWep != null &&
-							(item == null || hero.belongings.secondWep.trueLevel() > item.trueLevel())){
-						item = hero.belongings.secondWep;
-						break;
-					}
+//					if (hero.belongings.secondWep != null &&
+//							(item == null || hero.belongings.secondWep.trueLevel() > item.trueLevel())){
+//						item = hero.belongings.secondWep;
+//						break;
+//					}
 					break;
 				case 1:
 					item = hero.belongings.armor;

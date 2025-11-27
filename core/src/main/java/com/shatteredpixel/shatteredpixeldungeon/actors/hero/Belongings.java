@@ -62,10 +62,10 @@ public class Belongings implements Iterable<Item> {
 					cap++;
 				}
 			}
-			if (Dungeon.hero != null && Dungeon.hero.belongings.secondWep != null){
-				//secondary weapons still occupy an inv. slot
-				cap--;
-			}
+//			if (Dungeon.hero != null && Dungeon.hero.belongings.secondWep != null){
+//				//secondary weapons still occupy an inv. slot
+//				cap--;
+//			}
 			return cap;
 		}
 	}
@@ -89,10 +89,10 @@ public class Belongings implements Iterable<Item> {
 	public KindOfWeapon thrownWeapon = null;
 
 	//used to ensure that the duelist always uses the weapon she's using the ability of
-	public KindOfWeapon abilityWeapon = null;
+	//public KindOfWeapon abilityWeapon = null;
 
 	//used by the champion subclass
-	public KindOfWeapon secondWep = null;
+	//public KindOfWeapon secondWep = null;
 
 	//*** these accessor methods are so that worn items can be affected by various effects/debuffs
 	// we still want to access the raw equipped items in cases where effects should be ignored though,
@@ -101,7 +101,7 @@ public class Belongings implements Iterable<Item> {
 	//normally the primary equipped weapon, but can also be a thrown weapon or an ability's weapon
 	public KindOfWeapon attackingWeapon(){
 		if (thrownWeapon != null) return thrownWeapon;
-		if (abilityWeapon != null) return abilityWeapon;
+		//if (abilityWeapon != null) return abilityWeapon;
 		return weapon();
 	}
 
@@ -155,13 +155,13 @@ public class Belongings implements Iterable<Item> {
 		}
 	}
 
-	public KindOfWeapon secondWep(){
-		if (!lostInventory() || (secondWep != null && secondWep.keptThroughLostInventory())){
-			return secondWep;
-		} else {
-			return null;
-		}
-	}
+//	public KindOfWeapon secondWep(){
+//		if (!lostInventory() || (secondWep != null && secondWep.keptThroughLostInventory())){
+//			return secondWep;
+//		} else {
+//			return null;
+//		}
+//	}
 
 	// ***
 	
@@ -171,7 +171,7 @@ public class Belongings implements Iterable<Item> {
 	private static final String MISC       = "misc";
 	private static final String RING       = "ring";
 
-	private static final String SECOND_WEP = "second_wep";
+//	private static final String SECOND_WEP = "second_wep";
 
 	public void storeInBundle( Bundle bundle ) {
 		
@@ -182,7 +182,7 @@ public class Belongings implements Iterable<Item> {
 		bundle.put( ARTIFACT, artifact );
 		bundle.put( MISC, misc );
 		bundle.put( RING, ring );
-		bundle.put( SECOND_WEP, secondWep );
+		//bundle.put( SECOND_WEP, secondWep );
 	}
 	
 	public void restoreFromBundle( Bundle bundle ) {
@@ -205,8 +205,8 @@ public class Belongings implements Iterable<Item> {
 		ring = (Ring) bundle.get(RING);
 		if (ring() != null)         ring().activate( owner );
 
-		secondWep = (KindOfWeapon) bundle.get(SECOND_WEP);
-		if (secondWep() != null)    secondWep().activate(owner);
+//		secondWep = (KindOfWeapon) bundle.get(SECOND_WEP);
+//		if (secondWep() != null)    secondWep().activate(owner);
 	}
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
@@ -331,14 +331,14 @@ public class Belongings implements Iterable<Item> {
 				Badges.validateItemLevelAquired(weapon());
 			}
 		}
-		if (secondWep() != null){
-			if (ShardOfOblivion.passiveIDDisabled() && secondWep() instanceof Weapon){
-				((Weapon) secondWep()).setIDReady();
-			} else {
-				secondWep().identify();
-				Badges.validateItemLevelAquired(secondWep());
-			}
-		}
+//		if (secondWep() != null){
+//			if (ShardOfOblivion.passiveIDDisabled() && secondWep() instanceof Weapon){
+//				((Weapon) secondWep()).setIDReady();
+//			} else {
+//				secondWep().identify();
+//				Badges.validateItemLevelAquired(secondWep());
+//			}
+//		}
 		if (armor() != null) {
 			if (ShardOfOblivion.passiveIDDisabled()){
 				armor().setIDReady();
@@ -380,7 +380,7 @@ public class Belongings implements Iterable<Item> {
 	}
 	
 	public void uncurseEquipped() {
-		ScrollOfRemoveCurse.uncurse( owner, armor(), weapon(), artifact(), misc(), ring(), secondWep());
+		ScrollOfRemoveCurse.uncurse( owner, armor(), weapon(), artifact(), misc(), ring()/*, secondWep()*/);
 	}
 	
 	public Item randomUnequipped() {
@@ -412,7 +412,7 @@ public class Belongings implements Iterable<Item> {
 		
 		private Iterator<Item> backpackIterator = backpack.iterator();
 		
-		private Item[] equipped = {weapon, armor, artifact, misc, ring, secondWep};
+		private Item[] equipped = {weapon, armor, artifact, misc, ring/*, secondWep*/};
 		private int backpackIndex = equipped.length;
 		
 		@Override
@@ -458,9 +458,9 @@ public class Belongings implements Iterable<Item> {
 			case 4:
 				equipped[4] = ring = null;
 				break;
-			case 5:
-				equipped[5] = secondWep = null;
-				break;
+//			case 5:
+//				equipped[5] = secondWep = null;
+//				break;
 			default:
 				backpackIterator.remove();
 			}

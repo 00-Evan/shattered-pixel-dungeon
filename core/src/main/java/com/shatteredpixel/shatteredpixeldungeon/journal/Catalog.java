@@ -92,7 +92,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.GooBlob;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.MetalShard;
 import com.shatteredpixel.shatteredpixeldungeon.items.remains.BowFragment;
-import com.shatteredpixel.shatteredpixeldungeon.items.remains.BrokenHilt;
 import com.shatteredpixel.shatteredpixeldungeon.items.remains.BrokenStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.remains.CloakScrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.remains.SealShard;
@@ -258,7 +257,7 @@ public enum Catalog {
 				CorpseDust.class, Embers.class, CeremonialCandle.class, DarkGold.class, DwarfToken.class,
 				GooBlob.class, TengusMask.class, MetalShard.class, KingsCrown.class,
 				LiquidMetal.class, ArcaneResin.class,
-				SealShard.class, BrokenStaff.class, CloakScrap.class, BowFragment.class, BrokenHilt.class, TornPage.class);
+				SealShard.class, BrokenStaff.class, CloakScrap.class, BowFragment.class, /*BrokenHilt.class,*/ TornPage.class);
 
 	}
 

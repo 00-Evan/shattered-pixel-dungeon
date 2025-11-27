@@ -458,8 +458,8 @@ public enum Icons {
 				return new ItemSprite(ItemSpriteSheet.ARTIFACT_CLOAK);
 			case HUNTRESS:
 				return new ItemSprite(ItemSpriteSheet.SPIRIT_BOW);
-			case DUELIST:
-				return new ItemSprite(ItemSpriteSheet.RAPIER);
+//			case DUELIST:
+//				return new ItemSprite(ItemSpriteSheet.RAPIER);
 			case CLERIC:
 				return new ItemSprite(ItemSpriteSheet.ARTIFACT_TOME);
 			default:

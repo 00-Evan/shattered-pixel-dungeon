@@ -112,9 +112,9 @@ abstract public class ClassArmor extends Armor {
 			case HUNTRESS:
 				classArmor = new HuntressArmor();
 				break;
-			case DUELIST:
-				classArmor = new DuelistArmor();
-				break;
+//			case DUELIST:
+//				classArmor = new DuelistArmor();
+//				break;
 			case CLERIC:
 				classArmor = new ClericArmor();
 				break;

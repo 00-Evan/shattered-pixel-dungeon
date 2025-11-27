@@ -276,7 +276,7 @@ public class v2_X_Changes {
 				"_- Wondrous Resin_'s bonus cursed wand effects are now always neutral or positive.\n" +
 				"_- Mimic Tooth_ now boosts loot from all mimics."));
 
-		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 1), "Duelist Buffs",
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RAPIER), "Duelist Buffs",
 				"The Duelist is doing much better balance-wise since v2.4.0, but there are various specific abilities that are getting boosts this update:\n" +
 				"\n" +
 				"Weapon Abilities:\n" +
@@ -291,7 +291,7 @@ public class v2_X_Changes {
 				"_- Precise Assault_ accuracy bonus increased to 2x/5x/inf., up from 2x/4x/8x.\n" +
 				"_- Expose Weakness_ talent now applies weakness as well as vulnerable."));
 
-		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 4), "Monk Buffs",
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RAPIER), "Monk Buffs",
 				"v2.4.0's Duelist buffs were mainly focused on weapon abilities, which mainly benefit the Champion, so it makes sense that the Monk has fallen a little behind. I'm giving out several buffs and mechanics changes to boost the Monk back up, which should improve every ability she has, except meditate.\n" +
 				"\n" +
 				"_-_ Removed ability cooldowns entirely, except for flurry which has a 1 turn cooldown\n" +
@@ -387,7 +387,7 @@ public class v2_X_Changes {
 		changes.hardlight(CharSprite.WARNING);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 6), "Duelist Weapon Abilities",
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RAPIER), "Duelist Weapon Abilities",
 				"I'm making some overarching changes to the Duelist's weapon abilities, to make them stronger and feel more impactful:\n" +
 				"_-_ Weapon ability charge speed down by 33%\n" +
 				"_-_ Weapon ability charge cap reduced to 2-8, from 3-10\n" +
@@ -997,7 +997,7 @@ public class v2_X_Changes {
 				"_-_ Even at level 30, on-exp-gain effects will now still trigger as long as the amulet's curse is being weakened\n\n" +
 				"_-_ Increased enemy stat scaling in the earlier floors of the caves and prison"));
 
-		changes.addButton( new ChangeButton(new TalentIcon(Talent.PRECISE_ASSAULT), "Precise Assault",
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RAPIER), "Precise Assault",
 				"The _Lightweight Charge_ talent has been completely replaced with a new talent: _Precise Assault_. This new talent grants a big accuracy boost for 1 attack after using a weapon ability, encouraging interweaving special and regular attacks.\n\n" +
 				"Lightweight Charge is removed as it was originally designed much earlier in the Duelist's development process. This was before mechanics like Swift Equip, the Champion's Dual wielding, or Unencumbered Spirit existed. Those mechanics do a much better job of encouraging using abilities on lower tier weapons."));
 
@@ -1147,7 +1147,7 @@ public class v2_X_Changes {
 				"_-_ Now triggers on-hit effects in a 5x5 AOE\n" +
 				"_-_ Harmful on-hit effects now only apply to enemies in the AOE, and positive effects only apply to allies."));
 
-		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 2), "Duelist Subclasses",
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RAPIER), "Duelist Subclasses",
 				"The Duelist's subclasses have not had as many problems as her weapon abilities, so the changes here are more incremental. I've been more generous with the Monk, in anticipation that the weapon ability changes will be more beneficial to the Champion:\n\n" +
 				"_Champion:_\n" +
 				"_- Combined Lethality_ HP threshold up to 13/27/40 from 10/20/30\n\n" +
@@ -1159,7 +1159,7 @@ public class v2_X_Changes {
 				"_-_ Dash range boost up to +3 from +2\n" +
 				"_-_ Dragon Kick damage boost up to +50% from +33%"));
 
-		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 6), "Duelist Armor Abilities",
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RAPIER), "Duelist Armor Abilities",
 				"Armor abilities are also getting more minor changes, targeted at specific talents and the elemental strike ability:\n\n" +
 				"_- Elemental Strike_ AOE effect base power increased by 20-33%, varying by enchantment\n\n" +
 				"_- Expose Weakness_ turns of vulnerable increased to 2/4/6/8 from 1/2/3/4\n\n" +
@@ -1169,7 +1169,7 @@ public class v2_X_Changes {
 		changes.hardlight(CharSprite.NEGATIVE);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 4), "Duelist Nerfs",
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RAPIER), "Duelist Nerfs",
 				"The Duelist is also receiving a few very specific nerfs in v2.1.0:\n\n" +
 				"_- Meditate_ now grants the monk 8 turns of recharging, down from 10.\n" +
 				"_- Meditate_ recharging now begins after meditation ends, instead of when it starts.\n\n" +
@@ -1198,21 +1198,21 @@ public class v2_X_Changes {
 				"\n" +
 				"Unfortunately the Duelist ended up releasing quite weak. I overestimated how well an ability focused hero would perform versus the existing heroes. I erred much more on the side of making the next hero stronger, and so far that seems to be working out quite well."));
 
-		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 1), HeroClass.DUELIST.title(),
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.RAPIER), "The Duelist"/*HeroClass.DUELIST.title()*/,
 				"_Shattered Pixel Dungeon has a new playable character!!_\n" +
 				"\n" +
 				"The Duelist is an entire new hero class, _with a unique ability for every weapon in the game!_ She can be unlocked by earning a simple badge for equipping a T2 or higher weapon without a strength penalty. However, for existing players who already have a win she is unlocked by default!\n" +
 				"\n" +
 				"I want the Duelist to provide more interesting gameplay options for melee weapon focused builds, that have previously been fairly plain and simple compared to builds using other items."));
 
-		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 4), "Duelist Subclasses",
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.RAPIER), "Duelist Subclasses",
 				"_The Duelist has two subclasses, with 3 more talents each!_\n" +
 				"\n" +
 				"_The Champion_ is a master of melee weapons who can equip a secondary weapon in addition to her primary one!\n" +
 				"\n" +
 				"_The Monk_ is a master of physical technique. As she defeats enemies, she gains energy which can be used on a variety of defensive and utlity-focused abilities."));
 
-		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 6), "Duelist Armor Abilities",
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.RAPIER), "Duelist Armor Abilities",
 				"_The Duelist has three lategame armor abilities, with 3 more talents each!_\n" +
 				"\n" +
 				"_Challenge_ compels an enemy to fight the Duelist while all other enemies are temporarily frozen in time.\n" +

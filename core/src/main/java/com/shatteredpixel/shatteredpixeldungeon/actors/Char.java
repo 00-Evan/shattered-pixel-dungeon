@@ -59,7 +59,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LifeLink;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
+
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
@@ -79,7 +79,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.PowerOfMany;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Challenge;
+//import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Challenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.DeathMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.AuraOfProtection;
@@ -394,9 +394,9 @@ public abstract class Char extends Actor {
 					dr = 0;
 				}
 
-				if (h.buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) != null){
-					dr = 0;
-				}
+//				if (h.buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) != null){
+//					dr = 0;
+//				}
 			}
 
 			//we use a float here briefly so that we don't have to constantly round while
@@ -469,9 +469,9 @@ public abstract class Char extends Actor {
 				dmg *= 0.9f - 0.1f*Dungeon.hero.pointsInTalent(Talent.AURA_OF_PROTECTION);
 			}
 
-			if (enemy.buff(MonkEnergy.MonkAbility.Meditate.MeditateResistance.class) != null){
-				dmg *= 0.2f;
-			}
+//			if (enemy.buff(MonkEnergy.MonkAbility.Meditate.MeditateResistance.class) != null){
+//				dmg *= 0.2f;
+//			}
 
 			if ( buff(Weakness.class) != null ){
 				dmg *= 0.67f;
@@ -539,28 +539,28 @@ public abstract class Char extends Actor {
 				}
 			}
 
-			Talent.CombinedLethalityAbilityTracker combinedLethality = buff(Talent.CombinedLethalityAbilityTracker.class);
-			if (combinedLethality != null && this instanceof Hero && ((Hero) this).belongings.attackingWeapon() instanceof MeleeWeapon && combinedLethality.weapon != ((Hero) this).belongings.attackingWeapon()){
-				if ( enemy.isAlive() && enemy.alignment != alignment && !Char.hasProp(enemy, Property.BOSS)
-						&& !Char.hasProp(enemy, Property.MINIBOSS) &&
-						(enemy.HP/(float)enemy.HT) <= 0.4f*((Hero)this).pointsInTalent(Talent.COMBINED_LETHALITY)/3f) {
-					enemy.HP = 0;
-					if (enemy.buff(Brute.BruteRage.class) != null){
-						enemy.buff(Brute.BruteRage.class).detach();
-					}
-					if (!enemy.isAlive()) {
-						enemy.die(this);
-					} else {
-						//helps with triggering any on-damage effects that need to activate
-						enemy.damage(-1, this);
-						DeathMark.processFearTheReaper(enemy);
-					}
-					if (enemy.sprite != null) {
-						enemy.sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Talent.CombinedLethalityAbilityTracker.class, "executed"));
-					}
-				}
-				combinedLethality.detach();
-			}
+//			Talent.CombinedLethalityAbilityTracker combinedLethality = buff(Talent.CombinedLethalityAbilityTracker.class);
+//			if (combinedLethality != null && this instanceof Hero && ((Hero) this).belongings.attackingWeapon() instanceof MeleeWeapon && combinedLethality.weapon != ((Hero) this).belongings.attackingWeapon()){
+//				if ( enemy.isAlive() && enemy.alignment != alignment && !Char.hasProp(enemy, Property.BOSS)
+//						&& !Char.hasProp(enemy, Property.MINIBOSS) &&
+//						(enemy.HP/(float)enemy.HT) <= 0.4f*((Hero)this).pointsInTalent(Talent.COMBINED_LETHALITY)/3f) {
+//					enemy.HP = 0;
+//					if (enemy.buff(Brute.BruteRage.class) != null){
+//						enemy.buff(Brute.BruteRage.class).detach();
+//					}
+//					if (!enemy.isAlive()) {
+//						enemy.die(this);
+//					} else {
+//						//helps with triggering any on-damage effects that need to activate
+//						enemy.damage(-1, this);
+//						DeathMark.processFearTheReaper(enemy);
+//					}
+//					if (enemy.sprite != null) {
+//						enemy.sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Talent.CombinedLethalityAbilityTracker.class, "executed"));
+//					}
+//				}
+//				combinedLethality.detach();
+//			}
 
 			if (enemy.sprite != null) {
 				enemy.sprite.bloodBurstA(sprite.center(), effectiveDamage);
@@ -634,9 +634,9 @@ public abstract class Char extends Actor {
 			acuStat = INFINITE_ACCURACY;
 		}
 
-		if (defender.buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class) != null){
-			defStat = INFINITE_EVASION;
-		}
+//		if (defender.buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class) != null){
+//			defStat = INFINITE_EVASION;
+//		}
 
 		//if accuracy or evasion are large enough, treat them as infinite.
 		//note that infinite evasion beats infinite accuracy
@@ -992,10 +992,10 @@ public abstract class Char extends Actor {
 			}
 
 			//special case for monk using unarmed abilities
-			if (src == Dungeon.hero
-					&& Dungeon.hero.buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) != null){
-				icon = FloatingText.PHYS_DMG_NO_BLOCK;
-			}
+//			if (src == Dungeon.hero
+//					&& Dungeon.hero.buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) != null){
+//				icon = FloatingText.PHYS_DMG_NO_BLOCK;
+//			}
 
 			if (src instanceof Hunger)                                  icon = FloatingText.HUNGER;
 			if (src instanceof Burning)                                 icon = FloatingText.BURNING;
@@ -1062,10 +1062,10 @@ public abstract class Char extends Actor {
 					&& ch.buff(Talent.FollowupStrikeTracker.class).object == id()){
 				ch.buff(Talent.FollowupStrikeTracker.class).detach();
 			}
-			if (ch.buff(Talent.DeadlyFollowupTracker.class) != null
-					&& ch.buff(Talent.DeadlyFollowupTracker.class).object == id()){
-				ch.buff(Talent.DeadlyFollowupTracker.class).detach();
-			}
+//			if (ch.buff(Talent.DeadlyFollowupTracker.class) != null
+//					&& ch.buff(Talent.DeadlyFollowupTracker.class).object == id()){
+//				ch.buff(Talent.DeadlyFollowupTracker.class).detach();
+//			}
 		}
 	}
 	
@@ -1173,7 +1173,7 @@ public abstract class Char extends Actor {
 			}
 		}
 
-		if (sprite != null && buff(Challenge.SpectatorFreeze.class) != null){
+		if (sprite != null /*&& buff(Challenge.SpectatorFreeze.class) != null*/){
 			return false; //can't add buffs while frozen and game is loaded
 		}
 
@@ -1337,7 +1337,7 @@ public abstract class Char extends Actor {
 	//similar to isImmune, but only factors in damage.
 	//Is used in AI decision-making
 	public boolean isInvulnerable( Class effect ){
-		return buff(Challenge.SpectatorFreeze.class) != null || buff(Invulnerability.class) != null;
+		return /*buff(Challenge.SpectatorFreeze.class) != null ||*/ buff(Invulnerability.class) != null;
 	}
 
 	protected HashSet<Property> properties = new HashSet<>();

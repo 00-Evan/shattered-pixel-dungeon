@@ -26,7 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SacrificialFire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Challenge;
+
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
@@ -262,9 +262,9 @@ public class Ghoul extends Mob {
 			}
 
 			//have to delay this manually here are a downed ghouls can't be directly frozen otherwise
-			if (target.buff(Challenge.DuelParticipant.class) == null) {
-				turnsToRevive--;
-			}
+//			if (target.buff(Challenge.DuelParticipant.class) == null) {
+//				turnsToRevive--;
+//			}
 			if (turnsToRevive <= 0){
 				if (Actor.findChar( ghoul.pos ) != null) {
 					ArrayList<Integer> candidates = new ArrayList<>();
@@ -358,7 +358,7 @@ public class Ghoul extends Mob {
 				//don't count hero ally ghouls or duel frozen ghouls
 				if (ch != dieing && ch instanceof Ghoul
 						&& ch.alignment == dieing.alignment
-						&& ch.buff(Challenge.SpectatorFreeze.class) == null){
+						/*&& ch.buff(Challenge.SpectatorFreeze.class) == null*/){
 					if (ch.fieldOfView == null){
 						ch.fieldOfView = new boolean[Dungeon.level.length()];
 						Dungeon.level.updateFieldOfView( ch, ch.fieldOfView );

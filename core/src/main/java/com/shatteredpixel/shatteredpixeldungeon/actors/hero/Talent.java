@@ -36,7 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PhysicalEmpower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
@@ -55,7 +54,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
@@ -68,8 +66,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ShardOfOblivion;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gloves;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -163,22 +159,22 @@ public enum Talent {
 	//Spirit Hawk T4
 	EAGLE_EYE(119, 4), GO_FOR_THE_EYES(120, 4), SWIFT_SPIRIT(121, 4),
 
-	//Duelist T1
-	STRENGTHENING_MEAL(128), ADVENTURERS_INTUITION(129), PATIENT_STRIKE(130), AGGRESSIVE_BARRIER(131),
-	//Duelist T2
-	FOCUSED_MEAL(132), LIQUID_AGILITY(133), WEAPON_RECHARGING(134), LETHAL_HASTE(135), SWIFT_EQUIP(136),
-	//Duelist T3
-	PRECISE_ASSAULT(137, 3), DEADLY_FOLLOWUP(138, 3),
-	//Champion T3
-	VARIED_CHARGE(139, 3), TWIN_UPGRADES(140, 3), COMBINED_LETHALITY(141, 3),
-	//Monk T3
-	UNENCUMBERED_SPIRIT(142, 3), MONASTIC_VIGOR(143, 3), COMBINED_ENERGY(144, 3),
-	//Challenge T4
-	CLOSE_THE_GAP(145, 4), INVIGORATING_VICTORY(146, 4), ELIMINATION_MATCH(147, 4),
-	//Elemental Strike T4
-	ELEMENTAL_REACH(148, 4), STRIKING_FORCE(149, 4), DIRECTED_POWER(150, 4),
-	//Feint T4
-	FEIGNED_RETREAT(151, 4), EXPOSE_WEAKNESS(152, 4), COUNTER_ABILITY(153, 4),
+//	//Duelist T1
+//	STRENGTHENING_MEAL(128), ADVENTURERS_INTUITION(129), PATIENT_STRIKE(130), AGGRESSIVE_BARRIER(131),
+//	//Duelist T2
+//	FOCUSED_MEAL(132), LIQUID_AGILITY(133), WEAPON_RECHARGING(134), LETHAL_HASTE(135), SWIFT_EQUIP(136),
+//	//Duelist T3
+//	PRECISE_ASSAULT(137, 3), DEADLY_FOLLOWUP(138, 3),
+//	//Champion T3
+//	VARIED_CHARGE(139, 3), TWIN_UPGRADES(140, 3), COMBINED_LETHALITY(141, 3),
+//	//Monk T3
+//	UNENCUMBERED_SPIRIT(142, 3), MONASTIC_VIGOR(143, 3), COMBINED_ENERGY(144, 3),
+//	//Challenge T4
+//	CLOSE_THE_GAP(145, 4), INVIGORATING_VICTORY(146, 4), ELIMINATION_MATCH(147, 4),
+//	//Elemental Strike T4
+//	ELEMENTAL_REACH(148, 4), STRIKING_FORCE(149, 4), DIRECTED_POWER(150, 4),
+//	//Feint T4
+//	FEIGNED_RETREAT(151, 4), EXPOSE_WEAKNESS(152, 4), COUNTER_ABILITY(153, 4),
 
 	//Cleric T1
 	SATIATED_SPELLS(160), HOLY_INTUITION(161), SEARING_LIGHT(162), SHIELD_OF_LIGHT(163),
@@ -289,87 +285,9 @@ public enum Talent {
 			super.restoreFromBundle(bundle);
 			pos = bundle.getInt(POS);
 		}
-	};
-	public static class AggressiveBarrierCooldown extends FlavourBuff{
-		public int icon() { return BuffIndicator.TIME; }
-		public void tintIcon(Image icon) { icon.hardlight(0.35f, 0f, 0.7f); }
-		public float iconFadePercent() { return Math.max(0, visualcooldown() / 50); }
-	};
-	public static class LiquidAgilEVATracker extends FlavourBuff{};
-	public static class LiquidAgilACCTracker extends FlavourBuff{
-		public int uses;
-
-		{ type = buffType.POSITIVE; }
-		public int icon() { return BuffIndicator.INVERT_MARK; }
-		public void tintIcon(Image icon) { icon.hardlight(0.5f, 0f, 1f); }
-		public float iconFadePercent() { return Math.max(0, 1f - (visualcooldown() / 5)); }
-
-		private static final String USES = "uses";
-		@Override
-		public void storeInBundle(Bundle bundle) {
-			super.storeInBundle(bundle);
-			bundle.put(USES, uses);
-		}
-		@Override
-		public void restoreFromBundle(Bundle bundle) {
-			super.restoreFromBundle(bundle);
-			uses = bundle.getInt(USES);
-		}
-	};
-	public static class LethalHasteCooldown extends FlavourBuff{
-		public int icon() { return BuffIndicator.TIME; }
-		public void tintIcon(Image icon) { icon.hardlight(0.35f, 0f, 0.7f); }
-		public float iconFadePercent() { return Math.max(0, visualcooldown() / 100); }
-	};
-	public static class SwiftEquipCooldown extends FlavourBuff{
-		public boolean secondUse;
-		public boolean hasSecondUse(){
-			return secondUse;
-		}
-
-		public int icon() { return BuffIndicator.TIME; }
-		public void tintIcon(Image icon) {
-			if (hasSecondUse()) icon.hardlight(0.85f, 0f, 1.0f);
-			else                icon.hardlight(0.35f, 0f, 0.7f);
-		}
-		public float iconFadePercent() { return GameMath.gate(0, visualcooldown() / 20f, 1); }
-
-		private static final String SECOND_USE = "second_use";
-		@Override
-		public void storeInBundle(Bundle bundle) {
-			super.storeInBundle(bundle);
-			bundle.put(SECOND_USE, secondUse);
-		}
-		@Override
-		public void restoreFromBundle(Bundle bundle) {
-			super.restoreFromBundle(bundle);
-			secondUse = bundle.getBoolean(SECOND_USE);
-		}
-	};
-	public static class DeadlyFollowupTracker extends FlavourBuff{
-		public int object;
-		{ type = Buff.buffType.POSITIVE; }
-		public int icon() { return BuffIndicator.INVERT_MARK; }
-		public void tintIcon(Image icon) { icon.hardlight(0.5f, 0f, 1f); }
-		public float iconFadePercent() { return Math.max(0, 1f - (visualcooldown() / 5)); }
-		private static final String OBJECT    = "object";
-		@Override
-		public void storeInBundle(Bundle bundle) {
-			super.storeInBundle(bundle);
-			bundle.put(OBJECT, object);
-		}
-		@Override
-		public void restoreFromBundle(Bundle bundle) {
-			super.restoreFromBundle(bundle);
-			object = bundle.getInt(OBJECT);
-		}
 	}
-	public static class PreciseAssaultTracker extends FlavourBuff{
-		{ type = buffType.POSITIVE; }
-		public int icon() { return BuffIndicator.INVERT_MARK; }
-		public void tintIcon(Image icon) { icon.hardlight(1f, 1f, 0.0f); }
-		public float iconFadePercent() { return Math.max(0, 1f - (visualcooldown() / 5)); }
-	};
+
+    ;
 	public static class VariedChargeTracker extends Buff{
 		public Class weapon;
 
@@ -385,29 +303,29 @@ public enum Talent {
 			weapon = bundle.getClass(WEAPON);
 		}
 	}
-	public static class CombinedLethalityAbilityTracker extends FlavourBuff{
-		public MeleeWeapon weapon;
-	};
-	public static class CombinedEnergyAbilityTracker extends FlavourBuff{
-		public boolean monkAbilused = false;
-		public boolean wepAbilUsed = false;
-
-		private static final String MONK_ABIL_USED  = "monk_abil_used";
-		private static final String WEP_ABIL_USED   = "wep_abil_used";
-		@Override
-		public void storeInBundle(Bundle bundle) {
-			super.storeInBundle(bundle);
-			bundle.put(MONK_ABIL_USED, monkAbilused);
-			bundle.put(WEP_ABIL_USED, wepAbilUsed);
-		}
-		@Override
-		public void restoreFromBundle(Bundle bundle) {
-			super.restoreFromBundle(bundle);
-			monkAbilused = bundle.getBoolean(MONK_ABIL_USED);
-			wepAbilUsed = bundle.getBoolean(WEP_ABIL_USED);
-		}
-	}
-	public static class CounterAbilityTacker extends FlavourBuff{}
+//	public static class CombinedLethalityAbilityTracker extends FlavourBuff{
+//		public MeleeWeapon weapon;
+//	};
+//	public static class CombinedEnergyAbilityTracker extends FlavourBuff{
+//		public boolean monkAbilused = false;
+//		public boolean wepAbilUsed = false;
+//
+//		private static final String MONK_ABIL_USED  = "monk_abil_used";
+//		private static final String WEP_ABIL_USED   = "wep_abil_used";
+//		@Override
+//		public void storeInBundle(Bundle bundle) {
+//			super.storeInBundle(bundle);
+//			bundle.put(MONK_ABIL_USED, monkAbilused);
+//			bundle.put(WEP_ABIL_USED, wepAbilUsed);
+//		}
+//		@Override
+//		public void restoreFromBundle(Bundle bundle) {
+//			super.restoreFromBundle(bundle);
+//			monkAbilused = bundle.getBoolean(MONK_ABIL_USED);
+//			wepAbilUsed = bundle.getBoolean(WEP_ABIL_USED);
+//		}
+//	}
+//	public static class CounterAbilityTacker extends FlavourBuff{}
 	public static class SatiatedSpellsTracker extends Buff{
 		@Override
 		public int icon() {
@@ -454,8 +372,8 @@ public enum Talent {
 					return 90;
 				case HUNTRESS:
 					return 122;
-				case DUELIST:
-					return 154;
+//				case DUELIST:
+//					return 154;
 				case CLERIC:
 					return 186;
 			}
@@ -517,11 +435,11 @@ public enum Talent {
 			if (hero.belongings.ring instanceof Ring) hero.belongings.ring.setKnown();
 			if (hero.belongings.misc instanceof Ring) ((Ring) hero.belongings.misc).setKnown();
 		}
-		if (talent == ADVENTURERS_INTUITION && hero.pointsInTalent(ADVENTURERS_INTUITION) == 2){
-			if (hero.belongings.weapon() != null && !ShardOfOblivion.passiveIDDisabled()){
-				hero.belongings.weapon().identify();
-			}
-		}
+//		if (talent == ADVENTURERS_INTUITION && hero.pointsInTalent(ADVENTURERS_INTUITION) == 2){
+//			if (hero.belongings.weapon() != null && !ShardOfOblivion.passiveIDDisabled()){
+//				hero.belongings.weapon().identify();
+//			}
+//		}
 
 		if (talent == PROTECTIVE_SHADOWS && hero.invisible > 0){
 			Buff.affect(hero, Talent.ProtectiveShadowsTracker.class);
@@ -541,21 +459,21 @@ public enum Talent {
 			Dungeon.observe();
 		}
 
-		if (talent == TWIN_UPGRADES || talent == DESPERATE_POWER
-				|| talent == STRONGMAN || talent == DURABLE_PROJECTILES){
-			Item.updateQuickslot();
-		}
+//		if (talent == TWIN_UPGRADES || talent == DESPERATE_POWER
+//				|| talent == STRONGMAN || talent == DURABLE_PROJECTILES){
+//			Item.updateQuickslot();
+//		}
 
-		if (talent == UNENCUMBERED_SPIRIT && hero.pointsInTalent(talent) == 3){
-			Item toGive = new ClothArmor().identify();
-			if (!toGive.collect()){
-				Dungeon.level.drop(toGive, hero.pos).sprite.drop();
-			}
-			toGive = new Gloves().identify();
-			if (!toGive.collect()){
-				Dungeon.level.drop(toGive, hero.pos).sprite.drop();
-			}
-		}
+//		if (talent == UNENCUMBERED_SPIRIT && hero.pointsInTalent(talent) == 3){
+//			Item toGive = new ClothArmor().identify();
+//			if (!toGive.collect()){
+//				Dungeon.level.drop(toGive, hero.pos).sprite.drop();
+//			}
+//			toGive = new Gloves().identify();
+//			if (!toGive.collect()){
+//				Dungeon.level.drop(toGive, hero.pos).sprite.drop();
+//			}
+//		}
 
 		if (talent == LIGHT_READING && hero.heroClass == HeroClass.CLERIC){
 			for (Item item : Dungeon.hero.belongings.backpack){
@@ -610,20 +528,20 @@ public enum Talent {
 			//effectively 1/2 turns of haste
 			Buff.prolong( hero, Haste.class, 0.67f+hero.pointsInTalent(INVIGORATING_MEAL));
 		}
-		if (hero.hasTalent(STRENGTHENING_MEAL)){
-			//3 bonus physical damage for next 2/3 attacks
-			Buff.affect( hero, PhysicalEmpower.class).set(3, 1 + hero.pointsInTalent(STRENGTHENING_MEAL));
-		}
-		if (hero.hasTalent(FOCUSED_MEAL)){
-			if (hero.heroClass == HeroClass.DUELIST){
-				//0.67/1 charge for the duelist
-				Buff.affect( hero, MeleeWeapon.Charger.class ).gainCharge((hero.pointsInTalent(FOCUSED_MEAL)+1)/3f);
-				ScrollOfRecharging.charge( hero );
-			} else {
-				// lvl/3 / lvl/2 bonus dmg on next hit for other classes
-				Buff.affect( hero, PhysicalEmpower.class).set(Math.round(hero.lvl / (4f - hero.pointsInTalent(FOCUSED_MEAL))), 1);
-			}
-		}
+//		if (hero.hasTalent(STRENGTHENING_MEAL)){
+//			//3 bonus physical damage for next 2/3 attacks
+//			Buff.affect( hero, PhysicalEmpower.class).set(3, 1 + hero.pointsInTalent(STRENGTHENING_MEAL));
+//		}
+//		if (hero.hasTalent(FOCUSED_MEAL)){
+//			if (hero.heroClass == HeroClass.DUELIST){
+//				//0.67/1 charge for the duelist
+//				Buff.affect( hero, MeleeWeapon.Charger.class ).gainCharge((hero.pointsInTalent(FOCUSED_MEAL)+1)/3f);
+//				ScrollOfRecharging.charge( hero );
+//			} else {
+//				// lvl/3 / lvl/2 bonus dmg on next hit for other classes
+//				Buff.affect( hero, PhysicalEmpower.class).set(Math.round(hero.lvl / (4f - hero.pointsInTalent(FOCUSED_MEAL))), 1);
+//			}
+//		}
 		if (hero.hasTalent(SATIATED_SPELLS)){
 			if (hero.heroClass == HeroClass.CLERIC) {
 				Buff.affect(hero, SatiatedSpellsTracker.class);
@@ -678,12 +596,12 @@ public enum Talent {
 
 		// Affected by both Warrior(1.75x/2.5x) and Duelist(2.5x/inst.) talents
 		if (item instanceof MeleeWeapon){
-			factor *= 1f + 1.5f*hero.pointsInTalent(ADVENTURERS_INTUITION); //instant at +2 (see onItemEquipped)
+			//factor *= 1f + 1.5f*hero.pointsInTalent(ADVENTURERS_INTUITION); //instant at +2 (see onItemEquipped)
 			factor *= 1f + 0.75f*hero.pointsInTalent(VETERANS_INTUITION);
 		}
 		// Affected by both Warrior(2.5x/inst.) and Duelist(1.75x/2.5x) talents
 		if (item instanceof Armor){
-			factor *= 1f + 0.75f*hero.pointsInTalent(ADVENTURERS_INTUITION);
+			//factor *= 1f + 0.75f*hero.pointsInTalent(ADVENTURERS_INTUITION);
 			factor *= 1f + hero.pointsInTalent(VETERANS_INTUITION); //instant at +2 (see onItemEquipped)
 		}
 		// 3x/instant for Mage (see Wand.wandUsed())
@@ -740,12 +658,12 @@ public enum Talent {
 			}
 			Dungeon.observe();
 		}
-		if (hero.hasTalent(LIQUID_AGILITY)){
-			Buff.prolong(hero, LiquidAgilEVATracker.class, hero.cooldown() + Math.max(0, factor-1));
-			if (factor >= 0.5f){
-				Buff.prolong(hero, LiquidAgilACCTracker.class, 5f).uses = Math.round(factor);
-			}
-		}
+//		if (hero.hasTalent(LIQUID_AGILITY)){
+//			Buff.prolong(hero, LiquidAgilEVATracker.class, hero.cooldown() + Math.max(0, factor-1));
+//			if (factor >= 0.5f){
+//				Buff.prolong(hero, LiquidAgilACCTracker.class, 5f).uses = Math.round(factor);
+//			}
+//		}
 	}
 
 	public static void onScrollUsed( Hero hero, int pos, float factor, Class<?extends Item> cls ){
@@ -829,9 +747,9 @@ public enum Talent {
 			}
 			((Ring) item).setKnown();
 		}
-		if (hero.pointsInTalent(ADVENTURERS_INTUITION) == 2 && item instanceof Weapon){
-			identify = true;
-		}
+//		if (hero.pointsInTalent(ADVENTURERS_INTUITION) == 2 && item instanceof Weapon){
+//			identify = true;
+//		}
 
 		if (identify && !ShardOfOblivion.passiveIDDisabled()){
 			item.identify();
@@ -882,24 +800,24 @@ public enum Talent {
 			hero.buff(Talent.SpiritBladesTracker.class).detach();
 		}
 
-		if (hero.hasTalent(PATIENT_STRIKE)){
-			if (hero.buff(PatientStrikeTracker.class) != null
-					&& !(hero.belongings.attackingWeapon() instanceof MissileWeapon)){
-				hero.buff(PatientStrikeTracker.class).detach();
-				dmg += Random.IntRange(hero.pointsInTalent(Talent.PATIENT_STRIKE), 2);
-			}
-		}
-
-		if (hero.hasTalent(DEADLY_FOLLOWUP) && enemy.alignment == Char.Alignment.ENEMY) {
-			if (hero.belongings.attackingWeapon() instanceof MissileWeapon) {
-				if (!(hero.belongings.attackingWeapon() instanceof SpiritBow.SpiritArrow)) {
-					Buff.prolong(hero, DeadlyFollowupTracker.class, 5f).object = enemy.id();
-				}
-			} else if (hero.buff(DeadlyFollowupTracker.class) != null
-					&& hero.buff(DeadlyFollowupTracker.class).object == enemy.id()){
-				dmg = Math.round(dmg * (1.0f + .1f*hero.pointsInTalent(DEADLY_FOLLOWUP)));
-			}
-		}
+//		if (hero.hasTalent(PATIENT_STRIKE)){
+//			if (hero.buff(PatientStrikeTracker.class) != null
+//					&& !(hero.belongings.attackingWeapon() instanceof MissileWeapon)){
+//				hero.buff(PatientStrikeTracker.class).detach();
+//				dmg += Random.IntRange(hero.pointsInTalent(Talent.PATIENT_STRIKE), 2);
+//			}
+//		}
+//
+//		if (hero.hasTalent(DEADLY_FOLLOWUP) && enemy.alignment == Char.Alignment.ENEMY) {
+//			if (hero.belongings.attackingWeapon() instanceof MissileWeapon) {
+//				if (!(hero.belongings.attackingWeapon() instanceof SpiritBow.SpiritArrow)) {
+//					Buff.prolong(hero, DeadlyFollowupTracker.class, 5f).object = enemy.id();
+//				}
+//			} else if (hero.buff(DeadlyFollowupTracker.class) != null
+//					&& hero.buff(DeadlyFollowupTracker.class).object == enemy.id()){
+//				dmg = Math.round(dmg * (1.0f + .1f*hero.pointsInTalent(DEADLY_FOLLOWUP)));
+//			}
+//		}
 
 		return dmg;
 	}
@@ -967,9 +885,9 @@ public enum Talent {
 			case HUNTRESS:
 				Collections.addAll(tierTalents, NATURES_BOUNTY, SURVIVALISTS_INTUITION, FOLLOWUP_STRIKE, NATURES_AID);
 				break;
-			case DUELIST:
-				Collections.addAll(tierTalents, STRENGTHENING_MEAL, ADVENTURERS_INTUITION, PATIENT_STRIKE, AGGRESSIVE_BARRIER);
-				break;
+//			case DUELIST:
+//				Collections.addAll(tierTalents, STRENGTHENING_MEAL, ADVENTURERS_INTUITION, PATIENT_STRIKE, AGGRESSIVE_BARRIER);
+//				break;
 			case CLERIC:
 				Collections.addAll(tierTalents, SATIATED_SPELLS, HOLY_INTUITION, SEARING_LIGHT, SHIELD_OF_LIGHT);
 				break;
@@ -996,9 +914,9 @@ public enum Talent {
 			case HUNTRESS:
 				Collections.addAll(tierTalents, INVIGORATING_MEAL, LIQUID_NATURE, REJUVENATING_STEPS, HEIGHTENED_SENSES, DURABLE_PROJECTILES);
 				break;
-			case DUELIST:
-				Collections.addAll(tierTalents, FOCUSED_MEAL, LIQUID_AGILITY, WEAPON_RECHARGING, LETHAL_HASTE, SWIFT_EQUIP);
-				break;
+//			case DUELIST:
+//				Collections.addAll(tierTalents, FOCUSED_MEAL, LIQUID_AGILITY, WEAPON_RECHARGING, LETHAL_HASTE, SWIFT_EQUIP);
+//				break;
 			case CLERIC:
 				Collections.addAll(tierTalents, ENLIGHTENING_MEAL, RECALL_INSCRIPTION, SUNRAY, DIVINE_SENSE, BLESS);
 				break;
@@ -1025,9 +943,9 @@ public enum Talent {
 			case HUNTRESS:
 				Collections.addAll(tierTalents, POINT_BLANK, SEER_SHOT);
 				break;
-			case DUELIST:
-				Collections.addAll(tierTalents, PRECISE_ASSAULT, DEADLY_FOLLOWUP);
-				break;
+//			case DUELIST:
+//				Collections.addAll(tierTalents, PRECISE_ASSAULT, DEADLY_FOLLOWUP);
+//				break;
 			case CLERIC:
 				Collections.addAll(tierTalents, CLEANSE, LIGHT_READING);
 				break;
@@ -1083,12 +1001,12 @@ public enum Talent {
 			case WARDEN:
 				Collections.addAll(tierTalents, DURABLE_TIPS, BARKSKIN, SHIELDING_DEW);
 				break;
-			case CHAMPION:
-				Collections.addAll(tierTalents, VARIED_CHARGE, TWIN_UPGRADES, COMBINED_LETHALITY);
-				break;
-			case MONK:
-				Collections.addAll(tierTalents, UNENCUMBERED_SPIRIT, MONASTIC_VIGOR, COMBINED_ENERGY);
-				break;
+//			case CHAMPION:
+//				Collections.addAll(tierTalents, VARIED_CHARGE, TWIN_UPGRADES, COMBINED_LETHALITY);
+//				break;
+//			case MONK:
+//				Collections.addAll(tierTalents, UNENCUMBERED_SPIRIT, MONASTIC_VIGOR, COMBINED_ENERGY);
+//				break;
 			case PRIEST:
 				Collections.addAll(tierTalents, HOLY_LANCE, HALLOWED_GROUND, MNEMONIC_PRAYER);
 				break;

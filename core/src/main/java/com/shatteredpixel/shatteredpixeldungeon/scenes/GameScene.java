@@ -717,10 +717,10 @@ public class GameScene extends PixelScene {
 			updateItemDisplays = false;
 			QuickSlotButton.refresh();
 			InventoryPane.refresh();
-			if (ActionIndicator.action instanceof MeleeWeapon.Charger) {
-				//Champion weapon swap uses items, needs refreshing whenever item displays are updated
-				ActionIndicator.refresh();
-			}
+//			if (ActionIndicator.action instanceof MeleeWeapon.Charger) {
+//				//Champion weapon swap uses items, needs refreshing whenever item displays are updated
+//				ActionIndicator.refresh();
+//			}
 		}
 
 		if (Dungeon.hero == null || scene == null) {

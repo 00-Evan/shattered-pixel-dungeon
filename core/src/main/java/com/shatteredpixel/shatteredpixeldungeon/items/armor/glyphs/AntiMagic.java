@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.Judgement;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.ElementalStrike;
+
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.ElementalBlast;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.WarpBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.GuidingLight;
@@ -114,7 +114,7 @@ public class AntiMagic extends Armor.Glyph {
 		RESISTS.add( WandOfTransfusion.class );
 		RESISTS.add( WandOfWarding.Ward.class );
 
-		RESISTS.add( ElementalStrike.class );
+		//RESISTS.add( ElementalStrike.class );
 		RESISTS.add( Blazing.class );
 		RESISTS.add( WandOfFireblast.FireBlastOnHit.class );
 		RESISTS.add( Shocking.class );

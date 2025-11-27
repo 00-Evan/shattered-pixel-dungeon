@@ -88,8 +88,8 @@ public abstract class RemainsItem extends Item {
 				return new CloakScrap();
 			case HUNTRESS:
 				return new BowFragment();
-			case DUELIST:
-				return new BrokenHilt();
+//			case DUELIST:
+//				return new BrokenHilt();
 			case CLERIC:
 				return new TornPage();
 		}

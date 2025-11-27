@@ -803,7 +803,7 @@ public class Badges {
 		firstBossClassBadges.put(HeroClass.MAGE, Badge.BOSS_SLAIN_1_MAGE);
 		firstBossClassBadges.put(HeroClass.ROGUE, Badge.BOSS_SLAIN_1_ROGUE);
 		firstBossClassBadges.put(HeroClass.HUNTRESS, Badge.BOSS_SLAIN_1_HUNTRESS);
-		firstBossClassBadges.put(HeroClass.DUELIST, Badge.BOSS_SLAIN_1_DUELIST);
+		//firstBossClassBadges.put(HeroClass.DUELIST, Badge.BOSS_SLAIN_1_DUELIST);
 		firstBossClassBadges.put(HeroClass.CLERIC, Badge.BOSS_SLAIN_1_CLERIC);
 	}
 
@@ -813,7 +813,7 @@ public class Badges {
 		victoryClassBadges.put(HeroClass.MAGE, Badge.VICTORY_MAGE);
 		victoryClassBadges.put(HeroClass.ROGUE, Badge.VICTORY_ROGUE);
 		victoryClassBadges.put(HeroClass.HUNTRESS, Badge.VICTORY_HUNTRESS);
-		victoryClassBadges.put(HeroClass.DUELIST, Badge.VICTORY_DUELIST);
+		//victoryClassBadges.put(HeroClass.DUELIST, Badge.VICTORY_DUELIST);
 		victoryClassBadges.put(HeroClass.CLERIC, Badge.VICTORY_CLERIC);
 	}
 
@@ -827,8 +827,8 @@ public class Badges {
 		thirdBossSubclassBadges.put(HeroSubClass.FREERUNNER, Badge.BOSS_SLAIN_3_FREERUNNER);
 		thirdBossSubclassBadges.put(HeroSubClass.SNIPER, Badge.BOSS_SLAIN_3_SNIPER);
 		thirdBossSubclassBadges.put(HeroSubClass.WARDEN, Badge.BOSS_SLAIN_3_WARDEN);
-		thirdBossSubclassBadges.put(HeroSubClass.CHAMPION, Badge.BOSS_SLAIN_3_CHAMPION);
-		thirdBossSubclassBadges.put(HeroSubClass.MONK, Badge.BOSS_SLAIN_3_MONK);
+//		thirdBossSubclassBadges.put(HeroSubClass.CHAMPION, Badge.BOSS_SLAIN_3_CHAMPION);
+//		thirdBossSubclassBadges.put(HeroSubClass.MONK, Badge.BOSS_SLAIN_3_MONK);
 		thirdBossSubclassBadges.put(HeroSubClass.PRIEST, Badge.BOSS_SLAIN_3_PRIEST);
 		thirdBossSubclassBadges.put(HeroSubClass.PALADIN, Badge.BOSS_SLAIN_3_PALADIN);
 	}
@@ -947,9 +947,9 @@ public class Badges {
 			case HUNTRESS:
 				badge = Badge.MASTERY_HUNTRESS;
 				break;
-			case DUELIST:
-				badge = Badge.MASTERY_DUELIST;
-				break;
+//			case DUELIST:
+//				badge = Badge.MASTERY_DUELIST;
+//				break;
 			case CLERIC:
 				badge = Badge.MASTERY_CLERIC;
 				break;

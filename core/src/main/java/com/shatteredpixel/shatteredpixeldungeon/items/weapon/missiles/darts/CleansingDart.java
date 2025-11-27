@@ -49,7 +49,7 @@ public class CleansingDart extends TippedDart {
 			for (Buff b : defender.buffs()){
 				if (!(b instanceof ChampionEnemy)
 						&& b.type == Buff.buffType.POSITIVE
-						&& !(b instanceof Crossbow.ChargedShot)){
+						/*&& !(b instanceof Crossbow.ChargedShot)*/){
 					b.detach();
 				}
 			}

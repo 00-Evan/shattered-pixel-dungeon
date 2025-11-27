@@ -305,9 +305,9 @@ public class InventoryPane extends Component {
 
 		ArrayList<Item> items = (ArrayList<Item>) lastBag.items.clone();
 
-		if (lastBag == stuff.backpack && stuff.secondWep != null){
-			items.add(0, stuff.secondWep);
-		}
+//		if (lastBag == stuff.backpack && stuff.secondWep != null){
+//			items.add(0, stuff.secondWep);
+//		}
 
 		int j = 0;
 		for (int i = 0; i < 20; i++){

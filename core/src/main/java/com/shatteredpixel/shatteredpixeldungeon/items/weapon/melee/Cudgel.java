@@ -50,22 +50,6 @@ public class Cudgel extends MeleeWeapon {
 		return Messages.get(this, "prompt");
 	}
 
-	@Override
-	protected void duelistAbility(Hero hero, Integer target) {
-		//+(3+1.5*lvl) damage, roughly +67% base dmg, +100% scaling
-		int dmgBoost = augment.damageFactor(3 + Math.round(1.5f*buffedLvl()));
-		Mace.heavyBlowAbility(hero, target, 1, dmgBoost, this);
-	}
-
-	@Override
-	public String abilityInfo() {
-		int dmgBoost = levelKnown ? 3 + Math.round(1.5f*buffedLvl()) : 3;
-		if (levelKnown){
-			return Messages.get(this, "ability_desc", augment.damageFactor(min()+dmgBoost), augment.damageFactor(max()+dmgBoost));
-		} else {
-			return Messages.get(this, "typical_ability_desc", min(0)+dmgBoost, max(0)+dmgBoost);
-		}
-	}
 
 	public String upgradeAbilityStat(int level){
 		int dmgBoost = 3 + Math.round(1.5f*level);

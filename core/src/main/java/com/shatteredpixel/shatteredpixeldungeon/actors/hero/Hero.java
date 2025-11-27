@@ -56,18 +56,16 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Levitation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
+
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PhysicalEmpower;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
+
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.TimeStasis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.AscendedForm;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Challenge;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.ElementalStrike;
+
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesPower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.BodyForm;
@@ -476,9 +474,9 @@ public class Hero extends Char {
 			Buff.affect( this, Combo.class ).hit( enemy );
 		}
 
-		if (hit && heroClass == HeroClass.DUELIST && wasEnemy){
-			Buff.affect( this, Sai.ComboStrikeTracker.class).addHit();
-		}
+//		if (hit && heroClass == HeroClass.DUELIST && wasEnemy){
+//			Buff.affect( this, Sai.ComboStrikeTracker.class).addHit();
+//		}
 
 		attackTarget = null;
 		return hit;
@@ -492,43 +490,43 @@ public class Hero extends Char {
 		accuracy *= RingOfAccuracy.accuracyMultiplier( this );
 		
 		//precise assault and liquid agility
-		if (!(wep instanceof MissileWeapon)) {
-			if ((hasTalent(Talent.PRECISE_ASSAULT) || hasTalent(Talent.LIQUID_AGILITY))
-					//does not trigger on ability attacks
-					&& belongings.abilityWeapon != wep && buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) == null){
-
-				//non-duelist benefit for precise assault, can stack with liquid agility
-				if (heroClass != HeroClass.DUELIST) {
-					//persistent +10%/20%/30% ACC for other heroes
-					accuracy *= 1f + 0.1f * pointsInTalent(Talent.PRECISE_ASSAULT);
-				}
-
-				if (wep instanceof Flail && buff(Flail.SpinAbilityTracker.class) != null){
-					//do nothing, this is not a regular attack so don't consume talent fx
-				} else if (wep instanceof Crossbow && buff(Crossbow.ChargedShot.class) != null){
-					//do nothing, this is not a regular attack so don't consume talent fx
-				} else if (buff(Talent.PreciseAssaultTracker.class) != null) {
-					// 2x/5x/inf. ACC for duelist if she just used a weapon ability
-					switch (pointsInTalent(Talent.PRECISE_ASSAULT)){
-						default: case 1:
-							accuracy *= 2; break;
-						case 2:
-							accuracy *= 5; break;
-						case 3:
-							accuracy *= Float.POSITIVE_INFINITY; break;
-					}
-					buff(Talent.PreciseAssaultTracker.class).detach();
-				} else if (buff(Talent.LiquidAgilACCTracker.class) != null){
-					// 3x/inf. ACC, depending on talent level
-					accuracy *= pointsInTalent(Talent.LIQUID_AGILITY) == 2 ? Float.POSITIVE_INFINITY : 3f;
-					Talent.LiquidAgilACCTracker buff = buff(Talent.LiquidAgilACCTracker.class);
-					buff.uses--;
-					if (buff.uses <= 0) {
-						buff.detach();
-					}
-				}
-			}
-		}
+//		if (!(wep instanceof MissileWeapon)) {
+//			if ((hasTalent(Talent.PRECISE_ASSAULT) || hasTalent(Talent.LIQUID_AGILITY))
+//					//does not trigger on ability attacks
+//					&& belongings.abilityWeapon != wep && buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) == null){
+//
+//				//non-duelist benefit for precise assault, can stack with liquid agility
+//				if (heroClass != HeroClass.DUELIST) {
+//					//persistent +10%/20%/30% ACC for other heroes
+//					accuracy *= 1f + 0.1f * pointsInTalent(Talent.PRECISE_ASSAULT);
+//				}
+//
+//				if (wep instanceof Flail && buff(Flail.SpinAbilityTracker.class) != null){
+//					//do nothing, this is not a regular attack so don't consume talent fx
+//				} else if (wep instanceof Crossbow && buff(Crossbow.ChargedShot.class) != null){
+//					//do nothing, this is not a regular attack so don't consume talent fx
+//				} else if (buff(Talent.PreciseAssaultTracker.class) != null) {
+//					// 2x/5x/inf. ACC for duelist if she just used a weapon ability
+//					switch (pointsInTalent(Talent.PRECISE_ASSAULT)){
+//						default: case 1:
+//							accuracy *= 2; break;
+//						case 2:
+//							accuracy *= 5; break;
+//						case 3:
+//							accuracy *= Float.POSITIVE_INFINITY; break;
+//					}
+//					buff(Talent.PreciseAssaultTracker.class).detach();
+//				} else if (buff(Talent.LiquidAgilACCTracker.class) != null){
+//					// 3x/inf. ACC, depending on talent level
+//					accuracy *= pointsInTalent(Talent.LIQUID_AGILITY) == 2 ? Float.POSITIVE_INFINITY : 3f;
+//					Talent.LiquidAgilACCTracker buff = buff(Talent.LiquidAgilACCTracker.class);
+//					buff.uses--;
+//					if (buff.uses <= 0) {
+//						buff.detach();
+//					}
+//				}
+//			}
+//		}
 
 		if (buff(Scimitar.SwordDance.class) != null){
 			accuracy *= 1.50f;
@@ -559,13 +557,13 @@ public class Hero extends Char {
 		
 		evasion *= RingOfEvasion.evasionMultiplier( this );
 
-		if (buff(Talent.LiquidAgilEVATracker.class) != null){
-			if (pointsInTalent(Talent.LIQUID_AGILITY) == 1){
-				evasion *= 3f;
-			} else if (pointsInTalent(Talent.LIQUID_AGILITY) == 2){
-				return INFINITE_EVASION;
-			}
-		}
+//		if (buff(Talent.LiquidAgilEVATracker.class) != null){
+//			if (pointsInTalent(Talent.LIQUID_AGILITY) == 1){
+//				evasion *= 3f;
+//			} else if (pointsInTalent(Talent.LIQUID_AGILITY) == 2){
+//				return INFINITE_EVASION;
+//			}
+//		}
 
 		if (buff(Quarterstaff.DefensiveStance.class) != null){
 			evasion *= 3;
@@ -600,13 +598,13 @@ public class Hero extends Char {
 			return Messages.get(RoundShield.GuardTracker.class, "guarded");
 		}
 
-		if (buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class) != null){
-			buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class).detach();
-			if (sprite != null && sprite.visible) {
-				Sample.INSTANCE.play(Assets.Sounds.HIT_PARRY, 1, Random.Float(0.96f, 1.05f));
-			}
-			return Messages.get(Monk.class, "parried");
-		}
+//		if (buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class) != null){
+//			buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class).detach();
+//			if (sprite != null && sprite.visible) {
+//				Sample.INSTANCE.play(Assets.Sounds.HIT_PARRY, 1, Random.Float(0.96f, 1.05f));
+//			}
+//			return Messages.get(Monk.class, "parried");
+//		}
 
 		return super.defenseVerb();
 	}
@@ -648,26 +646,26 @@ public class Hero extends Char {
 			if (!(wep instanceof MissileWeapon)) dmg += RingOfForce.armedDamageBonus(this);
 		} else {
 			dmg = RingOfForce.damageRoll(this);
-			if (RingOfForce.unarmedGetsWeaponAugment(this)){
-				dmg = ((Weapon)belongings.attackingWeapon()).augment.damageFactor(dmg);
-			}
+//			if (RingOfForce.unarmedGetsWeaponAugment(this)){
+//				dmg = ((Weapon)belongings.attackingWeapon()).augment.damageFactor(dmg);
+//			}
 		}
 
-		PhysicalEmpower emp = buff(PhysicalEmpower.class);
-		if (emp != null){
-			dmg += emp.dmgBoost;
-			emp.left--;
-			if (emp.left <= 0) {
-				emp.detach();
-			}
-			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG, 0.75f, 1.2f);
-		}
+//		PhysicalEmpower emp = buff(PhysicalEmpower.class);
+//		if (emp != null){
+//			dmg += emp.dmgBoost;
+//			emp.left--;
+//			if (emp.left <= 0) {
+//				emp.detach();
+//			}
+//			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG, 0.75f, 1.2f);
+//		}
 
-		if (heroClass != HeroClass.DUELIST
-				&& hasTalent(Talent.WEAPON_RECHARGING)
-				&& (buff(Recharging.class) != null || buff(ArtifactRecharge.class) != null)){
-			dmg = Math.round(dmg * 1.025f + (.025f*pointsInTalent(Talent.WEAPON_RECHARGING)));
-		}
+//		if (heroClass != HeroClass.DUELIST
+//				&& hasTalent(Talent.WEAPON_RECHARGING)
+//				&& (buff(Recharging.class) != null || buff(ArtifactRecharge.class) != null)){
+//			dmg = Math.round(dmg * 1.025f + (.025f*pointsInTalent(Talent.WEAPON_RECHARGING)));
+//		}
 
 		if (dmg < 0) dmg = 0;
 		return dmg;
@@ -775,9 +773,9 @@ public class Hero extends Char {
 			}
 
 			//and augments + brawler's stance! My goodness, so many options now compared to 2014!
-			if (RingOfForce.unarmedGetsWeaponAugment(this)){
-				delay = ((Weapon)belongings.weapon).augment.delayFactor(delay);
-			}
+//			if (RingOfForce.unarmedGetsWeaponAugment(this)){
+//				delay = ((Weapon)belongings.weapon).augment.delayFactor(delay);
+//			}
 
 			return delay/speed;
 		}
@@ -1385,16 +1383,16 @@ public class Hero extends Char {
 
 		if (attackTarget.isAlive() && canAttack(attackTarget) && attackTarget.invisible == 0) {
 
-			if (heroClass != HeroClass.DUELIST
-					&& hasTalent(Talent.AGGRESSIVE_BARRIER)
-					&& buff(Talent.AggressiveBarrierCooldown.class) == null
-					&& (HP / (float)HT) <= 0.5f){
-				int shieldAmt = 1 + 2*pointsInTalent(Talent.AGGRESSIVE_BARRIER);
-				Buff.affect(this, Barrier.class).setShield(shieldAmt);
-				sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldAmt), FloatingText.SHIELDING);
-				Buff.affect(this, Talent.AggressiveBarrierCooldown.class, 50f);
-
-			}
+//			if (heroClass != HeroClass.DUELIST
+//					&& hasTalent(Talent.AGGRESSIVE_BARRIER)
+//					&& buff(Talent.AggressiveBarrierCooldown.class) == null
+//					&& (HP / (float)HT) <= 0.5f){
+//				int shieldAmt = 1 + 2*pointsInTalent(Talent.AGGRESSIVE_BARRIER);
+//				Buff.affect(this, Barrier.class).setShield(shieldAmt);
+//				sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldAmt), FloatingText.SHIELDING);
+//				Buff.affect(this, Talent.AggressiveBarrierCooldown.class, 50f);
+//
+//			}
 			//attack target cleared on onAttackComplete
 			sprite.attack( attackTarget.pos );
 
@@ -1425,9 +1423,9 @@ public class Hero extends Char {
 		if (hasTalent(Talent.HOLD_FAST)){
 			Buff.affect(this, HoldFast.class).pos = pos;
 		}
-		if (hasTalent(Talent.PATIENT_STRIKE)){
-			Buff.affect(Dungeon.hero, Talent.PatientStrikeTracker.class).pos = Dungeon.hero.pos;
-		}
+//		if (hasTalent(Talent.PATIENT_STRIKE)){
+//			Buff.affect(Dungeon.hero, Talent.PatientStrikeTracker.class).pos = Dungeon.hero.pos;
+//		}
 		if (!fullRest) {
 			if (sprite != null) {
 				sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "wait"));
@@ -1441,7 +1439,7 @@ public class Hero extends Char {
 		damage = super.attackProc( enemy, damage );
 
 		KindOfWeapon wep;
-		if (RingOfForce.fightingUnarmed(this) && !RingOfForce.unarmedGetsWeaponEnchantment(this)){
+		if (RingOfForce.fightingUnarmed(this) /*&& !RingOfForce.unarmedGetsWeaponEnchantment(this)*/){
 			wep = null;
 		} else {
 			wep = belongings.attackingWeapon();
@@ -1575,9 +1573,9 @@ public class Hero extends Char {
 				damage *= 0.67f;
 			}
 			//and to monk meditate damage reduction
-			if (buff(MonkEnergy.MonkAbility.Meditate.MeditateResistance.class) != null){
-				damage *= 0.2f;
-			}
+//			if (buff(MonkEnergy.MonkAbility.Meditate.MeditateResistance.class) != null){
+//				damage *= 0.2f;
+//			}
 		}
 
 		//unused, could be removed
@@ -1605,9 +1603,9 @@ public class Hero extends Char {
 
 		if (effectiveDamage <= 0) return;
 
-		if (buff(Challenge.DuelParticipant.class) != null){
-			buff(Challenge.DuelParticipant.class).addDamage(effectiveDamage);
-		}
+//		if (buff(Challenge.DuelParticipant.class) != null){
+//			buff(Challenge.DuelParticipant.class).addDamage(effectiveDamage);
+//		}
 
 		//flash red when hit for serious damage.
 		float percentDMG = effectiveDamage / (float)preHP; //percent of current HP that was taken
@@ -1961,12 +1959,12 @@ public class Hero extends Char {
 					buff(Talent.RejuvenatingStepsFurrow.class).detach();
 				}
 			}
-			if (buff(ElementalStrike.ElementalStrikeFurrowCounter.class) != null){
-				buff(ElementalStrike.ElementalStrikeFurrowCounter.class).countDown(percent*20f);
-				if (buff(ElementalStrike.ElementalStrikeFurrowCounter.class).count() <= 0){
-					buff(ElementalStrike.ElementalStrikeFurrowCounter.class).detach();
-				}
-			}
+//			if (buff(ElementalStrike.ElementalStrikeFurrowCounter.class) != null){
+//				buff(ElementalStrike.ElementalStrikeFurrowCounter.class).countDown(percent*20f);
+//				if (buff(ElementalStrike.ElementalStrikeFurrowCounter.class).count() <= 0){
+//					buff(ElementalStrike.ElementalStrikeFurrowCounter.class).detach();
+//				}
+//			}
 			if (buff(HallowedGround.HallowedFurrowTracker.class) != null){
 				buff(HallowedGround.HallowedFurrowTracker.class).countDown(percent*100f);
 				if (buff(HallowedGround.HallowedFurrowTracker.class).count() <= 0){
@@ -2280,10 +2278,10 @@ public class Hero extends Char {
 		if (hit && subClass == HeroSubClass.GLADIATOR && wasEnemy){
 			Buff.affect( this, Combo.class ).hit(attackTarget);
 		}
-
-		if (hit && heroClass == HeroClass.DUELIST && wasEnemy){
-			Buff.affect( this, Sai.ComboStrikeTracker.class).addHit();
-		}
+//
+//		if (hit && heroClass == HeroClass.DUELIST && wasEnemy){
+//			Buff.affect( this, Sai.ComboStrikeTracker.class).addHit();
+//		}
 
 		curAction = null;
 		attackTarget = null;

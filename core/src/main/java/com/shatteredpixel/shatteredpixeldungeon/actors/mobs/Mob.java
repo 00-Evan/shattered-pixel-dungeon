@@ -41,7 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.GreaterHaste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
+
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
@@ -52,7 +52,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.PowerOfMany;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Feint;
+
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.ShadowClone;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ClericSpell;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.GuidingLight;
@@ -246,11 +246,11 @@ public abstract class Mob extends Char {
 		boolean enemyInFOV = enemy != null && enemy.isAlive() && fieldOfView[enemy.pos] && enemy.invisible <= 0;
 
 		//prevents action, but still updates enemy seen status
-		if (buff(Feint.AfterImage.FeintConfusion.class) != null){
-			enemySeen = enemyInFOV;
-			spend( TICK );
-			return true;
-		}
+//		if (buff(Feint.AfterImage.FeintConfusion.class) != null){
+//			enemySeen = enemyInFOV;
+//			spend( TICK );
+//			return true;
+//		}
 
 		boolean result = state.act( enemyInFOV, justAlerted );
 
@@ -419,14 +419,14 @@ public abstract class Mob extends Char {
 					}
 				}
 				//if we were going to target the hero, but an afterimage exists, target that instead
-				if (closest == Dungeon.hero){
-					for (Char ch : enemies){
-						if (ch instanceof Feint.AfterImage){
-							closest = ch;
-							break;
-						}
-					}
-				}
+//				if (closest == Dungeon.hero){
+//					for (Char ch : enemies){
+//						if (ch instanceof Feint.AfterImage){
+//							closest = ch;
+//							break;
+//						}
+//					}
+//				}
 
 				return closest;
 			}
@@ -859,9 +859,9 @@ public abstract class Mob extends Char {
 				}
 				Dungeon.hero.earnExp(exp, getClass());
 
-				if (Dungeon.hero.subClass == HeroSubClass.MONK){
-					Buff.affect(Dungeon.hero, MonkEnergy.class).gainEnergy(this);
-				}
+//				if (Dungeon.hero.subClass == HeroSubClass.MONK){
+//					Buff.affect(Dungeon.hero, MonkEnergy.class).gainEnergy(this);
+//				}
 			}
 		}
 	}
@@ -888,12 +888,12 @@ public abstract class Mob extends Char {
 						&& Random.Float() < 0.34f + 0.33f* Dungeon.hero.pointsInTalent(Talent.LETHAL_MOMENTUM)){
 					Buff.affect(Dungeon.hero, Talent.LethalMomentumTracker.class, 0f);
 				}
-				if (Dungeon.hero.heroClass != HeroClass.DUELIST
-						&& Dungeon.hero.hasTalent(Talent.LETHAL_HASTE)
-						&& Dungeon.hero.buff(Talent.LethalHasteCooldown.class) == null){
-					Buff.affect(Dungeon.hero, Talent.LethalHasteCooldown.class, 100f);
-					Buff.affect(Dungeon.hero, GreaterHaste.class).set(2 + 2*Dungeon.hero.pointsInTalent(Talent.LETHAL_HASTE));
-				}
+//				if (Dungeon.hero.heroClass != HeroClass.DUELIST
+//						&& Dungeon.hero.hasTalent(Talent.LETHAL_HASTE)
+//						&& Dungeon.hero.buff(Talent.LethalHasteCooldown.class) == null){
+//					Buff.affect(Dungeon.hero, Talent.LethalHasteCooldown.class, 100f);
+//					Buff.affect(Dungeon.hero, GreaterHaste.class).set(2 + 2*Dungeon.hero.pointsInTalent(Talent.LETHAL_HASTE));
+//				}
 			}
 
 		}

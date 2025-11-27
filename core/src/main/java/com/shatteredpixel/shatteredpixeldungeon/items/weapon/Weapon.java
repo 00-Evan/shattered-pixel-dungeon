@@ -31,7 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.AscendedForm;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.ElementalStrike;
+
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.BodyForm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.HolyWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.Smite;
@@ -317,9 +317,9 @@ abstract public class Weapon extends KindOfWeapon {
 		int reach = RCH;
 		if (owner instanceof Hero && RingOfForce.fightingUnarmed((Hero) owner)){
 			reach = 1; //brawlers stance benefits from enchantments, but not innate reach
-			if (!RingOfForce.unarmedGetsWeaponEnchantment((Hero) owner)){
-				return reach;
-			}
+//			if (!RingOfForce.unarmedGetsWeaponEnchantment((Hero) owner)){
+//				return reach;
+//			}
 		}
 		if (owner instanceof Hero && owner.buff(AscendedForm.AscendBuff.class) != null){
 			reach += 2;
@@ -536,10 +536,10 @@ abstract public class Weapon extends KindOfWeapon {
 				multi += 3f;
 			}
 
-			if (attacker.buff(ElementalStrike.DirectedPowerTracker.class) != null){
-				multi += attacker.buff(ElementalStrike.DirectedPowerTracker.class).enchBoost;
-				attacker.buff(ElementalStrike.DirectedPowerTracker.class).detach();
-			}
+//			if (attacker.buff(ElementalStrike.DirectedPowerTracker.class) != null){
+//				multi += attacker.buff(ElementalStrike.DirectedPowerTracker.class).enchBoost;
+//				attacker.buff(ElementalStrike.DirectedPowerTracker.class).detach();
+//			}
 
 			if (attacker.buff(Talent.SpiritBladesTracker.class) != null
 					&& ((Hero)attacker).pointsInTalent(Talent.SPIRIT_BLADES) == 4){

@@ -31,9 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbili
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.AscendedForm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.PowerOfMany;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Trinity;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Challenge;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.ElementalStrike;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Feint;
+
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesPower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpectralBlades;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpiritHawk;
@@ -88,7 +86,7 @@ public enum HeroClass {
 	MAGE( HeroSubClass.BATTLEMAGE, HeroSubClass.WARLOCK ),
 	ROGUE( HeroSubClass.ASSASSIN, HeroSubClass.FREERUNNER ),
 	HUNTRESS( HeroSubClass.SNIPER, HeroSubClass.WARDEN ),
-	DUELIST( HeroSubClass.CHAMPION, HeroSubClass.MONK ),
+	//DUELIST( HeroSubClass.CHAMPION, HeroSubClass.MONK ),
 	CLERIC( HeroSubClass.PRIEST, HeroSubClass.PALADIN );
 
 	private final HeroSubClass[] subClasses;
@@ -133,9 +131,9 @@ public enum HeroClass {
 				initHuntress( hero );
 				break;
 
-			case DUELIST:
-				initDuelist( hero );
-				break;
+//			case DUELIST:
+//				initDuelist( hero );
+//				break;
 
 			case CLERIC:
 				initCleric( hero );
@@ -163,8 +161,8 @@ public enum HeroClass {
 				return Badges.Badge.MASTERY_ROGUE;
 			case HUNTRESS:
 				return Badges.Badge.MASTERY_HUNTRESS;
-			case DUELIST:
-				return Badges.Badge.MASTERY_DUELIST;
+//			case DUELIST:
+//				return Badges.Badge.MASTERY_DUELIST;
 			case CLERIC:
 				return Badges.Badge.MASTERY_CLERIC;
 		}
@@ -285,8 +283,8 @@ public enum HeroClass {
 				return new ArmorAbility[]{new SmokeBomb(), new DeathMark(), new ShadowClone()};
 			case HUNTRESS:
 				return new ArmorAbility[]{new SpectralBlades(), new NaturesPower(), new SpiritHawk()};
-			case DUELIST:
-				return new ArmorAbility[]{new Challenge(), new ElementalStrike(), new Feint()};
+//			case DUELIST:
+//				return new ArmorAbility[]{new Challenge(), new ElementalStrike(), new Feint()};
 			case CLERIC:
 				return new ArmorAbility[]{new AscendedForm(), new Trinity(), new PowerOfMany()};
 		}
@@ -302,8 +300,8 @@ public enum HeroClass {
 				return Assets.Sprites.ROGUE;
 			case HUNTRESS:
 				return Assets.Sprites.HUNTRESS;
-			case DUELIST:
-				return Assets.Sprites.DUELIST;
+//			case DUELIST:
+//				return Assets.Sprites.DUELIST;
 			case CLERIC:
 				return Assets.Sprites.CLERIC;
 		}
@@ -319,8 +317,8 @@ public enum HeroClass {
 				return Assets.Splashes.ROGUE;
 			case HUNTRESS:
 				return Assets.Splashes.HUNTRESS;
-			case DUELIST:
-				return Assets.Splashes.DUELIST;
+//			case DUELIST:
+//				return Assets.Splashes.DUELIST;
 			case CLERIC:
 				return Assets.Splashes.CLERIC;
 		}
@@ -339,8 +337,8 @@ public enum HeroClass {
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_ROGUE);
 			case HUNTRESS:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_HUNTRESS);
-			case DUELIST:
-				return Badges.isUnlocked(Badges.Badge.UNLOCK_DUELIST);
+//			case DUELIST:
+//				return Badges.isUnlocked(Badges.Badge.UNLOCK_DUELIST);
 			case CLERIC:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_CLERIC);
 		}

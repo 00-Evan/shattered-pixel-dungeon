@@ -74,7 +74,7 @@ public class GreaterHaste extends Buff {
 	@Override
 	public float iconFadePercent() {
 		//currently tied to the lethal haste talent, as that's the only source
-		float duration = 1 + 2*Dungeon.hero.pointsInTalent(Talent.LETHAL_HASTE);
+		float duration = 1 /*+ 2*Dungeon.hero.pointsInTalent(Talent.LETHAL_HASTE)*/;
 		return Math.max(0, (duration - left) / duration);
 	}
 

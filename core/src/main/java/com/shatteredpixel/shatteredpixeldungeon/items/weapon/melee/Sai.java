@@ -60,22 +60,6 @@ public class Sai extends MeleeWeapon {
 		return Messages.get(this, "prompt");
 	}
 
-	@Override
-	protected void duelistAbility(Hero hero, Integer target) {
-		//+(4+lvl) damage, roughly +60% base damage, +67% scaling
-		int dmgBoost = augment.damageFactor(4 + buffedLvl());
-		Sai.comboStrikeAbility(hero, target, 0, dmgBoost, this);
-	}
-
-	@Override
-	public String abilityInfo() {
-		int dmgBoost = levelKnown ? 4 + buffedLvl() : 4;
-		if (levelKnown){
-			return Messages.get(this, "ability_desc", augment.damageFactor(dmgBoost));
-		} else {
-			return Messages.get(this, "typical_ability_desc", augment.damageFactor(dmgBoost));
-		}
-	}
 
 	public String upgradeAbilityStat(int level){
 		return "+" + augment.damageFactor(4 + level);
@@ -92,18 +76,18 @@ public class Sai extends MeleeWeapon {
 			return;
 		}
 
-		hero.belongings.abilityWeapon = wep;
-		if (!hero.canAttack(enemy)){
-			GLog.w(Messages.get(wep, "ability_target_range"));
-			hero.belongings.abilityWeapon = null;
-			return;
-		}
-		hero.belongings.abilityWeapon = null;
+//		hero.belongings.abilityWeapon = wep;
+//		if (!hero.canAttack(enemy)){
+//			GLog.w(Messages.get(wep, "ability_target_range"));
+//			hero.belongings.abilityWeapon = null;
+//			return;
+//		}
+//		hero.belongings.abilityWeapon = null;
 
 		hero.sprite.attack(enemy.pos, new Callback() {
 			@Override
 			public void call() {
-				wep.beforeAbilityUsed(hero, enemy);
+				//wep.beforeAbilityUsed(hero, enemy);
 				AttackIndicator.target(enemy);
 
 				int recentHits = 0;
@@ -115,7 +99,7 @@ public class Sai extends MeleeWeapon {
 
 				boolean hit = hero.attack(enemy, 1f + multiPerHit*recentHits, boostPerHit*recentHits, Char.INFINITE_ACCURACY);
 				if (hit && !enemy.isAlive()){
-					wep.onAbilityKill(hero, enemy);
+					//wep.onAbilityKill(hero, enemy);
 				}
 
 				Invisibility.dispel();
@@ -124,7 +108,7 @@ public class Sai extends MeleeWeapon {
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				}
 
-				wep.afterAbilityUsed(hero);
+				//wep.afterAbilityUsed(hero);
 			}
 		});
 	}
@@ -144,9 +128,10 @@ public class Sai extends MeleeWeapon {
 			if (Dungeon.hero.belongings.weapon() instanceof Gloves
 					|| Dungeon.hero.belongings.weapon() instanceof Sai
 					|| Dungeon.hero.belongings.weapon() instanceof Gauntlet
-					|| Dungeon.hero.belongings.secondWep() instanceof Gloves
-					|| Dungeon.hero.belongings.secondWep() instanceof Sai
-					|| Dungeon.hero.belongings.secondWep() instanceof Gauntlet) {
+					//|| Dungeon.hero.belongings.secondWep() instanceof Gloves
+					//|| Dungeon.hero.belongings.secondWep() instanceof Sai
+					//|| Dungeon.hero.belongings.secondWep() instanceof Gauntlet
+            ) {
 				return BuffIndicator.DUEL_COMBO;
 			} else {
 				return BuffIndicator.NONE;

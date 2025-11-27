@@ -48,22 +48,6 @@ public class BattleAxe extends MeleeWeapon {
 		return Messages.get(this, "prompt");
 	}
 
-	@Override
-	protected void duelistAbility(Hero hero, Integer target) {
-		//+(5+1.5*lvl) damage, roughly +40% base dmg, +50% scaling
-		int dmgBoost = augment.damageFactor(5 + Math.round(1.5f*buffedLvl()));
-		Mace.heavyBlowAbility(hero, target, 1, dmgBoost, this);
-	}
-
-	@Override
-	public String abilityInfo() {
-		int dmgBoost = levelKnown ? 5 + Math.round(1.5f*buffedLvl()) : 5;
-		if (levelKnown){
-			return Messages.get(this, "ability_desc", augment.damageFactor(min()+dmgBoost), augment.damageFactor(max()+dmgBoost));
-		} else {
-			return Messages.get(this, "typical_ability_desc", min(0)+dmgBoost, max(0)+dmgBoost);
-		}
-	}
 
 	public String upgradeAbilityStat(int level){
 		int dmgBoost = 5 + Math.round(1.5f*level);

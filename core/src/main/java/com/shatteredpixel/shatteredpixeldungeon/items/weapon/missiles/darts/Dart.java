@@ -78,14 +78,14 @@ public class Dart extends MissileWeapon {
 	@Override
 	public int min(int lvl) {
 		if (bow != null){
-			if (!(this instanceof TippedDart) && Dungeon.hero.buff(Crossbow.ChargedShot.class) != null){
-				//ability increases base dmg by 50%, scaling by 50%
-				return  8 +                     //8 base
-						2*bow.buffedLvl() + lvl;//+2 per bow level, +1 per level
-			} else {
+//			if (!(this instanceof TippedDart) && Dungeon.hero.buff(Crossbow.ChargedShot.class) != null){
+//				//ability increases base dmg by 50%, scaling by 50%
+//				return  8 +                     //8 base
+//						2*bow.buffedLvl() + lvl;//+2 per bow level, +1 per level
+//			} else {
 				return  4 +                     //4 base
 						bow.buffedLvl() + lvl;  //+1 per level or bow level
-			}
+			//}
 		} else {
 			return  1 +     //1 base, down from 2
 					lvl;    //scaling unchanged
@@ -95,14 +95,14 @@ public class Dart extends MissileWeapon {
 	@Override
 	public int max(int lvl) {
 		if (bow != null){
-			if (!(this instanceof TippedDart) && Dungeon.hero.buff(Crossbow.ChargedShot.class) != null){
-				//ability increases base dmg by 50%, scaling by 50%
-				return  16 +                       //16 base
-						4*bow.buffedLvl() + 2*lvl; //+4 per bow level, +2 per level
-			} else {
+//			if (!(this instanceof TippedDart) && Dungeon.hero.buff(Crossbow.ChargedShot.class) != null){
+//				//ability increases base dmg by 50%, scaling by 50%
+//				return  16 +                       //16 base
+//						4*bow.buffedLvl() + 2*lvl; //+4 per bow level, +2 per level
+//			} else {
 				return  12 +                       //12 base
 						3*bow.buffedLvl() + 2*lvl; //+3 per bow level, +2 per level
-			}
+			//}
 		} else {
 			return  2 +     //2 base, down from 5
 					2*lvl;  //scaling unchanged
@@ -116,10 +116,10 @@ public class Dart extends MissileWeapon {
 			bow = null;
 		} else if (Dungeon.hero.belongings.weapon() instanceof Crossbow){
 			bow = (Crossbow) Dungeon.hero.belongings.weapon();
-		} else if (Dungeon.hero.belongings.secondWep() instanceof Crossbow) {
+		} /*else if (Dungeon.hero.belongings.secondWep() instanceof Crossbow) {
 			//player can instant swap anyway, so this is just QoL
 			bow = (Crossbow) Dungeon.hero.belongings.secondWep();
-		} else {
+		}*/ else {
 			bow = null;
 		}
 	}
@@ -137,15 +137,15 @@ public class Dart extends MissileWeapon {
 		}
 	}
 
-	@Override
-	public float accuracyFactor(Char owner, Char target) {
-		//don't update xbow here, as dart is the active weapon atm
-		if (bow != null && owner.buff(Crossbow.ChargedShot.class) != null){
-			return Char.INFINITE_ACCURACY;
-		} else {
-			return super.accuracyFactor(owner, target);
-		}
-	}
+//	@Override
+//	public float accuracyFactor(Char owner, Char target) {
+//		//don't update xbow here, as dart is the active weapon atm
+//		if (bow != null && owner.buff(Crossbow.ChargedShot.class) != null){
+//			return Char.INFINITE_ACCURACY;
+//		} else {
+//			return super.accuracyFactor(owner, target);
+//		}
+//	}
 
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
@@ -179,39 +179,39 @@ public class Dart extends MissileWeapon {
 	protected void processChargedShot( Char target, int dmg ){
 		//don't update xbow here, as dart may be the active weapon atm
 		processingChargedShot = true;
-		if (chargedShotPos != -1 && bow != null && Dungeon.hero.buff(Crossbow.ChargedShot.class) != null) {
-			PathFinder.buildDistanceMap(chargedShotPos, Dungeon.level.passable, 3);
-			//necessary to clone as some on-hit effects use Pathfinder
-			int[] distance = PathFinder.distance.clone();
-			for (Char ch : Actor.chars()){
-				if (ch == target){
-					Actor.add(new Actor() {
-						{ actPriority = VFX_PRIO; }
-						@Override
-						protected boolean act() {
-							if (!ch.isAlive()){
-								bow.onAbilityKill(Dungeon.hero, ch);
-							}
-							Actor.remove(this);
-							return true;
-						}
-					});
-				} else if (distance[ch.pos] != Integer.MAX_VALUE){
-					proc(Dungeon.hero, ch, dmg);
-				}
-			}
-		}
+//		if (chargedShotPos != -1 && bow != null && Dungeon.hero.buff(Crossbow.ChargedShot.class) != null) {
+//			PathFinder.buildDistanceMap(chargedShotPos, Dungeon.level.passable, 3);
+//			//necessary to clone as some on-hit effects use Pathfinder
+//			int[] distance = PathFinder.distance.clone();
+//			for (Char ch : Actor.chars()){
+//				if (ch == target){
+//					Actor.add(new Actor() {
+//						{ actPriority = VFX_PRIO; }
+//						@Override
+//						protected boolean act() {
+//							if (!ch.isAlive()){
+//								bow.onAbilityKill(Dungeon.hero, ch);
+//							}
+//							Actor.remove(this);
+//							return true;
+//						}
+//					});
+//				} else if (distance[ch.pos] != Integer.MAX_VALUE){
+//					proc(Dungeon.hero, ch, dmg);
+//				}
+//			}
+//		}
 		chargedShotPos = -1;
 		processingChargedShot = false;
 	}
 
-	@Override
-	protected void decrementDurability() {
-		super.decrementDurability();
-		if (Dungeon.hero.buff(Crossbow.ChargedShot.class) != null) {
-			Dungeon.hero.buff(Crossbow.ChargedShot.class).detach();
-		}
-	}
+//	@Override
+//	protected void decrementDurability() {
+//		super.decrementDurability();
+//		if (Dungeon.hero.buff(Crossbow.ChargedShot.class) != null) {
+//			Dungeon.hero.buff(Crossbow.ChargedShot.class).detach();
+//		}
+//	}
 
 	@Override
 	public void throwSound() {
