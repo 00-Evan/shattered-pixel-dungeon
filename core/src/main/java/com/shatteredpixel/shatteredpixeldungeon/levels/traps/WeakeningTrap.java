@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.properties.Property;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 
@@ -45,8 +46,8 @@ public class WeakeningTrap extends Trap{
 
 		Char ch = Actor.findChar( pos );
 		if (ch != null){
-			if (ch.properties().contains(Char.Property.BOSS)
-				|| ch.properties().contains(Char.Property.MINIBOSS)){
+			if (ch.properties().contains(Property.BOSS)
+				|| ch.properties().contains(Property.MINIBOSS)){
 				Buff.prolong( ch, Weakness.class, Weakness.DURATION/2f );
 			}
 			Buff.prolong( ch, Weakness.class, Weakness.DURATION*3f );

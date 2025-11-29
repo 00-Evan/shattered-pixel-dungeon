@@ -57,6 +57,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Piranha;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
+import com.shatteredpixel.shatteredpixeldungeon.actors.properties.Property;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
@@ -249,7 +250,7 @@ public class CursedWand {
 		@Override
 		public boolean valid(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
 			Char target = Actor.findChar(bolt.collisionPos);
-			if (positiveOnly && (target == null || Char.hasProp(target, Char.Property.IMMOVABLE))){
+			if (positiveOnly && (target == null || Char.hasProp(target, Property.IMMOVABLE))){
 				return false;
 			}
 			return true;
@@ -261,12 +262,12 @@ public class CursedWand {
 		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
 			Char target = Actor.findChar( bolt.collisionPos );
 			//can only teleport target if positive only
-			if (target != null && !Char.hasProp(target, Char.Property.IMMOVABLE) && (positiveOnly || Random.Int(2) == 0)){
+			if (target != null && !Char.hasProp(target, Property.IMMOVABLE) && (positiveOnly || Random.Int(2) == 0)){
 				ScrollOfTeleportation.teleportChar(target);
 				tryForWandProc(target, origin);
 				return true;
 			} else {
-				if (positiveOnly || user == null || Char.hasProp(user, Char.Property.IMMOVABLE)){
+				if (positiveOnly || user == null || Char.hasProp(user, Property.IMMOVABLE)){
 					return false;
 				} else {
 					ScrollOfTeleportation.teleportChar(user);
@@ -626,7 +627,7 @@ public class CursedWand {
 		@Override
 		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
 			Char ch = Actor.findChar(bolt.collisionPos);
-			if ((!positiveOnly || (ch instanceof Piranha)) && ch != null && !ch.flying && !Char.hasProp(ch, Char.Property.IMMOVABLE)) {
+			if ((!positiveOnly || (ch instanceof Piranha)) && ch != null && !ch.flying && !Char.hasProp(ch, Property.IMMOVABLE)) {
 				Buff.affect(ch, Levitation.class, Levitation.DURATION);
 			} else {
 				Buff.affect(user, Levitation.class, Levitation.DURATION);
@@ -693,8 +694,8 @@ public class CursedWand {
 			Char ch = Actor.findChar( bolt.collisionPos );
 			if (ch != null && !(ch instanceof Hero)
 					//ignores bosses, questgivers, rat king, etc.
-					&& !ch.properties().contains(Char.Property.BOSS)
-					&& !ch.properties().contains(Char.Property.MINIBOSS)
+					&& !ch.properties().contains(Property.BOSS)
+					&& !ch.properties().contains(Property.MINIBOSS)
 					&& !(ch instanceof NPC && ch.alignment == Char.Alignment.NEUTRAL)){
 				return true;
 			} else {

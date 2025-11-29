@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.properties.Property;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PitfallParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -105,7 +106,7 @@ public class PitfallTrap extends Trap {
 					Char ch = Actor.findChar(cell);
 					//don't trigger on flying chars, or immovable neutral chars
 					if (ch != null && !ch.flying
-							&& !(ch.alignment == Char.Alignment.NEUTRAL && Char.hasProp(ch, Char.Property.IMMOVABLE))
+							&& !(ch.alignment == Char.Alignment.NEUTRAL && Char.hasProp(ch, Property.IMMOVABLE))
 							&& !(ch.alignment == Char.Alignment.ALLY && ignoreAllies)) {
 						if (ch == Dungeon.hero) {
 							herofell = true;

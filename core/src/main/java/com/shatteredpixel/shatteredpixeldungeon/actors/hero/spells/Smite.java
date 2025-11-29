@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.properties.Property;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -120,7 +121,7 @@ public class Smite extends TargetedClericSpell {
 	public static int bonusDmg( Hero attacker, Char defender){
 		int min = 5 + attacker.lvl/2;
 		int max = 10 + attacker.lvl;
-		if (Char.hasProp(defender, Char.Property.UNDEAD) || Char.hasProp(defender, Char.Property.DEMONIC)){
+		if (Char.hasProp(defender, Property.UNDEAD) || Char.hasProp(defender, Property.DEMONIC)){
 			return max;
 		} else {
 			return Random.NormalIntRange(min, max);

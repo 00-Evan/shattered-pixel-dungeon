@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.properties.Property;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -116,7 +117,7 @@ public class HolyLance extends TargetedClericSpell {
 								public void call() {
 									int min = 15 + 15*Dungeon.hero.pointsInTalent(Talent.HOLY_LANCE);
 									int max = Math.round(27.5f + 27.5f*Dungeon.hero.pointsInTalent(Talent.HOLY_LANCE));
-									if (Char.hasProp(enemy, Char.Property.UNDEAD) || Char.hasProp(enemy, Char.Property.DEMONIC)){
+									if (Char.hasProp(enemy, Property.UNDEAD) || Char.hasProp(enemy, Property.DEMONIC)){
 										min = max;
 									}
 									enemy.damage(Random.NormalIntRange(min, max), HolyLance.this);

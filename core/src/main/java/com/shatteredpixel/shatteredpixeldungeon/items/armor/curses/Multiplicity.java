@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Statue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Thief;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
+import com.shatteredpixel.shatteredpixeldungeon.actors.properties.Property;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -80,7 +81,7 @@ public class Multiplicity extends Armor.Glyph {
 
 					//FIXME should probably have a mob property for this
 					if (!(toDuplicate instanceof Mob)
-							|| toDuplicate.properties().contains(Char.Property.BOSS) || toDuplicate.properties().contains(Char.Property.MINIBOSS)
+							|| toDuplicate.properties().contains(Property.BOSS) || toDuplicate.properties().contains(Property.MINIBOSS)
 							|| toDuplicate instanceof Mimic || toDuplicate instanceof Statue || toDuplicate instanceof NPC) {
 						m = Dungeon.level.createMob();
 					} else {
@@ -113,7 +114,7 @@ public class Multiplicity extends Armor.Glyph {
 
 				if (m != null) {
 
-					if (Char.hasProp(m, Char.Property.LARGE)){
+					if (Char.hasProp(m, Property.LARGE)){
 						for ( int i : spawnPoints.toArray(new Integer[0])){
 							if (!Dungeon.level.openSpace[i]){
 								//remove the value, not at the index

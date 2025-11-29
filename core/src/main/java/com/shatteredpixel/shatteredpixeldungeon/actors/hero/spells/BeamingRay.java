@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.PowerOfMany;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.DirectableAlly;
+import com.shatteredpixel.shatteredpixeldungeon.actors.properties.Property;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -113,7 +114,7 @@ public class BeamingRay extends TargetedClericSpell {
 		}
 
 		int range = 4*hero.pointsInTalent(Talent.BEAMING_RAY);
-		if (Char.hasProp(ally, Char.Property.IMMOVABLE)){
+		if (Char.hasProp(ally, Property.IMMOVABLE)){
 			range /= 2;
 		}
 		if (Dungeon.level.distance(ally.pos, telePos) > range){

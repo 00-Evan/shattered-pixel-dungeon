@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.properties.Property;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Chains;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Effects;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
@@ -154,7 +155,7 @@ public class EtherealChains extends Artifact {
 	//pulls an enemy to a position along the chain's path, as close to the hero as possible
 	private void chainEnemy( Ballistica chain, final Hero hero, final Char enemy ){
 		
-		if (enemy.properties().contains(Char.Property.IMMOVABLE)) {
+		if (enemy.properties().contains(Property.IMMOVABLE)) {
 			GLog.w( Messages.get(this, "cant_pull") );
 			return;
 		}
@@ -164,7 +165,7 @@ public class EtherealChains extends Artifact {
 			//prefer to the earliest point on the path
 			if (!Dungeon.level.solid[i]
 					&& Actor.findChar(i) == null
-					&& (!Char.hasProp(enemy, Char.Property.LARGE) || Dungeon.level.openSpace[i])){
+					&& (!Char.hasProp(enemy, Property.LARGE) || Dungeon.level.openSpace[i])){
 				bestPos = i;
 				break;
 			}

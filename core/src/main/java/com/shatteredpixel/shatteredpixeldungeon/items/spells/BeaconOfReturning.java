@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.properties.Property;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPassage;
@@ -131,13 +132,13 @@ public class BeaconOfReturning extends Spell {
 
 			Char existing = Actor.findChar(returnPos);
 			if (existing != null && existing != hero){
-				Char toPush = !Char.hasProp(existing, Char.Property.IMMOVABLE) ? hero : existing;
+				Char toPush = !Char.hasProp(existing, Property.IMMOVABLE) ? hero : existing;
 
 				ArrayList<Integer> candidates = new ArrayList<>();
 				for (int n : PathFinder.NEIGHBOURS8) {
 					int cell = returnPos + n;
 					if (!Dungeon.level.solid[cell] && Actor.findChar( cell ) == null
-							&& (!Char.hasProp(toPush, Char.Property.LARGE) || Dungeon.level.openSpace[cell])) {
+							&& (!Char.hasProp(toPush, Property.LARGE) || Dungeon.level.openSpace[cell])) {
 						candidates.add( cell );
 					}
 				}

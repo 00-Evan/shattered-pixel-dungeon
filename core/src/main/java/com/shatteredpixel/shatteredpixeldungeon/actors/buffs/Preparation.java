@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
+import com.shatteredpixel.shatteredpixeldungeon.actors.properties.Property;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -100,8 +101,8 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 		}
 		
 		public boolean canKO(Char defender){
-			if (defender.properties().contains(Char.Property.MINIBOSS)
-					|| defender.properties().contains(Char.Property.BOSS)){
+			if (defender.properties().contains(Property.MINIBOSS)
+					|| defender.properties().contains(Property.BOSS)){
 				return (defender.HP/(float)defender.HT) < (KOThreshold()/5f);
 			} else {
 				return (defender.HP/(float)defender.HT) < KOThreshold();

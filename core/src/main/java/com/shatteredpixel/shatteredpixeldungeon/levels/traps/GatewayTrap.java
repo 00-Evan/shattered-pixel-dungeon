@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.properties.Property;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -109,9 +110,9 @@ public class GatewayTrap extends Trap {
 			for (int i : PathFinder.NEIGHBOURS9){
 
 				Char ch = Actor.findChar(pos + i);
-				if (ch != null && !Char.hasProp(ch, Char.Property.IMMOVABLE)){
+				if (ch != null && !Char.hasProp(ch, Property.IMMOVABLE)){
 					int newPos = -1;
-					if (Char.hasProp(ch, Char.Property.LARGE)){
+					if (Char.hasProp(ch, Property.LARGE)){
 						if (!largeCharPositions.isEmpty()){
 							newPos = largeCharPositions.get(0);
 						}

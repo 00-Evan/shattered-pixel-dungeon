@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.properties.Property;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
@@ -100,7 +101,7 @@ public class ScrollOfTeleportation extends Scroll {
 			return teleportInNonRegularLevel( ch, false );
 		}
 
-		if (Char.hasProp(ch, Char.Property.IMMOVABLE) || ch.isImmune(source)){
+		if (Char.hasProp(ch, Property.IMMOVABLE) || ch.isImmune(source)){
 			GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 			return false;
 		}
@@ -214,7 +215,7 @@ public class ScrollOfTeleportation extends Scroll {
 	//prefers not seen(optional) > not visible > visible
 	private static boolean teleportInNonRegularLevel(Char ch, boolean preferNotSeen ){
 
-		if (Char.hasProp(ch, Char.Property.IMMOVABLE)){
+		if (Char.hasProp(ch, Property.IMMOVABLE)){
 			GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 			return false;
 		}
@@ -225,7 +226,7 @@ public class ScrollOfTeleportation extends Scroll {
 
 		boolean[] passable = Dungeon.level.passable;
 
-		if (Char.hasProp(ch, Char.Property.LARGE)){
+		if (Char.hasProp(ch, Property.LARGE)){
 			passable = BArray.and(passable, Dungeon.level.openSpace, null);
 		}
 

@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Statue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
+import com.shatteredpixel.shatteredpixeldungeon.actors.properties.Property;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -271,7 +272,7 @@ public abstract class RegularLevel extends Level {
 					|| !roomToSpawn.canPlaceCharacter(cellToPoint(mob.pos), this)
 					|| mob.pos == exit()
 					|| traps.get(mob.pos) != null || plants.get(mob.pos) != null
-					|| (!openSpace[mob.pos] && mob.properties().contains(Char.Property.LARGE))));
+					|| (!openSpace[mob.pos] && mob.properties().contains(Property.LARGE))));
 
 			if (tries >= 0) {
 				mobsToSpawn--;
@@ -293,7 +294,7 @@ public abstract class RegularLevel extends Level {
 							|| !roomToSpawn.canPlaceCharacter(cellToPoint(mob.pos), this)
 							|| mob.pos == exit()
 							|| traps.get(mob.pos) != null || plants.get(mob.pos) != null
-							|| (!openSpace[mob.pos] && mob.properties().contains(Char.Property.LARGE))));
+							|| (!openSpace[mob.pos] && mob.properties().contains(Property.LARGE))));
 
 					if (tries >= 0) {
 						mobsToSpawn--;
@@ -335,7 +336,7 @@ public abstract class RegularLevel extends Level {
 					&& Actor.findChar( cell ) == null
 					&& passable[cell]
 					&& !solid[cell]
-					&& (!Char.hasProp(ch, Char.Property.LARGE) || openSpace[cell])
+					&& (!Char.hasProp(ch, Property.LARGE) || openSpace[cell])
 					&& room.canPlaceCharacter(cellToPoint(cell), this)
 					&& cell != exit()) {
 				return cell;
@@ -364,7 +365,7 @@ public abstract class RegularLevel extends Level {
 			ArrayList<Point> points = room.charPlaceablePoints(this);
 			if (!points.isEmpty()){
 				cell = pointToCell(Random.element(points));
-				if (passable[cell] && (!Char.hasProp(ch, Char.Property.LARGE) || openSpace[cell])) {
+				if (passable[cell] && (!Char.hasProp(ch, Property.LARGE) || openSpace[cell])) {
 					return cell;
 				}
 			}

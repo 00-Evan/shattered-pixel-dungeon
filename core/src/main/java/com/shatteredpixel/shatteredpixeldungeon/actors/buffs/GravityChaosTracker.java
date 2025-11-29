@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.properties.Property;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -114,7 +115,7 @@ public class GravityChaosTracker extends Buff {
 
 		idx = Random.Int(PathFinder.NEIGHBOURS8.length);
 		for (Char ch : Actor.chars()){
-			if (Char.hasProp(ch, Char.Property.IMMOVABLE) ||
+			if (Char.hasProp(ch, Property.IMMOVABLE) ||
 					(positiveOnly && ch.alignment == Char.Alignment.ALLY)){
 				continue;
 			} else {

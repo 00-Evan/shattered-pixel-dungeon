@@ -61,6 +61,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Piranha;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogFist;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
+import com.shatteredpixel.shatteredpixeldungeon.actors.properties.Property;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WindParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -596,7 +597,7 @@ public abstract class Level implements Bundlable {
 		if (awareness != null) awareness.detach();
 
 		Char ally = Stasis.getStasisAlly();
-		if (Char.hasProp(ally, Char.Property.IMMOVABLE)){
+		if (Char.hasProp(ally, Property.IMMOVABLE)){
 			Dungeon.hero.buff(Stasis.StasisBuff.class).act();
 			GLog.w(Messages.get(Stasis.StasisBuff.class, "left_behind"));
 		}
@@ -687,7 +688,7 @@ public abstract class Level implements Bundlable {
 	public int mobCount(){
 		float count = 0;
 		for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])){
-			if (mob.alignment == Char.Alignment.ENEMY && !mob.properties().contains(Char.Property.MINIBOSS)) {
+			if (mob.alignment == Char.Alignment.ENEMY && !mob.properties().contains(Property.MINIBOSS)) {
 				count += mob.spawningWeight();
 			}
 		}
@@ -773,7 +774,7 @@ public abstract class Level implements Bundlable {
 
 		} while ((Dungeon.level == this && heroFOV[cell])
 				|| !passable[cell]
-				|| (Char.hasProp(ch, Char.Property.LARGE) && !openSpace[cell])
+				|| (Char.hasProp(ch, Property.LARGE) && !openSpace[cell])
 				|| Actor.findChar( cell ) != null);
 		return cell;
 	}
@@ -783,7 +784,7 @@ public abstract class Level implements Bundlable {
 		do {
 			cell = Random.Int( length() );
 		} while (!passable[cell]
-				|| (Char.hasProp(ch, Char.Property.LARGE) && !openSpace[cell]));
+				|| (Char.hasProp(ch, Property.LARGE) && !openSpace[cell]));
 		return cell;
 	}
 	

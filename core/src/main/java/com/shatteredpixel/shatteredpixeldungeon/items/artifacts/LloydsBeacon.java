@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.properties.Property;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -235,7 +236,7 @@ public class LloydsBeacon extends Artifact {
 
 											GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 
-										} else if (ch.properties().contains(Char.Property.IMMOVABLE)) {
+										} else if (ch.properties().contains(Property.IMMOVABLE)) {
 
 											GLog.w( Messages.get(LloydsBeacon.class, "tele_fail") );
 

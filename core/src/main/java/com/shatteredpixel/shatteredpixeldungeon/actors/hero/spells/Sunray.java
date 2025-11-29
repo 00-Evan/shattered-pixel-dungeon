@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.properties.Property;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
@@ -95,7 +96,7 @@ public class Sunray extends TargetedClericSpell {
 		if (ch != null) {
 			ch.sprite.burst(0xFFFFFF44, 5);
 
-			if (Char.hasProp(ch, Char.Property.UNDEAD) || Char.hasProp(ch, Char.Property.DEMONIC)){
+			if (Char.hasProp(ch, Property.UNDEAD) || Char.hasProp(ch, Property.DEMONIC)){
 				if (hero.pointsInTalent(Talent.SUNRAY) == 2) {
 					ch.damage(12, Sunray.this);
 				} else {

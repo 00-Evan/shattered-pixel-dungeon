@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.properties.Property;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.RainbowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
@@ -130,8 +131,8 @@ public class Pasty extends Food {
 
 				//charms an adjacent non-boss enemy, prioritizing the one the hero is focusing on
 				for (Char ch : Actor.chars()){
-					if (!Char.hasProp(ch, Char.Property.BOSS)
-							&& !Char.hasProp(ch, Char.Property.MINIBOSS)
+					if (!Char.hasProp(ch, Property.BOSS)
+							&& !Char.hasProp(ch, Property.MINIBOSS)
 							&& ch.alignment == Char.Alignment.ENEMY
 							&& Dungeon.level.adjacent(hero.pos, ch.pos)){
 						if (target == null || ch == TargetHealthIndicator.instance.target()){

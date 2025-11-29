@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.properties.Property;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -51,7 +52,7 @@ public class DisplacingDart extends TippedDart {
 		//attempts to teleport the enemy to a position 8-10 cells away from the hero
 		//prioritizes the closest visible cell to the defender, or closest non-visible if no visible are present
 		//grants vision on the defender if teleport goes to non-visible
-		if (!defender.properties().contains(Char.Property.IMMOVABLE)){
+		if (!defender.properties().contains(Property.IMMOVABLE)){
 			
 			ArrayList<Integer> visiblePositions = new ArrayList<>();
 			ArrayList<Integer> nonVisiblePositions = new ArrayList<>();
@@ -62,7 +63,7 @@ public class DisplacingDart extends TippedDart {
 				if (Dungeon.level.passable[pos]
 						&& PathFinder.distance[pos] >= 8
 						&& PathFinder.distance[pos] <= 10
-						&& (!Char.hasProp(defender, Char.Property.LARGE) || Dungeon.level.openSpace[pos])
+						&& (!Char.hasProp(defender, Property.LARGE) || Dungeon.level.openSpace[pos])
 						&& Actor.findChar(pos) == null){
 
 					if (Dungeon.level.heroFOV[pos]){

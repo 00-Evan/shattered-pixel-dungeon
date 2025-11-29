@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.properties.Property;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -50,7 +51,7 @@ public class StormCloud extends Blob {
 					Char ch = Actor.findChar(cell);
 					if (ch != null
 							&& !ch.isImmune(getClass())
-							&& Char.hasProp(ch, Char.Property.FIERY)){
+							&& Char.hasProp(ch, Property.FIERY)){
 						ch.damage(1 + Dungeon.scalingDepth()/5, this);
 					}
 				}

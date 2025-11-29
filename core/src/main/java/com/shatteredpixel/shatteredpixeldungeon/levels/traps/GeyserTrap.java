@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.properties.Property;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -81,7 +82,7 @@ public class GeyserTrap extends Trap {
 				}
 
 				//does the equivalent of a bomb's damage against fiery enemies.
-				if (Char.hasProp(ch, Char.Property.FIERY)){
+				if (Char.hasProp(ch, Property.FIERY)){
 					int dmg = Random.NormalIntRange(5 + scalingDepth(), 10 + scalingDepth()*2);
 					dmg *= 0.67f;
 					if (!ch.isImmune(GeyserTrap.class)){
@@ -130,7 +131,7 @@ public class GeyserTrap extends Trap {
 			}
 
 			//does the equivalent of a bomb's damage against fiery enemies.
-			if (Char.hasProp(ch, Char.Property.FIERY)){
+			if (Char.hasProp(ch, Property.FIERY)){
 				int dmg = Random.NormalIntRange(5 + scalingDepth(), 10 + scalingDepth()*2);
 				if (!ch.isImmune(GeyserTrap.class)){
 					ch.damage(dmg, this);
