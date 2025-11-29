@@ -191,6 +191,10 @@ public class GameEngine {
             return processNextTurn(externalCommands); // Recursive call for next actor
         }
 
+        // Tick buffs before actor acts (apply per-turn effects like poison, regeneration)
+        // This happens once per turn for the acting character
+        actor.getBuffContainer().tickAll(context, actor);
+
         // Decide what command this actor will execute
         GameCommand command = null;
 

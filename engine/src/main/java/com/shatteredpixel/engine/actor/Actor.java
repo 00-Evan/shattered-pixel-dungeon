@@ -1,6 +1,7 @@
 package com.shatteredpixel.engine.actor;
 
 import com.shatteredpixel.engine.EngineContext;
+import com.shatteredpixel.engine.actor.buff.BuffContainer;
 import com.shatteredpixel.engine.geom.Point;
 
 /**
@@ -26,6 +27,7 @@ public abstract class Actor {
     private final ActorType type;
     private Point position;
     private float time; // Time until this actor's next action
+    private final BuffContainer buffContainer; // Manages temporary effects on this actor
 
     // =========================================================================
     // Constructors
@@ -42,6 +44,7 @@ public abstract class Actor {
         this.type = type;
         this.position = position;
         this.time = 0f;
+        this.buffContainer = new BuffContainer();
     }
 
     // =========================================================================
@@ -60,6 +63,14 @@ public abstract class Actor {
      */
     public final ActorType getType() {
         return type;
+    }
+
+    /**
+     * Get this actor's buff container.
+     * Use this to add, remove, or query buffs on this actor.
+     */
+    public final BuffContainer getBuffContainer() {
+        return buffContainer;
     }
 
     // =========================================================================

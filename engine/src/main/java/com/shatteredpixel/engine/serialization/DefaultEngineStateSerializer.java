@@ -139,7 +139,12 @@ public class DefaultEngineStateSerializer implements EngineStateSerializer {
         Stats stats = character.getStats();
         int currentHealth = character.getCurrentHealth();
 
-        // TODO: Extract buffs when buff system is fully implemented
+        // Extract buffs from BuffContainer
+        BuffSnapshot[] buffSnapshots = character.getBuffContainer().getSnapshot();
+        List<BuffSnapshot> buffList = new ArrayList<>();
+        for (BuffSnapshot snap : buffSnapshots) {
+            buffList.add(snap);
+        }
 
         return new ActorSnapshot(
             actorId,
@@ -153,7 +158,8 @@ public class DefaultEngineStateSerializer implements EngineStateSerializer {
             stats.getDefense(),
             stats.getAccuracy(),
             stats.getEvasion(),
-            stats.getSpeed()
+            stats.getSpeed(),
+            buffList
         );
     }
 
@@ -189,6 +195,12 @@ public class DefaultEngineStateSerializer implements EngineStateSerializer {
                 if (grid.isInBounds(actor.getPosition())) {
                     grid.setOccupied(actor.getPosition(), true);
                 }
+            }
+
+            // Restore buffs now that actor is in context
+            if (actorSnapshot.buffs != null && !actorSnapshot.buffs.isEmpty()) {
+                BuffSnapshot[] buffSnapshotArray = actorSnapshot.buffs.toArray(new BuffSnapshot[0]);
+                actor.getBuffContainer().loadFromSnapshot(buffSnapshotArray, context, actor);
             }
         }
 
@@ -281,7 +293,7 @@ public class DefaultEngineStateSerializer implements EngineStateSerializer {
         // work around this. For now, we'll accept the new ID.
         // TODO: Add setId() or constructor that accepts ActorId for proper restoration
 
-        // TODO: Restore buffs when buff system is fully implemented
+        // Buffs are restored after actor is added to context (see restoreFromSnapshot)
 
         return actor;
     }

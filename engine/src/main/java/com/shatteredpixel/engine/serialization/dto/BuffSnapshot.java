@@ -1,34 +1,81 @@
 package com.shatteredpixel.engine.serialization.dto;
 
 /**
- * Snapshot of a single buff's state.
+ * Immutable serialization snapshot of a buff's state.
  *
- * This is a placeholder skeleton for future buff implementation.
- * Currently contains only minimal data for identifying buffs.
+ * Captures all data needed to recreate a buff during deserialization
+ * (e.g., after save/load or during replay).
  *
- * TODO: Expand when concrete buff system is implemented:
- * - Buff-specific data (strength, stacks, etc.)
- * - Source actor reference
- * - Tick-based vs duration-based tracking
- * - Conditional/reactive buff logic state
+ * Design:
+ * - Immutable: All fields final, no setters
+ * - Deterministic: Same buff state → same snapshot
+ * - GWT-safe: Pure data class, no reflection
+ * - Extensible: Subclasses can add buff-specific fields
+ *
+ * Basic snapshots contain:
+ * - buffType: Stable string identifier for buff type
+ * - duration: Remaining turns
+ *
+ * Buffs with additional state (e.g., stacks, intensity) should create
+ * custom BuffSnapshot subclasses with additional fields.
+ *
+ * Serialization flow:
+ * 1. BuffContainer.getSnapshot() calls buff.createSnapshot()
+ * 2. Snapshot stored in ActorSnapshot
+ * 3. ActorSnapshot serialized to byte[] via EngineSnapshot
+ * 4. During load, BuffRegistry.createBuff(snapshot) recreates buff
+ * 5. Buff added back to actor's BuffContainer
  */
 public class BuffSnapshot {
 
-    public final long buffId;
-    public final String buffTypeName;
-    public final int remainingDuration;
+    /**
+     * Stable identifier for buff type.
+     *
+     * Used by BuffRegistry to lookup factory during deserialization.
+     * Must match Buff.getBuffType() for the corresponding buff class.
+     */
+    public final String buffType;
 
     /**
-     * Create a buff snapshot.
+     * Remaining duration in turns.
      *
-     * @param buffId Unique identifier for this buff instance
-     * @param buffTypeName Type name (e.g., "POISON", "STRENGTH", "REGENERATION")
-     * @param remainingDuration Remaining turns/ticks (-1 for permanent)
+     * Restored as buff's initial duration during deserialization.
      */
-    public BuffSnapshot(long buffId, String buffTypeName, int remainingDuration) {
-        this.buffId = buffId;
-        this.buffTypeName = buffTypeName;
-        this.remainingDuration = remainingDuration;
+    public final int duration;
+
+    /**
+     * Create a basic buff snapshot.
+     *
+     * @param buffType Stable buff type identifier (e.g., "poison")
+     * @param duration Remaining turns
+     */
+    public BuffSnapshot(String buffType, int duration) {
+        if (buffType == null || buffType.isEmpty()) {
+            throw new IllegalArgumentException("Buff type cannot be null or empty");
+        }
+        if (duration < 0) {
+            throw new IllegalArgumentException("Duration cannot be negative, got: " + duration);
+        }
+        this.buffType = buffType;
+        this.duration = duration;
+    }
+
+    /**
+     * Get buff type identifier.
+     *
+     * @return Stable buff type string
+     */
+    public String getBuffType() {
+        return buffType;
+    }
+
+    /**
+     * Get remaining duration.
+     *
+     * @return Remaining turns
+     */
+    public int getDuration() {
+        return duration;
     }
 
     @Override
@@ -36,25 +83,19 @@ public class BuffSnapshot {
         if (this == obj) return true;
         if (!(obj instanceof BuffSnapshot)) return false;
         BuffSnapshot other = (BuffSnapshot) obj;
-        return this.buffId == other.buffId
-            && this.buffTypeName.equals(other.buffTypeName)
-            && this.remainingDuration == other.remainingDuration;
+        return this.buffType.equals(other.buffType)
+            && this.duration == other.duration;
     }
 
     @Override
     public int hashCode() {
-        int result = Long.hashCode(buffId);
-        result = 31 * result + buffTypeName.hashCode();
-        result = 31 * result + remainingDuration;
+        int result = buffType.hashCode();
+        result = 31 * result + duration;
         return result;
     }
 
     @Override
     public String toString() {
-        return "BuffSnapshot{" +
-            "id=" + buffId +
-            ", type=" + buffTypeName +
-            ", duration=" + remainingDuration +
-            "}";
+        return "BuffSnapshot{buffType='" + buffType + "', duration=" + duration + "}";
     }
 }
