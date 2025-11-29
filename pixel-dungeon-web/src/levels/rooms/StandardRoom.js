@@ -10,7 +10,8 @@
 
 import { Room } from './Room.js';
 import { Random } from '../../utils/Random.js';
-import { TerrainFlags } from '../Terrain.js';
+import { TerrainType, flags as TerrainFlags } from '../Terrain.js';
+import { Painter } from '../painters/Painter.js';
 
 /**
  * Room size categories
@@ -126,5 +127,34 @@ export class StandardRoom extends Room {
     paint(level) {
         // Default empty implementation - subclasses override
         throw new Error('StandardRoom.paint() must be overridden by subclass');
+    }
+
+    /**
+     * Create a random standard room
+     * Source: StandardRoom.java:190-192
+     *
+     * SIMPLIFIED: For initial port, returns a basic EmptyRoom
+     * Full implementation would select from a list of specific room types
+     */
+    static createRoom() {
+        return new EmptyRoom();
+    }
+}
+
+/**
+ * Simple empty room (for initial testing)
+ * A basic rectangular room with floor tiles
+ */
+class EmptyRoom extends StandardRoom {
+    constructor() {
+        super();
+    }
+
+    /**
+     * Paint a simple rectangular room
+     */
+    paint(level) {
+        // Fill with floor tiles
+        Painter.fill(level, this, TerrainType.EMPTY);
     }
 }
