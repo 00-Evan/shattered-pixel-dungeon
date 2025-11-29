@@ -91,7 +91,7 @@ export class Painter {
      * Source: Painter.java:54-62
      */
     static fill_xywh(level, x, y, w, h, value) {
-        const width = level.width();
+        const width = level.width;
 
         let pos = y * width + x;
         for (let i = y; i < y + h; i++, pos += width) {

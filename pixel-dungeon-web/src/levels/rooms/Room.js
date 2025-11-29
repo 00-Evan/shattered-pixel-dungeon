@@ -383,8 +383,29 @@ export class Room extends Rect {
         const canConnect = this.canConnect_room(room);
 
         if (isNeighbor && notConnected && canConnect) {
-            this.connected.set(room, null);
-            room.connected.set(this, null);
+            // Find the connection point for the door
+            const i = this.intersect(room);
+            const points = i.getPoints();
+
+            // Use the first valid connection point
+            let doorPoint = null;
+            for (const p of points) {
+                if (this.canConnect_point(p) && room.canConnect_point(p)) {
+                    doorPoint = new Door(p.x, p.y);
+                    break;
+                }
+            }
+
+            // If no valid point found, use center of intersection as fallback
+            if (!doorPoint) {
+                doorPoint = new Door(
+                    Math.floor((i.left + i.right) / 2),
+                    Math.floor((i.top + i.bottom) / 2)
+                );
+            }
+
+            this.connected.set(room, doorPoint);
+            room.connected.set(this, doorPoint);
             return true;
         }
         return false;

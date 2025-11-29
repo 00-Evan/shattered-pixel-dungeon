@@ -196,6 +196,14 @@ export class Level {
     }
 
     /**
+     * Convert point coordinates to cell index
+     * Source: Level.java (common utility)
+     */
+    pointToCell(point) {
+        return point.x + point.y * this.width;
+    }
+
+    /**
      * Build terrain flag maps from map array
      * Source: Level.java:829-871
      */

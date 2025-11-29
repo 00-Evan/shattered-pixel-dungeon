@@ -390,8 +390,19 @@ export class Builder {
 
         // Apply shifts if needed
         if (shiftX !== 0 || shiftY !== 0) {
+            const shiftedDoors = new Set(); // Track shifted doors to avoid double-shifting
+
             for (const room of rooms) {
                 room.shift(shiftX, shiftY);
+
+                // Also shift door coordinates (only once per door)
+                for (const [neighbor, door] of room.connected.entries()) {
+                    if (door && !shiftedDoors.has(door)) {
+                        door.x += shiftX;
+                        door.y += shiftY;
+                        shiftedDoors.add(door);
+                    }
+                }
             }
         }
     }

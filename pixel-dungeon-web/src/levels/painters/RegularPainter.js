@@ -106,9 +106,20 @@ export class RegularPainter extends Painter {
         // Source: RegularPainter.java:101-111
         let rightMost = 0;
         let bottomMost = 0;
+        const shiftedDoors = new Set(); // Track shifted doors to avoid double-shifting
 
         for (const r of rooms) {
             r.shift(-leftMost, -topMost);
+
+            // Also shift door coordinates (only once per door)
+            for (const [neighbor, door] of r.connected.entries()) {
+                if (door && !shiftedDoors.has(door)) {
+                    door.x -= leftMost;
+                    door.y -= topMost;
+                    shiftedDoors.add(door);
+                }
+            }
+
             if (r.right > rightMost) rightMost = r.right;
             if (r.bottom > bottomMost) bottomMost = r.bottom;
         }
@@ -143,7 +154,16 @@ export class RegularPainter extends Painter {
      * Source: RegularPainter.java:171-191
      */
     placeDoors(r) {
+        if (!r || !r.connected) {
+            return;
+        }
+
         for (const [n, door] of r.connected.entries()) {
+            // Safety check: skip if door is null or invalid
+            if (!door || typeof door.set !== 'function') {
+                console.warn(`[placeDoors] Invalid door object for room connection, skipping`);
+                continue;
+            }
             door.set(DoorType.REGULAR);
         }
     }
@@ -153,8 +173,28 @@ export class RegularPainter extends Painter {
      * Source: RegularPainter.java:193-210
      */
     paintDoors(level, rooms) {
+        if (!level || !level.map || !rooms) {
+            return;
+        }
+
         for (const r of rooms) {
+            if (!r || !r.connected) {
+                continue;
+            }
+
             for (const [n, door] of r.connected.entries()) {
+                // Safety check: skip if door is null or has no type
+                if (!door || !door.type) {
+                    continue;
+                }
+
+                // Safety check: ensure door coordinates are within level bounds
+                const cell = door.x + door.y * level.width;
+                if (cell < 0 || cell >= level.map.length) {
+                    console.warn(`[paintDoors] Door at (${door.x}, ${door.y}) is out of bounds, skipping`);
+                    continue;
+                }
+
                 if (door.type === DoorType.REGULAR) {
                     Painter.set(level, door, TerrainType.DOOR);
                 } else if (door.type === DoorType.TUNNEL) {
