@@ -16,15 +16,18 @@ Random.pushGenerator_seed(12345);
 console.log('Test 1: Create rooms manually');
 const entrance = EntranceRoom.createEntrance();
 const exit = ExitRoom.createExit();
-const standard = StandardRoom.createRoom();
+const standard1 = StandardRoom.createRoom();
+const standard2 = StandardRoom.createRoom();
+const standard3 = StandardRoom.createRoom();
+const standard4 = StandardRoom.createRoom();
 
 console.log(`  Entrance: ${entrance.width()}x${entrance.height()}`);
 console.log(`  Exit: ${exit.width()}x${exit.height()}`);
-console.log(`  Standard: ${standard.width()}x${standard.height()}`);
+console.log(`  Standards created: 4 rooms`);
 
-console.log('\nTest 2: Test builder with minimal rooms');
+console.log('\nTest 2: Test builder with more rooms');
 const builder = new LoopBuilder();
-const rooms = [entrance, exit, standard];
+const rooms = [entrance, exit, standard1, standard2, standard3, standard4];
 
 console.log(`  Calling builder.build()...`);
 let buildAttempts = 0;

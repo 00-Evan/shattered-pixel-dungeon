@@ -309,16 +309,19 @@ export class Room extends Rect {
         }
 
         const i = this.intersect(r);
+        const points = i.getPoints();
 
         // Must have at least one valid connection point
         let foundPoint = false;
-        for (const p of i.getPoints()) {
+        for (const p of points) {
             if (this.canConnect_point(p) && r.canConnect_point(p)) {
                 foundPoint = true;
                 break;
             }
         }
-        if (!foundPoint) return false;
+        if (!foundPoint) {
+            return false;
+        }
 
         // Check directional connection limits
         if (i.width() === 0 && i.left === this.left)
@@ -375,8 +378,11 @@ export class Room extends Rect {
      * Source: Room.java:270-279
      */
     connect(room) {
-        if ((this.neigbours.includes(room) || this.addNeigbour(room))
-                && !this.connected.has(room) && this.canConnect_room(room)) {
+        const isNeighbor = this.neigbours.includes(room) || this.addNeigbour(room);
+        const notConnected = !this.connected.has(room);
+        const canConnect = this.canConnect_room(room);
+
+        if (isNeighbor && notConnected && canConnect) {
             this.connected.set(room, null);
             room.connected.set(this, null);
             return true;

@@ -362,4 +362,37 @@ export class Builder {
             return -1;
         }
     }
+
+    /**
+     * Normalize room coordinates to positive space
+     * Shifts all rooms so minimum coordinates are at (padding, padding)
+     *
+     * @param rooms - List of rooms to normalize
+     * @param padding - Minimum offset from (0,0), defaults to 1
+     */
+    static normalizeCoordinates(rooms, padding = 1) {
+        if (!rooms || rooms.length === 0) {
+            return;
+        }
+
+        // Find minimum X and Y coordinates
+        let minX = Number.MAX_SAFE_INTEGER;
+        let minY = Number.MAX_SAFE_INTEGER;
+
+        for (const room of rooms) {
+            if (room.left < minX) minX = room.left;
+            if (room.top < minY) minY = room.top;
+        }
+
+        // Calculate shift amounts
+        const shiftX = minX < padding ? padding - minX : 0;
+        const shiftY = minY < padding ? padding - minY : 0;
+
+        // Apply shifts if needed
+        if (shiftX !== 0 || shiftY !== 0) {
+            for (const room of rooms) {
+                room.shift(shiftX, shiftY);
+            }
+        }
+    }
 }

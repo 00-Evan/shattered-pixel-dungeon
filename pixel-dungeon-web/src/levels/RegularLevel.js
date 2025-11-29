@@ -37,19 +37,31 @@ export class RegularLevel extends Level {
      * Source: RegularLevel.java:104-121
      */
     build() {
+        console.log('  RegularLevel.build() called');
         this.builder = this.builder_();
 
         const initRooms = this.initRooms();
+        console.log(`  Created ${initRooms.length} rooms`);
         Random.shuffle(initRooms);
 
-        // Retry until builder succeeds
+        // Retry until builder succeeds (with limit to prevent infinite loops)
         // Source: RegularLevel.java:111-117
+        let attempts = 0;
+        const maxAttempts = 100;
         do {
             for (const r of initRooms) {
                 r.neigbours.length = 0;
                 r.connected.clear();
             }
+            attempts++;
+            if (attempts % 10 === 0) {
+                console.log(`  Build attempt ${attempts}...`);
+            }
             this.rooms = this.builder.build([...initRooms]);
+
+            if (attempts >= maxAttempts) {
+                throw new Error(`Failed to build level after ${maxAttempts} attempts`);
+            }
         } while (this.rooms === null);
 
         // Paint rooms onto level map
@@ -82,7 +94,7 @@ export class RegularLevel extends Level {
             let s;
             do {
                 s = StandardRoom.createRoom();
-            } while (!s.setSizeCat(standards - i));
+            } while (!s.setSizeCat_maxValue(standards - i));
             i += s.sizeFactor() - 1;
             initRooms.push(s);
         }

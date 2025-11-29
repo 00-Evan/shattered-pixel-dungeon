@@ -51,29 +51,27 @@ export class LoopBuilder extends RegularBuilder {
         this.entrance.setSize();
         this.entrance.setPos(0, 0);
 
-        // DEBUG
-        console.log(`[LoopBuilder] Entrance sized: ${this.entrance.width()}x${this.entrance.height()}`);
-
         // Build main path as a chain of rooms
         const placedRooms = [this.entrance];
 
-        // Add main path rooms
+        // Add main path rooms - put exit in the MIDDLE, not right after entrance!
+        // Entrance and exit cannot connect directly (Room.java:219-222)
         const mainPath = [this.entrance];
-        if (this.exit !== null) {
-            mainPath.push(this.exit);
-        }
         mainPath.push(...this.mainPathRooms);
 
-        // DEBUG
-        console.log(`[LoopBuilder] Main path has ${mainPath.length} rooms`);
+        // Insert exit in the middle of the path
+        if (this.exit !== null && mainPath.length > 1) {
+            const midPoint = Math.floor(mainPath.length / 2);
+            mainPath.splice(midPoint, 0, this.exit);
+        } else if (this.exit !== null) {
+            // If there are no other rooms, still add exit but it will fail to connect
+            mainPath.push(this.exit);
+        }
 
         // Place main path rooms in a chain
         if (!this.buildMainChain(placedRooms, mainPath)) {
-            console.log(`[LoopBuilder] buildMainChain failed`);
             return null;
         }
-
-        console.log(`[LoopBuilder] buildMainChain succeeded, ${placedRooms.length} rooms placed`);
 
         // Add connection tunnels between main path rooms
         this.addConnectionTunnels(placedRooms, mainPath);
@@ -102,6 +100,9 @@ export class LoopBuilder extends RegularBuilder {
             }
         }
 
+        // Normalize coordinates to positive space
+        Builder.normalizeCoordinates(placedRooms);
+
         return placedRooms;
     }
 
@@ -117,13 +118,9 @@ export class LoopBuilder extends RegularBuilder {
         // Direction angles: 0=up, 90=right, 180=down, 270=left
         const directions = [0, 90, 180, 270];
 
-        console.log(`[buildMainChain] Starting with ${placedRooms.length} placed, ${mainPath.length} total`);
-
         for (let i = 1; i < mainPath.length && attempts < maxAttempts; i++) {
             const nextRoom = mainPath[i];
             nextRoom.setSize();
-
-            console.log(`[buildMainChain] Placing room ${i}/${mainPath.length-1}: ${nextRoom.width()}x${nextRoom.height()}`);
 
             let placed = false;
             const shuffledDirs = [...directions];
@@ -131,7 +128,6 @@ export class LoopBuilder extends RegularBuilder {
 
             for (const angle of shuffledDirs) {
                 const resultAngle = Builder.placeRoom(placedRooms, currentRoom, nextRoom, angle);
-                console.log(`  Tried angle ${angle}: result = ${resultAngle}`);
 
                 if (resultAngle !== -1) {
                     placedRooms.push(nextRoom);
@@ -139,7 +135,6 @@ export class LoopBuilder extends RegularBuilder {
                     currentRoom = nextRoom;
                     placed = true;
                     attempts = 0;
-                    console.log(`  ✓ Placed successfully`);
                     break;
                 }
             }
