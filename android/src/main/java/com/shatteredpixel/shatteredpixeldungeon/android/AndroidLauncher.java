@@ -80,9 +80,9 @@ public class AndroidLauncher extends AndroidApplication {
 			instance = this;
 
 			try {
-				Game.version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+				Game.setVersion(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
 			} catch (PackageManager.NameNotFoundException e) {
-				Game.version = "???";
+				Game.setVersion("???");
 			}
 			try {
 				Game.versionCode = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;

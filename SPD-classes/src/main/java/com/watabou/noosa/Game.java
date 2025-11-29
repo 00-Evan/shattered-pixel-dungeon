@@ -61,7 +61,7 @@ public class Game implements ApplicationListener {
 	// Density: mdpi=1, hdpi=1.5, xhdpi=2...
 	public static float density = 1;
 	
-	public static String version;
+	private static String version;
 	public static int versionCode;
 	
 	// Current scene
@@ -88,10 +88,19 @@ public class Game implements ApplicationListener {
 		sceneClass = c;
 		
 		instance = this;
-		this.platform = platform;
+		Game.platform = platform;
 	}
-	
-	@Override
+
+    public static String getVersion() {
+        return version;
+    }
+
+    public static void setVersion(String version) {
+
+        Game.version = version;
+    }
+
+    @Override
 	public void create() {
 		dispHeight = Gdx.graphics.getDisplayMode().height;
 		dispWidth = Gdx.graphics.getDisplayMode().width;

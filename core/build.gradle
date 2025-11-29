@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '2.1.21'
+    ext.kotlin_version = '2.2.21'
     repositories {
         mavenCentral()
     }
@@ -26,8 +26,12 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 dependencies {
     api project(':SPD-classes')
     implementation project(':services')
-   // implementation project(':core')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    // implementation project(':core')
+    //implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+// https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.2.21")
+    def collection_version = "1.5.0"
+    implementation "androidx.collection:collection:$collection_version"
 }
 repositories {
     mavenCentral()

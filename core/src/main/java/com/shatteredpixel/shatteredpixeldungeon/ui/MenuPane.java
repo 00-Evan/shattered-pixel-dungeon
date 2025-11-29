@@ -137,7 +137,7 @@ public class MenuPane extends Component {
 		btnMenu = new MenuButton();
 		add( btnMenu );
 
-		version = new BitmapText( "v" + Game.version, PixelScene.pixelFont);
+		version = new BitmapText( "v" + Game.getVersion(), PixelScene.pixelFont);
 		version.alpha( 0.5f );
 		add(version);
 

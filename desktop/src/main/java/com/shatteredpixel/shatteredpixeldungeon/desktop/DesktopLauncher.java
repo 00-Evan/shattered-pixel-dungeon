@@ -97,14 +97,14 @@ public class DesktopLauncher {
 							title + " was not able to initialize its graphics display, sorry about that!\n\n" +
 									"This usually happens when your graphics card has misconfigured drivers or does not support openGL 2.0+.\n\n" +
 									"If you are certain the game should work on your computer, please message the developer (Evan@ShatteredPixel.com)\n\n" +
-									"version: " + Game.version + "\n" +
+									"version: " + Game.getVersion() + "\n" +
 									exceptionMsg,
 							"ok", "error", false);
 				} else {
 					TinyFileDialogs.tinyfd_messageBox(title + " Has Crashed!",
 							title + " has run into an error it cannot recover from and has crashed, sorry about that!\n\n" +
 									"If you could, please email this error message to the developer (Evan@ShatteredPixel.com):\n\n" +
-									"version: " + Game.version + "\n" +
+									"version: " + Game.getVersion() + "\n" +
 									exceptionMsg,
 							"ok", "error", false);
 				}
@@ -112,9 +112,9 @@ public class DesktopLauncher {
 			}
 		});
 		
-		Game.version = DesktopLauncher.class.getPackage().getSpecificationVersion();
-		if (Game.version == null) {
-			Game.version = System.getProperty("Specification-Version");
+		Game.setVersion(DesktopLauncher.class.getPackage().getSpecificationVersion());
+		if (Game.getVersion() == null) {
+			Game.setVersion(System.getProperty("Specification-Version"));
 		}
 		
 		try {

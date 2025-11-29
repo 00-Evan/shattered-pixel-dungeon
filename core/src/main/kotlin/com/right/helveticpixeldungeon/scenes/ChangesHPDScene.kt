@@ -20,6 +20,7 @@
  */
 package com.right.helveticpixeldungeon.scenes
 
+import com.right.helveticpixeldungeon.scenes.ui.changelist.V0_X_Changes
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.Chrome
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon
@@ -29,15 +30,55 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene
 import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene
 import com.shatteredpixel.shatteredpixeldungeon.ui.*
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.ChangeInfo
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.WndChanges
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.WndChangesTabbed
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle
 import com.watabou.noosa.Camera
+import com.watabou.noosa.Image
 import com.watabou.noosa.audio.Music
 import com.watabou.noosa.ui.Component
 import kotlin.math.ceil
 import kotlin.math.max
 
 class ChangesHPDScene : PixelScene() {
-    public override fun create() {
+    private var rightScroll: ScrollPane? = null
+    private var changeBody: RenderedTextBlock? = null
+    private var changeTitle: IconTitle? = null
+
+    fun updateChangesText(icon: Image?, title: String?, vararg messages: String?) {
+        if (changeTitle != null) {
+
+            changeTitle!!.icon(icon)
+            changeTitle!!.label(title)
+            changeTitle!!.setPos(changeTitle!!.left(), changeTitle!!.top())
+
+            var message: String = ""
+            for (i in messages.indices) {
+                message += messages[i]
+                if (i != messages.size - 1) {
+                    message += "\n\n"
+                }
+            }
+            changeBody?.text(message)
+
+            rightScroll?.content()?.setSize(
+                rightScroll!!.width(),
+                changeBody!!.bottom() + 2
+            )
+            rightScroll?.setSize(rightScroll!!.width(), rightScroll!!.height())
+            rightScroll?.scrollTo(0f, 0f)
+
+
+        } else {
+            if (messages.size == 1) {
+                addToFront(WndChanges(icon, title, messages[0]))
+            } else {
+                addToFront(WndChangesTabbed(icon, title, *messages))
+            }
+        }
+    }
+
+    override fun create() {
         super.create()
 
         Music.INSTANCE.playTracks(
@@ -72,33 +113,33 @@ class ChangesHPDScene : PixelScene() {
             panel.x = (w - pw) / 2f - pw / 2 - 1
             panel.y = 20f
 
-            val rightPanel = Chrome.get(Chrome.Type.TOAST)
-            rightPanel!!.size(pw.toFloat(), ph.toFloat())
+            val rightPanel = Chrome.get(Chrome.Type.TOAST)!!
+            rightPanel.size(pw.toFloat(), ph.toFloat())
             rightPanel.x = (w - pw) / 2f + pw / 2 + 1
             rightPanel.y = 20f
             add(rightPanel)
 
-            val rightScroll = ScrollPane(Component())
+            rightScroll = ScrollPane(Component())
             add(rightScroll)
-            rightScroll.setRect(
+            rightScroll?.setRect(
                 rightPanel.x + rightPanel.marginLeft(),
                 rightPanel.y + rightPanel.marginTop() - 1,
                 rightPanel.innerWidth() + 2,
                 rightPanel.innerHeight() + 2
             )
-            rightScroll.scrollTo(0f, 0f)
+            rightScroll?.scrollTo(0f, 0f)
 
-            val changeTitle = IconTitle(Icons.get(Icons.CHANGES), Messages.get(ChangesScene::class.java, "right_title"))
-            changeTitle.setPos(0f, 1f)
-            changeTitle.setSize(pw.toFloat(), 20f)
-            rightScroll.content().add(changeTitle)
+            changeTitle = IconTitle(Icons.get(Icons.CHANGES), Messages.get(ChangesScene::class.java, "right_title"))
+            changeTitle?.setPos(0f, 1f)
+            changeTitle?.setSize(pw.toFloat(), 20f)
+            rightScroll?.content()?.add(changeTitle)
 
-            val body = Messages.get(ChangesScene::class.java, "right_body")
+            val body = Messages.get(ChangesScene::class.java, "right_body")!!
 
-            val changeBody = renderTextBlock(body, 6)
-            changeBody.maxWidth(pw - panel.marginHor())
-            changeBody.setPos(0f, changeTitle.bottom() + 2)
-            rightScroll.content().add(changeBody)
+            changeBody = renderTextBlock(body, 6)
+            changeBody?.maxWidth(pw - panel.marginHor())
+            changeBody?.setPos(0f, changeTitle!!.bottom() + 2)
+            rightScroll!!.content().add(changeBody)
         } else {
             panel.size(pw.toFloat(), ph.toFloat())
             panel.x = (w - pw) / 2f
@@ -120,7 +161,7 @@ class ChangesHPDScene : PixelScene() {
 
         val switchSPD = object : ChangeInfo("SPD", true, "") {
             override fun onClick(x: Float, y: Float): Boolean {
-                if (switchSPDBtn!!.inside(x, y)) {
+                if (switchSPDBtn.inside(x, y)) {
                     switchSPDBtn.onClick()
                     return true
                 }
@@ -132,19 +173,22 @@ class ChangesHPDScene : PixelScene() {
                 var posY = this.y + 12
                 if (major) posY += 2f
                 val posX = x
-                switchSPDBtn!!.setRect(posX + 1, posY, width() - 2, switchSPDBtn.reqHeight())
+                switchSPDBtn.setRect(posX + 1, posY, width() - 2, switchSPDBtn.reqHeight())
 
-                line.size(width(), 1f)
+                line.size(width(), 0f)
 
-                line.x = posX
-                line.y = switchSPDBtn.bottom() + 3
+
+
+                this.height = switchSPDBtn.bottom() - this.y + 3
             }
         }
 
-        switchSPD!!.add(switchSPDBtn)
+        switchSPD.add(switchSPDBtn)
         switchSPD.hardlight(Window.TITLE_COLOR)
         switchSPD.layout()
         changeInfos.add(switchSPD)
+
+        V0_X_Changes.addAllChanges(changeInfos)
 
         val list: ScrollPane = object : ScrollPane(Component()) {
             override fun onClick(x: Float, y: Float) {
@@ -203,6 +247,24 @@ class ChangesHPDScene : PixelScene() {
         addToBack(archs)
 
         fadeIn()
+    }
+
+    companion object {
+
+        fun showChangeInfo(icon: Image, title: String?, vararg messages: String?) {
+            val s = ShatteredPixelDungeon.scene()
+            if (s is ChangesHPDScene) {
+
+                s.updateChangesText(icon, title, *messages)
+                return
+            }
+            if (messages.size == 1) {
+                s.addToFront(WndChanges(icon, title, messages[0]))
+            } else {
+                s.addToFront(WndChangesTabbed(icon, title, *messages))
+            }
+        }
+
     }
 
     override fun onBackPressed() {

@@ -44,7 +44,6 @@ public class ChangesScene extends PixelScene {
 
     public static int changesSelected = 0;
 
-    private NinePatch rightPanel;
     private ScrollPane rightScroll;
     private IconTitle changeTitle;
     private RenderedTextBlock changeBody;
@@ -97,7 +96,7 @@ public class ChangesScene extends PixelScene {
             panel.x = (w - pw) / 2f - pw / 2 - 1;
             panel.y = 20;
 
-            rightPanel = Chrome.get(Chrome.Type.TOAST);
+            NinePatch rightPanel = Chrome.get(Chrome.Type.TOAST);
             rightPanel.size(pw, ph);
             rightPanel.x = (w - pw) / 2f + pw / 2 + 1;
             rightPanel.y = 20;
@@ -134,47 +133,48 @@ public class ChangesScene extends PixelScene {
 
         final ArrayList<ChangeInfo> changeInfos = new ArrayList<>();
 
-        var switchHPDBtn = new StyledButton(Chrome.Type.RED_BUTTON, Messages.get(this, "switch_hpd")) {
-            @Override
-            public void onClick() {
-                ChangesScene.changesSelected = 0;
-                ShatteredPixelDungeon.switchNoFade(ChangesHPDScene.class);
-            }
-        };
-
-        var switchHPD = new ChangeInfo("HPD", true, "") {
-            @Override
-            public boolean onClick(float x, float y) {
-                if (switchHPDBtn.inside(x, y)) {
-                    switchHPDBtn.onClick();
-                    return true;
+        if (changesSelected == 0) {
+            var switchHPDBtn = new StyledButton(Chrome.Type.RED_BUTTON, Messages.get(this, "switch_hpd")) {
+                @Override
+                public void onClick() {
+                    ChangesScene.changesSelected = 0;
+                    ShatteredPixelDungeon.switchNoFade(ChangesHPDScene.class);
                 }
-                return super.onClick(x, y);
-            }
+            };
 
-            @Override
-            protected void layout() {
-                super.layout();
-                float posY = this.y + 12;
-                if (major) posY += 2;
-                float posX = x;
-                switchHPDBtn.setRect(posX + 1, posY, width() - 2, switchHPDBtn.reqHeight());
+            var switchHPD = new ChangeInfo("HPD", true, "") {
+                @Override
+                public boolean onClick(float x, float y) {
+                    if (switchHPDBtn.inside(x, y)) {
+                        switchHPDBtn.onClick();
+                        return true;
+                    }
+                    return super.onClick(x, y);
+                }
 
-                line.size(width(), 0);
+                @Override
+                protected void layout() {
+                    super.layout();
+                    float posY = this.y + 12;
+                    if (major) posY += 2;
+                    float posX = x;
+                    switchHPDBtn.setRect(posX + 1, posY, width() - 2, switchHPDBtn.reqHeight());
+
+                    line.size(width(), 0);
 
 //                line.x = posX;
 //                line.y = switchHPDBtn.bottom()+3;
-                //this.y=line.y;
-                this.height = switchHPDBtn.bottom() - this.y + 3;
-            }
-        };
+                    //this.y=line.y;
+                    this.height = switchHPDBtn.bottom() - this.y + 3;
+                }
+            };
 
-        switchHPD.add(switchHPDBtn);
+            switchHPD.add(switchHPDBtn);
 
-        switchHPD.hardlight(Window.TITLE_COLOR);
-        switchHPD.layout();
-        changeInfos.add(switchHPD);
-
+            switchHPD.hardlight(Window.TITLE_COLOR);
+            switchHPD.layout();
+            changeInfos.add(switchHPD);
+        }
         if (Messages.lang() != Languages.ENGLISH) {
             ChangeInfo langWarn = new ChangeInfo("", true, Messages.get(this, "lang_warn"));
             langWarn.hardlight(CharSprite.WARNING);

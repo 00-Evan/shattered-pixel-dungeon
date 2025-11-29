@@ -1198,7 +1198,7 @@ public class v2_X_Changes {
 				"\n" +
 				"Unfortunately the Duelist ended up releasing quite weak. I overestimated how well an ability focused hero would perform versus the existing heroes. I erred much more on the side of making the next hero stronger, and so far that seems to be working out quite well."));
 
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.RAPIER), "The Duelist"/*HeroClass.DUELIST.title()*/,
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.RAPIER), "The Duelist?!"/*HeroClass.DUELIST.title()*/,
 				"_Shattered Pixel Dungeon has a new playable character!!_\n" +
 				"\n" +
 				"The Duelist is an entire new hero class, _with a unique ability for every weapon in the game!_ She can be unlocked by earning a simple badge for equipping a T2 or higher weapon without a strength penalty. However, for existing players who already have a win she is unlocked by default!\n" +

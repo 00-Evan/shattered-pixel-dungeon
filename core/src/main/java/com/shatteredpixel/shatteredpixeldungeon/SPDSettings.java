@@ -354,7 +354,7 @@ public class SPDSettings extends GameSettings {
 	}
 
 	public static boolean betas(){
-		return getBoolean(KEY_BETAS, Game.version.contains("BETA") || Game.version.contains("RC"));
+		return getBoolean(KEY_BETAS, Game.getVersion().contains("BETA") || Game.getVersion().contains("RC"));
 	}
 
 	public static void WiFi(boolean value){
