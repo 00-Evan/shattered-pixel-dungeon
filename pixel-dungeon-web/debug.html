@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Dungeon - Headless Debug Test</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 20px;
+        }
+        h1 {
+            color: #00ff00;
+            font-size: 20px;
+        }
+        #info {
+            margin-bottom: 20px;
+            color: #ffff00;
+        }
+        pre {
+            background: #000;
+            padding: 20px;
+            border: 2px solid #00ff00;
+            font-size: 14px;
+            line-height: 1.2;
+            overflow-x: auto;
+        }
+        .error {
+            color: #ff0000;
+            background: #330000;
+            padding: 20px;
+            border: 2px solid #ff0000;
+        }
+        .legend {
+            background: #222;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #444;
+        }
+        .legend-item {
+            display: inline-block;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🗡️ Pixel Dungeon - Headless Debug Test</h1>
+
+    <div class="legend">
+        <strong>Legend:</strong>
+        <span class="legend-item"># = Wall</span>
+        <span class="legend-item">. = Floor/Empty</span>
+        <span class="legend-item">+ = Door</span>
+        <span class="legend-item">~ = Water</span>
+        <span class="legend-item">, = Grass</span>
+        <span class="legend-item">E = Entrance</span>
+        <span class="legend-item">X = Exit</span>
+    </div>
+
+    <div id="info">Loading...</div>
+    <pre id="map">Generating dungeon...</pre>
+
+    <script type="module">
+        import { RegularLevel } from './src/levels/RegularLevel.js';
+        import { TerrainType } from './src/levels/Terrain.js';
+
+        const infoEl = document.getElementById('info');
+        const mapEl = document.getElementById('map');
+
+        try {
+            console.log('Starting dungeon generation...');
+
+            // Create and generate level
+            const level = new RegularLevel();
+            const seed = Date.now();
+
+            console.log(`Generating with seed: ${seed}`);
+            level.create(seed);
+
+            console.log('Level generated successfully!');
+            console.log(`Dimensions: ${level.width}x${level.height} (${level.length} cells)`);
+
+            // Display level info
+            infoEl.innerHTML = `
+                <strong>✓ Level Generated Successfully</strong><br>
+                Seed: ${seed}<br>
+                Dimensions: ${level.width} × ${level.height} (${level.length} cells)<br>
+                Rooms: ${level.rooms ? level.rooms.length : 'N/A'}<br>
+                Feeling: ${level.feeling || 'NONE'}
+            `;
+
+            // Build ASCII map
+            let mapString = '';
+
+            for (let y = 0; y < level.height; y++) {
+                for (let x = 0; x < level.width; x++) {
+                    const cell = x + y * level.width;
+                    const terrain = level.map[cell];
+
+                    // Check if this is entrance or exit
+                    let char = ' ';
+
+                    if (level.entrance === cell) {
+                        char = 'E';
+                    } else if (level.exit === cell) {
+                        char = 'X';
+                    } else {
+                        // Map terrain to characters
+                        switch (terrain) {
+                            case TerrainType.WALL:
+                                char = '#';
+                                break;
+                            case TerrainType.EMPTY:
+                            case TerrainType.EMPTY_SP:
+                            case TerrainType.EMPTY_DECO:
+                                char = '.';
+                                break;
+                            case TerrainType.DOOR:
+                            case TerrainType.OPEN_DOOR:
+                            case TerrainType.LOCKED_DOOR:
+                                char = '+';
+                                break;
+                            case TerrainType.WATER:
+                                char = '~';
+                                break;
+                            case TerrainType.GRASS:
+                            case TerrainType.HIGH_GRASS:
+                            case TerrainType.FURROWED_GRASS:
+                                char = ',';
+                                break;
+                            case TerrainType.CHASM:
+                                char = ' ';
+                                break;
+                            case TerrainType.ENTRANCE:
+                                char = 'E';
+                                break;
+                            case TerrainType.EXIT:
+                                char = 'X';
+                                break;
+                            case TerrainType.PEDESTAL:
+                            case TerrainType.STATUE:
+                            case TerrainType.STATUE_SP:
+                                char = '□';
+                                break;
+                            case TerrainType.BOOKSHELF:
+                            case TerrainType.BARRICADE:
+                                char = '▓';
+                                break;
+                            case TerrainType.WELL:
+                                char = '○';
+                                break;
+                            case TerrainType.ALCHEMY:
+                                char = '⚗';
+                                break;
+                            default:
+                                char = '?';
+                                break;
+                        }
+                    }
+
+                    mapString += char;
+                }
+                mapString += '\n';
+            }
+
+            // Display map
+            mapEl.textContent = mapString;
+
+            // Log stats
+            const terrainCounts = {};
+            for (let i = 0; i < level.map.length; i++) {
+                const terrain = level.map[i];
+                terrainCounts[terrain] = (terrainCounts[terrain] || 0) + 1;
+            }
+
+            console.log('Terrain distribution:');
+            console.table(terrainCounts);
+
+        } catch (error) {
+            console.error('Level generation failed:', error);
+            infoEl.innerHTML = '<strong style="color: #ff0000;">✗ Level Generation Failed</strong>';
+            mapEl.className = 'error';
+            mapEl.textContent = `Error: ${error.message}\n\nStack:\n${error.stack}`;
+        }
+    </script>
+</body>
+</html>
