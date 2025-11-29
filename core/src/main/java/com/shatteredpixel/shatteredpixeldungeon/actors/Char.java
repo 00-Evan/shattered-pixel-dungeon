@@ -181,8 +181,8 @@ public abstract class Char extends Actor {
     public boolean deathMarked = false;
     protected float baseSpeed = 1;
     protected PathFinder.Path path;
-    protected HashSet<Property> properties = new HashSet<>();
-    private LinkedHashSet<Buff> buffs = new LinkedHashSet<>();
+    protected final HashSet<Property> properties = new HashSet<>();
+    private final LinkedHashSet<Buff> buffs = new LinkedHashSet<>();
     //used so that buffs(Shieldbuff.class) isn't called every time unnecessarily
     private int cachedShield = 0;
 
@@ -1117,7 +1117,7 @@ public abstract class Char extends Actor {
     }
 
     // foreach the buffs with the fn.break if fn returns true.
-    public synchronized void buffs(Function1<Buff, Boolean> fn) {
+    public synchronized void buffsForeach(Function1<Buff, Boolean> fn) {
         for (Buff b : buffs) {
             if (fn.invoke(b)) {
                 break;
@@ -1127,7 +1127,7 @@ public abstract class Char extends Actor {
 
     @SuppressWarnings("unchecked")
     // foreach the buffs with the given Class and the fn,break if fn returns true.
-    public synchronized <T extends Buff> void buffs(Class<T> c, Function1<T, Boolean> fn) {
+    public synchronized <T extends Buff> void buffsForeach(Class<T> c, Function1<T, Boolean> fn) {
         for (Buff b : buffs) {
             if (c.isInstance(b)) {
                 if (fn.invoke((T) b)) {
@@ -1140,7 +1140,7 @@ public abstract class Char extends Actor {
 
     @SuppressWarnings("unchecked")
     // foreach the buffs with the given KClass and the fn,break if fn returns true.
-    public synchronized <T extends Buff> void buffs(KClass<T> c, Function1<T, Boolean> fn) {
+    public synchronized <T extends Buff> void buffsForeach(KClass<T> c, Function1<T, Boolean> fn) {
         for (Buff b : buffs) {
             if (c.isInstance(b)) {
                 if (fn.invoke((T) b)) {
@@ -1346,12 +1346,13 @@ public abstract class Char extends Actor {
     }
 
     public HashSet<Property> properties() {
-        HashSet<Property> props = new HashSet<>(properties);
-        //TODO any more of these and we should make it a property of the buff, like with resistances/immunities
-        if (buff(ChampionEnemy.Giant.class) != null) {
-            props.add(Property.LARGE);
-        }
-        return props;
+//        HashSet<Property> props = new HashSet<>(properties);
+//        //TODO any more of these and we should make it a property of the buff, like with resistances/immunities
+////        if (buff(ChampionEnemy.Giant.class) != null) {
+////            props.add(Property.LARGE);
+////        }
+//        return props;
+        return properties;
     }
 
     //these are relative to the hero

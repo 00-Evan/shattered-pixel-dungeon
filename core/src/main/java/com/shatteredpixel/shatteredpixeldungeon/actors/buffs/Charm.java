@@ -28,6 +28,8 @@ import com.watabou.utils.Bundle;
 
 public class Charm extends FlavourBuff {
 
+    /** {@code object} is an id of the Actor.
+     */
 	public int object = 0;
 	public boolean ignoreHeroAllies = false;
 

@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.properties.Property;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -197,7 +198,7 @@ public abstract class ChampionEnemy extends Buff {
 
 	}
 
-	//Also makes target large, see Char.properties()
+	//Also makes target large, see Giant.attachTo(Char target)
 	public static class Giant extends ChampionEnemy {
 
 		{
@@ -205,7 +206,23 @@ public abstract class ChampionEnemy extends Buff {
 			rays = 5;
 		}
 
-		@Override
+        @Override
+        public boolean attachTo(Char target) {
+            if(super.attachTo(target)) {
+                this.target.properties().add(Property.LARGE);
+                return true;
+            }else {
+                return false;
+            }
+        }
+
+        @Override
+        public void detach() {
+            this.target.properties().remove(Property.LARGE);
+            super.detach();
+        }
+
+        @Override
 		public float damageTakenFactor() {
 			return 0.2f;
 		}

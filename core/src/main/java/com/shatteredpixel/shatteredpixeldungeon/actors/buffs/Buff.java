@@ -63,7 +63,9 @@ public class Buff extends Actor {
 	public HashSet<Class> immunities() {
 		return new HashSet<>(immunities);
 	}
-	
+
+    /** @return true when successfully attach buff to target,false when not.
+    */
 	public boolean attachTo( Char target ) {
 
 		if (target.isImmune( getClass() )) {
