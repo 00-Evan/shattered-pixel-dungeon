@@ -37,7 +37,7 @@ android {
             //See here: https://developer.android.com/studio/build/shrink-code#decode-stack-trace
             shrinkResources true
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             dependencies {
                 releaseImplementation project(':services:updates:githubUpdates')

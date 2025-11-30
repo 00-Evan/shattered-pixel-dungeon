@@ -1,5 +1,5 @@
 plugins {
-    id 'org.beryx.runtime' version '2.0.0'
+    id 'org.beryx.runtime' version '2.0.1'
 }
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
@@ -70,10 +70,10 @@ runtime {
     if (osName.contains('windows')) {
         //May work on Windows 7 (2009), but that's old enough that I'm only officially supporting Windows 10 (2015)
         targetPlatform("win") {
-            jdkHome = jdkDownload("https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.16%2B8/OpenJDK17U-jdk_x64_windows_hotspot_17.0.16_8.zip")
-            javaHome = file("./build/jdks/win/jdk-17.0.16+8").getAbsolutePath()
+            jdkHome = jdkDownload("https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.17%2B10/OpenJDK17U-jdk_x64_windows_hotspot_17.0.17_10.zip")
+            javaHome = file("./build/jdks/win/jdk-17.0.17+10").getAbsolutePath()
             jpackage {
-                jpackageHome = file("./build/jdks/win/jdk-17.0.16+8")
+                jpackageHome = file("./build/jdks/win/jdk-17.0.17+10")
                 imageOptions = ["--icon", file("./src/main/assets/icons/windows.ico"),
                                 "--java-options", "-XX:+IgnoreUnrecognizedVMOptions"]
             }
@@ -81,10 +81,10 @@ runtime {
     } else if (osName.contains('linux')) {
         //May work on glibc 2.12 (2010), but that's old enough that I'm only officially supporting glibc 2.17 (2012)
         targetPlatform("linux") {
-            jdkHome = jdkDownload("https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.16%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.16_8.tar.gz")
-            javaHome = file("./build/jdks/linux/jdk-17.0.16+8").getAbsolutePath()
+            jdkHome = jdkDownload("https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.17%2B10/OpenJDK17U-jdk_x64_linux_hotspot_17.0.17_10.tar.gz")
+            javaHome = file("./build/jdks/linux/jdk-17.0.17+10").getAbsolutePath()
             jpackage {
-                jpackageHome = file("./build/jdks/linux/jdk-17.0.16+8")
+                jpackageHome = file("./build/jdks/linux/jdk-17.0.17+10")
                 imageOptions = ["--icon", file("./src/main/assets/icons/icon_256.png"),
                                 "--java-options", "-XX:+IgnoreUnrecognizedVMOptions"]
             }
@@ -92,10 +92,10 @@ runtime {
     } else if (osName.contains('mac')) {
         //This JDK officially supports MacOS 12 (2021), but internals suggest support for 10.12 (2016)
         targetPlatform("mac") {
-            jdkHome = jdkDownload("https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.16%2B8/OpenJDK17U-jdk_x64_mac_hotspot_17.0.16_8.tar.gz")
-            javaHome = file("./build/jdks/mac/jdk-17.0.16+8/Contents/Home/").getAbsolutePath()
+            jdkHome = jdkDownload("https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.17%2B10/OpenJDK17U-jdk_x64_mac_hotspot_17.0.17_10.tar.gz")
+            javaHome = file("./build/jdks/mac/jdk-17.0.17+10/Contents/Home/").getAbsolutePath()
             jpackage {
-                jpackageHome = file("./build/jdks/mac/jdk-17.0.16+8/Contents/Home/")
+                jpackageHome = file("./build/jdks/mac/jdk-17.0.17+10/Contents/Home/")
                 imageOptions = ["--icon", file("./src/main/assets/icons/mac.icns"),
                                 "--java-options", "-XstartOnFirstThread",
                                 "--java-options", "-XX:+IgnoreUnrecognizedVMOptions",
