@@ -213,21 +213,23 @@ public class SkeletonKey extends Artifact {
 						//attempt to knock back char
 						if (Actor.findChar(target) != null){
 
+							Char toMove = Actor.findChar(target);
+
 							int pushCell = -1;
 							//push to the closest open cell that's further than the door
 							for (int i : PathFinder.NEIGHBOURS8){
-								if (!Dungeon.level.solid[target+i] && Actor.findChar(target+i) == null){
-									if (Dungeon.level.trueDistance(curUser.pos, target+i) > Dungeon.level.trueDistance(curUser.pos, target)) {
-										if (pushCell == -1 || Dungeon.level.trueDistance(curUser.pos, pushCell) > Dungeon.level.trueDistance(curUser.pos, target + i)){
-											pushCell = target + i;
-										}
-									}
+								if (!Dungeon.level.solid[target+i]
+										&& Actor.findChar(target+i) == null
+										&& (Dungeon.level.openSpace[target+i] || !Char.hasProp(toMove, Char.Property.LARGE))
+										&& Dungeon.level.trueDistance(curUser.pos, target+i) > Dungeon.level.trueDistance(curUser.pos, target)
+										&& (pushCell == -1 || Dungeon.level.trueDistance(curUser.pos, pushCell) > Dungeon.level.trueDistance(curUser.pos, target + i))){
+									pushCell = target + i;
 								}
 							}
 
-							if (pushCell != -1){
+							if (pushCell != -1 && !Char.hasProp(toMove, Char.Property.IMMOVABLE)){
 								Ballistica push = new Ballistica(target, pushCell, Ballistica.PROJECTILE);
-								WandOfBlastWave.throwChar(Actor.findChar(target), push, 1, false, false, this);
+								WandOfBlastWave.throwChar(toMove, push, 1, false, false, this);
 							} else {
 								GLog.w(Messages.get(SkeletonKey.class, "lock_no_space"));
 								return;
