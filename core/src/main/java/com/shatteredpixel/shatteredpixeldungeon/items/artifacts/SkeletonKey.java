@@ -55,6 +55,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -248,6 +249,22 @@ public class SkeletonKey extends Artifact {
 								gainExp(2);
 								curUser.spendAndNext(Actor.TICK);
 								curUser.sprite.idle();
+
+								//throw items inside the door in random directions
+								if (Dungeon.level.heaps.get(target) != null){
+									ArrayList<Integer> candidates = new ArrayList<>();
+									for (int n : PathFinder.NEIGHBOURS8){
+										if (Dungeon.level.passable[target+n]){
+											candidates.add(target+n);
+										}
+									}
+									if (!candidates.isEmpty()){
+										Heap heap = Dungeon.level.heaps.get(target);
+										while (!heap.isEmpty()) {
+											Dungeon.level.drop(heap.pickUp(), Random.element(candidates)).sprite.drop(target);
+										}
+									}
+								}
 							}
 						});
 						curUser.busy();
