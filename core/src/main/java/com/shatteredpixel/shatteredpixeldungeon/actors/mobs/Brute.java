@@ -92,7 +92,9 @@ public class Brute extends Mob {
 				triggerEnrage();
 			}
 			if (rage == null){
-				rage = buff(BruteRage.class);
+				for (BruteRage b : buffs(BruteRage.class)){
+					rage = b;
+				}
 			}
 			return rage != null && rage.shielding() > 0;
 		}
@@ -101,7 +103,7 @@ public class Brute extends Mob {
 	protected void triggerEnrage(){
 		rage = Buff.affect(this, BruteRage.class);
 		rage.setShield(HT/2 + 4);
-		sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(HT/2 + 4), FloatingText.SHIELDING );
+		sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(HT/2), FloatingText.SHIELDING );
 		if (Dungeon.level.heroFOV[pos]) {
 			SpellSprite.show( this, SpellSprite.BERSERK);
 		}
