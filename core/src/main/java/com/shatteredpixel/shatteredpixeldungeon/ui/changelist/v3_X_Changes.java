@@ -77,6 +77,31 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-4", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"**-** Updated various internal libraries\n" +
+				"**-** Updated translations"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by BETA:**\n" +
+				"**-** Skeleton key being able to trap items and some characters into closed doors\n" +
+				"**-** Various cases where excess keys wouldn't be discarded\n" +
+				"**-** Skeleton key upgrades not being recorded in the catalog\n" +
+				"**-** Armored brutes dieing immediately instead of gaining rage shield\n" +
+				"**-** Allies travelling with you into quest tester area\n" +
+				"**-** Minor textual errors\n" +
+				"\n" +
+				"**Existed Prior to BETA:**\n" +
+				"**-** Spirit Form not properly working with ring of force"));
+
 		changes = new ChangeInfo("BETA-3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
@@ -86,7 +111,7 @@ public class v3_X_Changes {
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
-				"**Caused by BETA-2:**\n" +
+				"**Caused by BETA:**\n" +
 				"**-** Gnoll brutes becoming immortal in more cases\n" +
 				"**-** Further crashes at the end of Tengu phase 1\n" +
 				"**-** Recall Inscription spell being castable repeatedly\n" +
@@ -102,7 +127,7 @@ public class v3_X_Changes {
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
-				"**Caused by BETA-1:**\n" +
+				"**Caused by BETA:**\n" +
 				"**-** Boosts provided by rings not being properly cleared by the new quest area\n" +
 				"**-** Gnoll brutes becoming immortal if killed via assassination\n" +
 				"**-** Crashes at the end of Tengu phase 1 (hopefully)\n" +
