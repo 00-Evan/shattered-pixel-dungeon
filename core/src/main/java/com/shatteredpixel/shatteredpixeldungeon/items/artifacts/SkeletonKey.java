@@ -632,7 +632,7 @@ public class SkeletonKey extends Artifact {
 			}
 			if (removed){
 				GameScene.updateKeyDisplay();
-				GLog.i("You discard your excess keys.");
+				GLog.i(Messages.get(SkeletonKey.class, "discard"));
 			}
 		}
 
