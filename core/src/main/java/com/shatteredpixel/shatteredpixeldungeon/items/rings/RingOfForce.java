@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.SpiritForm;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -79,8 +80,16 @@ public class RingOfForce extends Ring {
 	}
 
 	public static int damageRoll( Hero hero ){
-		if (hero.buff(Force.class) != null
-				&& hero.buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) == null) {
+		//level can be 0 while still using a ring, so we specifically check for the presence of a ring of force
+		boolean usingForce = hero.buff(Force.class) != null;
+		if (hero.buff(SpiritForm.SpiritFormBuff.class) != null && hero.buff(SpiritForm.SpiritFormBuff.class).ring() instanceof RingOfForce){
+			usingForce = true;
+		}
+		//and ignore that presence if using monk abilities
+		if (hero.buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) != null){
+			usingForce = false;
+		}
+		if (usingForce) {
 			int level = getBuffedBonus(hero, Force.class);
 			float tier = tier(hero.STR());
 			int dmg = Hero.heroDamageIntRange(min(level, tier), max(level, tier));
