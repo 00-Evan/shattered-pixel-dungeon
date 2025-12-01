@@ -59,7 +59,7 @@ public class ForceCube extends MissileWeapon {
 			return;
 		}
 
-		rangedHit( null, cell );
+		rangedHit( (Char) null, cell );
 		Dungeon.level.pressCell(cell);
 		
 		ArrayList<Char> targets = new ArrayList<>();

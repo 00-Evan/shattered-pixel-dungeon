@@ -173,7 +173,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 
 	//used for just updating a sprite based on a given character, not linking them or placing in the game
 	public void linkVisuals( Char ch ){
-		//do nothin by default
+		//do nothing by default
 	}
 	
 	public PointF worldToCamera( int cell ) {

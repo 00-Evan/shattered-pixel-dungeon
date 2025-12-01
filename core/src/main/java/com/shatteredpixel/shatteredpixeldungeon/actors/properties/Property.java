@@ -46,7 +46,8 @@ public enum Property {
             new HashSet<>(Arrays.asList(AllyBuff.class, Dread.class, Terror.class, Amok.class, Charm.class, Sleep.class,
                     Paralysis.class, Frost.class, Chill.class, Slow.class, Speed.class))),
     // below are properties from HPD:
-    WITHHEAD,
+    // cannot be detected by buff MindVision
+    NOMIND,
     ;
 
     private final HashSet<Class> resistances;

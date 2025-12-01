@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
+import com.right.helveticpixeldungeon.actors.facilities.Facility;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -254,6 +255,15 @@ abstract public class MissileWeapon extends Weapon {
 
 			}
 		}
+        Facility facility=Actor.findFacility(cell);
+        if(facility!=null){
+            if(!curUser.shoot(facility,this)){
+                rangedMiss(cell);
+            }else {
+                rangedHit(facility, cell);
+            }
+
+        }
 	}
 
 	@Override
@@ -313,7 +323,13 @@ abstract public class MissileWeapon extends Weapon {
 			Dungeon.level.drop( this, cell ).sprite.drop();
 		}
 	}
-	
+    protected void rangedHit( Facility facility, int cell ){
+        decrementDurability();
+        if (durability > 0 && !spawnedForEffect){
+            if(facility.onStick(this))return;
+            else Dungeon.level.drop( this, cell ).sprite.drop();
+        }
+    }
 	protected void rangedMiss( int cell ) {
 		parent = null;
 		if (!spawnedForEffect) super.onThrow(cell);

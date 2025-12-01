@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors;
 
+import com.right.helveticpixeldungeon.actors.facilities.Facility;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
@@ -145,6 +146,7 @@ public abstract class Actor implements Bundlable {
 	
 	private static final HashSet<Actor> all = new HashSet<>();
 	private static final HashSet<Char> chars = new HashSet<>();
+    public static final HashSet<Facility> facilities = new HashSet<>();
 	private static volatile Actor current;
 
 	private static SparseArray<Actor> ids = new SparseArray<>();
@@ -349,6 +351,10 @@ public abstract class Actor implements Bundlable {
 				add(buff);
 			}
 		}
+        if(actor instanceof Facility f){
+            facilities.add(f);
+            f.onAdd();
+        }
 	}
 	
 	public static synchronized void remove( Actor actor ) {
@@ -356,6 +362,11 @@ public abstract class Actor implements Bundlable {
 		if (actor != null) {
 			all.remove( actor );
 			chars.remove( actor );
+            if(actor instanceof Facility f){
+                facilities.remove(f);
+                f.onRemove();
+            }
+
 			actor.onRemove();
 
 			if (actor.id > 0) {
@@ -380,6 +391,13 @@ public abstract class Actor implements Bundlable {
 		}
 		return null;
 	}
+    public static synchronized Facility findFacility( int pos ) {
+        for (Facility facility : facilities){
+            if (facility.getPos() == pos)
+                return facility;
+        }
+        return null;
+    }
 
 	public static synchronized Actor findById( int id ) {
 		return ids.get( id );
@@ -390,4 +408,5 @@ public abstract class Actor implements Bundlable {
 	}
 
 	public static synchronized HashSet<Char> chars() { return new HashSet<>(chars); }
+    public static synchronized HashSet<Facility> facilities() { return new HashSet<>(facilities); }
 }

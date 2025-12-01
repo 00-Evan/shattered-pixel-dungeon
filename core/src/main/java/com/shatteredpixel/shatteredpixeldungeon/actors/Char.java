@@ -181,6 +181,10 @@ public abstract class Char extends Actor {
     public boolean deathMarked = false;
     protected float baseSpeed = 1;
     protected PathFinder.Path path;
+
+    /**
+     *  should only br added when Char constructed.
+     */
     protected final HashSet<Property> properties = new HashSet<>();
     private final LinkedHashSet<Buff> buffs = new LinkedHashSet<>();
     //used so that buffs(Shieldbuff.class) isn't called every time unnecessarily
@@ -1345,6 +1349,7 @@ public abstract class Char extends Actor {
         return /*buff(Challenge.SpectatorFreeze.class) != null ||*/ buff(Invulnerability.class) != null;
     }
 
+    // properties should only be added when Char constructed,so it's thread safe to just return it.
     public HashSet<Property> properties() {
 //        HashSet<Property> props = new HashSet<>(properties);
 //        //TODO any more of these and we should make it a property of the buff, like with resistances/immunities
@@ -1352,7 +1357,7 @@ public abstract class Char extends Actor {
 ////            props.add(Property.LARGE);
 ////        }
 //        return props;
-        return properties;
+        return  properties;
     }
 
     //these are relative to the hero

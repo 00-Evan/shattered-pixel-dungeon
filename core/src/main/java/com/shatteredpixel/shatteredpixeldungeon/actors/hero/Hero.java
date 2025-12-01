@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
+import com.right.helveticpixeldungeon.actors.facilities.Facility;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
@@ -473,7 +474,12 @@ public class Hero extends Char {
 		attackTarget = null;
 		return hit;
 	}
-	
+	public boolean shoot(Facility facility,MissileWeapon wep){
+
+       boolean hit= facility.onBeShoot(this,wep);
+        Invisibility.dispel();
+        return hit;
+    }
 	@Override
 	public int attackSkill( Char target ) {
 		KindOfWeapon wep = belongings.attackingWeapon();
