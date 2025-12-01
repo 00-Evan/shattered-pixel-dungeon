@@ -44,14 +44,14 @@ public class RealtimeInteractionPrompt extends Component {
     @Override
     public void update() {
         super.update();
-        // 1) HARD SAFETY CHECKS: bail out during transitions or when input/UI should be disabled
-        if (!RealtimeInput.isEnabled() || 
-                Dungeon.hero == null || 
-                !Dungeon.hero.ready || // hero not ready during level transitions
-                Dungeon.level == null) {
+
+        // Early return: bail out during transitions or when input/UI should be disabled
+        if (!RealtimeInput.isEnabled() || Dungeon.hero == null ||
+                !Dungeon.hero.ready || Dungeon.level == null) {
             hideAll();
             return;
         }
+
         try {
             Heap best = findClosestInteractableHeap();
             if (best == null) {
@@ -59,12 +59,16 @@ public class RealtimeInteractionPrompt extends Component {
                 return;
             }
 
-            // --- SPRITE LOGIC (World Space) ---
-            Item item = best.peek();
             targetCell = best.pos;
+            Item item = best.peek();
             boolean isContainer = best.type != Heap.Type.HEAP && best.type != Heap.Type.FOR_SALE;
-            if (isContainer || item != null) {
-                // Update visual if changed (track heap types with negative keys to avoid collisions)
+
+            // --- SPRITE LOGIC (World Space) ---
+            // Early return: skip sprite if neither container nor item
+            if (!isContainer && item == null) {
+                highlightSprite.visible = false;
+            } else {
+                // Update visual if changed (track heap types with negative keys)
                 int desiredKey = isContainer ? (-100 - best.type.ordinal()) : item.image();
                 if (desiredKey != lastImageId) {
                     if (isContainer) {
@@ -72,58 +76,47 @@ public class RealtimeInteractionPrompt extends Component {
                     } else {
                         highlightSprite.view(item);
                     }
-                    // Force pure-white silhouette, remove any item-specific glow
                     highlightSprite.glow(null);
                     highlightSprite.color(0xFFFFFF);
                     lastImageId = desiredKey;
                 }
-                // Constant alpha (no flashing)
                 highlightSprite.alpha(0.17f);
                 highlightSprite.visible = true;
+            }
 
-                // --- PRECISE WORLD POSITIONING USING ItemSprite.worldToCamera ---
-                // Slightly upscale the silhouette, then compute exact world TL for this cell
-                float overlayScale = 1.01f;
-                highlightSprite.scale.set(overlayScale);
-                highlightSprite.origin.set(0, 0);
-                PointF worldTL = highlightSprite.worldToCamera(targetCell);
+            // Calculate world position ONCE - setup scale/origin first, then get position
+            highlightSprite.scale.set(1.01f);
+            highlightSprite.origin.set(0, 0);
+            PointF worldTL = highlightSprite.worldToCamera(targetCell);
+
+            // Position sprite using pre-calculated worldTL
+            if (highlightSprite.visible) {
                 highlightSprite.x = worldTL.x;
                 highlightSprite.y = worldTL.y;
-            } else {
-                // No item and not a container we render
-                highlightSprite.visible = false;
             }
 
             // --- TEXT LOGIC (Screen/UI Space) ---
             nameLabel.text(getHeapName(best));
+            nameLabel.measure();
             nameLabel.visible = true;
 
-            nameLabel.measure();
-
-            float labelX;
-            float labelY;
+            float labelX, labelY;
 
             if (highlightSprite.visible) {
-                // Center directly under the rendered silhouette bottom-center
-                // 1) Use the same world TL we used to place the sprite
-                PointF spriteTL = highlightSprite.worldToCamera(targetCell);
-                float spriteBottomCenterX = spriteTL.x + highlightSprite.width() / 2f;
-                float spriteBottomY = spriteTL.y + highlightSprite.height();
-
-                // 2) Convert bottom-center to UI coordinates
+                // Center under sprite bottom-center, reusing worldTL (zero allocation)
+                float spriteBottomCenterX = worldTL.x + highlightSprite.width() / 2f;
+                float spriteBottomY = worldTL.y + highlightSprite.height();
                 Point bcScreen = Camera.main.cameraToScreen(spriteBottomCenterX, spriteBottomY);
                 PointF bcUI = PixelScene.uiCamera.screenToCamera(bcScreen.x, bcScreen.y);
 
-                // 3) Center horizontally under the sprite; add small padding below
                 labelX = bcUI.x - (nameLabel.width() / 2f);
                 labelY = bcUI.y + 2f;
             } else {
                 // Fallback: center under tile
-                PointF worldTL = DungeonTilemap.tileToWorld(targetCell);
                 Point screen = Camera.main.cameraToScreen(worldTL.x, worldTL.y);
                 PointF ui = PixelScene.uiCamera.screenToCamera(screen.x, screen.y);
-                float zoom = Camera.main.zoom;
-                float tileSizeUI = DungeonTilemap.SIZE * zoom;
+                float tileSizeUI = DungeonTilemap.SIZE * Camera.main.zoom;
+
                 labelX = ui.x + (tileSizeUI / 2f) - (nameLabel.width() / 2f);
                 labelY = ui.y + tileSizeUI + 2f;
             }
@@ -131,7 +124,6 @@ public class RealtimeInteractionPrompt extends Component {
             nameLabel.x = labelX;
             nameLabel.y = labelY;
         } catch (Exception e) {
-            // During level transitions or any unexpected state, fail silently for this frame
             hideAll();
         }
     }
