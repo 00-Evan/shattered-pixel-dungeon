@@ -112,16 +112,21 @@ public class DesktopLauncher {
 			}
 		});
 		
-		Game.version = DesktopLauncher.class.getPackage().getSpecificationVersion();
+				Game.version = DesktopLauncher.class.getPackage().getSpecificationVersion();
 		if (Game.version == null) {
 			Game.version = System.getProperty("Specification-Version");
+		}
+		// Ensure a non-null version when running from IDE without manifest
+		if (Game.version == null || Game.version.isEmpty()) {
+			Game.version = "dev";
 		}
 		
 		try {
 			Game.versionCode = Integer.parseInt(DesktopLauncher.class.getPackage().getImplementationVersion());
 		} catch (NumberFormatException e) {
-			Game.versionCode = Integer.parseInt(System.getProperty("Implementation-Version"));
+			Game.versionCode = 1;
 		}
+
 
 		if (UpdateImpl.supportsUpdates()){
 			Updates.service = UpdateImpl.getUpdateService();
@@ -137,11 +142,22 @@ public class DesktopLauncher {
 		//if I were implementing this from scratch I would use the full implementation title for saves
 		// (e.g. /.shatteredpixel/shatteredpixeldungeon), but we have too much existing save
 		// date to worry about transferring at this point.
-		String vendor = DesktopLauncher.class.getPackage().getImplementationTitle();
+				String vendor = DesktopLauncher.class.getPackage().getImplementationTitle();
 		if (vendor == null) {
 			vendor = System.getProperty("Implementation-Title");
 		}
-		vendor = vendor.split("\\.")[1];
+		if (vendor == null || !vendor.contains(".")) {
+			// Fallback for running from IDE without manifest attributes
+			String pkgName = DesktopLauncher.class.getPackage().getName();
+			if (pkgName != null && pkgName.contains(".")) {
+				vendor = pkgName.split("\\.")[1];
+			} else {
+				vendor = "shatteredpixel";
+			}
+		} else {
+			vendor = vendor.split("\\.")[1];
+		}
+
 
 		String basePath = "";
 		Files.FileType baseFileType = null;

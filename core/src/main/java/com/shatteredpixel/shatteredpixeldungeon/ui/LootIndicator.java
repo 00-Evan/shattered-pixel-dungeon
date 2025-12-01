@@ -25,7 +25,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.input.RealtimeInput;
 import com.watabou.input.GameAction;
+
 
 public class LootIndicator extends Tag {
 	
@@ -83,10 +85,19 @@ public class LootIndicator extends Tag {
 
 	}
 	
-	@Override
+		@Override
 	public void update() {
 		
+		// Hide entirely in realtime mode
+		if (RealtimeInput.isEnabled()) {
+			visible = false;
+			slot.enable(false);
+			super.update();
+			return;
+		}
+		
 		if (Dungeon.hero.ready) {
+
 			Heap heap = Dungeon.level.heaps.get( Dungeon.hero.pos );
 			if (heap != null) {
 				

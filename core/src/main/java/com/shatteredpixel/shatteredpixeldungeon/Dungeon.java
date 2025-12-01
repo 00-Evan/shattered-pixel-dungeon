@@ -470,8 +470,11 @@ public class Dungeon {
 		
 		PathFinder.setMapSize(level.width(), level.height());
 		
-		Dungeon.level = level;
+				Dungeon.level = level;
 		hero.pos = pos;
+		// Reset hero exact realtime coordinates to match new grid position
+		hero.onLevelSwitched();
+
 
 		if (hero.buff(AscensionChallenge.class) != null){
 			hero.buff(AscensionChallenge.class).onLevelSwitch();

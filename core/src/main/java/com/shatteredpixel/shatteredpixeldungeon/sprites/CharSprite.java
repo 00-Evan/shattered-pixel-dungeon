@@ -210,11 +210,18 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		}
 	}
 	
-	public void idle() {
+		public void idle() {
 		play(idle);
+	}
+
+	// Public wrapper to play the run animation without motion, avoiding resets if already running
+	public void playRun() {
+		if (curAnim == run) return;
+		play(run);
 	}
 	
 	public void move( int from, int to ) {
+
 		turnTo( from , to );
 
 		play( run );

@@ -285,12 +285,23 @@ public class SPDSettings extends GameSettings {
 
 	//Input
 
+	public static final String KEY_REALTIME_MODE    = "realtime_mode";
 	public static final String KEY_CONTROLLER_SENS  = "controller_sens";
 	public static final String KEY_MOVE_SENS        = "move_sens";
+
+
+		public static void realtime(boolean value){
+		put(KEY_REALTIME_MODE, value);
+	}
+
+	public static boolean realtime(){
+		return getBoolean(KEY_REALTIME_MODE, false);
+	}
 
 	public static void controllerPointerSensitivity( int value ){
 		put( KEY_CONTROLLER_SENS, value );
 	}
+
 
 	public static int controllerPointerSensitivity(){
 		return getInt(KEY_CONTROLLER_SENS, 5, 1, 10);

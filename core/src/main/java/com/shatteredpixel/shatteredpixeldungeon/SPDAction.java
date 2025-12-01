@@ -131,7 +131,8 @@ public class SPDAction extends GameAction {
 		defaultBindings.put( Input.Keys.F4,             SPDAction.BAG_4 );
 		defaultBindings.put( Input.Keys.F5,             SPDAction.BAG_5 );
 
-		defaultBindings.put( Input.Keys.E,              SPDAction.EXAMINE );
+				defaultBindings.put( Input.Keys.E,              SPDAction.WAIT_OR_PICKUP );
+
 		defaultBindings.put( Input.Keys.Z,              SPDAction.REST );
 
 		defaultBindings.put( Input.Keys.Q,              SPDAction.TAG_ATTACK );

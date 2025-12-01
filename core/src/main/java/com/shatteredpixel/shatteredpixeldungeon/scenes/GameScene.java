@@ -21,7 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
+import com.badlogic.gdx.Gdx;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
@@ -61,6 +63,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.DimensionalSundial;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrinketCatalyst;
+import com.shatteredpixel.shatteredpixeldungeon.input.RealtimeInput;
+
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
@@ -99,6 +103,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.InventoryPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.LootIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.MenuPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RealtimeInteractionPrompt;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ResumeIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RightClickMenu;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StatusPane;
@@ -127,6 +132,7 @@ import com.watabou.input.ControllerHandler;
 import com.watabou.input.KeyBindings;
 import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Camera;
+
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.Group;
@@ -206,6 +212,10 @@ public class GameScene extends PixelScene {
 	private ActionIndicator action;
 	private ResumeIndicator resume;
 
+	private RealtimeInteractionPrompt rtPrompt;
+
+
+
 	{
 		inGameScene = true;
 	}
@@ -220,9 +230,13 @@ public class GameScene extends PixelScene {
 
 		Dungeon.level.playLevelMusic();
 
-		SPDSettings.lastClass(Dungeon.hero.heroClass.ordinal());
+				SPDSettings.lastClass(Dungeon.hero.heroClass.ordinal());
+		
+		// Sync realtime mode with current setting on scene entry
+		RealtimeInput.setEnabled(SPDSettings.realtime());
 		
 		super.create();
+
 		Camera.main.zoom( GameMath.gate(minZoom, defaultZoom + SPDSettings.zoom(), maxZoom));
 		Camera.main.edgeScroll.set(1);
 
@@ -490,9 +504,14 @@ public class GameScene extends PixelScene {
 		loot.camera = uiCamera;
 		add( loot );
 
-		attack = new AttackIndicator();
+				attack = new AttackIndicator();
 		attack.camera = uiCamera;
 		add( attack );
+
+												
+
+
+
 
 		log = new GameLog();
 		log.camera = uiCamera;
@@ -503,9 +522,15 @@ public class GameScene extends PixelScene {
 			bringToFront(status);
 		}
 
-		toolbar = new Toolbar();
+				toolbar = new Toolbar();
 		toolbar.camera = uiCamera;
 		add( toolbar );
+
+		// Realtime Interaction UI (Added after Toolbar to ensure visibility)
+		rtPrompt = new RealtimeInteractionPrompt();
+		rtPrompt.camera = uiCamera;
+		addToFront(rtPrompt);
+
 
 		if (uiSize == 2) {
 			inventory = new InventoryPane();
@@ -832,9 +857,25 @@ public class GameScene extends PixelScene {
 
 	private static float waterOfs = 0;
 	
-	@Override
+		@Override
 	public synchronized void update() {
+				// Realtime tick: update hero cooldowns every frame when enabled
+		if (RealtimeInput.isEnabled() && Dungeon.hero != null) {
+			float deltaTime = Gdx.graphics.getDeltaTime();
+			Dungeon.hero.updateRealtime(deltaTime);
+			float targetX = Dungeon.hero.sprite.x + Dungeon.hero.sprite.width() / 2f;
+			float targetY = Dungeon.hero.sprite.y + Dungeon.hero.sprite.height() / 2f;
+			Camera.main.panTo(new PointF(targetX, targetY), 20f);
+		}
 		lastOffset = null;
+
+												// RealtimeInteractionPrompt handles floating prompts in realtime mode
+
+
+
+
+
+
 
 		if (updateItemDisplays){
 			updateItemDisplays = false;
@@ -920,7 +961,8 @@ public class GameScene extends PixelScene {
 
 		}
 
-		cellSelector.enable(Dungeon.hero.ready);
+				cellSelector.enable(RealtimeInput.isEnabled() || Dungeon.hero.ready);
+
 
 		if (!toDestroy.isEmpty()) {
 			for (Gizmo g : toDestroy) {
@@ -1708,12 +1750,27 @@ public class GameScene extends PixelScene {
 
 	
 	private static final CellSelector.Listener defaultCellListener = new CellSelector.Listener() {
-		@Override
+								@Override
 		public void onSelect( Integer cell ) {
+			// Realtime behavior: clicking self attempts pickup; otherwise attack-towards click
+			if (RealtimeInput.isEnabled()) {
+				if (Dungeon.hero != null) {
+					if (cell != null && cell == Dungeon.hero.pos) {
+						Dungeon.hero.tryRealtimePickupAction();
+					} else {
+						Dungeon.hero.performRealtimeAttackTowardsCell(cell != null ? cell : -1);
+					}
+				}
+				return;
+			}
+
 			if (Dungeon.hero.handle( cell )) {
 				Dungeon.hero.next();
 			}
 		}
+
+
+
 
 		@Override
 		public void onRightClick(Integer cell) {

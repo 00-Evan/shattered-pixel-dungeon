@@ -44,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndKeyBindings;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuickBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
+import com.shatteredpixel.shatteredpixeldungeon.input.RealtimeInput;
 import com.watabou.input.ControllerHandler;
 import com.watabou.input.GameAction;
 import com.watabou.input.KeyBindings;
@@ -57,6 +58,7 @@ import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 
 import java.util.ArrayList;
+
 
 public class Toolbar extends Component {
 
@@ -195,14 +197,19 @@ public class Toolbar extends Component {
 			}
 		});
 		
-		add(btnWait = new Tool(24, 0, 20, 26) {
+				add(btnWait = new Tool(24, 0, 20, 26) {
 			@Override
 			protected void onClick() {
+				// Realtime: disable wait
+				if (RealtimeInput.isEnabled()) {
+					return;
+				}
 				if (Dungeon.hero != null &&  Dungeon.hero.ready && !GameScene.cancel()) {
 					examining = false;
 					Dungeon.hero.rest(false);
 				}
 			}
+
 			
 			@Override
 			public GameAction keyAction() {
@@ -215,11 +222,15 @@ public class Toolbar extends Component {
 			}
 
 			@Override
-			protected String hoverText() {
+						protected String hoverText() {
 				return Messages.titleCase(Messages.get(WndKeyBindings.class, "wait"));
 			}
 
 			protected boolean onLongClick() {
+				// Realtime: disable long rest
+				if (RealtimeInput.isEnabled()) {
+					return true;
+				}
 				if (Dungeon.hero != null && Dungeon.hero.ready && !GameScene.cancel()) {
 					examining = false;
 					Dungeon.hero.rest(true);
@@ -227,17 +238,23 @@ public class Toolbar extends Component {
 				return true;
 			}
 		});
+
 		btnWait.icon( 176, 0, 16, 16 );
 
 		//hidden button for rest keybind
-		add(new Button(){
+				add(new Button(){
 			@Override
 			protected void onClick() {
+				// Realtime: disable rest
+				if (RealtimeInput.isEnabled()) {
+					return;
+				}
 				if (Dungeon.hero != null && Dungeon.hero.ready && !GameScene.cancel()) {
 					examining = false;
 					Dungeon.hero.rest(true);
 				}
 			}
+
 
 			@Override
 			public GameAction keyAction() {
@@ -247,10 +264,20 @@ public class Toolbar extends Component {
 		});
 
 		//hidden button for wait / pickup keybind
-		add(new Button(){
+				add(new Button(){
 			@Override
 			protected void onClick() {
 				if (Dungeon.hero != null && Dungeon.hero.ready && !GameScene.cancel()) {
+					// Realtime: pickup only; no wait fallback
+																if (RealtimeInput.isEnabled()) {
+							// Route Space to the direct interaction logic (containers first, manual keys)
+							Dungeon.hero.performRealtimeInteraction();
+							return;
+						}
+
+
+
+					// Turn-based: original behavior (pickup else wait)
 					Dungeon.hero.waitOrPickup = true;
 					if ((Dungeon.level.heaps.get(Dungeon.hero.pos) != null || Dungeon.hero.canSelfTrample())
 						&& Dungeon.hero.handle(Dungeon.hero.pos)){
@@ -270,12 +297,17 @@ public class Toolbar extends Component {
 			}
 
 			protected boolean onLongClick() {
+				// Realtime: disable rest on long press
+				if (RealtimeInput.isEnabled()) {
+					return true;
+				}
 				if (Dungeon.hero != null && Dungeon.hero.ready && !GameScene.cancel()) {
 					examining = false;
 					Dungeon.hero.rest(true);
 				}
 				return true;
 			}
+
 
 			@Override
 			public GameAction keyAction() {

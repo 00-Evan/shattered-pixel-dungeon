@@ -40,6 +40,8 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.input.RealtimeInput;
+
 import com.watabou.input.ControllerHandler;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
@@ -665,8 +667,10 @@ public class WndSettings extends WndTabbed {
 
 		ColorBlock sep2;
 
-		OptionSlider optControlSens;
+				OptionSlider optControlSens;
 		OptionSlider optHoldMoveSens;
+		CheckBox chkRealtime;
+
 
 		@Override
 		protected void createChildren() {
@@ -702,11 +706,22 @@ public class WndSettings extends WndTabbed {
 				add(btnControllerBindings);
 			}
 
-			sep2 = new ColorBlock(1, 1, 0xFF000000);
+						sep2 = new ColorBlock(1, 1, 0xFF000000);
 			add(sep2);
 
+			chkRealtime = new CheckBox("Realtime mode"){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					SPDSettings.realtime(checked());
+					RealtimeInput.setEnabled(checked());
+				}
+			};
+			chkRealtime.checked(SPDSettings.realtime());
+			add(chkRealtime);
 
 			optControlSens = new OptionSlider(
+
 					Messages.get(this, "controller_sensitivity"),
 					"1",
 					"10",
@@ -761,18 +776,21 @@ public class WndSettings extends WndTabbed {
 				}
 			}
 
-			sep2.size(width, 1);
+						sep2.size(width, 1);
 			sep2.y = height+ GAP;
 
+			chkRealtime.setRect(0, sep2.y + 1 + GAP, width, BTN_HEIGHT);
+
 			if (width > 200){
-				optControlSens.setRect(0, sep2.y + 1 + GAP, width/2-1, SLIDER_HEIGHT);
+				optControlSens.setRect(0, chkRealtime.bottom() + GAP, width/2-1, SLIDER_HEIGHT);
 				optHoldMoveSens.setRect(width/2 + 1, optControlSens.top(), width/2 -1, SLIDER_HEIGHT);
 			} else {
-				optControlSens.setRect(0, sep2.y + 1 + GAP, width, SLIDER_HEIGHT);
+				optControlSens.setRect(0, chkRealtime.bottom() + GAP, width, SLIDER_HEIGHT);
 				optHoldMoveSens.setRect(0, optControlSens.bottom() + GAP, width, SLIDER_HEIGHT);
 			}
 
 			height = optHoldMoveSens.bottom();
+
 
 		}
 	}

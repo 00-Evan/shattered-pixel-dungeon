@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.badlogic.gdx.Gdx;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -171,7 +172,11 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
+import com.shatteredpixel.shatteredpixeldungeon.input.RealtimeInput;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.Camera;
+
+
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.Delayer;
 import com.watabou.utils.BArray;
@@ -188,7 +193,28 @@ import java.util.LinkedHashMap;
 
 public class Hero extends Char {
 
+	// Sub-tile exact position (in tile units, not pixels). Used in realtime mode for smooth movement.
+	public float exactX;
+	public float exactY;
+	private boolean exactInit = false;
+		private static final float REALTIME_MOVE_TILES_PER_SEC = 6.0f; // base speed; multiplied by speed()
+	private static final float COLLISION_RADIUS = 0.3f; // in tile units; 1.0 == full tile
+								private static final float PICKUP_RANGE = 1.5f; // in tiles, realtime pickup radius
+
+	// Allows operate distance checks to pass when we initiated an interact via teleport trick
+	private int operatePosOverride = -1;
+
+		// Track last known grid cell for realtime FOV updates
+	private int lastGridX = -1;
+	private int lastGridY = -1;
+
+	// Track last movement direction for click-to-attack (cardinal/diagonal)
+	private int lastDirX = 0;
+	private int lastDirY = 0;
+
+
 	{
+
 		actPriority = HERO_PRIO;
 		
 		alignment = Alignment.ALLY;
@@ -202,8 +228,12 @@ public class Hero extends Char {
 	private static final float TIME_TO_SEARCH	    = 2f;
 	private static final float HUNGER_FOR_SEARCH	= 6f;
 	
-	public HeroClass heroClass = HeroClass.ROGUE;
+		public HeroClass heroClass = HeroClass.ROGUE;
+	
+	// Realtime attack cooldown in seconds; only used when realtime mode is enabled
+	public float attackCooldown = 0f;
 	public HeroSubClass subClass = HeroSubClass.NONE;
+
 	public ArmorAbility armorAbility = null;
 	public ArrayList<LinkedHashMap<Talent, Integer>> talents = new ArrayList<>();
 	public LinkedHashMap<Talent, Talent> metamorphedTalents = new LinkedHashMap<>();
@@ -246,8 +276,10 @@ public class Hero extends Char {
 		
 		belongings = new Belongings( this );
 		
-		visibleEnemies = new ArrayList<>();
+				visibleEnemies = new ArrayList<>();
+		// exact coords will be initialized lazily in updateRealtime once level is ready
 	}
+
 	
 	public void updateHT( boolean boostHP ){
 		int curHT = HT;
@@ -337,8 +369,12 @@ public class Hero extends Char {
 		
 		STR = bundle.getInt( STRENGTH );
 
-		belongings.restoreFromBundle( bundle );
+				belongings.restoreFromBundle( bundle );
+
+		// Initialize exact position from restored pos
+		initExactFromPos();
 	}
+
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
 		info.level = bundle.getInt( LEVEL );
@@ -485,8 +521,15 @@ public class Hero extends Char {
 		return hit;
 	}
 	
-	@Override
+		@Override
 	public boolean attack(Char enemy, float dmgMulti, float dmgBonus, float accMulti) {
+		// In realtime mode, enforce attack cooldown instead of spending turn time here
+		if (RealtimeInput.isEnabled()) {
+			if (attackCooldown > 0f) {
+				return false;
+			}
+		}
+
 		boolean result = super.attack(enemy, dmgMulti, dmgBonus, accMulti);
 		if (!(belongings.attackingWeapon() instanceof MissileWeapon)){
 			if (buff(Talent.PreciseAssaultTracker.class) != null){
@@ -496,8 +539,14 @@ public class Hero extends Char {
 				buff(Talent.LiquidAgilACCTracker.class).detach();
 			}
 		}
+
+		// When in realtime mode, set cooldown equal to the current weapon's effective delay
+		if (RealtimeInput.isEnabled()) {
+			attackCooldown = attackDelay();
+		}
 		return result;
 	}
+
 
 	@Override
 	public int attackSkill( Char target ) {
@@ -1022,12 +1071,13 @@ public class Hero extends Char {
 			
 			Heap heap = Dungeon.level.heaps.get( dst );
 			if (heap != null && heap.type == Type.FOR_SALE && heap.size() == 1) {
-				Game.runOnRenderThread(new Callback() {
-					@Override
-					public void call() {
-						GameScene.show( new WndTradeItem( heap ) );
-					}
-				});
+				                final Heap shopHeap = heap;
+                Game.runOnRenderThread(new Callback() {
+                    @Override
+                    public void call() {
+                        GameScene.show(new WndTradeItem(shopHeap));
+                    }
+                });
 			}
 
 			return false;
@@ -1072,75 +1122,241 @@ public class Hero extends Char {
 	// so that the hero spends a turn even if the fail to pick up an item
 	public boolean waitOrPickup = false;
 
-	private boolean actPickUp( HeroAction.PickUp action ) {
-		int dst = action.dst;
-		if (pos == dst) {
-			
-			Heap heap = Dungeon.level.heaps.get( pos );
-			if (heap != null) {
-				Item item = heap.peek();
-				if (item.doPickUp( this )) {
-					heap.pickUp();
+	    	    	public Heap getClosestPickupableHeap(float range){
+        if (!exactInit) initExactFromPos();
+        int w = Dungeon.level.width();
+        Heap bestHeap = null;
+        float bestDist = Float.MAX_VALUE;
+        for (Heap h : Dungeon.level.heaps.valueList()){
+            if (h.type != Type.HEAP) continue;
+            if (!Dungeon.level.heroFOV[h.pos]) continue;
+            int hx = h.pos % w;
+            int hy = h.pos / w;
+            float dx = hx - exactX;
+            float dy = hy - exactY;
+            float dist = (float)Math.sqrt(dx*dx + dy*dy);
+            if (dist <= range && dist < bestDist){
+                bestDist = dist;
+                bestHeap = h;
+            }
+        }
+        return bestHeap;
+            }
 
-					if (item instanceof Dewdrop
-							|| item instanceof TimekeepersHourglass.sandBag
-							|| item instanceof DriedRose.Petal
-							|| item instanceof Key
-							|| item instanceof Guidebook
-							|| (item instanceof MissileWeapon && !MissileWeapon.UpgradedSetTracker.pickupValid(this, (MissileWeapon) item))) {
-						//Do Nothing
-					} else if (item instanceof DarkGold) {
-						DarkGold existing = belongings.getItem(DarkGold.class);
-						if (existing != null){
-							if (existing.quantity() >= 40) {
-								GLog.p(Messages.get(DarkGold.class, "you_now_have", existing.quantity()));
-							} else {
-								GLog.i(Messages.get(DarkGold.class, "you_now_have", existing.quantity()));
-							}
-						}
-					} else {
+	private Heap getClosestInteractableHeap(float range){
+        if (!exactInit) initExactFromPos();
+        int w = Dungeon.level.width();
+        Heap bestHeap = null;
+        float bestDist = Float.MAX_VALUE;
+        for (Heap h : Dungeon.level.heaps.valueList()){
+            if (h.type == Type.HEAP || h.type == Type.FOR_SALE) continue;
+            int hx = h.pos % w;
+            int hy = h.pos / w;
+            float dx = hx - exactX;
+            float dy = hy - exactY;
+            float dist = (float)Math.sqrt(dx*dx + dy*dy);
+            if (dist <= range && dist < bestDist){
+                bestDist = dist;
+                bestHeap = h;
+            }
+        }
+        return bestHeap;
+    }
 
-						//TODO make all unique items important? or just POS / SOU?
-						boolean important = item.unique && item.isIdentified() &&
-								(item instanceof Scroll || item instanceof Potion);
-						if (important) {
-							GLog.p( Messages.capitalize(Messages.get(this, "you_now_have", item.name())) );
-						} else {
-							GLog.i( Messages.capitalize(Messages.get(this, "you_now_have", item.name())) );
-						}
-					}
-					
-					curAction = null;
-				} else {
+	private Heap getClosestHeapAnyType(float range){
+        if (!exactInit) initExactFromPos();
+        int w = Dungeon.level.width();
+        Heap bestHeap = null;
+        float bestDist = Float.MAX_VALUE;
+        for (Heap h : Dungeon.level.heaps.valueList()){
+            int hx = h.pos % w;
+            int hy = h.pos / w;
+            float dx = hx - exactX;
+            float dy = hy - exactY;
+            float dist = (float)Math.sqrt(dx*dx + dy*dy);
+            if (dist <= range && dist < bestDist){
+                bestDist = dist;
+                bestHeap = h;
+            }
+        }
+        return bestHeap;
+    }
 
-					if (waitOrPickup) {
-						spendAndNextConstant(TIME_TO_REST);
-					}
+						public boolean pickup(Heap heap){
+        // Universal, aggressive pickup/interact: always teleport onto the heap, then interact/collect
+        if (heap == null){
+            heap = getClosestHeapAnyType(PICKUP_RANGE);
+        }
+        if (heap == null){
+            Gdx.app.log("InteractDebug", "No target found within range.");
+            return false;
+        }
 
-					//allow the hero to move between levels even if they can't collect the item
-					if (Dungeon.level.getTransition(pos) != null){
-						throwItems();
-					} else {
-						heap.sprite.drop();
-					}
+        Gdx.app.log("InteractDebug", "Target found: pos="+heap.pos+" | Type="+heap.type+" | size="+heap.size());
 
-					if (item instanceof Dewdrop
-							|| item instanceof TimekeepersHourglass.sandBag
-							|| item instanceof DriedRose.Petal
-							|| item instanceof Key) {
-						//Do Nothing
-					} else {
-						GLog.newLine();
-						GLog.n(Messages.capitalize(Messages.get(this, "you_cant_have", item.name())));
-					}
+        boolean result = false;
+        int savedPos = this.pos;
+        try {
+            // FORCE TELEPORT: Always stand directly on the target (valid: chests are passable in this fork)
+            this.pos = heap.pos;
 
-					ready();
-				}
-			} else {
-				ready();
-			}
+                        // A. Try container open via operate flow (non-item heaps)
+            if (heap.type != Type.HEAP && heap.type != Type.FOR_SALE){
+                if (sprite != null) sprite.turnTo(pos, heap.pos);
+                curAction = new HeroAction.OpenChest(heap.pos);
+                operatePosOverride = heap.pos;
+                actOpenChest((HeroAction.OpenChest)curAction);
+                result = true; // started interaction
 
-			return false;
+            } else if (heap.type == Type.HEAP){
+                // B. Collect item via doPickUp
+                Item item = heap.peek();
+                if (item != null){
+                    Gdx.app.log("InteractDebug", "Attempting item doPickUp while on top of heap");
+                    boolean picked = item.doPickUp(this, heap.pos);
+                    if (picked){
+                        heap.pickUp();
+                        result = true;
+                        if (RealtimeInput.isEnabled()){
+                            spend(-item.pickupDelay());
+                            ready();
+                        }
+                    }
+                }
+
+
+            } else { // FOR_SALE
+                // Keep shop flow (no free pickup), but still called while teleported on top
+                final Heap shopHeap = heap;
+                Game.runOnRenderThread(new Callback() {
+                    @Override
+                    public void call() {
+                        GameScene.show(new WndTradeItem(shopHeap));
+                    }
+                });
+                result = true;
+            }
+        } finally {
+            // Restore actual position after initiating the action
+            this.pos = savedPos;
+        }
+
+        return result;
+    }
+
+
+
+
+	    private boolean actPickUp( HeroAction.PickUp action ) {
+        int dst = action.dst;
+                if (pos == dst) {
+            
+            // First, prefer nearby interactable containers (chests, tombs, skeletons, etc.)
+            Heap nearbyContainer = getClosestInteractableHeap(PICKUP_RANGE);
+            if (nearbyContainer != null) {
+                int savedPos = this.pos;
+                try {
+                    // Teleport Trick: pretend standing on the container for adjacency checks
+                    this.pos = nearbyContainer.pos;
+                    curAction = new HeroAction.OpenChest(nearbyContainer.pos);
+                    operatePosOverride = nearbyContainer.pos;
+                    actOpenChest((HeroAction.OpenChest) curAction);
+                } finally {
+                    this.pos = savedPos;
+                }
+                return false;
+            }
+
+            // Use helper to find closest pickupable heap in range
+            Heap bestHeap = getClosestPickupableHeap(PICKUP_RANGE);
+            int pickCell = bestHeap != null ? bestHeap.pos : pos;
+
+            if (bestHeap != null) {
+                Item item = bestHeap.peek();
+                // Teleport Trick: temporarily set hero.pos to the pickup cell to bypass position checks
+                int savedPos = this.pos;
+                if (pickCell != savedPos) {
+                    this.pos = pickCell;
+                }
+                boolean picked = item.doPickUp( this, pickCell );
+                // restore position immediately
+                if (this.pos != savedPos) {
+                    this.pos = savedPos;
+                }
+                                if (picked) {
+                    bestHeap.pickUp();
+
+
+                    // In realtime mode, negate pickup delay and keep control responsive
+                    if (RealtimeInput.isEnabled()) {
+                        spend(-item.pickupDelay());
+                        ready();
+                    }
+
+                    // Centered item name feedback (UI-friendly world overlay)
+                    try {
+                        float cx = Camera.main.scroll.x + Camera.main.width / 2f;
+                        float cy = Camera.main.scroll.y + Camera.main.height / 2f;
+                        FloatingText.show(cx, cy, Messages.titleCase(item.name()), 0xFFEEAA);
+                    } catch (Throwable ignored) {}
+
+                    if (item instanceof Dewdrop
+                            || item instanceof TimekeepersHourglass.sandBag
+                            || item instanceof DriedRose.Petal
+                            || item instanceof Key
+                            || item instanceof Guidebook
+                            || (item instanceof MissileWeapon && !MissileWeapon.UpgradedSetTracker.pickupValid(this, (MissileWeapon) item))) {
+                        //Do Nothing
+                    } else if (item instanceof DarkGold) {
+                        DarkGold existing = belongings.getItem(DarkGold.class);
+                        if (existing != null){
+                            if (existing.quantity() >= 40) {
+                                GLog.p(Messages.get(DarkGold.class, "you_now_have", existing.quantity()));
+                            } else {
+                                GLog.i(Messages.get(DarkGold.class, "you_now_have", existing.quantity()));
+                            }
+                        }
+                    } else {
+                        boolean important = item.unique && item.isIdentified() &&
+                                (item instanceof Scroll || item instanceof Potion);
+                        if (important) {
+                            GLog.p( Messages.capitalize(Messages.get(this, "you_now_have", item.name())) );
+                        } else {
+                            GLog.i( Messages.capitalize(Messages.get(this, "you_now_have", item.name())) );
+                        }
+                    }
+                    
+                    curAction = null;
+                } else {
+                    if (waitOrPickup) {
+                        spendAndNextConstant(TIME_TO_REST);
+                    }
+
+                    //allow the hero to move between levels even if they can't collect the item
+                    if (Dungeon.level.getTransition(pos) != null){
+                        throwItems();
+                    } else if (bestHeap.sprite != null){
+                        bestHeap.sprite.drop();
+                    }
+
+                    if (!(item instanceof Dewdrop
+                            || item instanceof TimekeepersHourglass.sandBag
+                            || item instanceof DriedRose.Petal
+                            || item instanceof Key)) {
+                        GLog.newLine();
+                        GLog.n(Messages.capitalize(Messages.get(this, "you_cant_have", item.name())));
+                    }
+
+                    ready();
+                }
+            } else {
+                // No heap in range: in realtime do nothing; in turn-based fall back to ready
+                ready();
+            }
+
+            return false;
+
+
 
 		} else if (getCloser( dst )) {
 
@@ -2274,8 +2490,437 @@ public class Hero extends Char {
 		}
 	}
 	
+				// Called from the rendering thread in the upcoming realtime loop to tick down cooldowns
+		public void updateRealtime(float deltaTime) {
+		if (attackCooldown > 0f) {
+			attackCooldown -= deltaTime;
+			if (attackCooldown < 0f) attackCooldown = 0f;
+		}
+
+		if (!RealtimeInput.isEnabled()) {
+			return;
+		}
+
+		// Lazy init exact coords when realtime mode starts
+		if (!exactInit) {
+			initExactFromPos();
+		}
+
+		// Movement vector from realtime input
+		int ix = (RealtimeInput.moveRight ? 1 : 0) - (RealtimeInput.moveLeft ? 1 : 0);
+		int iy = (RealtimeInput.moveDown ? 1 : 0) - (RealtimeInput.moveUp ? 1 : 0);
+
+		float dx = ix;
+		float dy = iy;
+				// normalize to prevent faster diagonal movement
+		if (dx != 0 || dy != 0) {
+			float len = (float)Math.sqrt(dx*dx + dy*dy);
+			dx /= len;
+			dy /= len;
+			// Record last non-zero input direction for click-to-attack
+			lastDirX = ix;
+			lastDirY = iy;
+		}
+
+
+		float moveSpeed = REALTIME_MOVE_TILES_PER_SEC * speed();
+		float stepX = dx * moveSpeed * deltaTime;
+		float stepY = dy * moveSpeed * deltaTime;
+
+				// Auto-open door directly in front when pushing against it (avoid locked/crystal doors)
+		if ((dx != 0 || dy != 0) && Dungeon.level != null) {
+			int w = Dungeon.level.width();
+			int h = Dungeon.level.height();
+			int gx = (int)(exactX + dx * 1.0f + 0.5f);
+			int gy = (int)(exactY + dy * 1.0f + 0.5f);
+			if (gx >= 0 && gy >= 0 && gx < w && gy < h) {
+				int nextTile = gx + gy * w;
+				int tile = Dungeon.level.map[nextTile];
+				if (tile == Terrain.DOOR) {
+					com.shatteredpixel.shatteredpixeldungeon.levels.features.Door.enter(nextTile);
+				}
+			}
+		}
+
+		// Attempt to move with simple collision and sliding
+		if (dx != 0 || dy != 0) {
+			attemptSlide(stepX, stepY);
+		}
+
+
+		// Sync grid position for gameplay logic
+		syncGridPosToExact();
+
+				// Update sprite to exact position
+		updateSpritePosition();
+
+				// Trigger FOV update when entering a new grid cell
+		int currentGridX = (int)(exactX + 0.5f);
+		int currentGridY = (int)(exactY + 0.5f);
+		if (currentGridX != lastGridX || currentGridY != lastGridY) {
+			// Auto-close doors when stepping off them
+			if (Dungeon.level != null && lastGridX >= 0 && lastGridY >= 0) {
+				int wLvl = Dungeon.level.width();
+				int hLvl = Dungeon.level.height();
+				if (lastGridX < wLvl && lastGridY < hLvl) {
+					int prevCell = lastGridX + lastGridY * wLvl;
+					try {
+						if (Dungeon.level.map[prevCell] == Terrain.OPEN_DOOR) {
+							com.shatteredpixel.shatteredpixeldungeon.levels.features.Door.leave(prevCell);
+						}
+					} catch (Throwable t) {
+						// Safeguard: ignore any errors if the door cannot be closed
+					}
+				}
+			}
+
+			Dungeon.observe();
+			lastGridX = currentGridX;
+			lastGridY = currentGridY;
+		}
+
+
+				// Animation: run when moving, idle when stopped (and not tween-moving)
+		if (sprite != null) {
+
+			boolean anyMove = (ix != 0 || iy != 0);
+			// Face the direction of horizontal travel
+			if (dx > 0f) {
+				((CharSprite)sprite).flipHorizontal = false; // facing right
+			} else if (dx < 0f) {
+				((CharSprite)sprite).flipHorizontal = true;  // facing left
+			}
+
+			if (anyMove) {
+				((CharSprite)sprite).playRun();
+			} else if (!sprite.isMoving) {
+				sprite.idle();
+			}
+		}
+
+	}
+
+
+
+
+	
+								
+		
+				
+
+
+				public void tryRealtimePickupAction() {
+			// Force the pickup action using aggressive interact+debug flow
+			waitOrPickup = true;
+			pickup(null);
+		}
+
+				// Handles Spacebar interaction in realtime: doors/stairs first, then containers/items
+		public void performRealtimeInteraction() {
+			if (!RealtimeInput.isEnabled() || Dungeon.level == null) return;
+
+			// A) Stairs/Level transitions: if standing on a transition and the level isn't locked, activate it
+			LevelTransition transition = Dungeon.level.getTransition(pos);
+			if (transition != null
+					&& transition.inside(pos)
+					&& !Dungeon.level.locked
+					&& !Dungeon.level.plants.containsKey(pos)
+					&& (Dungeon.depth < 26 || transition.type == LevelTransition.Type.REGULAR_ENTRANCE)) {
+				// Trigger transition immediately; bypass turn system
+				if (Dungeon.level.activateTransition(this, transition)) {
+					return;
+				}
+			}
+
+			// B) Locked doors adjacent: direct manual unlock (no operate flow)
+			for (int off : PathFinder.NEIGHBOURS8) {
+				int cell = pos + off;
+				if (!Dungeon.level.insideMap(cell)) continue;
+				int tile = Dungeon.level.map[cell];
+
+				if (tile == Terrain.LOCKED_DOOR) {
+					if (Notes.keyCount(new IronKey(Dungeon.depth)) > 0) {
+						Notes.remove(new IronKey(Dungeon.depth));
+						GameScene.updateKeyDisplay();
+						Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
+						Level.set(cell, Terrain.DOOR);
+						GameScene.updateMap(cell);
+						// Optionally auto-open immediately
+						com.shatteredpixel.shatteredpixeldungeon.levels.features.Door.enter(cell);
+						return;
+					} else {
+						GLog.w(Messages.get(this, "locked_door"));
+						// don't early-return; still allow other interactions this frame
+					}
+				} else if (tile == Terrain.CRYSTAL_DOOR) {
+					if (Notes.keyCount(new CrystalKey(Dungeon.depth)) > 0) {
+						Notes.remove(new CrystalKey(Dungeon.depth));
+						GameScene.updateKeyDisplay();
+						Level.set(cell, Terrain.EMPTY);
+						Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+						CellEmitter.get(cell).start(Speck.factory(Speck.DISCOVER), 0.025f, 20);
+						GameScene.updateMap(cell);
+						return;
+					} else {
+						GLog.w(Messages.get(this, "locked_door"));
+					}
+				} else if (tile == Terrain.LOCKED_EXIT) {
+					if (Notes.keyCount(new SkeletonKey(Dungeon.depth)) > 0) {
+						Notes.remove(new SkeletonKey(Dungeon.depth));
+						GameScene.updateKeyDisplay();
+						Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
+						Level.set(cell, Terrain.UNLOCKED_EXIT);
+						GameScene.updateMap(cell);
+						return;
+					} else {
+						GLog.w(Messages.get(this, "locked_door"));
+					}
+				}
+			}
+
+			// 1) Prioritize interactive containers within range (1.5 tiles)
+
+			Heap bestContainer = null;
+			float bestDist = Float.MAX_VALUE;
+			int w = Dungeon.level.width();
+			for (Heap h : Dungeon.level.heaps.valueList()){
+				if (h == null) continue;
+				if (h.type == Type.HEAP || h.type == Type.FOR_SALE) continue; // only containers
+				if (!Dungeon.level.heroFOV[h.pos]) continue;
+				int hx = h.pos % w;
+				int hy = h.pos / w;
+				float dx = hx - exactX;
+				float dy = hy - exactY;
+				float dist = (float)Math.sqrt(dx*dx + dy*dy);
+				if (dist <= PICKUP_RANGE && dist < bestDist){
+					bestContainer = h;
+					bestDist = dist;
+				}
+			}
+
+						if (bestContainer != null){
+				// Expanded radius tolerance for interaction
+				float tol = 1.6f;
+				int hx = bestContainer.pos % w;
+				int hy = bestContainer.pos / w;
+				float dx = hx - exactX;
+				float dy = hy - exactY;
+				float dist = (float)Math.sqrt(dx*dx + dy*dy);
+				if (dist <= tol){
+					int savedPos = this.pos;
+					try {
+						// FORCE ON-TOP SNAP: engine requires hero.pos == heap.pos to open
+						this.pos = bestContainer.pos;
+						// stop any motion/animations that could block immediate open
+						if (sprite != null) {
+							sprite.interruptMotion();
+							sprite.idle();
+						}
+																		// Direct hotwire by heap type (manual key logic for locked/crystal)
+						switch (bestContainer.type) {
+							case LOCKED_CHEST: {
+								boolean hasKey = Notes.keyCount(new GoldenKey(Dungeon.depth)) > 0;
+								if (hasKey) {
+									Notes.remove(new GoldenKey(Dungeon.depth));
+									GameScene.updateKeyDisplay();
+									Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
+									bestContainer.open(this);
+									GLog.i("Manual Unlock Success.");
+								} else {
+									GLog.w(Messages.get(this, "locked_chest"));
+								}
+								break;
+							}
+							case CRYSTAL_CHEST: {
+								boolean hasKey = Notes.keyCount(new CrystalKey(Dungeon.depth)) > 0;
+								if (hasKey) {
+									Notes.remove(new CrystalKey(Dungeon.depth));
+									GameScene.updateKeyDisplay();
+									Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
+									bestContainer.open(this);
+									GLog.i("Manual Unlock Success.");
+								} else {
+									GLog.w(Messages.get(this, "locked_chest"));
+								}
+								break;
+							}
+							case CHEST:
+							case TOMB:
+							case SKELETON:
+							case REMAINS:
+								bestContainer.open(this);
+								GLog.i("Forced container open at %d", bestContainer.pos);
+								break;
+							default:
+								bestContainer.open(this);
+								break;
+						}
+
+
+					} finally {
+						this.pos = savedPos;
+					}
+					return; // consume action
+				}
+			}
+
+
+			// 2) Fallback to item pickup using our realtime pickup logic
+			waitOrPickup = true;
+			pickup(null);
+
+			// 3) Optional: else could attempt an attack here if desired
+		}
+
+
+
+				public void performRealtimeAttack() {
+
+			// Log 1: Check entry and cooldown
+			com.badlogic.gdx.Gdx.app.log("AttackDebug", "Attempting attack. Cooldown: " + attackCooldown);
+
+			// Ensure realtime context and level exist
+			if (!com.shatteredpixel.shatteredpixeldungeon.input.RealtimeInput.isEnabled()) {
+				com.badlogic.gdx.Gdx.app.log("AttackDebug", "Failed: Realtime disabled.");
+				return;
+			}
+			if (com.shatteredpixel.shatteredpixeldungeon.Dungeon.level == null) {
+				com.badlogic.gdx.Gdx.app.log("AttackDebug", "Failed: Level is null.");
+				return;
+			}
+
+			if (attackCooldown > 0f) {
+				com.badlogic.gdx.Gdx.app.log("AttackDebug", "Failed: Cooldown active.");
+				return;
+			}
+
+						// Log 2: Check Direction
+			com.badlogic.gdx.Gdx.app.log("AttackDebug", "Facing Direction: " + lastDirX + ", " + lastDirY);
+			// Do not require facing direction; we'll pick the closest enemy within range
+
+			int w = com.shatteredpixel.shatteredpixeldungeon.Dungeon.level.width();
+
+			int h = com.shatteredpixel.shatteredpixeldungeon.Dungeon.level.height();
+			int nx = (int)(exactX + 0.5f);
+			int ny = (int)(exactY + 0.5f);
+			int tx = nx + lastDirX;
+			int ty = ny + lastDirY;
+
+			if (tx < 0 || ty < 0 || tx >= w || ty >= h) {
+				com.badlogic.gdx.Gdx.app.log("AttackDebug", "Failed: Target tile out of bounds. tx=" + tx + ", ty=" + ty);
+				return;
+			}
+
+						int targetTile = tx + ty * w;
+			// Log 3: Check Target Tile (for miss animation direction)
+			com.badlogic.gdx.Gdx.app.log("AttackDebug", "Targeting Tile Index (forward): " + targetTile);
+
+			// New: Proximity-based targeting in tile units using exactX/exactY
+			float attackRange = 1.5f;
+			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob best = null;
+			float bestDist = Float.MAX_VALUE;
+			for (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob mob : com.shatteredpixel.shatteredpixeldungeon.Dungeon.level.mobs) {
+				if (mob == null || !mob.isAlive()) continue;
+				// compute mob tile coordinates
+				float mx = (mob.pos % w);
+				float my = (mob.pos / w);
+				float dxm = mx - exactX;
+				float dym = my - exactY;
+				float dist = (float)Math.sqrt(dxm*dxm + dym*dym);
+				if (dist <= attackRange && dist < bestDist) {
+					best = mob;
+					bestDist = dist;
+				}
+			}
+
+			if (best == null) {
+				com.badlogic.gdx.Gdx.app.log("AttackDebug", "Failed: No mob found within range " + attackRange + ".");
+				// Swing anyway to visualize a miss and apply cooldown
+				if (sprite != null) sprite.attack(targetTile);
+				attackCooldown = attackDelay();
+				return;
+			}
+
+						com.badlogic.gdx.Gdx.app.log("AttackDebug", "SUCCESS: Closest mob " + best.name() + " at dist " + bestDist + ". Forcing damage bypass.");
+
+			// Visual: still play attack animation toward the mob's tile
+			if (sprite != null) sprite.attack(best.pos);
+
+			// Bypass adjacency/path checks: roll to-hit and apply simplified damage directly
+			boolean rollHit = com.shatteredpixel.shatteredpixeldungeon.actors.Char.hit(this, best, false);
+			com.badlogic.gdx.Gdx.app.log("AttackDebug", "Hit roll result: " + rollHit);
+
+			int dmg = damageRoll();
+			int dr = Math.round(best.drRoll() * com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge.statModifier(best));
+			int effective = best.defenseProc(this, dmg);
+			if (effective >= 0) {
+				effective = Math.max(effective - dr, 0);
+				effective = attackProc(best, effective);
+			}
+			com.badlogic.gdx.Gdx.app.log("AttackDebug", "Applying damage: base=" + dmg + ", afterDR+procs=" + effective);
+			best.damage(effective, this);
+
+			// Cancel invisibility effects similar to standard attack flow
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility.dispel();
+
+			// Apply cooldown immediately in realtime mode
+			attackCooldown = attackDelay();
+
+
+		}
+
+
+
+
+	public void performRealtimeAttackTowardsCell(int clickedCell) {
+		if (!RealtimeInput.isEnabled()) return;
+		if (attackCooldown > 0f) return;
+		if (Dungeon.level == null) return;
+
+		int w = Dungeon.level.width();
+		int h = Dungeon.level.height();
+
+		// Determine facing. Prefer lastDir if set, else derive from clicked cell.
+		int dirX = lastDirX;
+		int dirY = lastDirY;
+		int nx = (int)(exactX + 0.5f);
+		int ny = (int)(exactY + 0.5f);
+		if ((dirX == 0 && dirY == 0) && clickedCell >= 0 && clickedCell < Dungeon.level.length()) {
+			int cx = clickedCell % w;
+			int cy = clickedCell / w;
+			dirX = Integer.compare(cx, nx); // -1, 0, or +1
+			dirY = Integer.compare(cy, ny);
+			// Prevent zero vector: if click is same cell, default to facing right
+			if (dirX == 0 && dirY == 0) dirX = 1;
+		}
+
+		// If still no direction, default to right
+		if (dirX == 0 && dirY == 0) dirX = 1;
+
+		int tx = nx + dirX;
+		int ty = ny + dirY;
+		if (tx < 0 || ty < 0 || tx >= w || ty >= h) return;
+
+		int targetCell = tx + ty * w;
+
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob mob = Dungeon.level.findMob(targetCell);
+		if (mob != null && mob.isAlive()) {
+			// Normal melee animation -> onAttackComplete will process the hit
+			attackTarget = mob;
+			if (sprite != null) sprite.attack(targetCell);
+		} else {
+			// Swing into empty space, apply cooldown manually
+			if (sprite != null) sprite.attack(targetCell);
+			attackCooldown = attackDelay();
+		}
+	}
+
+
+
 	@Override
 	public void onAttackComplete() {
+
+
 
 		if (attackTarget == null){
 			curAction = null;
@@ -2289,8 +2934,12 @@ public class Hero extends Char {
 
 		boolean hit = attack(attackTarget);
 		
-		Invisibility.dispel();
-		spend( attackDelay() );
+				Invisibility.dispel();
+		// In realtime mode do not spend time into the scheduler
+		if (!RealtimeInput.isEnabled()) {
+			spend( attackDelay() );
+		}
+
 
 		if (hit && subClass == HeroSubClass.GLADIATOR && wasEnemy){
 			Buff.affect( this, Combo.class ).hit(attackTarget);
@@ -2306,10 +2955,160 @@ public class Hero extends Char {
 		super.onAttackComplete();
 	}
 	
-	@Override
+		@Override
 	public void onMotionComplete() {
 		GameScene.checkKeyHold();
 	}
+
+	private void initExactFromPos() {
+		if (Dungeon.level == null) return;
+		int w = Dungeon.level.width();
+		int px = pos % w;
+		int py = pos / w;
+		exactX = px;
+		exactY = py;
+				exactInit = true;
+		// set last known grid to current to avoid redundant initial observe
+		lastGridX = px;
+		lastGridY = py;
+		updateSpritePosition();
+	}
+
+
+	private void syncGridPosToExact() {
+		int w = Dungeon.level.width();
+		int nx = (int)(exactX + 0.5f);
+		int ny = (int)(exactY + 0.5f);
+		int newCell = nx + ny * w;
+		if (newCell != pos) {
+			pos = newCell;
+			Dungeon.level.occupyCell(this);
+		}
+	}
+
+		private boolean isPassableCenter(float tx, float ty) {
+		// collision radius check at four sample points around the target center
+		return isTilePassableAt(tx - COLLISION_RADIUS, ty)
+			&& isTilePassableAt(tx + COLLISION_RADIUS, ty)
+			&& isTilePassableAt(tx, ty - COLLISION_RADIUS)
+			&& isTilePassableAt(tx, ty + COLLISION_RADIUS);
+	}
+
+	private boolean isTilePassableAt(float sx, float sy) {
+		int w = Dungeon.level.width();
+		int h = Dungeon.level.height();
+		int nx = (int)(sx + 0.5f);
+		int ny = (int)(sy + 0.5f);
+		if (nx < 0 || ny < 0 || nx >= w || ny >= h) return false;
+		int cell = nx + ny * w;
+		if (!(Dungeon.level.passable[cell] || Dungeon.level.avoid[cell])) return false;
+		if (Dungeon.level.pit[cell] && !Dungeon.level.solid[cell]) return false;
+		// Block if another char occupies this cell (except ourselves)
+		Char ch = Actor.findChar(cell);
+		return ch == null || ch == this;
+	}
+
+
+		private void attemptSlide(float stepX, float stepY) {
+		float targetX = exactX + stepX;
+		float targetY = exactY + stepY;
+
+		boolean moved = false;
+		// 1) try full move first
+		if (isPassableCenter(targetX, targetY)) {
+			exactX = targetX;
+			exactY = targetY;
+			moved = true;
+		} else {
+			// 2) try axis-aligned moves
+			boolean movedX = false;
+			if (stepX != 0 && isPassableCenter(exactX + stepX, exactY)) {
+				exactX += stepX;
+				moved = movedX = true;
+			}
+			if (stepY != 0 && isPassableCenter(exactX, exactY + stepY)) {
+				exactY += stepY;
+				moved = true;
+			}
+
+			// 3) sequential pass: try X then Y, or Y then X, with full steps
+			if (!moved && stepX != 0 && stepY != 0) {
+				// X then Y
+				if (isPassableCenter(exactX + stepX, exactY) && isPassableCenter(exactX + stepX, exactY + stepY)) {
+					exactX += stepX;
+					exactY += stepY;
+					moved = true;
+				} else if (isPassableCenter(exactX, exactY + stepY) && isPassableCenter(exactX + stepX, exactY + stepY)) {
+					// Y then X
+					exactY += stepY;
+					exactX += stepX;
+					moved = true;
+				}
+			}
+
+			// 4) reduced-step attempts (two-pass with smaller increments)
+			if (!moved) {
+				float[] scales = new float[]{0.5f, 0.25f};
+				for (float s : scales) {
+					float sx = stepX * s;
+					float sy = stepY * s;
+
+					// try scaled full move
+					if ((sx != 0 || sy != 0) && isPassableCenter(exactX + sx, exactY + sy)) {
+						exactX += sx;
+						exactY += sy;
+						moved = true;
+						break;
+					}
+					// try scaled axis moves
+					if (sx != 0 && isPassableCenter(exactX + sx, exactY)) {
+						exactX += sx;
+						moved = true;
+						break;
+					}
+					if (sy != 0 && isPassableCenter(exactX, exactY + sy)) {
+						exactY += sy;
+						moved = true;
+						break;
+					}
+					// try scaled sequential combos
+					if (sx != 0 && sy != 0) {
+						if (isPassableCenter(exactX + sx, exactY) && isPassableCenter(exactX + sx, exactY + sy)) {
+							exactX += sx;
+							exactY += sy;
+							moved = true;
+							break;
+						}
+						if (isPassableCenter(exactX, exactY + sy) && isPassableCenter(exactX + sx, exactY + sy)) {
+							exactY += sy;
+							exactX += sx;
+							moved = true;
+							break;
+						}
+					}
+				}
+			}
+		}
+		if (moved) {
+			// Clear pathing related flags used by turn-based move
+			walkingToVisibleTrapInFog = false;
+		}
+	}
+
+
+	private void updateSpritePosition() {
+		if (sprite == null || Dungeon.level == null) return;
+		int w = Dungeon.level.width();
+		int nx = (int)(exactX + 0.5f);
+		int ny = (int)(exactY + 0.5f);
+		int cell = nx + ny * w;
+		com.watabou.utils.PointF base = sprite.worldToCamera(cell);
+				float offX = (float)((exactX - nx) * com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap.SIZE);
+
+		float offY = (float)((exactY - ny) * com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap.SIZE);
+		sprite.point(new com.watabou.utils.PointF(base.x + offX, base.y + offY));
+	}
+
 	
 	@Override
 	public void onOperateComplete() {
@@ -2343,11 +3142,11 @@ public class Hero extends Char {
 				}
 			}
 			
-		} else if (curAction instanceof HeroAction.OpenChest) {
+				} else if (curAction instanceof HeroAction.OpenChest) {
 			
 			Heap heap = Dungeon.level.heaps.get( ((HeroAction.OpenChest)curAction).dst );
 			
-			if (Dungeon.level.distance(pos, heap.pos) <= 1){
+			if (Dungeon.level.distance(pos, heap.pos) <= 1 || operatePosOverride == heap.pos){
 				boolean hasKey = true;
 				if (heap.type == Type.SKELETON || heap.type == Type.REMAINS) {
 					Sample.INSTANCE.play( Assets.Sounds.BONES );
@@ -2365,11 +3164,13 @@ public class Hero extends Char {
 			}
 			
 		}
-		curAction = null;
+			// clear override after attempting chest open
+			operatePosOverride = -1;
+			curAction = null;
 
-		if (!ready) {
-			super.onOperateComplete();
-		}
+			if (!ready) {
+				super.onOperateComplete();
+			}
 	}
 
 	public boolean search( boolean intentional ) {
@@ -2557,11 +3358,19 @@ public class Hero extends Char {
 		updateHT(false);
 	}
 
-	@Override
+		@Override
 	public void next() {
 		if (isAlive())
 			super.next();
 	}
+
+	// Called by Dungeon.switchLevel to reset realtime positioning state
+	public void onLevelSwitched() {
+		// Force re-init of exact coordinates to new grid position
+		exactInit = false;
+		initExactFromPos();
+	}
+
 
 	public static interface Doom {
 		public void onDeath();
