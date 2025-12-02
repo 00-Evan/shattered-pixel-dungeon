@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
+import com.right.helveticpixeldungeon.actors.facilities.Facility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 
 public class HeroAction {
@@ -57,7 +58,13 @@ public class HeroAction {
 			this.ch = ch;
 		}
 	}
-	
+	public static class Operate extends HeroAction {
+        public Facility facility;
+		public Operate(Facility facility) {
+            this.dst=facility.getPos();
+            this.facility = facility;
+        }
+	}
 	public static class Unlock extends HeroAction {
 		public Unlock( int door ) {
 			this.dst = door;

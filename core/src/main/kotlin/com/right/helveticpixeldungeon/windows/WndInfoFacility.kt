@@ -3,6 +3,7 @@ package com.right.helveticpixeldungeon.windows
 import com.right.helveticpixeldungeon.actors.facilities.Facility
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene
+import com.shatteredpixel.shatteredpixeldungeon.ui.Window
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage
 import com.watabou.noosa.ui.Component
 import kotlin.math.max
@@ -17,12 +18,13 @@ class WndInfoFacility(facility: Facility) : WndTitledMessage(FacilityTitle(facil
         val name = PixelScene.renderTextBlock(Messages.titleCase(facility.name()), 9)
 
         init {
+            name.hardlight( Window.TITLE_COLOR)
             add(image)
             add(name)
         }
 
         override fun layout() {
-            image!!.x = 0f
+            image.x = 0f
             image.y = max(0f, name.height() - image.height())
 
             name.setPos(

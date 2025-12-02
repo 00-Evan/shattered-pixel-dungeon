@@ -1,6 +1,7 @@
 package com.right.helveticpixeldungeon.actors.facilities
 
 import com.right.helveticpixeldungeon.sprites.facilities.WorkTableSprite
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Katana
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword
@@ -21,5 +22,18 @@ class WorkTable : Facility() {
 
         heap.drop(item)
         return heap
+    }
+
+    override fun shouldHeroInteract(hero: Hero,isAdjacent: Boolean): Boolean {
+       return hero.belongings?.weapon!=null
+    }
+
+    override fun onOperate(hero: Hero): Boolean {
+        hero.belongings?.weapon?.let {
+            val level=it.level()
+            it.level(level+1)
+        }
+
+        return false
     }
 }

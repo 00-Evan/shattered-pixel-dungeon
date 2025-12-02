@@ -112,4 +112,12 @@ open class Facility : Actor() {
     open fun onDropItem(heap: Heap): Heap {
         return heap
     }
+
+    open fun shouldHeroInteract(hero: Hero,isAdjacent: Boolean): Boolean {
+        return false
+    }
+
+    open fun onOperate(hero: Hero): Boolean {
+        return false
+    }
 }
