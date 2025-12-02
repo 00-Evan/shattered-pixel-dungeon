@@ -49,6 +49,8 @@ public class DemonSpawnerRoom extends SpecialRoom {
 
 		DemonSpawner spawner = new DemonSpawner();
 		spawner.pos = cx + cy * level.width();
+		Statistics.spawnersAlive++;
+		spawner.spawnRecorded = true;
 		level.mobs.add( spawner );
 
 		CustomFloor vis = new CustomFloor();
