@@ -31,7 +31,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.CrystalKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
+
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -266,7 +268,7 @@ public class RealtimeController {
 	 *
 	 * @return true if key was available and consumed
 	 */
-	private static boolean tryUnlockChest(Hero hero, Heap heap, com.shatteredpixel.shatteredpixeldungeon.items.Item key) {
+	private static boolean tryUnlockChest(Hero hero, Heap heap, Key key) {
 		if (Notes.keyCount(key) <= 0) return false;
 
 		Notes.remove(key);
@@ -274,4 +276,5 @@ public class RealtimeController {
 		Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
 		return true;
 	}
+
 }

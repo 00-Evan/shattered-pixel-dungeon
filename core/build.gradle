@@ -3,6 +3,26 @@ apply plugin: 'java-library'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 java.sourceCompatibility = java.targetCompatibility = appJavaCompatibility
 
+// Exclude local stub to use DeviceCompat from SPD-classes jar
+sourceSets {
+    main {
+        java {
+            exclude 'com/watabou/utils/DeviceCompat.java'
+        }
+    }
+}
+
 dependencies {
+
+    // Use prebuilt SPD-classes jar for noosa/utils/platform classes
+    implementation files(rootProject.file("SPD-classes/build/libs/SPD-classes-${appVersionName}.jar"))
+    // Core libGDX APIs required by SPD-classes Game and other classes
+    implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+        // Controller API for input references in core (ControllerListener, etc.)
+    implementation "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
+
+
     implementation project(':services')
 }
+
+

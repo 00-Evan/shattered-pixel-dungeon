@@ -4,6 +4,8 @@ apply plugin: 'java-library'
 java.sourceCompatibility = java.targetCompatibility = appJavaCompatibility
 
 dependencies {
-    implementation project(':SPD-classes')
+    // Use prebuilt SPD-classes jar instead of a Gradle subproject
+    implementation files(rootProject.file("SPD-classes/build/libs/SPD-classes-${appVersionName}.jar"))
     api project(':services')
 }
+
