@@ -66,9 +66,9 @@ public class TextInput extends Component {
 		viewport.setWorldSize(Game.width, Game.height);
 		viewport.setScreenBounds(0, 0, Game.width, Game.height);
 		viewport.setCamera(new OrthographicCamera());
-		//TODO this is needed for the moment as Spritebatch switched to using VAOs in libGDX v1.13.1
-		//  This results in HARD crashes atm, whereas old vertex arrays work fine
-		SpriteBatch.overrideVertexType = Mesh.VertexDataType.VertexArray;
+		//TODO SpriteBatch.overrideVertexType was removed in newer libGDX versions
+		//  This was a workaround for VAO crashes in v1.13.1, no longer needed
+		//SpriteBatch.overrideVertexType = Mesh.VertexDataType.VertexArray;
 		stage = new Stage(viewport);
 		Game.inputHandler.addInputProcessor(stage);
 
