@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.mechanics;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -81,6 +82,8 @@ public class RealtimeController {
 
 	/**
 	 * Attempts to activate a level transition if hero is standing on one.
+	 * CRITICAL: Must save the current level before transitioning to ensure
+	 * the level can be loaded when returning via stairs.
 	 *
 	 * @return true if transition was activated
 	 */
@@ -91,6 +94,15 @@ public class RealtimeController {
 		if (Dungeon.level.locked) return false;
 		if (Dungeon.level.plants.containsKey(hero.pos)) return false;
 		if (Dungeon.depth >= 26 && transition.type != LevelTransition.Type.REGULAR_ENTRANCE) return false;
+
+		// Save current level before transitioning (critical for ascend/return)
+		try {
+			Dungeon.saveAll();
+		} catch (java.io.IOException e) {
+			ShatteredPixelDungeon.reportException(e);
+			GLog.w("Failed to save game before level transition");
+			return false;
+		}
 
 		return Dungeon.level.activateTransition(hero, transition);
 	}
