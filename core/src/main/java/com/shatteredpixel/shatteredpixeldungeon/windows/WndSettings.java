@@ -48,7 +48,6 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Component;
-import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -112,23 +111,23 @@ public class WndSettings extends WndTabbed {
 		input.setSize(width, 0);
 		height = Math.max(height, input.height());
 
-		if (DeviceCompat.hasHardKeyboard() || ControllerHandler.isControllerConnected()) {
-			add( input );
-			Image icon;
-			if (ControllerHandler.controllerActive || !DeviceCompat.hasHardKeyboard()){
-				icon = Icons.get(Icons.CONTROLLER);
-			} else {
-				icon = Icons.get(Icons.KEYBOARD);
-			}
-			add(new IconTab(icon) {
-				@Override
-				protected void select(boolean value) {
-					super.select(value);
-					input.visible = input.active = value;
-					if (value) last_index = 2;
-				}
-			});
+		// PC desktop - always show Input tab
+		add( input );
+		Image icon;
+		if (ControllerHandler.controllerActive){
+			icon = Icons.get(Icons.CONTROLLER);
+		} else {
+			// PC has keyboard
+			icon = Icons.get(Icons.KEYBOARD);
 		}
+		add(new IconTab(icon) {
+			@Override
+			protected void select(boolean value) {
+				super.select(value);
+				input.visible = input.active = value;
+				if (value) last_index = 2;
+			}
+		});
 
 		data = new DataTab();
 		data.setSize(width, 0);
@@ -238,15 +237,8 @@ public class WndSettings extends WndTabbed {
 			sep1 = new ColorBlock(1, 1, 0xFF000000);
 			add(sep1);
 
+			// PC desktop - use standard fullscreen text
 			String fullscreenText = Messages.get(this, "fullscreen");
-			//TODO English only for now, make sure to translate later
-			if (Messages.lang() == Languages.ENGLISH){
-				if (DeviceCompat.isAndroid()){
-					fullscreenText = Messages.get(this, "hide_navigation");
-				} else if (DeviceCompat.isiOS()){
-					fullscreenText = Messages.get(this, "hide_gesture");
-				}
-			}
 			chkFullscreen = new CheckBox( fullscreenText ) {
 				@Override
 				protected void onClick() {
@@ -262,17 +254,7 @@ public class WndSettings extends WndTabbed {
 			}
 			add(chkFullscreen);
 
-			if (DeviceCompat.isAndroid()) {
-				chkLandscape = new CheckBox(Messages.get(this, "landscape")) {
-					@Override
-					protected void onClick() {
-						super.onClick();
-						SPDSettings.landscape(checked());
-					}
-				};
-				chkLandscape.checked(SPDSettings.landscape());
-				add(chkLandscape);
-			}
+			// PC desktop - no landscape/portrait orientation toggle needed
 
 			sep2 = new ColorBlock(1, 1, 0xFF000000);
 			add(sep2);
@@ -681,18 +663,16 @@ public class WndSettings extends WndTabbed {
 			sep1 = new ColorBlock(1, 1, 0xFF000000);
 			add(sep1);
 
-			if (DeviceCompat.hasHardKeyboard()){
+			// PC desktop - always show keyboard bindings
+			btnKeyBindings = new RedButton(Messages.get(this, "key_bindings")){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					ShatteredPixelDungeon.scene().addToFront(new WndKeyBindings(false));
+				}
+			};
 
-				btnKeyBindings = new RedButton(Messages.get(this, "key_bindings")){
-					@Override
-					protected void onClick() {
-						super.onClick();
-						ShatteredPixelDungeon.scene().addToFront(new WndKeyBindings(false));
-					}
-				};
-
-				add(btnKeyBindings);
-			}
+			add(btnKeyBindings);
 
 			if (ControllerHandler.isControllerConnected()){
 				btnControllerBindings = new RedButton(Messages.get(this, "controller_bindings")){
@@ -850,17 +830,7 @@ public class WndSettings extends WndTabbed {
 				}
 			}
 
-			if (!DeviceCompat.isDesktop()){
-				chkWifi = new CheckBox(Messages.get(this, "wifi")){
-					@Override
-					protected void onClick() {
-						super.onClick();
-						SPDSettings.WiFi(checked());
-					}
-				};
-				chkWifi.checked(SPDSettings.WiFi());
-				add(chkWifi);
-			}
+			// PC desktop - no WiFi-only mode checkbox needed
 		}
 
 		@Override
@@ -972,36 +942,19 @@ public class WndSettings extends WndTabbed {
 			chkMuteSFX.checked(!SPDSettings.soundFx());
 			add( chkMuteSFX );
 
-			if (DeviceCompat.isiOS()){
+			// PC desktop - show music background option
+			sep3 = new ColorBlock(1, 1, 0xFF000000);
+			add(sep3);
 
-				sep3 = new ColorBlock(1, 1, 0xFF000000);
-				add(sep3);
-
-				chkIgnoreSilent = new CheckBox( Messages.get(this, "ignore_silent") ){
-					@Override
-					protected void onClick() {
-						super.onClick();
-						SPDSettings.ignoreSilentMode(checked());
-					}
-				};
-				chkIgnoreSilent.checked(SPDSettings.ignoreSilentMode());
-				add(chkIgnoreSilent);
-
-			} else if (DeviceCompat.isDesktop()){
-
-				sep3 = new ColorBlock(1, 1, 0xFF000000);
-				add(sep3);
-
-				chkMusicBG = new CheckBox( Messages.get(this, "music_bg") ){
-					@Override
-					protected void onClick() {
-						super.onClick();
-						SPDSettings.playMusicInBackground(checked());
-					}
-				};
-				chkMusicBG.checked(SPDSettings.playMusicInBackground());
-				add(chkMusicBG);
-			}
+			chkMusicBG = new CheckBox( Messages.get(this, "music_bg") ){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					SPDSettings.playMusicInBackground(checked());
+				}
+			};
+			chkMusicBG.checked(SPDSettings.playMusicInBackground());
+			add(chkMusicBG);
 		}
 
 		@Override

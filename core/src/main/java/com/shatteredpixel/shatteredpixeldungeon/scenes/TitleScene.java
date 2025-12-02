@@ -245,8 +245,9 @@ public class TitleScene extends PixelScene {
 		version = new BitmapText( "v" + Game.version, pixelFont);
 		version.measure();
 		version.hardlight( 0x888888 );
-		version.x = insets.left + w - version.width() - (DeviceCompat.isDesktop() ? 4 : 8);
-		version.y = insets.top + h - version.height() - (DeviceCompat.isDesktop() ? 2 : 4);
+		// PC desktop margins
+		version.x = insets.left + w - version.width() - 4;
+		version.y = insets.top + h - version.height() - 2;
 		add( version );
 
 		btnFade = new IconButton(Icons.CHEVRON.get()){
@@ -289,11 +290,10 @@ public class TitleScene extends PixelScene {
 		};
 		add(fadeResetter);
 
-		if (DeviceCompat.isDesktop()) {
-			btnExit = new ExitButton();
-			btnExit.setPos( w - btnExit.width(), 0 );
-			add( btnExit );
-		}
+		// PC desktop - always show exit button
+		btnExit = new ExitButton();
+		btnExit.setPos( w - btnExit.width(), 0 );
+		add( btnExit );
 
 		Badges.loadGlobal();
 		if (Badges.isUnlocked(Badges.Badge.VICTORY) && !SPDSettings.victoryNagged()) {
@@ -334,10 +334,9 @@ public class TitleScene extends PixelScene {
 
 		version.alpha(alpha);
 		btnFade.icon().alpha(alpha);
-		if (btnExit != null){
-			btnExit.enable(alpha != 0);
-			btnExit.icon().alpha(alpha);
-		}
+		// btnExit always exists on PC desktop
+		btnExit.enable(alpha != 0);
+		btnExit.icon().alpha(alpha);
 
 	}
 

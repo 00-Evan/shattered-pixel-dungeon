@@ -181,7 +181,8 @@ public class PixelScene extends Scene {
 	@Override
 	public void update() {
 		//we create this here so that it is last in the scene
-		if (DeviceCompat.isDesktop() && fullscreenListener == null){
+		// PC desktop - always set up Alt+Enter fullscreen toggle
+		if (fullscreenListener == null){
 			KeyEvent.addKeyListener(fullscreenListener = new Signal.Listener<KeyEvent>() {
 
 				private boolean alt;
