@@ -37,4 +37,9 @@ public class DeviceCompat {
     public static void log(String tag, String message) {
         System.out.println("[" + tag + "] " + message);
     }
+
+    // Debug mode check
+    public static boolean isDebug() {
+        return System.getProperty("Specification-Version", "").contains("INDEV");
+    }
 }

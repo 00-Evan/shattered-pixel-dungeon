@@ -45,7 +45,6 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Component;
-import com.watabou.utils.DeviceCompat;
 
 public class MenuPane extends Component {
 
@@ -163,8 +162,8 @@ public class MenuPane extends Component {
 		version.scale.set(PixelScene.align(0.5f));
 		version.measure();
 
-		float rightMargin = DeviceCompat.isDesktop() ? 1 : 8;
-		if (DeviceCompat.isDebug()) rightMargin = 1; //don't care about hiding 'indev'
+		// PC desktop always uses tight margin
+		float rightMargin = 1;
 		float overFlow = version.width()-(bg.width()-4-rightMargin);
 		if (overFlow >= 1){
 			version.x = x + 2 - overFlow;
