@@ -581,8 +581,10 @@ public class DriedRose extends Artifact {
 		private void updateRose(){
 			if (rose == null) {
 				rose = Dungeon.hero.belongings.getItem(DriedRose.class);
-				rose.ghost = this;
-				rose.ghostID = id();
+				if (rose != null) {
+					rose.ghost = this;
+					rose.ghostID = id();
+				}
 			}
 			
 			//same dodge as the hero
