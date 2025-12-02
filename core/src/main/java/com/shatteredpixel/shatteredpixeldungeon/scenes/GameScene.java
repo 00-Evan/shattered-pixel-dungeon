@@ -1612,7 +1612,6 @@ public class GameScene extends PixelScene {
 		cancel();
 
 		if (scene != null) {
-			//TODO can the inventory pane work in these cases? bad to fallback to mobile window
 			if (scene.inventory != null && scene.inventory.visible && !showingWindow()){
 				scene.inventory.setSelector(listener);
 				return null;
