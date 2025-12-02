@@ -3,7 +3,18 @@ apply plugin: 'java-library'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 java.sourceCompatibility = java.targetCompatibility = appJavaCompatibility
 
+// Exclude local stub to use DeviceCompat from SPD-classes jar
+sourceSets {
+    main {
+        java {
+            exclude 'com/watabou/utils/DeviceCompat.java'
+        }
+    }
+}
+
 dependencies {
     api project(':SPD-classes')
     implementation project(':services')
 }
+
+

@@ -15,14 +15,18 @@ allprojects {
 
         appJavaCompatibility = JavaVersion.VERSION_11
 
-        gdxVersion = '1.13.6-SNAPSHOT'
+                // Pin to stable libGDX to avoid missing SNAPSHOT artifacts
+        gdxVersion = '1.12.1'
         gdxControllersVersion = '2.2.4'
+
     }
     version = appVersionName
 
-    repositories {
+        repositories {
         mavenCentral()
-        maven { url 'https://central.sonatype.com/repository/maven-snapshots/' }
+        // Use the proper Sonatype snapshots repository for SNAPSHOT artifacts like gdx 1.13.6-SNAPSHOT
+        maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
     }
+
 
 }
