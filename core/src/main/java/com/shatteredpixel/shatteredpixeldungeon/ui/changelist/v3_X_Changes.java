@@ -262,29 +262,8 @@ public class v3_X_Changes {
 				"**-** Camera follow on enemies working when they aren't visible\n" +
 				"**-** Some specific Chinese characters not rendering on iOS and Desktop"));
 
-		if (DeviceCompat.isAndroid()){
-
-			//5.0 lollipop
-			if (DeviceCompat.getPlatformVersion() < 21){
-				String androidVersion;
-				switch (DeviceCompat.getPlatformVersion()){
-					default: case 14: case 15: androidVersion = "4.0"; break;
-					case 16: androidVersion = "4.1"; break;
-					case 17: androidVersion = "4.2"; break;
-					case 18: androidVersion = "4.3"; break;
-					case 19: case 20: androidVersion = "4.4"; break;
-				}
-
-				changes.addButton(new ChangeButton(Icons.get(Icons.WARNING), "Ending Android 4.0-4.4 Support",
-						"Unless any immediate issues pop up, v3.2.1 will be the last Shattered Pixel Dungeon update that supports Android versions below 5.0. This includes Android " + androidVersion + ", which your device is currently using.\n" +
-						"\n" +
-						"I am making this change as the latest versions of certain code libraries no longer support Android versions below 5.0, and updating to these version is becoming mandatory.\n" +
-						"\n" +
-						"Future updates to Shattered Pixel Dungeon will not be compatible with your device. Of course you can continue playing Shattered v3.2.1 indefinitely."));
-
-			}
-
-		} else if (DeviceCompat.isDesktop()) {
+		// PC desktop - check Java version compatibility
+		if (DeviceCompat.isDesktop()) {
 			int javaVersion = Integer.parseInt(System.getProperty("java.version").split("\\.")[0]);
 			//version is reported as "1.X" before java 9
 			if (javaVersion == 1) {
