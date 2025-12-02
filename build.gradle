@@ -4,7 +4,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.11.1'
+        // Android classpath deleted from here
     }
 }
 
@@ -19,13 +19,11 @@ allprojects {
 
         appJavaCompatibility = JavaVersion.VERSION_11
 
-        appAndroidCompileSDK = 35   //Android 15
-        appAndroidMinSDK = 21       //Android 5.0
-        appAndroidTargetSDK = 35    //Android 15
+        // Android SDK lines deleted from here
 
-        gdxVersion = '1.13.6-SNAPSHOT' //using snapshot as 1.13.5 has issues with Android R8
+        gdxVersion = '1.13.6-SNAPSHOT'
         gdxControllersVersion = '2.2.4'
-        robovmVersion = '2.3.23'
+        // RoboVM version deleted from here
     }
     version = appVersionName
 
