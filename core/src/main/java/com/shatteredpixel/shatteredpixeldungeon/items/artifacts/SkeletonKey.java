@@ -149,7 +149,7 @@ public class SkeletonKey extends Artifact {
 							return;
 						}
 						if (charge < 1){
-							GLog.i( Messages.get(this, "iron_charge") );
+							GLog.i( Messages.get(this, "iron_charges") );
 							return;
 						}
 						Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
