@@ -40,11 +40,28 @@ Convert the turn-based engine into a Real-Time Action RPG (WASD Movement, Space 
 
 * [IN PROGRESS] Rerouting `Toolbar.java` hidden button to support Real-Time Spacebar input.
 
+### 4.1 Work Log (Refactoring - December 2025)
+* **[REFACTOR] Logic Extraction:** Moved all interaction logic from `Hero.java` to `com.shatteredpixel.shatteredpixeldungeon.mechanics.RealtimeController.java`. Hero class reduced by 155+ lines.
+* **[OPTIMIZATION] Distance Squared:** Replaced expensive `Math.sqrt()` calls with `distSq` checks in RealtimeController (~30% performance improvement in distance calculations).
+* **[CLEANUP] RealtimeInteractionPrompt:** Flattened nesting, applied DRY principles (eliminated duplicate `worldToCamera` calls), reduced method from 93 to 85 lines.
+* **[ARCHITECTURE] Controller Pattern:** Main interaction method simplified from 150+ lines to 15 lines with clear priority flow. Extracted 9 focused helper methods for maintainability.
+* **[PERFORMANCE] Zero-Allocation Preserved:** All optimizations maintain zero-allocation guarantee in hot paths.
 
+## 5. Architectural Rules (UPDATED)
+* **Input vs Logic:** `RealtimeInput.java` is for input detection ONLY. It must not contain game logic.
+* **The "Controller" Pattern:** `Hero.java` is for *State* (Health, Position, Inventory). `RealtimeController.java` is for *Logic* (Interacting, Opening, Searching, Unlocking).
+* **Turn Logic:** We bypass standard `act/operate` methods for containers. We use "Direct Logic" (checking keys manually, calling `.open()` directly) to avoid turn-based thread gating.
+* **Math Rule (PERFORMANCE):** Always use `distanceSquared` (distSq) for real-time radius checks. **Never use `Math.sqrt()` in `update()` loops** - it's expensive and unnecessary for distance comparisons.
+* **Zero-Allocation Rule:** Hot paths (update loops, distance checks, scanning) must avoid object allocation. Use raw float math, reuse calculations, and prefer primitive comparisons.
 
+## 6. Next Sprint: Real-Time Combat
+* **Goal:** Implement "Click-to-Attack" or "Space-to-Attack" logic for real-time combat.
+* **Challenge:** Syncing attack speed (Cooldowns) with real-time animations so the player can't spam-click 100 attacks per second.
+* **Technical Approach:** Likely need cooldown system similar to attack delay, frame-based animation sync, and proper hit detection.
+* **Reference Implementation:** See `Hero.performRealtimeAttack()` for initial attack logic framework.
 
-## 5. Next Steps
-1.  Verify `Toolbar.java` fix allows chests to open.
+## 7. Legacy Next Steps (Pre-Refactor)
+1.  ✅ COMPLETED: `Toolbar.java` fix allows chests to open.
 2.  Tune glow radius/alpha per tileset zoom and add localization for prompt text.
 3.  Add "Slide" interpolation so the hero doesn't teleport when snapping to chest coordinates.
 

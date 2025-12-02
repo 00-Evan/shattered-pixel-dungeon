@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameSettings;
 import com.watabou.utils.Point;
 
@@ -138,7 +137,8 @@ public class SPDSettings extends GameSettings {
 	}
 
 	public static int interfaceSize(){
-		int size = getInt( KEY_UI_SIZE, DeviceCompat.isDesktop() ? 2 : 0 );
+		// PC desktop defaults to size 2 (full UI)
+		int size = getInt( KEY_UI_SIZE, 2 );
 		if (size > 0){
 			//force mobile UI if there is not enough space for full UI
 			float wMin = Game.width / PixelScene.MIN_WIDTH_FULL;

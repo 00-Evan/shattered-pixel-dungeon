@@ -1,10 +1,6 @@
 buildscript {
     repositories {
-        google()
         mavenCentral()
-    }
-    dependencies {
-        // Android classpath deleted from here
     }
 }
 
@@ -19,16 +15,12 @@ allprojects {
 
         appJavaCompatibility = JavaVersion.VERSION_11
 
-        // Android SDK lines deleted from here
-
         gdxVersion = '1.13.6-SNAPSHOT'
         gdxControllersVersion = '2.2.4'
-        // RoboVM version deleted from here
     }
     version = appVersionName
 
     repositories {
-        google()
         mavenCentral()
         maven { url 'https://central.sonatype.com/repository/maven-snapshots/' }
     }
