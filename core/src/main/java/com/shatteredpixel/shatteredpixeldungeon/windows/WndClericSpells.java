@@ -45,7 +45,6 @@ import com.watabou.input.PointerEvent;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
-import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.PointF;
 
 import java.util.ArrayList;
@@ -81,10 +80,9 @@ public class WndClericSpells extends Window {
 		RenderedTextBlock msg;
 		if (info){
 			msg = PixelScene.renderTextBlock( Messages.get( this, "info_desc"), 6);
-		} else if (DeviceCompat.isDesktop()){
-			msg = PixelScene.renderTextBlock( Messages.get( this, "cast_desc_desktop"), 6);
 		} else {
-			msg = PixelScene.renderTextBlock( Messages.get( this, "cast_desc_mobile"), 6);
+			// PC desktop - use desktop cast description
+			msg = PixelScene.renderTextBlock( Messages.get( this, "cast_desc_desktop"), 6);
 		}
 		msg.maxWidth(WIDTH);
 		msg.setPos(0, title.bottom()+4);
