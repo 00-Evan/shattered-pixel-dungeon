@@ -63,18 +63,15 @@ import java.util.ArrayList;
 
 public class PixelScene extends Scene {
 
-	// Minimum virtual display size for mobile portrait orientation
+	// Minimum virtual display size for portrait orientation
 	public static final float MIN_WIDTH_P = 135;
 	public static final float MIN_HEIGHT_P = 225;
 
-	// Minimum virtual display size for mobile landscape orientation
+	// Minimum virtual display size for landscape orientation
 	public static final float MIN_WIDTH_L = 240;
 	public static final float MIN_HEIGHT_L = 160;
 
 	// Minimum virtual display size for full desktop UI (landscape only)
-	//TODO maybe include another scale for mixed UI? might make it more accessible to mobile devices
-	// mixed UI has similar requirements to mobile landscape tbh... Maybe just merge them?
-	// mixed UI can possible be used on mobile portrait for tablets though.. Does that happen often?
 	public static final float MIN_WIDTH_FULL = 360;
 	public static final float MIN_HEIGHT_FULL = 200;
 
@@ -123,7 +120,6 @@ public class PixelScene extends Scene {
 			scaleFactor = 2.5f;
 		}
 
-		//TODO all insets? or just blockers?
 		RectF insets = Game.platform.getSafeInsets(PlatformSupport.INSET_ALL);
 
 		float w = Game.width - insets.left - insets.right;

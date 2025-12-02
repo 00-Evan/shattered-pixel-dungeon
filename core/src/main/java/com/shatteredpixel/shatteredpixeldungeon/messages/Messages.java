@@ -99,8 +99,7 @@ public class Messages {
 		bundles = new ArrayList<>();
 		for (String file : prop_files) {
 			if (bundleLocal.getLanguage().equals("id")){
-				//This is a really silly hack to fix some platforms using "id" for indonesian and some using "in" (Android 14- mostly).
-				//So if we detect "id" then we treat "###_in" as the base bundle so that it gets loaded instead of English.
+				// Handle Indonesian language code ("id" vs "in")
 				bundles.add(I18NBundle.createBundle(Gdx.files.internal(file + "_in"), bundleLocal));
 			} else {
 				bundles.add(I18NBundle.createBundle(Gdx.files.internal(file), bundleLocal));
