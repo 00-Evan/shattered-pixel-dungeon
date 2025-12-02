@@ -1,13 +1,10 @@
 //core game code modules
-include ':SPD-classes'
 include ':core'
 
-//platform modules
-include ':android'
-include ':ios'
+//platform modules (PC only)
 include ':desktop'
 
-//service modules
+//service modules (may be needed for updates/news)
 include ':services'
     //updates
     include ':services:updates:debugUpdates'

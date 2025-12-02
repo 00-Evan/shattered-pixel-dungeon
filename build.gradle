@@ -1,10 +1,6 @@
 buildscript {
     repositories {
-        google()
         mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.11.1'
     }
 }
 
@@ -19,18 +15,12 @@ allprojects {
 
         appJavaCompatibility = JavaVersion.VERSION_11
 
-        appAndroidCompileSDK = 35   //Android 15
-        appAndroidMinSDK = 21       //Android 5.0
-        appAndroidTargetSDK = 35    //Android 15
-
-        gdxVersion = '1.13.6-SNAPSHOT' //using snapshot as 1.13.5 has issues with Android R8
+        gdxVersion = '1.13.6-SNAPSHOT'
         gdxControllersVersion = '2.2.4'
-        robovmVersion = '2.3.23'
     }
     version = appVersionName
 
     repositories {
-        google()
         mavenCentral()
         maven { url 'https://central.sonatype.com/repository/maven-snapshots/' }
     }
