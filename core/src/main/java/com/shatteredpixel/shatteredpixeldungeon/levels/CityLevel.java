@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
@@ -99,24 +100,24 @@ public class CityLevel extends RegularLevel {
 		//6 to 8, average 7
 		return 6+Random.chances(new float[]{1, 3, 1});
 	}
-	
+
 	@Override
 	protected int specialRooms(boolean forceMax) {
 		if (forceMax) return 3;
 		//2 to 3, average 2.33
 		return 2 + Random.chances(new float[]{2, 1});
 	}
-	
+
 	@Override
 	public String tilesTex() {
 		return Assets.Environment.TILES_CITY;
 	}
-	
+
 	@Override
 	public String waterTex() {
 		return Assets.Environment.WATER_CITY;
 	}
-	
+
 	@Override
 	protected Painter painter() {
 		return new CityPainter()
@@ -124,7 +125,7 @@ public class CityLevel extends RegularLevel {
 				.setGrass(feeling == Feeling.GRASS ? 0.80f : 0.20f, 3)
 				.setTraps(nTraps(), trapClasses(), trapChances());
 	}
-	
+
 	@Override
 	protected Class<?>[] trapClasses() {
 		return new Class[]{
@@ -144,6 +145,10 @@ public class CityLevel extends RegularLevel {
 	@Override
 	public boolean activateTransition(Hero hero, LevelTransition transition) {
 		if (transition.type == LevelTransition.Type.BRANCH_EXIT) {
+
+			if (hero.buff(AscensionChallenge.class) != null){
+				return false;
+			}
 
 			Game.runOnRenderThread(new Callback() {
 				@Override
