@@ -184,8 +184,8 @@ public class FloatingText extends RenderedTextBlock {
 			} else {
 				icon.x = left() + width() - icon.width();
 			}
-			icon.y = top();
-			PixelScene.align(icon);
+			icon.x = PixelScene.align(Camera.main, icon.x);
+			icon.y = PixelScene.align(Camera.main, top());
 		}
 	}
 
