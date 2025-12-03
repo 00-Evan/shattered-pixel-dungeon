@@ -96,14 +96,18 @@ public class RealtimeController {
 		if (Dungeon.depth >= 26 && transition.type != LevelTransition.Type.REGULAR_ENTRANCE) return false;
 
 		// Save current level before transitioning (critical for ascend/return)
+		GLog.i("RealtimeController: Saving depth %d branch %d before transition", Dungeon.depth, Dungeon.branch);
 		try {
 			Dungeon.saveAll();
+			GLog.i("RealtimeController: Save successful");
 		} catch (java.io.IOException e) {
 			ShatteredPixelDungeon.reportException(e);
 			GLog.w("Failed to save game before level transition");
 			return false;
 		}
 
+		GLog.i("RealtimeController: Activating transition to depth %d (type: %s)",
+			transition.destDepth, transition.type);
 		return Dungeon.level.activateTransition(hero, transition);
 	}
 

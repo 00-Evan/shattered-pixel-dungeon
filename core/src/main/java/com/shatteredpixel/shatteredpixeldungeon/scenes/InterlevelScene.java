@@ -685,15 +685,22 @@ public class InterlevelScene extends PixelScene {
 
 	private void ascend() throws IOException {
 		Mob.holdAllies( Dungeon.level );
+
+		com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("InterlevelScene.ascend: Current depth=%d branch=%d", Dungeon.depth, Dungeon.branch);
 		Dungeon.saveAll();
+		com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("InterlevelScene.ascend: Saved current level");
 
 		Level level;
 		Dungeon.depth = curTransition.destDepth;
 		Dungeon.branch = curTransition.destBranch;
+		com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("InterlevelScene.ascend: Switching to depth=%d branch=%d", Dungeon.depth, Dungeon.branch);
 
 		if (Dungeon.levelHasBeenGenerated(Dungeon.depth, Dungeon.branch)) {
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("InterlevelScene.ascend: Level exists, loading from file");
 			level = Dungeon.loadLevel( GamesInProgress.curSlot );
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("InterlevelScene.ascend: Level loaded successfully");
 		} else {
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("InterlevelScene.ascend: Level doesn't exist, generating new");
 			level = Dungeon.newLevel();
 		}
 
