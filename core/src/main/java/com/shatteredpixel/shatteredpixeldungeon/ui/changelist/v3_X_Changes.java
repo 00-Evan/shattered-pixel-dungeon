@@ -45,7 +45,7 @@ import java.util.ArrayList;
 public class v3_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
-		//add_Coming_Soon(changeInfos);
+		add_Coming_Soon(changeInfos);
 		add_v3_3_Changes(changeInfos);
 		add_v3_2_Changes(changeInfos);
 		add_v3_1_Changes(changeInfos);
@@ -58,101 +58,49 @@ public class v3_X_Changes {
 		changes.hardlight(0xCCCCCC);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "...",
-				"..."));
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Overview and ETA",
+				"The next major Shattered update will be v3.4 or v4.0 (I haven't decided on a version number yet) and will, finally, feature an overhaul to the Ambitious Imp quest in the metropolis!\n" +
+				"\n" +
+				"While work has started on the new quest, I do still expect this update to take some time. You'll hear from me in patches to v3.3, and early in the new year with my usual year in review blog post. I expect I'll be able to give a more solid eta in one of those.\n" +
+				"\n" +
+				"**Please keep in mind that while I always try to keep to the ETAs I provide, they are just estimates. If you don’t hear from me by the ETA, it means I’m still busy with the update!**"));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.CHANGES), "...",
-				"..."));
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ESCAPE), "Expanding Tester Area in Patches",
+				"Just like with v3.2, I expect that v3.3 is going to have a longer than usual patch cycle. I've purposefully designed the new quest tester area such that it can be iterated on and expanded in patches to v3.3. This lets me make relatively quick experiments relating to the layout and some of the hazards in the new quest area.\n" +
+				"\n" +
+				"I don't think that the tester area will end up looking complete in v3.3 patches, but it's going to get a whole lost closer than it is currently."));
 
-		changes.addButton( new ChangeButton(new Image(new ImpSprite()), "...",
-				"..."));
+		changes.addButton( new ChangeButton(new Image(new ImpSprite()), "Imp Quest Overhaul",
+				"After v3.3 patches are done and the tester area is getting closer to finished, It'll be time to step back, take a bit longer, and eventually release the overhauled imp quest as primary content in the next update!\n" +
+				"\n" +
+				"As mentioned before, the new quest will have you infiltrate a dwarven vault full of danger and treasure! It's going to be a new kind of challenge, as you won't be able to take your existing items with you, but I expect the reward will be well worth it!"));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "...",
-				"..."));
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Other Changes",
+				"I expect the next update to be fairly light on smaller changes, as I want the focus to be on the new quest. There will surely be the usual amount of smaller tweaks and bug fixes though, and in particular I expect there will be at least a little balancing to follow up on the new items and item changes in v3.3."));
 	}
 
 	public static void add_v3_3_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v3.3-BETA", true, "");
+		ChangeInfo changes = new ChangeInfo("v3.3", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes = new ChangeInfo("BETA-4", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** Updated various internal libraries\n" +
-				"**-** Updated translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by BETA:**\n" +
-				"**-** Skeleton key being able to trap items and some characters into closed doors\n" +
-				"**-** Various cases where excess keys wouldn't be discarded\n" +
-				"**-** Skeleton key upgrades not being recorded in the catalog\n" +
-				"**-** Armored brutes dieing immediately instead of gaining rage shield\n" +
-				"**-** Allies travelling with you into quest tester area\n" +
-				"**-** Minor textual errors\n" +
-				"\n" +
-				"**Existed Prior to BETA:**\n" +
-				"**-** Spirit Form not properly working with ring of force"));
-
-		changes = new ChangeInfo("BETA-3", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** Updated translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by BETA:**\n" +
-				"**-** Gnoll brutes becoming immortal in more cases\n" +
-				"**-** Further crashes at the end of Tengu phase 1\n" +
-				"**-** Recall Inscription spell being castable repeatedly\n" +
-				"**-** Minor visual errors"));
-
-		changes = new ChangeInfo("BETA-2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** Randomize menu in hero select now remembers which options were just used.\n\n" +
-				"**-** Updated translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by BETA:**\n" +
-				"**-** Boosts provided by rings not being properly cleared by the new quest area\n" +
-				"**-** Gnoll brutes becoming immortal if killed via assassination\n" +
-				"**-** Crashes at the end of Tengu phase 1 (hopefully)\n" +
-				"**-** Beacon of Returning not functioning properly when returning to the same floor\n" +
-				"**-** Bolas inflicting 3 turns of cripple instead of 5\n" +
-				"**-** Disabled buttons in options windows not showing as disabled\n" +
-				"**-** Minor textual errors"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
-				"Hey Beta testers!\n" +
+				"**-** Released December 4th, 2025\n" +
+				"**-** 122 days after v3.2.0 (66 days after v3.2.5)\n" +
 				"\n" +
-				"Aside from any major bugs that might pop up v3.3 is already content-complete! I plan to release it in a little under a week, once any bugs are fixed and translators have had a little time with the new text.\n" +
-				"\n" +
-				"Over the beta and following the release I also plan to keep improving on the new quest tester area, bringing it closer to what it'll eventually look like when the quest is complete."));
+				"Dev commentary will be added here in the future."));
 
 		changes.addButton( new ChangeButton(new Image(new ImpSprite()), "Initial Imp Quest Tester Area",
 				"**While v3.3 does not include the new quest, it does include a tester area for it, similar to the tester area that existed before the new caves quest!**\n" +
 				"\n" +
-				"This tester area can be accessed from a new room that spawns in the city, this room also contains the Imp who gives his old quest. Simply walk onto the large vault entrance to be offered a teleport into the new area." +
+				"This tester area can be accessed from a new room that spawns in the city, this room also contains the Imp who gives his old quest. Simply walk onto the large vault entrance to be offered a teleport into the new area.\n" +
 				"\n" +
-				"Currently the new area has fully functional storage of your current items, very basic level generation, and no quest hazards. **I intend to continue iterating on and improving this tester area during the release of v3.3 and in followup patches. The quest itself don't release in a patch however.**"));
+				"Currently the new area has fully functional storage of your current items, very basic level generation, and no quest hazards. **I intend to continue iterating on and improving this tester area during the release of v3.3 and in followup patches. The quest itself isn't coming in a patch however.**"));
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_KEY), "New Artifact and Trinket!",
 				"**Two new equipment items have been added to the game!**\n" +
@@ -235,12 +183,14 @@ public class v3_X_Changes {
 				"**-** Mimics being susceptible to surprise attacks after they surprise the hero\n" +
 				"**-** DM-200s and Golems not switching from targets they can't reach\n" +
 				"**-** DM-300 still sometimes using abilities right out of supercharge\n" +
-				"**-** DM-300's gas shot dealing damage instantly in specific situations"
+				"**-** DM-300's gas shot dealing damage instantly in specific situations\n" +
+				"**-** Demon Spawners not being recorded as alive in very specific cases"
 				,
 				"**Items:**\n" +
 				"**-** Transmuting tipped darts destroying the original dart stack\n" +
 				"**-** Unstable Spellbook not triggering Siren's Song effect properly if the hero is also under time freeze\n" +
 				"**-** Charge count on Duelist's weapons being always set to 2 in rankings\n" +
+				"**-** Spirit Form not properly working with ring of force\n" +
 				"\n" +
 				"**Misc.:**\n" +
 				"**-** Compass pointing to exit staying visible if exit becomes hidden\n" +
@@ -262,7 +212,7 @@ public class v3_X_Changes {
 				"**- Projectile Momentum** bonus damage nerf reverted, damage bonus up to 15/30/45% at +1/2/3, from 10/20/30% at +1/2/3\n" +
 				"\n" +
 				"**- Durable Projectiles** nerf reverted, bonus durability up to +50%/+75% at +1/+2, from +33%/+50% at +1/+2\n" +
-				"**- Point Blank Shot** Accuracy boost up to +25/50/75% at +1/2/3, from +20/40/60% at +1/2/3\n"));
+				"**- Point Blank Shot** Accuracy boost up to +25/50/75% at +1/2/3, from +20/40/60% at +1/2/3"));
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.TOMAHAWK), "Thrown Weapon Buffs",
 				"Thrown weapons are mostly in a pretty good place balance-wise since the patches to v3.2, but I'm making two targeted buffs regardless:\n" +
