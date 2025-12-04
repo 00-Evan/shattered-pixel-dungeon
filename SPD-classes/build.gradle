@@ -10,4 +10,9 @@ dependencies {
 
     //noinspection GradleDependency , later JSON versions cause crashes on old versions of android
     implementation "org.json:json:20170516"
+
+    // Testing dependencies
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.mockito:mockito-core:5.8.0'
+    testImplementation 'org.hamcrest:hamcrest:2.2'
 }
