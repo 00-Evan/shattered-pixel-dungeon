@@ -619,7 +619,6 @@ public class Dungeon {
 	
 	public static void saveGame( int save ) {
 		try {
-			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveGame: Starting save to slot %d", save);
 			Bundle bundle = new Bundle();
 
 			bundle.put( INIT_VER, initialVersion );
@@ -685,59 +684,31 @@ public class Dungeon {
 			Badges.saveLocal( badges );
 			bundle.put( BADGES, badges );
 
-			String gamePath = GamesInProgress.gameFile(save);
-			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveGame: Writing bundle to %s", gamePath);
-			FileUtils.bundleToFile( gamePath, bundle);
-			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveGame: SUCCESS - game file written");
+			FileUtils.bundleToFile( GamesInProgress.gameFile(save), bundle);
 
 		} catch (IOException e) {
-			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.w("Dungeon.saveGame: FAILED with IOException: %s", e.getMessage());
 			GamesInProgress.setUnknown( save );
-			ShatteredPixelDungeon.reportException(e);
-		} catch (Exception e) {
-			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.w("Dungeon.saveGame: FAILED with Exception: %s", e.getMessage());
 			ShatteredPixelDungeon.reportException(e);
 		}
 	}
 	
 	public static void saveLevel( int save ) throws IOException {
-		String depthPath = GamesInProgress.depthFile( save, depth, branch );
-		com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveLevel: Saving depth=%d branch=%d to %s", depth, branch, depthPath);
-
 		Bundle bundle = new Bundle();
 		bundle.put( LEVEL, level );
 
-		FileUtils.bundleToFile(depthPath, bundle);
-		com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveLevel: SUCCESS - level file written");
+		FileUtils.bundleToFile(GamesInProgress.depthFile( save, depth, branch ), bundle);
 	}
 	
 	public static void saveAll() throws IOException {
-		com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveAll: hero=%s, isAlive=%b, depth=%d, branch=%d",
-			hero != null ? "exists" : "NULL",
-			hero != null && hero.isAlive(),
-			depth, branch);
-
 		if (hero != null && (hero.isAlive() || WndResurrect.instance != null)) {
-			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveAll: Conditions met, saving...");
 
 			Actor.fixTime();
 			updateLevelExplored();
 
-			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveAll: Calling saveGame() for slot %d", GamesInProgress.curSlot);
 			saveGame( GamesInProgress.curSlot );
-			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveAll: saveGame() complete");
-
-			String filePath = GamesInProgress.depthFile(GamesInProgress.curSlot, depth, branch);
-			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveAll: Calling saveLevel() to %s", filePath);
 			saveLevel( GamesInProgress.curSlot );
-			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveAll: saveLevel() complete");
-
-			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveAll: Calling GamesInProgress.set() for slot %d", GamesInProgress.curSlot);
 			GamesInProgress.set( GamesInProgress.curSlot );
-			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveAll: ALL SAVES COMPLETE - game should be registered!");
 
-		} else {
-			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.w("Dungeon.saveAll: SKIPPED - hero check failed!");
 		}
 	}
 	

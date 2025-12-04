@@ -96,52 +96,39 @@ public class GamesInProgress {
 	
 	public static Info check( int slot ) {
 
-		System.out.println("[GAMECHECK] Checking slot " + slot);
-
 		if (slotStates.containsKey( slot )) {
-			Info cachedInfo = slotStates.get( slot );
-			System.out.println("[GAMECHECK] Slot " + slot + " found in cache: " + (cachedInfo != null ? "HAS INFO" : "NULL"));
-			return cachedInfo;
+
+			return slotStates.get( slot );
 
 		} else if (!gameExists( slot )) {
-			System.out.println("[GAMECHECK] Slot " + slot + " - gameExists() returned false");
+
 			slotStates.put(slot, null);
 			return null;
 
 		} else {
 
-			System.out.println("[GAMECHECK] Slot " + slot + " - file exists, loading...");
 			Info info;
 			try {
 
 				Bundle bundle = FileUtils.bundleFromFile(gameFile(slot));
-				int version = bundle.getInt( "version" );
-				System.out.println("[GAMECHECK] Slot " + slot + " - version in file: " + version + ", required: " + ShatteredPixelDungeon.v2_4_2);
 
-				if (version < ShatteredPixelDungeon.v2_4_2) {
-					System.out.println("[GAMECHECK] Slot " + slot + " - VERSION TOO OLD, rejecting");
+				if (bundle.getInt( "version" ) < ShatteredPixelDungeon.v2_4_2) {
 					info = null;
 				} else {
 
-					System.out.println("[GAMECHECK] Slot " + slot + " - version OK, calling Dungeon.preview()");
 					info = new Info();
 					info.slot = slot;
 					Dungeon.preview(info, bundle);
-					System.out.println("[GAMECHECK] Slot " + slot + " - preview complete. Depth: " + info.depth + ", Hero class: " + info.heroClass);
 				}
 
 			} catch (IOException e) {
-				System.out.println("[GAMECHECK ERROR] Slot " + slot + " - IOException: " + e.getMessage());
 				info = null;
 			} catch (Exception e){
-				System.out.println("[GAMECHECK ERROR] Slot " + slot + " - Exception: " + e.getMessage());
-				e.printStackTrace();
 				ShatteredPixelDungeon.reportException( e );
 				info = null;
 			}
 
 			slotStates.put( slot, info );
-			System.out.println("[GAMECHECK] Slot " + slot + " - final result: " + (info != null ? "INFO CREATED" : "NULL"));
 			return info;
 
 		}
