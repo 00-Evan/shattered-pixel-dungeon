@@ -55,6 +55,21 @@ Convert the turn-based engine into a Real-Time Action RPG (WASD Movement, Space 
 * **[ARCHITECTURE] Controller Pattern:** Main interaction method simplified from 150+ lines to 15 lines with clear priority flow. Extracted 9 focused helper methods for maintainability.
 * **[PERFORMANCE] Zero-Allocation Preserved:** All optimizations maintain zero-allocation guarantee in hot paths.
 
+### 4.2 Work Log (Save System Investigation - December 4, 2025)
+* **[BUG INVESTIGATION] Save Persistence Failure:** User reported that saves complete successfully but "no active runs" appear when reloading the game.
+* **[ANALYSIS] Save Chain Flow:** Traced save flow: `Dungeon.saveAll()` → `saveGame()` → `saveLevel()` → `GamesInProgress.set()`.
+* **[DISCOVERY] Silent Failures:** Found that `saveGame()` catches IOExceptions silently without logging, making failures invisible.
+* **[FIX] Comprehensive Save Logging:** Added detailed logging to entire save chain:
+  - `saveGame()`: Logs start, file path, SUCCESS/FAILED status, and exception details
+  - `saveLevel()`: Logs depth, branch, file path, and SUCCESS status
+  - Both methods now catch and log IOExceptions and generic Exceptions separately
+* **[NEXT STEP] Diagnostic Output:** User needs to rebuild with latest code to capture complete save flow logs and identify exact failure point.
+* **[TECHNICAL NOTES]:**
+  - `GamesInProgress.set()` updates in-memory cache (`slotStates` HashMap) but does NOT persist to disk
+  - Actual disk persistence happens in `saveGame()` via `FileUtils.bundleToFile()`
+  - `GamesInProgress.check()` loads game info from disk via `Dungeon.preview()` when cache misses
+  - `gameExists()` checks for folder existence and file length > 1 byte
+
 ## 5. Architectural Rules (UPDATED)
 * **Input vs Logic:** `RealtimeInput.java` is for input detection ONLY. It must not contain game logic.
 * **The "Controller" Pattern:** `Hero.java` is for *State* (Health, Position, Inventory). `RealtimeController.java` is for *Logic* (Interacting, Opening, Searching, Unlocking).
