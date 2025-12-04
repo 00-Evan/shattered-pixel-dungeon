@@ -618,6 +618,7 @@ public class InterlevelScene extends PixelScene {
 	}
 
 	private void descend() throws IOException {
+		com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("InterlevelScene.descend: Starting. Current depth=%d branch=%d", Dungeon.depth, Dungeon.branch);
 
 		if (Dungeon.hero == null) {
 			Mob.clearHeldAllies();
@@ -646,11 +647,14 @@ public class InterlevelScene extends PixelScene {
 			Dungeon.switchLevel( level, -1 );
 		} else {
 			Mob.holdAllies( Dungeon.level );
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("InterlevelScene.descend: Saving current level (depth=%d branch=%d)", Dungeon.depth, Dungeon.branch);
 			Dungeon.saveAll();
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("InterlevelScene.descend: Save complete");
 
 			Level level;
 			Dungeon.depth = curTransition.destDepth;
 			Dungeon.branch = curTransition.destBranch;
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("InterlevelScene.descend: Switching to depth=%d branch=%d", Dungeon.depth, Dungeon.branch);
 
 			if (Dungeon.levelHasBeenGenerated(Dungeon.depth, Dungeon.branch)) {
 				level = Dungeon.loadLevel( GamesInProgress.curSlot );
@@ -695,8 +699,12 @@ public class InterlevelScene extends PixelScene {
 		Dungeon.branch = curTransition.destBranch;
 		com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("InterlevelScene.ascend: Switching to depth=%d branch=%d", Dungeon.depth, Dungeon.branch);
 
-		if (Dungeon.levelHasBeenGenerated(Dungeon.depth, Dungeon.branch)) {
-			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("InterlevelScene.ascend: Level exists, loading from file");
+		boolean levelGenerated = Dungeon.levelHasBeenGenerated(Dungeon.depth, Dungeon.branch);
+		com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("InterlevelScene.ascend: levelHasBeenGenerated(%d, %d) = %b", Dungeon.depth, Dungeon.branch, levelGenerated);
+
+		if (levelGenerated) {
+			String filePath = GamesInProgress.depthFile(GamesInProgress.curSlot, Dungeon.depth, Dungeon.branch);
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("InterlevelScene.ascend: Attempting to load from: %s", filePath);
 			level = Dungeon.loadLevel( GamesInProgress.curSlot );
 			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("InterlevelScene.ascend: Level loaded successfully");
 		} else {
