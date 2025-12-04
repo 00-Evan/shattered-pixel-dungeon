@@ -700,15 +700,27 @@ public class Dungeon {
 	}
 	
 	public static void saveAll() throws IOException {
+		com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveAll: hero=%s, isAlive=%b, depth=%d, branch=%d",
+			hero != null ? "exists" : "NULL",
+			hero != null && hero.isAlive(),
+			depth, branch);
+
 		if (hero != null && (hero.isAlive() || WndResurrect.instance != null)) {
-			
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveAll: Conditions met, saving...");
+
 			Actor.fixTime();
 			updateLevelExplored();
 			saveGame( GamesInProgress.curSlot );
+
+			String filePath = GamesInProgress.depthFile(GamesInProgress.curSlot, depth, branch);
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveAll: Saving level to %s", filePath);
 			saveLevel( GamesInProgress.curSlot );
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveAll: Level saved successfully");
 
 			GamesInProgress.set( GamesInProgress.curSlot );
 
+		} else {
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.w("Dungeon.saveAll: SKIPPED - hero check failed!");
 		}
 	}
 	
