@@ -619,6 +619,7 @@ public class Dungeon {
 	
 	public static void saveGame( int save ) {
 		try {
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveGame: Starting save to slot %d", save);
 			Bundle bundle = new Bundle();
 
 			bundle.put( INIT_VER, initialVersion );
@@ -646,24 +647,24 @@ public class Dungeon {
 			Bundle limDrops = new Bundle();
 			LimitedDrops.store( limDrops );
 			bundle.put ( LIMDROPS, limDrops );
-			
+
 			int count = 0;
 			int ids[] = new int[chapters.size()];
 			for (Integer id : chapters) {
 				ids[count++] = id;
 			}
 			bundle.put( CHAPTERS, ids );
-			
+
 			Bundle quests = new Bundle();
 			Ghost		.Quest.storeInBundle( quests );
 			Wandmaker	.Quest.storeInBundle( quests );
 			Blacksmith	.Quest.storeInBundle( quests );
 			Imp			.Quest.storeInBundle( quests );
 			bundle.put( QUESTS, quests );
-			
+
 			SpecialRoom.storeRoomsInBundle( bundle );
 			SecretRoom.storeRoomsInBundle( bundle );
-			
+
 			Statistics.storeInBundle( bundle );
 			Notes.storeInBundle( bundle );
 			Generator.storeInBundle( bundle );
@@ -673,30 +674,41 @@ public class Dungeon {
 				bundleArr[i] = generatedLevels.get(i);
 			}
 			bundle.put( GENERATED_LEVELS, bundleArr);
-			
+
 			Scroll.save( bundle );
 			Potion.save( bundle );
 			Ring.save( bundle );
 
 			Actor.storeNextID( bundle );
-			
+
 			Bundle badges = new Bundle();
 			Badges.saveLocal( badges );
 			bundle.put( BADGES, badges );
-			
-			FileUtils.bundleToFile( GamesInProgress.gameFile(save), bundle);
-			
+
+			String gamePath = GamesInProgress.gameFile(save);
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveGame: Writing bundle to %s", gamePath);
+			FileUtils.bundleToFile( gamePath, bundle);
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveGame: SUCCESS - game file written");
+
 		} catch (IOException e) {
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.e("Dungeon.saveGame: FAILED with IOException: %s", e.getMessage());
 			GamesInProgress.setUnknown( save );
+			ShatteredPixelDungeon.reportException(e);
+		} catch (Exception e) {
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.e("Dungeon.saveGame: FAILED with Exception: %s", e.getMessage());
 			ShatteredPixelDungeon.reportException(e);
 		}
 	}
 	
 	public static void saveLevel( int save ) throws IOException {
+		String depthPath = GamesInProgress.depthFile( save, depth, branch );
+		com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveLevel: Saving depth=%d branch=%d to %s", depth, branch, depthPath);
+
 		Bundle bundle = new Bundle();
 		bundle.put( LEVEL, level );
-		
-		FileUtils.bundleToFile(GamesInProgress.depthFile( save, depth, branch ), bundle);
+
+		FileUtils.bundleToFile(depthPath, bundle);
+		com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveLevel: SUCCESS - level file written");
 	}
 	
 	public static void saveAll() throws IOException {
