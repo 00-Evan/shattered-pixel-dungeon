@@ -123,8 +123,12 @@ public class DesktopLauncher {
 		
 		try {
 			Game.versionCode = Integer.parseInt(DesktopLauncher.class.getPackage().getImplementationVersion());
+			System.out.println("[INIT] Game.versionCode set from manifest: " + Game.versionCode);
 		} catch (NumberFormatException e) {
-			Game.versionCode = 1;
+			// In development builds, manifest version isn't set, so use current version
+			// This matches the latest version in ShatteredPixelDungeon.java
+			Game.versionCode = 859; // v3_2_0
+			System.out.println("[INIT] Game.versionCode set to development default: " + Game.versionCode);
 		}
 
 
