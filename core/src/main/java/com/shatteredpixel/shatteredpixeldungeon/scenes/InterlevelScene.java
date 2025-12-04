@@ -647,15 +647,15 @@ public class InterlevelScene extends PixelScene {
 			Dungeon.switchLevel( level, -1 );
 		} else {
 			Mob.holdAllies( Dungeon.level );
-			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("InterlevelScene.descend: Starting descent from depth=%d to depth=%d", Dungeon.depth, curTransition.destDepth);
 
-			// NOTE: GameScene.onPause() already saved before switching to InterlevelScene
-			// No need to save again here - it causes conflicts
+			// CRITICAL: Must save BEFORE changing depth, while Dungeon.level still holds the current level
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("InterlevelScene.descend: Saving depth=%d before descent", Dungeon.depth);
+			Dungeon.saveAll();
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("InterlevelScene.descend: Save complete, now descending to depth=%d", curTransition.destDepth);
 
 			Level level;
 			Dungeon.depth = curTransition.destDepth;
 			Dungeon.branch = curTransition.destBranch;
-			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("InterlevelScene.descend: Switched to depth=%d branch=%d", Dungeon.depth, Dungeon.branch);
 
 			if (Dungeon.levelHasBeenGenerated(Dungeon.depth, Dungeon.branch)) {
 				level = Dungeon.loadLevel( GamesInProgress.curSlot );
@@ -676,7 +676,7 @@ public class InterlevelScene extends PixelScene {
 		Mob.holdAllies( Dungeon.level );
 
 		Buff.affect( Dungeon.hero, Chasm.Falling.class );
-		// NOTE: GameScene.onPause() already saved before switching to InterlevelScene
+		Dungeon.saveAll();
 
 		Level level;
 		Dungeon.depth++;
@@ -691,15 +691,14 @@ public class InterlevelScene extends PixelScene {
 	private void ascend() throws IOException {
 		Mob.holdAllies( Dungeon.level );
 
-		com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("InterlevelScene.ascend: Starting ascent from depth=%d to depth=%d", Dungeon.depth, curTransition.destDepth);
-
-		// NOTE: GameScene.onPause() already saved before switching to InterlevelScene
-		// No need to save again here - it causes conflicts
+		// CRITICAL: Must save BEFORE changing depth, while Dungeon.level still holds the current level
+		com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("InterlevelScene.ascend: Saving depth=%d before ascent", Dungeon.depth);
+		Dungeon.saveAll();
+		com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("InterlevelScene.ascend: Save complete, now ascending to depth=%d", curTransition.destDepth);
 
 		Level level;
 		Dungeon.depth = curTransition.destDepth;
 		Dungeon.branch = curTransition.destBranch;
-		com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("InterlevelScene.ascend: Switched to depth=%d branch=%d", Dungeon.depth, Dungeon.branch);
 
 		boolean levelGenerated = Dungeon.levelHasBeenGenerated(Dungeon.depth, Dungeon.branch);
 		com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("InterlevelScene.ascend: levelHasBeenGenerated(%d, %d) = %b", Dungeon.depth, Dungeon.branch, levelGenerated);
@@ -721,7 +720,7 @@ public class InterlevelScene extends PixelScene {
 	
 	private void returnTo() throws IOException {
 		Mob.holdAllies( Dungeon.level );
-		// NOTE: GameScene.onPause() already saved before switching to InterlevelScene
+		Dungeon.saveAll();
 
 		Level level;
 		Dungeon.depth = returnDepth;
