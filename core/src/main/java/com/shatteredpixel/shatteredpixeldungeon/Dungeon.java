@@ -691,11 +691,11 @@ public class Dungeon {
 			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveGame: SUCCESS - game file written");
 
 		} catch (IOException e) {
-			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.e("Dungeon.saveGame: FAILED with IOException: %s", e.getMessage());
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.w("Dungeon.saveGame: FAILED with IOException: %s", e.getMessage());
 			GamesInProgress.setUnknown( save );
 			ShatteredPixelDungeon.reportException(e);
 		} catch (Exception e) {
-			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.e("Dungeon.saveGame: FAILED with Exception: %s", e.getMessage());
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.w("Dungeon.saveGame: FAILED with Exception: %s", e.getMessage());
 			ShatteredPixelDungeon.reportException(e);
 		}
 	}
