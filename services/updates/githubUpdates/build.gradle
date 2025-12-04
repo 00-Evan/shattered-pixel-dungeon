@@ -5,7 +5,7 @@ java.sourceCompatibility = java.targetCompatibility = appJavaCompatibility
 
 dependencies {
     // Use prebuilt SPD-classes jar instead of a Gradle subproject
-    implementation files(rootProject.file("SPD-classes/build/libs/SPD-classes-${appVersionName}.jar"))
+    implementation project(':SPD-classes')
     // Required for Gdx Net used by GitHubUpdates
     implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
 
