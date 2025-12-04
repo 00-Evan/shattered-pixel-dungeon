@@ -173,17 +173,33 @@ public class FileUtils {
 	}
 	
 	// bundle reading
-	
+
 	//only works for base path
 	public static Bundle bundleFromFile( String fileName ) throws IOException{
 		try {
 			FileHandle file = getFileHandle( fileName );
+
+			// Log file read attempt
+			System.out.println("[FILELOAD] Attempting to read: " + fileName);
+			System.out.println("[FILELOAD] FileType: " + defaultFileType);
+			System.out.println("[FILELOAD] BasePath: " + defaultPath);
+			if (file != null) {
+				String absolutePath = file.file() != null ? file.file().getAbsolutePath() : "null";
+				System.out.println("[FILELOAD] Absolute path: " + absolutePath);
+				System.out.println("[FILELOAD] File exists: " + file.exists());
+				System.out.println("[FILELOAD] File length: " + (file.exists() ? file.length() : 0));
+			} else {
+				System.out.println("[FILELOAD ERROR] FileHandle is null for: " + fileName);
+			}
+
 			if (!file.exists() || file.isDirectory() || file.length() == 0) {
+				System.out.println("[FILELOAD ERROR] File check failed - exists:" + file.exists() + " isDir:" + file.isDirectory() + " length:" + file.length());
 				throw new IOException("file does not exist!");
 			}
 			return bundleFromStream(file.read());
 		} catch (GdxRuntimeException e){
 			//game classes expect an IO exception, so wrap the GDX exception in that
+			System.out.println("[FILELOAD ERROR] GdxRuntimeException: " + e.getMessage());
 			throw new IOException(e);
 		}
 	}
@@ -201,6 +217,18 @@ public class FileUtils {
 		try {
 			FileHandle file = getFileHandle(fileName);
 
+			// Log the actual file path and type for debugging
+			if (file != null) {
+				String absolutePath = file.file() != null ? file.file().getAbsolutePath() : "null";
+				System.out.println("[FILESAVE] Writing to: " + fileName);
+				System.out.println("[FILESAVE] FileType: " + defaultFileType);
+				System.out.println("[FILESAVE] BasePath: " + defaultPath);
+				System.out.println("[FILESAVE] Absolute path: " + absolutePath);
+				System.out.println("[FILESAVE] File exists before write: " + file.exists());
+			} else {
+				System.out.println("[FILESAVE ERROR] FileHandle is null for: " + fileName);
+			}
+
 			//write to a temp file, then move the files.
 			// This helps prevent save corruption if writing is interrupted
 			if (file.exists()){
@@ -210,6 +238,12 @@ public class FileUtils {
 				temp.moveTo(file);
 			} else {
 				bundleToStream(file.write(false), bundle);
+			}
+
+			// Verify file was written
+			if (file != null) {
+				System.out.println("[FILESAVE] File exists after write: " + file.exists());
+				System.out.println("[FILESAVE] File length: " + file.length());
 			}
 
 		} catch (GdxRuntimeException e){
