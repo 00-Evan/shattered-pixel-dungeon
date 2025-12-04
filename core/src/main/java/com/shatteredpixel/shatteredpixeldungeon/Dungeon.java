@@ -710,14 +710,19 @@ public class Dungeon {
 
 			Actor.fixTime();
 			updateLevelExplored();
+
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveAll: Calling saveGame() for slot %d", GamesInProgress.curSlot);
 			saveGame( GamesInProgress.curSlot );
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveAll: saveGame() complete");
 
 			String filePath = GamesInProgress.depthFile(GamesInProgress.curSlot, depth, branch);
-			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveAll: Saving level to %s", filePath);
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveAll: Calling saveLevel() to %s", filePath);
 			saveLevel( GamesInProgress.curSlot );
-			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveAll: Level saved successfully");
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveAll: saveLevel() complete");
 
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveAll: Calling GamesInProgress.set() for slot %d", GamesInProgress.curSlot);
 			GamesInProgress.set( GamesInProgress.curSlot );
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.i("Dungeon.saveAll: ALL SAVES COMPLETE - game should be registered!");
 
 		} else {
 			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.w("Dungeon.saveAll: SKIPPED - hero check failed!");
