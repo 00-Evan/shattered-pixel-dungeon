@@ -111,13 +111,15 @@ public class Feint extends ArmorAbility {
 				hero.pos = target;
 				Dungeon.level.occupyCell(hero);
 				Invisibility.dispel();
-				hero.spendAndNext(1f);
+				hero.next();
 			}
 		});
+		hero.spend(1f);
 
 		AfterImage image = new AfterImage();
 		image.pos = hero.pos;
-		GameScene.add(image, 1);
+		GameScene.add(image);
+		image.syncToHero(hero);
 
 		int imageAttackPos;
 		Char enemyTarget = TargetHealthIndicator.instance.target();
@@ -192,6 +194,12 @@ public class Feint extends ArmorAbility {
 			destroy();
 			sprite.die();
 			return true;
+		}
+
+		public void syncToHero(Hero hero){
+			if (cooldown() != hero.cooldown()){
+				spendConstant(hero.cooldown() - cooldown());
+			}
 		}
 
 		@Override
