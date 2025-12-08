@@ -233,9 +233,7 @@ public class ItemSprite extends MovieClip {
 				view( 0, null );
 		}
 
-		if (heap.hidden){
-			alpha(0.15f);
-		}
+		alpha( heap.hidden ? 0.15f : 1f);
 
 		return this;
 	}
