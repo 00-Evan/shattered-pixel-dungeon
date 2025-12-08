@@ -22,9 +22,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
@@ -53,7 +55,7 @@ public class Tomahawk extends MissileWeapon {
 	}
 
 	public float minBleed(){
-		return minBleed(buffedLvl());
+		return minBleed(buffedLvl() + RingOfSharpshooting.levelDamageBonus(Dungeon.hero));
 	}
 
 	public float minBleed(int lvl){
@@ -61,7 +63,7 @@ public class Tomahawk extends MissileWeapon {
 	}
 
 	public float maxBleed(){
-		return maxBleed(buffedLvl());
+		return maxBleed(buffedLvl() + RingOfSharpshooting.levelDamageBonus(Dungeon.hero));
 	}
 
 	public float maxBleed(int lvl){
