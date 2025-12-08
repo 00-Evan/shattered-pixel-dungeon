@@ -182,8 +182,9 @@ public class CityLevel extends RegularLevel {
 									crystal.storeHeroBelongings(Dungeon.hero);
 									crystal.collect();
 								}
-								Dungeon.hero.belongings.armor = new ClothArmor();
-								Dungeon.hero.belongings.armor.identify();
+								hero.belongings.armor = new ClothArmor();
+								hero.belongings.armor.identify();
+								hero.updateHT( false );
 								CityLevel.super.activateTransition(hero, transition);
 							}
 						}

@@ -85,6 +85,7 @@ public class EscapeCrystal extends Item {
 				}
 
 				restoreHeroBelongings(hero);
+				hero.updateHT( false );
 
 				Level.beforeTransition();
 				InterlevelScene.curTransition = new LevelTransition(Dungeon.level,
