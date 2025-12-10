@@ -354,7 +354,7 @@ public class v2_X_Changes {
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released May 15th, 2024\n" +
 				"_-_ 118 days after Shattered v2.3.0\n\n" +
-				"Dev commentary will be added here in the future."));
+				"More dev commentary will be added here in the next major update"));
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RAT_SKULL), "Trinkets!",
 				"_A new category of item has been added: Trinkets!_\n" +
@@ -583,8 +583,11 @@ public class v2_X_Changes {
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released January 18th, 2024\n" +
 				"_-_ 92 days after Shattered v2.2.0\n\n" +
-				"v2.3.0 was originally going to contain two new variants for the caves quest, but after a longer than expected dev cycle plus the holidays, I opted to release v2.3.0 with just one more variant and move on to other content for a while, instead of spending even more time on the caves quest.\n\n" +
-				"More dev commentary will be added here in the next major update."));
+				"2.3.0 was originally going to contain two new variants for the caves quest, but after a longer than expected dev cycle plus the holidays, I opted to release v2.3.0 with just one more variant and move on to other content for a while, instead of spending even more time on the caves quest.\n" +
+						"\n" +
+						"While I'm very happy with how both caves quest variants turned out, I decided to actively try to reduce the amount of extra work quest variants will cause me in future quest additions.\n" +
+						"\n" +
+						"This update also included several fun extra items. I had always intended to add more holiday items after the initial ones in v0.3.3, but it ended up taking me a bit more than 9 years years to do it! Remains in Shattered have also been heavily nerfed from their original form, and so I wanted to add something new to them to try and improve their feel."));
 
 		changes.addButton(new ChangeButton(new Image(new GnollGuardSprite()), "Gnoll Caves Quest",
 				"_A second variant has been added to the caves quest!_\n" +
