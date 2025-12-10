@@ -85,6 +85,26 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("v3.3.1", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by v3.3.1:**\n" +
+				"**-** Skeleton key not triggering on-artifact effects\n" +
+				"**-** Tomahawk bleed damage not scaling with ring of sharpshooting\n" +
+				"**-** Vault tester area being enterable with a lost inventory, causing a softlock\n" +
+				"**-** Buffs from ring of might persisting outside of vault tester area\n" +
+				"**-** Wand of regrowth spawning and being usable to healing in quest tester area\n" +
+				"**-** Uncommon cases of cracked spyglass making thrown items hidden\n" +
+				"**-** Feint afterimage lasting longer than 1 turn in some cases\n" +
+				"**-** Various textual errors"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
