@@ -237,14 +237,7 @@ public class VaultLevel extends Level { //for now
 
 	@Override
 	protected void createItems() {
-		Random.pushGenerator(Random.Long());
-		ArrayList<Item> bonesItems = Bones.get();
-		if (bonesItems != null) {
-			for (Item i : bonesItems) {
-				drop(i, entrance()-width()).setHauntedIfCursed().type = Heap.Type.REMAINS;
-			}
-		}
-		Random.popGenerator();
+		//do nothing for now
 	}
 
 	@Override
