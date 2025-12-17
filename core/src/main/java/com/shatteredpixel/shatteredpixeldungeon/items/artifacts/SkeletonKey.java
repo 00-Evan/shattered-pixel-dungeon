@@ -205,6 +205,9 @@ public class SkeletonKey extends Artifact {
 								CellEmitter.get( target ).start( Speck.factory( Speck.DISCOVER ), 0.025f, 20 );
 								curUser.spendAndNext(Actor.TICK);
 								curUser.sprite.idle();
+
+								//if there is a distant well landmark above, remove it, as we just opened the door
+								Notes.remove(Notes.Landmark.DISTANT_WELL, Dungeon.depth-1);
 							}
 						});
 						curUser.busy();
