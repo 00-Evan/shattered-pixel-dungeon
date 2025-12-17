@@ -85,9 +85,9 @@ public class FileUtils {
 			} else if (file.length() == 0) {
 				file.delete();
 			} else {
-				if (file.name().endsWith(".tmp")){
+				if (file.name().endsWith(".spdtmp")){
 					FileHandle temp = file;
-					FileHandle original = getFileHandle( defaultFileType, "", temp.path().replace(".tmp", "") );
+					FileHandle original = getFileHandle( defaultFileType, "", temp.path().replace(".spdtmp", "") );
 
 					//replace the base file with the temp one if base is invalid or temp is valid and newer
 					try {
@@ -204,7 +204,7 @@ public class FileUtils {
 			//write to a temp file, then move the files.
 			// This helps prevent save corruption if writing is interrupted
 			if (file.exists()){
-				FileHandle temp = getFileHandle(fileName + ".tmp");
+				FileHandle temp = getFileHandle(fileName + ".spdtmp");
 				bundleToStream(temp.write(false), bundle);
 				file.delete();
 				temp.moveTo(file);
