@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.PetrifiedSeed;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.utils.Random;
 
@@ -116,6 +117,11 @@ public class HighGrass {
 			if (Dungeon.level instanceof MiningLevel
 					&& Blacksmith.Quest.Type() == Blacksmith.Quest.FUNGI
 					&& Random.Int(3) != 0){
+				naturalismLevel = -1;
+			}
+
+			//grass gives no loot in vault tester area
+			if (Dungeon.level instanceof VaultLevel){
 				naturalismLevel = -1;
 			}
 			
