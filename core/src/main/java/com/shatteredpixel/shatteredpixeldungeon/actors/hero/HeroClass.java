@@ -51,6 +51,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CursedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
@@ -60,6 +61,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlam
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfPurity;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
@@ -73,6 +75,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Cudgel;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gloves;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Partisan;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.PlankShield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Rapier;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife;
@@ -89,7 +93,8 @@ public enum HeroClass {
 	ROGUE( HeroSubClass.ASSASSIN, HeroSubClass.FREERUNNER ),
 	HUNTRESS( HeroSubClass.SNIPER, HeroSubClass.WARDEN ),
 	DUELIST( HeroSubClass.CHAMPION, HeroSubClass.MONK ),
-	CLERIC( HeroSubClass.PRIEST, HeroSubClass.PALADIN );
+	CLERIC( HeroSubClass.PRIEST, HeroSubClass.PALADIN ),
+	REVENANTS( HeroSubClass.DELIVERER, HeroSubClass.RECONCILED );
 
 	private HeroSubClass[] subClasses;
 
@@ -140,6 +145,10 @@ public enum HeroClass {
 			case CLERIC:
 				initCleric( hero );
 				break;
+
+			case REVENANTS:
+				initRevenants( hero );
+				break;
 		}
 
 		if (SPDSettings.quickslotWaterskin()) {
@@ -167,6 +176,8 @@ public enum HeroClass {
 				return Badges.Badge.MASTERY_DUELIST;
 			case CLERIC:
 				return Badges.Badge.MASTERY_CLERIC;
+			case REVENANTS:
+				return Badges.Badge.MASTERY_REVENANTS;
 		}
 		return null;
 	}
@@ -260,6 +271,26 @@ public enum HeroClass {
 		new ScrollOfRemoveCurse().identify();
 	}
 
+	private static void initRevenants( Hero hero ) {
+
+		(hero.belongings.weapon = new Partisan()).identify();
+
+		PlankShield shield = new PlankShield();
+		shield.identify().collect();
+
+		CursedRose rose = new CursedRose();
+		(hero.belongings.artifact = rose).identify();
+		hero.belongings.artifact.activate( hero );
+
+		Dungeon.quickslot.setSlot(0, rose);
+		Dungeon.quickslot.setSlot(1, shield);
+
+		// Auto-identify specific items for Revenants
+		new PotionOfMindVision().identify();
+		new ScrollOfRetribution().identify();
+		new ScrollOfMirrorImage().identify();
+	}
+
 	public String title() {
 		return Messages.get(HeroClass.class, name());
 	}
@@ -290,6 +321,9 @@ public enum HeroClass {
 				return new ArmorAbility[]{new Challenge(), new ElementalStrike(), new Feint()};
 			case CLERIC:
 				return new ArmorAbility[]{new AscendedForm(), new Trinity(), new PowerOfMany()};
+			case REVENANTS:
+				// TODO: Create unique Revenants abilities
+				return new ArmorAbility[]{new SmokeBomb(), new ShadowClone(), new DeathMark()};
 		}
 	}
 
@@ -307,6 +341,9 @@ public enum HeroClass {
 				return Assets.Sprites.DUELIST;
 			case CLERIC:
 				return Assets.Sprites.CLERIC;
+			case REVENANTS:
+				// TODO: Create unique Revenants sprite
+				return Assets.Sprites.ROGUE; // Using rogue sprite as placeholder
 		}
 	}
 
@@ -324,9 +361,12 @@ public enum HeroClass {
 				return Assets.Splashes.DUELIST;
 			case CLERIC:
 				return Assets.Splashes.CLERIC;
+			case REVENANTS:
+				// TODO: Create unique Revenants splash art
+				return Assets.Splashes.ROGUE; // Using rogue splash as placeholder
 		}
 	}
-	
+
 	public boolean isUnlocked(){
 		//always unlock on debug builds
 		if (DeviceCompat.isDebug()) return true;
@@ -344,6 +384,8 @@ public enum HeroClass {
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_DUELIST);
 			case CLERIC:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_CLERIC);
+			case REVENANTS:
+				return true; // Always unlocked for testing, TODO: add unlock requirement
 		}
 	}
 	
