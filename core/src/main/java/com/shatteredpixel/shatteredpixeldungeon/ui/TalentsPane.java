@@ -194,6 +194,10 @@ public class TalentsPane extends ScrollPane {
 								@Override
 								protected void onSelect(int index) {
 									super.onSelect(index);
+									//safety check to ensure previous UI is still there
+									if (TalentTierPane.this.parent == null){
+										return;
+									}
 									if (index == 0 || index == 1){
 										while (Dungeon.hero.talentPointsAvailable(tier) > 0){
 											TalentButton button = Random.element(buttons);
