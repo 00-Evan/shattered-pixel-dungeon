@@ -64,7 +64,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 		revivePersists = true;
 	}
 
-	public float energy = 10;
+	public float energy = 0;
 	public int cooldown; //currently unused, abilities had cooldowns prior to v2.5
 
 	private static final float MAX_COOLDOWN = 5;
