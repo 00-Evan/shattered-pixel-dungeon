@@ -235,7 +235,7 @@ public class Blacksmith extends NPC {
 			completed	= false;
 
 			favor       = 0;
-			pickaxe     = new Pickaxe().identify();
+			pickaxe     = new Pickaxe().identify(false);
 			freePickaxe = false;
 			reforges    = 0;
 			hardens     = 0;
