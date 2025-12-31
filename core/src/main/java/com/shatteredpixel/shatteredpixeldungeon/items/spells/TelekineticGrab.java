@@ -59,6 +59,7 @@ public class TelekineticGrab extends TargetedSpell {
 
 	@Override
 	protected float timeToCast() {
+		//time is processed in the spell's logic, as it relates to items picked up
 		return 0;
 	}
 
@@ -133,6 +134,7 @@ public class TelekineticGrab extends TargetedSpell {
 			hero.spend(Actor.TICK);
 		}
 
+		onSpellused();
 	}
 
 	@Override
