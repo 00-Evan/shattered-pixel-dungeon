@@ -419,6 +419,9 @@ public class DriedRose extends Artifact {
 					while (partialCharge > 1) {
 						ghost.HP++;
 						partialCharge--;
+						if (ghost.HP == ghost.HT){
+							partialCharge = 0;
+						}
 					}
 				} else {
 					partialCharge = 0;
