@@ -54,7 +54,8 @@ public class VaultLevel extends CityLevel {
 		initRooms.add(roomEntrance = new EntranceRoom(){
 			@Override
 			public int maxConnections(int direction) {
-				return 1;
+				if (direction == LEFT || direction == TOP) return 0;
+				return super.maxConnections(direction);
 			}
 
 			@Override
@@ -73,6 +74,16 @@ public class VaultLevel extends CityLevel {
 		}
 
 		initRooms.add(new RegionDecoLineRoom(){
+			@Override
+			public float[] sizeCatProbs() {
+				return new float[]{0, 0, 1};
+			}
+
+			@Override
+			public boolean isExit() {
+				return true;
+			}
+
 			@Override
 			public int maxConnections(int direction) {
 				return 1;
@@ -113,7 +124,8 @@ public class VaultLevel extends CityLevel {
 					((Armor) item).inscribe(null);
 				}
 			}
-			item.identify();
+			//not true ID, prevents extra info about rings leaking to main game
+			item.levelKnown = item.cursedKnown = true;
 			addItemToSpawn(item);
 		}
 
@@ -183,8 +195,6 @@ public class VaultLevel extends CityLevel {
 			}
 		}
 	}
-
-	//TODO createItems will generate normal ones too =S
 
 	@Override
 	public int randomRespawnCell( Char ch ) {

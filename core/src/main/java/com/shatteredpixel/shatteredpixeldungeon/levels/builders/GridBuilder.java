@@ -61,27 +61,42 @@ public class GridBuilder extends Builder {
 		ArrayList<Room> toPlace = new ArrayList<>(rooms);
 		toPlace.remove(entrance);
 
+		//move the exit to the back
+		if (exit != null) {
+			toPlace.remove(exit);
+			toPlace.add(exit);
+		}
+
 		ArrayList<Room> placed = new ArrayList<>();
 		placed.add(entrance);
 
 		//use a sparse array to track room positions, with a mapping of x + 1000*y = cell
-		//this assumes that levels won't more than 1000 rooms wide
+		// and an index offset of 100,100 (x=y=100) to ensure we aren't dealing with negative indexes
+		//this effectively puts a limit of -99 < x < 999 and -99 < y < inf. on level sizes in rooms
 		SparseArray<Room> gridCells = new SparseArray<>();
-		gridCells.put(0, entrance);
-
+		gridCells.put(100_100, entrance);
 		for (Room r : toPlace){
+			int cellWidth = 1;
+			int cellHeight = 1;
+			//TODO this works on rigid multiples atm, would be nicer to buffer rooms that don't quite work
 			if (!r.forceSize(ROOM_SIZE, ROOM_SIZE)){
-				throw new RuntimeException("rigid room sizes for now!");
+				if (!r.forceSize(2*ROOM_SIZE-1, 2*ROOM_SIZE-1)) {
+					throw new RuntimeException("rigid room sizes for now!");
+				}
+				cellWidth = cellHeight = 2;
 			}
 			do {
-				Room n = Random.element(placed);
-				int nIdx = gridCells.findKey(n, true, Integer.MIN_VALUE);
+				r.neigbours.clear();
+				int[] keys = gridCells.keyArray();
+				int nIdx = keys[Random.Int(keys.length)];
+				Room n =  gridCells.get(nIdx, null);
 				int rIdx = nIdx;
-				switch (Random.Int(4)){
-					case 0:
+				//currently always pulls down and to the right
+				switch (Random.Int(10)){
+					case 0: case 4: case 5: case 6:
 						rIdx += 1;
 						break;
-					case 1:
+					case 1: case 7: case 8: case 9:
 						rIdx += 1000;
 						break;
 					case 2:
@@ -91,22 +106,30 @@ public class GridBuilder extends Builder {
 						rIdx -= 1000;
 						break;
 				}
-				//TODO negatives
-				int x = rIdx%1000;
-				int y = rIdx/1000;
+				//-100 to cancel offsets
+				int x = (rIdx % 1000) - 100;
+				int y = (rIdx / 1000) - 100;
 				r.setPos(x*(ROOM_SIZE-1), y*(ROOM_SIZE-1));
-				//TODO want to manually limit size probably
-				if (x >= 0 && y >= 0 && !gridCells.containsKey(rIdx)){
+				boolean valid = true;
+				for (int i = 0; i < cellWidth; i++){
+					for (int j = 0; j < cellHeight; j++){
+						if (gridCells.containsKey(rIdx + i + j*1000)){
+							valid = false;
+						}
+					}
+				}
+				if (valid){
 					if (r.connect(n)) {
 						placed.add(r);
-						gridCells.put(rIdx, r);
+						for (int i = 0; i < cellWidth; i++){
+							for (int j = 0; j < cellHeight; j++){
+								gridCells.put(rIdx + i + j*1000, r);
+							}
+						}
 					}
 				}
 			} while (!placed.contains(r));
 		}
-
-		//need a buffer room?
-		//contains an internal room, fills with
 
 		findNeighbours(rooms);
 
