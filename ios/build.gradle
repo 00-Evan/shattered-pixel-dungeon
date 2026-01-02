@@ -46,7 +46,10 @@ dependencies {
     implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
     implementation "com.mobidevelop.robovm:robovm-rt:$robovmVersion"
     implementation "com.mobidevelop.robovm:robovm-cocoatouch:$robovmVersion"
-    implementation "com.badlogicgames.gdx:gdx-backend-robovm-metalangle:$gdxVersion"
+    //FIXME using a prior version of metalangle backend as 1.13.5+ crashes on A7 and A8 devices
+    // Yes this is dangerous, the old backend seems to only work with libGDX 1.14.0 incidentally
+    // Ideally the next release of libGDX will fix this and this can simply use $gdxVersion again
+    implementation "com.badlogicgames.gdx:gdx-backend-robovm-metalangle:1.13.1"
     implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
     implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-ios"
     implementation "com.badlogicgames.gdx-controllers:gdx-controllers-ios:$gdxControllersVersion"
