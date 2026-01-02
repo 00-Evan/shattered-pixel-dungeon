@@ -46,20 +46,12 @@ public class Swiftness extends Armor.Glyph {
 		}
 
 		boolean enemyNear = false;
-		//for each enemy, check if they are adjacent, or within 2 tiles and an adjacent cell is open or a door
+		//an enemy counts as 'near' if they are within a 3-tile passable path of the hero
+		//yes this does mean that things like visible trap tiles and chasms count as walls
+		PathFinder.buildDistanceMap(owner.pos, Dungeon.level.passable, 3);
 		for (Char ch : Actor.chars()){
-			if ( Dungeon.level.distance(ch.pos, owner.pos) <= 2 && owner.alignment != ch.alignment && ch.alignment != Char.Alignment.NEUTRAL){
-				if (Dungeon.level.adjacent(ch.pos, owner.pos)){
-					enemyNear = true;
-					break;
-				} else {
-					for (int i : PathFinder.NEIGHBOURS8){
-						if (Dungeon.level.adjacent(owner.pos+i, ch.pos) && (!Dungeon.level.solid[owner.pos+i] || Dungeon.level.passable[owner.pos+i])){
-							enemyNear = true;
-							break;
-						}
-					}
-				}
+			if (ch.alignment == Char.Alignment.ENEMY && PathFinder.distance[ch.pos] != Integer.MAX_VALUE){
+				enemyNear = true;
 			}
 		}
 		if (enemyNear){
