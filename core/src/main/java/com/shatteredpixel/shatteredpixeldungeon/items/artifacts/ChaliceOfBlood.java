@@ -45,6 +45,8 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class ChaliceOfBlood extends Artifact {
 
 	{
@@ -60,7 +62,7 @@ public class ChaliceOfBlood extends Artifact {
 		ArrayList<String> actions = super.actions( hero );
 		if (isEquipped( hero )
 				&& level() < levelCap
-				&& !cursed
+				&& blessedType!=CURSED
 				&& !hero.isInvulnerable(getClass())
 				&& hero.buff(MagicImmune.class) == null)
 			actions.add(AC_PRICK);
@@ -158,7 +160,7 @@ public class ChaliceOfBlood extends Artifact {
 	
 	@Override
 	public void charge(Hero target, float amount) {
-		if (cursed || target.buff(MagicImmune.class) != null) return;
+		if (blessedType==CURSED || target.buff(MagicImmune.class) != null) return;
 
 		//grants 5 turns of healing up-front, if hero isn't starving
 		if (target.isStarving()) return;
@@ -186,7 +188,7 @@ public class ChaliceOfBlood extends Artifact {
 
 		if (isEquipped (Dungeon.hero)){
 			desc += "\n\n";
-			if (cursed)
+			if (blessedType==CURSED)
 				desc += Messages.get(this, "desc_cursed");
 			else if (level() == 0)
 				desc += Messages.get(this, "desc_1");

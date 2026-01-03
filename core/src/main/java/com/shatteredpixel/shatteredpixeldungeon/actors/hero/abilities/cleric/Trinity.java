@@ -370,7 +370,7 @@ public class Trinity extends ArmorAbility {
 						w.image = Dungeon.hero.belongings.weapon().image;
 					}
 					w.enchant((Weapon.Enchantment) Reflection.newInstance(cls));
-					w.cursedKnown = true;
+					w.blessedTypeKnown = true;
 					options.add(w);
 				} else if (Armor.Glyph.class.isAssignableFrom(cls)) {
 					Armor a = new ClothArmor(){
@@ -384,7 +384,7 @@ public class Trinity extends ArmorAbility {
 						a.image = Dungeon.hero.belongings.armor().image;
 					}
 					a.inscribe((Armor.Glyph) Reflection.newInstance(cls));
-					a.cursedKnown = true;
+					a.blessedTypeKnown = true;
 					options.add(a);
 				} else {
 					options.add((Item) Reflection.newInstance(cls));

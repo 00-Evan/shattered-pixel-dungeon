@@ -46,6 +46,8 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class WildMagic extends ArmorAbility {
 
 	{
@@ -139,7 +141,7 @@ public class WildMagic extends ArmorAbility {
 
 		float startTime = Game.timeTotal;
 		if (cur.tryToZap(hero, cell)) {
-			if (!cur.cursed) {
+			if (cur.blessedType!=CURSED) {
 				cur.fx(aim, new Callback() {
 					@Override
 					public void call() {

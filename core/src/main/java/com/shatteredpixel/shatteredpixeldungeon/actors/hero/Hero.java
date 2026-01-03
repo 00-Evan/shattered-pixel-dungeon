@@ -605,7 +605,7 @@ public class Hero extends Char {
 //		if (buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class) != null){
 //			buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class).detach();
 //			if (sprite != null && sprite.visible) {
-//				Sample.INSTANCE.play(Assets.Sounds.HIT_PARRY, 1, Random.Float(0.96f, 1.05f));
+//				Sample.INSTANCE.play(HAssets.Sounds.HIT_PARRY, 1, Random.Float(0.96f, 1.05f));
 //			}
 //			return Messages.get(Monk.class, "parried");
 //		}
@@ -662,7 +662,7 @@ public class Hero extends Char {
 //			if (emp.left <= 0) {
 //				emp.detach();
 //			}
-//			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG, 0.75f, 1.2f);
+//			Sample.INSTANCE.play(HAssets.Sounds.HIT_STRONG, 0.75f, 1.2f);
 //		}
 
 //		if (heroClass != HeroClass.DUELIST

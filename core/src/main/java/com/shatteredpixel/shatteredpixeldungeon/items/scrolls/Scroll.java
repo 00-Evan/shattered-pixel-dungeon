@@ -244,7 +244,14 @@ public abstract class Scroll extends Item {
 	@Override
 	public String info() {
 		//skip custom notes if anonymized and un-Ided
-		return (anonymous && (handler == null || !handler.isKnown( this ))) ? desc() : super.info();
+		String info= (anonymous && (handler == null || !handler.isKnown( this ))) ? desc() : super.info();
+        info+=switch (blessedType){
+            default -> "";
+            case HOLY -> "\n\n" + Messages.get(Scroll.class, "holy");
+            case BLESSED -> "\n\n" + Messages.get(Scroll.class, "blessed");
+            case CURSED -> "\n\n" + Messages.get(Scroll.class, "cursed");
+        };
+        return info;
 	}
 
 	@Override

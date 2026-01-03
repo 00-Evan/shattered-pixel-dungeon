@@ -41,6 +41,8 @@ import com.watabou.noosa.audio.Sample;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class CursingTrap extends Trap {
 
 	{
@@ -104,7 +106,8 @@ public class CursingTrap extends Trap {
 	}
 
 	private static void curse(Item item){
-		item.cursed = item.cursedKnown = true;
+		item.blessedType = CURSED;
+        item.blessedTypeKnown = true;
 
 		if (item instanceof Weapon){
 			Weapon w = (Weapon) item;

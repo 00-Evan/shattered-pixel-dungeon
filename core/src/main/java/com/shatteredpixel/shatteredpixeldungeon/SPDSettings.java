@@ -148,6 +148,9 @@ public class SPDSettings extends GameSettings {
 
 	public static final String KEY_GAMES_SORT    = "games_sort";
 
+    public static final String KEY_UNLOCKED_ALL  = "unlocked_all";
+
+
 	//0 = mobile, 1 = mixed (large without inventory in main UI), 2 = large
 	public static void interfaceSize( int value ){
 		put( KEY_UI_SIZE, value );
@@ -216,6 +219,14 @@ public class SPDSettings extends GameSettings {
 						|| language() == Languages.KOREAN || language() == Languages.JAPANESE));
 	}
 
+    public static void unlockedAll( boolean value ){
+        put( KEY_UNLOCKED_ALL, value );
+    }
+
+    public static boolean unlockedAll(){
+        return getBoolean( KEY_UNLOCKED_ALL, false);
+    }
+
 	public static void vibration(boolean value){
 		put(KEY_VIBRATION, value);
 	}
@@ -259,12 +270,12 @@ public class SPDSettings extends GameSettings {
 		return getInt( KEY_LAST_CLASS, 0, 0, 3 );
 	}
 	
-	public static void challenges( int value ) {
+	public static void challenges( long value ) {
 		put( KEY_CHALLENGES, value );
 	}
 	
-	public static int challenges() {
-		return getInt( KEY_CHALLENGES, 0, 0, Challenges.MAX_VALUE );
+	public static long challenges() {
+		return getLong( KEY_CHALLENGES, 0, 0, Challenges.MAX_VALUE );
 	}
 
 	public static void customSeed( String value ){

@@ -41,6 +41,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndUpgrade;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class ScrollOfUpgrade extends InventoryScroll {
 	
 	{
@@ -79,16 +81,16 @@ public class ScrollOfUpgrade extends InventoryScroll {
 		//...yes this is rather messy
 		if (item instanceof Weapon){
 			Weapon w = (Weapon) item;
-			boolean wasCursed = w.cursed;
+			BlessedType blessedType = w.blessedType;
 			boolean wasHardened = w.enchantHardened;
 			boolean hadCursedEnchant = w.hasCurseEnchant();
 			boolean hadGoodEnchant = w.hasGoodEnchant();
 
 			item = w.upgrade();
 
-			if (w.cursedKnown && hadCursedEnchant && !w.hasCurseEnchant()){
+			if (w.blessedTypeKnown && hadCursedEnchant && !w.hasCurseEnchant()){
 				removeCurse( Dungeon.hero );
-			} else if (w.cursedKnown && wasCursed && !w.cursed){
+			} else if (w.blessedTypeKnown && blessedType == CURSED && w.blessedType != CURSED){
 				weakenCurse( Dungeon.hero );
 			}
 			if (wasHardened && !w.enchantHardened){
@@ -99,16 +101,16 @@ public class ScrollOfUpgrade extends InventoryScroll {
 
 		} else if (item instanceof Armor){
 			Armor a = (Armor) item;
-			boolean wasCursed = a.cursed;
+			BlessedType blessedType = a.blessedType;
 			boolean wasHardened = a.glyphHardened;
 			boolean hadCursedGlyph = a.hasCurseGlyph();
 			boolean hadGoodGlyph = a.hasGoodGlyph();
 
 			item = a.upgrade();
 
-			if (a.cursedKnown && hadCursedGlyph && !a.hasCurseGlyph()){
+			if (a.blessedTypeKnown && hadCursedGlyph && !a.hasCurseGlyph()){
 				removeCurse( Dungeon.hero );
-			} else if (a.cursedKnown && wasCursed && !a.cursed){
+			} else if (a.blessedTypeKnown && blessedType == CURSED && a.blessedType != CURSED){
 				weakenCurse( Dungeon.hero );
 			}
 			if (wasHardened && !a.glyphHardened){
@@ -118,11 +120,11 @@ public class ScrollOfUpgrade extends InventoryScroll {
 			}
 
 		} else if (item instanceof Wand || item instanceof Ring) {
-			boolean wasCursed = item.cursed;
+			BlessedType blessedType = item.blessedType;
 
 			item = item.upgrade();
 
-			if (item.cursedKnown && wasCursed && !item.cursed){
+			if (item.blessedTypeKnown && blessedType == CURSED && item.blessedType != CURSED){
 				removeCurse( Dungeon.hero );
 			}
 

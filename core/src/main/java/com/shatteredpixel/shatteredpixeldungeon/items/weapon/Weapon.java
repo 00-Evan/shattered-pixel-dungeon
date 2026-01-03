@@ -79,6 +79,8 @@ import com.watabou.utils.Reflection;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.*;
+
 abstract public class Weapon extends KindOfWeapon {
 
 	public float    ACC = 1f;	// Accuracy modifier
@@ -378,8 +380,13 @@ abstract public class Weapon extends KindOfWeapon {
 				enchant(null);
 			}
 		}
-		
-		cursed = false;
+
+        if (this.trueLevel() >= 7 && Random.Int(3) == 0) {
+            blessedType = BLESSED;
+        }else {
+            blessedType = NORMAL;
+        }
+
 
 		return super.upgrade();
 	}
@@ -390,7 +397,7 @@ abstract public class Weapon extends KindOfWeapon {
 			&& (Dungeon.hero.subClass != HeroSubClass.PALADIN || enchantment == null)){
 				return Messages.get(HolyWeapon.class, "ench_name", super.name());
 			} else {
-				return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.name(super.name()) : super.name();
+				return enchantment != null && (blessedTypeKnown || !enchantment.curse()) ? enchantment.name(super.name()) : super.name();
 
 		}
 	}
@@ -418,10 +425,13 @@ abstract public class Weapon extends KindOfWeapon {
 			float effectRoll = Random.Float();
 			if (effectRoll < 0.3f * ParchmentScrap.curseChanceMultiplier()) {
 				enchant(Enchantment.randomCurse());
-				cursed = true;
+				blessedType = CURSED;
 			} else if (effectRoll >= 1f - (0.1f * ParchmentScrap.enchantChanceMultiplier())){
 				enchant();
 			}
+            if(effectRoll>=1f-(0.1f*ParchmentScrap.blessChanceMultiplier())){
+                blessedType=BLESSED;
+            }
 
 		Random.popGenerator();
 
@@ -486,7 +496,7 @@ abstract public class Weapon extends KindOfWeapon {
 				&& (Dungeon.hero.subClass != HeroSubClass.PALADIN || enchantment == null)){
 			return HOLY;
 		} else {
-			return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.glowing() : null;
+			return enchantment != null && (blessedTypeKnown || !enchantment.curse()) ? enchantment.glowing() : null;
 		}
 	}
 

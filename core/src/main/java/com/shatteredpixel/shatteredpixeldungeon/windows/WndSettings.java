@@ -411,6 +411,8 @@ public class WndSettings extends WndTabbed {
         CheckBox chkFont;
         CheckBox chkVibrate;
 
+        CheckBox chkUnlockedAll;
+
         @Override
         protected void createChildren() {
             title = PixelScene.renderTextBlock(Messages.get(this, "title"), 9);
@@ -645,6 +647,16 @@ public class WndSettings extends WndTabbed {
                 chkVibrate.checked(SPDSettings.vibration());
             }
             add(chkVibrate);
+
+            chkUnlockedAll=new CheckBox(Messages.get(this, "unlocked_all")) {
+                @Override
+                protected void onClick() {
+                    super.onClick();
+                    SPDSettings.unlockedAll(checked());
+                }
+            };
+            chkUnlockedAll.checked(SPDSettings.unlockedAll());
+            add(chkUnlockedAll);
         }
 
         @Override
@@ -685,12 +697,14 @@ public class WndSettings extends WndTabbed {
             if (width > 200) {
                 chkFont.setRect(0, sep2.y + 1 + GAP, width / 2 - 1, BTN_HEIGHT);
                 chkVibrate.setRect(chkFont.right() + 2, chkFont.top(), width / 2 - 1, BTN_HEIGHT);
-                height = chkVibrate.bottom();
+                chkUnlockedAll.setRect(0,chkFont.bottom() + GAP, width / 2 - 1, BTN_HEIGHT);
+                height = chkUnlockedAll.bottom();
 
             } else {
                 chkFont.setRect(0, sep2.y + 1 + GAP, width, BTN_HEIGHT);
                 chkVibrate.setRect(0, chkFont.bottom() + GAP, width, BTN_HEIGHT);
-                height = chkVibrate.bottom();
+                chkUnlockedAll.setRect(0, chkVibrate.bottom()+GAP, width, BTN_HEIGHT);
+                height = chkUnlockedAll.bottom();
             }
         }
 

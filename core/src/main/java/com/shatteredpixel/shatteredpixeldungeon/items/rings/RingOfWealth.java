@@ -53,6 +53,8 @@ import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.*;
+
 public class RingOfWealth extends Ring {
 
 	{
@@ -78,7 +80,7 @@ public class RingOfWealth extends Ring {
 	}
 
 	public String upgradeStat1(int level){
-		if (cursed && cursedKnown) level = Math.min(-1, level-3);
+		if (blessedType == CURSED && blessedTypeKnown) level = Math.min(-1, level-3);
 		return Messages.decimalFormat("#.##", 100f * (Math.pow(1.2f, level+1)-1f)) + "%";
 	}
 
@@ -298,8 +300,11 @@ public class RingOfWealth extends Ring {
 				result.level(minLevel);
 			}
 		}
-		result.cursed = false;
-		result.cursedKnown = true;
+		result.blessedType = NORMAL;
+        if(Random.Float() <0.1f){
+            result.blessedType = BLESSED;
+        }
+		result.blessedTypeKnown = true;
 		if (result.level() >= 2) {
 			latestDropTier = 4;
 		} else {

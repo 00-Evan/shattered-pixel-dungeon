@@ -47,6 +47,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.*;
+
 public class Ring extends KindofMisc {
 	
 	protected Buff buff;
@@ -190,16 +192,27 @@ public class Ring extends KindofMisc {
 			desc = super.info();
 		}
 
-		if (cursed && isEquipped( Dungeon.hero )) {
+		if (blessedType==CURSED && isEquipped( Dungeon.hero )) {
 			desc += "\n\n" + Messages.get(Ring.class, "cursed_worn");
 			
-		} else if (cursed && cursedKnown) {
-			desc += "\n\n" + Messages.get(Ring.class, "curse_known");
-			
-		} else if (!isIdentified() && cursedKnown){
-			desc += "\n\n" + Messages.get(Ring.class, "not_cursed");
-			
-		}
+		} else if (blessedType==CURSED && blessedTypeKnown) {
+            desc+="\n\n" + Messages.get(Ring.class, "curse_known");
+
+		}  else if (!isIdentified() && blessedTypeKnown){
+            desc+="\n\n" + switch (blessedType){
+                default -> "";
+                case BLESSED -> Messages.get(Ring.class, "blessed_known");
+                case HOLY -> Messages.get(Ring.class, "holy_known");
+                case NORMAL -> Messages.get(Ring.class, "not_cursed");
+            };
+
+		}else if (isIdentified() && blessedTypeKnown){
+            desc+=switch (blessedType){
+                default -> "";
+                case BLESSED -> "\n\n" + Messages.get(Ring.class, "blessed");
+                case HOLY -> "\n\n" + Messages.get(Ring.class, "holy");
+            };
+        }
 		
 		if (isKnown()) {
 			desc += "\n\n" + statsInfo();
@@ -229,9 +242,13 @@ public class Ring extends KindofMisc {
 		super.upgrade();
 		
 		if (Random.Int(3) == 0) {
-			cursed = false;
+			blessedType = CURSED;
 		}
-		
+
+        if (this.trueLevel() >= 7 && Random.Int(3) == 0) {
+            blessedType = BLESSED;
+        }
+
 		return this;
 	}
 	
@@ -271,9 +288,12 @@ public class Ring extends KindofMisc {
 		
 		//30% chance to be cursed
 		if (Random.Float() < 0.3f) {
-			cursed = true;
+			blessedType = CURSED;
 		}
-		
+        //5% chance to be blessed
+        if(Random.Float() < 0.05f) {
+            blessedType=BLESSED;
+        }
 		return this;
 	}
 	
@@ -292,9 +312,16 @@ public class Ring extends KindofMisc {
 	@Override
 	public int value() {
 		int price = 75;
-		if (cursed && cursedKnown) {
+		if (blessedType==CURSED && blessedTypeKnown) {
 			price /= 2;
 		}
+        if(blessedTypeKnown){
+            price= (int) (price* switch (blessedType) {
+                default -> 1;
+                case BLESSED->1.5;
+                case HOLY -> 2;
+            });
+        }
 		if (levelKnown) {
 			if (level() > 0) {
 				price *= (level() + 1);
@@ -387,20 +414,22 @@ public class Ring extends KindofMisc {
 
 	//just used for ring descriptions
 	public int soloBonus(){
-		if (cursed){
-			return Math.min( 0, Ring.this.level()-2 );
-		} else {
-			return Ring.this.level()+1;
-		}
+        return switch (blessedType) {
+            case CURSED -> Math.min(0, Ring.this.level() - 2);
+            case NORMAL -> Ring.this.level() + 1;
+            case BLESSED -> Ring.this.level() + 2;
+            case HOLY -> Ring.this.level() + 3;
+        };
 	}
 
 	//just used for ring descriptions
 	public int soloBuffedBonus(){
-		if (cursed){
-			return Math.min( 0, Ring.this.buffedLvl()-2 );
-		} else {
-			return Ring.this.buffedLvl()+1;
-		}
+        return switch (blessedType) {
+            case CURSED -> Math.min(0, Ring.this.buffedLvl() - 2);
+            case NORMAL -> Ring.this.buffedLvl() + 1;
+            case BLESSED -> Ring.this.buffedLvl() + 2;
+            case HOLY -> Ring.this.buffedLvl() + 3;
+        };
 	}
 
 	//just used for ring descriptions

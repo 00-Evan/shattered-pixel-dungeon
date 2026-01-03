@@ -63,6 +63,9 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.NORMAL;
+
 public class ShopRoom extends SpecialRoom {
 
 	protected ArrayList<Item> itemsToSpawn;
@@ -252,7 +255,7 @@ public class ShopRoom extends SpecialRoom {
 			break;
 		}
 		w.enchant(null);
-		w.cursed = false;
+		w.blessedType = NORMAL;
 		w.level(0);
 		w.identify(false);
 		itemsToSpawn.add(w);
@@ -300,7 +303,7 @@ public class ShopRoom extends SpecialRoom {
 		itemsToSpawn.add( new StoneOfAugmentation() );
 
 		TimekeepersHourglass hourglass = Dungeon.hero.belongings.getItem(TimekeepersHourglass.class);
-		if (hourglass != null && hourglass.isIdentified() && !hourglass.cursed){
+		if (hourglass != null && hourglass.isIdentified() && hourglass.blessedType != CURSED){
 			int bags = 0;
 			//creates the given float percent of the remaining bags to be dropped.
 			//this way players who get the hourglass late can still max it, usually.
@@ -337,8 +340,8 @@ public class ShopRoom extends SpecialRoom {
 			default:
 				rare = new Stylus();
 		}
-		rare.cursed = false;
-		rare.cursedKnown = true;
+		rare.blessedType = NORMAL;
+		rare.blessedTypeKnown = true;
 		itemsToSpawn.add( rare );
 
 		//use a new generator here to prevent items in shop stock affecting levelgen RNG (e.g. sandbags)

@@ -34,6 +34,8 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.*;
+
 public class StoneOfDetectMagic extends InventoryStone {
 
 	{
@@ -45,19 +47,19 @@ public class StoneOfDetectMagic extends InventoryStone {
 	public boolean usableOnItem(Item item){
 		return (item instanceof EquipableItem || item instanceof Wand)
 				&& !(item instanceof MissileWeapon)
-				&& (!item.isIdentified() || !item.cursedKnown);
+				&& (!item.isIdentified() || !item.blessedTypeKnown);
 	}
 
 	@Override
 	protected void onItemSelected(Item item) {
 
-		item.cursedKnown = true;
+		item.blessedTypeKnown = true;
 		useAnimation();
 
 		boolean negativeMagic = false;
 		boolean positiveMagic = false;
 
-		negativeMagic = item.cursed;
+		negativeMagic = item.blessedType == CURSED;
 		if (!negativeMagic){
 			if (item instanceof Weapon && ((Weapon) item).hasCurseEnchant()){
 				negativeMagic = true;
@@ -66,7 +68,7 @@ public class StoneOfDetectMagic extends InventoryStone {
 			}
 		}
 
-		positiveMagic = item.trueLevel() > 0;
+		positiveMagic = item.trueLevel() > 0 ||item.blessedType == BLESSED || item.blessedType == HOLY;
 		if (!positiveMagic){
 			if (item instanceof Weapon && ((Weapon) item).hasGoodEnchant()){
 				positiveMagic = true;

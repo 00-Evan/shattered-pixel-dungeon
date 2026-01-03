@@ -24,12 +24,15 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.StatueSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.NORMAL;
 
 public class ArmoredStatue extends Statue {
 
@@ -51,7 +54,7 @@ public class ArmoredStatue extends Statue {
 		super.createWeapon(useDecks);
 
 		armor = Generator.randomArmor();
-		armor.cursed = false;
+		armor.blessedType = NORMAL;
 		armor.inscribe(Armor.Glyph.random());
 	}
 

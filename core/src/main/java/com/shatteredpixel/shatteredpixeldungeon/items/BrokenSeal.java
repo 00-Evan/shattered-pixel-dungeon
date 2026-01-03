@@ -49,6 +49,8 @@ import com.watabou.utils.GameMath;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class BrokenSeal extends Item {
 
 	public static final String AC_AFFIX = "AFFIX";
@@ -59,7 +61,7 @@ public class BrokenSeal extends Item {
 	{
 		image = ItemSpriteSheet.SEAL;
 
-		cursedKnown = levelKnown = true;
+		blessedTypeKnown = levelKnown = true;
 		unique = true;
 		bones = false;
 
@@ -124,10 +126,10 @@ public class BrokenSeal extends Item {
 	//outgoing is either the seal itself as an item, or an armor the seal is affixed to
 	public void affixToArmor(Armor armor, Item outgoing){
 		if (armor != null) {
-			if (!armor.cursedKnown){
+			if (!armor.blessedTypeKnown){
 				GLog.w(Messages.get(BrokenSeal.class, "unknown_armor"));
 
-			} else if (armor.cursed && (getGlyph() == null || !getGlyph().curse())){
+			} else if (armor.blessedType==CURSED && (getGlyph() == null || !getGlyph().curse())){
 				GLog.w(Messages.get(BrokenSeal.class, "cursed_armor"));
 
 			}else if (armor.glyph != null && getGlyph() != null

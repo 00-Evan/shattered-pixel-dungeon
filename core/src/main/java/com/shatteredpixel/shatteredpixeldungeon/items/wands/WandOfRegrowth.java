@@ -59,6 +59,8 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class WandOfRegrowth extends Wand {
 
 	{
@@ -277,12 +279,17 @@ public class WandOfRegrowth extends Wand {
 
 	@Override
 	protected int chargesPerCast() {
-		if (cursed ||
+		if (blessedType==CURSED ||
 				(charger != null && charger.target != null && charger.target.buff(WildMagic.WildMagicTracker.class) != null)){
 			return 1;
 		}
-		//consumes 30% of current charges, rounded up, with a min of 1 and a max of 3.
-		return (int) GameMath.gate(1, (int)Math.ceil(curCharges*0.3f), 3);
+		//consumes 30%,25% or 20%  of current charges, rounded up, with a min of 1 and a max of 3.
+        float factor=switch (blessedType){
+            default -> 0.3f;
+            case BLESSED -> 0.25f;
+            case HOLY -> 0.2f;
+        };
+		return (int) GameMath.gate(1, (int)Math.ceil(curCharges*factor), 3);
 	}
 
 	@Override

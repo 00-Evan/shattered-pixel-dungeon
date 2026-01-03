@@ -52,6 +52,8 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class MasterThievesArmband extends Artifact {
 
 	{
@@ -74,7 +76,7 @@ public class MasterThievesArmband extends Artifact {
 		if (isEquipped(hero)
 				&& charge > 0
 				&& hero.buff(MagicImmune.class) == null
-				&& !cursed) {
+				&& blessedType!=CURSED) {
 			actions.add(AC_STEAL);
 		}
 		return actions;
@@ -98,7 +100,7 @@ public class MasterThievesArmband extends Artifact {
 				GLog.i( Messages.get(this, "no_charge") );
 				usesTargeting = false;
 
-			} else if (cursed) {
+			} else if (blessedType==CURSED) {
 				GLog.w( Messages.get(this, "cursed") );
 				usesTargeting = false;
 
@@ -221,7 +223,7 @@ public class MasterThievesArmband extends Artifact {
 	
 	@Override
 	public void charge(Hero target, float amount) {
-		if (cursed || target.buff(MagicImmune.class) != null) return;
+		if (blessedType==CURSED || target.buff(MagicImmune.class) != null) return;
 		if (charge < chargeCap) {
 			partialCharge += 0.1f * amount;
 			while (partialCharge >= 1f) {
@@ -248,7 +250,7 @@ public class MasterThievesArmband extends Artifact {
 		String desc = super.desc();
 
 		if ( isEquipped (Dungeon.hero) ){
-			if (cursed){
+			if (blessedType==CURSED){
 				desc += "\n\n" + Messages.get(this, "desc_cursed");
 			} else {
 				desc += "\n\n" + Messages.get(this, "desc_worn");
@@ -262,7 +264,7 @@ public class MasterThievesArmband extends Artifact {
 
 		@Override
 		public boolean act() {
-			if (cursed && Dungeon.gold > 0 && Random.Int(5) == 0){
+			if (blessedType==CURSED && Dungeon.gold > 0 && Random.Int(5) == 0){
 				Dungeon.gold--;
 				updateQuickslot();
 			}
@@ -272,7 +274,7 @@ public class MasterThievesArmband extends Artifact {
 		}
 
 		public void gainCharge(float levelPortion) {
-			if (cursed || target.buff(MagicImmune.class) != null) return;
+			if (blessedType==CURSED || target.buff(MagicImmune.class) != null) return;
 
 			if (charge < chargeCap){
 				float chargeGain = 3f * levelPortion;

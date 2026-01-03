@@ -111,16 +111,9 @@ public class GamesInProgress {
 			try {
 				
 				Bundle bundle = FileUtils.bundleFromFile(gameFile(slot));
-
-				if (bundle.getInt( "version" ) < ShatteredPixelDungeon.v2_3_2) {
-					info = null;
-				} else {
-
-					info = new Info();
-					info.slot = slot;
-					Dungeon.preview(info, bundle);
-				}
-
+                info = new Info();
+                info.slot = slot;
+                Dungeon.preview(info, bundle);
 			} catch (IOException e) {
 				info = null;
 			} catch (Exception e){
@@ -178,7 +171,7 @@ public class GamesInProgress {
 
 		public int depth;
 		public int version;
-		public int challenges;
+		public long challenges;
 
 		public long seed;
 		public String customSeed;

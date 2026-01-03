@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
@@ -33,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatshield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RoundShield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
@@ -51,6 +49,8 @@ import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Reflection;
+
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
 
 public class WndUpgrade extends Window {
 
@@ -129,14 +129,14 @@ public class WndUpgrade extends Window {
 		add(bg2);
 
 		if (!toUpgrade.isIdentified()){
-			if (!toUpgrade.cursed && toUpgrade.cursedKnown){
+			if (toUpgrade.blessedType != CURSED && toUpgrade.blessedTypeKnown){
 				bg1.hardlight(1f, 1, 2f);
 				bg2.hardlight(1f, 1, 2f);
 			} else {
 				bg1.hardlight(2f, 1, 2f);
 				bg2.hardlight(2f, 1, 2f);
 			}
-		} else if (toUpgrade.cursed && toUpgrade.cursedKnown){
+		} else if (toUpgrade.blessedType == CURSED && toUpgrade.blessedTypeKnown){
 			bg1.hardlight(2f, 0.5f, 1f);
 			bg2.hardlight(2f, 0.5f, 1f);
 		}
@@ -370,12 +370,12 @@ public class WndUpgrade extends Window {
 				}
 			}
 
-			if ((toUpgrade.cursed
+			if ((toUpgrade.blessedType == CURSED
 					|| (toUpgrade instanceof Weapon && ((Weapon) toUpgrade).hasCurseEnchant())
 					|| (toUpgrade instanceof Armor && ((Armor) toUpgrade).hasCurseGlyph()))
-					&& toUpgrade.cursedKnown) {
+					&& toUpgrade.blessedTypeKnown) {
 
-				if (toUpgrade.cursed && (toUpgrade instanceof Weapon && ((Weapon) toUpgrade).hasCurseEnchant())
+				if (toUpgrade.blessedType == CURSED && (toUpgrade instanceof Weapon && ((Weapon) toUpgrade).hasCurseEnchant())
 						|| (toUpgrade instanceof Armor && ((Armor) toUpgrade).hasCurseGlyph())){
 					bottom = addMessage(Messages.get(this, "cursed_weaken"), CharSprite.POSITIVE, bottom);
 				} else {

@@ -46,6 +46,9 @@
 		<activity
 			android:name=".AndroidMissingNativesHandler">
 		</activity>
+        <activity
+            android:name=".AndroidShowErrorPage">
+        </activity>
 	</application>
 
 </manifest>

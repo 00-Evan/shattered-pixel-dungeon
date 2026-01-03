@@ -51,6 +51,8 @@ import com.watabou.utils.PathFinder;
 
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class LloydsBeacon extends Artifact {
 
 	public static final float TIME_TO_USE = 1;
@@ -317,7 +319,7 @@ public class LloydsBeacon extends Artifact {
 	public class beaconRecharge extends ArtifactBuff{
 		@Override
 		public boolean act() {
-			if (charge < chargeCap && !cursed && Regeneration.regenOn()) {
+			if (charge < chargeCap && blessedType!=CURSED && Regeneration.regenOn()) {
 				partialCharge += 1 / (100f - (chargeCap - charge)*10f);
 
 				while (partialCharge >= 1) {

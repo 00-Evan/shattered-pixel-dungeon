@@ -49,6 +49,9 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.NORMAL;
+
 abstract public class MissileWeapon extends Weapon {
 
 	{
@@ -486,17 +489,28 @@ abstract public class MissileWeapon extends Weapon {
 			}
 		}
 
-		if (enchantment != null && (cursedKnown || !enchantment.curse())){
+		if (enchantment != null && (blessedTypeKnown || !enchantment.curse())){
 			info += "\n\n" + Messages.get(Weapon.class, "enchanted", enchantment.name());
 			info += " " + Messages.get(enchantment, "desc");
 		}
 
-		if (cursed && isEquipped( Dungeon.hero )) {
+		if (blessedType==CURSED && isEquipped( Dungeon.hero )) {
 			info += "\n\n" + Messages.get(Weapon.class, "cursed_worn");
-		} else if (cursedKnown && cursed) {
+		} else if (blessedTypeKnown && blessedType==CURSED) {
 			info += "\n\n" + Messages.get(Weapon.class, "cursed");
-		} else if (!isIdentified() && cursedKnown){
-			info += "\n\n" + Messages.get(Weapon.class, "not_cursed");
+		}  else if (isIdentified() && blessedTypeKnown&&blessedType!=NORMAL){
+            info += switch (blessedType){
+                default -> "";
+                case BLESSED -> "\n\n" + Messages.get(Weapon.class, "blessed");
+                case HOLY ->  "\n\n" + Messages.get(Weapon.class, "holy");
+            };
+        }  else if (!isIdentified() && blessedTypeKnown){
+            info += "\n\n" + switch (blessedType){
+                default -> "";
+                case BLESSED ->  Messages.get(Weapon.class, "blessed_known");
+                case HOLY ->   Messages.get(Weapon.class, "holy_known");
+                case NORMAL ->  Messages.get(Weapon.class, "not_cursed");
+            };
 		}
 
 		info += "\n\n" + Messages.get(MissileWeapon.class, "distance");

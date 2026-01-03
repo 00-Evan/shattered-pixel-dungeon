@@ -52,6 +52,8 @@ import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class HornOfPlenty extends Artifact {
 
 
@@ -81,7 +83,7 @@ public class HornOfPlenty extends Artifact {
 			actions.add(AC_SNACK);
 			actions.add(AC_EAT);
 		}
-		if (isEquipped( hero ) && level() < levelCap && !cursed) {
+		if (isEquipped( hero ) && level() < levelCap && blessedType!=CURSED) {
 			actions.add(AC_STORE);
 		}
 		return actions;
@@ -173,7 +175,7 @@ public class HornOfPlenty extends Artifact {
 	
 	@Override
 	public void charge(Hero target, float amount) {
-		if (charge < chargeCap && !cursed && target.buff(MagicImmune.class) == null){
+		if (charge < chargeCap && blessedType!=CURSED && target.buff(MagicImmune.class) == null){
 			partialCharge += 0.25f*amount;
 			while (partialCharge >= 1){
 				partialCharge--;
@@ -199,7 +201,7 @@ public class HornOfPlenty extends Artifact {
 		String desc = super.desc();
 
 		if ( isEquipped( Dungeon.hero ) ){
-			if (!cursed) {
+			if (blessedType!=CURSED) {
 				if (level() < levelCap)
 					desc += "\n\n" +Messages.get(this, "desc_hint");
 			} else {
@@ -272,7 +274,7 @@ public class HornOfPlenty extends Artifact {
 	public class hornRecharge extends ArtifactBuff{
 
 		public void gainCharge(float levelPortion) {
-			if (cursed || target.buff(MagicImmune.class) != null) return;
+			if (blessedType==CURSED || target.buff(MagicImmune.class) != null) return;
 			
 			if (charge < chargeCap) {
 

@@ -34,6 +34,10 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.StatueSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
+
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.BLESSED;
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.NORMAL;
 
 public class GuardianTrap extends Trap {
 
@@ -83,7 +87,10 @@ public class GuardianTrap extends Trap {
 		@Override
 		public void createWeapon( boolean useDecks ) {
 			weapon = (MeleeWeapon) Generator.randomUsingDefaults(Generator.Category.WEAPON);
-			weapon.cursed = false;
+			weapon.blessedType = NORMAL;
+            if(Random.Float() <0.07f){
+                weapon.blessedType = BLESSED;
+            }
 			weapon.enchant(null);
 			weapon.level(0);
 		}

@@ -39,19 +39,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BadgesGrid;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BadgesList;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Button;
-import com.shatteredpixel.shatteredpixeldungeon.ui.CheckBox;
-import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
-import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
-import com.shatteredpixel.shatteredpixeldungeon.ui.TalentButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.TalentsPane;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.ui.*;
 import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
+import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -61,7 +51,10 @@ import com.watabou.noosa.ui.Component;
 import com.watabou.utils.DeviceCompat;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Locale;
+
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.*;
 
 public class WndRanking extends WndTabbed {
 	
@@ -347,6 +340,9 @@ public class WndRanking extends WndTabbed {
 			if (stuff.weapon != null) {
 				addItem( stuff.weapon );
 			}
+            if (stuff.secWeapon != null) {
+                addItem(stuff.secWeapon);
+            }
 			if (stuff.armor != null) {
 				addItem( stuff.armor );
 			}
@@ -374,7 +370,7 @@ public class WndRanking extends WndTabbed {
 				slotsActive++;
 			}
 
-			float slotWidth = Math.min(28, ((WIDTH - slotsActive + 1) / (float)slotsActive));
+			float slotWidth = Math.min(23, ((WIDTH - slotsActive + 1) / (float)slotsActive));
 
 			for (int i = -1; i < QuickSlot.SIZE; i++){
 				Item item = null;
@@ -386,7 +382,7 @@ public class WndRanking extends WndTabbed {
 				if (item != null){
 					QuickSlotButton slot = new QuickSlotButton(item);
 
-					slot.setRect( pos, 120, slotWidth, 23 );
+					slot.setRect( pos, 120, slotWidth, 18 );
 					PixelScene.align(slot);
 
 					add(slot);
@@ -425,50 +421,92 @@ public class WndRanking extends WndTabbed {
 	}
 
 	private class ChallengesTab extends Group{
-
+        private  ChallengesScrollPane list;
 		public ChallengesTab(){
 			super();
 
 			camera = WndRanking.this.camera;
 
-			float pos = 0;
-
-			for (int i=0; i < Challenges.NAME_IDS.length; i++) {
-
-				final String challenge = Challenges.NAME_IDS[i];
-
-				CheckBox cb = new CheckBox( Messages.titleCase(Messages.get(Challenges.class, challenge)) );
-				cb.checked( (Dungeon.challenges & Challenges.MASKS[i]) != 0 );
-				cb.active = false;
-
-				if (i > 0) {
-					pos += 1;
-				}
-				cb.setRect( 0, pos, WIDTH-16, 15 );
-
-				add( cb );
-
-				IconButton info = new IconButton(Icons.get(Icons.INFO)){
-					@Override
-					protected void onClick() {
-						super.onClick();
-						ShatteredPixelDungeon.scene().add(
-								new WndMessage(Messages.get(Challenges.class, challenge+"_desc"))
-						);
-					}
-				};
-				info.setRect(cb.right(), pos, 16, 15);
-				add(info);
-
-				pos = cb.bottom();
-			}
+            list = new ChallengesScrollPane(Dungeon.challenges);
+            add( list );
+            list.setPos(0, 0);
+            list.setSize(WIDTH, HEIGHT);
+            list.scrollTo(0, 0);
 		}
+        public static class ChallengesScrollPane extends ScrollPane {
+
+            private static final int WIDTH = 115;
+
+            private static final int BTN_HEIGHT = 15;
+            private static final int GAP = 1;
+
+            private final ArrayList<Button> infos;
+
+            public ChallengesScrollPane(long checked) {
+                super(new Component());
+                disableThumb();
+
+                infos = new ArrayList<>();
+
+                float pos = 0;
+                for (int i = 0; i < Challenges.NAME_IDS.length; i++) {
+
+                    final String challenge = Challenges.NAME_IDS[i];
+
+                    CheckBox cb = new CheckBox(Messages.titleCase(Messages.get(Challenges.class, challenge)));
+                    cb.checked((checked & Challenges.MASKS[i]) != 0);
+                    cb.active = false;
+
+                    if (i > 0) {
+                        pos += GAP;
+                    }
+                    cb.setRect(0, pos, WIDTH - 16, BTN_HEIGHT);
+
+                    content.add(cb);
+
+
+                    WndChallenges.ChallengesIconButton info = new WndChallenges.ChallengesIconButton(Icons.get(Icons.INFO), challenge);
+                    info.setRect(cb.right(), pos, 16, BTN_HEIGHT);
+                    content.add(info);
+                    infos.add(info);
+
+                    pos = cb.bottom();
+                }
+                content.setSize(width, pos + 16);
+
+
+            }
+
+
+
+            @Override
+            protected void layout() {
+                super.layout();
+                float pos = 0;
+                for (var info : infos) {
+                    pos += info.height();
+                }
+                content.setSize(width, pos + 16);
+            }
+
+            @Override
+            public void onClick(float x, float y) {
+
+                for (var info : infos) {
+                    if ((info instanceof WndChallenges.ChallengesIconButton btn) && info.inside(x, y)) {
+                        btn.onClick();
+                        return;
+                    }
+                }
+            }
+        }
+
 
 	}
 
 	private class ItemButton extends Button {
 		
-		public static final int HEIGHT	= 23;
+		public static final int HEIGHT	= 18;
 		
 		private Item item;
 		
@@ -483,15 +521,25 @@ public class WndRanking extends WndTabbed {
 			this.item = item;
 			
 			slot.item( item );
-			if (item.cursed && item.cursedKnown) {
+
+            int color = 0x9953564D;
+            if(item.blessedType == Item.BlessedType.BLESSED){
+                color = InventorySlot.BLESSED;
+            }else if(item.blessedType == Item.BlessedType.HOLY){
+                color = InventorySlot.HOLY;
+            }
+            bg.texture( TextureCache.createSolid( color ) );
+            bg.resetColor();
+
+			if (item.blessedType == CURSED && item.blessedTypeKnown) {
 				bg.ra = +0.3f;
 				bg.ga = -0.15f;
 				bg.ba = -0.15f;
 			} else if (!item.isIdentified()) {
-				if ((item instanceof EquipableItem || item instanceof Wand) && item.cursedKnown){
+				if ((item instanceof EquipableItem || item instanceof Wand) && item.blessedType == Item.BlessedType.NORMAL && item.blessedTypeKnown){
 					bg.ba = +0.3f;
 					bg.ra = -0.1f;
-				} else {
+				} else if(!item.blessedTypeKnown){
 					bg.ra = +0.35f;
 					bg.ba = +0.35f;
 				}
@@ -500,8 +548,7 @@ public class WndRanking extends WndTabbed {
 		
 		@Override
 		protected void createChildren() {
-			
-			bg = new ColorBlock( 28, HEIGHT, 0x9953564D );
+			bg = new ColorBlock( 23, HEIGHT, 0x9953564D );
 			add( bg );
 			
 			slot = new ItemSlot();
@@ -518,7 +565,7 @@ public class WndRanking extends WndTabbed {
 			bg.x = x;
 			bg.y = y;
 			
-			slot.setRect( x, y, 28, HEIGHT );
+			slot.setRect( x, y, 23, HEIGHT );
 			PixelScene.align(slot);
 			
 			name.maxWidth((int)(width - slot.width() - 2));
@@ -553,11 +600,20 @@ public class WndRanking extends WndTabbed {
 		private Item item;
 		private ColorBlock bg;
 
+        // TODO: make the color more proper
 		QuickSlotButton(Item item){
 			super(item);
 			this.item = item;
 
-			if (item.cursed && item.cursedKnown) {
+            int color = 0x9953564D;
+            if(item.blessedType == Item.BlessedType.BLESSED){
+                color = InventorySlot.BLESSED;
+            }else if(item.blessedType == Item.BlessedType.HOLY){
+                color = InventorySlot.HOLY;
+            }
+            bg.texture( TextureCache.createSolid( color ) );
+            bg.resetColor();
+			if (item.blessedType == CURSED && item.blessedTypeKnown) {
 				bg.ra = +0.2f;
 				bg.ga = -0.1f;
 			} else if (!item.isIdentified()) {

@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Transmuting;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
@@ -54,7 +53,11 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
+
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.BLESSED;
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.NORMAL;
 
 public class ScrollOfTransmutation extends InventoryScroll {
 	
@@ -108,7 +111,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 			if (result != item) {
 				int slot = Dungeon.quickslot.getSlot(item);
 				if (item.isEquipped(Dungeon.hero)) {
-					item.cursed = false; //to allow it to be unequipped
+					item.blessedType = NORMAL; //to allow it to be unequipped
 					if (item instanceof Artifact && result instanceof Ring){
 						//if we turned an equipped artifact into a ring, ring goes into inventory
 						((EquipableItem) item).doUnequip(Dungeon.hero, false);
@@ -175,8 +178,8 @@ public class ScrollOfTransmutation extends InventoryScroll {
 				//artifact and ring levels are not exactly equivalent, give the ring up to +2
 				Item result = Generator.randomUsingDefaults(Generator.Category.RING);
 				result.levelKnown = item.levelKnown;
-				result.cursed = item.cursed;
-				result.cursedKnown = item.cursedKnown;
+				result.blessedType = item.blessedType;
+				result.blessedTypeKnown = item.blessedTypeKnown;
 				if (item.visiblyUpgraded() == 10){
 					result.level(2);
 				} else if (item.visiblyUpgraded() >= 5){
@@ -205,7 +208,10 @@ public class ScrollOfTransmutation extends InventoryScroll {
 			do {
 				n = (Wand) Generator.randomUsingDefaults(Generator.Category.WAND);
 			} while (Challenges.isItemBlocked(n) || n.getClass() == wandClass);
-			n.cursed = false;
+			n.blessedType = NORMAL;
+            if(Random.Float() <0.05f){
+                n.blessedType = BLESSED;
+            }
 			n.level(0);
 			n.identify();
 			staff.imbueWand(n, null);
@@ -249,8 +255,8 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		n.curseInfusionBonus = w.curseInfusionBonus;
 		n.masteryPotionBonus = w.masteryPotionBonus;
 		n.levelKnown = w.levelKnown;
-		n.cursedKnown = w.cursedKnown;
-		n.cursed = w.cursed;
+		n.blessedTypeKnown = w.blessedTypeKnown;
+		n.blessedType = w.blessedType;
 		n.augment = w.augment;
 		n.enchantHardened = w.enchantHardened;
 		
@@ -274,8 +280,8 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		}
 		
 		n.levelKnown = r.levelKnown;
-		n.cursedKnown = r.cursedKnown;
-		n.cursed = r.cursed;
+		n.blessedTypeKnown = r.blessedTypeKnown;
+		n.blessedType = r.blessedType;
 		
 		return n;
 	}
@@ -297,8 +303,8 @@ public class ScrollOfTransmutation extends InventoryScroll {
 				}
 			}
 
-			n.cursedKnown = a.cursedKnown;
-			n.cursed = a.cursed;
+			n.blessedTypeKnown = a.blessedTypeKnown;
+			n.blessedType = a.blessedType;
 			n.levelKnown = a.levelKnown;
 			n.transferUpgrade(a.visiblyUpgraded());
 			return n;
@@ -315,8 +321,8 @@ public class ScrollOfTransmutation extends InventoryScroll {
 
 		n.level(t.trueLevel());
 		n.levelKnown = t.levelKnown;
-		n.cursedKnown = t.cursedKnown;
-		n.cursed = t.cursed;
+		n.blessedTypeKnown = t.blessedTypeKnown;
+		n.blessedType = t.blessedType;
 
 		return n;
 	}
@@ -333,8 +339,8 @@ public class ScrollOfTransmutation extends InventoryScroll {
 
 		n.levelKnown = w.levelKnown;
 		n.curChargeKnown = w.curChargeKnown;
-		n.cursedKnown = w.cursedKnown;
-		n.cursed = w.cursed;
+		n.blessedTypeKnown = w.blessedTypeKnown;
+		n.blessedType = w.blessedType;
 		n.curseInfusionBonus = w.curseInfusionBonus;
 		n.resinBonus = w.resinBonus;
 

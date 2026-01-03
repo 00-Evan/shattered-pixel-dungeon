@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
 
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -35,6 +34,9 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.BLESSED;
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.NORMAL;
 
 public class SecretMazeRoom extends SecretRoom {
 	
@@ -109,8 +111,11 @@ public class SecretMazeRoom extends SecretRoom {
 				((Armor) prize).inscribe(null);
 			}
 		}
-		prize.cursed = false;
-		prize.cursedKnown = true;
+		prize.blessedType = NORMAL;
+        if(Random.Float() <0.07f){
+            prize.blessedType = BLESSED;
+        }
+		prize.blessedTypeKnown = true;
 		
 		//33% chance for an extra update.
 		if (Random.Int(3) == 0){

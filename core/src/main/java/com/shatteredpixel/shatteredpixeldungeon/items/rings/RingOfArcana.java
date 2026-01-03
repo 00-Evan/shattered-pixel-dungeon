@@ -26,6 +26,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class RingOfArcana extends Ring {
 
 	{
@@ -48,7 +50,7 @@ public class RingOfArcana extends Ring {
 	}
 
 	public String upgradeStat1(int level){
-		if (cursed) level = Math.min(-1, level-3);
+		if (blessedType==CURSED) level = Math.min(-1, level-3);
 		return Messages.decimalFormat("#.##", 100f * (Math.pow(1.175f, level+1)-1f)) + "%";
 	}
 

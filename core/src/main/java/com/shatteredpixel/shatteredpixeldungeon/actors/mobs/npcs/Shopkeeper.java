@@ -51,296 +51,292 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
-import com.watabou.utils.BArray;
-import com.watabou.utils.Bundlable;
-import com.watabou.utils.Bundle;
-import com.watabou.utils.Callback;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.*;
 
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class Shopkeeper extends NPC {
 
-	{
-		spriteClass = ShopkeeperSprite.class;
+    public static int MAX_BUYBACK_HISTORY = 3;
+    public static String BUYBACK_ITEMS = "buyback_items";
+    public static String TURNS_SINCE_HARMED = "turns_since_harmed";
+    public ArrayList<Item> buybackItems = new ArrayList<>();
+    private int turnsSinceHarmed = -1;
 
-		properties.add(Property.IMMOVABLE);
-	}
+    {
+        spriteClass = ShopkeeperSprite.class;
 
-	public static int MAX_BUYBACK_HISTORY = 3;
-	public ArrayList<Item> buybackItems = new ArrayList<>();
+        properties.add(Property.IMMOVABLE);
+    }
 
-	private int turnsSinceHarmed = -1;
+    //shopkeepers are greedy!
+    public static int sellPrice(Item item) {
+        return item.value() * 5 * (Dungeon.depth / 5 + 1);
+    }
 
-	@Override
-	public Notes.Landmark landmark() {
-		return Notes.Landmark.SHOP;
-	}
+    public static WndBag sell() {
+        return GameScene.selectItem(itemSelector);
+    }
 
-	@Override
-	protected boolean act() {
+    public static boolean canSell(Item item) {
+        if (item.value() <= 0) return false;
+        if (item.unique && !item.stackable) return false;
+        if (item instanceof Armor && ((Armor) item).checkSeal() != null) return false;
+        if (item.isEquipped(Dungeon.hero) && item.blessedType == CURSED) return false;
+        return true;
+    }
 
-		if (turnsSinceHarmed >= 0){
-			turnsSinceHarmed ++;
-		}
+    @Override
+    public Notes.Landmark landmark() {
+        return Notes.Landmark.SHOP;
+    }
 
-		sprite.turnTo( pos, Dungeon.hero.pos );
-		spend( TICK );
-		return super.act();
-	}
-	
-	@Override
-	public void damage( int dmg, Object src ) {
-		processHarm();
-	}
-	
-	@Override
-	public boolean add( Buff buff ) {
-		if (buff.type == Buff.buffType.NEGATIVE){
-			processHarm();
-		}
-		return false;
-	}
+    @Override
+    protected boolean act() {
 
-	public void processHarm(){
+        if (turnsSinceHarmed >= 0) {
+            turnsSinceHarmed++;
+        }
 
-		//do nothing if the shopkeeper is out of the hero's FOV
-		if (!Dungeon.level.heroFOV[pos]){
-			return;
-		}
+        sprite.turnTo(pos, Dungeon.hero.pos);
+        spend(TICK);
+        return super.act();
+    }
 
-		if (turnsSinceHarmed == -1){
-			turnsSinceHarmed = 0;
-			yell(Messages.get(this, "warn"));
+    @Override
+    public void damage(int dmg, Object src) {
+        processHarm();
+    }
 
-			//use a new actor as we can't clear the gas while we're in the middle of processing it
-			Actor.add(new Actor() {
-				{
-					actPriority = VFX_PRIO;
-				}
+    @Override
+    public boolean add(Buff buff) {
+        if (buff.type == Buff.buffType.NEGATIVE) {
+            processHarm();
+        }
+        return false;
+    }
 
-				@Override
-				protected boolean act() {
-					//cleanses all harmful blobs in the shop
-					ArrayList<Blob> blobs = new ArrayList<>();
-					for (Class c : new BlobImmunity().immunities()){
-						Blob b = Dungeon.level.blobs.get(c);
-						if (b != null && b.volume > 0){
-							blobs.add(b);
-						}
-					}
+    public void processHarm() {
 
-					PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), 4 );
+        //do nothing if the shopkeeper is out of the hero's FOV
+        if (!Dungeon.level.heroFOV[pos]) {
+            return;
+        }
 
-					for (int i=0; i < Dungeon.level.length(); i++) {
-						if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+        if (turnsSinceHarmed == -1) {
+            turnsSinceHarmed = 0;
+            yell(Messages.get(this, "warn"));
 
-							boolean affected = false;
-							for (Blob blob : blobs) {
-								if (blob.cur[i] > 0) {
-									blob.clear(i);
-									affected = true;
-								}
-							}
+            //use a new actor as we can't clear the gas while we're in the middle of processing it
+            Actor.add(new Actor() {
+                {
+                    actPriority = VFX_PRIO;
+                }
 
-							if (affected && Dungeon.level.heroFOV[i]) {
-								CellEmitter.get( i ).burst( Speck.factory( Speck.DISCOVER ), 2 );
-							}
+                @Override
+                protected boolean act() {
+                    //cleanses all harmful blobs in the shop
+                    ArrayList<Blob> blobs = new ArrayList<>();
+                    for (Class c : new BlobImmunity().immunities()) {
+                        Blob b = Dungeon.level.blobs.get(c);
+                        if (b != null && b.volume > 0) {
+                            blobs.add(b);
+                        }
+                    }
 
-						}
-					}
-					Actor.remove(this);
-					return true;
-				}
-			});
+                    PathFinder.buildDistanceMap(pos, BArray.not(Dungeon.level.solid, null), 4);
 
-		//There is a 1 turn buffer before more damage/debuffs make the shopkeeper flee
-		//This is mainly to prevent stacked effects from causing an instant flee
-		} else if (turnsSinceHarmed >= 1) {
-			flee();
-		}
-	}
-	
-	public void flee() {
-		destroy();
+                    for (int i = 0; i < Dungeon.level.length(); i++) {
+                        if (PathFinder.distance[i] < Integer.MAX_VALUE) {
 
-		Notes.remove( landmark() );
-		GLog.newLine();
-		GLog.n(Messages.get(this, "flee"));
+                            boolean affected = false;
+                            for (Blob blob : blobs) {
+                                if (blob.cur[i] > 0) {
+                                    blob.clear(i);
+                                    affected = true;
+                                }
+                            }
 
-		if (sprite != null) {
-			sprite.killAndErase();
-			CellEmitter.get(pos).burst(ElmoParticle.FACTORY, 6);
-		}
-	}
-	
-	@Override
-	public void destroy() {
-		super.destroy();
-		for (Heap heap: Dungeon.level.heaps.valueList()) {
-			if (heap.type == Heap.Type.FOR_SALE) {
-				if (ShatteredPixelDungeon.scene() instanceof GameScene) {
-					CellEmitter.get(heap.pos).burst(ElmoParticle.FACTORY, 4);
-				}
-				if (heap.size() == 1) {
-					heap.destroy();
-				} else {
-					heap.items.remove(heap.size()-1);
-					heap.type = Heap.Type.HEAP;
-				}
-			}
-		}
-	}
-	
-	@Override
-	public boolean reset() {
-		return true;
-	}
+                            if (affected && Dungeon.level.heroFOV[i]) {
+                                CellEmitter.get(i).burst(Speck.factory(Speck.DISCOVER), 2);
+                            }
 
-	//shopkeepers are greedy!
-	public static int sellPrice(Item item){
-		return item.value() * 5 * (Dungeon.depth / 5 + 1);
-	}
-	
-	public static WndBag sell() {
-		return GameScene.selectItem( itemSelector );
-	}
+                        }
+                    }
+                    Actor.remove(this);
+                    return true;
+                }
+            });
 
-	public static boolean canSell(Item item){
-		if (item.value() <= 0)                                              return false;
-		if (item.unique && !item.stackable)                                 return false;
-		if (item instanceof Armor && ((Armor) item).checkSeal() != null)    return false;
-		if (item.isEquipped(Dungeon.hero) && item.cursed)                   return false;
-		return true;
-	}
+            //There is a 1 turn buffer before more damage/debuffs make the shopkeeper flee
+            //This is mainly to prevent stacked effects from causing an instant flee
+        } else if (turnsSinceHarmed >= 1) {
+            flee();
+        }
+    }
 
-	private static WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
-		@Override
-		public String textPrompt() {
-			return Messages.get(Shopkeeper.class, "sell");
-		}
+    public void flee() {
+        destroy();
 
-		@Override
-		public boolean itemSelectable(Item item) {
-			return Shopkeeper.canSell(item);
-		}
+        Notes.remove(landmark());
+        GLog.newLine();
+        GLog.n(Messages.get(this, "flee"));
 
-		@Override
-		public void onSelect( Item item ) {
-			if (item != null) {
-				WndBag parentWnd = sell();
-				GameScene.show( new WndTradeItem( item, parentWnd ) );
-			}
-		}
-	};
+        if (sprite != null) {
+            sprite.killAndErase();
+            CellEmitter.get(pos).burst(ElmoParticle.FACTORY, 6);
+        }
+    }
 
-	@Override
-	public boolean interact(Char c) {
-		if (c != Dungeon.hero) {
-			return true;
-		}
-		Game.runOnRenderThread(new Callback() {
-			@Override
-			public void call() {
-				String[] options = new String[2+ buybackItems.size()];
-				int maxLen = PixelScene.landscape() ? 30 : 25;
-				int i = 0;
-				options[i++] = Messages.get(Shopkeeper.this, "sell");
-				options[i++] = Messages.get(Shopkeeper.this, "talk");
-				for (Item item : buybackItems){
-					options[i] = Messages.get(Heap.class, "for_sale", item.value(), Messages.titleCase(item.title()));
-					if (options[i].length() > maxLen) options[i] = options[i].substring(0, maxLen-3) + "...";
-					i++;
-				}
-				CurrencyIndicator.showGold = true;
-				GameScene.show(new WndOptions(sprite(), Messages.titleCase(name()), description(), options){
-					@Override
-					protected void onSelect(int index) {
-						super.onSelect(index);
-						if (index == 0){
-							sell();
-						} else if (index == 1){
-							GameScene.show(new WndTitledMessage(sprite(), Messages.titleCase(name()), chatText()));
-						} else if (index > 1){
-							GLog.i(Messages.get(Shopkeeper.this, "buyback"));
-							Item returned = buybackItems.remove(index-2);
-							Dungeon.gold -= returned.value();
-							Statistics.goldCollected -= returned.value();
-							if (!returned.doPickUp(Dungeon.hero)){
-								Dungeon.level.drop(returned, Dungeon.hero.pos);
-							}
-						}
-					}
+    @Override
+    public void destroy() {
+        super.destroy();
+        for (Heap heap : Dungeon.level.heaps.valueList()) {
+            if (heap.type == Heap.Type.FOR_SALE) {
+                if (ShatteredPixelDungeon.scene() instanceof GameScene) {
+                    CellEmitter.get(heap.pos).burst(ElmoParticle.FACTORY, 4);
+                }
+                if (heap.size() == 1) {
+                    heap.destroy();
+                } else {
+                    heap.items.remove(heap.size() - 1);
+                    heap.type = Heap.Type.HEAP;
+                }
+            }
+        }
+    }    private static WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
+        @Override
+        public String textPrompt() {
+            return Messages.get(Shopkeeper.class, "sell");
+        }
 
-					@Override
-					protected boolean enabled(int index) {
-						if (index > 1){
-							return Dungeon.gold >= buybackItems.get(index-2).value();
-						} else {
-							return super.enabled(index);
-						}
-					}
+        @Override
+        public boolean itemSelectable(Item item) {
+            return Shopkeeper.canSell(item);
+        }
 
-					@Override
-					protected boolean hasIcon(int index) {
-						return index > 1;
-					}
+        @Override
+        public void onSelect(Item item) {
+            if (item != null) {
+                WndBag parentWnd = sell();
+                GameScene.show(new WndTradeItem(item, parentWnd));
+            }
+        }
+    };
 
-					@Override
-					protected Image getIcon(int index) {
-						if (index > 1){
-							return new ItemSprite(buybackItems.get(index-2));
-						}
-						return null;
-					}
+    @Override
+    public boolean reset() {
+        return true;
+    }
 
-					@Override
-					public void hide() {
-						super.hide();
-						CurrencyIndicator.showGold = false;
-					}
-				});
-			}
-		});
-		return true;
-	}
+    @Override
+    public boolean interact(Char c) {
+        if (c != Dungeon.hero) {
+            return true;
+        }
+        Game.runOnRenderThread(new Callback() {
+            @Override
+            public void call() {
+                String[] options = new String[2 + buybackItems.size()];
+                int maxLen = PixelScene.landscape() ? 30 : 25;
+                int i = 0;
+                options[i++] = Messages.get(Shopkeeper.this, "sell");
+                options[i++] = Messages.get(Shopkeeper.this, "talk");
+                for (Item item : buybackItems) {
+                    options[i] = Messages.get(Heap.class, "for_sale", item.value(), Messages.titleCase(item.title()));
+                    if (options[i].length() > maxLen) options[i] = options[i].substring(0, maxLen - 3) + "...";
+                    i++;
+                }
+                CurrencyIndicator.showGold = true;
+                GameScene.show(new WndOptions(sprite(), Messages.titleCase(name()), description(), options) {
+                    @Override
+                    protected void onSelect(int index) {
+                        super.onSelect(index);
+                        if (index == 0) {
+                            sell();
+                        } else if (index == 1) {
+                            GameScene.show(new WndTitledMessage(sprite(), Messages.titleCase(name()), chatText()));
+                        } else if (index > 1) {
+                            GLog.i(Messages.get(Shopkeeper.this, "buyback"));
+                            Item returned = buybackItems.remove(index - 2);
+                            Dungeon.gold -= returned.value();
+                            Statistics.goldCollected -= returned.value();
+                            if (!returned.doPickUp(Dungeon.hero)) {
+                                Dungeon.level.drop(returned, Dungeon.hero.pos);
+                            }
+                        }
+                    }
 
-	public String chatText(){
-		if (Dungeon.hero.buff(AscensionChallenge.class) != null){
-			return Messages.get(this, "talk_ascent");
-		}
-		switch (Dungeon.depth){
-			case 6: default:
-				return Messages.get(this, "talk_prison_intro") + "\n\n" + Messages.get(this, "talk_prison_" + Dungeon.hero.heroClass.name());
-			case 11:
-				return Messages.get(this, "talk_caves");
-			case 16:
-				return Messages.get(this, "talk_city");
-			case 20:
-				return Messages.get(this, "talk_halls");
-		}
-	}
+                    @Override
+                    protected boolean enabled(int index) {
+                        if (index > 1) {
+                            return Dungeon.gold >= buybackItems.get(index - 2).value();
+                        } else {
+                            return super.enabled(index);
+                        }
+                    }
 
-	public static String BUYBACK_ITEMS = "buyback_items";
+                    @Override
+                    protected boolean hasIcon(int index) {
+                        return index > 1;
+                    }
 
-	public static String TURNS_SINCE_HARMED = "turns_since_harmed";
+                    @Override
+                    protected Image getIcon(int index) {
+                        if (index > 1) {
+                            return new ItemSprite(buybackItems.get(index - 2));
+                        }
+                        return null;
+                    }
 
-	@Override
-	public void storeInBundle(Bundle bundle) {
-		super.storeInBundle(bundle);
-		bundle.put(BUYBACK_ITEMS, buybackItems);
-		bundle.put(TURNS_SINCE_HARMED, turnsSinceHarmed);
-	}
+                    @Override
+                    public void hide() {
+                        super.hide();
+                        CurrencyIndicator.showGold = false;
+                    }
+                });
+            }
+        });
+        return true;
+    }
 
-	@Override
-	public void restoreFromBundle(Bundle bundle) {
-		super.restoreFromBundle(bundle);
-		buybackItems.clear();
-		if (bundle.contains(BUYBACK_ITEMS)){
-			for (Bundlable i : bundle.getCollection(BUYBACK_ITEMS)){
-				buybackItems.add((Item) i);
-			}
-		}
-		turnsSinceHarmed = bundle.contains(TURNS_SINCE_HARMED) ? bundle.getInt(TURNS_SINCE_HARMED) : -1;
-	}
+    public String chatText() {
+        if (Dungeon.hero.buff(AscensionChallenge.class) != null) {
+            return Messages.get(this, "talk_ascent");
+        }
+        switch (Dungeon.depth) {
+            case 6:
+            default:
+                return Messages.get(this, "talk_prison_intro") + "\n\n" + Messages.get(this, "talk_prison_" + Dungeon.hero.heroClass.name());
+            case 11:
+                return Messages.get(this, "talk_caves");
+            case 16:
+                return Messages.get(this, "talk_city");
+            case 20:
+                return Messages.get(this, "talk_halls");
+        }
+    }
+
+    @Override
+    public void storeInBundle(Bundle bundle) {
+        super.storeInBundle(bundle);
+        bundle.put(BUYBACK_ITEMS, buybackItems);
+        bundle.put(TURNS_SINCE_HARMED, turnsSinceHarmed);
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+        buybackItems.clear();
+        if (bundle.contains(BUYBACK_ITEMS)) {
+            for (Bundlable i : bundle.getCollection(BUYBACK_ITEMS)) {
+                buybackItems.add((Item) i);
+            }
+        }
+        turnsSinceHarmed = bundle.contains(TURNS_SINCE_HARMED) ? bundle.getInt(TURNS_SINCE_HARMED) : -1;
+    }
+
+
 }

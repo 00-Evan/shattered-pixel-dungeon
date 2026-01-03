@@ -32,13 +32,11 @@ import android.view.ViewConfiguration;
 import android.window.OnBackInvokedCallback;
 import android.window.OnBackInvokedDispatcher;
 
+import com.badlogic.gdx.ApplicationLogger;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.backends.android.AndroidApplication;
-import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.badlogic.gdx.backends.android.AndroidAudio;
-import com.badlogic.gdx.backends.android.AsynchronousAndroidAudio;
+import com.badlogic.gdx.backends.android.*;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeType;
 import com.badlogic.gdx.utils.GdxNativesLoader;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
@@ -152,7 +150,7 @@ public class AndroidLauncher extends AndroidApplication {
 		Button.longClick = ViewConfiguration.getLongPressTimeout()/1000f;
 		
 		initialize(new ShatteredPixelDungeon(support), config);
-		
+		setApplicationLogger(new PDApplicationLogger());
 	}
 
 	@Override
@@ -189,4 +187,30 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onMultiWindowModeChanged(isInMultiWindowMode);
 		support.updateSystemUI();
 	}
+
+    public static class PDApplicationLogger extends AndroidApplicationLogger  {
+
+
+        @Override
+        public void error(String tag, String message) {
+            super.error(tag, message);
+        }
+
+        @Override
+        public void error(String tag, String message, Throwable exception) {
+            super.error(tag, message, exception);
+        }
+
+        private void showErrPage(String tag, String message) {
+            showErrPage(tag, message, null);
+        }
+        private void showErrPage(String tag, String message,Throwable exception) {
+            AndroidShowErrorPage.tag = tag;
+            AndroidShowErrorPage.message = message;
+            AndroidShowErrorPage.exception=exception;
+            Intent intent = new Intent(instance, AndroidShowErrorPage.class);
+            instance.startActivity(intent);
+            instance.finish();
+        }
+    }
 }

@@ -38,6 +38,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 import java.util.HashSet;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class RingOfElements extends Ring {
 
 	{
@@ -60,7 +62,7 @@ public class RingOfElements extends Ring {
 	}
 
 	public String upgradeStat1(int level){
-		if (cursed && cursedKnown) level = Math.min(-1, level-3);
+		if (blessedType == CURSED && blessedTypeKnown) level = Math.min(-1, level-3);
 		return Messages.decimalFormat("#.##", 100f * (1f - Math.pow(0.825f, level+1))) + "%";
 	}
 	

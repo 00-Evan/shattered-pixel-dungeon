@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.properties.Property;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
@@ -47,6 +48,8 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
 
 public class Imp extends NPC {
 
@@ -252,9 +255,9 @@ public class Imp extends NPC {
 				
 				do {
 					reward = (Ring)Generator.random( Generator.Category.RING );
-				} while (reward.cursed);
+				} while (reward.blessedType== CURSED);
 				reward.upgrade( 2 );
-				reward.cursed = true;
+				reward.blessedType = CURSED;
 			}
 		}
 		

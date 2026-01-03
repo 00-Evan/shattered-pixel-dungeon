@@ -56,6 +56,8 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class TimekeepersHourglass extends Artifact {
 
 	{
@@ -85,7 +87,7 @@ public class TimekeepersHourglass extends Artifact {
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		if (isEquipped( hero )
-				&& !cursed
+				&& blessedType!=CURSED
 				&& hero.buff(MagicImmune.class) == null
 				&& (charge > 0 || activeBuff != null)) {
 			actions.add(AC_ACTIVATE);
@@ -110,7 +112,7 @@ public class TimekeepersHourglass extends Artifact {
 					GLog.i( Messages.get(this, "deactivate") );
 				}
 			} else if (charge <= 0)         GLog.i( Messages.get(this, "no_charge") );
-			else if (cursed)                GLog.i( Messages.get(this, "cursed") );
+			else if (blessedType==CURSED)                GLog.i( Messages.get(this, "cursed") );
 			else GameScene.show(
 						new WndOptions(new ItemSprite(this),
 								Messages.titleCase(name()),
@@ -179,7 +181,7 @@ public class TimekeepersHourglass extends Artifact {
 	
 	@Override
 	public void charge(Hero target, float amount) {
-		if (charge < chargeCap && !cursed && target.buff(MagicImmune.class) == null){
+		if (charge < chargeCap && blessedType != CURSED && target.buff(MagicImmune.class) == null){
 			partialCharge += 0.25f*amount;
 			while (partialCharge >= 1){
 				partialCharge--;
@@ -208,7 +210,7 @@ public class TimekeepersHourglass extends Artifact {
 		String desc = super.desc();
 
 		if (isEquipped( Dungeon.hero )){
-			if (!cursed) {
+			if (blessedType != CURSED) {
 				if (level() < levelCap )
 					desc += "\n\n" + Messages.get(this, "desc_hint");
 
@@ -254,7 +256,7 @@ public class TimekeepersHourglass extends Artifact {
 		public boolean act() {
 
 			if (charge < chargeCap
-					&& !cursed
+					&& blessedType != CURSED
 					&& target.buff(MagicImmune.class) == null
 					&& Regeneration.regenOn()) {
 				//90 turns to charge at full, 60 turns to charge at 0/10
@@ -270,7 +272,7 @@ public class TimekeepersHourglass extends Artifact {
 						partialCharge = 0;
 					}
 				}
-			} else if (cursed && Random.Int(10) == 0)
+			} else if (blessedType==CURSED && Random.Int(10) == 0)
 				((Hero) target).spend( TICK );
 
 			updateQuickslot();
@@ -509,7 +511,7 @@ public class TimekeepersHourglass extends Artifact {
 			Catalog.setSeen(getClass());
 			Statistics.itemTypesDiscovered.add(getClass());
 			TimekeepersHourglass hourglass = hero.belongings.getItem( TimekeepersHourglass.class );
-			if (hourglass != null && !hourglass.cursed) {
+			if (hourglass != null && hourglass.blessedType != CURSED) {
 				hourglass.upgrade();
 				Catalog.countUses(hourglass.getClass(), 2);
 				Sample.INSTANCE.play( Assets.Sounds.DEWDROP );

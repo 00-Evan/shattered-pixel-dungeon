@@ -28,14 +28,14 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Fireball;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.*;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSettings;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndVictoryCongrats;
 import com.watabou.glwrap.Blending;
-import com.watabou.noosa.BitmapText;
-import com.watabou.noosa.Camera;
-import com.watabou.noosa.Game;
-import com.watabou.noosa.Image;
+import com.watabou.noosa.*;
 import com.watabou.noosa.audio.Music;
 import com.watabou.utils.ColorMath;
 import com.watabou.utils.DeviceCompat;
@@ -188,11 +188,11 @@ public class TitleScene extends PixelScene {
             btnPlay.setRect(btnAreaLeft, topRegion + GAP, buttonAreaWidth, BTN_HEIGHT);
             align(btnPlay);
             //btnSupport.setRect(btnPlay.left(), btnPlay.bottom() + GAP, btnPlay.width(), BTN_HEIGHT);
-            btnRankings.setRect(btnPlay.left(), btnPlay.bottom() + GAP, (btnPlay.width() / 2) - 1, BTN_HEIGHT);
-            btnBadges.setRect(btnRankings.right() + 2, btnRankings.top(), btnRankings.width(), BTN_HEIGHT);
+            btnRankings.setRect(btnPlay.left(), btnPlay.bottom() + GAP,btnPlay.width() , BTN_HEIGHT);
+            btnBadges.setRect(btnRankings.left(), btnRankings.bottom()+ GAP, (btnPlay.width() / 2) - 1 , BTN_HEIGHT);
             //btnNews.setRect(btnRankings.left(), btnRankings.bottom() + GAP, btnRankings.width(), BTN_HEIGHT);
-            btnChanges.setRect(btnRankings.left(), btnRankings.bottom() + GAP, btnPlay.width(), BTN_HEIGHT);
-            btnSettings.setRect(btnChanges.left(), btnChanges.bottom() + GAP, btnRankings.width(), BTN_HEIGHT);
+            btnChanges.setRect(btnBadges.right()+2, btnBadges.top(), btnBadges.width(), BTN_HEIGHT);
+            btnSettings.setRect(btnBadges.left(), btnChanges.bottom() + GAP, btnBadges.width(), BTN_HEIGHT);
             btnAbout.setRect(btnSettings.right() + 2, btnSettings.top(), btnSettings.width(), BTN_HEIGHT);
         }
 
@@ -227,7 +227,6 @@ public class TitleScene extends PixelScene {
         add(fb);
     }
 
-
     private static class ChangesButton extends StyledButton {
 
         boolean updateShown = false;
@@ -242,7 +241,7 @@ public class TitleScene extends PixelScene {
         protected void onClick() {
 
 
-           // ShatteredPixelDungeon.switchNoFade(ChangesHPDScene.class);
+            // ShatteredPixelDungeon.switchNoFade(ChangesHPDScene.class);
             ShatteredPixelDungeon.switchNoFade(ChangesHPDScene.class);
 
         }
@@ -289,7 +288,7 @@ public class TitleScene extends PixelScene {
 
         @Override
         protected void onClick() {
-             ShatteredPixelDungeon.switchScene(AboutScene.class);
+            ShatteredPixelDungeon.switchScene(AboutScene.class);
         }
     }
 }

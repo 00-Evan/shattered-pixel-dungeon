@@ -54,6 +54,9 @@ import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.NORMAL;
+
 public class SpiritBow extends Weapon {
 	
 	public static final String AC_SHOOT		= "SHOOT";
@@ -158,7 +161,7 @@ public class SpiritBow extends Weapon {
 			case NONE:
 		}
 
-		if (enchantment != null && (cursedKnown || !enchantment.curse())){
+		if (enchantment != null && (blessedTypeKnown || !enchantment.curse())){
 			info += "\n\n" + Messages.capitalize(Messages.get(Weapon.class, "enchanted", enchantment.name()));
 			if (enchantHardened) info += " " + Messages.get(Weapon.class, "enchant_hardened");
 			info += " " + enchantment.desc();
@@ -166,12 +169,23 @@ public class SpiritBow extends Weapon {
 			info += "\n\n" + Messages.get(Weapon.class, "hardened_no_enchant");
 		}
 		
-		if (cursed && isEquipped( Dungeon.hero )) {
+		if (blessedType== CURSED && isEquipped( Dungeon.hero )) {
 			info += "\n\n" + Messages.get(Weapon.class, "cursed_worn");
-		} else if (cursedKnown && cursed) {
+		} else if (blessedTypeKnown && blessedType==CURSED) {
 			info += "\n\n" + Messages.get(Weapon.class, "cursed");
-		} else if (!isIdentified() && cursedKnown){
-			info += "\n\n" + Messages.get(Weapon.class, "not_cursed");
+		} else if (isIdentified() && blessedTypeKnown&&blessedType!=NORMAL){
+            info += switch (blessedType){
+                default -> "";
+                case BLESSED -> "\n\n" + Messages.get(Weapon.class, "blessed");
+                case HOLY ->  "\n\n" + Messages.get(Weapon.class, "holy");
+            };
+        }  else if (!isIdentified() && blessedTypeKnown){
+            info += "\n\n" + switch (blessedType){
+                default -> "";
+                case BLESSED ->  Messages.get(Weapon.class, "blessed_known");
+                case HOLY ->   Messages.get(Weapon.class, "holy_known");
+                case NORMAL ->  Messages.get(Weapon.class, "not_cursed");
+            };
 		}
 		
 		info += "\n\n" + Messages.get(MissileWeapon.class, "distance");

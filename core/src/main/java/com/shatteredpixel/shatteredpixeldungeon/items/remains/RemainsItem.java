@@ -79,20 +79,13 @@ public abstract class RemainsItem extends Item {
 	}
 
 	public static RemainsItem get(HeroClass cls){
-		switch (cls){
-			case WARRIOR: default:
-				return new SealShard();
-			case MAGE:
-				return new BrokenStaff();
-			case ROGUE:
-				return new CloakScrap();
-			case HUNTRESS:
-				return new BowFragment();
-//			case DUELIST:
-//				return new BrokenHilt();
-			case CLERIC:
-				return new TornPage();
-		}
+        return switch (cls) {
+            default -> new SealShard();
+            case MAGE -> new BrokenStaff();
+            case ROGUE -> new CloakScrap();
+            case HUNTRESS -> new BowFragment();
+            case CLERIC -> new TornPage();
+        };
 	}
 
 }

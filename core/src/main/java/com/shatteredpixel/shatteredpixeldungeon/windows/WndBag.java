@@ -56,14 +56,14 @@ public class WndBag extends WndTabbed {
 	//only one bag window can appear at a time
 	public static Window INSTANCE;
 
-	protected static final int COLS_P   = 5;
-	protected static final int COLS_L   = 5;
+	protected static final int COLS_P   = 6;
+	protected static final int COLS_L   = 6;
 	
-	protected static int SLOT_WIDTH_P   = 28;
-	protected static int SLOT_WIDTH_L   = 28;
+	protected static int SLOT_WIDTH_P   = /*28*/20;
+	protected static int SLOT_WIDTH_L   = /*28*/24;
 
-	protected static int SLOT_HEIGHT_P	= 28;
-	protected static int SLOT_HEIGHT_L	= 28;
+	protected static int SLOT_HEIGHT_P	= /*28*/20;
+	protected static int SLOT_HEIGHT_L	=/* 28*/24;
 
 	protected static final int SLOT_MARGIN	= 1;
 	
@@ -80,7 +80,7 @@ public class WndBag extends WndTabbed {
 	protected int count;
 	protected int col;
 	protected int row;
-	
+
 	private static Bag lastBag;
 
 	public WndBag( Bag bag ) {
@@ -104,7 +104,7 @@ public class WndBag extends WndTabbed {
 		slotHeight = PixelScene.landscape() ? SLOT_HEIGHT_L : SLOT_HEIGHT_P;
 
 		nCols = PixelScene.landscape() ? COLS_L : COLS_P;
-		nRows = (int)Math.ceil(25/(float)nCols); //we expect to lay out 25 slots in all cases
+		nRows = (int)Math.ceil(42/(float)nCols); //we expect to lay out 25 slots in all cases
 
 		int windowWidth = slotWidth * nCols + SLOT_MARGIN * (nCols - 1);
 		int windowHeight = TITLE_HEIGHT + slotHeight * nRows + SLOT_MARGIN * (nRows - 1);
@@ -122,7 +122,7 @@ public class WndBag extends WndTabbed {
 		}
 
 		placeTitle( bag, windowWidth );
-		
+
 		placeItems( bag );
 
 		resize( windowWidth, windowHeight );
@@ -238,12 +238,13 @@ public class WndBag extends WndTabbed {
 		// Equipped items
 		Belongings stuff = Dungeon.hero.belongings;
 		placeItem( stuff.weapon != null ? stuff.weapon : new Placeholder( ItemSpriteSheet.WEAPON_HOLDER ) );
+        placeItem( stuff.secWeapon != null ? stuff.secWeapon : new Placeholder( ItemSpriteSheet.GUN_HOLDER ) );
 		placeItem( stuff.armor != null ? stuff.armor : new Placeholder( ItemSpriteSheet.ARMOR_HOLDER ) );
 		placeItem( stuff.artifact != null ? stuff.artifact : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
 		placeItem( stuff.misc != null ? stuff.misc : new Placeholder( ItemSpriteSheet.SOMETHING ) );
 		placeItem( stuff.ring != null ? stuff.ring : new Placeholder( ItemSpriteSheet.RING_HOLDER ) );
 
-		int equipped = 5;
+		int equipped = 6;
 
 		//the container itself if it's not the root backpack
 		if (container != Dungeon.hero.belongings.backpack){

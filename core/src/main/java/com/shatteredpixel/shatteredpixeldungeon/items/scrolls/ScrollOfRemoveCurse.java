@@ -42,6 +42,9 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.NORMAL;
+
 public class ScrollOfRemoveCurse extends InventoryScroll {
 
 	{
@@ -85,7 +88,7 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 	public static boolean uncursable( Item item ){
 		if (item.isEquipped(Dungeon.hero) && Dungeon.hero.buff(Degrade.class) != null) {
 			return true;
-		} if ((item instanceof EquipableItem || item instanceof Wand) && ((!item.isIdentified() && !item.cursedKnown) || item.cursed)){
+		} if ((item instanceof EquipableItem || item instanceof Wand) && ((!item.isIdentified() && !item.blessedTypeKnown) || item.blessedType == CURSED)){
 			return true;
 		} else if (item instanceof Weapon){
 			return ((Weapon)item).hasCurseEnchant();
@@ -119,10 +122,10 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 		boolean procced = false;
 		for (Item item : items) {
 			if (item != null) {
-				item.cursedKnown = true;
-				if (item.cursed) {
+				item.blessedTypeKnown = true;
+				if (item.blessedType == CURSED) {
 					procced = true;
-					item.cursed = false;
+					item.blessedType = NORMAL;
 				}
 			}
 			if (item instanceof Weapon){

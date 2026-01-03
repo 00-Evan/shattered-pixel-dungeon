@@ -84,8 +84,8 @@ public class Item implements Bundlable {
 
 	public boolean levelKnown = false;
 	
-	public boolean cursed;
-	public boolean cursedKnown;
+	public BlessedType blessedType = BlessedType.NORMAL;
+	public boolean blessedTypeKnown =  false;
 	
 	// Unique items persist through revival
 	public boolean unique = false;
@@ -437,16 +437,16 @@ public class Item implements Bundlable {
 		return levelKnown ? buffedLvl() : 0;
 	}
 	
-	public boolean visiblyCursed() {
-		return cursed && cursedKnown;
-	}
+//	public boolean visiblyCursed() {
+//		return blessedOrCursed && blessedOrCursedKnown;
+//	}
 	
 	public boolean isUpgradable() {
 		return true;
 	}
 	
 	public boolean isIdentified() {
-		return levelKnown && cursedKnown;
+		return levelKnown && blessedTypeKnown;
 	}
 	
 	public boolean isEquipped( Hero hero ) {
@@ -465,7 +465,7 @@ public class Item implements Bundlable {
 		}
 
 		levelKnown = true;
-		cursedKnown = true;
+		blessedTypeKnown = true;
 		Item.updateQuickslot();
 		
 		return this;
@@ -577,8 +577,8 @@ public class Item implements Bundlable {
 	private static final String QUANTITY		= "quantity";
 	private static final String LEVEL			= "level";
 	private static final String LEVEL_KNOWN		= "levelKnown";
-	private static final String CURSED			= "cursed";
-	private static final String CURSED_KNOWN	= "cursedKnown";
+	private static final String BLESSED_TYPE = "blessedType";
+	private static final String BLESSED_TYPE_KNOWN = "blessedTypeKnown";
 	private static final String QUICKSLOT		= "quickslotpos";
 	private static final String KEPT_LOST       = "kept_lost";
 	private static final String CUSTOM_NOTE_ID = "custom_note_id";
@@ -588,8 +588,8 @@ public class Item implements Bundlable {
 		bundle.put( QUANTITY, quantity );
 		bundle.put( LEVEL, level );
 		bundle.put( LEVEL_KNOWN, levelKnown );
-		bundle.put( CURSED, cursed );
-		bundle.put( CURSED_KNOWN, cursedKnown );
+		bundle.put(BLESSED_TYPE, blessedType);
+		bundle.put(BLESSED_TYPE_KNOWN, blessedTypeKnown);
 		if (Dungeon.quickslot.contains(this)) {
 			bundle.put( QUICKSLOT, Dungeon.quickslot.getSlot(this) );
 		}
@@ -601,7 +601,7 @@ public class Item implements Bundlable {
 	public void restoreFromBundle( Bundle bundle ) {
 		quantity	= bundle.getInt( QUANTITY );
 		levelKnown	= bundle.getBoolean( LEVEL_KNOWN );
-		cursedKnown	= bundle.getBoolean( CURSED_KNOWN );
+		blessedTypeKnown = bundle.getBoolean(BLESSED_TYPE_KNOWN);
 		
 		int level = bundle.getInt( LEVEL );
 		if (level > 0) {
@@ -610,7 +610,10 @@ public class Item implements Bundlable {
 			degrade( -level );
 		}
 		
-		cursed	= bundle.getBoolean( CURSED );
+		blessedType = bundle.getEnum(BLESSED_TYPE,BlessedType.class);
+        if (blessedType == null) {
+            blessedType = BlessedType.NORMAL;
+        }
 
 		//only want to populate slot on first load.
 		if (Dungeon.hero == null) {
@@ -717,4 +720,16 @@ public class Item implements Bundlable {
 			return Messages.get(Item.class, "prompt");
 		}
 	};
+
+    public  enum BlessedType{
+        HOLY,
+        BLESSED,
+        NORMAL,
+        CURSED;
+        final String type;
+        private BlessedType() {
+            type = name().toLowerCase();
+        }
+
+    }
 }

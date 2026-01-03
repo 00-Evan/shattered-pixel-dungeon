@@ -41,6 +41,8 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class WandOfDisintegration extends DamageWand {
 
 	{
@@ -60,7 +62,7 @@ public class WandOfDisintegration extends DamageWand {
 	
 	@Override
 	public int targetingPos(Hero user, int dst) {
-		if (!cursed || !cursedKnown) {
+		if (blessedType != CURSED || !blessedTypeKnown) {
 			return dst;
 		} else {
 			return super.targetingPos(user, dst);

@@ -57,6 +57,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class Heap implements Bundlable {
 	
 	public enum Type {
@@ -116,9 +118,9 @@ public class Heap implements Bundlable {
 	
 	public Heap setHauntedIfCursed(){
 		for (Item item : items) {
-			if (item.cursed) {
+			if (item.blessedType==  CURSED) {
 				haunted = true;
-				item.cursedKnown = true;
+				item.blessedTypeKnown = true;
 				break;
 			}
 		}

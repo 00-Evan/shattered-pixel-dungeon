@@ -38,6 +38,8 @@ import com.watabou.noosa.audio.Sample;
 
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class Stylus extends Item {
 	
 	private static final float TIME_TO_INSCRIBE = 2;
@@ -86,10 +88,10 @@ public class Stylus extends Item {
 	
 	private void inscribe( Armor armor ) {
 
-		if (!armor.cursedKnown){
+		if (!armor.blessedTypeKnown){
 			GLog.w( Messages.get(this, "identify"));
 			return;
-		} else if (armor.cursed || armor.hasCurseGlyph()){
+		} else if (armor.blessedType == CURSED || armor.hasCurseGlyph()){
 			GLog.w( Messages.get(this, "cursed"));
 			return;
 		}

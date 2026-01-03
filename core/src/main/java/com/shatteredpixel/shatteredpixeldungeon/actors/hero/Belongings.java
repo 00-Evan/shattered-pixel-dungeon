@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
@@ -80,6 +79,7 @@ public class Belongings implements Iterable<Item> {
 	}
 
 	public KindOfWeapon weapon = null;
+    public KindOfWeapon secWeapon = null;
 	public Armor armor = null;
 	public Artifact artifact = null;
 	public KindofMisc misc = null;
@@ -373,7 +373,7 @@ public class Belongings implements Iterable<Item> {
 		}
 		for (Item item : backpack) {
 			if (item instanceof EquipableItem || item instanceof Wand) {
-				item.cursedKnown = true;
+				item.blessedTypeKnown = true;
 			}
 		}
 		Item.updateQuickslot();

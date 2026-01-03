@@ -50,6 +50,8 @@ import com.watabou.noosa.audio.Sample;
 
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class WndBlacksmith extends Window {
 
 	private static final int WIDTH_P = 120;
@@ -327,7 +329,7 @@ public class WndBlacksmith extends Window {
 
 			@Override
 			public boolean itemSelectable(Item item) {
-				return item.isIdentified() && !item.cursed && item.isUpgradable();
+				return item.isIdentified() && item.blessedType != CURSED && item.isUpgradable();
 			}
 
 			@Override
@@ -374,7 +376,7 @@ public class WndBlacksmith extends Window {
 		@Override
 		public boolean itemSelectable(Item item) {
 			return item.isUpgradable()
-					&& item.isIdentified() && !item.cursed
+					&& item.isIdentified() && item.blessedType != CURSED
 					&& ((item instanceof MeleeWeapon && !((Weapon) item).enchantHardened)
 					|| (item instanceof Armor && !((Armor) item).glyphHardened));
 		}
@@ -419,7 +421,7 @@ public class WndBlacksmith extends Window {
 		public boolean itemSelectable(Item item) {
 			return item.isUpgradable()
 					&& item.isIdentified()
-					&& !item.cursed
+					&& item.blessedType != CURSED
 					&& item.level() < 2;
 		}
 

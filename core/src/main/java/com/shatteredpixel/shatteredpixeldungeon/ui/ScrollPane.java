@@ -47,7 +47,7 @@ public class ScrollPane extends Component {
 	protected Signal.Listener<KeyEvent> keyListener;
 	protected Component content;
 	protected ColorBlock thumb;
-
+    protected boolean thumbVisble = true;
 	private float keyScroll = 0;
 
 	public ScrollPane( Component content ) {
@@ -127,9 +127,16 @@ public class ScrollPane extends Component {
 		add( controller );
 
 		thumb = new ColorBlock( 1, 1, THUMB_COLOR );
-		thumb.am = THUMB_ALPHA;
+		thumb.am = thumbVisble ? THUMB_ALPHA : 0;
 		add( thumb );
 	}
+
+    public void disableThumb() {
+        thumbVisble = false;
+    }
+    public void enableThumb() {
+        thumbVisble = true;
+    }
 
 	@Override
 	protected void layout() {
@@ -183,7 +190,7 @@ public class ScrollPane extends Component {
 			if (dragging) {
 
 				dragging = false;
-				thumb.am = THUMB_ALPHA;
+				thumb.am = thumbVisble ? THUMB_ALPHA : 0;
 
 			} else {
 
@@ -206,7 +213,7 @@ public class ScrollPane extends Component {
 
 				dragging = true;
 				lastPos.set( event.current );
-				thumb.am = 1;
+				thumb.am = thumbVisble ? 1 : 0;
 
 			}
 		}

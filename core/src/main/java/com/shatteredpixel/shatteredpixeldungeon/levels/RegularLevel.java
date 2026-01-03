@@ -66,6 +66,8 @@ import com.watabou.utils.Random;
 
 import java.util.*;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public abstract class RegularLevel extends Level {
 
     private static HashMap<Document, Dungeon.LimitedDrops> limitedDocs = new HashMap<>();
@@ -511,7 +513,7 @@ public abstract class RegularLevel extends Level {
 
         Random.pushGenerator(Random.Long());
         DriedRose rose = Dungeon.hero.belongings.getItem(DriedRose.class);
-        if (rose != null && rose.isIdentified() && !rose.cursed && Ghost.Quest.completed()) {
+        if (rose != null && rose.isIdentified() && rose.blessedType!=CURSED && Ghost.Quest.completed()) {
             //aim to drop 1 petal every 2 floors
             int petalsNeeded = (int) Math.ceil((float) ((Dungeon.depth / 2) - rose.droppedPetals) / 3);
 

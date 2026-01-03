@@ -80,11 +80,13 @@ public class InventoryPane extends Component {
 
 	private ArrayList<BagButton> bags;
 
-	public static final int WIDTH = 187;
-	public static final int HEIGHT = 82;
+	public static final int WIDTH = 187-1-17;
+	public static final int HEIGHT = 82+24+1+24;
 
 	private static final int SLOT_WIDTH = 17;
 	private static final int SLOT_HEIGHT = 24;
+
+    private static final int SLOT_NUM=36;
 
 	private WndBag.ItemSelector selector;
 
@@ -153,7 +155,7 @@ public class InventoryPane extends Component {
 		};
 
 		equipped = new ArrayList<>();
-		for (int i = 0; i < 5; i++){
+		for (int i = 0; i < 6; i++){
 			InventorySlot btn = new InventoryPaneSlot(null);
 			equipped.add(btn);
 			add(btn);
@@ -176,7 +178,7 @@ public class InventoryPane extends Component {
 		add(promptTxt);
 
 		bagItems = new ArrayList<>();
-		for (int i = 0; i < 20; i++){
+		for (int i = 0; i < SLOT_NUM; i++){
 			InventorySlot btn = new InventoryPaneSlot(null);
 			bagItems.add(btn);
 			add(btn);
@@ -297,11 +299,13 @@ public class InventoryPane extends Component {
 			lastBag = stuff.backpack;
 		}
 
-		equipped.get(0).item(stuff.weapon == null ? new WndBag.Placeholder( ItemSpriteSheet.WEAPON_HOLDER ) : stuff.weapon);
-		equipped.get(1).item(stuff.armor == null ? new WndBag.Placeholder( ItemSpriteSheet.ARMOR_HOLDER ) : stuff.armor);
-		equipped.get(2).item(stuff.artifact == null ? new WndBag.Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) : stuff.artifact);
-		equipped.get(3).item(stuff.misc == null ? new WndBag.Placeholder( ItemSpriteSheet.SOMETHING ) : stuff.misc);
-		equipped.get(4).item(stuff.ring == null ? new WndBag.Placeholder( ItemSpriteSheet.RING_HOLDER ) : stuff.ring);
+        int eqi=0;
+		equipped.get(eqi++).item(stuff.weapon == null ? new WndBag.Placeholder( ItemSpriteSheet.WEAPON_HOLDER ) : stuff.weapon);
+        equipped.get(eqi++).item(stuff.secWeapon == null ? new WndBag.Placeholder( ItemSpriteSheet.GUN_HOLDER ) : stuff.secWeapon);
+        equipped.get(eqi++).item(stuff.armor == null ? new WndBag.Placeholder( ItemSpriteSheet.ARMOR_HOLDER ) : stuff.armor);
+		equipped.get(eqi++).item(stuff.artifact == null ? new WndBag.Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) : stuff.artifact);
+		equipped.get(eqi++).item(stuff.misc == null ? new WndBag.Placeholder( ItemSpriteSheet.SOMETHING ) : stuff.misc);
+		equipped.get(eqi++).item(stuff.ring == null ? new WndBag.Placeholder( ItemSpriteSheet.RING_HOLDER ) : stuff.ring);
 
 		ArrayList<Item> items = (ArrayList<Item>) lastBag.items.clone();
 
@@ -310,7 +314,7 @@ public class InventoryPane extends Component {
 //		}
 
 		int j = 0;
-		for (int i = 0; i < 20; i++){
+		for (int i = 0; i < SLOT_NUM; i++){
 			if (i == 0 && lastBag != stuff.backpack){
 				bagItems.get(i).item(lastBag);
 				continue;

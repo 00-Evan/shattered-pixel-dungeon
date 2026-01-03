@@ -135,8 +135,20 @@ public class Food extends Item {
 	public boolean isIdentified() {
 		return true;
 	}
-	
-	@Override
+
+    @Override
+    public String desc() {
+        String desc= super.desc();
+        desc+=switch (blessedType){
+            default -> "";
+            case BLESSED -> "\n\n" + Messages.get(Food.class, "blessed");
+            case HOLY -> "\n\n" + Messages.get(Food.class, "holy");
+            case CURSED -> "\n\n" + Messages.get(Food.class, "cursed");
+        };
+        return desc;
+    }
+
+    @Override
 	public int value() {
 		return 10 * quantity;
 	}

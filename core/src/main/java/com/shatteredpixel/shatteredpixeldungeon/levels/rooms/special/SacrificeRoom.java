@@ -35,6 +35,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.*;
+
 public class SacrificeRoom extends SpecialRoom {
 
 	@Override
@@ -94,14 +96,18 @@ public class SacrificeRoom extends SpecialRoom {
 		Weapon.Enchantment curse = Weapon.Enchantment.randomCurse();
 
 		//if it isn't already cursed, give it a free upgrade
-		if (!prize.cursed){
+		if (prize.blessedType != CURSED){
 			prize.upgrade();
 			//curse the weapon, unless it has a glyph
 			if (!prize.hasGoodEnchant()){
 				prize.enchant(curse);
 			}
 		}
-		prize.cursed = prize.cursedKnown = true;
+		prize.blessedType = NORMAL;
+        if(Random.Float() <0.07f){
+            prize.blessedType = BLESSED;
+        }
+        prize.blessedTypeKnown = true;
 
 		return prize;
 	}

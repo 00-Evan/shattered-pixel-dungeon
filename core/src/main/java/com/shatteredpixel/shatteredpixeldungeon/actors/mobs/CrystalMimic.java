@@ -47,6 +47,8 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.NORMAL;
+
 public class CrystalMimic extends Mimic {
 
 	{
@@ -177,8 +179,8 @@ public class CrystalMimic extends Mimic {
 	protected void generatePrize( boolean useDecks ) {
 		//Crystal mimic already contains a prize item. Just guarantee it isn't cursed.
 		for (Item i : items){
-			i.cursed = false;
-			i.cursedKnown = true;
+			i.blessedType = NORMAL;
+			i.blessedTypeKnown = true;
 		}
 	}
 

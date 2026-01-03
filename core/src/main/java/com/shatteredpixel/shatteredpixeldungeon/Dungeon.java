@@ -179,7 +179,7 @@ public class Dungeon {
 
 	}
 
-	public static int challenges;
+	public static long challenges;
 	public static int mobsToChampion;
 
 	public static Hero hero;
@@ -286,7 +286,7 @@ public class Dungeon {
 		GamesInProgress.selectedClass.initHero( hero );
 	}
 
-	public static boolean isChallenged( int mask ) {
+	public static boolean isChallenged( long mask ) {
 		return (challenges & mask) != 0;
 	}
 

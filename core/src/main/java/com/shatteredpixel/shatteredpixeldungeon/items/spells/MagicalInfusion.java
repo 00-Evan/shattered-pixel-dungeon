@@ -41,6 +41,8 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndUpgrade;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class MagicalInfusion extends InventorySpell {
 	
 	{
@@ -92,10 +94,10 @@ public class MagicalInfusion extends InventorySpell {
 		} else if (item instanceof Armor && ((Armor) item).glyph != null) {
 			item = ((Armor) item).upgrade(true);
 		} else {
-			boolean wasCursed = item.cursed;
+			BlessedType blessedType = item.blessedType;
 			boolean wasCurseInfused = item instanceof Wand && ((Wand) item).curseInfusionBonus;
 			item = item.upgrade();
-			if (wasCursed) item.cursed = true;
+			if (blessedType == CURSED) item.blessedType = CURSED;
 			if (wasCurseInfused) ((Wand) item).curseInfusionBonus = true;
 		}
 

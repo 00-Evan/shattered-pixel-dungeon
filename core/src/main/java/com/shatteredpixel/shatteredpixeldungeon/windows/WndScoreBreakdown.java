@@ -48,42 +48,33 @@ public class WndScoreBreakdown extends Window {
 		float pos = title.bottom()+2;
 
 		NumberFormat num = NumberFormat.getInstance(Messages.locale());
-		if (Dungeon.initialVersion > ShatteredPixelDungeon.v1_2_3) {
-			pos = statSlot(this, Messages.get(this, "progress_title"),
+
+        pos = statSlot(this, Messages.get(this, "progress_title"),
 					num.format(Statistics.progressScore), pos, Statistics.progressScore >= 50_000);
-			pos = addInfo(this, Messages.get(this, "progress_desc"), pos);
-			pos = statSlot(this, Messages.get(this, "treasure_title"),
+        pos = addInfo(this, Messages.get(this, "progress_desc"), pos);
+        pos = statSlot(this, Messages.get(this, "treasure_title"),
 					num.format(Statistics.treasureScore), pos, Statistics.treasureScore >= 20_000);
-			pos = addInfo(this, Messages.get(this, "treasure_desc"), pos);
-			pos = statSlot(this, Messages.get(this, "explore_title"),
+        pos = addInfo(this, Messages.get(this, "treasure_desc"), pos);
+        pos = statSlot(this, Messages.get(this, "explore_title"),
 					num.format(Statistics.exploreScore), pos, Statistics.exploreScore >= 20_000);
-			pos = addInfo(this, Messages.get(this, "explore_desc"), pos);
-			pos = statSlot(this, Messages.get(this, "bosses_title"),
+        pos = addInfo(this, Messages.get(this, "explore_desc"), pos);
+        pos = statSlot(this, Messages.get(this, "bosses_title"),
 					num.format(Statistics.totalBossScore), pos, Statistics.totalBossScore >= 15_000);
-			pos = addInfo(this, Messages.get(this, "bosses_desc"), pos);
-			pos = statSlot(this, Messages.get(this, "quests_title"),
+        pos = addInfo(this, Messages.get(this, "bosses_desc"), pos);
+        pos = statSlot(this, Messages.get(this, "quests_title"),
 					num.format(Statistics.totalQuestScore), pos, Statistics.totalQuestScore >= 10_000);
-			pos = addInfo(this, Messages.get(this, "quests_desc"), pos);
-		} else {
-			pos = statSlot(this, Messages.get(this, "progress_title"),
-					num.format(Statistics.progressScore), pos, Statistics.progressScore >= 78_000);
-			pos = addInfo(this, Messages.get(this, "progress_desc"), pos);
-			pos = statSlot(this, Messages.get(this, "treasure_title"),
-					num.format(Statistics.treasureScore), pos, Statistics.treasureScore >= 30_000);
-			pos = addInfo(this, Messages.get(this, "treasure_desc_old"), pos);
-		}
+        pos = addInfo(this, Messages.get(this, "quests_desc"), pos);
+
 
 		if (Statistics.winMultiplier > 1) {
 			pos = statSlot(this, Messages.get(this, "win_multiplier"), Messages.decimalFormat("#.##", Statistics.winMultiplier) + "x", pos, false);
 		}
-		if (Statistics.chalMultiplier > 1) {
+		if (Statistics.chalMultiplier > 1 || Statistics.chalMultiplier == 0) {
 			pos = statSlot(this, Messages.get(this, "challenge_multiplier"), Messages.decimalFormat("#.##", Statistics.chalMultiplier) + "x", pos, false);
 		}
 		pos = statSlot(this, Messages.get(this, "total"), num.format(Statistics.totalScore), pos, false);
 
-		if (Dungeon.initialVersion <= ShatteredPixelDungeon.v1_2_3){
-			pos = addInfo(this, Messages.get(this, "old_score_desc"), pos);
-		}
+
 
 		resize(WIDTH, (int)pos);
 

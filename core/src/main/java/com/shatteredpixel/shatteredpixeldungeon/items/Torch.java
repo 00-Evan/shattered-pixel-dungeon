@@ -26,7 +26,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
@@ -68,8 +70,15 @@ public class Torch extends Item {
 			
 			detach( hero.belongings.backpack );
 			Catalog.countUse(getClass());
-			
-			Buff.affect(hero, Light.class, Light.DURATION);
+
+            float duration=Light.DURATION;
+            duration*=switch (blessedType){
+                case HOLY -> 2.0f;
+                case BLESSED -> 1.2f;
+                case NORMAL -> 1.0f;
+                case CURSED -> 0.8f;
+            };
+			Buff.affect(hero, Light.class, duration);
 			Sample.INSTANCE.play(Assets.Sounds.BURNING);
 			
 			Emitter emitter = hero.sprite.centerEmitter();
@@ -77,8 +86,25 @@ public class Torch extends Item {
 			
 		}
 	}
-	
-	@Override
+
+    @Override
+    public String info() {
+        String info= super.info();
+        info+=switch (blessedType){
+            default -> "";
+            case HOLY -> "\n\n" + Messages.get(Torch.class, "holy");
+            case BLESSED -> "\n\n" + Messages.get(Torch.class, "blessed");
+            case CURSED -> "\n\n" + Messages.get(Torch.class, "cursed");
+        };
+        return info;
+    }
+
+    @Override
+    public boolean isSimilar(Item item) {
+        return super.isSimilar(item) && this.blessedType == item.blessedType;
+    }
+
+    @Override
 	public boolean isUpgradable() {
 		return false;
 	}

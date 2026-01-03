@@ -82,4 +82,15 @@ public class ParchmentScrap extends Trinket {
 				return 0f;
 		}
 	}
+
+    public static float blessChanceMultiplier(){return blessChanceMultiplier(trinketLevel(ParchmentScrap.class));}
+    public static float blessChanceMultiplier( int level ){
+        return switch (level){
+            default ->  1;
+            case 0->2;
+            case 1->4;
+            case 2->7;
+            case 3->10;
+        };
+    }
 }

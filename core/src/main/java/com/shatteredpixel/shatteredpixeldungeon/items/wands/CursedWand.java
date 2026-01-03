@@ -116,6 +116,8 @@ import com.watabou.utils.Random;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 //helper class to contain all the cursed wand zapping logic, so the main wand class doesn't get huge.
 public class CursedWand {
 
@@ -1169,9 +1171,10 @@ public class CursedWand {
 			do {
 				result = Generator.randomUsingDefaults(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
 						Generator.Category.RING, Generator.Category.ARTIFACT));
-			} while (result.cursed);
+			} while (result.blessedType == CURSED);
 			if (result.isUpgradable()) result.upgrade();
-			result.cursed = result.cursedKnown = true;
+			result.blessedType = CURSED;
+            result.blessedTypeKnown = true;
 			if (origin instanceof Wand){
 				GLog.w( Messages.get(CursedWand.class, "transmogrify_wand") );
 			} else {

@@ -55,7 +55,7 @@ abstract public class ClassArmor extends Armor {
 	
 	{
 		levelKnown = true;
-		cursedKnown = true;
+		blessedTypeKnown = true;
 		defaultAction = AC_ABILITY;
 
 		bones = false;
@@ -128,14 +128,14 @@ abstract public class ClassArmor extends Armor {
 			classArmor.seal = armor.seal;
 		}
 		classArmor.glyphHardened = armor.glyphHardened;
-		classArmor.cursed = armor.cursed;
+		classArmor.blessedType = armor.blessedType;
 		classArmor.curseInfusionBonus = armor.curseInfusionBonus;
 		classArmor.masteryPotionBonus = armor.masteryPotionBonus;
-		if (armor.levelKnown && armor.cursedKnown) {
+		if (armor.levelKnown && armor.blessedTypeKnown) {
 			classArmor.identify();
 		} else {
 			classArmor.levelKnown = armor.levelKnown;
-			classArmor.cursedKnown = true;
+			classArmor.blessedTypeKnown = true;
 		}
 
 		classArmor.charge = 50;
@@ -240,7 +240,7 @@ abstract public class ClassArmor extends Armor {
 								level(armor.trueLevel());
 								tier = armor.tier;
 								augment = armor.augment;
-								cursed = armor.cursed;
+								blessedType = armor.blessedType;
 								curseInfusionBonus = armor.curseInfusionBonus;
 								masteryPotionBonus = armor.masteryPotionBonus;
 								if (armor.checkSeal() != null) {
@@ -269,11 +269,11 @@ abstract public class ClassArmor extends Armor {
 									inscribe(armor.glyph);
 								}
 
-								if (armor.levelKnown && armor.cursedKnown) {
+								if (armor.levelKnown && armor.blessedTypeKnown) {
 									identify();
 								} else {
 									levelKnown = armor.levelKnown;
-									cursedKnown = true;
+									blessedTypeKnown = true;
 								}
 
 								GLog.p( Messages.get(ClassArmor.class, "transfer_complete") );

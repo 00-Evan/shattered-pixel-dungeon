@@ -24,7 +24,9 @@ package com.shatteredpixel.shatteredpixeldungeon.items.trinkets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Bundle;
 
@@ -43,7 +45,26 @@ public abstract class Trinket extends Item {
 		return false;
 	}
 
-	protected abstract int upgradeEnergyCost();
+    @Override
+    public Item upgrade() {
+         super.upgrade();
+         if(trueLevel()>3)this.level(3);
+         return this;
+    }
+
+    @Override
+    public int buffedLvl() {
+        int lvl= super.buffedLvl();
+        lvl+=switch (blessedType){
+            default -> 0;
+            case BLESSED -> 1;
+            case HOLY -> 2;
+        };
+
+        return Math.min(lvl, 3);
+    }
+
+    protected abstract int upgradeEnergyCost();
 
 	protected static int trinketLevel(Class<? extends Trinket> trinketType ){
 		if (Dungeon.hero == null || Dungeon.hero.belongings == null){
@@ -63,6 +84,12 @@ public abstract class Trinket extends Item {
 	public String info() {
 		String info = super.info();
 		info += "\n\n" + statsDesc();
+        info+=switch (blessedType){
+            default -> "";
+            case HOLY -> "\n\n" + Messages.get(Trinket.class, "holy");
+            case BLESSED -> "\n\n" + Messages.get(Trinket.class, "blessed");
+            case CURSED -> "\n\n" + Messages.get(Trinket.class, "cursed");
+        };
 		return info;
 	}
 
@@ -75,7 +102,7 @@ public abstract class Trinket extends Item {
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
-		levelKnown = cursedKnown = true; //for pre-2.5 saves
+		levelKnown = blessedTypeKnown = true; //for pre-2.5 saves
 	}
 
 	public static class PlaceHolder extends Trinket {

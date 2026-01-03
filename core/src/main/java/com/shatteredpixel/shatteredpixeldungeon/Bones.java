@@ -38,6 +38,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class Bones {
 
 	private static final String BONES_FILE	= "bones.dat";
@@ -208,8 +210,8 @@ public class Bones {
 						Artifact artifact = Reflection.newInstance(((Artifact)item).getClass());
 						
 						if (artifact != null){
-							artifact.cursed = true;
-							artifact.cursedKnown = true;
+							artifact.blessedType = CURSED;
+							artifact.blessedTypeKnown = true;
 						}
 
 						item = artifact;
@@ -221,8 +223,8 @@ public class Bones {
 
 				if (item != null) {
 					if (item.isUpgradable() && !(item instanceof MissileWeapon)) {
-						item.cursed = true;
-						item.cursedKnown = true;
+						item.blessedType = CURSED;
+						item.blessedTypeKnown = true;
 					}
 
 					if (item.isUpgradable()) {

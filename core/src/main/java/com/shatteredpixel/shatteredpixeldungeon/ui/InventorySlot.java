@@ -32,11 +32,16 @@ import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.audio.Sample;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class InventorySlot extends ItemSlot {
 
 	private static final int NORMAL		= 0x9953564D;
 	private static final int EQUIPPED	= 0x9991938C;
 
+    public static final int BLESSED	= 0x99EFD351;
+
+    public  static final int HOLY       = 0x99FFCD01;
 	private ColorBlock bg;
 
 	public InventorySlot( Item item ) {
@@ -81,20 +86,25 @@ public class InventorySlot extends ItemSlot {
 					item == Dungeon.hero.belongings.armor ||
 					item == Dungeon.hero.belongings.artifact ||
 					item == Dungeon.hero.belongings.misc ||
-					item == Dungeon.hero.belongings.ring /*||
-					item == Dungeon.hero.belongings.secondWep*/;
+					item == Dungeon.hero.belongings.ring ;
 
-			bg.texture( TextureCache.createSolid( equipped ? EQUIPPED : NORMAL ) );
+            int color =  equipped ? EQUIPPED : NORMAL;
+            if(item.blessedType == Item.BlessedType.BLESSED && item.blessedTypeKnown){
+                color = BLESSED;
+            }else if(item.blessedType == Item.BlessedType.HOLY && item.blessedTypeKnown){
+                color = HOLY;
+            }
+			bg.texture( TextureCache.createSolid( color ) );
 			bg.resetColor();
-			if (item.cursed && item.cursedKnown) {
+			if (item.blessedType== CURSED && item.blessedTypeKnown) {
 				bg.ra = +0.3f;
 				bg.ga = -0.15f;
 				bg.ba = -0.15f;
-			} else if (!item.isIdentified()) {
-				if ((item instanceof EquipableItem || item instanceof Wand) && item.cursedKnown){
+			} else if (!item.isIdentified() ) {
+				if ((item instanceof EquipableItem || item instanceof Wand) &&  item.blessedType == Item.BlessedType.NORMAL && item.blessedTypeKnown){
 					bg.ba = +0.3f;
 					bg.ra = -0.1f;
-				} else {
+				} else if(!item.blessedTypeKnown) {
 					bg.ra = +0.35f;
 					bg.ba = +0.35f;
 				}

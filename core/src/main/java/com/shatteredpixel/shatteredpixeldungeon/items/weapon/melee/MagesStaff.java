@@ -59,6 +59,9 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.NORMAL;
+
 public class MagesStaff extends MeleeWeapon {
 
 	private Wand wand;
@@ -95,7 +98,7 @@ public class MagesStaff extends MeleeWeapon {
 	public MagesStaff(Wand wand){
 		this();
 		wand.identify();
-		wand.cursed = false;
+		wand.blessedType = NORMAL;
 		this.wand = wand;
 		updateWand(false);
 		wand.curCharges = wand.maxCharges;
@@ -148,8 +151,8 @@ public class MagesStaff extends MeleeWeapon {
 				return;
 			}
 
-			if (cursed || hasCurseEnchant()) wand.cursed = true;
-			else                             wand.cursed = false;
+			if (blessedType==CURSED || hasCurseEnchant()) wand.blessedType = CURSED;
+			else                             wand.blessedType = NORMAL;
 			wand.execute(hero, AC_ZAP);
 		}
 	}
@@ -258,9 +261,10 @@ public class MagesStaff extends MeleeWeapon {
 			applyWandChargeBuff(Dungeon.hero);
 		}
 
-		if (wand.cursed && (!this.cursed || !this.hasCurseEnchant())){
+		if (wand.blessedType==CURSED && (this.blessedType!=CURSED || !this.hasCurseEnchant())){
 			equipCursed(Dungeon.hero);
-			this.cursed = this.cursedKnown = true;
+			this.blessedType =  CURSED;
+            this.blessedTypeKnown = true;
 			enchant(Enchantment.randomCurse());
 		}
 
@@ -340,7 +344,7 @@ public class MagesStaff extends MeleeWeapon {
 			return super.name();
 		} else {
 			String name = Messages.get(wand, "staff_name");
-			return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.name( name ) : name;
+			return enchantment != null && (blessedTypeKnown || !enchantment.curse()) ? enchantment.name( name ) : name;
 		}
 	}
 
@@ -350,7 +354,7 @@ public class MagesStaff extends MeleeWeapon {
 
 		if (wand != null){
 			info += "\n\n" + Messages.get(this, "has_wand", Messages.get(wand, "name"));
-			if ((!cursed && !hasCurseEnchant()) || !cursedKnown)    info += " " + wand.statsDesc();
+			if ((blessedType!=CURSED && !hasCurseEnchant()) || !blessedTypeKnown)    info += " " + wand.statsDesc();
 			else                                                    info += " " + Messages.get(this, "cursed_wand");
 
 			if (Dungeon.hero.subClass == HeroSubClass.BATTLEMAGE){
@@ -442,7 +446,7 @@ public class MagesStaff extends MeleeWeapon {
 						bodyText += "\n\n" + Messages.get(MagesStaff.class, "imbue_unknown", trueLevel());
 					}
 
-					if (!item.cursedKnown || item.cursed){
+					if (!item.blessedTypeKnown || item.blessedType==CURSED){
 						bodyText += "\n\n" + Messages.get(MagesStaff.class, "imbue_cursed");
 					}
 

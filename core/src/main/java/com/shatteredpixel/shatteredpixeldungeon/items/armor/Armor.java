@@ -83,51 +83,53 @@ import com.watabou.utils.Reflection;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.*;
+
 public class Armor extends EquipableItem {
 
 	protected static final String AC_DETACH       = "DETACH";
-	
+
 	public enum Augment {
 		EVASION (2f , -1f),
 		DEFENSE (-2f, 1f),
 		NONE	(0f   ,  0f);
-		
+
 		private float evasionFactor;
 		private float defenceFactor;
-		
+
 		Augment(float eva, float df){
 			evasionFactor = eva;
 			defenceFactor = df;
 		}
-		
+
 		public int evasionFactor(int level){
 			return Math.round((2 + level) * evasionFactor);
 		}
-		
+
 		public int defenseFactor(int level){
 			return Math.round((2 + level) * defenceFactor);
 		}
 	}
-	
+
 	public Augment augment = Augment.NONE;
-	
+
 	public Glyph glyph;
 	public boolean glyphHardened = false;
 	public boolean curseInfusionBonus = false;
 	public boolean masteryPotionBonus = false;
-	
+
 	protected BrokenSeal seal;
-	
+
 	public int tier;
-	
+
 	private static final int USES_TO_ID = 10;
 	private float usesLeftToID = USES_TO_ID;
 	private float availableUsesToID = USES_TO_ID/2f;
-	
+
 	public Armor( int tier ) {
 		this.tier = tier;
 	}
-	
+
 	private static final String USES_LEFT_TO_ID = "uses_left_to_id";
 	private static final String AVAILABLE_USES  = "available_uses";
 	private static final String GLYPH			= "glyph";
@@ -160,7 +162,7 @@ public class Armor extends EquipableItem {
 		curseInfusionBonus = bundle.getBoolean( CURSE_INFUSION_BONUS );
 		masteryPotionBonus = bundle.getBoolean( MASTERY_POTION_BONUS );
 		seal = (BrokenSeal)bundle.get(SEAL);
-		
+
 		augment = bundle.getEnum(AUGMENT, Augment.class);
 	}
 
@@ -231,9 +233,9 @@ public class Armor extends EquipableItem {
 
 		// 15/25% chance
 		if (hero.heroClass != HeroClass.CLERIC && hero.hasTalent(Talent.HOLY_INTUITION)
-				&& cursed && !cursedKnown
+				&& blessedType==BlessedType.CURSED && !blessedTypeKnown
 				&& Random.Int(20) < 1 + 2*hero.pointsInTalent(Talent.HOLY_INTUITION)){
-			cursedKnown = true;
+			blessedTypeKnown = true;
 			GLog.p(Messages.get(this, "curse_detected"));
 			return false;
 		}
@@ -242,15 +244,15 @@ public class Armor extends EquipableItem {
 
 		Armor oldArmor = hero.belongings.armor;
 		if (hero.belongings.armor == null || hero.belongings.armor.doUnequip( hero, true, false )) {
-			
+
 			hero.belongings.armor = this;
-			
-			cursedKnown = true;
-			if (cursed) {
+
+			blessedTypeKnown = true;
+			if (blessedType==BlessedType.CURSED) {
 				equipCursed( hero );
 				GLog.n( Messages.get(Armor.class, "equip_cursed") );
 			}
-			
+
 			((HeroSprite)hero.sprite).updateArmor();
 			activate(hero);
 			Talent.onItemEquipped(hero, this);
@@ -258,7 +260,7 @@ public class Armor extends EquipableItem {
 
 			if (Dungeon.hero.heroClass == HeroClass.WARRIOR && checkSeal() == null){
 				BrokenSeal seal = oldArmor != null ? oldArmor.checkSeal() : null;
-				if (seal != null && (!cursed || (seal.getGlyph() != null && seal.getGlyph().curse()))){
+				if (seal != null && (blessedType!=BlessedType.CURSED || (seal.getGlyph() != null && seal.getGlyph().curse()))){
 
 					GameScene.show(new WndOptions(new ItemSprite(ItemSpriteSheet.SEAL),
 							Messages.titleCase(seal.title()),
@@ -287,12 +289,12 @@ public class Armor extends EquipableItem {
 				hero.next();
 			}
 			return true;
-			
+
 		} else {
-			
+
 			collect( hero.belongings.backpack );
 			return false;
-			
+
 		}
 	}
 
@@ -364,7 +366,7 @@ public class Armor extends EquipableItem {
 
 		}
 	}
-	
+
 	@Override
 	public boolean isEquipped( Hero hero ) {
 		return hero != null && hero.belongings.armor() == this;
@@ -403,37 +405,37 @@ public class Armor extends EquipableItem {
 			return lvl;
 		}
 	}
-	
+
 	public float evasionFactor( Char owner, float evasion ){
-		
+
 		if (hasGlyph(Stone.class, owner) && !Stone.testingEvasion()){
 			return 0;
 		}
-		
+
 		if (owner instanceof Hero){
 			int aEnc = STRReq() - ((Hero) owner).STR();
 			if (aEnc > 0) evasion /= Math.pow(1.5, aEnc);
-			
+
 			Momentum momentum = owner.buff(Momentum.class);
 			if (momentum != null){
 				evasion += momentum.evasionBonus(((Hero) owner).lvl, Math.max(0, -aEnc));
 			}
 		}
-		
+
 		return evasion + augment.evasionFactor(buffedLvl());
 	}
-	
+
 	public float speedFactor( Char owner, float speed ){
-		
+
 		if (owner instanceof Hero) {
 			int aEnc = STRReq() - ((Hero) owner).STR();
 			if (aEnc > 0) speed /= Math.pow(1.2, aEnc);
 		}
-		
+
 		return speed;
-		
+
 	}
-	
+
 	@Override
 	public int level() {
 		int level = super.level();
@@ -442,12 +444,12 @@ public class Armor extends EquipableItem {
 		if (curseInfusionBonus) level += 1 + level/6;
 		return level;
 	}
-	
+
 	@Override
 	public Item upgrade() {
 		return upgrade( false );
 	}
-	
+
 	public Item upgrade( boolean inscribe ) {
 
 		if (inscribe){
@@ -479,15 +481,20 @@ public class Armor extends EquipableItem {
 				}
 			}
 		}
-		
-		cursed = false;
+        if (this.trueLevel() >= 7 && Random.Int(3) == 0) {
+            blessedType = BLESSED;
+        }else {
+            blessedType = NORMAL;
+        }
+
+
 
 		if (seal != null && seal.level() == 0)
 			seal.upgrade();
 
 		return super.upgrade();
 	}
-	
+
 	public int proc( Char attacker, Char defender, int damage ) {
 
 		if (defender.buff(MagicImmune.class) == null) {
@@ -529,7 +536,7 @@ public class Armor extends EquipableItem {
 			}
 			damage = Math.max(damage, 0);
 		}
-		
+
 		if (!levelKnown && defender == Dungeon.hero) {
 			float uses = Math.min( availableUsesToID, Talent.itemIDSpeedFactor(Dungeon.hero, this) );
 			availableUsesToID -= uses;
@@ -547,10 +554,10 @@ public class Armor extends EquipableItem {
 				}
 			}
 		}
-		
+
 		return damage;
 	}
-	
+
 	@Override
 	public void onHeroGainExp(float levelPercent, Hero hero) {
 		levelPercent *= Talent.itemIDSpeedFactor(hero, this);
@@ -559,26 +566,26 @@ public class Armor extends EquipableItem {
 			availableUsesToID = Math.min(USES_TO_ID/2f, availableUsesToID + levelPercent * USES_TO_ID);
 		}
 	}
-	
+
 	@Override
 	public String name() {
 		if (isEquipped(Dungeon.hero) && !hasCurseGlyph() && Dungeon.hero.buff(HolyWard.HolyArmBuff.class) != null
 			&& (Dungeon.hero.subClass != HeroSubClass.PALADIN || glyph == null)){
 				return Messages.get(HolyWard.class, "glyph_name", super.name());
 			} else {
-				return glyph != null && (cursedKnown || !glyph.curse()) ? glyph.name( super.name() ) : super.name();
+				return glyph != null && (blessedTypeKnown || !glyph.curse()) ? glyph.name( super.name() ) : super.name();
 
 		}
 	}
-	
+
 	@Override
 	public String info() {
 		String info = super.info();
-		
+
 		if (levelKnown) {
 
 			info += "\n\n" + Messages.get(Armor.class, "curr_absorb", tier, DRMin(), DRMax(), STRReq());
-			
+
 			if (Dungeon.hero != null && STRReq() > Dungeon.hero.STR()) {
 				info += " " + Messages.get(Armor.class, "too_heavy");
 			}
@@ -604,30 +611,41 @@ public class Armor extends EquipableItem {
 				&& (Dungeon.hero.subClass != HeroSubClass.PALADIN || glyph == null)){
 			info += "\n\n" + Messages.capitalize(Messages.get(Armor.class, "inscribed", Messages.get(HolyWard.class, "glyph_name", Messages.get(Glyph.class, "glyph"))));
 			info += " " + Messages.get(HolyWard.class, "glyph_desc");
-		} else if (glyph != null  && (cursedKnown || !glyph.curse())) {
+		} else if (glyph != null  && (blessedTypeKnown || !glyph.curse())) {
 			info += "\n\n" +  Messages.capitalize(Messages.get(Armor.class, "inscribed", glyph.name()));
 			if (glyphHardened) info += " " + Messages.get(Armor.class, "glyph_hardened");
 			info += " " + glyph.desc();
 		} else if (glyphHardened){
 			info += "\n\n" + Messages.get(Armor.class, "hardened_no_glyph");
 		}
-		
-		if (cursed && isEquipped( Dungeon.hero )) {
+
+		if (blessedType==CURSED && isEquipped( Dungeon.hero )) {
 			info += "\n\n" + Messages.get(Armor.class, "cursed_worn");
-		} else if (cursedKnown && cursed) {
+		} else if (blessedTypeKnown && blessedType==CURSED) {
 			info += "\n\n" + Messages.get(Armor.class, "cursed");
-		} else if (!isIdentified() && cursedKnown){
+		} else if (isIdentified() && blessedTypeKnown&&blessedType!=NORMAL){
+            info += switch (blessedType){
+                default -> "";
+                case BLESSED -> "\n\n" + Messages.get(Armor.class, "blessed");
+                case HOLY ->  "\n\n" + Messages.get(Armor.class, "holy");
+            };
+        } else if (!isIdentified() && blessedTypeKnown){
 			if (glyph != null && glyph.curse()) {
 				info += "\n\n" + Messages.get(Armor.class, "weak_cursed");
 			} else {
-				info += "\n\n" + Messages.get(Armor.class, "not_cursed");
+                info += "\n\n" + switch (blessedType){
+                    default -> "";
+                    case BLESSED ->  Messages.get(Armor.class, "blessed_known");
+                    case HOLY ->   Messages.get(Armor.class, "holy_known");
+                    case NORMAL ->  Messages.get(Armor.class, "not_cursed");
+                };
 			}
 		}
 
 		if (seal != null) {
 			info += "\n\n" + Messages.get(Armor.class, "seal_attached", seal.maxShield(tier, level()));
 		}
-		
+
 		return info;
 	}
 
@@ -664,10 +682,13 @@ public class Armor extends EquipableItem {
 			float effectRoll = Random.Float();
 			if (effectRoll < 0.3f * ParchmentScrap.curseChanceMultiplier()) {
 				inscribe(Glyph.randomCurse());
-				cursed = true;
+				blessedType = CURSED;
 			} else if (effectRoll >= 1f - (0.15f * ParchmentScrap.enchantChanceMultiplier())){
 				inscribe();
 			}
+            if(effectRoll>=1f-(0.1f*ParchmentScrap.blessChanceMultiplier())){
+                blessedType=BLESSED;
+            }
 
 		Random.popGenerator();
 
@@ -692,7 +713,7 @@ public class Armor extends EquipableItem {
 		//strength req decreases at +1,+3,+6,+10,etc.
 		return (8 + Math.round(tier * 2)) - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
 	}
-	
+
 	@Override
 	public int value() {
 		if (seal != null) return 0;
@@ -701,9 +722,16 @@ public class Armor extends EquipableItem {
 		if (hasGoodGlyph()) {
 			price *= 1.5;
 		}
-		if (cursedKnown && (cursed || hasCurseGlyph())) {
+		if (blessedTypeKnown && (blessedType==CURSED || hasCurseGlyph())) {
 			price /= 2;
 		}
+        if(blessedTypeKnown){
+            price= (int) (price* switch (blessedType) {
+                default -> 1;
+                case BLESSED->1.5;
+                case HOLY -> 2;
+            });
+        }
 		if (levelKnown && level() > 0) {
 			price *= (level() + 1);
 		}
@@ -776,12 +804,12 @@ public class Armor extends EquipableItem {
 				&& (Dungeon.hero.subClass != HeroSubClass.PALADIN || glyph == null)){
 			return HOLY;
 		} else {
-			return glyph != null && (cursedKnown || !glyph.curse()) ? glyph.glowing() : null;
+			return glyph != null && (blessedTypeKnown || !glyph.curse()) ? glyph.glowing() : null;
 		}
 	}
-	
+
 	public static abstract class Glyph implements Bundlable {
-		
+
 		public static final Class<?>[] common = new Class<?>[]{
 				Obfuscation.class, Swiftness.class, Viscosity.class, Potential.class };
 
@@ -802,7 +830,7 @@ public class Armor extends EquipableItem {
 				AntiEntropy.class, Corrosion.class, Displacement.class, Metabolism.class,
 				Multiplicity.class, Stench.class, Overgrowth.class, Bulk.class
 		};
-		
+
 		public abstract int proc( Armor armor, Char attacker, Char defender, int damage );
 
 		protected float procChanceMultiplier( Char defender ){
@@ -820,14 +848,14 @@ public class Armor extends EquipableItem {
 
 			return multi;
 		}
-		
+
 		public String name() {
 			if (!curse())
 				return name( Messages.get(this, "glyph") );
 			else
 				return name( Messages.get(Item.class, "curse"));
 		}
-		
+
 		public String name( String armorName ) {
 			return Messages.get(this, "name", armorName);
 		}
@@ -839,7 +867,7 @@ public class Armor extends EquipableItem {
 		public boolean curse() {
 			return false;
 		}
-		
+
 		@Override
 		public void restoreFromBundle( Bundle bundle ) {
 		}
@@ -847,7 +875,7 @@ public class Armor extends EquipableItem {
 		@Override
 		public void storeInBundle( Bundle bundle ) {
 		}
-		
+
 		public abstract ItemSprite.Glowing glowing();
 
 		@SuppressWarnings("unchecked")
@@ -861,7 +889,7 @@ public class Armor extends EquipableItem {
 					return randomRare( toIgnore );
 			}
 		}
-		
+
 		@SuppressWarnings("unchecked")
 		public static Glyph randomCommon( Class<? extends Glyph> ... toIgnore ){
 			ArrayList<Class<?>> glyphs = new ArrayList<>(Arrays.asList(common));
@@ -872,7 +900,7 @@ public class Armor extends EquipableItem {
 				return (Glyph) Reflection.newInstance(Random.element(glyphs));
 			}
 		}
-		
+
 		@SuppressWarnings("unchecked")
 		public static Glyph randomUncommon( Class<? extends Glyph> ... toIgnore ){
 			ArrayList<Class<?>> glyphs = new ArrayList<>(Arrays.asList(uncommon));
@@ -883,7 +911,7 @@ public class Armor extends EquipableItem {
 				return (Glyph) Reflection.newInstance(Random.element(glyphs));
 			}
 		}
-		
+
 		@SuppressWarnings("unchecked")
 		public static Glyph randomRare( Class<? extends Glyph> ... toIgnore ){
 			ArrayList<Class<?>> glyphs = new ArrayList<>(Arrays.asList(rare));
@@ -894,7 +922,7 @@ public class Armor extends EquipableItem {
 				return (Glyph) Reflection.newInstance(Random.element(glyphs));
 			}
 		}
-		
+
 		@SuppressWarnings("unchecked")
 		public static Glyph randomCurse( Class<? extends Glyph> ... toIgnore ){
 			ArrayList<Class<?>> glyphs = new ArrayList<>(Arrays.asList(curses));
@@ -905,6 +933,6 @@ public class Armor extends EquipableItem {
 				return (Glyph) Reflection.newInstance(Random.element(glyphs));
 			}
 		}
-		
+
 	}
 }

@@ -1,10 +1,11 @@
 package com.right.helveticpixeldungeon.actors.facilities
 
+import com.right.helveticpixeldungeon.items.GlassWater
 import com.right.helveticpixeldungeon.sprites.facilities.WorkTableSprite
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Katana
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword
+import com.shatteredpixel.shatteredpixeldungeon.items.Item
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet
 
 class WorkTable : Facility() {
     init {
@@ -17,9 +18,36 @@ class WorkTable : Facility() {
     }
 
     override fun onDropItem(heap: Heap): Heap {
-        val item= Katana().identify()!!
+        var item= GlassWater().identify()!!
         item.level(256)
+        heap.drop(item)
 
+        item=object : Item(){
+            init {
+                image= ItemSpriteSheet.WORKTABLE
+            }
+        }.identify()
+        heap.drop(item)
+
+        item=object : Item(){
+            init {
+                image= ItemSpriteSheet.WOOD_COOKIE
+            }
+        }.identify()
+        heap.drop(item)
+
+        item=object : Item(){
+            init {
+                image= ItemSpriteSheet.SANDWICH
+            }
+        }.identify()
+        heap.drop(item)
+
+        item=object : Item(){
+            init {
+                image= ItemSpriteSheet.GLASS
+            }
+        }.identify()
         heap.drop(item)
         return heap
     }

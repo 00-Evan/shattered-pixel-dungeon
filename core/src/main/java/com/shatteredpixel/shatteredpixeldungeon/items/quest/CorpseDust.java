@@ -43,13 +43,15 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class CorpseDust extends Item {
 	
 	{
 		image = ItemSpriteSheet.DUST;
 		
-		cursed = true;
-		cursedKnown = true;
+		blessedType = CURSED;
+		blessedTypeKnown = true;
 		
 		unique = true;
 	}

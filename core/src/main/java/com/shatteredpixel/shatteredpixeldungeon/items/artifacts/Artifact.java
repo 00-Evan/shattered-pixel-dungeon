@@ -38,6 +38,8 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.*;
+
 public class Artifact extends KindofMisc {
 
 	protected Buff passiveBuff;
@@ -173,13 +175,26 @@ public class Artifact extends KindofMisc {
 
 	@Override
 	public String info() {
-		if (cursed && cursedKnown && !isEquipped( Dungeon.hero )) {
+		if (blessedType==CURSED && blessedTypeKnown && !isEquipped( Dungeon.hero )) {
 			return super.info() + "\n\n" + Messages.get(Artifact.class, "curse_known");
 			
-		} else if (!isIdentified() && cursedKnown && !isEquipped( Dungeon.hero)) {
-			return super.info() + "\n\n" + Messages.get(Artifact.class, "not_cursed");
+		} else if (!isIdentified() && blessedTypeKnown && !isEquipped( Dungeon.hero)) {
+
+			return super.info() + switch (blessedType){
+                default -> "";
+                case HOLY -> "\n\n" +  Messages.get(Artifact.class, "holy_known");
+                case BLESSED -> "\n\n" +   Messages.get(Artifact.class, "blessed_known");
+                case NORMAL -> "\n\n" + Messages.get(Artifact.class, "not_cursed");
+            };
 			
-		} else {
+		} else if (isIdentified() && blessedTypeKnown&&blessedType!=NORMAL){
+            return super.info() +  switch (blessedType){
+                default -> "";
+                case HOLY -> "\n\n" +  Messages.get(Artifact.class, "holy");
+                case BLESSED -> "\n\n" +   Messages.get(Artifact.class, "blessed");
+                case NORMAL -> "\n\n" + Messages.get(Artifact.class, "not_cursed");
+            };
+        } else {
 			return super.info();
 			
 		}
@@ -189,7 +204,7 @@ public class Artifact extends KindofMisc {
 	public String status() {
 		
 		//if the artifact isn't IDed, or is cursed, don't display anything
-		if (!isIdentified() || cursed){
+		if (!isIdentified() || blessedType==CURSED){
 			return null;
 		}
 
@@ -220,8 +235,12 @@ public class Artifact extends KindofMisc {
 		
 		//30% chance to be cursed
 		if (Random.Float() < 0.3f) {
-			cursed = true;
+			blessedType = CURSED;
 		}
+        //5% chance to be blessed
+        if(Random.Float() < 0.05f) {
+            blessedType=BLESSED;
+        }
 		return this;
 	}
 
@@ -230,9 +249,16 @@ public class Artifact extends KindofMisc {
 		int price = 100;
 		if (level() > 0)
 			price += 20*visiblyUpgraded();
-		if (cursed && cursedKnown) {
+		if (blessedType==CURSED && blessedTypeKnown) {
 			price /= 2;
 		}
+        if(blessedTypeKnown){
+            price= (int) (price* switch (blessedType) {
+                default -> 1;
+                case BLESSED->1.5;
+                case HOLY -> 2;
+            });
+        }
 		if (price < 1) {
 			price = 1;
 		}
@@ -269,7 +295,7 @@ public class Artifact extends KindofMisc {
 		}
 
 		public boolean isCursed() {
-			return target.buff(MagicImmune.class) == null && cursed;
+			return target.buff(MagicImmune.class) == null && blessedType==CURSED;
 		}
 
 		public void charge(Hero target, float amount){

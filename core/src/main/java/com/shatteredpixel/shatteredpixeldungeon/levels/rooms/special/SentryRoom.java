@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -56,6 +55,9 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
+
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.BLESSED;
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.NORMAL;
 
 public class SentryRoom extends SpecialRoom {
 
@@ -197,8 +199,11 @@ public class SentryRoom extends SpecialRoom {
 				((Armor) prize).inscribe(null);
 			}
 		}
-		prize.cursed = false;
-		prize.cursedKnown = true;
+		prize.blessedType = NORMAL;
+        if(Random.Float() <0.07f){
+            prize.blessedType = BLESSED;
+        }
+		prize.blessedTypeKnown = true;
 
 		//33% chance for an extra update.
 		if (Random.Int(3) == 0){

@@ -21,12 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CrystalSpire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
@@ -253,7 +248,7 @@ public class WndJournal extends WndTabbed {
 			list.addTitle(Document.ADVENTURERS_GUIDE.title());
 
 			for (String page : Document.ADVENTURERS_GUIDE.pageNames()){
-				boolean found = Document.ADVENTURERS_GUIDE.isPageFound(page);
+				boolean found = Document.ADVENTURERS_GUIDE.isPageFound(page)|| SPDSettings.unlockedAll();
 				ScrollingListPane.ListItem item = new ScrollingListPane.ListItem(
 						Document.ADVENTURERS_GUIDE.pageSprite(page),
 						null,
@@ -321,7 +316,7 @@ public class WndJournal extends WndTabbed {
 						updateList();
 					}
 				};
-				if (Document.ALCHEMY_GUIDE.isPageFound(i)) {
+				if (Document.ALCHEMY_GUIDE.isPageFound(i)|| SPDSettings.unlockedAll()) {
 					pageButtons[i].icon(new ItemSprite(sprites[i], null));
 				} else {
 					pageButtons[i].icon(new ItemSprite(ItemSpriteSheet.SOMETHING, null));
@@ -695,7 +690,7 @@ public class WndJournal extends WndTabbed {
 					}
 					for (String page : doc.pageNames()){
 						totalItems++;
-						if (doc.isPageFound(page)){
+						if (doc.isPageFound(page)|| SPDSettings.unlockedAll()){
 							totalSeen++;
 						}
 					}
@@ -709,7 +704,7 @@ public class WndJournal extends WndTabbed {
 
 					for (String page : doc.pageNames()){
 						totalItems++;
-						if (doc.isPageFound(page)){
+						if (doc.isPageFound(page)|| SPDSettings.unlockedAll()){
 							totalSeen++;
 						}
 					}
@@ -721,7 +716,7 @@ public class WndJournal extends WndTabbed {
 					totalItems = totalSeen = 0;
 					for (String page : doc.pageNames()){
 						totalItems++;
-						if (doc.isPageFound(page)){
+						if (doc.isPageFound(page)|| SPDSettings.unlockedAll()){
 							totalSeen++;
 						}
 					}
@@ -746,7 +741,7 @@ public class WndJournal extends WndTabbed {
 	private static void addGridItems( ScrollingGridPane grid, Collection<Class<?>> classes) {
 		for (Class<?> itemClass : classes) {
 
-			boolean seen = Catalog.isSeen(itemClass);;
+			boolean seen = Catalog.isSeen(itemClass)|| SPDSettings.unlockedAll();
 			ItemSprite sprite = null;
 			Image secondIcon = null;
 			String title = "";
@@ -877,7 +872,7 @@ public class WndJournal extends WndTabbed {
 	private static void addGridEntities(ScrollingGridPane grid, Collection<Class<?>> classes) {
 		for (Class<?> entityCls : classes){
 
-			boolean seen = Bestiary.isSeen(entityCls);
+			boolean seen = Bestiary.isSeen(entityCls)|| SPDSettings.unlockedAll();
 			Mob mob = null;
 			Image icon = null;
 			String title = null;
@@ -1016,8 +1011,8 @@ public class WndJournal extends WndTabbed {
 
 			Image sprite = doc.pageSprite(page);
 
-			boolean seen = doc.isPageFound(page);
-			boolean read = doc.isPageRead(page);
+			boolean seen = doc.isPageFound(page)|| SPDSettings.unlockedAll();
+			boolean read = doc.isPageRead(page)|| SPDSettings.unlockedAll();
 
 			if (!seen){
 				sprite.lightness(0f);

@@ -55,6 +55,8 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class WandOfWarding extends Wand {
 
 	{
@@ -64,7 +66,7 @@ public class WandOfWarding extends Wand {
 
 	@Override
 	public int collisionProperties(int target) {
-		if (cursed)                                 return super.collisionProperties(target);
+		if (blessedType == CURSED)                                 return super.collisionProperties(target);
 		else if (!Dungeon.level.heroFOV[target])    return Ballistica.PROJECTILE;
 		else                                        return Ballistica.STOP_TARGET;
 	}
@@ -72,7 +74,7 @@ public class WandOfWarding extends Wand {
 	@Override
 	public void execute(Hero hero, String action) {
 		//cursed warding does use targeting as it's just doing regular cursed zaps
-		usesTargeting = cursed && cursedKnown;
+		usesTargeting = blessedType == CURSED && blessedTypeKnown;
 		super.execute(hero, action);
 	}
 

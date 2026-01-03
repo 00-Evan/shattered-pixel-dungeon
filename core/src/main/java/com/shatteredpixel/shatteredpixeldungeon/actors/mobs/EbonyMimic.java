@@ -41,6 +41,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.MimicSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.NORMAL;
+
 public class EbonyMimic extends Mimic {
 
 	{
@@ -103,8 +105,8 @@ public class EbonyMimic extends Mimic {
 		//all existing prize items are guaranteed uncursed, and are always at least +1
 		for (Item i : items){
 			if (i instanceof EquipableItem || i instanceof Wand){
-				i.cursed = false;
-				i.cursedKnown = true;
+				i.blessedType = NORMAL;
+				i.blessedTypeKnown = true;
 				if (i instanceof Weapon && ((Weapon) i).hasCurseEnchant()){
 					((Weapon) i).enchant(null);
 				}

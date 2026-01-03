@@ -43,6 +43,8 @@ import com.watabou.noosa.audio.Sample;
 
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class CurseInfusion extends InventorySpell {
 	
 	{
@@ -62,7 +64,7 @@ public class CurseInfusion extends InventorySpell {
 		CellEmitter.get(curUser.pos).burst(ShadowParticle.UP, 5);
 		Sample.INSTANCE.play(Assets.Sounds.CURSED);
 		
-		item.cursed = true;
+		item.blessedType = CURSED;
 		if (item instanceof MeleeWeapon || item instanceof SpiritBow) {
 			Weapon w = (Weapon) item;
 			if (w.enchantment != null) {

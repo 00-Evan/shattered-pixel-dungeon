@@ -172,7 +172,7 @@ public enum Rankings {
 	//assumes a ranking is loaded, or game is ending
 	public int calculateScore(){
 
-		if (Dungeon.initialVersion > ShatteredPixelDungeon.v1_2_3){
+
 			Statistics.progressScore = Dungeon.hero.lvl * Statistics.deepestFloor * 65;
 			Statistics.progressScore = Math.min(Statistics.progressScore, 50_000);
 
@@ -209,21 +209,13 @@ public enum Rankings {
 			if (Statistics.gameWon)         Statistics.winMultiplier += 1f;
 			if (Statistics.ascended)        Statistics.winMultiplier += 0.5f;
 
-		//pre v1.3.0 runs have different score calculations
-		//only progress and treasure score, and they are each up to 50% bigger
-		//win multiplier is a simple 2x if run was a win, challenge multi is the same as 1.3.0
-		} else {
-			Statistics.progressScore = Dungeon.hero.lvl * Statistics.deepestFloor * 100;
-			Statistics.treasureScore = Math.min(Statistics.goldCollected, 30_000);
 
-			Statistics.exploreScore = Statistics.totalBossScore = Statistics.totalQuestScore = 0;
-
-			Statistics.winMultiplier = Statistics.gameWon ? 2 : 1;
-
-		}
 
 		Statistics.chalMultiplier = (float)Math.pow(1.25, Challenges.activeChallenges());
 		Statistics.chalMultiplier = Math.round(Statistics.chalMultiplier*20f)/20f;
+        if(Challenges.hasCheatChallenges()){
+            Statistics.chalMultiplier = 0;
+        }
 
 		Statistics.totalScore = Statistics.progressScore + Statistics.treasureScore + Statistics.exploreScore
 					+ Statistics.totalBossScore + Statistics.totalQuestScore;
@@ -342,9 +334,7 @@ public enum Rankings {
 
 		Dungeon.initialVersion = data.getInt(GAME_VERSION);
 
-		if (Dungeon.initialVersion <= ShatteredPixelDungeon.v1_2_3){
-			Statistics.gameWon = rec.win;
-		}
+
 		rec.score = calculateScore();
 
 		if (rec.gameData.contains(SEED)){

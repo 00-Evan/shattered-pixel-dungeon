@@ -38,6 +38,8 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class DisarmingTrap extends Trap{
 
 	{
@@ -81,7 +83,7 @@ public class DisarmingTrap extends Trap{
 			Hero hero = Dungeon.hero;
 			KindOfWeapon weapon = hero.belongings.weapon;
 
-			if (weapon != null && !weapon.cursed) {
+			if (weapon != null && weapon.blessedType != CURSED) {
 
 				int cell;
 				int tries = 50;

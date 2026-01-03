@@ -66,8 +66,8 @@ public class TormentedSpirit extends Wraith {
 			prize = Generator.randomArmor();
 			((Armor) prize).inscribe();
 		}
-		prize.cursed = false;
-		prize.cursedKnown = true;
+		prize.blessedType = Item.BlessedType.NORMAL;
+		prize.blessedTypeKnown = true;
 
 		if (prize.level() == 0 && Random.Int(2) == 0){
 			prize.upgrade();

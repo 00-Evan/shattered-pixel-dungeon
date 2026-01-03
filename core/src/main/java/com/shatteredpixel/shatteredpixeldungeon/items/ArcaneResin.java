@@ -41,6 +41,8 @@ import com.watabou.noosa.audio.Sample;
 
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class ArcaneResin extends Item {
 
 	{
@@ -154,7 +156,7 @@ public class ArcaneResin extends Item {
 			return ingredients.size() == 1
 					&& ingredients.get(0) instanceof Wand
 					&& ingredients.get(0).isIdentified()
-					&& !ingredients.get(0).cursed;
+					&& ingredients.get(0).blessedType!=CURSED;
 		}
 
 		@Override

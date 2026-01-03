@@ -67,6 +67,8 @@ import com.watabou.utils.Reflection;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class SandalsOfNature extends Artifact {
 
 	{
@@ -124,11 +126,11 @@ public class SandalsOfNature extends Artifact {
 		if (hero.buff(MagicImmune.class) != null){
 			return actions;
 		}
-		if (isEquipped( hero ) && !cursed) {
+		if (isEquipped( hero ) && blessedType!=CURSED) {
 			actions.add(AC_FEED);
 		}
 		if (isEquipped( hero )
-				&& !cursed
+				&& blessedType!=CURSED
 				&& curSeedEffect != null
 				&& charge >= seedChargeReqs.get(curSeedEffect)) {
 			actions.add(AC_ROOT);
@@ -146,7 +148,7 @@ public class SandalsOfNature extends Artifact {
 
 			GameScene.selectItem(itemSelector);
 
-		} else if (action.equals(AC_ROOT) && !cursed){
+		} else if (action.equals(AC_ROOT) && blessedType!=CURSED){
 
 			if (!isEquipped( hero ))                                GLog.i( Messages.get(Artifact.class, "need_to_equip") );
 			else if (curSeedEffect == null)                         GLog.i( Messages.get(this, "no_effect") );
@@ -164,7 +166,7 @@ public class SandalsOfNature extends Artifact {
 	
 	@Override
 	public void charge(Hero target, float amount) {
-		if (cursed || target.buff(MagicImmune.class) != null) return;
+		if (blessedType==CURSED || target.buff(MagicImmune.class) != null) return;
 		if (charge < chargeCap) {
 			partialCharge += 2*amount;
 			while (partialCharge >= 1f){
@@ -200,7 +202,7 @@ public class SandalsOfNature extends Artifact {
 		if ( isEquipped ( Dungeon.hero ) ) {
 			desc += "\n\n";
 
-			if (!cursed) {
+			if (blessedType!=CURSED) {
 				desc += Messages.get(this, "desc_hint");
 			} else {
 				desc += Messages.get(this, "desc_cursed");
@@ -270,7 +272,7 @@ public class SandalsOfNature extends Artifact {
 
 	public class Naturalism extends ArtifactBuff{
 		public void charge() {
-			if (cursed || target.buff(MagicImmune.class) != null) return;
+			if (blessedType==CURSED || target.buff(MagicImmune.class) != null) return;
 			if (charge < chargeCap){
 				//0.5 charge per grass at +0, up to 1 at +10
 				float chargeGain = (3f + level())/6f;

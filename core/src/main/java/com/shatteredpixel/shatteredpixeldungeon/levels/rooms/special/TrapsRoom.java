@@ -45,6 +45,9 @@ import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.BLESSED;
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.NORMAL;
+
 public class TrapsRoom extends SpecialRoom {
 
 	//size is a bit limited to prevent too many or too few traps
@@ -145,8 +148,11 @@ public class TrapsRoom extends SpecialRoom {
 				((Armor) prize).inscribe(null);
 			}
 		}
-		prize.cursed = false;
-		prize.cursedKnown = true;
+		prize.blessedType = NORMAL;
+        if(Random.Float() <0.07f){
+            prize.blessedType = BLESSED;
+        }
+		prize.blessedTypeKnown = true;
 
 		//33% chance for an extra update.
 		if (Random.Int(3) == 0){

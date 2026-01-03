@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
+import com.right.helveticpixeldungeon.items.TestWeaponSpawner;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
@@ -114,6 +115,11 @@ public enum HeroClass {
 
 		new ScrollOfIdentify().identify();
 
+        if(Dungeon.isChallenged(Challenges.INDEV_MODE)){
+            new TestWeaponSpawner().collect();
+
+        }
+
 		switch (this) {
 			case WARRIOR:
 				initWarrior( hero );
@@ -130,10 +136,6 @@ public enum HeroClass {
 			case HUNTRESS:
 				initHuntress( hero );
 				break;
-
-//			case DUELIST:
-//				initDuelist( hero );
-//				break;
 
 			case CLERIC:
 				initCleric( hero );
@@ -300,9 +302,7 @@ public enum HeroClass {
 				return Assets.Sprites.ROGUE;
 			case HUNTRESS:
 				return Assets.Sprites.HUNTRESS;
-//			case DUELIST:
-//				return Assets.Sprites.DUELIST;
-			case CLERIC:
+            case CLERIC:
 				return Assets.Sprites.CLERIC;
 		}
 	}
@@ -318,7 +318,7 @@ public enum HeroClass {
 			case HUNTRESS:
 				return Assets.Splashes.HUNTRESS;
 //			case DUELIST:
-//				return Assets.Splashes.DUELIST;
+//				return HAssets.Splashes.DUELIST;
 			case CLERIC:
 				return Assets.Splashes.CLERIC;
 		}

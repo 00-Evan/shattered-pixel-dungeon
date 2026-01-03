@@ -18,17 +18,13 @@ tasks.withType(JavaCompile).configureEach {
     it.options.release = 21
 }
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-    kotlinOptions {
-        jvmTarget = 21
-    }
-}
+
 dependencies {
     api project(':SPD-classes')
     implementation project(':services')
     // implementation project(':core')
     //implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-// https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
+    // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
     implementation("org.jetbrains.kotlin:kotlin-stdlib:2.2.21")
     def collection_version = "1.5.0"
     implementation "androidx.collection:collection:$collection_version"

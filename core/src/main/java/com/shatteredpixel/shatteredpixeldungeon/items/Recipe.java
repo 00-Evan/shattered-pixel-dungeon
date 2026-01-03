@@ -63,6 +63,8 @@ import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public abstract class Recipe {
 	
 	public abstract boolean testIngredients(ArrayList<Item> ingredients);
@@ -256,12 +258,12 @@ public abstract class Recipe {
 	public static boolean usableInRecipe(Item item){
 		if (item instanceof EquipableItem){
 			//only thrown weapons and wands allowed among equipment items
-			return item.isIdentified() && !item.cursed && item instanceof MissileWeapon;
+			return item.isIdentified() && item.blessedType!=CURSED && item instanceof MissileWeapon;
 		} else if (item instanceof Wand) {
-			return item.isIdentified() && !item.cursed;
+			return item.isIdentified() && item.blessedType!=CURSED;
 		} else {
 			//other items can be unidentified, but not cursed
-			return !item.cursed;
+			return item.blessedType!=CURSED;
 		}
 	}
 }

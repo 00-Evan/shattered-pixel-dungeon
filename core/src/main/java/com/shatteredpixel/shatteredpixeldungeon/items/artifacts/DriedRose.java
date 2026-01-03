@@ -83,6 +83,8 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 public class DriedRose extends Artifact {
 
 	{
@@ -119,7 +121,7 @@ public class DriedRose extends Artifact {
 		}
 		if (isEquipped( hero )
 				&& charge == chargeCap
-				&& !cursed
+				&& blessedType!= CURSED
 				&& hero.buff(MagicImmune.class) == null
 				&& ghostID == 0) {
 			actions.add(AC_SUMMON);
@@ -127,7 +129,7 @@ public class DriedRose extends Artifact {
 		if (ghostID != 0){
 			actions.add(AC_DIRECT);
 		}
-		if (isIdentified() && !cursed){
+		if (isIdentified() && blessedType!= CURSED){
 			actions.add(AC_OUTFIT);
 		}
 		
@@ -156,7 +158,7 @@ public class DriedRose extends Artifact {
 			else if (ghost != null)         GLog.i( Messages.get(this, "spawned") );
 			else if (!isEquipped( hero ))   GLog.i( Messages.get(Artifact.class, "need_to_equip") );
 			else if (charge != chargeCap)   GLog.i( Messages.get(this, "no_charge") );
-			else if (cursed)                GLog.i( Messages.get(this, "cursed") );
+			else if (blessedType==CURSED)                GLog.i( Messages.get(this, "cursed") );
 			else {
 				ArrayList<Integer> spawnPoints = new ArrayList<>();
 				for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
@@ -245,7 +247,7 @@ public class DriedRose extends Artifact {
 		String desc = super.desc();
 
 		if (isEquipped( Dungeon.hero )){
-			if (!cursed){
+			if (blessedType!= CURSED){
 
 				if (level() < levelCap)
 					desc+= "\n\n" + Messages.get(this, "desc_hint");
@@ -308,7 +310,7 @@ public class DriedRose extends Artifact {
 	
 	@Override
 	public void charge(Hero target, float amount) {
-		if (cursed || target.buff(MagicImmune.class) != null) return;
+		if (blessedType==CURSED || target.buff(MagicImmune.class) != null) return;
 
 		if (ghost == null){
 			if (charge < chargeCap) {
@@ -409,7 +411,7 @@ public class DriedRose extends Artifact {
 			}
 			
 			//rose does not charge while ghost hero is alive
-			if (ghost != null && !cursed && target.buff(MagicImmune.class) == null){
+			if (ghost != null && blessedType!=CURSED && target.buff(MagicImmune.class) == null){
 				
 				//heals to full over 500 turns
 				if (ghost.HP < ghost.HT && Regeneration.regenOn()) {
@@ -428,7 +430,7 @@ public class DriedRose extends Artifact {
 			}
 			
 			if (charge < chargeCap
-					&& !cursed
+					&& blessedType!=CURSED
 					&& target.buff(MagicImmune.class) == null
 					&& Regeneration.regenOn()) {
 				//500 turns to a full charge
@@ -441,7 +443,7 @@ public class DriedRose extends Artifact {
 						GLog.p( Messages.get(DriedRose.class, "charged") );
 					}
 				}
-			} else if (cursed && Random.Int(100) == 0) {
+			} else if (blessedType==CURSED && Random.Int(100) == 0) {
 
 				ArrayList<Integer> spawnPoints = new ArrayList<>();
 
@@ -905,7 +907,7 @@ public class DriedRose extends Artifact {
 								} else if (item.unique) {
 									GLog.w( Messages.get(WndGhostHero.class, "cant_unique"));
 									hide();
-								} else if (item.cursed || !item.cursedKnown) {
+								} else if (item.blessedType==CURSED || !item.blessedTypeKnown) {
 									GLog.w(Messages.get(WndGhostHero.class, "cant_cursed"));
 									hide();
 								}  else if (!item.levelKnown && ((MeleeWeapon)item).STRReq(0) > rose.ghostStrength()){
@@ -980,7 +982,7 @@ public class DriedRose extends Artifact {
 								} else if (item.unique || ((Armor) item).checkSeal() != null) {
 									GLog.w( Messages.get(WndGhostHero.class, "cant_unique"));
 									hide();
-								} else if (item.cursed || !item.cursedKnown) {
+								} else if (item.blessedType==CURSED || !item.blessedTypeKnown) {
 									GLog.w(Messages.get(WndGhostHero.class, "cant_cursed"));
 									hide();
 								}  else if (!item.levelKnown && ((Armor)item).STRReq(0) > rose.ghostStrength()){

@@ -246,10 +246,17 @@ public class Bomb extends Item {
 		int depth = Dungeon.hero == null ? 1 : Dungeon.scalingDepth();
 		String desc = Messages.get(this, "desc", 4+depth, 12+3*depth);
 		if (fuse == null) {
-			return desc + "\n\n" + Messages.get(this, "desc_fuse");
+			 desc += "\n\n" + Messages.get(this, "desc_fuse");
 		} else {
-			return desc + "\n\n" + Messages.get(this, "desc_burning");
+			 desc += "\n\n" + Messages.get(this, "desc_burning");
 		}
+        desc+=switch (blessedType){
+            default -> "";
+            case HOLY -> "\n\n" + Messages.get(Bomb.class, "holy");
+            case BLESSED -> "\n\n" + Messages.get(Bomb.class, "blessed");
+            case CURSED -> "\n\n" + Messages.get(Bomb.class, "cursed");
+        };
+        return desc;
 	}
 
 	private static final String FUSE = "fuse";

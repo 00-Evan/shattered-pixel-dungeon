@@ -34,6 +34,8 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.utils.Random;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+
 
 public abstract class KindofMisc extends EquipableItem {
 
@@ -136,9 +138,9 @@ public abstract class KindofMisc extends EquipableItem {
 
 			// 15/25% chance
 			if (hero.heroClass != HeroClass.CLERIC && hero.hasTalent(Talent.HOLY_INTUITION)
-					&& cursed && !cursedKnown
+					&& blessedType==CURSED && !blessedTypeKnown
 					&& Random.Int(20) < 1 + 2*hero.pointsInTalent(Talent.HOLY_INTUITION)){
-				cursedKnown = true;
+				blessedTypeKnown = true;
 				GLog.p(Messages.get(this, "curse_detected"));
 				return false;
 			}
@@ -156,8 +158,8 @@ public abstract class KindofMisc extends EquipableItem {
 			Talent.onItemEquipped(hero, this);
 			activate( hero );
 
-			cursedKnown = true;
-			if (cursed) {
+			blessedTypeKnown = true;
+			if (blessedType==CURSED) {
 				equipCursed( hero );
 				GLog.n( Messages.get(this, "equip_cursed", this) );
 			}

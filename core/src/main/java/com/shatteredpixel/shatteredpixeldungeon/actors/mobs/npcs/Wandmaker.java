@@ -59,6 +59,8 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.NORMAL;
+
 public class Wandmaker extends NPC {
 
 	{
@@ -326,7 +328,7 @@ public class Wandmaker extends NPC {
 
 				given = false;
 				wand1 = (Wand) Generator.random(Generator.Category.WAND);
-				wand1.cursed = false;
+				wand1.blessedType = NORMAL;
 				wand1.upgrade();
 
 				wand2 = (Wand) Generator.random(Generator.Category.WAND);
@@ -338,7 +340,7 @@ public class Wandmaker extends NPC {
 				for (Item i :toUndo){
 					Generator.undoDrop(i);
 				}
-				wand2.cursed = false;
+				wand2.blessedType = NORMAL;
 				wand2.upgrade();
 				
 			}

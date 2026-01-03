@@ -52,7 +52,7 @@ public class Bag extends Item implements Iterable<Item> {
 	public ArrayList<Item> items = new ArrayList<>();
 
 	public int capacity(){
-		return 20; // default container size
+		return 36/*20*/; // default container size
 	}
 
 	//if an item is being quick-used from the bag, the bag should take on its targeting properties

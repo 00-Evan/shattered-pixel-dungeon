@@ -21,33 +21,16 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.HolyWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.watabou.noosa.Image;
-import com.watabou.noosa.Visual;
-import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundle;
+
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.*;
 
 public class MeleeWeapon extends Weapon {
 
@@ -331,7 +314,7 @@ public String info() {
             && (Dungeon.hero.subClass != HeroSubClass.PALADIN || enchantment == null)) {
         info += "\n\n" + Messages.capitalize(Messages.get(Weapon.class, "enchanted", Messages.get(HolyWeapon.class, "ench_name", Messages.get(Enchantment.class, "enchant"))));
         info += " " + Messages.get(HolyWeapon.class, "ench_desc");
-    } else if (enchantment != null && (cursedKnown || !enchantment.curse())) {
+    } else if (enchantment != null && (blessedTypeKnown || !enchantment.curse())) {
         info += "\n\n" + Messages.capitalize(Messages.get(Weapon.class, "enchanted", enchantment.name()));
         if (enchantHardened) info += " " + Messages.get(Weapon.class, "enchant_hardened");
         info += " " + enchantment.desc();
@@ -339,22 +322,28 @@ public String info() {
         info += "\n\n" + Messages.get(Weapon.class, "hardened_no_enchant");
     }
 
-    if (cursed && isEquipped(Dungeon.hero)) {
+    if (blessedType==CURSED && isEquipped(Dungeon.hero)) {
         info += "\n\n" + Messages.get(Weapon.class, "cursed_worn");
-    } else if (cursedKnown && cursed) {
+    } else if (blessedTypeKnown && blessedType==CURSED) {
         info += "\n\n" + Messages.get(Weapon.class, "cursed");
-    } else if (!isIdentified() && cursedKnown) {
+    } else if (isIdentified() && blessedTypeKnown&&blessedType!=NORMAL){
+        info += switch (blessedType){
+            default -> "";
+            case BLESSED -> "\n\n" + Messages.get(Weapon.class, "blessed");
+            case HOLY ->  "\n\n" + Messages.get(Weapon.class, "holy");
+        };
+    } else if (!isIdentified() && blessedTypeKnown) {
         if (enchantment != null && enchantment.curse()) {
             info += "\n\n" + Messages.get(Weapon.class, "weak_cursed");
         } else {
-            info += "\n\n" + Messages.get(Weapon.class, "not_cursed");
+            info += "\n\n" + switch (blessedType){
+                default -> "";
+                case BLESSED ->  Messages.get(Weapon.class, "blessed_known");
+                case HOLY ->   Messages.get(Weapon.class, "holy_known");
+                case NORMAL ->  Messages.get(Weapon.class, "not_cursed");
+            };
         }
     }
-
-    //the mage's staff has no ability as it can only be gained by the mage
-//    if (Dungeon.hero != null && Dungeon.hero.heroClass == HeroClass.DUELIST && !(this instanceof MagesStaff)) {
-//        info += "\n\n" + abilityInfo();
-//    }
 
     return info;
 }
@@ -386,10 +375,17 @@ public String statsInfo() {
 public int value() {
     int price = 20 * tier;
     if (hasGoodEnchant()) {
-        price *= 1.5;
+        price = (int) (price* 1.5);
     }
-    if (cursedKnown && (cursed || hasCurseEnchant())) {
+    if (blessedTypeKnown && (blessedType==CURSED || hasCurseEnchant())) {
         price /= 2;
+    }
+    if(blessedTypeKnown){
+        price= (int) (price* switch (blessedType) {
+                    default -> 1;
+                    case BLESSED->1.5;
+                    case HOLY -> 2;
+                });
     }
     if (levelKnown && level() > 0) {
         price *= (level() + 1);
@@ -558,7 +554,7 @@ public int value() {
 //        Dungeon.hero.belongings.secondWep = temp;
 //
 //        Dungeon.hero.sprite.operate(Dungeon.hero.pos);
-//        Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
+//        Sample.INSTANCE.play(HAssets.Sounds.UNLOCK);
 //
 //        ActionIndicator.setAction(this);
 //        Item.updateQuickslot();
