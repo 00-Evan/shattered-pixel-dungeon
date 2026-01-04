@@ -104,7 +104,6 @@ public class v3_X_Changes {
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
 				"**Caused by v3.3:**\n" +
-				"**-** Crash on launch on old iOS devices with A7 and A8 processors\n" +
 				"**-** Monk energy starting at 10 instead of 0 after subclass is chosen\n" +
 				"**-** Game showing a warning about save file errors in more cases than it should\n" +
 				"**-** Rare cases where keys would be discarded when they shouldn't be\n" +
@@ -113,6 +112,7 @@ public class v3_X_Changes {
 				"**-** Various minor textual errors\n" +
 				"\n" +
 				"**Existed Prior to v3.3:**\n" +
+				"**-** Crash on launch on old iOS devices with A7 and A8 processors\n" +
 				"**-** Cases where the Steam version could hang on launch on Linux\n" +
 				"**-** Reclaim trap counting as being cast for talents even when it isn't consumed\n" +
 				"**-** Pickaxe being marked as seen before it is given to the player\n" +
