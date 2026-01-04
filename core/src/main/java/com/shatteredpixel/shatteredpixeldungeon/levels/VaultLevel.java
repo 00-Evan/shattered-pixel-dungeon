@@ -47,53 +47,64 @@ import java.util.ArrayList;
 
 public class VaultLevel extends CityLevel {
 
+	public static class VaultEntrance extends EntranceRoom {
+		@Override
+		public int maxConnections(int direction) {
+			if (direction == LEFT || direction == TOP) return 0;
+			return super.maxConnections(direction);
+		}
+
+		@Override
+		public boolean canMerge(Level l, Room other, Point p, int mergeTerrain) {
+			return false;
+		}
+	}
+
+	public static class VaultSegmentedRoom extends SegmentedRoom {
+		@Override
+		public float[] sizeCatProbs() {
+			return new float[]{1, 0, 0};
+		}
+	}
+
+	public static class VaultRegionDecoLineRoom extends RegionDecoLineRoom{
+		@Override
+		public float[] sizeCatProbs() {
+			return new float[]{0, 0, 1};
+		}
+
+		@Override
+		public boolean isExit() {
+			return true;
+		}
+
+		@Override
+		public int maxConnections(int direction) {
+			return 1;
+		}
+
+		@Override
+		public boolean canPlaceItem(Point p, Level l) {
+			return false;
+		}
+
+		@Override
+		public boolean canMerge(Level l, Room other, Point p, int mergeTerrain) {
+			return false;
+		}
+	}
+
 	@Override
 	protected ArrayList<Room> initRooms() {
 		ArrayList<Room> initRooms = new ArrayList<>();
 
-		initRooms.add(roomEntrance = new EntranceRoom(){
-			@Override
-			public int maxConnections(int direction) {
-				if (direction == LEFT || direction == TOP) return 0;
-				return super.maxConnections(direction);
-			}
-
-			@Override
-			public boolean canMerge(Level l, Room other, Point p, int mergeTerrain) {
-				return false;
-			}
-		});
+		initRooms.add(roomEntrance = new VaultEntrance());
 
 		for (int i = 0; i < 23; i++){
-			initRooms.add(new SegmentedRoom(){
-				@Override
-				public float[] sizeCatProbs() {
-					return new float[]{1, 0, 0};
-				}
-			});
+			initRooms.add(new VaultSegmentedRoom());
 		}
 
-		initRooms.add(new RegionDecoLineRoom(){
-			@Override
-			public float[] sizeCatProbs() {
-				return new float[]{0, 0, 1};
-			}
-
-			@Override
-			public boolean isExit() {
-				return true;
-			}
-
-			@Override
-			public int maxConnections(int direction) {
-				return 1;
-			}
-
-			@Override
-			public boolean canMerge(Level l, Room other, Point p, int mergeTerrain) {
-				return false;
-			}
-		});
+		initRooms.add(new VaultRegionDecoLineRoom());
 
 		return initRooms;
 	}
