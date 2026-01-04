@@ -104,7 +104,6 @@ public abstract class TargetedSpell extends Spell {
 				curSpell.fx(shot, new Callback() {
 					public void call() {
 						curSpell.affectTarget(shot, curUser);
-						curSpell.onSpellused();
 					}
 				});
 				
