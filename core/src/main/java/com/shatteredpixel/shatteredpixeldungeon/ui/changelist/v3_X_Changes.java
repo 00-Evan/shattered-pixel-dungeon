@@ -85,9 +85,15 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("v3.3.2", false, null);
+		changes = new ChangeInfo("v3.3.3 & v3.3.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), "v3.3.3",
+				"v3.3.3 is a quick followup patch to fix one serious bug introduced in v3.3.2, sorry for the trouble!\n\n" +
+				"Fixed the following bugs:\n" +
+				"**Caused by v3.3.2:**\n" +
+				"**-** Crashes caused by resurrection via unblessed ankh while holding a skeleton key."));
 
 		changes.addButton( new ChangeButton(new Image(new ImpSprite()), "Quest Tester Area Progress",
 				"Happy New Year Everyone!\n\n" +
