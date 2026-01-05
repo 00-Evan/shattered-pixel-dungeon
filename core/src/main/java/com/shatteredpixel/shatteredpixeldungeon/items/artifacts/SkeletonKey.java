@@ -595,6 +595,13 @@ public class SkeletonKey extends Artifact {
 			}
 		}
 
+		//used if a level was reset, e.g. via unblessed ankh vs. boss
+		public void clearDepth(){
+			ironKeysNeeded[Dungeon.depth] = -1;
+			goldenKeysNeeded[Dungeon.depth] = -1;
+			crystalKeysNeeded[Dungeon.depth] = -1;
+		}
+
 		public void processIronLockOpened(){
 			if (ironKeysNeeded[Dungeon.depth] == -1){
 				setupKeysForDepth();

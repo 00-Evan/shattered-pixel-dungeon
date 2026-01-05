@@ -769,7 +769,7 @@ public class InterlevelScene extends PixelScene {
 
 			//need to reset key replacement tracking as well
 			if (Dungeon.hero.buff(SkeletonKey.KeyReplacementTracker.class) != null){
-				Dungeon.hero.buff(SkeletonKey.KeyReplacementTracker.class).setupKeysForDepth();
+				Dungeon.hero.buff(SkeletonKey.KeyReplacementTracker.class).clearDepth();
 			}
 
 		} else {
