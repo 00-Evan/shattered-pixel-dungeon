@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrinketCatalyst;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.GridBuilder;
@@ -127,6 +128,10 @@ public class VaultLevel extends CityLevel {
 					Generator.Category.ARMOR,
 					Generator.Category.WAND,
 					Generator.Category.RING));
+			//regrowth is disallowed as it can be used to farm HP regen
+			if (item instanceof WandOfRegrowth){
+				continue;
+			}
 			if (item.cursed){
 				item.cursed = false;
 				if (item instanceof MeleeWeapon && ((MeleeWeapon) item).hasCurseEnchant()){
