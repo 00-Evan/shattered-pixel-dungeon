@@ -53,6 +53,7 @@ public class Web extends Blob {
 
 				l.solid[cell] = off[cell] > 0 || (Terrain.flags[l.map[cell]] & Terrain.SOLID) != 0;
 				l.flamable[cell] = off[cell] > 0 || (Terrain.flags[l.map[cell]] & Terrain.FLAMABLE) != 0;
+				l.updateOpenSpace(cell);
 			}
 		}
 	}
@@ -62,6 +63,7 @@ public class Web extends Blob {
 		super.seed(level, cell, amount);
 		level.solid[cell] = cur[cell] > 0 || (Terrain.flags[level.map[cell]] & Terrain.SOLID) != 0;
 		level.flamable[cell] = cur[cell] > 0 || (Terrain.flags[level.map[cell]] & Terrain.FLAMABLE) != 0;
+		level.updateOpenSpace(cell);
 	}
 
 	//affects characters as they step on it. See Level.OccupyCell and Level.PressCell
@@ -83,6 +85,7 @@ public class Web extends Blob {
 		Level l = Dungeon.level;
 		l.solid[cell] = cur[cell] > 0 || (Terrain.flags[l.map[cell]] & Terrain.SOLID) != 0;
 		l.flamable[cell] = cur[cell] > 0 || (Terrain.flags[l.map[cell]] & Terrain.FLAMABLE) != 0;
+		l.updateOpenSpace(cell);
 	}
 
 	@Override
@@ -97,6 +100,7 @@ public class Web extends Blob {
 			for (int i=0; i < l.length(); i++) {
 				l.solid[i] = l.solid[i] || cur[i] > 0;
 				l.flamable[i] = l.flamable[i] || cur[i] > 0;
+				//openSpace will be updated as part of building flap maps
 			}
 		}
 	}

@@ -878,6 +878,25 @@ public abstract class Level implements Bundlable {
 
 	}
 
+	//updates open space both on the cell itself and adjacent cells
+	public void updateOpenSpace(int cell){
+		for (int i : PathFinder.NEIGHBOURS9) {
+			if (solid[cell+i]){
+				openSpace[cell+i] = false;
+			} else {
+				for (int j = 1; j < PathFinder.CIRCLE8.length; j += 2){
+					if (solid[cell+i+PathFinder.CIRCLE8[j]]) {
+						openSpace[cell+i] = false;
+					} else if (!solid[cell+i+PathFinder.CIRCLE8[(j+1)%8]]
+							&& !solid[cell+i+PathFinder.CIRCLE8[(j+2)%8]]){
+						openSpace[cell+i] = true;
+						break;
+					}
+				}
+			}
+		}
+	}
+
 	public void destroy( int pos ) {
 		//if raw tile type is flammable or empty
 		int terr = map[pos];

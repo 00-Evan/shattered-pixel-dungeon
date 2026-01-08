@@ -500,6 +500,7 @@ public class SkeletonKey extends Artifact {
 					l.solid[cell] = off[cell] > 0 || (Terrain.flags[l.map[cell]] & Terrain.SOLID) != 0;
 					l.passable[cell] = off[cell] == 0 && (Terrain.flags[l.map[cell]] & Terrain.PASSABLE) != 0;
 					l.avoid[cell] = off[cell] == 0 && (Terrain.flags[l.map[cell]] & Terrain.AVOID) != 0;
+					l.updateOpenSpace(cell);
 				}
 			}
 
@@ -515,6 +516,7 @@ public class SkeletonKey extends Artifact {
 			level.solid[cell] = cur[cell] > 0 || (Terrain.flags[level.map[cell]] & Terrain.SOLID) != 0;
 			level.passable[cell] = cur[cell] == 0 && (Terrain.flags[level.map[cell]] & Terrain.PASSABLE) != 0;
 			level.avoid[cell] = cur[cell] == 0 && (Terrain.flags[level.map[cell]] & Terrain.AVOID) != 0;
+			level.updateOpenSpace(cell);
 		}
 
 		@Override
@@ -526,6 +528,7 @@ public class SkeletonKey extends Artifact {
 			l.solid[cell] = cur[cell] > 0 || (Terrain.flags[l.map[cell]] & Terrain.SOLID) != 0;
 			l.passable[cell] = cur[cell] == 0 && (Terrain.flags[l.map[cell]] & Terrain.PASSABLE) != 0;
 			l.avoid[cell] = cur[cell] == 0 && (Terrain.flags[l.map[cell]] & Terrain.AVOID) != 0;
+			l.updateOpenSpace(cell);
 		}
 
 		@Override
@@ -542,6 +545,7 @@ public class SkeletonKey extends Artifact {
 					l.solid[i] = l.solid[i] || cur[i] > 0;
 					l.passable[i] = l.passable[i] && cur[i] == 0;
 					l.avoid[i] = l.avoid[i] && cur[i] == 0;
+					//openSpace will be updated as part of building flap maps
 				}
 			}
 		}
