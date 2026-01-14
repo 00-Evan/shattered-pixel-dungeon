@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndUpgrade;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
@@ -66,6 +67,11 @@ public class MagicalInfusion extends InventorySpell {
 	public void reShowSelector(){
 		curItem = this;
 		GameScene.selectItem(itemSelector);
+	}
+
+	public WndBag.ItemSelector getSelector(){
+		curItem = this;
+		return itemSelector;
 	}
 
 	public void useAnimation(){

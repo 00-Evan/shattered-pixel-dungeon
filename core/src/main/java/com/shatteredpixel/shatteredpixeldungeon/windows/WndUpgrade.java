@@ -509,6 +509,15 @@ public class WndUpgrade extends Window {
 		}
 	}
 
+	public WndBag.ItemSelector getItemSelector(){
+		if (upgrader instanceof ScrollOfUpgrade) {
+			return ((ScrollOfUpgrade) upgrader).getSelector(force);
+		} else if (upgrader instanceof MagicalInfusion){
+			return ((MagicalInfusion)upgrader).getSelector();
+		}
+		return null;
+	}
+
 	private float fillFields(String title, String msg1, String msg2, float bottom){
 
 		//the ~ symbol is more commonly used in Chinese

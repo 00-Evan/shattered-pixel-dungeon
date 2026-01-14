@@ -58,6 +58,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.InventoryScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.DimensionalSundial;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrinketCatalyst;
@@ -121,6 +122,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndKeyBindings;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndUpgrade;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
 import com.watabou.input.ControllerHandler;
@@ -1584,7 +1586,42 @@ public class GameScene extends PixelScene {
 
 		return null;
 	}
-	
+
+	//logic for preserving inventory selection windows on scene reset (e.g. via auto-rotate)
+	private static WndBag.ItemSelector savedSelector;
+
+	@Override
+	public synchronized void saveWindows() {
+		super.saveWindows();
+		if (scene.inventory != null && scene.inventory.getSelector() != null){
+			savedSelector = scene.inventory.getSelector();
+		} else {
+			for (Gizmo g : members.toArray(new Gizmo[0])){
+				if (g instanceof WndBag){
+					savedSelector = ((WndBag) g).getSelector();
+				//also keeps selector active over inventory scroll cancel and upgrade window
+				} else if (g instanceof InventoryScroll.WndConfirmCancel){
+					savedSelector = ((InventoryScroll.WndConfirmCancel) g).getItemSelector();
+				} else if (g instanceof WndUpgrade){
+					savedSelector = ((WndUpgrade) g).getItemSelector();
+				}
+			}
+		}
+	}
+
+	@Override
+	public synchronized void restoreWindows() {
+		super.restoreWindows();
+		if (savedSelector != null){
+			if (scene.inventory != null){
+				scene.inventory.setSelector(savedSelector);
+			} else {
+				addToFront(new WndBag(Dungeon.hero.belongings.backpack, savedSelector));
+			}
+			savedSelector = null;
+		}
+	}
+
 	public static boolean cancel() {
 		cellSelector.resetKeyHold();
 		if (Dungeon.hero != null && (Dungeon.hero.curAction != null || Dungeon.hero.resting)) {
