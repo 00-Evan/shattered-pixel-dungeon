@@ -22,7 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.builders;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+import com.watabou.utils.Rect;
 import com.watabou.utils.SparseArray;
 
 import java.util.ArrayList;
@@ -78,12 +80,22 @@ public class GridBuilder extends Builder {
 		for (Room r : toPlace){
 			int cellWidth = 1;
 			int cellHeight = 1;
-			//TODO this works on rigid multiples atm, would be nicer to buffer rooms that don't quite work
+			//TODO this works on rigid multiples atm, would be nicer to buffer rooms that don't work on that
 			if (!r.forceSize(ROOM_SIZE, ROOM_SIZE)){
+				//TODO tries larger width first, perhaps randomize that?
 				if (!r.forceSize(2*ROOM_SIZE-1, 2*ROOM_SIZE-1)) {
-					throw new RuntimeException("rigid room sizes for now!");
+					if (!r.forceSize(ROOM_SIZE, 2*ROOM_SIZE-1)) {
+						if (!r.forceSize(2*ROOM_SIZE-1, ROOM_SIZE)) {
+							throw new RuntimeException("rigid room sizes for now!");
+						} else {
+							cellWidth = 2; cellHeight = 1;
+						}
+					} else {
+						cellWidth = 1; cellHeight = 2;
+					}
+				} else {
+					cellWidth = cellHeight = 2;
 				}
-				cellWidth = cellHeight = 2;
 			}
 			do {
 				r.neigbours.clear();
@@ -109,16 +121,33 @@ public class GridBuilder extends Builder {
 				//-100 to cancel offsets
 				int x = (rIdx % 1000) - 100;
 				int y = (rIdx / 1000) - 100;
-				r.setPos(x*(ROOM_SIZE-1), y*(ROOM_SIZE-1));
-				boolean valid = true;
-				for (int i = 0; i < cellWidth; i++){
-					for (int j = 0; j < cellHeight; j++){
-						if (gridCells.containsKey(rIdx + i + j*1000)){
-							valid = false;
+				boolean valid;
+
+				if (!gridCells.containsKey(rIdx)) {
+					if (cellWidth == 1 && cellHeight == 1){
+						valid = true;
+
+					//more complex check for larger rooms
+					} else {
+						Rect space = findFreeGridSpace(new Point(x, y), gridCells, cellWidth, cellHeight);
+						//add 1 to width/height as it's inclusive
+						int excessWidth = (space.width() + 1) - cellWidth;
+						int excessHeight = (space.height() + 1) - cellHeight;
+						valid = excessWidth >= 0 && excessHeight >= 0;
+						if (valid) {
+							//randomly place the room within available space.
+							// We could do more with this probably, e.g. preferred DIR
+							x = space.left + Random.Int(excessWidth+1);
+							y = space.top + Random.Int(excessHeight+1);
+							rIdx = getIdx(x, y);
 						}
 					}
+				} else {
+					valid = false;
 				}
+
 				if (valid){
+					r.setPos(x*(ROOM_SIZE-1), y*(ROOM_SIZE-1));
 					if (r.connect(n)) {
 						placed.add(r);
 						for (int i = 0; i < cellWidth; i++){
@@ -143,6 +172,84 @@ public class GridBuilder extends Builder {
 		}
 
 		return rooms;
+	}
+
+	//same as Builder.findFreeSpace, but using grid coordination and collision
+	//assumes the starting cell is open
+	public Rect findFreeGridSpace(Point start, SparseArray<Room> collision, int maxWidth, int maxHeight){
+		Rect space = new Rect(start.x, start.y, start.x, start.y);
+
+		//expand one at a time in each direction, so as to prioritize a more square shape
+		boolean expanded = true;
+		while (expanded){
+			expanded = false;
+			//left
+			if (space.left > start.x-(maxWidth-1)) {
+				boolean valid = true;
+				for (int y = space.top; y <= space.bottom; y++) {
+					if (collision.containsKey(getIdx(space.left-1, y))) {
+						valid = false;
+						break;
+					}
+				}
+				if (valid){
+					space.left--;
+					expanded = true;
+				}
+			}
+			//top
+			if (space.top > start.y-(maxHeight-1)){
+				boolean valid = true;
+				for (int x = space.left; x <= space.right; x++) {
+					if (collision.containsKey(getIdx(x, space.top-1))) {
+						valid = false;
+						break;
+					}
+				}
+				if (valid){
+					space.top--;
+					expanded = true;
+				}
+			}
+			//right
+			if (space.right < start.x+(maxWidth-1)) {
+				boolean valid = true;
+				for (int y = space.top; y <= space.bottom; y++) {
+					if (collision.containsKey(getIdx(space.right+1, y))) {
+						valid = false;
+						break;
+					}
+				}
+				if (valid){
+					space.right++;
+					expanded = true;
+				}
+			}
+			//bottom
+			if (space.bottom < start.y+(maxHeight-1)){
+				boolean valid = true;
+				for (int x = space.left; x <= space.right; x++) {
+					if (collision.containsKey(getIdx(x, space.bottom+1))) {
+						valid = false;
+						break;
+					}
+				}
+				if (valid){
+					space.bottom++;
+					expanded = true;
+				}
+			}
+		}
+
+		return space;
+	}
+
+	private int getIdx(Point p){
+		return p.x + 1000*p.y + 100;
+	}
+
+	private int getIdx(int x, int y){
+		return (x+100) + 1000*(y+100);
 	}
 
 }
