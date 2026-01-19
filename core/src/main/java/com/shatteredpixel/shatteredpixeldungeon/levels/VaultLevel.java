@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -30,106 +29,42 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
-import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrinketCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.GridBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ChasmRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.RegionDecoLineRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.SegmentedRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.WaterBridgeRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.entrance.EntranceRoom;
-import com.watabou.utils.Point;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultCircleRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultCrossRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultEntranceRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultFinalRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultLongRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultQuadrantsRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultRingRoom;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
 public class VaultLevel extends CityLevel {
 
-	public static class VaultEntrance extends EntranceRoom {
-		@Override
-		public int maxConnections(int direction) {
-			if (direction == LEFT || direction == TOP) return 0;
-			return super.maxConnections(direction);
-		}
-
-		@Override
-		public boolean canMerge(Level l, Room other, Point p, int mergeTerrain) {
-			return false;
-		}
-	}
-
-	public static class VaultSegmentedRoom extends SegmentedRoom {
-		@Override
-		public float[] sizeCatProbs() {
-			return new float[]{1, 0, 0};
-		}
-	}
-
-	public static class VaultRegionDecoLineRoom extends RegionDecoLineRoom{
-		@Override
-		public float[] sizeCatProbs() {
-			return new float[]{0, 0, 1};
-		}
-
-		@Override
-		public boolean isExit() {
-			return true;
-		}
-
-		@Override
-		public int maxConnections(int direction) {
-			return 1;
-		}
-
-		@Override
-		public boolean canPlaceItem(Point p, Level l) {
-			return false;
-		}
-
-		@Override
-		public boolean canMerge(Level l, Room other, Point p, int mergeTerrain) {
-			return false;
-		}
-	}
-
 	@Override
 	protected ArrayList<Room> initRooms() {
 		ArrayList<Room> initRooms = new ArrayList<>();
 
-		initRooms.add(roomEntrance = new VaultEntrance());
+		initRooms.add(roomEntrance = new VaultEntranceRoom());
 
-		for (int i = 0; i < 18; i++){
-			initRooms.add(new VaultSegmentedRoom());
+		for (int i = 0; i < 4; i++){
+			initRooms.add(new VaultRingRoom());
+			initRooms.add(new VaultCircleRoom());
+			initRooms.add(new VaultCrossRoom());
+			initRooms.add(new VaultQuadrantsRoom());
 		}
 
-		initRooms.add(new EmptyRoom(){
-			@Override
-			public int minWidth() {
-				return 10;
-			}
-			@Override
-			public int maxWidth() {
-				return 20;
-			}
-		});
-		initRooms.add(new EmptyRoom(){
-			@Override
-			public int minHeight() {
-				return 10;
-			}
-			@Override
-			public int maxHeight() {
-				return 20;
-			}
-		});
+		initRooms.add(new VaultLongRoom());
+		initRooms.add(new VaultLongRoom());
 
-		initRooms.add(new VaultRegionDecoLineRoom());
+		initRooms.add(new VaultFinalRoom());
 		return initRooms;
 	}
 
@@ -141,56 +76,6 @@ public class VaultLevel extends CityLevel {
 	@Override
 	protected int nTraps() {
 		return 0;
-	}
-
-	@Override
-	protected boolean build() {
-		for (int i = 0; i < 20; i++){
-			Item item = Generator.randomUsingDefaults(Random.oneOf(
-					Generator.Category.WEAPON, Generator.Category.WEAPON, Generator.Category.WEAPON,
-					Generator.Category.ARMOR,
-					Generator.Category.WAND,
-					Generator.Category.RING));
-			//regrowth is disallowed as it can be used to farm HP regen
-			if (item instanceof WandOfRegrowth){
-				continue;
-			}
-			if (item.cursed){
-				item.cursed = false;
-				if (item instanceof MeleeWeapon && ((MeleeWeapon) item).hasCurseEnchant()){
-					((MeleeWeapon) item).enchant(null);
-				} else if (item instanceof Armor && ((Armor) item).hasCurseGlyph()){
-					((Armor) item).inscribe(null);
-				}
-			}
-			//not true ID, prevents extra info about rings leaking to main game
-			item.levelKnown = item.cursedKnown = true;
-			addItemToSpawn(item);
-		}
-
-		if (!super.build()){
-			return false;
-		}
-
-		Room finalRoom = room(RegionDecoLineRoom.class);
-		for (Point p : finalRoom.getPoints()){
-			int cell = pointToCell(p);
-			if (map[cell] == Terrain.REGION_DECO){
-				set(cell, Terrain.REGION_DECO_ALT, this);
-			} else if (map[cell] == Terrain.EMPTY || map[cell] == Terrain.EMPTY_DECO || map[cell] == Terrain.WATER || map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.GRASS){
-				set(cell, Terrain.EMPTY_SP, this);
-			}
-		}
-
-		set(entrance(), Terrain.EMPTY, this);
-		transitions.add(new LevelTransition(this,
-				entrance(),
-				LevelTransition.Type.BRANCH_ENTRANCE,
-				Dungeon.depth,
-				0,
-				LevelTransition.Type.BRANCH_EXIT));
-
-		return true;
 	}
 
 	@Override
@@ -214,20 +99,33 @@ public class VaultLevel extends CityLevel {
 
 	@Override
 	protected void createItems() {
+		for (int i = 0; i < 20; i++){
+			Item item = Generator.randomUsingDefaults(Random.oneOf(
+					Generator.Category.WEAPON, Generator.Category.WEAPON, Generator.Category.WEAPON,
+					Generator.Category.ARMOR,
+					Generator.Category.WAND,
+					Generator.Category.RING));
+			//regrowth is disallowed as it can be used to farm HP regen
+			if (item instanceof WandOfRegrowth){
+				continue;
+			}
+			if (item.cursed){
+				item.cursed = false;
+				if (item instanceof MeleeWeapon && ((MeleeWeapon) item).hasCurseEnchant()){
+					((MeleeWeapon) item).enchant(null);
+				} else if (item instanceof Armor && ((Armor) item).hasCurseGlyph()){
+					((Armor) item).inscribe(null);
+				}
+			}
+			//not true ID, prevents extra info about rings leaking to main game
+			item.levelKnown = item.cursedKnown = true;
+			addItemToSpawn(item);
+		}
+
 		//copypasta from super.createItems
 		for (Item item : itemsToSpawn) {
 			int cell = randomDropCell();
-			if (item instanceof TrinketCatalyst){
-				drop( item, cell ).type = Heap.Type.LOCKED_CHEST;
-				int keyCell = randomDropCell();
-				drop( new GoldenKey(Dungeon.depth), keyCell ).type = Heap.Type.HEAP;
-				if (map[keyCell] == Terrain.HIGH_GRASS || map[keyCell] == Terrain.FURROWED_GRASS) {
-					map[keyCell] = Terrain.GRASS;
-					losBlocking[keyCell] = false;
-				}
-			} else {
-				drop( item, cell ).type = Heap.Type.HEAP;
-			}
+			drop( item, cell ).type = Heap.Type.HEAP;
 			if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
 				map[cell] = Terrain.GRASS;
 				losBlocking[cell] = false;

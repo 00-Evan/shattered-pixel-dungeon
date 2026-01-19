@@ -33,7 +33,8 @@ import java.util.ArrayList;
 //TODO extend regular builder?
 public class GridBuilder extends Builder {
 
-	public static int ROOM_SIZE = 9;
+	//TODO this shouldn't be static, could be a parameter
+	public static int ROOM_SIZE = 11;
 
 	//each adjacency is processed twice, so this gives a ~50% chance to connect two adjacent rooms
 	protected float extraConnectionChance = 0.30f;
@@ -103,19 +104,19 @@ public class GridBuilder extends Builder {
 				int nIdx = keys[Random.Int(keys.length)];
 				Room n =  gridCells.get(nIdx, null);
 				int rIdx = nIdx;
-				//currently always pulls down and to the right
+				//currently always pulls up and to the right
 				switch (Random.Int(10)){
 					case 0: case 4: case 5: case 6:
 						rIdx += 1;
 						break;
 					case 1: case 7: case 8: case 9:
-						rIdx += 1000;
+						rIdx -= 1000;
 						break;
 					case 2:
 						rIdx -= 1;
 						break;
 					case 3:
-						rIdx -= 1000;
+						rIdx += 1000;
 						break;
 				}
 				//-100 to cancel offsets
