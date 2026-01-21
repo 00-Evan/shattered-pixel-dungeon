@@ -137,8 +137,10 @@ public class Bomb extends Item {
 
 	public void explode(int cell){
 		//We're blowing up, so no need for a fuse anymore.
-		fuse.snuff();
-		this.fuse = null;
+		if (fuse != null) {
+			fuse.snuff();
+			this.fuse = null;
+		}
 
 		Sample.INSTANCE.play( Assets.Sounds.BLAST );
 
