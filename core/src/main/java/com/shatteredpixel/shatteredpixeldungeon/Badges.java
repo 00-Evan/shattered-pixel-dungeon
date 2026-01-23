@@ -1394,4 +1394,20 @@ public class Badges {
 
 		return null;
 	}
+
+
+/**
+	 * Helper method to check if a specific collection of badges is fully unlocked.
+	 * This is useful for tracking progress on grouped achievements.
+	 * @param category A collection of badges to check against the player's profile.
+	 * @return true if every badge in the provided collection is present in local/global sets.
+	 */
+	public static boolean isCategoryComplete(Collection<Badge> category) {
+		for (Badge b : category) {
+			if (!isUnlocked(b)) {
+				return false;
+			}
+		}
+		return true;
+	}
 }
