@@ -60,10 +60,4 @@ public class Sai extends MeleeWeapon {
 		return Messages.get(this, "prompt");
 	}
 
-
-	public String upgradeAbilityStat(int level){
-		return "+" + augment.damageFactor(4 + level);
-	}
-
-
 }

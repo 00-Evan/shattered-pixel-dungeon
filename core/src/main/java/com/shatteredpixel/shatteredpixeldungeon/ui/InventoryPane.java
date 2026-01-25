@@ -29,10 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -80,11 +76,12 @@ public class InventoryPane extends Component {
 
 	private ArrayList<BagButton> bags;
 
-	public static final int WIDTH = 187-1-17;
-	public static final int HEIGHT = 82+24+1+24;
+	public static final int WIDTH = 170/*187-1-17*/;
+	public static final int HEIGHT = 103 /*82+24+1+24-8-20*/;
 
-	private static final int SLOT_WIDTH = 17;
-	private static final int SLOT_HEIGHT = 24;
+    private static final int BAGTAP_WIDTH = 14;
+	private static final int SLOT_WIDTH = 15;
+	private static final int SLOT_HEIGHT = 22;
 
     private static final int SLOT_NUM=36;
 
@@ -142,7 +139,10 @@ public class InventoryPane extends Component {
 						&& KeyBindings.getActionForKey(keyEvent) != SPDAction.BAG_2
 						&& KeyBindings.getActionForKey(keyEvent) != SPDAction.BAG_3
 						&& KeyBindings.getActionForKey(keyEvent) != SPDAction.BAG_4
-						&& KeyBindings.getActionForKey(keyEvent) != SPDAction.BAG_5){
+						&& KeyBindings.getActionForKey(keyEvent) != SPDAction.BAG_5
+                        && KeyBindings.getActionForKey(keyEvent) != SPDAction.BAG_6
+                        && KeyBindings.getActionForKey(keyEvent) != SPDAction.BAG_7
+                        && KeyBindings.getActionForKey(keyEvent) != SPDAction.BAG_8){
 					//any windows opened as a consequence of this should be centered on the inventory
 					GameScene.centerNextWndOnInvPane();
 					selector.onSelect(null);
@@ -185,11 +185,13 @@ public class InventoryPane extends Component {
 		}
 
 		bags = new ArrayList<>();
-		for (int i = 0; i < 5; i++){
+		for (int i = 0; i < Dungeon.hero.belongings.getBags().size(); i++){
 			BagButton btn = new BagButton(null, i+1);
 			bags.add(btn);
 			add(btn);
 		}
+
+
 
 		crossB = Icons.TARGET.get();
 		crossB.visible = false;
@@ -202,12 +204,18 @@ public class InventoryPane extends Component {
 		updateInventory();
 
 		width = WIDTH;
+        if(bags.size()>5){
+            width += (1+BAGTAP_WIDTH)*(bags.size()-5);
+        }
 		height = HEIGHT;
 	}
 
 	@Override
 	protected void layout() {
 		width = WIDTH;
+        if(bags.size()>5){
+            width += (1+BAGTAP_WIDTH)*(bags.size()-5);
+        }
 		height = HEIGHT;
 
 		bg.x = x;
@@ -242,16 +250,16 @@ public class InventoryPane extends Component {
 		energy.y = energyTxt.y;
 
 		for (BagButton b : bags){
-			b.setRect(left, y + 14, SLOT_WIDTH, 14);
+			b.setRect(left, y + 14,BAGTAP_WIDTH /*SLOT_WIDTH*/, 14);
 			left = b.right()+1;
 		}
 
 		left = x+4;
-		float top = y+4+SLOT_HEIGHT+1;
+		float top = y+4+SLOT_HEIGHT+1+2;
 		for (InventorySlot b : bagItems){
 			b.setRect(left, top, SLOT_WIDTH, SLOT_HEIGHT);
 			left = b.right()+1;
-			if (left - x > width - 17){
+			if (left - x > width - SLOT_WIDTH){
 				left = x+4;
 				top += SLOT_HEIGHT+1;
 			}
@@ -474,21 +482,7 @@ public class InventoryPane extends Component {
 
 	}
 
-	private Image bagIcon(Bag bag ) {
-		if (bag instanceof VelvetPouch) {
-			return Icons.get( Icons.SEED_POUCH );
-		} else if (bag instanceof ScrollHolder) {
-			return Icons.get( Icons.SCROLL_HOLDER );
-		} else if (bag instanceof MagicalHolster) {
-			return Icons.get( Icons.WAND_HOLSTER );
-		} else if (bag instanceof PotionBandolier) {
-			return Icons.get( Icons.POTION_BANDOLIER );
-		} else {
-			return Icons.get( Icons.BACKPACK );
-		}
-	}
-
-	private class InventoryPaneSlot extends InventorySlot {
+    private class InventoryPaneSlot extends InventorySlot {
 
 		private InventoryPaneSlot( Item item ){
 			super(item);
@@ -615,7 +609,7 @@ public class InventoryPane extends Component {
 		private int index;
 
 		public BagButton( Bag bag, int index ){
-			super( bagIcon(bag) );
+			super( Bag.icon(bag) );
 			this.bag = bag;
 			this.index = index;
 			visible = active = bag != null;
@@ -623,7 +617,7 @@ public class InventoryPane extends Component {
 
 		public void bag( Bag bag ){
 			this.bag = bag;
-			icon(bagIcon(bag));
+			icon( Bag.icon(bag) );
 			visible = active = bag != null;
 
 			if (lastBag == bag){
@@ -675,18 +669,16 @@ public class InventoryPane extends Component {
 
 		@Override
 		public GameAction keyAction() {
-			switch (index){
-				case 1: default:
-					return SPDAction.BAG_1;
-				case 2:
-					return SPDAction.BAG_2;
-				case 3:
-					return SPDAction.BAG_3;
-				case 4:
-					return SPDAction.BAG_4;
-				case 5:
-					return SPDAction.BAG_5;
-			}
+            return switch (index) {
+                default -> SPDAction.BAG_1;
+                case 2 -> SPDAction.BAG_2;
+                case 3 -> SPDAction.BAG_3;
+                case 4 -> SPDAction.BAG_4;
+                case 5 -> SPDAction.BAG_5;
+                case 6 -> SPDAction.BAG_6;
+                case 7 -> SPDAction.BAG_7;
+                case 8 -> SPDAction.BAG_8;
+            };
 		}
 
 		@Override

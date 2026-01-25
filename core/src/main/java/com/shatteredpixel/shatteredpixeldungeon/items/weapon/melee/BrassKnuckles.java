@@ -27,31 +27,28 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class BrassKnuckles extends MeleeWeapon {
 
-	{
-		image = ItemSpriteSheet.BRASS_KNUCKLES;
-		hitSound = Assets.Sounds.HIT;
-		hitSoundPitch = 1.3f;
+    {
+        image = ItemSpriteSheet.BRASS_KNUCKLES;
+        hitSound = Assets.Sounds.HIT;
+        hitSoundPitch = 1.3f;
 
-		tier = 1;
-		DLY = 0.5f; //2x speed
-		
-		bones = false;
-	}
+        tier = 2;
+        DLY = 0.5f; //2x speed
 
-	@Override
-	public int max(int lvl) {
-		return  Math.round(2.5f*(tier+1)) +     //5 base, down from 10
-				lvl*Math.round(0.5f*(tier+1));  //+1 per level, down from +2
-	}
+        bones = false;
+    }
 
-	@Override
-	public String targetingPrompt() {
-		return Messages.get(this, "prompt");
-	}
+    @Override
+    public int max(int lvl) {
+        return  3 * (tier + 1) +
+                lvl * (tier + 1);
+    }
+
+    @Override
+    public String targetingPrompt() {
+        return Messages.get(this, "prompt");
+    }
 
 
-	public String upgradeAbilityStat(int level){
-		return "+" + augment.damageFactor(3 + level);
-	}
 
 }

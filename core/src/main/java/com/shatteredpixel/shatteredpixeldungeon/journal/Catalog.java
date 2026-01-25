@@ -189,6 +189,7 @@ public enum Catalog {
 		MELEE_WEAPONS.addItems(Generator.Category.WEP_T3.classes);
 		MELEE_WEAPONS.addItems(Generator.Category.WEP_T4.classes);
 		MELEE_WEAPONS.addItems(Generator.Category.WEP_T5.classes);
+        MELEE_WEAPONS.addItems(Generator.Category.WEP_T6.classes);
 
 		ARMOR.addItems(Generator.Category.ARMOR.classes);
 
@@ -197,6 +198,7 @@ public enum Catalog {
 		THROWN_WEAPONS.addItems(Generator.Category.MIS_T3.classes);
 		THROWN_WEAPONS.addItems(Generator.Category.MIS_T4.classes);
 		THROWN_WEAPONS.addItems(Generator.Category.MIS_T5.classes);
+        THROWN_WEAPONS.addItems(Generator.Category.MIS_T6.classes);
 
 		ENCHANTMENTS.addItems(Weapon.Enchantment.common);
 		ENCHANTMENTS.addItems(Weapon.Enchantment.uncommon);

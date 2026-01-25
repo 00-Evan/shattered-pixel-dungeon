@@ -72,6 +72,9 @@ public class SPDAction extends GameAction {
 	public static final GameAction BAG_3        = new SPDAction("bag_3");
 	public static final GameAction BAG_4        = new SPDAction("bag_4");
 	public static final GameAction BAG_5        = new SPDAction("bag_5");
+    public static final GameAction BAG_6        = new SPDAction("bag_6");
+    public static final GameAction BAG_7        = new SPDAction("bag_7");
+    public static final GameAction BAG_8        = new SPDAction("bag_8");
 
 	public static final GameAction EXAMINE      = new SPDAction("examine");
 	public static final GameAction WAIT         = new SPDAction("wait");
@@ -130,6 +133,9 @@ public class SPDAction extends GameAction {
 		defaultBindings.put( Input.Keys.F3,             SPDAction.BAG_3 );
 		defaultBindings.put( Input.Keys.F4,             SPDAction.BAG_4 );
 		defaultBindings.put( Input.Keys.F5,             SPDAction.BAG_5 );
+        defaultBindings.put( Input.Keys.F6,             SPDAction.BAG_6 );
+        defaultBindings.put( Input.Keys.F7,             SPDAction.BAG_7 );
+        defaultBindings.put( Input.Keys.F8,             SPDAction.BAG_8 );
 
 		defaultBindings.put( Input.Keys.E,              SPDAction.EXAMINE );
 		defaultBindings.put( Input.Keys.Z,              SPDAction.REST );

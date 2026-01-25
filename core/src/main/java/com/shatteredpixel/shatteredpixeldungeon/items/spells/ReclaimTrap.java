@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Reflection;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -58,7 +59,7 @@ public class ReclaimTrap extends TargetedSpell {
 	private Class<?extends Trap> storedTrap = null;
 	
 	@Override
-	public ArrayList<String> actions(Hero hero) {
+	public ArrayList<String> actions(@NotNull Hero hero) {
 		ArrayList<String> actions = super.actions(hero);
 		//prevents exploits, pre-v3.0.0
 		if (storedTrap != null){

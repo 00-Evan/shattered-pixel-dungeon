@@ -95,14 +95,17 @@ public class ScrollingListPane extends ScrollPane {
 			this(icon, null, text);
 		}
 
-		public ListItem( Image icon, String iconText, String text ) {
+        public ListItem( Image icon, String iconText, String text ){
+            this(icon,iconText,text,9);
+        }
+        public ListItem( Image icon, String iconText, String text,int textSize ) {
 			super();
 
 			if (icon != null) {
 				this.icon.copy(icon);
 			} else {
 				remove(label);
-				label = PixelScene.renderTextBlock(9);
+				label = PixelScene.renderTextBlock(textSize);
 				add(label);
 			}
 

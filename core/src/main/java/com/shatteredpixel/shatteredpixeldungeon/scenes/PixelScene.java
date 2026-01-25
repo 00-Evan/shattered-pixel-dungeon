@@ -323,10 +323,14 @@ public class PixelScene extends Scene {
 	}
 
 	public static RenderedTextBlock renderTextBlock(String text, int size ){
-		RenderedTextBlock result = new RenderedTextBlock( text, size*defaultZoom);
-		result.zoom(1/(float)defaultZoom);
-		return result;
+		return renderTextBlock(text, size, -1);
 	}
+
+    public static RenderedTextBlock renderTextBlock(String text, int size, int color){
+        RenderedTextBlock result = new RenderedTextBlock( text, size*defaultZoom, color);
+        result.zoom(1/(float)defaultZoom);
+        return result;
+    }
 
 	/**
 	 * These methods align UI elements to device pixels.

@@ -553,9 +553,9 @@ public class Hero extends Char {
             return INFINITE_EVASION;
         }
 
-        if (buff(RoundShield.GuardTracker.class) != null) {
-            return INFINITE_EVASION;
-        }
+//        if (buff(RoundShield.GuardTracker.class) != null) {
+//            return INFINITE_EVASION;
+//        }
 
         float evasion = defenseSkill;
 
@@ -595,12 +595,12 @@ public class Hero extends Char {
             return Messages.get(Monk.class, "parried");
         }
 
-        if (buff(RoundShield.GuardTracker.class) != null) {
-            buff(RoundShield.GuardTracker.class).hasBlocked = true;
-            BuffIndicator.refreshHero();
-            Sample.INSTANCE.play(Assets.Sounds.HIT_PARRY, 1, Random.Float(0.96f, 1.05f));
-            return Messages.get(RoundShield.GuardTracker.class, "guarded");
-        }
+//        if (buff(RoundShield.GuardTracker.class) != null) {
+//            buff(RoundShield.GuardTracker.class).hasBlocked = true;
+//            BuffIndicator.refreshHero();
+//            Sample.INSTANCE.play(Assets.Sounds.HIT_PARRY, 1, Random.Float(0.96f, 1.05f));
+//            return Messages.get(RoundShield.GuardTracker.class, "guarded");
+//        }
 
 //		if (buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class) != null){
 //			buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class).detach();
@@ -1349,12 +1349,7 @@ public class Hero extends Char {
         }
 
         if (action.facility.shouldHeroInteract(this,isAdjacent)) {
-            sprite.attack(action.dst, () -> {
-                action.facility.onOperate(this);
-                ready();
-            });
-
-            return false;
+            return action.facility.onOperate(this,action.dst);
         } else if (getCloser(action.dst)) {
             return true;
         } else {
@@ -1421,7 +1416,7 @@ public class Hero extends Char {
 //		}
         if (!fullRest) {
             if (sprite != null) {
-                sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "wait"));
+                sprite.showStatusWithScale(CharSprite.DEFAULT, Messages.get(this, "wait"));
             }
         }
         resting = fullRest;

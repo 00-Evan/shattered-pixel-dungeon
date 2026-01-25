@@ -22,11 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -72,54 +69,46 @@ public class RoundShield extends MeleeWeapon {
 	}
 
 
-	public static void guardAbility(Hero hero, int duration, MeleeWeapon wep){
-		//wep.beforeAbilityUsed(hero, null);
-		Buff.prolong(hero, GuardTracker.class, duration).hasBlocked = false;
-		hero.sprite.operate(hero.pos);
-		hero.spendAndNext(Actor.TICK);
-		//wep.afterAbilityUsed(hero);
-	}
-
-	public static class GuardTracker extends FlavourBuff {
-
-		{
-			announced = true;
-			type = buffType.POSITIVE;
-		}
-
-		public boolean hasBlocked = false;
-
-		@Override
-		public int icon() {
-			return BuffIndicator.DUEL_GUARD;
-		}
-
-		@Override
-		public void tintIcon(Image icon) {
-			if (hasBlocked){
-				icon.tint(0x651f66, 0.5f);
-			} else {
-				icon.resetColor();
-			}
-		}
-
-		@Override
-		public float iconFadePercent() {
-			return Math.max(0, (5 - visualcooldown()) / 5);
-		}
-
-		private static final String BLOCKED = "blocked";
-
-		@Override
-		public void storeInBundle(Bundle bundle) {
-			super.storeInBundle(bundle);
-			bundle.put(BLOCKED, hasBlocked);
-		}
-
-		@Override
-		public void restoreFromBundle(Bundle bundle) {
-			super.restoreFromBundle(bundle);
-			hasBlocked = bundle.getBoolean(BLOCKED);
-		}
-	}
+//    public static class GuardTracker extends FlavourBuff {
+//
+//		{
+//			announced = true;
+//			type = buffType.POSITIVE;
+//		}
+//
+//		public boolean hasBlocked = false;
+//
+//		@Override
+//		public int icon() {
+//			return BuffIndicator.DUEL_GUARD;
+//		}
+//
+//		@Override
+//		public void tintIcon(Image icon) {
+//			if (hasBlocked){
+//				icon.tint(0x651f66, 0.5f);
+//			} else {
+//				icon.resetColor();
+//			}
+//		}
+//
+//		@Override
+//		public float iconFadePercent() {
+//			return Math.max(0, (5 - visualcooldown()) / 5);
+//		}
+//
+//		private static final String BLOCKED = "blocked";
+//
+//		@Override
+//		public void storeInBundle(Bundle bundle) {
+//			super.storeInBundle(bundle);
+//			bundle.put(BLOCKED, hasBlocked);
+//		}
+//
+//		@Override
+//		public void restoreFromBundle(Bundle bundle) {
+//			super.restoreFromBundle(bundle);
+//			hasBlocked = bundle.getBoolean(BLOCKED);
+//		}
+//	}
 }

@@ -24,13 +24,14 @@ package com.shatteredpixel.shatteredpixeldungeon.items.potions.brews;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
 public abstract class Brew extends Potion {
 	
 	@Override
-	public ArrayList<String> actions(Hero hero) {
+	public ArrayList<String> actions(@NotNull Hero hero) {
 		ArrayList<String> actions = super.actions( hero );
 		actions.remove( AC_DRINK );
 		return actions;
@@ -42,7 +43,7 @@ public abstract class Brew extends Potion {
 	}
 	
 	@Override
-	public void doThrow(Hero hero) {
+	public void doThrow(@NotNull Hero hero) {
 		GameScene.selectCell(thrower);
 	}
 	

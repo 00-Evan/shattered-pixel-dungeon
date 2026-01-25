@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -64,7 +65,7 @@ public class Pickaxe extends MeleeWeapon {
 	}
 
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
+	public ArrayList<String> actions(@NotNull Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		if (Dungeon.level instanceof MiningLevel){
 			actions.remove(AC_DROP);

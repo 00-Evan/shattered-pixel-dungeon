@@ -253,6 +253,7 @@ public abstract class Actor implements Bundlable {
 			if (!interrupted && !Game.switchingScene()) {
 				float earliest = Float.MAX_VALUE;
 
+                // TODO:maybe we can transform Actor#all to a priority queue?
 				for (Actor actor : all) {
 					
 					//some actors will always go before others if time is equal.

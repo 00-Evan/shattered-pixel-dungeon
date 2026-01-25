@@ -297,6 +297,8 @@ public class AndroidPlatformSupport extends PlatformSupport {
 	//splits on newline (for layout), chinese/japanese (for font choice), and '_'/'**' (for highlighting)
 	private Pattern regularsplitter = Pattern.compile(
 			"(?<=\n)|(?=\n)|(?<=_)|(?=_)|(?<=\\*\\*)|(?=\\*\\*)|" +
+                    "(?<=ɐ)|(?=ɐ)|(?<=ɑ)|(?=ɑ)|(?<=ɓ)|(?=ɓ)|(?<=ɔ)|(?=ɔ)|(?<=ɕ)|(?=ɕ)|(?<=ɖ)|(?=ɖ)|(?<=ɗ)|(?=ɗ)|" +
+                    "(?<=Ɐ)|(?=Ɐ)|(?<=Ɑ)|(?=Ɑ)|(?<=Ɓ)|(?=Ɓ)|(?<=Ɔ)|(?=Ɔ)|(?<=Ɖ)|(?=Ɖ)|(?<=Ɗ)|(?=Ɗ)|" +
 					"(?<=\\p{InHiragana})|(?=\\p{InHiragana})|" +
 					"(?<=\\p{InKatakana})|(?=\\p{InKatakana})|" +
 					"(?<=\\p{InCJK_Unified_Ideographs})|(?=\\p{InCJK_Unified_Ideographs})|" +
@@ -306,6 +308,8 @@ public class AndroidPlatformSupport extends PlatformSupport {
 	//additionally splits on spaces, so that each word can be laid out individually
 	private Pattern regularsplitterMultiline = Pattern.compile(
 			"(?<= )|(?= )|(?<=\n)|(?=\n)|(?<=_)|(?=_)|(?<=\\*\\*)|(?=\\*\\*)|" +
+                    "(?<=ɐ)|(?=ɐ)|(?<=ɑ)|(?=ɑ)|(?<=ɓ)|(?=ɓ)|(?<=ɔ)|(?=ɔ)|(?<=ɕ)|(?=ɕ)|(?<=ɖ)|(?=ɖ)|(?<=ɗ)|(?=ɗ)|" +
+                    "(?<=Ɐ)|(?=Ɐ)|(?<=Ɑ)|(?=Ɑ)|(?<=Ɓ)|(?=Ɓ)|(?<=Ɔ)|(?=Ɔ)|(?<=Ɖ)|(?=Ɖ)|(?<=Ɗ)|(?=Ɗ)|" +
 					"(?<=\\p{InHiragana})|(?=\\p{InHiragana})|" +
 					"(?<=\\p{InKatakana})|(?=\\p{InKatakana})|" +
 					"(?<=\\p{InCJK_Unified_Ideographs})|(?=\\p{InCJK_Unified_Ideographs})|" +

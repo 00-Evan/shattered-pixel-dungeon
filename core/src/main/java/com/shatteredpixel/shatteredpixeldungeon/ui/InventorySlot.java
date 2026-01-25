@@ -36,104 +36,102 @@ import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CU
 
 public class InventorySlot extends ItemSlot {
 
-	private static final int NORMAL		= 0x9953564D;
-	private static final int EQUIPPED	= 0x9991938C;
+    public static final int BLESSED = 0x99EFD351;
+    public static final int HOLY = 0x99FFCD01;
+    private static final int NORMAL = 0x9953564D;
+    private static final int EQUIPPED = 0x9991938C;
+    private ColorBlock bg;
 
-    public static final int BLESSED	= 0x99EFD351;
+    public InventorySlot(Item item) {
 
-    public  static final int HOLY       = 0x99FFCD01;
-	private ColorBlock bg;
+        super(item);
+    }
 
-	public InventorySlot( Item item ) {
+    @Override
+    protected void createChildren() {
+        bg = new ColorBlock(1, 1, NORMAL);
+        add(bg);
 
-		super( item );
-	}
+        super.createChildren();
+    }
 
-	@Override
-	protected void createChildren() {
-		bg = new ColorBlock( 1, 1, NORMAL );
-		add( bg );
+    @Override
+    protected void layout() {
+        bg.size(width, height);
+        bg.x = x;
+        bg.y = y;
 
-		super.createChildren();
-	}
+        super.layout();
+    }
 
-	@Override
-	protected void layout() {
-		bg.size(width, height);
-		bg.x = x;
-		bg.y = y;
+    @Override
+    public void alpha(float value) {
+        super.alpha(value);
+        bg.alpha(value);
+    }
 
-		super.layout();
-	}
+    @Override
+    public void item(Item item) {
 
-	@Override
-	public void alpha(float value) {
-		super.alpha(value);
-		bg.alpha(value);
-	}
+        super.item(item);
 
-	@Override
-	public void item( Item item ) {
+        bg.visible = !(item instanceof Gold || item instanceof Bag);
 
-		super.item( item );
+        if (item != null) {
 
-		bg.visible = !(item instanceof Gold || item instanceof Bag);
+            boolean equipped = item.isEquipped(Dungeon.hero) ||
+                    item == Dungeon.hero.belongings.weapon ||
+                    item == Dungeon.hero.belongings.armor ||
+                    item == Dungeon.hero.belongings.artifact ||
+                    item == Dungeon.hero.belongings.misc ||
+                    item == Dungeon.hero.belongings.ring;
 
-		if (item != null) {
-
-			boolean equipped = item.isEquipped(Dungeon.hero) ||
-					item == Dungeon.hero.belongings.weapon ||
-					item == Dungeon.hero.belongings.armor ||
-					item == Dungeon.hero.belongings.artifact ||
-					item == Dungeon.hero.belongings.misc ||
-					item == Dungeon.hero.belongings.ring ;
-
-            int color =  equipped ? EQUIPPED : NORMAL;
-            if(item.blessedType == Item.BlessedType.BLESSED && item.blessedTypeKnown){
+            int color = equipped ? EQUIPPED : NORMAL;
+            if (item.blessedType == Item.BlessedType.BLESSED && (item.blessedTypeKnown || item.isIdentified())) {
                 color = BLESSED;
-            }else if(item.blessedType == Item.BlessedType.HOLY && item.blessedTypeKnown){
+            } else if (item.blessedType == Item.BlessedType.DIVINE && (item.blessedTypeKnown || item.isIdentified())) {
                 color = HOLY;
             }
-			bg.texture( TextureCache.createSolid( color ) );
-			bg.resetColor();
-			if (item.blessedType== CURSED && item.blessedTypeKnown) {
-				bg.ra = +0.3f;
-				bg.ga = -0.15f;
-				bg.ba = -0.15f;
-			} else if (!item.isIdentified() ) {
-				if ((item instanceof EquipableItem || item instanceof Wand) &&  item.blessedType == Item.BlessedType.NORMAL && item.blessedTypeKnown){
-					bg.ba = +0.3f;
-					bg.ra = -0.1f;
-				} else if(!item.blessedTypeKnown) {
-					bg.ra = +0.35f;
-					bg.ba = +0.35f;
-				}
-			}
+            bg.texture(TextureCache.createSolid(color));
+            bg.resetColor();
+            if (item.blessedType == CURSED && item.blessedTypeKnown) {
+                bg.ra = +0.3f;
+                bg.ga = -0.15f;
+                bg.ba = -0.15f;
+            } else if (!item.isIdentified()) {
+                if ((item instanceof EquipableItem || item instanceof Wand) && item.blessedType == Item.BlessedType.NORMAL && item.blessedTypeKnown) {
+                    bg.ba = +0.3f;
+                    bg.ra = -0.1f;
+                } else if (!item.blessedTypeKnown) {
+                    bg.ra = +0.35f;
+                    bg.ba = +0.35f;
+                }
+            }
 
-			if (item.name() == null) {
-				enable( false );
-			} else if (Dungeon.hero.belongings.lostInventory()
-					&& !item.keptThroughLostInventory()){
-				enable(false);
-			}
-		} else {
-			bg.texture( TextureCache.createSolid( NORMAL ) );
-			bg.resetColor();
-		}
-	}
+            if (item.name() == null) {
+                enable(false);
+            } else if (Dungeon.hero.belongings.lostInventory()
+                    && !item.keptThroughLostInventory()) {
+                enable(false);
+            }
+        } else {
+            bg.texture(TextureCache.createSolid(NORMAL));
+            bg.resetColor();
+        }
+    }
 
-	public Item item(){
-		return item;
-	}
+    public Item item() {
+        return item;
+    }
 
-	@Override
-	protected void onPointerDown() {
-		bg.brightness( 1.5f );
-		Sample.INSTANCE.play( Assets.Sounds.CLICK, 0.7f, 0.7f, 1.2f );
-	}
+    @Override
+    protected void onPointerDown() {
+        bg.brightness(1.5f);
+        Sample.INSTANCE.play(Assets.Sounds.CLICK, 0.7f, 0.7f, 1.2f);
+    }
 
-	protected void onPointerUp() {
-		bg.brightness( 1.0f );
-	}
+    protected void onPointerUp() {
+        bg.brightness(1.0f);
+    }
 
 }

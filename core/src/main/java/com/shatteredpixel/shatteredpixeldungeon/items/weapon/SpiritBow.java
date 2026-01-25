@@ -51,6 +51,7 @@ import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -75,7 +76,7 @@ public class SpiritBow extends Weapon {
 	public float sniperSpecialBonusDamage = 0f;
 	
 	@Override
-	public ArrayList<String> actions(Hero hero) {
+	public ArrayList<String> actions(@NotNull Hero hero) {
 		ArrayList<String> actions = super.actions(hero);
 		actions.remove(AC_EQUIP);
 		actions.add(AC_SHOOT);
@@ -83,7 +84,7 @@ public class SpiritBow extends Weapon {
 	}
 	
 	@Override
-	public void execute(Hero hero, String action) {
+	public void execute(@NotNull Hero hero, @NotNull String action) {
 		
 		super.execute(hero, action);
 		
@@ -177,13 +178,13 @@ public class SpiritBow extends Weapon {
             info += switch (blessedType){
                 default -> "";
                 case BLESSED -> "\n\n" + Messages.get(Weapon.class, "blessed");
-                case HOLY ->  "\n\n" + Messages.get(Weapon.class, "holy");
+                case DIVINE ->  "\n\n" + Messages.get(Weapon.class, "divine");
             };
         }  else if (!isIdentified() && blessedTypeKnown){
             info += "\n\n" + switch (blessedType){
                 default -> "";
                 case BLESSED ->  Messages.get(Weapon.class, "blessed_known");
-                case HOLY ->   Messages.get(Weapon.class, "holy_known");
+                case DIVINE ->   Messages.get(Weapon.class, "divine_known");
                 case NORMAL ->  Messages.get(Weapon.class, "not_cursed");
             };
 		}

@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -68,14 +69,14 @@ public class ShardOfOblivion extends Trinket {
 	}
 
 	@Override
-	public ArrayList<String> actions(Hero hero) {
+	public ArrayList<String> actions(@NotNull Hero hero) {
 		ArrayList<String> actions = super.actions(hero);
 		actions.add(AC_IDENTIFY);
 		return actions;
 	}
 
 	@Override
-	public void execute(Hero hero, String action) {
+	public void execute(@NotNull Hero hero, @NotNull String action) {
 		if (action.equals(AC_IDENTIFY)){
 			curUser = hero;
 			curItem = this;

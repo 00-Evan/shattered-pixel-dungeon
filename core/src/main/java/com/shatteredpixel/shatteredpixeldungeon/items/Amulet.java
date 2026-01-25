@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.AmuletScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.Game;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class Amulet extends Item {
 	}
 	
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
+	public ArrayList<String> actions(@NotNull Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		if (hero.buff(AscensionChallenge.class) != null){
 			actions.clear();
@@ -59,7 +60,7 @@ public class Amulet extends Item {
 	}
 	
 	@Override
-	public void execute( Hero hero, String action ) {
+	public void execute(@NotNull Hero hero, @NotNull String action ) {
 
 		super.execute( hero, action );
 

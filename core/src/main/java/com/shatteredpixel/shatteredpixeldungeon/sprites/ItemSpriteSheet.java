@@ -223,7 +223,7 @@ public class ItemSpriteSheet {
 	public static final int RAPIER          = WEP_TIER1+3;
 	public static final int DAGGER          = WEP_TIER1+4;
 	public static final int MAGES_STAFF     = WEP_TIER1+5;
-    public static final int  BRASS_KNUCKLES    = WEP_TIER1+6; //  Brass knuckles
+    public static final int STEEL_HANDGUN =   WEP_TIER1+6;
 	static{
 		assignItemRect(WORN_SHORTSWORD, 13, 13);
 		assignItemRect(CUDGEL,          15, 15);
@@ -231,16 +231,17 @@ public class ItemSpriteSheet {
 		assignItemRect(RAPIER,          13, 14);
 		assignItemRect(DAGGER,          12, 13);
 		assignItemRect(MAGES_STAFF,     15, 16);
-        assignItemRect(BRASS_KNUCKLES,  15, 10);
+        assignItemRect(STEEL_HANDGUN,14,15);
 	}
 
-	private static final int WEP_TIER2      =                               xy(9, 7);   //8 slots
+	private static final int WEP_TIER2      =                               xy(16, 7);   //8 slots
 	public static final int SHORTSWORD      = WEP_TIER2+0;
 	public static final int HAND_AXE        = WEP_TIER2+1;
 	public static final int SPEAR           = WEP_TIER2+2;
 	public static final int QUARTERSTAFF    = WEP_TIER2+3;
 	public static final int DIRK            = WEP_TIER2+4;
 	public static final int SICKLE          = WEP_TIER2+5;
+    public static final int  BRASS_KNUCKLES    = WEP_TIER2+6; //  Brass knuckles
 	static{
 		assignItemRect(SHORTSWORD,      13, 13);
 		assignItemRect(HAND_AXE,        12, 14);
@@ -248,6 +249,7 @@ public class ItemSpriteSheet {
 		assignItemRect(QUARTERSTAFF,    16, 16);
 		assignItemRect(DIRK,            13, 14);
 		assignItemRect(SICKLE,          15, 15);
+        assignItemRect(BRASS_KNUCKLES,  15, 10);
 	}
 
 	private static final int WEP_TIER3      =                               xy(1, 8);   //8 slots
@@ -266,7 +268,7 @@ public class ItemSpriteSheet {
 		assignItemRect(WHIP,            14, 14);
 	}
 
-	private static final int WEP_TIER4      =                               xy(9, 8);   //8 slots
+	private static final int WEP_TIER4      =                               xy(16, 8);   //8 slots
 	public static final int LONGSWORD       = WEP_TIER4+0;
 	public static final int BATTLE_AXE      = WEP_TIER4+1;
 	public static final int FLAIL           = WEP_TIER4+2;

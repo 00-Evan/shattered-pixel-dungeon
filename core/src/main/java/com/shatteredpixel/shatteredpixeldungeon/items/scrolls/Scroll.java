@@ -58,11 +58,14 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
 
 public abstract class Scroll extends Item {
 	
@@ -163,14 +166,14 @@ public abstract class Scroll extends Item {
 	}
 	
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
+	public ArrayList<String> actions(@NotNull Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		actions.add( AC_READ );
 		return actions;
 	}
 	
 	@Override
-	public void execute( Hero hero, String action ) {
+	public void execute(@NotNull Hero hero, @NotNull String action ) {
 
 		super.execute( hero, action );
 
@@ -183,8 +186,11 @@ public abstract class Scroll extends Item {
 			} else if (hero.buff(UnstableSpellbook.bookRecharge.class) != null
 					&& hero.buff(UnstableSpellbook.bookRecharge.class).isCursed()
 					&& !(this instanceof ScrollOfRemoveCurse || this instanceof ScrollOfAntiMagic)){
-				GLog.n( Messages.get(this, "cursed") );
-			} else {
+				GLog.n( Messages.get(this, "spellbook_cursed") );
+			} if(blessedType == CURSED) {
+                // TODO: make it more usable
+                GLog.w( Messages.get(this, "blessed"));
+            } else {
 				doRead();
 			}
 			
@@ -247,7 +253,7 @@ public abstract class Scroll extends Item {
 		String info= (anonymous && (handler == null || !handler.isKnown( this ))) ? desc() : super.info();
         info+=switch (blessedType){
             default -> "";
-            case HOLY -> "\n\n" + Messages.get(Scroll.class, "holy");
+            case DIVINE -> "\n\n" + Messages.get(Scroll.class, "divine");
             case BLESSED -> "\n\n" + Messages.get(Scroll.class, "blessed");
             case CURSED -> "\n\n" + Messages.get(Scroll.class, "cursed");
         };
@@ -283,7 +289,14 @@ public abstract class Scroll extends Item {
 	
 	@Override
 	public int value() {
-		return 30 * quantity;
+        int value = 30 * quantity;
+        value = (int) (value * switch (blessedType){
+            case DIVINE -> 2;
+            case BLESSED -> 1.3f;
+            case NORMAL -> 1;
+            case CURSED -> 0.5f;
+        });
+        return value;
 	}
 
 	@Override

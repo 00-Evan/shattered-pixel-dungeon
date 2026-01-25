@@ -79,6 +79,7 @@ import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -176,14 +177,14 @@ public class Armor extends EquipableItem {
 	}
 
 	@Override
-	public ArrayList<String> actions(Hero hero) {
+	public ArrayList<String> actions(@NotNull Hero hero) {
 		ArrayList<String> actions = super.actions(hero);
 		if (seal != null) actions.add(AC_DETACH);
 		return actions;
 	}
 
 	@Override
-	public void execute(Hero hero, String action) {
+	public void execute(@NotNull Hero hero, @NotNull String action) {
 
 		super.execute(hero, action);
 
@@ -627,7 +628,7 @@ public class Armor extends EquipableItem {
             info += switch (blessedType){
                 default -> "";
                 case BLESSED -> "\n\n" + Messages.get(Armor.class, "blessed");
-                case HOLY ->  "\n\n" + Messages.get(Armor.class, "holy");
+                case DIVINE ->  "\n\n" + Messages.get(Armor.class, "divine");
             };
         } else if (!isIdentified() && blessedTypeKnown){
 			if (glyph != null && glyph.curse()) {
@@ -636,7 +637,7 @@ public class Armor extends EquipableItem {
                 info += "\n\n" + switch (blessedType){
                     default -> "";
                     case BLESSED ->  Messages.get(Armor.class, "blessed_known");
-                    case HOLY ->   Messages.get(Armor.class, "holy_known");
+                    case DIVINE ->   Messages.get(Armor.class, "divine_known");
                     case NORMAL ->  Messages.get(Armor.class, "not_cursed");
                 };
 			}
@@ -729,7 +730,7 @@ public class Armor extends EquipableItem {
             price= (int) (price* switch (blessedType) {
                 default -> 1;
                 case BLESSED->1.5;
-                case HOLY -> 2;
+                case DIVINE -> 2;
             });
         }
 		if (levelKnown && level() > 0) {

@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items.trinkets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -58,7 +57,7 @@ public abstract class Trinket extends Item {
         lvl+=switch (blessedType){
             default -> 0;
             case BLESSED -> 1;
-            case HOLY -> 2;
+            case DIVINE -> 2;
         };
 
         return Math.min(lvl, 3);
@@ -86,7 +85,7 @@ public abstract class Trinket extends Item {
 		info += "\n\n" + statsDesc();
         info+=switch (blessedType){
             default -> "";
-            case HOLY -> "\n\n" + Messages.get(Trinket.class, "holy");
+            case DIVINE -> "\n\n" + Messages.get(Trinket.class, "divine");
             case BLESSED -> "\n\n" + Messages.get(Trinket.class, "blessed");
             case CURSED -> "\n\n" + Messages.get(Trinket.class, "cursed");
         };

@@ -27,10 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -57,13 +53,13 @@ public class WndBag extends WndTabbed {
 	public static Window INSTANCE;
 
 	protected static final int COLS_P   = 6;
-	protected static final int COLS_L   = 6;
+	protected static final int COLS_L   = 9;
 	
 	protected static int SLOT_WIDTH_P   = /*28*/20;
-	protected static int SLOT_WIDTH_L   = /*28*/24;
+	protected static int SLOT_WIDTH_L   = /*28*/25;
 
 	protected static int SLOT_HEIGHT_P	= /*28*/20;
-	protected static int SLOT_HEIGHT_L	=/* 28*/24;
+	protected static int SLOT_HEIGHT_L	=/* 28*/25;
 
 	protected static final int SLOT_MARGIN	= 1;
 	
@@ -115,7 +111,7 @@ public class WndBag extends WndTabbed {
 				windowHeight -= nRows;
 			}
 		} else {
-			while (slotWidth >= 26 && (windowWidth + chrome.marginHor()) > PixelScene.uiCamera.width){
+			while (slotWidth >= 20 && (windowWidth + chrome.marginHor()) > PixelScene.uiCamera.width){
 				slotWidth--;
 				windowWidth -= nCols;
 			}
@@ -239,10 +235,16 @@ public class WndBag extends WndTabbed {
 		Belongings stuff = Dungeon.hero.belongings;
 		placeItem( stuff.weapon != null ? stuff.weapon : new Placeholder( ItemSpriteSheet.WEAPON_HOLDER ) );
         placeItem( stuff.secWeapon != null ? stuff.secWeapon : new Placeholder( ItemSpriteSheet.GUN_HOLDER ) );
-		placeItem( stuff.armor != null ? stuff.armor : new Placeholder( ItemSpriteSheet.ARMOR_HOLDER ) );
-		placeItem( stuff.artifact != null ? stuff.artifact : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
-		placeItem( stuff.misc != null ? stuff.misc : new Placeholder( ItemSpriteSheet.SOMETHING ) );
-		placeItem( stuff.ring != null ? stuff.ring : new Placeholder( ItemSpriteSheet.RING_HOLDER ) );
+        placeItem( stuff.armor != null ? stuff.armor : new Placeholder( ItemSpriteSheet.ARMOR_HOLDER ) );
+        placeItem( stuff.artifact != null ? stuff.artifact : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
+        placeItem( stuff.misc != null ? stuff.misc : new Placeholder( ItemSpriteSheet.SOMETHING ) );
+        placeItem( stuff.ring != null ? stuff.ring : new Placeholder( ItemSpriteSheet.RING_HOLDER ) );
+
+        if(nCols > 6){
+            col = 0;
+            row++;
+        }
+
 
 		int equipped = 6;
 
@@ -399,28 +401,14 @@ public class WndBag extends WndTabbed {
 	protected int tabHeight() {
 		return 20;
 	}
-	
-	private Image icon( Bag bag ) {
-		if (bag instanceof VelvetPouch) {
-			return Icons.get( Icons.SEED_POUCH );
-		} else if (bag instanceof ScrollHolder) {
-			return Icons.get( Icons.SCROLL_HOLDER );
-		} else if (bag instanceof MagicalHolster) {
-			return Icons.get( Icons.WAND_HOLSTER );
-		} else if (bag instanceof PotionBandolier) {
-			return Icons.get( Icons.POTION_BANDOLIER );
-		} else {
-			return Icons.get( Icons.BACKPACK );
-		}
-	}
-	
-	private class BagTab extends IconTab {
 
-		private Bag bag;
-		private int index;
+    private class BagTab extends IconTab {
+
+		private final Bag bag;
+		private final int index;
 		
 		public BagTab( Bag bag, int index ) {
-			super( icon(bag) );
+			super( Bag.icon(bag) );
 			
 			this.bag = bag;
 			this.index = index;
@@ -428,18 +416,16 @@ public class WndBag extends WndTabbed {
 
 		@Override
 		public GameAction keyAction() {
-			switch (index){
-				case 1: default:
-					return SPDAction.BAG_1;
-				case 2:
-					return SPDAction.BAG_2;
-				case 3:
-					return SPDAction.BAG_3;
-				case 4:
-					return SPDAction.BAG_4;
-				case 5:
-					return SPDAction.BAG_5;
-			}
+            return switch (index) {
+                default -> SPDAction.BAG_1;
+                case 2 -> SPDAction.BAG_2;
+                case 3 -> SPDAction.BAG_3;
+                case 4 -> SPDAction.BAG_4;
+                case 5 -> SPDAction.BAG_5;
+                case 6 -> SPDAction.BAG_6;
+                case 7 -> SPDAction.BAG_7;
+                case 8 -> SPDAction.BAG_8;
+            };
 		}
 
 		@Override

@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -49,7 +50,7 @@ public class EnergyCrystal extends Item {
 	}
 
 	@Override
-	public ArrayList<String> actions(Hero hero ) {
+	public ArrayList<String> actions(@NotNull Hero hero ) {
 		return new ArrayList<>();
 	}
 

@@ -52,6 +52,7 @@ import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Reflection;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -106,7 +107,7 @@ public class Item implements Bundlable {
 		}
 	};
 	
-	public ArrayList<String> actions( Hero hero ) {
+	public ArrayList<String> actions(@NotNull Hero hero ) {
 		ArrayList<String> actions = new ArrayList<>();
 		actions.add( AC_DROP );
 		actions.add( AC_THROW );
@@ -149,11 +150,11 @@ public class Item implements Bundlable {
 		return keptThoughLostInvent;
 	}
 
-	public void doThrow( Hero hero ) {
+	public void doThrow(@NotNull Hero hero ) {
 		GameScene.selectCell(thrower);
 	}
 	
-	public void execute( Hero hero, String action ) {
+	public void execute(@NotNull Hero hero,@NotNull String action ) {
 
 		GameScene.cancel();
 		curUser = hero;
@@ -179,7 +180,7 @@ public class Item implements Bundlable {
 		return defaultAction;
 	}
 	
-	public void execute( Hero hero ) {
+	public void execute( @NotNull Hero hero ) {
 		String action = defaultAction();
 		if (action != null) {
 			execute(hero, defaultAction());
@@ -321,8 +322,7 @@ public class Item implements Bundlable {
 			
 			return null;
 			
-		} else
-		if (quantity == 1) {
+		} else if (quantity == 1) {
 
 			if (stackable){
 				Dungeon.quickslot.convertToPlaceholder(this);
@@ -331,8 +331,7 @@ public class Item implements Bundlable {
 			return detachAll( container );
 			
 		} else {
-			
-			
+
 			Item detached = split(1);
 			updateQuickslot();
 			if (detached != null) detached.onDetach( );
@@ -364,7 +363,7 @@ public class Item implements Bundlable {
 	}
 	
 	public boolean isSimilar( Item item ) {
-		return getClass() == item.getClass();
+		return getClass() == item.getClass() && blessedType == item.blessedType;
 	}
 
 	protected void onDetach(){}
@@ -396,7 +395,25 @@ public class Item implements Bundlable {
 
 		updateQuickslot();
 	}
-	
+
+    public void safeUpgradeOrDegrade( int level ){
+        if (level > 0) {
+            if (level > 127) {
+                this.upgrade(127);
+                this.level(level);
+            } else {
+                this.upgrade(level);
+            }
+        } else if (level < 0) {
+            if (level < -128) {
+                this.degrade(128);
+                this.level(level);
+            } else {
+                this.degrade(-level);
+            }
+        }
+    }
+
 	public Item upgrade() {
 		
 		this.level++;
@@ -452,6 +469,15 @@ public class Item implements Bundlable {
 	public boolean isEquipped( Hero hero ) {
 		return false;
 	}
+
+    public Item blessedTypeKnown(boolean flag) {
+        this.blessedTypeKnown = flag;
+        return this;
+    }
+    public Item blessedType(BlessedType blessedType) {
+        this.blessedType = blessedType;
+        return this;
+    }
 
 	public final Item identify(){
 		return identify(true);
@@ -605,9 +631,20 @@ public class Item implements Bundlable {
 		
 		int level = bundle.getInt( LEVEL );
 		if (level > 0) {
-			upgrade( level );
+            if(level > 127 ) {
+                upgrade(127);
+                this.level(level);
+            } else {
+                upgrade( level );
+            }
 		} else if (level < 0) {
-			degrade( -level );
+            if(level < -128){
+                degrade(128);
+                this.level(level);
+            } else {
+                degrade( -level );
+            }
+
 		}
 		
 		blessedType = bundle.getEnum(BLESSED_TYPE,BlessedType.class);
@@ -722,14 +759,33 @@ public class Item implements Bundlable {
 	};
 
     public  enum BlessedType{
-        HOLY,
-        BLESSED,
         NORMAL,
+        DIVINE,
+        BLESSED,
         CURSED;
         final String type;
-        private BlessedType() {
+        BlessedType() {
             type = name().toLowerCase();
         }
 
+        public boolean isHoly() {
+            return this == BLESSED || this == DIVINE;
+        }
+
+        public boolean isNormal() {
+            return this == NORMAL;
+        }
+
+        public boolean isDivine() {
+            return this == DIVINE;
+        }
+
+        public boolean isBlessed() {
+            return this == BLESSED;
+        }
+
+        public boolean isCursed() {
+            return this == CURSED;
+        }
     }
 }

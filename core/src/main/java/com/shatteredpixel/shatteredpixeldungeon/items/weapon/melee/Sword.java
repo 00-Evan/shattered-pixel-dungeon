@@ -41,9 +41,4 @@ public class Sword extends MeleeWeapon {
 		return Messages.get(this, "prompt");
 	}
 
-    public String upgradeAbilityStat(int level){
-		int dmgBoost = 5 + level;
-		return augment.damageFactor(min(level)+dmgBoost) + "-" + augment.damageFactor(max(level)+dmgBoost);
-	}
-
 }

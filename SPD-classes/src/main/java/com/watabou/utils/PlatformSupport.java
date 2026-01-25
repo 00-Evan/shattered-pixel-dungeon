@@ -160,4 +160,7 @@ public abstract class PlatformSupport {
 		return fonts.get(generator).get(key);
 	}
 
+    public boolean isDesktop() {
+        return false;
+    }
 }

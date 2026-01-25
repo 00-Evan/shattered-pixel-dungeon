@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.HolyWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 
@@ -330,7 +329,7 @@ public String info() {
         info += switch (blessedType){
             default -> "";
             case BLESSED -> "\n\n" + Messages.get(Weapon.class, "blessed");
-            case HOLY ->  "\n\n" + Messages.get(Weapon.class, "holy");
+            case DIVINE ->  "\n\n" + Messages.get(Weapon.class, "divine");
         };
     } else if (!isIdentified() && blessedTypeKnown) {
         if (enchantment != null && enchantment.curse()) {
@@ -339,7 +338,7 @@ public String info() {
             info += "\n\n" + switch (blessedType){
                 default -> "";
                 case BLESSED ->  Messages.get(Weapon.class, "blessed_known");
-                case HOLY ->   Messages.get(Weapon.class, "holy_known");
+                case DIVINE ->   Messages.get(Weapon.class, "divine_known");
                 case NORMAL ->  Messages.get(Weapon.class, "not_cursed");
             };
         }
@@ -384,7 +383,7 @@ public int value() {
         price= (int) (price* switch (blessedType) {
                     default -> 1;
                     case BLESSED->1.5;
-                    case HOLY -> 2;
+                    case DIVINE -> 2;
                 });
     }
     if (levelKnown && level() > 0) {

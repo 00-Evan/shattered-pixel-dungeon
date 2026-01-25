@@ -29,6 +29,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.spells.BeaconOfReturning;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Spell;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.watabou.noosa.Image;
 
 public class ScrollHolder extends Bag {
 
@@ -66,4 +68,8 @@ public class ScrollHolder extends Bag {
 		return 40;
 	}
 
+    @Override
+    public Image icon() {
+        return Icons.get( Icons.SCROLL_HOLDER );
+    }
 }

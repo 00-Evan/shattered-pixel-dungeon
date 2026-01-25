@@ -64,9 +64,4 @@ public class Greataxe extends MeleeWeapon {
 		return Messages.get(this, "prompt");
 	}
 
-
-	public String upgradeAbilityStat(int level){
-		int dmgBoost = 15 + 2*level;
-		return augment.damageFactor(min(level)+dmgBoost) + "-" + augment.damageFactor(max(level)+dmgBoost);
-	}
 }

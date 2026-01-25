@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.noosa.audio.Sample;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -57,14 +58,14 @@ public class Stylus extends Item {
 	}
 	
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
+	public ArrayList<String> actions(@NotNull Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		actions.add( AC_INSCRIBE );
 		return actions;
 	}
 	
 	@Override
-	public void execute( Hero hero, String action ) {
+	public void execute(@NotNull Hero hero, @NotNull String action ) {
 
 		super.execute( hero, action );
 

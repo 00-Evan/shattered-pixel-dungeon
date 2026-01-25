@@ -26,6 +26,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.LiquidMetal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.watabou.noosa.Image;
 
 public class PotionBandolier extends Bag {
 
@@ -51,4 +53,8 @@ public class PotionBandolier extends Bag {
 		return 40;
 	}
 
+    @Override
+    public Image icon() {
+        return Icons.get( Icons.POTION_BANDOLIER );
+    }
 }

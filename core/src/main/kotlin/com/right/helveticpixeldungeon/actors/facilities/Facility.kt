@@ -117,7 +117,8 @@ open class Facility : Actor() {
         return false
     }
 
-    open fun onOperate(hero: Hero): Boolean {
+    open fun onOperate(hero: Hero,dst:Int): Boolean {
+        hero.ready()
         return false
     }
 }

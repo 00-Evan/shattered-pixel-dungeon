@@ -751,14 +751,15 @@ public class WndJournal extends WndTabbed {
 
 				Item item = (Item) Reflection.newInstance(itemClass);
 
+
 				if (seen) {
-					if (item instanceof Ring) {
-						((Ring) item).anonymize();
-					} else if (item instanceof Potion) {
-						((Potion) item).anonymize();
-					} else if (item instanceof Scroll) {
-						((Scroll) item).anonymize();
-					}
+                    switch (item) {
+                        case Ring ring -> ring.anonymize();
+                        case Potion potion -> potion.anonymize();
+                        case Scroll scroll -> scroll.anonymize();
+                        default -> {
+                        }
+                    }
 				}
 
 				sprite = new ItemSprite(item.image, seen ? item.glowing() : null);
@@ -845,19 +846,19 @@ public class WndJournal extends WndTabbed {
 			ScrollingGridPane.GridItem gridItem = new ScrollingGridPane.GridItem(sprite) {
 				@Override
 				public boolean onClick(float x, float y) {
-					if (inside(x, y)) {
-						Image sprite = new ItemSprite();
-						sprite.copy(icon);
-						if (ShatteredPixelDungeon.scene() instanceof GameScene){
-							GameScene.show(new WndJournalItem(sprite, finalTitle, finalDesc));
-						} else {
-							ShatteredPixelDungeon.scene().addToFront(new WndJournalItem(sprite, finalTitle, finalDesc));
-						}
-						return true;
-					} else {
-						return false;
-					}
-				}
+                    if (!inside(x, y)) {
+                        return false;
+                    } else {
+                        Image sprite = new ItemSprite();
+                        sprite.copy(icon);
+                        if (ShatteredPixelDungeon.scene() instanceof GameScene){
+                            GameScene.show(new WndJournalItem(sprite, finalTitle, finalDesc));
+                        } else {
+                            ShatteredPixelDungeon.scene().addToFront(new WndJournalItem(sprite, finalTitle, finalDesc));
+                        }
+                        return true;
+                    }
+                }
 			};
 			if (secondIcon != null){
 				gridItem.addSecondIcon(secondIcon);

@@ -67,6 +67,8 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.*;
+
 public class MiningLevel extends CavesLevel {
 
 	@Override
@@ -213,7 +215,14 @@ public class MiningLevel extends CavesLevel {
 				map[cell] = Terrain.GRASS;
 				losBlocking[cell] = false;
 			}
-			drop( new Torch(), cell );
+            Item.BlessedType blessedType = NORMAL;
+            int random = Random.Int(10);
+            if(random<=2){
+                blessedType = BLESSED;
+            }else if(random >= 9){
+                blessedType = DIVINE;
+            }
+			drop( new Torch().blessedType(blessedType), cell );
 		}
 	}
 

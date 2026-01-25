@@ -49,6 +49,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -71,7 +72,7 @@ public class MasterThievesArmband extends Artifact {
 	public static final String AC_STEAL = "STEAL";
 
 	@Override
-	public ArrayList<String> actions(Hero hero) {
+	public ArrayList<String> actions(@NotNull Hero hero) {
 		ArrayList<String> actions = super.actions(hero);
 		if (isEquipped(hero)
 				&& charge > 0
@@ -83,7 +84,7 @@ public class MasterThievesArmband extends Artifact {
 	}
 
 	@Override
-	public void execute(Hero hero, String action) {
+	public void execute(@NotNull Hero hero, @NotNull String action) {
 		super.execute(hero, action);
 
 		if (hero.buff(MagicImmune.class) != null) return;

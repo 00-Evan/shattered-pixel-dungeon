@@ -194,7 +194,15 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		showStatusWithIcon(color, text, FloatingText.NO_ICON, args);
 	}
 
-	public void showStatusWithIcon( int color, String text, int icon, Object... args ) {
+    public void showStatusWithScale( int color, String text, Object... args ) {
+        showStatusWithIconWithScale(color, text, FloatingText.NO_ICON,true, args);
+    }
+
+    public void showStatusWithIcon( int color, String text, int icon, Object... args ){
+        showStatusWithIconWithScale(color,text,icon,false,args);
+    }
+
+	public void showStatusWithIconWithScale( int color, String text, int icon,boolean shouldScale, Object... args ) {
 		if (visible) {
 			if (args.length > 0) {
 				text = Messages.format( text, args );
@@ -202,9 +210,9 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			float x = destinationCenter().x;
 			float y = destinationCenter().y - height()/2f;
 			if (ch != null) {
-				FloatingText.show( x, y, ch.pos, text, color, icon, true );
+				FloatingText.show( x, y, ch.pos, text, color, icon, true, shouldScale );
 			} else {
-				FloatingText.show( x, y, -1, text, color, icon, true );
+				FloatingText.show( x, y, -1, text, color, icon, true, shouldScale );
 			}
 		}
 	}

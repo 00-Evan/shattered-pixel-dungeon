@@ -27,6 +27,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.quest.MetalShard;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.watabou.noosa.Image;
 
 public class VelvetPouch extends Bag {
 
@@ -53,4 +55,8 @@ public class VelvetPouch extends Bag {
 		return 30;
 	}
 
+    @Override
+    public Image icon() {
+        return Icons.get( Icons.SEED_POUCH );
+    }
 }

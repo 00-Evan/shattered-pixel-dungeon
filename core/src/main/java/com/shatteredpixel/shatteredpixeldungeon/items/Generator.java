@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
+import com.right.helveticpixeldungeon.items.weapon.melee.SteelHandGun;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClericArmor;
@@ -193,7 +194,8 @@ public class Generator {
 		WEP_T3	( 0, 0, MeleeWeapon.class),
 		WEP_T4	( 0, 0, MeleeWeapon.class),
 		WEP_T5	( 0, 0, MeleeWeapon.class),
-		
+        WEP_T6	( 0, 0, MeleeWeapon.class),
+
 		ARMOR	( 2, 1, Armor.class ),
 		
 		MISSILE ( 1, 2, MissileWeapon.class ),
@@ -202,7 +204,8 @@ public class Generator {
 		MIS_T3  ( 0, 0, MissileWeapon.class ),
 		MIS_T4  ( 0, 0, MissileWeapon.class ),
 		MIS_T5  ( 0, 0, MissileWeapon.class ),
-		
+        MIS_T6  ( 0, 0, MissileWeapon.class ),
+
 		WAND	( 1, 1, Wand.class ),
 		RING	( 1, 0, Ring.class ),
 		ARTIFACT( 0, 1, Artifact.class),
@@ -388,7 +391,8 @@ public class Generator {
 					Gloves.class,
 					Rapier.class,
 					Cudgel.class,
-                    BrassKnuckles.class,
+
+                    SteelHandGun.class
 			};
 			WEP_T1.defaultProbs = new float[]{ 2, 0, 2, 2, 2, 2 };
 			WEP_T1.probs = WEP_T1.defaultProbs.clone();
@@ -400,7 +404,8 @@ public class Generator {
 					Quarterstaff.class,
 					Dirk.class,
 					Sickle.class,
-					Pickaxe.class
+					Pickaxe.class,
+                    BrassKnuckles.class,
 			};
 			WEP_T2.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2, 0 };
 			WEP_T2.probs = WEP_T2.defaultProbs.clone();
@@ -439,9 +444,15 @@ public class Generator {
 			};
 			WEP_T5.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2, 2 };
 			WEP_T5.probs = WEP_T5.defaultProbs.clone();
-			
+
+            WEP_T6.classes = new Class<?>[]{
+                    // TODO: add t6 weapon
+            };
+            WEP_T6.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2, 2 };
+            WEP_T6.probs = WEP_T6.defaultProbs.clone();
+
 			//see Generator.randomArmor
-			ARMOR.classes = new Class<?>[]{
+            ARMOR.classes = new Class<?>[]{
 					ClothArmor.class,
 					LeatherArmor.class,
 					MailArmor.class,
@@ -500,7 +511,13 @@ public class Generator {
 			};
 			MIS_T5.defaultProbs = new float[]{ 3, 3, 3 };
 			MIS_T5.probs = MIS_T5.defaultProbs.clone();
-			
+
+            MIS_T6.classes = new Class<?>[]{
+                 // TODO: add T6 missile
+            };
+            MIS_T6.defaultProbs = new float[]{ 3, 3, 3 };
+            MIS_T6.probs = MIS_T6.defaultProbs.clone();
+
 			FOOD.classes = new Class<?>[]{
 					Food.class,
 					Pasty.class,
@@ -755,7 +772,8 @@ public class Generator {
 			Category.WEP_T2,
 			Category.WEP_T3,
 			Category.WEP_T4,
-			Category.WEP_T5
+			Category.WEP_T5,
+            Category.WEP_T6,
 	};
 
 	public static MeleeWeapon randomWeapon(){
@@ -788,7 +806,8 @@ public class Generator {
 			Category.MIS_T2,
 			Category.MIS_T3,
 			Category.MIS_T4,
-			Category.MIS_T5
+			Category.MIS_T5,
+            Category.MIS_T6,
 	};
 	
 	public static MissileWeapon randomMissile(){

@@ -26,6 +26,7 @@ import com.badlogic.gdx.utils.I18NBundle;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import kotlin.reflect.KClass;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -115,12 +116,16 @@ public class Messages {
 	 */
 
 	public static String get(String key, Object...args){
-		return get(null, key, args);
+		return get((Class) null, key, args);
 	}
 
 	public static String get(Object o, String k, Object...args){
 		return get(o.getClass(), k, args);
 	}
+
+    public static String get(KClass kc, String k, Object...args){
+        return get(kc.getClass(), k, args);
+    }
 
 	public static String get(Class c, String k, Object...args){
 		String key;
@@ -197,17 +202,17 @@ public class Messages {
 	public static String titleCase( String str ){
 		//English capitalizes every word except for a few exceptions
 		if (lang == Languages.ENGLISH){
-			String result = "";
+			StringBuilder result = new StringBuilder();
 			//split by any unicode space character
 			for (String word : str.split("(?<=\\p{Zs})")){
 				if (noCaps.contains(word.trim().toLowerCase(Locale.ENGLISH).replaceAll(":|[0-9]", ""))){
-					result += word;
+					result.append(word);
 				} else {
-					result += capitalize(word);
+					result.append(capitalize(word));
 				}
 			}
 			//first character is always capitalized.
-			return capitalize(result);
+			return capitalize(result.toString());
 		}
 
 		//Otherwise, use sentence case

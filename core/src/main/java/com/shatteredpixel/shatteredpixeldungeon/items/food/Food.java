@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -60,14 +61,14 @@ public class Food extends Item {
 	}
 	
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
+	public ArrayList<String> actions(@NotNull Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		actions.add( AC_EAT );
 		return actions;
 	}
 	
 	@Override
-	public void execute( Hero hero, String action ) {
+	public void execute(@NotNull Hero hero, @NotNull String action ) {
 
 		super.execute( hero, action );
 
@@ -142,7 +143,7 @@ public class Food extends Item {
         desc+=switch (blessedType){
             default -> "";
             case BLESSED -> "\n\n" + Messages.get(Food.class, "blessed");
-            case HOLY -> "\n\n" + Messages.get(Food.class, "holy");
+            case DIVINE -> "\n\n" + Messages.get(Food.class, "divine");
             case CURSED -> "\n\n" + Messages.get(Food.class, "cursed");
         };
         return desc;
@@ -150,6 +151,13 @@ public class Food extends Item {
 
     @Override
 	public int value() {
-		return 10 * quantity;
+        int value = 10 * quantity;
+        value = (int) (value * switch (blessedType){
+            case DIVINE -> 2;
+            case BLESSED -> 1.3f;
+            case NORMAL -> 1;
+            case CURSED -> 0.5f;
+        });
+        return value;
 	}
 }

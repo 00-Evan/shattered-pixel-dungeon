@@ -49,6 +49,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -76,7 +77,7 @@ public class HornOfPlenty extends Artifact {
 	public static final String AC_STORE = "STORE";
 
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
+	public ArrayList<String> actions(@NotNull Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		if (hero.buff(MagicImmune.class) != null) return actions;
 		if (isEquipped( hero ) && charge > 0) {
@@ -90,7 +91,7 @@ public class HornOfPlenty extends Artifact {
 	}
 
 	@Override
-	public void execute( Hero hero, String action ) {
+	public void execute(@NotNull Hero hero, @NotNull String action ) {
 
 		super.execute(hero, action);
 

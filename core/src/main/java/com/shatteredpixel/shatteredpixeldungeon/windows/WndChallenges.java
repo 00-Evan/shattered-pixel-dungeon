@@ -128,7 +128,7 @@ public class WndChallenges extends Window {
 
                 pos = cb.bottom();
             }
-            content.setSize(width, pos + 16);
+            //content.setSize(width, pos + 16);
             WndChallenges.this.resize(WIDTH, TTL_HEIGHT + BTN_HEIGHT * 9 + GAP * 8);
 
         }

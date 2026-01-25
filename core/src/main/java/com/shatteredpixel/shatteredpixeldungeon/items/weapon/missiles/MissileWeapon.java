@@ -46,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -160,7 +161,7 @@ abstract public class MissileWeapon extends Weapon {
 	}
 
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
+	public ArrayList<String> actions(@NotNull Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		actions.remove( AC_EQUIP );
 		return actions;
@@ -173,7 +174,7 @@ abstract public class MissileWeapon extends Weapon {
 	}
 
 	public boolean isSimilar( Item item ) {
-		return level() == item.level() && getClass() == item.getClass();
+		return blessedType == item.blessedType && level() == item.level() && getClass() == item.getClass();
 	}
 	
 	@Override
@@ -225,7 +226,7 @@ abstract public class MissileWeapon extends Weapon {
 	}
 
 	@Override
-	public void doThrow(Hero hero) {
+	public void doThrow(@NotNull Hero hero) {
 		parent = null; //reset parent before throwing, just incase
 		super.doThrow(hero);
 	}
@@ -502,13 +503,13 @@ abstract public class MissileWeapon extends Weapon {
             info += switch (blessedType){
                 default -> "";
                 case BLESSED -> "\n\n" + Messages.get(Weapon.class, "blessed");
-                case HOLY ->  "\n\n" + Messages.get(Weapon.class, "holy");
+                case DIVINE ->  "\n\n" + Messages.get(Weapon.class, "divine");
             };
         }  else if (!isIdentified() && blessedTypeKnown){
             info += "\n\n" + switch (blessedType){
                 default -> "";
                 case BLESSED ->  Messages.get(Weapon.class, "blessed_known");
-                case HOLY ->   Messages.get(Weapon.class, "holy_known");
+                case DIVINE ->   Messages.get(Weapon.class, "divine_known");
                 case NORMAL ->  Messages.get(Weapon.class, "not_cursed");
             };
 		}
@@ -531,7 +532,15 @@ abstract public class MissileWeapon extends Weapon {
 	
 	@Override
 	public int value() {
-		return 6 * tier * quantity * (level() + 1);
+        int value = 6 * tier * quantity * (level() + 1);
+        value = (int) (value * switch (blessedType){
+            case DIVINE -> 2;
+            case BLESSED -> 1.3f;
+            case NORMAL -> 1;
+            case CURSED -> 0.5f;
+        });
+        return value;
+
 	}
 
 	private static final String SPAWNED = "spawned";

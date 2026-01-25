@@ -421,7 +421,7 @@ public class WndRanking extends WndTabbed {
 	}
 
 	private class ChallengesTab extends Group{
-        private  ChallengesScrollPane list;
+        private final ChallengesScrollPane list;
 		public ChallengesTab(){
 			super();
 
@@ -525,13 +525,13 @@ public class WndRanking extends WndTabbed {
             int color = 0x9953564D;
             if(item.blessedType == Item.BlessedType.BLESSED){
                 color = InventorySlot.BLESSED;
-            }else if(item.blessedType == Item.BlessedType.HOLY){
+            }else if(item.blessedType == Item.BlessedType.DIVINE){
                 color = InventorySlot.HOLY;
             }
             bg.texture( TextureCache.createSolid( color ) );
             bg.resetColor();
 
-			if (item.blessedType == CURSED && item.blessedTypeKnown) {
+            if (item.blessedType == CURSED && item.blessedTypeKnown) {
 				bg.ra = +0.3f;
 				bg.ga = -0.15f;
 				bg.ba = -0.15f;
@@ -608,7 +608,7 @@ public class WndRanking extends WndTabbed {
             int color = 0x9953564D;
             if(item.blessedType == Item.BlessedType.BLESSED){
                 color = InventorySlot.BLESSED;
-            }else if(item.blessedType == Item.BlessedType.HOLY){
+            }else if(item.blessedType == Item.BlessedType.DIVINE){
                 color = InventorySlot.HOLY;
             }
             bg.texture( TextureCache.createSolid( color ) );

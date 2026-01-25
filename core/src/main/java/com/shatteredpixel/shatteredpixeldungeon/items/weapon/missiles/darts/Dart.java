@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -61,14 +62,14 @@ public class Dart extends MissileWeapon {
 	protected static final String AC_TIP = "TIP";
 	
 	@Override
-	public ArrayList<String> actions(Hero hero) {
+	public ArrayList<String> actions(@NotNull Hero hero) {
 		ArrayList<String> actions = super.actions( hero );
 		actions.add( AC_TIP );
 		return actions;
 	}
 	
 	@Override
-	public void execute(Hero hero, String action) {
+	public void execute(@NotNull Hero hero, @NotNull String action) {
 		super.execute(hero, action);
 		if (action.equals(AC_TIP)){
 			GameScene.selectItem(itemSelector);

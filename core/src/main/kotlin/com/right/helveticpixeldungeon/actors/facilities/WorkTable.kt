@@ -6,6 +6,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap
 import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet
+import com.watabou.utils.Callback
 
 class WorkTable : Facility() {
     init {
@@ -56,11 +57,15 @@ class WorkTable : Facility() {
        return hero.belongings?.weapon!=null
     }
 
-    override fun onOperate(hero: Hero): Boolean {
-        hero.belongings?.weapon?.let {
-            val level=it.level()
-            it.level(level+1)
+    override fun onOperate(hero: Hero,dst:Int): Boolean {
+        hero.sprite.attack(dst){
+            hero.belongings?.weapon?.let {
+                val level=it.level()
+                it.level(level+1)
+            }
+            hero.ready()
         }
+
 
         return false
     }

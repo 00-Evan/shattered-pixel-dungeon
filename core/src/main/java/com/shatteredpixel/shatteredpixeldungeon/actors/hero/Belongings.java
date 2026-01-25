@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -88,11 +89,11 @@ public class Belongings implements Iterable<Item> {
 	//used when thrown weapons temporary become the current weapon
 	public KindOfWeapon thrownWeapon = null;
 
-	//used to ensure that the duelist always uses the weapon she's using the ability of
-	//public KindOfWeapon abilityWeapon = null;
+	// //used to ensure that the duelist always uses the weapon she's using the ability of
+	// public KindOfWeapon abilityWeapon = null;
 
-	//used by the champion subclass
-	//public KindOfWeapon secondWep = null;
+	// //used by the champion subclass
+	// public KindOfWeapon secondWep = null;
 
 	//*** these accessor methods are so that worn items can be affected by various effects/debuffs
 	// we still want to access the raw equipped items in cases where effects should be ignored though,
@@ -122,6 +123,14 @@ public class Belongings implements Iterable<Item> {
 			return null;
 		}
 	}
+
+    public KindOfWeapon secWeapon(){
+        if (!lostInventory() || (secWeapon != null && secWeapon.keptThroughLostInventory())){
+            return secWeapon;
+        } else {
+            return null;
+        }
+    }
 
 	public Armor armor(){
 		if (!lostInventory() || (armor != null && armor.keptThroughLostInventory())){
@@ -166,6 +175,7 @@ public class Belongings implements Iterable<Item> {
 	// ***
 	
 	private static final String WEAPON		= "weapon";
+    private static final String SECWEAPON		= "secweapon";
 	private static final String ARMOR		= "armor";
 	private static final String ARTIFACT   = "artifact";
 	private static final String MISC       = "misc";
@@ -178,6 +188,7 @@ public class Belongings implements Iterable<Item> {
 		backpack.storeInBundle( bundle );
 		
 		bundle.put( WEAPON, weapon );
+        bundle.put(SECWEAPON,secWeapon);
 		bundle.put( ARMOR, armor );
 		bundle.put( ARTIFACT, artifact );
 		bundle.put( MISC, misc );
@@ -192,7 +203,10 @@ public class Belongings implements Iterable<Item> {
 		
 		weapon = (KindOfWeapon) bundle.get(WEAPON);
 		if (weapon() != null)       weapon().activate(owner);
-		
+
+        secWeapon = (KindOfWeapon) bundle.get(SECWEAPON);
+        if (secWeapon() != null)       secWeapon().activate(owner);
+
 		armor = (Armor)bundle.get( ARMOR );
 		if (armor() != null)        armor().activate( owner );
 
@@ -253,6 +267,7 @@ public class Belongings implements Iterable<Item> {
 		return null;
 	}
 
+    @SuppressWarnings("unchecked")
 	public<T extends Item> ArrayList<T> getAllItems( Class<T> itemClass ) {
 		ArrayList<T> result = new ArrayList<>();
 
@@ -401,7 +416,8 @@ public class Belongings implements Iterable<Item> {
 		return count;
 	}
 
-	@Override
+	@NotNull
+    @Override
 	public Iterator<Item> iterator() {
 		return new ItemIterator();
 	}

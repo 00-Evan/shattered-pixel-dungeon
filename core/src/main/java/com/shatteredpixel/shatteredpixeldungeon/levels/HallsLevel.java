@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.HallsPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -58,6 +59,8 @@ import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.*;
 
 public class HallsLevel extends RegularLevel {
 
@@ -117,8 +120,26 @@ public class HallsLevel extends RegularLevel {
 	
 	@Override
 	public void create() {
-		addItemToSpawn( new Torch() );
-		addItemToSpawn( new Torch() );
+        Item.BlessedType blessedType = NORMAL;
+        int random = Random.Int(20);
+        if(random==0){
+            blessedType = CURSED;
+        }else if(random >=1 && random <=3){
+            blessedType = BLESSED;
+        }else if(random >=18){
+            blessedType = DIVINE;
+        }
+		addItemToSpawn( new Torch().blessedType(blessedType) );
+        blessedType = NORMAL;
+        random = Random.Int(20);
+        if(random==0){
+            blessedType = CURSED;
+        }else if(random >=1 && random <=3){
+            blessedType = BLESSED;
+        }else if(random >=18){
+            blessedType = DIVINE;
+        }
+		addItemToSpawn( new Torch().blessedType(blessedType) );
 		super.create();
 	}
 	

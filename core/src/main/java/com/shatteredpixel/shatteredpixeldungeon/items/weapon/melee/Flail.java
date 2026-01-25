@@ -28,7 +28,7 @@ import com.watabou.noosa.audio.Sample;
 
 public class Flail extends MeleeWeapon {
 
-    private static int spinBoost = 0;
+    //private static int spinBoost = 0;
 
     {
         image = ItemSpriteSheet.FLAIL;
@@ -46,16 +46,16 @@ public class Flail extends MeleeWeapon {
                 lvl * Math.round(1.6f * (tier + 1));  //+8 per level, up from +5
     }
 
-    @Override
-    public int damageRoll(Char owner) {
-        int dmg = super.damageRoll(owner) + spinBoost;
-        if (spinBoost > 0) Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
-        spinBoost = 0;
-        return dmg;
-    }
+//    @Override
+//    public int damageRoll(Char owner) {
+//        int dmg = super.damageRoll(owner) + spinBoost;
+//       if (spinBoost > 0) Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+//       spinBoost = 0;
+//        return dmg;
+//    }
 
-    @Override
-    public float accuracyFactor(Char owner, Char target) {
+//    @Override
+//    public float accuracyFactor(Char owner, Char target) {
 //		SpinAbilityTracker spin = owner.buff(SpinAbilityTracker.class);
 //		if (spin != null) {
 //			Actor.add(new Actor() {
@@ -75,16 +75,16 @@ public class Flail extends MeleeWeapon {
 //			// so +120% base dmg, +135% scaling at 3 spins
 //			spinBoost = spin.spins * augment.damageFactor(8 + 2*buffedLvl());
 //			return Float.POSITIVE_INFINITY;
-        //} else {
-        spinBoost = 0;
-        return super.accuracyFactor(owner, target);
-        //}
-    }
+//        } else {
+//        spinBoost = 0;
+//        return super.accuracyFactor(owner, target);
+//        }
+//    }
 
 
-    public String upgradeAbilityStat(int level) {
-        return "+" + augment.damageFactor(8 + 2 * level);
-    }
+//    public String upgradeAbilityStat(int level) {
+//        return "+" + augment.damageFactor(8 + 2 * level);
+//    }
 
 //	public static class SpinAbilityTracker extends FlavourBuff {
 //

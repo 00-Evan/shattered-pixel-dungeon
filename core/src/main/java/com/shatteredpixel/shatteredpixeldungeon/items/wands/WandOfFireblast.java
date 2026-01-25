@@ -210,7 +210,7 @@ public class WandOfFireblast extends DamageWand {
         float factor=switch (blessedType){
             default -> 0.3f;
             case BLESSED -> 0.25f;
-            case HOLY -> 0.2f;
+            case DIVINE -> 0.2f;
         };
 		return (int) GameMath.gate(1, (int)Math.ceil(curCharges*factor), 3);
 	}

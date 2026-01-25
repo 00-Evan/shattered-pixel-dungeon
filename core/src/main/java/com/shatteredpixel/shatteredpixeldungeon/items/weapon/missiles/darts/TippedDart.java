@@ -51,6 +51,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.utils.Reflection;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -66,7 +67,7 @@ public abstract class TippedDart extends Dart {
 	private static final String AC_CLEAN = "CLEAN";
 	
 	@Override
-	public ArrayList<String> actions(Hero hero) {
+	public ArrayList<String> actions(@NotNull Hero hero) {
 		ArrayList<String> actions = super.actions( hero );
 		actions.remove( AC_TIP );
 		actions.add( AC_CLEAN );
@@ -74,7 +75,7 @@ public abstract class TippedDart extends Dart {
 	}
 	
 	@Override
-	public void execute(final Hero hero, String action) {
+	public void execute(@NotNull final Hero hero, @NotNull String action) {
 		super.execute(hero, action);
 		if (action.equals( AC_CLEAN )){
 

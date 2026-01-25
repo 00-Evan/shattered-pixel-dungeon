@@ -28,9 +28,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuickBag;
+import com.watabou.noosa.Image;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -68,7 +71,7 @@ public class Bag extends Item implements Iterable<Item> {
 	}
 
 	@Override
-	public void execute( Hero hero, String action ) {
+	public void execute(@NotNull Hero hero, @NotNull String action ) {
 		quickUseItem = null;
 
 		super.execute( hero, action );
@@ -255,4 +258,15 @@ public class Bag extends Item implements Iterable<Item> {
 			}
 		}
 	}
+
+    public Image icon() {
+        return Icons.get( Icons.BACKPACK );
+    }
+
+    public static Image icon(Bag bag) {
+        if(bag == null){
+            return Icons.get( Icons.BACKPACK );
+        }
+        return bag.icon();
+    }
 }

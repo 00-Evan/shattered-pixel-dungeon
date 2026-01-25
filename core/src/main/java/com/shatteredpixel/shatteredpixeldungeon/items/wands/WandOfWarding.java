@@ -54,6 +54,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
+import org.jetbrains.annotations.NotNull;
 
 import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
 
@@ -72,7 +73,7 @@ public class WandOfWarding extends Wand {
 	}
 
 	@Override
-	public void execute(Hero hero, String action) {
+	public void execute(@NotNull Hero hero, @NotNull String action) {
 		//cursed warding does use targeting as it's just doing regular cursed zaps
 		usesTargeting = blessedType == CURSED && blessedTypeKnown;
 		super.execute(hero, action);

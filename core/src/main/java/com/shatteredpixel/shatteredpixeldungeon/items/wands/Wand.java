@@ -60,6 +60,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -278,7 +279,7 @@ public abstract class Wand extends Item {
     }
 
     @Override
-    public ArrayList<String> actions(Hero hero) {
+    public ArrayList<String> actions(@NotNull Hero hero) {
         ArrayList<String> actions = super.actions(hero);
         if (curCharges > 0 || !curChargeKnown) {
             actions.add(AC_ZAP);
@@ -288,7 +289,7 @@ public abstract class Wand extends Item {
     }
 
     @Override
-    public void execute(Hero hero, String action) {
+    public void execute(@NotNull Hero hero, @NotNull String action) {
 
         super.execute(hero, action);
 
@@ -434,12 +435,12 @@ public abstract class Wand extends Item {
                 default -> "";
                 case CURSED -> Messages.get(Wand.class, "cursed");
                 case BLESSED -> Messages.get(Wand.class, "blessed");
-                case HOLY -> Messages.get(Wand.class, "holy");
+                case DIVINE -> Messages.get(Wand.class, "divine");
             };
         } else if (!isIdentified() && blessedTypeKnown) {
             desc += "\n\n" + switch (blessedType) {
                 default -> "";
-                case HOLY ->  Messages.get(Wand.class, "holy_known");
+                case DIVINE ->  Messages.get(Wand.class, "divine_known");
                 case BLESSED ->  Messages.get(Wand.class, "blessed_known");
                 case NORMAL -> Messages.get(Wand.class, "not_cursed");
             };
@@ -735,7 +736,7 @@ public abstract class Wand extends Item {
             price= (int) (price* switch (blessedType) {
                 default -> 1;
                 case BLESSED->1.5;
-                case HOLY -> 2;
+                case DIVINE -> 2;
             });
         }
         if (levelKnown) {

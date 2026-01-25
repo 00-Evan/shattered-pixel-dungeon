@@ -182,7 +182,7 @@ public class Artifact extends KindofMisc {
 
 			return super.info() + switch (blessedType){
                 default -> "";
-                case HOLY -> "\n\n" +  Messages.get(Artifact.class, "holy_known");
+                case DIVINE -> "\n\n" +  Messages.get(Artifact.class, "divine_known");
                 case BLESSED -> "\n\n" +   Messages.get(Artifact.class, "blessed_known");
                 case NORMAL -> "\n\n" + Messages.get(Artifact.class, "not_cursed");
             };
@@ -190,7 +190,7 @@ public class Artifact extends KindofMisc {
 		} else if (isIdentified() && blessedTypeKnown&&blessedType!=NORMAL){
             return super.info() +  switch (blessedType){
                 default -> "";
-                case HOLY -> "\n\n" +  Messages.get(Artifact.class, "holy");
+                case DIVINE -> "\n\n" +  Messages.get(Artifact.class, "divine");
                 case BLESSED -> "\n\n" +   Messages.get(Artifact.class, "blessed");
                 case NORMAL -> "\n\n" + Messages.get(Artifact.class, "not_cursed");
             };
@@ -256,7 +256,7 @@ public class Artifact extends KindofMisc {
             price= (int) (price* switch (blessedType) {
                 default -> 1;
                 case BLESSED->1.5;
-                case HOLY -> 2;
+                case DIVINE -> 2;
             });
         }
 		if (price < 1) {

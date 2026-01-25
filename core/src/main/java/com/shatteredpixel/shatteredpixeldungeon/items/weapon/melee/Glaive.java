@@ -50,9 +50,5 @@ public class Glaive extends MeleeWeapon {
 	}
 
 
-	public String upgradeAbilityStat(int level){
-		int dmgBoost = 12 + Math.round(2.5f*level);
-		return augment.damageFactor(min(level)+dmgBoost) + "-" + augment.damageFactor(max(level)+dmgBoost);
-	}
 
 }

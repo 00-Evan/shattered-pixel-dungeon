@@ -50,6 +50,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Reflection;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -70,16 +71,17 @@ public class Blandfruit extends Food {
 
 	@Override
 	public boolean isSimilar( Item item ) {
-		if ( super.isSimilar(item) ){
-			Blandfruit other = (Blandfruit) item;
-			if (potionAttrib == null && other.potionAttrib == null) {
-					return true;
-			} else if (potionAttrib != null && other.potionAttrib != null
-					&& potionAttrib.isSimilar(other.potionAttrib)){
-					return true;
-			}
-		}
-		return false;
+        if (!super.isSimilar(item)) {
+            return false;
+        }
+        Blandfruit other = (Blandfruit) item;
+        if (potionAttrib == null && other.potionAttrib == null) {
+                return true;
+        } else if (potionAttrib != null && other.potionAttrib != null
+                && potionAttrib.isSimilar(other.potionAttrib)){
+                return true;
+        }
+        return false;
 	}
 
 	@Override
@@ -94,7 +96,7 @@ public class Blandfruit extends Food {
 	}
 
 	@Override
-	public void execute( Hero hero, String action ) {
+	public void execute(@NotNull Hero hero, @NotNull String action ) {
 
 		if (action.equals( Potion.AC_CHOOSE )){
 

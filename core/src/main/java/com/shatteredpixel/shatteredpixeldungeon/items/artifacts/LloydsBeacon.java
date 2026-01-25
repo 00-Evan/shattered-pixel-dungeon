@@ -48,6 +48,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -96,7 +97,7 @@ public class LloydsBeacon extends Artifact {
 	}
 	
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
+	public ArrayList<String> actions(@NotNull Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		actions.add( AC_ZAP );
 		actions.add( AC_SET );
@@ -107,7 +108,7 @@ public class LloydsBeacon extends Artifact {
 	}
 	
 	@Override
-	public void execute( Hero hero, String action ) {
+	public void execute(@NotNull Hero hero, @NotNull String action ) {
 
 		super.execute( hero, action );
 

@@ -68,10 +68,15 @@ public class ScrollOfTeleportation extends Scroll {
 		identify();
 
 	}
-	
-	public static boolean teleportToLocation(Char ch, int pos){
-		PathFinder.buildDistanceMap(pos, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null));
-		if (PathFinder.distance[ch.pos] == Integer.MAX_VALUE
+
+    public  static boolean teleportToLocation(Char ch, int pos){
+        return teleportToLocation(ch, pos, true);
+    }
+	public static boolean teleportToLocation(Char ch, int pos,boolean limited){
+        if(limited){
+            PathFinder.buildDistanceMap(pos, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null));
+        }
+		if ((limited && PathFinder.distance[ch.pos] == Integer.MAX_VALUE)
 				|| (!Dungeon.level.passable[pos] && !Dungeon.level.avoid[pos])
 				|| (Actor.findChar(pos) != null && Actor.findChar(pos) != ch)){
 			if (ch == Dungeon.hero){

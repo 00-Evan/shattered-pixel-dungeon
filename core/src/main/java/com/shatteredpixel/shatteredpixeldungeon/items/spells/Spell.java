@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -45,14 +46,14 @@ public abstract class Spell extends Item {
 	}
 	
 	@Override
-	public ArrayList<String> actions(Hero hero ) {
+	public ArrayList<String> actions(@NotNull Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		actions.add( AC_CAST );
 		return actions;
 	}
 	
 	@Override
-	public void execute( final Hero hero, String action ) {
+	public void execute(@NotNull final Hero hero, @NotNull String action ) {
 		
 		super.execute( hero, action );
 		

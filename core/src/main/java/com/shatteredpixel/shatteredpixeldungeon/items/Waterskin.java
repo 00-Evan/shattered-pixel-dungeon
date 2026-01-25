@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -71,7 +72,7 @@ public class Waterskin extends Item {
 	}
 
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
+	public ArrayList<String> actions(@NotNull Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		if (volume > 0) {
 			actions.add( AC_DRINK );
@@ -80,7 +81,7 @@ public class Waterskin extends Item {
 	}
 
 	@Override
-	public void execute( final Hero hero, String action ) {
+	public void execute(@NotNull final Hero hero, @NotNull String action ) {
 
 		super.execute( hero, action );
 

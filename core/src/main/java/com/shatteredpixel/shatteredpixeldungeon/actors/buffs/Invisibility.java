@@ -113,9 +113,9 @@ public class Invisibility extends FlavourBuff {
 			bubble.detach();
 		}
 
-		RoundShield.GuardTracker guard = ch.buff(RoundShield.GuardTracker.class);
-		if (guard != null && guard.hasBlocked){
-			guard.detach();
-		}
+//		RoundShield.GuardTracker guard = ch.buff(RoundShield.GuardTracker.class);
+//		if (guard != null && guard.hasBlocked){
+//			guard.detach();
+//		}
 	}
 }

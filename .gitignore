@@ -15,9 +15,9 @@ release/
 # Local configuration file (sdk path, etc)
 local.properties
 
-#intellij project files
+# intellij project files
 *.iml
 *.idea
 
-#bakup file
+# bakup file
 *.bak

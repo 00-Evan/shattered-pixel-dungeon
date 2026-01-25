@@ -72,6 +72,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -218,14 +219,14 @@ public class Potion extends Item {
 	}
 	
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
+	public ArrayList<String> actions(@NotNull Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		actions.add( AC_DRINK );
 		return actions;
 	}
 	
 	@Override
-	public void execute( final Hero hero, String action ) {
+	public void execute(@NotNull final Hero hero, @NotNull String action ) {
 
 		super.execute( hero, action );
 		
@@ -259,7 +260,7 @@ public class Potion extends Item {
 	}
 	
 	@Override
-	public void doThrow( final Hero hero ) {
+	public void doThrow(@NotNull final Hero hero ) {
 
 		if (isKnown()
 				&& !mustThrowPots.contains(this.getClass())
@@ -384,7 +385,7 @@ public class Potion extends Item {
 		String info= (anonymous && (handler == null || !handler.isKnown( this ))) ? desc() : super.info();
         info+=switch (blessedType){
             default -> "";
-            case HOLY -> "\n\n" + Messages.get(Potion.class, "holy");
+            case DIVINE -> "\n\n" + Messages.get(Potion.class, "divine");
             case BLESSED -> "\n\n" + Messages.get(Potion.class, "blessed");
             case CURSED -> "\n\n" + Messages.get(Potion.class, "cursed");
         };
@@ -445,7 +446,14 @@ public class Potion extends Item {
 	
 	@Override
 	public int value() {
-		return 30 * quantity;
+        int value = 30 * quantity;
+        value = (int) (value * switch (blessedType){
+            case DIVINE -> 2;
+            case BLESSED -> 1.3f;
+            case NORMAL -> 1;
+            case CURSED -> 0.5f;
+        });
+        return value;
 	}
 
 	@Override

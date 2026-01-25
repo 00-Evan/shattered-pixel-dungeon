@@ -45,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndChooseAbility;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -161,7 +162,7 @@ abstract public class ClassArmor extends Armor {
 	}
 	
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
+	public ArrayList<String> actions(@NotNull Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		if (isEquipped( hero )) {
 			actions.add( AC_ABILITY );
@@ -185,7 +186,7 @@ abstract public class ClassArmor extends Armor {
 	}
 
 	@Override
-	public void execute( Hero hero, String action ) {
+	public void execute(@NotNull Hero hero, @NotNull String action ) {
 
 		super.execute( hero, action );
 

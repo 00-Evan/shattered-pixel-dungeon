@@ -68,7 +68,7 @@ public class StoneOfDetectMagic extends InventoryStone {
 			}
 		}
 
-		positiveMagic = item.trueLevel() > 0 ||item.blessedType == BLESSED || item.blessedType == HOLY;
+		positiveMagic = item.trueLevel() > 0 ||item.blessedType == BLESSED || item.blessedType == DIVINE;
 		if (!positiveMagic){
 			if (item instanceof Weapon && ((Weapon) item).hasGoodEnchant()){
 				positiveMagic = true;

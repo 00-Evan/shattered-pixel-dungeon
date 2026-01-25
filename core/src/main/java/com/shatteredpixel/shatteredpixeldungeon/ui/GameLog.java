@@ -158,7 +158,7 @@ public class GameLog extends Component implements Signal.Listener<String> {
 		float pos = y;
 		for (int i=length-1; i >= 0; i--) {
 			RenderedTextBlock entry = (RenderedTextBlock)members.get( i );
-			entry.setHightlighting(false);
+			entry.setHightlighting(/*false*/true);
 			entry.maxWidth((int)width);
 			entry.setPos(x, pos-entry.height());
 			pos -= entry.height()+2;

@@ -51,9 +51,6 @@ public class Cudgel extends MeleeWeapon {
 	}
 
 
-	public String upgradeAbilityStat(int level){
-		int dmgBoost = 3 + Math.round(1.5f*level);
-		return augment.damageFactor(min(level)+dmgBoost) + "-" + augment.damageFactor(max(level)+dmgBoost);
-	}
+
 
 }

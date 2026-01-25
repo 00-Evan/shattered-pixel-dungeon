@@ -66,7 +66,7 @@ import com.watabou.utils.Random;
 
 import java.util.*;
 
-import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.CURSED;
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.*;
 
 public abstract class RegularLevel extends Level {
 
@@ -215,7 +215,7 @@ public abstract class RegularLevel extends Level {
         for(int pos=0;pos<this.map.length;pos++) {
             if ( this.map[pos] == Terrain.HIGH_GRASS&&Random.Int(9)>4) {
                 WorkTable wt = new WorkTable();
-                this.setFacility(wt, pos);
+                //this.setFacility(wt, pos);
             }
         }
 //        int pos=this.entrance;
@@ -484,7 +484,15 @@ public abstract class RegularLevel extends Level {
                 map[cell] = Terrain.GRASS;
                 losBlocking[cell] = false;
             }
-            drop(new Torch(), cell);
+
+            Item.BlessedType blessedType = NORMAL;
+            int random = Random.Int(20);
+            if(random==0){
+                blessedType = CURSED;
+            }else if(random >=1 && random <=3){
+                blessedType = BLESSED;
+            }
+            drop(new Torch().blessedType(blessedType), cell);
             //add a second torch to help with the larger floor
             if (feeling == Feeling.LARGE) {
                 cell = randomDropCell();

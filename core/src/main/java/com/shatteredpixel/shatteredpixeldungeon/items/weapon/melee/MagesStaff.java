@@ -36,12 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorrosion;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -56,6 +51,7 @@ import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -64,504 +60,499 @@ import static com.shatteredpixel.shatteredpixeldungeon.items.Item.BlessedType.NO
 
 public class MagesStaff extends MeleeWeapon {
 
-	private Wand wand;
+    public static final String AC_IMBUE = "IMBUE";
+    public static final String AC_ZAP = "ZAP";
+    private static final float STAFF_SCALE_FACTOR = 0.75f;
+    private static final String WAND = "wand";
+    private Wand wand;
+    private final WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
 
-	public static final String AC_IMBUE = "IMBUE";
-	public static final String AC_ZAP	= "ZAP";
+        @Override
+        public String textPrompt() {
+            return Messages.get(MagesStaff.class, "prompt");
+        }
 
-	private static final float STAFF_SCALE_FACTOR = 0.75f;
+        @Override
+        public Class<? extends Bag> preferredBag() {
+            return MagicalHolster.class;
+        }
 
-	{
-		image = ItemSpriteSheet.MAGES_STAFF;
-		hitSound = Assets.Sounds.HIT;
-		hitSoundPitch = 1.1f;
+        @Override
+        public boolean itemSelectable(Item item) {
+            return item instanceof Wand;
+        }
 
-		tier = 1;
+        @Override
+        public void onSelect(final Item item) {
+            if (item != null) {
 
-		defaultAction = AC_ZAP;
-		usesTargeting = true;
+                if (wand == null) {
+                    applyWand((Wand) item);
+                } else {
+                    int newLevel;
+                    int itemLevel = item.trueLevel();
+                    if (itemLevel >= trueLevel()) {
+                        if (trueLevel() > 0) newLevel = itemLevel + 1;
+                        else newLevel = itemLevel;
+                    } else {
+                        newLevel = trueLevel();
+                    }
 
-		unique = true;
-		bones = false;
-	}
+                    String bodyText = Messages.get(MagesStaff.class, "imbue_desc");
+                    if (item.isIdentified()) {
+                        bodyText += "\n\n" + Messages.get(MagesStaff.class, "imbue_level", newLevel);
+                    } else {
+                        bodyText += "\n\n" + Messages.get(MagesStaff.class, "imbue_unknown", trueLevel());
+                    }
 
-	public MagesStaff() {
-		wand = null;
-	}
+                    if (!item.blessedTypeKnown || item.blessedType == CURSED) {
+                        bodyText += "\n\n" + Messages.get(MagesStaff.class, "imbue_cursed");
+                    }
 
-	@Override
-	public int max(int lvl) {
-		return  Math.round(3f*(tier+1)) +   //6 base damage, down from 10
-				lvl*(tier+1);               //scaling unaffected
-	}
+                    if (Dungeon.hero.hasTalent(Talent.WAND_PRESERVATION)
+                            && Dungeon.hero.buff(Talent.WandPreservationCounter.class) == null) {
+                        bodyText += "\n\n" + Messages.get(MagesStaff.class, "imbue_talent");
+                    } else {
+                        bodyText += "\n\n" + Messages.get(MagesStaff.class, "imbue_lost");
+                    }
 
-	public MagesStaff(Wand wand){
-		this();
-		wand.identify();
-		wand.blessedType = NORMAL;
-		this.wand = wand;
-		updateWand(false);
-		wand.curCharges = wand.maxCharges;
-	}
+                    GameScene.show(
+                            new WndOptions(new ItemSprite(item),
+                                    Messages.titleCase(item.name()),
+                                    bodyText,
+                                    Messages.get(MagesStaff.class, "yes"),
+                                    Messages.get(MagesStaff.class, "no")) {
+                                @Override
+                                protected void onSelect(int index) {
+                                    if (index == 0) {
+                                        applyWand((Wand) item);
+                                    }
+                                }
+                            }
+                    );
+                }
+            }
+        }
 
-	@Override
-	public ArrayList<String> actions(Hero hero) {
-		ArrayList<String> actions = super.actions( hero );
-		actions.add(AC_IMBUE);
-		if (wand!= null && wand.curCharges > 0) {
-			actions.add( AC_ZAP );
-		}
-		return actions;
-	}
+        private void applyWand(Wand wand) {
+            Sample.INSTANCE.play(Assets.Sounds.BURNING);
+            curUser.sprite.emitter().burst(ElmoParticle.FACTORY, 12);
+            evoke(curUser);
 
-	@Override
-	public String defaultAction() {
-		return AC_ZAP;
-	}
+            Dungeon.quickslot.clearItem(wand);
 
-	@Override
-	public void activate( Char ch ) {
-		super.activate(ch);
-		applyWandChargeBuff(ch);
-	}
+            wand.detach(curUser.belongings.backpack);
 
-	@Override
-	public int targetingPos(Hero user, int dst) {
-		if (wand != null) {
-			return wand.targetingPos(user, dst);
-		} else {
-			return super.targetingPos(user, dst);
-		}
-	}
+            GLog.p(Messages.get(MagesStaff.class, "imbue", wand.name()));
+            imbueWand(wand, curUser);
 
-	@Override
-	public void execute(Hero hero, String action) {
+            updateQuickslot();
+        }
+    };
+    private final Emitter.Factory StaffParticleFactory = new Emitter.Factory() {
+        @Override
+        //reimplementing this is needed as instance creation of new staff particles must be within this class.
+        public void emit(Emitter emitter, int index, float x, float y) {
+            StaffParticle c = (StaffParticle) emitter.getFirstAvailable(StaffParticle.class);
+            if (c == null) {
+                c = new StaffParticle();
+                emitter.add(c);
+            }
+            c.reset(x, y);
+        }
 
-		super.execute(hero, action);
+        @Override
+        //some particles need light mode, others don't
+        public boolean lightMode() {
+            return !((wand instanceof WandOfDisintegration)
+                    || (wand instanceof WandOfCorruption)
+                    || (wand instanceof WandOfCorrosion)
+                    || (wand instanceof WandOfRegrowth)
+                    || (wand instanceof WandOfLivingEarth));
+        }
+    };
 
-		if (action.equals(AC_IMBUE)) {
+    {
+        image = ItemSpriteSheet.MAGES_STAFF;
+        hitSound = Assets.Sounds.HIT;
+        hitSoundPitch = 1.1f;
 
-			curUser = hero;
-			GameScene.selectItem(itemSelector);
+        tier = 1;
 
-		} else if (action.equals(AC_ZAP)){
+        defaultAction = AC_ZAP;
+        usesTargeting = true;
 
-			if (wand == null) {
-				GameScene.show(new WndUseItem(null, this));
-				return;
-			}
+        unique = true;
+        bones = false;
+    }
 
-			if (blessedType==CURSED || hasCurseEnchant()) wand.blessedType = CURSED;
-			else                             wand.blessedType = NORMAL;
-			wand.execute(hero, AC_ZAP);
-		}
-	}
+    public MagesStaff() {
+        wand = null;
+    }
 
-	@Override
-	public int buffedVisiblyUpgraded() {
-		if (wand != null){
-			return Math.max(super.buffedVisiblyUpgraded(), wand.buffedVisiblyUpgraded());
-		} else {
-			return super.buffedVisiblyUpgraded();
-		}
-	}
+    public MagesStaff(Wand wand) {
+        this();
+        wand.identify();
+        wand.blessedType = NORMAL;
+        this.wand = wand;
+        updateWand(false);
+        wand.curCharges = wand.maxCharges;
+    }
 
-	@Override
-	public int proc(Char attacker, Char defender, int damage) {
-		if (attacker instanceof Hero && ((Hero) attacker).hasTalent(Talent.MYSTICAL_CHARGE)){
-			Hero hero = (Hero) attacker;
-			ArtifactRecharge.chargeArtifacts(hero, hero.pointsInTalent(Talent.MYSTICAL_CHARGE)/2f);
-		}
+    @Override
+    public int max(int lvl) {
+        return Math.round(3f * (tier + 1)) +   //6 base damage, down from 10
+                lvl * (tier + 1);               //scaling unaffected
+    }
 
-		Talent.EmpoweredStrikeTracker empoweredStrike = attacker.buff(Talent.EmpoweredStrikeTracker.class);
-		if (empoweredStrike != null){
-			damage = Math.round( damage * (1f + Dungeon.hero.pointsInTalent(Talent.EMPOWERED_STRIKE)/6f));
-		}
+    @Override
+    public ArrayList<String> actions(@NotNull Hero hero) {
+        ArrayList<String> actions = super.actions(hero);
+        actions.add(AC_IMBUE);
+        if (wand != null && wand.curCharges > 0) {
+            actions.add(AC_ZAP);
+        }
+        return actions;
+    }
 
-		if (wand != null &&
-				attacker instanceof Hero && ((Hero)attacker).subClass == HeroSubClass.BATTLEMAGE) {
-			if (wand.curCharges < wand.maxCharges) wand.partialCharge += 0.5f;
-			ScrollOfRecharging.charge((Hero)attacker);
-			wand.onHit(this, attacker, defender, damage);
-		}
+    @Override
+    public String defaultAction() {
+        return AC_ZAP;
+    }
 
-		if (empoweredStrike != null){
-			if (!empoweredStrike.delayedDetach) empoweredStrike.detach();
-			if (!(defender instanceof Mob) || !((Mob) defender).surprisedBy(attacker)){
-				Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG, 0.75f, 1.2f);
-			}
-		}
-		return super.proc(attacker, defender, damage);
-	}
+    @Override
+    public void activate(Char ch) {
+        super.activate(ch);
+        applyWandChargeBuff(ch);
+    }
 
-	@Override
-	public int reachFactor(Char owner) {
-		int reach = super.reachFactor(owner);
-		if (owner instanceof Hero
-				&& wand instanceof WandOfDisintegration
-				&& ((Hero)owner).subClass == HeroSubClass.BATTLEMAGE){
-			reach += Math.round(Wand.procChanceMultiplier(owner));
-		}
-		return reach;
-	}
+    @Override
+    public int targetingPos(Hero user, int dst) {
+        if (wand != null) {
+            return wand.targetingPos(user, dst);
+        } else {
+            return super.targetingPos(user, dst);
+        }
+    }
 
-	@Override
-	public boolean collect( Bag container ) {
-		if (super.collect(container)) {
-			if (container.owner != null) {
-				applyWandChargeBuff(container.owner);
-			}
-			return true;
-		} else {
-			return false;
-		}
-	}
+    @Override
+    public void execute(@NotNull Hero hero, @NotNull String action) {
 
-	@Override
-	public void onDetach( ) {
-		if (wand != null) wand.stopCharging();
-	}
+        super.execute(hero, action);
 
-	public Item imbueWand(Wand wand, Char owner){
+        if (action.equals(AC_IMBUE)) {
 
-		int oldStaffcharges = this.wand != null ? this.wand.curCharges : 0;
+            curUser = hero;
+            GameScene.selectItem(itemSelector);
 
-		if (owner == Dungeon.hero && Dungeon.hero.hasTalent(Talent.WAND_PRESERVATION)){
-			Talent.WandPreservationCounter counter = Buff.affect(Dungeon.hero, Talent.WandPreservationCounter.class);
-			if (counter.count() == 0){
-				counter.countUp(1);
-				this.wand.level(0);
-				if (!this.wand.collect()) {
-					Dungeon.level.drop(this.wand, owner.pos);
-				}
-				GLog.newLine();
-				GLog.p(Messages.get(this, "preserved"));
-			}
-		}
+        } else if (action.equals(AC_ZAP)) {
 
-		this.wand = null;
+            if (wand == null) {
+                GameScene.show(new WndUseItem(null, this));
+                return;
+            }
 
-		wand.resinBonus = 0;
-		wand.updateLevel();
+            if (blessedType == CURSED || hasCurseEnchant()) wand.blessedType = CURSED;
+            else wand.blessedType = NORMAL;
+            wand.execute(hero, AC_ZAP);
+        }
+    }
 
-		//syncs the level of the two items.
-		int targetLevel = Math.max(this.trueLevel(), wand.trueLevel());
+    @Override
+    public int buffedVisiblyUpgraded() {
+        if (wand != null) {
+            return Math.max(super.buffedVisiblyUpgraded(), wand.buffedVisiblyUpgraded());
+        } else {
+            return super.buffedVisiblyUpgraded();
+        }
+    }
 
-		//if the staff's level is being overridden by the wand, preserve 1 upgrade
-		if (wand.trueLevel() >= this.trueLevel() && this.trueLevel() > 0) targetLevel++;
-		
-		level(targetLevel);
-		this.wand = wand;
-		wand.levelKnown = wand.curChargeKnown = true;
-		updateWand(false);
-		wand.curCharges = Math.min(wand.maxCharges, wand.curCharges+oldStaffcharges);
-		if (owner != null){
-			applyWandChargeBuff(owner);
- 		} else if (Dungeon.hero.belongings.contains(this)){
-			applyWandChargeBuff(Dungeon.hero);
-		}
+    @Override
+    public int proc(Char attacker, Char defender, int damage) {
+        if (attacker instanceof Hero && ((Hero) attacker).hasTalent(Talent.MYSTICAL_CHARGE)) {
+            Hero hero = (Hero) attacker;
+            ArtifactRecharge.chargeArtifacts(hero, hero.pointsInTalent(Talent.MYSTICAL_CHARGE) / 2f);
+        }
 
-		if (wand.blessedType==CURSED && (this.blessedType!=CURSED || !this.hasCurseEnchant())){
-			equipCursed(Dungeon.hero);
-			this.blessedType =  CURSED;
+        Talent.EmpoweredStrikeTracker empoweredStrike = attacker.buff(Talent.EmpoweredStrikeTracker.class);
+        if (empoweredStrike != null) {
+            damage = Math.round(damage * (1f + Dungeon.hero.pointsInTalent(Talent.EMPOWERED_STRIKE) / 6f));
+        }
+
+        if (wand != null &&
+                attacker instanceof Hero && ((Hero) attacker).subClass == HeroSubClass.BATTLEMAGE) {
+            if (wand.curCharges < wand.maxCharges) wand.partialCharge += 0.5f;
+            ScrollOfRecharging.charge((Hero) attacker);
+            wand.onHit(this, attacker, defender, damage);
+        }
+
+        if (empoweredStrike != null) {
+            if (!empoweredStrike.delayedDetach) empoweredStrike.detach();
+            if (!(defender instanceof Mob) || !((Mob) defender).surprisedBy(attacker)) {
+                Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG, 0.75f, 1.2f);
+            }
+        }
+        return super.proc(attacker, defender, damage);
+    }
+
+    @Override
+    public int reachFactor(Char owner) {
+        int reach = super.reachFactor(owner);
+        if (owner instanceof Hero
+                && wand instanceof WandOfDisintegration
+                && ((Hero) owner).subClass == HeroSubClass.BATTLEMAGE) {
+            reach += Math.round(Wand.procChanceMultiplier(owner));
+        }
+        return reach;
+    }
+
+    @Override
+    public boolean collect(Bag container) {
+        if (super.collect(container)) {
+            if (container.owner != null) {
+                applyWandChargeBuff(container.owner);
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        if (wand != null) wand.stopCharging();
+    }
+
+    public Item imbueWand(Wand wand, Char owner) {
+
+        int oldStaffcharges = this.wand != null ? this.wand.curCharges : 0;
+
+        if (owner == Dungeon.hero && Dungeon.hero.hasTalent(Talent.WAND_PRESERVATION)) {
+            Talent.WandPreservationCounter counter = Buff.affect(Dungeon.hero, Talent.WandPreservationCounter.class);
+            if (counter.count() == 0) {
+                counter.countUp(1);
+                this.wand.level(0);
+                if (!this.wand.collect()) {
+                    Dungeon.level.drop(this.wand, owner.pos);
+                }
+                GLog.newLine();
+                GLog.p(Messages.get(this, "preserved"));
+            }
+        }
+
+        this.wand = null;
+
+        wand.resinBonus = 0;
+        wand.updateLevel();
+
+        //syncs the level of the two items.
+        int targetLevel = Math.max(this.trueLevel(), wand.trueLevel());
+
+        //if the staff's level is being overridden by the wand, preserve 1 upgrade
+        if (wand.trueLevel() >= this.trueLevel() && this.trueLevel() > 0) targetLevel++;
+
+        level(targetLevel);
+        this.wand = wand;
+        wand.levelKnown = wand.curChargeKnown = true;
+        updateWand(false);
+        wand.curCharges = Math.min(wand.maxCharges, wand.curCharges + oldStaffcharges);
+        if (owner != null) {
+            applyWandChargeBuff(owner);
+        } else if (Dungeon.hero.belongings.contains(this)) {
+            applyWandChargeBuff(Dungeon.hero);
+        }
+
+        if (wand.blessedType == CURSED && (this.blessedType != CURSED || !this.hasCurseEnchant())) {
+            equipCursed(Dungeon.hero);
+            this.blessedType = CURSED;
             this.blessedTypeKnown = true;
-			enchant(Enchantment.randomCurse());
-		}
+            enchant(Enchantment.randomCurse());
+        }
 
-		//This is necessary to reset any particles.
-		//FIXME this is gross, should implement a better way to fully reset quickslot visuals
-		int slot = Dungeon.quickslot.getSlot(this);
-		if (slot != -1){
-			Dungeon.quickslot.clearSlot(slot);
-			updateQuickslot();
-			Dungeon.quickslot.setSlot( slot, this );
-			updateQuickslot();
-		}
-		
-		Badges.validateItemLevelAquired(this);
+        //This is necessary to reset any particles.
+        //FIXME this is gross, should implement a better way to fully reset quickslot visuals
+        int slot = Dungeon.quickslot.getSlot(this);
+        if (slot != -1) {
+            Dungeon.quickslot.clearSlot(slot);
+            updateQuickslot();
+            Dungeon.quickslot.setSlot(slot, this);
+            updateQuickslot();
+        }
 
-		return this;
-	}
+        Badges.validateItemLevelAquired(this);
 
-	public void gainCharge( float amt ){
-		gainCharge(amt, false);
-	}
+        return this;
+    }
 
-	public void gainCharge( float amt, boolean overcharge ){
-		if (wand != null){
-			wand.gainCharge(amt, overcharge);
-		}
-	}
+    public void gainCharge(float amt) {
+        gainCharge(amt, false);
+    }
 
-	public void applyWandChargeBuff(Char owner){
-		if (wand != null){
-			wand.charge(owner, STAFF_SCALE_FACTOR);
-		}
-	}
+    public void gainCharge(float amt, boolean overcharge) {
+        if (wand != null) {
+            wand.gainCharge(amt, overcharge);
+        }
+    }
 
-	public Class<?extends Wand> wandClass(){
-		return wand != null ? wand.getClass() : null;
-	}
+    public void applyWandChargeBuff(Char owner) {
+        if (wand != null) {
+            wand.charge(owner, STAFF_SCALE_FACTOR);
+        }
+    }
 
-	@Override
-	public Item upgrade(boolean enchant) {
-		super.upgrade( enchant );
+    public Class<? extends Wand> wandClass() {
+        return wand != null ? wand.getClass() : null;
+    }
 
-		updateWand(true);
+    @Override
+    public Item upgrade(boolean enchant) {
+        super.upgrade(enchant);
 
-		return this;
-	}
+        updateWand(true);
 
-	@Override
-	public Item degrade() {
-		super.degrade();
+        return this;
+    }
 
-		updateWand(false);
+    @Override
+    public Item degrade() {
+        super.degrade();
 
-		return this;
-	}
-	
-	public void updateWand(boolean levelled){
-		if (wand != null) {
-			int curCharges = wand.curCharges;
-			wand.level(level());
-			//gives the wand one additional max charge
-			wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
-			wand.curCharges = Math.min(curCharges + (levelled ? 1 : 0), wand.maxCharges);
-			updateQuickslot();
-		}
-	}
+        updateWand(false);
 
-	@Override
-	public String status() {
-		if (wand == null) return super.status();
-		else return wand.status();
-	}
+        return this;
+    }
 
-	@Override
-	public String name() {
-		if (wand == null) {
-			return super.name();
-		} else {
-			String name = Messages.get(wand, "staff_name");
-			return enchantment != null && (blessedTypeKnown || !enchantment.curse()) ? enchantment.name( name ) : name;
-		}
-	}
+    public void updateWand(boolean levelled) {
+        if (wand != null) {
+            int curCharges = wand.curCharges;
+            wand.level(level());
+            //gives the wand one additional max charge
+            wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
+            wand.curCharges = Math.min(curCharges + (levelled ? 1 : 0), wand.maxCharges);
+            updateQuickslot();
+        }
+    }
 
-	@Override
-	public String info() {
-		String info = super.info();
+    @Override
+    public String status() {
+        if (wand == null) return super.status();
+        else return wand.status();
+    }
 
-		if (wand != null){
-			info += "\n\n" + Messages.get(this, "has_wand", Messages.get(wand, "name"));
-			if ((blessedType!=CURSED && !hasCurseEnchant()) || !blessedTypeKnown)    info += " " + wand.statsDesc();
-			else                                                    info += " " + Messages.get(this, "cursed_wand");
+    @Override
+    public String name() {
+        if (wand == null) {
+            return super.name();
+        } else {
+            String name = Messages.get(wand, "staff_name");
+            return enchantment != null && (blessedTypeKnown || !enchantment.curse()) ? enchantment.name(name) : name;
+        }
+    }
 
-			if (Dungeon.hero.subClass == HeroSubClass.BATTLEMAGE){
-				info += "\n\n" + Messages.get(wand, "bmage_desc");
-			}
-		}
+    @Override
+    public String info() {
+        String info = super.info();
 
-		return info;
-	}
+        if (wand != null) {
+            info += "\n\n" + Messages.get(this, "has_wand", Messages.get(wand, "name"));
+            if ((blessedType != CURSED && !hasCurseEnchant()) || !blessedTypeKnown) info += " " + wand.statsDesc();
+            else info += " " + Messages.get(this, "cursed_wand");
 
-	@Override
-	public Emitter emitter() {
-		if (wand == null) return null;
-		Emitter emitter = new Emitter();
-		emitter.pos(12.5f, 3);
-		emitter.fillTarget = false;
-		emitter.pour(StaffParticleFactory, 0.1f);
-		return emitter;
-	}
+            if (Dungeon.hero.subClass == HeroSubClass.BATTLEMAGE) {
+                info += "\n\n" + Messages.get(wand, "bmage_desc");
+            }
+        }
 
-	private static final String WAND = "wand";
+        return info;
+    }
 
-	@Override
-	public void storeInBundle(Bundle bundle) {
-		super.storeInBundle(bundle);
-		bundle.put(WAND, wand);
-	}
+    @Override
+    public Emitter emitter() {
+        if (wand == null) return null;
+        Emitter emitter = new Emitter();
+        emitter.pos(12.5f, 3);
+        emitter.fillTarget = false;
+        emitter.pour(StaffParticleFactory, 0.1f);
+        return emitter;
+    }
 
-	@Override
-	public void restoreFromBundle(Bundle bundle) {
-		super.restoreFromBundle(bundle);
-		wand = (Wand) bundle.get(WAND);
-		if (wand != null) {
-			wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
-		}
-	}
+    @Override
+    public void storeInBundle(Bundle bundle) {
+        super.storeInBundle(bundle);
+        bundle.put(WAND, wand);
+    }
 
-	@Override
-	public int value() {
-		return 0;
-	}
-	
-	@Override
-	public Weapon enchant(Enchantment ench) {
-		if (curseInfusionBonus && (ench == null || !ench.curse())){
-			curseInfusionBonus = false;
-			updateWand(false);
-		}
-		return super.enchant(ench);
-	}
-	
-	private final WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+        wand = (Wand) bundle.get(WAND);
+        if (wand != null) {
+            wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
+        }
+    }
 
-		@Override
-		public String textPrompt() {
-			return Messages.get(MagesStaff.class, "prompt");
-		}
+    @Override
+    public int value() {
+        return 0;
+    }
 
-		@Override
-		public Class<?extends Bag> preferredBag(){
-			return MagicalHolster.class;
-		}
+    @Override
+    public Weapon enchant(Enchantment ench) {
+        if (curseInfusionBonus && (ench == null || !ench.curse())) {
+            curseInfusionBonus = false;
+            updateWand(false);
+        }
+        return super.enchant(ench);
+    }
 
-		@Override
-		public boolean itemSelectable(Item item) {
-			return item instanceof Wand;
-		}
+    //determines particle effects to use based on wand the staff owns.
+    public class StaffParticle extends PixelParticle {
 
-		@Override
-		public void onSelect( final Item item ) {
-			if (item != null) {
+        public float sizeJitter = 0;
+        private float minSize;
+        private float maxSize;
 
-				if (wand == null){
-					applyWand((Wand)item);
-				} else {
-					int newLevel;
-					int itemLevel = item.trueLevel();
-					if (itemLevel >= trueLevel()){
-						if (trueLevel() > 0)    newLevel = itemLevel + 1;
-						else                    newLevel = itemLevel;
-					} else {
-						newLevel = trueLevel();
-					}
+        public StaffParticle() {
+            super();
+        }
 
-					String bodyText = Messages.get(MagesStaff.class, "imbue_desc");
-					if (item.isIdentified()){
-						bodyText += "\n\n" + Messages.get(MagesStaff.class, "imbue_level", newLevel);
-					} else {
-						bodyText += "\n\n" + Messages.get(MagesStaff.class, "imbue_unknown", trueLevel());
-					}
+        public void reset(float x, float y) {
+            revive();
 
-					if (!item.blessedTypeKnown || item.blessedType==CURSED){
-						bodyText += "\n\n" + Messages.get(MagesStaff.class, "imbue_cursed");
-					}
+            speed.set(0);
 
-					if (Dungeon.hero.hasTalent(Talent.WAND_PRESERVATION)
-						&& Dungeon.hero.buff(Talent.WandPreservationCounter.class) == null){
-						bodyText += "\n\n" + Messages.get(MagesStaff.class, "imbue_talent");
-					} else {
-						bodyText += "\n\n" + Messages.get(MagesStaff.class, "imbue_lost");
-					}
+            this.x = x;
+            this.y = y;
 
-					GameScene.show(
-							new WndOptions(new ItemSprite(item),
-									Messages.titleCase(item.name()),
-									bodyText,
-									Messages.get(MagesStaff.class, "yes"),
-									Messages.get(MagesStaff.class, "no")) {
-								@Override
-								protected void onSelect(int index) {
-									if (index == 0) {
-										applyWand((Wand)item);
-									}
-								}
-							}
-					);
-				}
-			}
-		}
+            if (wand != null)
+                wand.staffFx(this);
 
-		private void applyWand(Wand wand){
-			Sample.INSTANCE.play(Assets.Sounds.BURNING);
-			curUser.sprite.emitter().burst( ElmoParticle.FACTORY, 12 );
-			evoke(curUser);
+        }
 
-			Dungeon.quickslot.clearItem(wand);
+        public void setSize(float minSize, float maxSize) {
+            this.minSize = minSize;
+            this.maxSize = maxSize;
+        }
 
-			wand.detach(curUser.belongings.backpack);
+        public void setLifespan(float life) {
+            lifespan = left = life;
+        }
 
-			GLog.p( Messages.get(MagesStaff.class, "imbue", wand.name()));
-			imbueWand( wand, curUser );
+        public void shuffleXY(float amt) {
+            x += Random.Float(-amt, amt);
+            y += Random.Float(-amt, amt);
+        }
 
-			updateQuickslot();
-		}
-	};
+        public void radiateXY(float amt) {
+            float hypot = (float) Math.hypot(speed.x, speed.y);
+            this.x += speed.x / hypot * amt;
+            this.y += speed.y / hypot * amt;
+        }
 
-	private final Emitter.Factory StaffParticleFactory = new Emitter.Factory() {
-		@Override
-		//reimplementing this is needed as instance creation of new staff particles must be within this class.
-		public void emit( Emitter emitter, int index, float x, float y ) {
-			StaffParticle c = (StaffParticle)emitter.getFirstAvailable(StaffParticle.class);
-			if (c == null) {
-				c = new StaffParticle();
-				emitter.add(c);
-			}
-			c.reset(x, y);
-		}
-
-		@Override
-		//some particles need light mode, others don't
-		public boolean lightMode() {
-			return !((wand instanceof WandOfDisintegration)
-					|| (wand instanceof WandOfCorruption)
-					|| (wand instanceof WandOfCorrosion)
-					|| (wand instanceof WandOfRegrowth)
-					|| (wand instanceof WandOfLivingEarth));
-		}
-	};
-
-	//determines particle effects to use based on wand the staff owns.
-	public class StaffParticle extends PixelParticle{
-
-		private float minSize;
-		private float maxSize;
-		public float sizeJitter = 0;
-
-		public StaffParticle(){
-			super();
-		}
-
-		public void reset( float x, float y ) {
-			revive();
-
-			speed.set(0);
-
-			this.x = x;
-			this.y = y;
-
-			if (wand != null)
-				wand.staffFx( this );
-
-		}
-
-		public void setSize( float minSize, float maxSize ){
-			this.minSize = minSize;
-			this.maxSize = maxSize;
-		}
-
-		public void setLifespan( float life ){
-			lifespan = left = life;
-		}
-
-		public void shuffleXY(float amt){
-			x += Random.Float(-amt, amt);
-			y += Random.Float(-amt, amt);
-		}
-
-		public void radiateXY(float amt){
-			float hypot = (float)Math.hypot(speed.x, speed.y);
-			this.x += speed.x/hypot*amt;
-			this.y += speed.y/hypot*amt;
-		}
-
-		@Override
-		public void update() {
-			super.update();
-			size(minSize + (left / lifespan)*(maxSize-minSize) + Random.Float(sizeJitter));
-		}
-	}
+        @Override
+        public void update() {
+            super.update();
+            size(minSize + (left / lifespan) * (maxSize - minSize) + Random.Float(sizeJitter));
+        }
+    }
 }

@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -59,7 +60,7 @@ public class Ankh extends Item {
 	}
 
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
+	public ArrayList<String> actions(@NotNull Hero hero ) {
 		ArrayList<String> actions = super.actions(hero);
 		Waterskin waterskin = hero.belongings.getItem(Waterskin.class);
 		if (waterskin != null && waterskin.isFull() && !blessed)
@@ -68,7 +69,7 @@ public class Ankh extends Item {
 	}
 
 	@Override
-	public void execute( final Hero hero, String action ) {
+	public void execute(@NotNull final Hero hero, @NotNull String action ) {
 
 		super.execute( hero, action );
 
