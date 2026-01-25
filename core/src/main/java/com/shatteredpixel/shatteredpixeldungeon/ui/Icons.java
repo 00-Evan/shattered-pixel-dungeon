@@ -108,6 +108,7 @@ public enum Icons {
 	SLEEP,
 	ALERT,
 	LOST,
+	INVESTIGATE,
 	DEPTH,      //depth icons have three variants, for regular, seeded, daily, and daily replay runs
 	DEPTH_CHASM,
 	DEPTH_WATER,
@@ -341,13 +342,16 @@ public enum Icons {
 				icon.frame( icon.texture.uvRectBySize( 0, 88, 7, 5 ) );
 				break;
 			case SLEEP:
-				icon.frame( icon.texture.uvRectBySize( 16, 80, 9, 8 ) );
+				icon.frame( icon.texture.uvRectBySize( 7, 88, 9, 8 ) );
 				break;
 			case ALERT:
-				icon.frame( icon.texture.uvRectBySize( 16, 88, 8, 8 ) );
+				icon.frame( icon.texture.uvRectBySize( 16, 80, 8, 8 ) );
 				break;
 			case LOST:
-				icon.frame( icon.texture.uvRectBySize( 24, 88, 8, 8 ) );
+				icon.frame( icon.texture.uvRectBySize( 24, 80, 8, 8 ) );
+				break;
+			case INVESTIGATE:
+				icon.frame( icon.texture.uvRectBySize( 16, 88, 8, 8 ) );
 				break;
 			case DEPTH:
 				icon.frame( icon.texture.uvRectBySize( 32 + runTypeOfsX(), 80 + runTypeOfsY(), 6, 7 ) );
