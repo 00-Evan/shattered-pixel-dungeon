@@ -78,7 +78,8 @@ public class GridBuilder extends Builder {
 		//this effectively puts a limit of -99 < x < 999 and -99 < y < inf. on level sizes in rooms
 		SparseArray<Room> gridCells = new SparseArray<>();
 		gridCells.put(100_100, entrance);
-		for (Room r : toPlace){
+		while (!toPlace.isEmpty()) {
+			Room r = toPlace.remove(0);
 			int cellWidth = 1;
 			int cellHeight = 1;
 			//TODO this works on rigid multiples atm, would be nicer to buffer rooms that don't work on that
@@ -98,8 +99,14 @@ public class GridBuilder extends Builder {
 					cellWidth = cellHeight = 2;
 				}
 			}
+			int tries = 0;
 			do {
 				r.neigbours.clear();
+				tries++;
+				if (tries > 30) {
+					toPlace.add(r); //can't place for now, put it into the back of to place list
+					break;
+				}
 				int[] keys = gridCells.keyArray();
 				int nIdx = keys[Random.Int(keys.length)];
 				Room n =  gridCells.get(nIdx, null);
