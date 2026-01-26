@@ -59,13 +59,6 @@ public class DistortionTrap extends Trap{
 		shape = LARGE_DOT;
 	}
 
-	private static final ArrayList<Class<?extends Mob>> RARE = new ArrayList<>(Arrays.asList(
-			Albino.class, CausticSlime.class,
-			Bandit.class,
-			ArmoredBrute.class, DM201.class,
-			Elemental.ChaosElemental.class, Senior.class,
-			Acidic.class));
-
 	@Override
 	public void activate() {
 
@@ -134,7 +127,7 @@ public class DistortionTrap extends Trap{
 					}
 					break;
 				case 4:
-					mob = Reflection.newInstance(Random.element(RARE));
+					mob = Reflection.newInstance(Random.element(MobSpawner.RARE_ALTS.values()));
 					break;
 			}
 
