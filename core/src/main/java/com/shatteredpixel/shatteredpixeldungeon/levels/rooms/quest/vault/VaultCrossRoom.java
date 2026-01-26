@@ -38,6 +38,6 @@ public class VaultCrossRoom extends StandardRoom {
 	@Override
 	public boolean canConnect(Point p) {
 		Point c = center();
-		return (c.x == p.x || c.y == p.y) && super.canConnect(p);
+		return (Math.abs(c.x - p.x) <= 1 || Math.abs(c.y - p.y) <= 1) && super.canConnect(p);
 	}
 }
