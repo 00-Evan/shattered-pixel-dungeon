@@ -550,13 +550,21 @@ public class GnollGeomancer extends Mob {
 		@Override
 		public boolean act(boolean enemyInFOV, boolean justAlerted) {
 			if (!enemyInFOV){
-				spend(TICK);
-				return true;
+				//if we can't see our current target, try to find a new one
+				enemy = null;
+				enemy = chooseEnemy();
+				if (enemy != null){
+					return act(true, justAlerted);
+				} else {
+					//wait if we can't
+					spend(TICK);
+					return true;
+				}
 			} else {
 				enemySeen = true;
 
-				//use abilities more frequently on the hero's initial approach or if sapper is alive
-				// but only if hero isn't stunned, to prevent stunlocking
+				//use abilities more frequently on the enemy's initial approach or if sapper is alive
+				// but only if enemy isn't stunned, to prevent stunlocking
 				if ((Dungeon.level.distance(pos, enemy.pos) > 2 || hasSapper())
 						&& buff(RockArmor.class) != null
 						&& enemy.buff(Paralysis.class) == null){
