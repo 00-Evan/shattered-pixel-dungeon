@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.noosa.Game;
 import com.watabou.utils.Random;
 
 public class WndChooseSubclass extends Window {
@@ -73,6 +74,14 @@ public class WndChooseSubclass extends Window {
 						}
 					}
 				});
+			}
+
+			@Override
+			public void update() {
+				if (Statistics.qualifiedForRandomVictoryBadge){
+					icon.tint(1, 1, 1, (float)Math.abs(Math.cos(1.5f*Math.PI* Game.timeTotal)/2f));
+				}
+				super.update();
 			}
 
 			@Override
