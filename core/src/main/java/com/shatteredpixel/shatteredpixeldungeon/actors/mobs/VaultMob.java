@@ -27,11 +27,11 @@ public class VaultMob extends Mob {
 		super.move(step, travelling);
 		if (travelling && !sprite.visible && Dungeon.level.distance(pos, Dungeon.hero.pos) <= 6){
 			if (state == HUNTING){
-				WandOfBlastWave.BlastWave.blast(pos, 1.5f, 0xFF0000);
+				WandOfBlastWave.BlastWave.blast(pos, 1f, 0xFF0000);
 			} else if (state == INVESTIGATING){
-				WandOfBlastWave.BlastWave.blast(pos, 1.5f, 0xFF8800);
+				WandOfBlastWave.BlastWave.blast(pos, 1f, 0xFF8800);
 			} else {
-				WandOfBlastWave.BlastWave.blast(pos, 1.5f);
+				WandOfBlastWave.BlastWave.blast(pos, 1f);
 			}
 		}
 	}

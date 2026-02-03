@@ -283,6 +283,8 @@ public class WandOfBlastWave extends DamageWand {
 			b.reset(pos, radius);
 			if (hardLight != -1){
 				b.hardlight(hardLight);
+			} else {
+				b.resetColor();
 			}
 		}
 
