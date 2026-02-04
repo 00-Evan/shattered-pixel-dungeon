@@ -160,6 +160,7 @@ public class VaultMob extends Mob {
 				} else {
 					//reset this, representing the mob looking around in place
 					previousPos = pos;
+					sprite.idle();
 				}
 			}
 			return wanderPos;

@@ -251,6 +251,9 @@ public class WandOfBlastWave extends DamageWand {
 			x = (pos % Dungeon.level.width()) * DungeonTilemap.SIZE + (DungeonTilemap.SIZE - width) / 2;
 			y = (pos / Dungeon.level.width()) * DungeonTilemap.SIZE + (DungeonTilemap.SIZE - height) / 2;
 
+			resetColor();
+			scale.set(0);
+
 			time = TIME_TO_FADE;
 			this.size = size;
 		}
@@ -283,8 +286,6 @@ public class WandOfBlastWave extends DamageWand {
 			b.reset(pos, radius);
 			if (hardLight != -1){
 				b.hardlight(hardLight);
-			} else {
-				b.resetColor();
 			}
 		}
 
