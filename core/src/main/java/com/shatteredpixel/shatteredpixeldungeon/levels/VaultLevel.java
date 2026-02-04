@@ -37,11 +37,14 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultCircleRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultCrossRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultEnemyCenterRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultEntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultFinalRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultLongRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultQuadrantsRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultRingRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultRingsRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultSimpleEnemyTreasureRoom;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -54,11 +57,14 @@ public class VaultLevel extends CityLevel {
 
 		initRooms.add(roomEntrance = new VaultEntranceRoom());
 
-		for (int i = 0; i < 4; i++){
+		for (int i = 0; i < 2; i++){
 			initRooms.add(new VaultRingRoom());
 			initRooms.add(new VaultCircleRoom());
 			initRooms.add(new VaultCrossRoom());
 			initRooms.add(new VaultQuadrantsRoom());
+			initRooms.add(new VaultEnemyCenterRoom());
+			initRooms.add(new VaultRingsRoom());
+			initRooms.add(new VaultSimpleEnemyTreasureRoom());
 		}
 
 		initRooms.add(new VaultLongRoom());
