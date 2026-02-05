@@ -93,7 +93,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		comboTime = Math.max(comboTime, 5f);
 
 		if (!enemy.isAlive() || (enemy.buff(Corruption.class) != null && enemy.HP == enemy.HT)){
-			comboTime = 15f + 15f*((Hero)target).pointsInTalent(Talent.CLEAVE);
+			comboTime = 150f + 15f*((Hero)target).pointsInTalent(Talent.CLEAVE);
 		}
 
 		initialComboTime = comboTime;
@@ -336,6 +336,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	}
 
 	private static ComboMove moveBeingUsed;
+	private static int furyHitsLeft = 0;
 
 	private void doAttack(final Char enemy) {
 
@@ -437,9 +438,14 @@ public class Combo extends Buff implements ActionIndicator.Action {
 				break;
 
 			case FURY:
-				count--;
+				if (count > 0){
+					furyHitsLeft = count;
+					count = 0;
+					hero.spend(hero.attackDelay());
+				}
+				furyHitsLeft--;
 				//fury attacks as many times as you have combo count
-				if (count > 0 && enemy.isAlive() && hero.canAttack(enemy) &&
+				if (furyHitsLeft > 0 && enemy.isAlive() && hero.canAttack(enemy) &&
 						(wasAlly || enemy.alignment != target.alignment)){
 					target.sprite.attack(enemy.pos, new Callback() {
 						@Override
@@ -448,10 +454,11 @@ public class Combo extends Buff implements ActionIndicator.Action {
 						}
 					});
 				} else {
+					furyHitsLeft = 0;
 					detach();
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 					ActionIndicator.clearAction(Combo.this);
-					hero.spendAndNext(hero.attackDelay());
+					hero.next();
 				}
 				break;
 
