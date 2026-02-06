@@ -105,10 +105,12 @@ public class WardSprite extends MobSprite {
 	}
 
 	public void linkVisuals(Char ch ){
-		
-		if (ch == null) return;
-		
-		updateTier( ((WandOfWarding.Ward)ch).tier );
+
+		if (ch instanceof WandOfWarding.Ward) {
+			updateTier(((WandOfWarding.Ward) ch).tier);
+		} else {
+			updateTier(5); //defaults to 5
+		}
 		
 	}
 
