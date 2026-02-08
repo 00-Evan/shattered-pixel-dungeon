@@ -3,6 +3,9 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.VaultRat;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -61,7 +64,16 @@ public class VaultSimpleEnemyTreasureRoom extends StandardRoom {
 				break;
 		}
 
-		level.drop(Generator.randomWeapon(true), treasurePos).type = Heap.Type.CHEST;
+		Item treasure = Generator.randomWeapon(true);
+		level.drop(treasure, treasurePos).type = Heap.Type.CHEST;
+		if (treasure.cursed){
+			treasure.cursed = false;
+			if (((MeleeWeapon) treasure).hasCurseEnchant()){
+				((MeleeWeapon) treasure).enchant(null);
+			}
+		}
+		//not true ID
+		treasure.levelKnown = treasure.cursedKnown = true;
 
 		for (Door door : connected.values()) {
 			door.set( Door.Type.REGULAR );
