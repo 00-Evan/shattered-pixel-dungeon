@@ -44,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultCr
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultEnemyCenterRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultEntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultFinalRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultLasersRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultLongRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultQuadrantsRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultRingRoom;
@@ -71,6 +72,7 @@ public class VaultLevel extends CityLevel {
 			initRooms.add(new VaultRingsRoom());
 			initRooms.add(new VaultSimpleEnemyTreasureRoom());
 			initRooms.add(new AlternatingTrapsRoom());
+			initRooms.add(new VaultLasersRoom());
 		}
 
 		initRooms.add(new VaultLongRoom());
