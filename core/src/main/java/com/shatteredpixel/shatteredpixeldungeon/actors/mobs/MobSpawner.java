@@ -248,7 +248,7 @@ public class MobSpawner extends Actor {
 				Class<? extends Mob> cl = rotation.get(i);
 				Class<? extends Mob> alt = RARE_ALTS.get(cl);
 				if (alt != null) {
-					rotation.set(i, cl);
+					rotation.set(i, alt);
 				}
 			}
 		}
