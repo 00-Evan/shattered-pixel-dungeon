@@ -85,6 +85,24 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("v3.3.6", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new Image(new ImpSprite()), "Quest Tester Area Hazards",
+				"I've added three new static hazards to the quest tester area!\n" +
+				"\n" +
+				"There are now sentries which scan in a pattern, sentries that periodically fire lasers, and floor vents that periodically vent green flames. At the moment none of these hazards actually harm you, instead they just show '!!!' above your character if they hit you.\n" +
+				"\n" +
+				"I think these are enough hazards to cook with, so next I'm going to focus on more variety of room layouts and a better overall level layout (Currently room placement is mostly random). I expect there will be 1 or 2 more v3.3 patches and then I'll move onto making the new quest properly."));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by v3.3.5:**\n" +
+				"**-** Gladiator's combo lasting much longer than intended after defeating an enemy\n" +
+				"**-** Rare enemies appearing much less frequently than intended\n" +
+				"**-** Some items in the quest tester area spawning as cursed"));
+
 		changes = new ChangeInfo("v3.3.5", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
@@ -148,15 +166,9 @@ public class v3_X_Changes {
 				"**-** Arcane Bomb particle fx persisting when they shouldn't in a bunch of specific cases\n" +
 				"**-** Thrown weapons not IDing properly in very specific cases"));
 
-		changes = new ChangeInfo("v3.3.3 & v3.3.2", false, null);
+		changes = new ChangeInfo("v3.3.3 - v3.3.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), "v3.3.3",
-				"v3.3.3 is a quick followup patch to fix one serious bug introduced in v3.3.2, sorry for the trouble!\n\n" +
-				"Fixed the following bugs:\n" +
-				"**Caused by v3.3.2:**\n" +
-				"**-** Crashes caused by resurrection via unblessed ankh while holding a skeleton key."));
 
 		changes.addButton( new ChangeButton(new Image(new ImpSprite()), "Quest Tester Area Progress",
 				"Happy New Year Everyone!\n\n" +
@@ -172,36 +184,12 @@ public class v3_X_Changes {
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
-				"**Caused by v3.3:**\n" +
-				"**-** Monk energy starting at 10 instead of 0 after subclass is chosen\n" +
-				"**-** Game showing a warning about save file errors in more cases than it should\n" +
-				"**-** Rare cases where keys would be discarded when they shouldn't be\n" +
-				"**-** Landmark for distant well rooms not being cleared when the skeleton key is used to open their door\n" +
-				"**-** Various rare crash bugs\n" +
-				"**-** Various minor textual errors\n" +
-				"\n" +
 				"**Existed Prior to v3.3:**\n" +
 				"**-** Crash on launch on old iOS devices with A7 and A8 processors\n" +
 				"**-** Cases where the Steam version could hang on launch on Linux\n" +
 				"**-** Reclaim trap counting as being cast for talents even when it isn't consumed\n" +
 				"**-** Pickaxe being marked as seen before it is given to the player\n" +
 				"**-** Specific cases where ghost ally could regenerate past max HP"));
-
-		changes = new ChangeInfo("v3.3.1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by v3.3:**\n" +
-				"**-** Skeleton key not triggering on-artifact effects\n" +
-				"**-** Tomahawk bleed damage not scaling with ring of sharpshooting\n" +
-				"**-** Vault tester area being enterable with a lost inventory, causing a softlock\n" +
-				"**-** Buffs from ring of might persisting outside of vault tester area\n" +
-				"**-** Wand of regrowth spawning and being usable to healing in quest tester area\n" +
-				"**-** Uncommon cases of cracked spyglass making thrown items hidden\n" +
-				"**-** Feint afterimage lasting longer than 1 turn in some cases\n" +
-				"**-** Various textual errors"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
