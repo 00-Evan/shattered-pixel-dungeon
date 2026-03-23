@@ -113,7 +113,7 @@ public class GamesInProgress {
 				
 				Bundle bundle = FileUtils.bundleFromFile(gameFile(slot));
 
-				if (bundle.getInt( "version" ) < ShatteredPixelDungeon.v2_5_4) {
+				if (bundle.getInt( "version" ) < ShatteredPixelDungeon.v3_1_1) {
 					info = null;
 				} else {
 

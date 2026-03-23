@@ -404,12 +404,7 @@ public class AscensionChallenge extends Buff {
 		super.restoreFromBundle(bundle);
 		stacks = bundle.getFloat(STACKS);
 		damageInc = bundle.getFloat(DAMAGE);
-		if (bundle.contains(STACKS_LOWERED)){
-			stacksLowered = bundle.getBoolean(STACKS_LOWERED);
-		//pre-v3.1 saves
-		} else {
-			stacksLowered = true;
-		}
+		stacksLowered = bundle.getBoolean(STACKS_LOWERED);
 	}
 
 	//chars with this buff are not boosted by the ascension challenge

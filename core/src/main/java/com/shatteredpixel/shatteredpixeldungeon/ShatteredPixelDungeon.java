@@ -36,11 +36,9 @@ public class ShatteredPixelDungeon extends Game {
 	//rankings from v1.2.3 and older use a different score formula, so this reference is kept
 	public static final int v1_2_3 = 628;
 
-	//savegames from versions older than v2.5.4 are no longer supported, and data from them is ignored
-	public static final int v2_5_4 = 802;
-
-	public static final int v3_0_2 = 833;
+	//savegames from versions older than v3.1.1 are no longer supported, and data from them is ignored
 	public static final int v3_1_1 = 850;
+	public static final int v3_2_1 = 861; //last version for Android 4.4- and Java 8
 	public static final int v3_2_5 = 877;
 	public static final int v3_3_0 = 883;
 	

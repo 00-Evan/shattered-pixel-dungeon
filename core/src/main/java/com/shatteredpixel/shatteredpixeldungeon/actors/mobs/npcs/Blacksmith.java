@@ -323,13 +323,6 @@ public class Blacksmith extends NPC {
 				}
 				if (node.contains(FREE_PICKAXE)){
 					freePickaxe = node.getBoolean(FREE_PICKAXE);
-				} else {
-					//some for pre-3.1 saves, some from incorrect values from v3.1-BETA-1.0
-					if (favor >= 2500){
-						freePickaxe = true;
-					} else {
-						freePickaxe = false;
-					}
 				}
 				reforges = node.getInt( REFORGES );
 				hardens = node.getInt( HARDENS );

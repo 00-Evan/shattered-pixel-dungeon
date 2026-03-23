@@ -952,24 +952,18 @@ public class Generator {
 					cat.dropped = bundle.getInt(cat.name().toLowerCase() + CATEGORY_DROPPED);
 				}
 
-				//pre-v3.0.0 and pre-v3.3.0 conversion for artifacts (addition of tome and key)
+				//pre-v3.3.0 conversion for artifacts (addition of tome and key)
 				if (cat == Category.ARTIFACT && probs.length != cat.defaultProbs.length){
-					int tomeIDX = 5;
 					int keyIDX = 9;
 					int j = 0;
 					for (int i = 0; i < probs.length; i++){
-						//we do a specific check here for holy tome pre-v3.0.0
-						if (j == tomeIDX && probs.length == cat.defaultProbs.length-2){
-							cat.probs[j] = 0;
-							j++;
-						} else if (j == keyIDX){
+						if (j == keyIDX){
 							cat.probs[j] = 1;
 							j++;
 						}
 						cat.probs[j] = probs[i];
 						j++;
 					}
-
 				}
 
 			}

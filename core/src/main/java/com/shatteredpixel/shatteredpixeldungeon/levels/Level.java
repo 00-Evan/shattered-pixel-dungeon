@@ -363,8 +363,8 @@ public abstract class Level implements Bundlable {
 
 		version = bundle.getInt( VERSION );
 		
-		//saves from before v2.5.4 are not supported
-		if (version < ShatteredPixelDungeon.v2_5_4){
+		//saves from before v3.1.1 are not supported
+		if (version < ShatteredPixelDungeon.v3_1_1){
 			throw new RuntimeException("old save");
 		}
 
