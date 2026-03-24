@@ -72,14 +72,18 @@ public class Skeleton extends Mob {
 		
 		super.die( cause );
 		
-		if (cause == Chasm.class) return;
-		
+		if (cause != Chasm.class){
+			boneExplosion(pos, this);
+		}
+	}
+
+	public static void boneExplosion(int pos, Char source){
 		boolean heroKilled = false;
 		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
 			Char ch = findChar( pos + PathFinder.NEIGHBOURS8[i] );
 			if (ch != null && ch.isAlive()) {
 				int damage = Math.round(Random.NormalIntRange(6, 12));
-				damage = Math.round( damage * AscensionChallenge.statModifier(this));
+				damage = Math.round( damage * AscensionChallenge.statModifier(source));
 
 				//all sources of DR are 2x effective vs. bone explosion
 				//this does not consume extra uses of rock armor and earthroot armor
@@ -100,7 +104,7 @@ public class Skeleton extends Mob {
 
 				if (ch.buff(MagicImmune.class) == null) {
 					ShieldOfLight.ShieldOfLightTracker shield = ch.buff(ShieldOfLight.ShieldOfLightTracker.class);
-					if (shield != null && shield.object == id()) {
+					if (shield != null && shield.object == source.id()) {
 						int min = 1 + Dungeon.hero.pointsInTalent(Talent.SHIELD_OF_LIGHT);
 						damage -= Random.NormalIntRange(min, 2 * min);
 						damage -= Random.NormalIntRange(min, 2 * min); //apply twice
@@ -108,7 +112,7 @@ public class Skeleton extends Mob {
 					} else if (ch == Dungeon.hero
 							&& Dungeon.hero.heroClass != HeroClass.CLERIC
 							&& Dungeon.hero.hasTalent(Talent.SHIELD_OF_LIGHT)
-							&& TargetHealthIndicator.instance.target() == this) {
+							&& TargetHealthIndicator.instance.target() == source) {
 						//33/50%
 						if (Random.Int(6) < 1 + Dungeon.hero.pointsInTalent(Talent.SHIELD_OF_LIGHT)) {
 							damage -= 2; //doubled
@@ -123,20 +127,20 @@ public class Skeleton extends Mob {
 
 				//apply DR twice (with 2 rolls for more consistency)
 				damage = Math.max( 0,  damage - (ch.drRoll() + ch.drRoll()) );
-				ch.damage( damage, this );
+				ch.damage( damage, source );
 				if (ch == Dungeon.hero && !ch.isAlive()) {
 					heroKilled = true;
 				}
 			}
 		}
-		
+
 		if (Dungeon.level.heroFOV[pos]) {
 			Sample.INSTANCE.play( Assets.Sounds.BONES );
 		}
-		
+
 		if (heroKilled) {
-			Dungeon.fail( this );
-			GLog.n( Messages.get(this, "explo_kill") );
+			Dungeon.fail( source );
+			GLog.n( Messages.get(Skeleton.class, "explo_kill") );
 		}
 	}
 
