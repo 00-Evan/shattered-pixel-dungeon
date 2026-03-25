@@ -43,6 +43,13 @@ public class ArmoredBrute extends Brute {
 		loot = Generator.Category.ARMOR;
 		lootChance = 1f;
 	}
+
+	@Override
+	public int damageRoll() {
+		return buff(ArmoredRage.class) != null ?
+				Random.NormalIntRange( 15, 40 ) :
+				Random.NormalIntRange( 5, 25 );
+	}
 	
 	@Override
 	public int drRoll() {
