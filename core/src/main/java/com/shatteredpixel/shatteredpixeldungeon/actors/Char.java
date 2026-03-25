@@ -1079,6 +1079,10 @@ public abstract class Char extends Actor {
 	}
 	
 	public void die( Object src ) {
+		//something else is forcing death, so remove death mark to prevent conflicts
+		if (buff(DeathMark.DeathMarkTracker.class) != null){
+			buff(DeathMark.DeathMarkTracker.class).detachOnDeath();
+		}
 		destroy();
 		if (src != Chasm.class) {
 			sprite.die();

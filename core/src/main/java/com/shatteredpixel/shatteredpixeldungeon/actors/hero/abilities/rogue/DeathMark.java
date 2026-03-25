@@ -206,6 +206,24 @@ public class DeathMark extends ArmorAbility {
 			}
 		}
 
+		//if something is already dieing when death mark is attached, need to avoid triggering die() again
+		public void detachOnDeath(){
+			super.detach();
+			target.deathMarked = false;
+			//trigger death mark vfx and deathly durability if the target would have died with death mark ending normally
+			if (!target.isAlive()){
+				target.sprite.flash();
+				target.sprite.bloodBurstA(target.sprite.center(), target.HT*2);
+				Sample.INSTANCE.play(Assets.Sounds.HIT_STAB);
+				Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+				int shld = Math.round(initialHP * (0.125f*Dungeon.hero.pointsInTalent(Talent.DEATHLY_DURABILITY)));
+				if (shld > 0 && target.alignment != Char.Alignment.ALLY){
+					Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shld), FloatingText.SHIELDING);
+					Buff.affect(Dungeon.hero, Barrier.class).setShield(shld);
+				}
+			}
+		}
+
 		private static String INITIAL_HP = "initial_hp";
 
 		@Override
