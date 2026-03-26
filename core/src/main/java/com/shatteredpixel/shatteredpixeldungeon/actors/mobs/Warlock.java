@@ -42,7 +42,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
-public class Warlock extends Mob implements Callback {
+public class Warlock extends Mob {
 	
 	private static final float TIME_TO_ZAP	= 1f;
 	
@@ -140,11 +140,6 @@ public class Warlock extends Mob implements Callback {
 	
 	public void onZapComplete() {
 		zap();
-		next();
-	}
-	
-	@Override
-	public void call() {
 		next();
 	}
 
