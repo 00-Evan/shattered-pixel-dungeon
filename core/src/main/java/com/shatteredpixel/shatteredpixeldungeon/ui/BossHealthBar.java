@@ -42,6 +42,7 @@ public class BossHealthBar extends Component {
 
 	private Image shieldHP;
 	private Image hp;
+	private Image Dot; //a visual darkening over HP and shield that shows total incoming DOT
 	private BitmapText hpText;
 
 	private Button bossInfo;
@@ -85,8 +86,13 @@ public class BossHealthBar extends Component {
 		shieldHP = large ? new Image(asset, 0, 55, 96, 9) : new Image(asset, 71, 5, 47, 4);
 		add(shieldHP);
 
-		hp =  large ? new Image(asset, 0, 46, 96, 9) : new Image(asset, 71, 0, 47, 4);
+		hp = large ? new Image(asset, 0, 46, 96, 9) : new Image(asset, 71, 0, 47, 4);
 		add(hp);
+
+		Dot = large ? new Image(asset, 0, 46, 96, 9) : new Image(asset, 71, 0, 47, 4);
+		Dot.hardlight(0, 0, 0);
+		Dot.alpha(0.25f);
+		add(Dot);
 
 		hpText = new BitmapText(PixelScene.pixelFont);
 		hpText.alpha(0.6f);
@@ -137,8 +143,8 @@ public class BossHealthBar extends Component {
 		bar.x = x;
 		bar.y = y;
 
-		hp.x = shieldHP.x = bar.x+(large ? 30 : 15);
-		hp.y = shieldHP.y = bar.y+(large ? 2 : 3);
+		hp.x = shieldHP.x = Dot.x = bar.x+(large ? 30 : 15);
+		hp.y = shieldHP.y = Dot.y = bar.y+(large ? 2 : 3);
 
 		if (!large) hpText.scale.set(PixelScene.align(0.5f));
 		hpText.x = hp.x + (large ? (96-hpText.width())/2f : 1);
@@ -180,19 +186,24 @@ public class BossHealthBar extends Component {
 
 				int health = boss.HP;
 				int shield = boss.shielding();
+				int incomingDOT = boss.incomingDOT();
 				int max = boss.HT;
 
 				float healthPercent = health/(float)max;
 				float shieldPercent = shield/(float)max;
+				float DOTPercent    = incomingDOT/(float)max;
 
 				if (healthPercent + shieldPercent > 1f){
 					float excess = healthPercent + shieldPercent;
 					healthPercent /= excess;
 					shieldPercent /= excess;
+					DOTPercent    /= excess;
 				}
 
 				hp.scale.x = healthPercent;
 				shieldHP.scale.x = healthPercent + shieldPercent;
+				Dot.scale.x = Math.min(DOTPercent, shieldHP.scale.x);
+				Dot.x = shieldHP.x + shieldHP.width() - Dot.width();
 
 				if (bleeding != blood.on){
 					if (bleeding)   skull.tint( 0xcc0000, large ? 0.3f : 0.6f );

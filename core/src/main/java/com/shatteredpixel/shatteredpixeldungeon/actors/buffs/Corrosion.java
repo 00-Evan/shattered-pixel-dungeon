@@ -31,7 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 
-public class Corrosion extends Buff implements Hero.Doom {
+public class Corrosion extends Buff implements Hero.Doom, Buff.DOTbuff {
 
 	private float damage = 1;
 	protected float left;
@@ -72,10 +72,12 @@ public class Corrosion extends Buff implements Hero.Doom {
 		this.left = Math.max(duration, left);
 		if (this.damage < damage) this.damage = damage;
 		this.source = source;
+		target.needsIncomingDOTUpdate = true;
 	}
 
 	public void extend( float duration ) {
 		left += duration;
+		target.needsIncomingDOTUpdate = true;
 	}
 	
 	@Override
@@ -116,6 +118,7 @@ public class Corrosion extends Buff implements Hero.Doom {
 			detach();
 		}
 
+		target.needsIncomingDOTUpdate = true;
 		return true;
 	}
 	
@@ -129,4 +132,18 @@ public class Corrosion extends Buff implements Hero.Doom {
 		GLog.n(Messages.get(this, "ondeath"));
 	}
 
+	@Override
+	public int totalIncomingDMG() {
+		int total = 0;
+		float curDMG = damage;
+		for (int i = (int)Math.ceil(left); i > 0; i--){
+			total += (int)curDMG;
+			if (curDMG < (Dungeon.scalingDepth()/2)+2) {
+				curDMG++;
+			} else {
+				curDMG += 0.5f;
+			}
+		}
+		return total;
+	}
 }

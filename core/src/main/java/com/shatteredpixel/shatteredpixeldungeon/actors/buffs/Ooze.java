@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-public class Ooze extends Buff {
+public class Ooze extends Buff implements Buff.DOTbuff {
 
 	public static final float DURATION = 20f;
 
@@ -80,10 +80,12 @@ public class Ooze extends Buff {
 	public void set(float left){
 		this.left = left;
 		acted = false;
+		target.needsIncomingDOTUpdate = true;
 	}
 
 	public void extend( float duration ) {
 		left += duration;
+		target.needsIncomingDOTUpdate = true;
 	}
 
 	@Override
@@ -98,7 +100,7 @@ public class Ooze extends Buff {
 				target.damage(1 + Dungeon.scalingDepth() / 5, this);
 			} else if (Dungeon.scalingDepth() == 5){
 				target.damage(1, this); //1 dmg per turn vs Goo
-			} else if (Random.Int(2) == 0) {
+			} else if ((int)left % 2 == 0) {
 				target.damage(1, this); //0.5 dmg per turn in sewers
 			}
 
@@ -117,6 +119,19 @@ public class Ooze extends Buff {
 		if (Dungeon.level.water[target.pos] && !target.flying){
 			detach();
 		}
+		target.needsIncomingDOTUpdate = true;
 		return true;
+	}
+
+	@Override
+	public int totalIncomingDMG() {
+		if (Dungeon.scalingDepth() > 5) {
+			int dmg = 1 + Dungeon.scalingDepth() / 5;
+			return (int)(Math.ceil(left)*dmg);
+		} else if (Dungeon.scalingDepth() == 5){
+			return (int)(Math.ceil(left));
+		} else {
+			return (int)(Math.ceil(left)/2);
+		}
 	}
 }

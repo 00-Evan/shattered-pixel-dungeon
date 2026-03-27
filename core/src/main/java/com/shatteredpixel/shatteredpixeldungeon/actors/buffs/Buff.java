@@ -205,4 +205,10 @@ public class Buff extends Actor {
 			b.detach();
 		}
 	}
+
+	//Buffs which declare their total incoming damage over time (even an average)
+	// This is used in health bar visuals to show total incoming damage
+	public interface DOTbuff {
+		int totalIncomingDMG();
+	}
 }

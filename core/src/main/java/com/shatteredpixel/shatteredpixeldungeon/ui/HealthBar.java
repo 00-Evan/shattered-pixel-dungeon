@@ -27,18 +27,21 @@ import com.watabou.noosa.ui.Component;
 
 public class HealthBar extends Component {
 
-	private static final int COLOR_BG	= 0xFFCC0000;
+	private static final int COLOR_BG	= 0xFFAA0000;
 	private static final int COLOR_HP	= 0xFF00EE00;
 	private static final int COLOR_SHLD = 0xFFFFFFFF;
+	private static final int COLOR_DOT	= 0x66000000;
 	
 	private static final int HEIGHT	= 2;
 	
 	private ColorBlock Bg;
 	private ColorBlock Shld;
 	private ColorBlock Hp;
+	private ColorBlock Dot;
 	
 	private float health;
 	private float shield;
+	private float incomingDOT;
 	
 	@Override
 	protected void createChildren() {
@@ -50,6 +53,9 @@ public class HealthBar extends Component {
 		
 		Hp = new ColorBlock( 1, 1, COLOR_HP );
 		add( Hp );
+
+		Dot = new ColorBlock( 1, 1, COLOR_DOT );
+		add( Dot );
 		
 		height = HEIGHT;
 	}
@@ -57,8 +63,8 @@ public class HealthBar extends Component {
 	@Override
 	protected void layout() {
 		
-		Bg.x = Shld.x = Hp.x = x;
-		Bg.y = Shld.y = Hp.y = y;
+		Bg.x = Shld.x = Hp.x = Dot.x = x;
+		Bg.y = Shld.y = Hp.y = Dot.y = y;
 		
 		Bg.size( width, height );
 		
@@ -67,23 +73,29 @@ public class HealthBar extends Component {
 		if (camera() != null) pixelWidth *= camera().zoom;
 		Shld.size( width * (float)Math.ceil(shield * pixelWidth)/pixelWidth, height );
 		Hp.size( width * (float)Math.ceil(health * pixelWidth)/pixelWidth, height );
+
+		Dot.size( width * (float)Math.ceil(incomingDOT * pixelWidth)/pixelWidth, height );
+		Dot.scale.x = Math.min(Dot.scale.x, Shld.scale.x); //DOT darken can't go outside of HP bar
+		Dot.x += Shld.width() - Dot.width();
 	}
 	
 	public void level( float value ) {
-		level( value, 0f );
+		level( value, 0f, 0f );
 	}
 
-	public void level( float health, float shield ){
+	public void level( float health, float shield, float DOT ){
 		this.health = health;
 		this.shield = shield;
+		this.incomingDOT = DOT;
 		layout();
 	}
 
 	public void level(Char c){
 		float health = c.HP;
 		float shield = c.shielding();
+		float incomingDot = c.incomingDOT();
 		float max = Math.max(health+shield, c.HT);
 
-		level(health/max, (health+shield)/max);
+		level(health/max, (health+shield)/max, incomingDot/max);
 	}
 }
