@@ -2490,9 +2490,9 @@ public class Hero extends Char {
 				if ((foresight || fieldOfView[curr]) && curr != pos) {
 
 					if ((foresight && (!Dungeon.level.mapped[curr] || foresightScan))){
-						GameScene.effectOverFog(new CheckedCell(curr, foresightScan ? pos : curr));
+						GameScene.checkedCell(curr, foresightScan ? pos : curr);
 					} else if (intentional) {
-						GameScene.effectOverFog(new CheckedCell(curr, pos));
+						GameScene.checkedCell(curr, pos);
 					}
 
 					if (foresight){

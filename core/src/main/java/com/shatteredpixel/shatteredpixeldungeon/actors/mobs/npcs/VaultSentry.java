@@ -86,7 +86,7 @@ public class VaultSentry extends NPC {
 						SFXLastPlayed = ShatteredPixelDungeon.realTime;
 					}
 					if (Dungeon.level.heroFOV[cell]) {
-						GameScene.effect(new CheckedCell(cell, pos));
+						GameScene.checkedCell(cell, pos);
 						visible = true;
 					}
 				}
