@@ -341,6 +341,14 @@ public class CityBossLevel extends Level {
 		GameScene.updateMap( bottomDoor );
 		Dungeon.observe();
 
+		Heap h = heaps.get(bottomDoor);
+		if (h != null){
+			for (Item i : h.items){
+				drop(i, bottomDoor-width()).sprite.drop(bottomDoor);
+			}
+			h.destroy();
+		}
+
 		Game.runOnRenderThread(new Callback() {
 			@Override
 			public void call() {

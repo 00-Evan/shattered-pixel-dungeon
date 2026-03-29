@@ -433,6 +433,15 @@ public class PrisonBossLevel extends Level {
 				set(pointToCell(tenguCellDoor), Terrain.LOCKED_DOOR);
 				GameScene.updateMap(pointToCell(tenguCellDoor));
 
+				int tenguDoorPos = pointToCell(tenguCellDoor);
+				Heap h = heaps.get(tenguDoorPos);
+				if (h != null){
+					for (Item i : h.items){
+						drop(i, tenguDoorPos + width()).sprite.drop(tenguDoorPos);
+					}
+					h.destroy();
+				}
+
 				//moves intelligent allies with the hero, preferring closer pos to cell door
 				int doorPos = pointToCell(tenguCellDoor);
 				Mob.holdAllies(this, doorPos);
