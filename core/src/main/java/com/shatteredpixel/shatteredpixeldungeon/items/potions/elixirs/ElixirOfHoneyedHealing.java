@@ -75,7 +75,7 @@ public class ElixirOfHoneyedHealing extends Elixir {
 
 	@Override
 	public int energyVal() {
-		return 8;
+		return quantity * 8;
 	}
 
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
