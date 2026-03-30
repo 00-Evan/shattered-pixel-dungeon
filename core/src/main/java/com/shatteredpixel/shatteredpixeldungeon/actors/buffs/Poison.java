@@ -66,6 +66,10 @@ public class Poison extends Buff implements Hero.Doom, Buff.DOTbuff {
 		this.left += duration;
 		target.needsIncomingDOTUpdate = true;
 	}
+
+	public void delay( float turns ){
+		spend(turns);
+	}
 	
 	@Override
 	public int icon() {
