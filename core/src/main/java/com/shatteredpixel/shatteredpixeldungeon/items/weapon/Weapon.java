@@ -59,6 +59,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Bloomi
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Chilling;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Corrupting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Elastic;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Eldritch;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Kinetic;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Lucky;
@@ -518,15 +519,15 @@ abstract public class Weapon extends KindOfWeapon {
 				Blazing.class, Chilling.class, Kinetic.class, Shocking.class, Venomous.class};
 
 		public static final Class<?>[] uncommon = new Class<?>[]{
-				Blocking.class, Blooming.class, Elastic.class,
+				Blocking.class, Blooming.class, Eldritch.class, Elastic.class,
 				Lucky.class, Projecting.class, Unstable.class, Vorpal.class};
 
 		public static final Class<?>[] rare = new Class<?>[]{
 				Corrupting.class, Grim.class, Vampiric.class};
 
 		public static final float[] typeChances = new float[]{
-				50, //10.0% each
-				40, //5.71% each
+				50, //10% each
+				40, //5%  each
 				10  //3.33% each
 		};
 
