@@ -30,6 +30,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PointF;
 
+//FIXME the whole position of VaultMob as its own class currently causes a bunch of hierarchy issues
+// It might make more sense to re-integrate this functionality into Mob itself, with a boolean trigger
+// for alternate awareness behaviour. That would let vault mobs become subclasses of the mob they copy
 public class VaultMob extends Mob {
 
 	{

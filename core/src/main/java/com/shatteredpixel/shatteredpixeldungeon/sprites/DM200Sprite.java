@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM200;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultDM200;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -69,7 +70,11 @@ public class DM200Sprite extends MobSprite {
 				new Callback() {
 					@Override
 					public void call() {
-						((DM200)ch).onZapComplete();
+						if (ch instanceof DM200) {
+							((DM200) ch).onZapComplete();
+						} else if (ch instanceof VaultDM200){
+							((VaultDM200) ch).onZapComplete();
+						}
 					}
 				} );
 		Sample.INSTANCE.play( Assets.Sounds.GAS );
