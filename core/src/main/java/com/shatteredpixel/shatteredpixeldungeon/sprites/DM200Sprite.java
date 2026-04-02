@@ -70,11 +70,7 @@ public class DM200Sprite extends MobSprite {
 				new Callback() {
 					@Override
 					public void call() {
-						if (ch instanceof DM200) {
-							((DM200) ch).onZapComplete();
-						} else if (ch instanceof VaultDM200){
-							((VaultDM200) ch).onZapComplete();
-						}
+						((DM200) ch).onZapComplete();
 					}
 				} );
 		Sample.INSTANCE.play( Assets.Sounds.GAS );

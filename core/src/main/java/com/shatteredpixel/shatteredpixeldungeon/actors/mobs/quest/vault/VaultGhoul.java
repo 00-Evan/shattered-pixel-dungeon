@@ -21,40 +21,19 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.GhoulSprite;
-import com.watabou.utils.Random;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Ghoul;
 
-//looks like and has stats like a ghoul, but has no unique ghoul behaviours
-//TODO we cooould let it have some ghoul behaviours tough, a room with a high number of these might be a nice challenge
-public class VaultGhoul extends VaultMob {
+//does not spawn or follow a partner due to overriding AI states and partnerID
+// but will still buddy up with nearby ghouls for the purposes of survival
+public class VaultGhoul extends Ghoul {
 
 	//TODO stats
 
 	{
-		spriteClass = GhoulSprite.class;
-
-		HP = HT = 45;
-		defenseSkill = 20;
+		activateSteathGameplayBehaviour();
+		partnerID = -2; //does not spawn a partner
 
 		maxLvl = -2;
-
-		properties.add(Property.UNDEAD);
-	}
-
-	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 16, 22 );
-	}
-
-	@Override
-	public int attackSkill( Char target ) {
-		return 24;
-	}
-
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 4);
 	}
 
 }

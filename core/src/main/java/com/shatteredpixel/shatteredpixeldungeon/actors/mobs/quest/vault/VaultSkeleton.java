@@ -21,51 +21,18 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Skeleton;
-import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.VaultSkeletonSprite;
-import com.watabou.utils.Random;
 
-public class VaultSkeleton extends VaultMob {
+public class VaultSkeleton extends Skeleton {
 
 	//TODO stat refinement
 
 	{
+		activateSteathGameplayBehaviour();
 		spriteClass = VaultSkeletonSprite.class;
 
-		HP = HT = 25;
-		defenseSkill = 9;
-
 		maxLvl = -2;
-
-		properties.add(Property.UNDEAD);
-		properties.add(Property.INORGANIC);
-	}
-
-	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 2, 10 );
-	}
-
-	@Override
-	public void die( Object cause ) {
-
-		super.die( cause );
-
-		if (cause != Chasm.class){
-			Skeleton.boneExplosion(pos, this);
-		}
-	}
-
-	@Override
-	public int attackSkill( Char target ) {
-		return 12;
-	}
-
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 5);
 	}
 
 }

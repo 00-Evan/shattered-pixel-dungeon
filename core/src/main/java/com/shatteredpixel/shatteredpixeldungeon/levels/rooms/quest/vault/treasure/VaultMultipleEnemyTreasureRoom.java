@@ -21,8 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasure;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultRat;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultSkeleton;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultGhoul;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -51,46 +50,46 @@ public class VaultMultipleEnemyTreasureRoom extends VaultTreasureRoom {
 			Painter.fill(level, left+1, areaTop+1, 9, 3, Terrain.EMPTY_SP);
 			Painter.fill(level, left+4, areaTop, 3, 5, Terrain.EMPTY_SP);
 
-			VaultSkeleton skele = new VaultSkeleton();
-			skele.pos = c.x + areaTop*level.width();
-			level.mobs.add(skele);
+			VaultGhoul ghoul = new VaultGhoul();
+			ghoul.pos = c.x + areaTop*level.width();
+			level.mobs.add(ghoul);
 
-			skele = new VaultSkeleton();
-			skele.pos = c.x + (areaTop+4)*level.width();
-			level.mobs.add(skele);
+			ghoul = new VaultGhoul();
+			ghoul.pos = c.x + (areaTop+4)*level.width();
+			level.mobs.add(ghoul);
 
-			skele = new VaultSkeleton();
+			ghoul = new VaultGhoul();
 			if (entrance.x == left){
-				skele.pos = c.x + 1 + (areaTop+2)*level.width();
-				treasurePos = skele.pos + 2;
+				ghoul.pos = c.x + 1 + (areaTop+2)*level.width();
+				treasurePos = ghoul.pos + 2;
 			} else {
-				skele.pos = c.x - 1 + (areaTop+2)*level.width();
-				treasurePos = skele.pos - 2;
+				ghoul.pos = c.x - 1 + (areaTop+2)*level.width();
+				treasurePos = ghoul.pos - 2;
 			}
-			level.mobs.add(skele);
+			level.mobs.add(ghoul);
 
 		} else {
 			int areaLeft = (int)GameMath.gate(left+1, entrance.x-2, right-5);
 			Painter.fill(level, areaLeft+1, top+1, 3, 9, Terrain.EMPTY_SP);
 			Painter.fill(level, areaLeft, top+4, 5, 3, Terrain.EMPTY_SP);
 
-			VaultSkeleton skele = new VaultSkeleton();
-			skele.pos = areaLeft + c.y*level.width();
-			level.mobs.add(skele);
+			VaultGhoul ghoul = new VaultGhoul();
+			ghoul.pos = areaLeft + c.y*level.width();
+			level.mobs.add(ghoul);
 
-			skele = new VaultSkeleton();
-			skele.pos = areaLeft+4 + c.y*level.width();
-			level.mobs.add(skele);
+			ghoul = new VaultGhoul();
+			ghoul.pos = areaLeft+4 + c.y*level.width();
+			level.mobs.add(ghoul);
 
-			skele = new VaultSkeleton();
+			ghoul = new VaultGhoul();
 			if (entrance.y == top){
-				skele.pos = areaLeft+2 + (c.y+1)*level.width();
-				treasurePos = skele.pos + 2*level.width();
+				ghoul.pos = areaLeft+2 + (c.y+1)*level.width();
+				treasurePos = ghoul.pos + 2*level.width();
 			} else {
-				skele.pos = areaLeft+2 + (c.y-1)*level.width();
-				treasurePos = skele.pos - 2*level.width();
+				ghoul.pos = areaLeft+2 + (c.y-1)*level.width();
+				treasurePos = ghoul.pos - 2*level.width();
 			}
-			level.mobs.add(skele);
+			level.mobs.add(ghoul);
 		}
 
 		Painter.set(level, treasurePos, Terrain.PEDESTAL);

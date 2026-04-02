@@ -21,66 +21,18 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM100;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.VaultDM100Sprite;
-import com.watabou.utils.Random;
 
-public class VaultDM100 extends VaultMob {
-
-	private static final float TIME_TO_ZAP	= 1f;
+public class VaultDM100 extends DM100 {
 
 	//TODO stats
 
 	{
+		activateSteathGameplayBehaviour();
 		spriteClass = VaultDM100Sprite.class;
 
-		HP = HT = 20;
-		defenseSkill = 8;
-
 		maxLvl = -2;
-
-		properties.add(Property.ELECTRIC);
-		properties.add(Property.INORGANIC);
-	}
-
-	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 2, 8 );
-	}
-
-	@Override
-	public int attackSkill( Char target ) {
-		return 11;
-	}
-
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 4);
-	}
-
-	@Override
-	protected boolean canAttack( Char enemy ) {
-		return super.canAttack(enemy)
-				|| new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
-	}
-
-	@Override
-	protected boolean doAttack( Char enemy ) {
-
-		if (Dungeon.level.adjacent( pos, enemy.pos )
-				|| new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos != enemy.pos) {
-
-			return super.doAttack( enemy );
-
-		} else {
-
-			spend( TIME_TO_ZAP );
-
-			return DM100.DM100Zap(this, enemy);
-		}
 	}
 
 }
