@@ -81,7 +81,7 @@ public class VaultLongRoom extends StandardRoom {
 
 		VaultRat rat = new VaultRat();
 		rat.pos = randomWander(level);
-		rat.wanderPositions = new int[]{
+		int[] wanderPositions = new int[]{
 				randomWander(level), randomWander(level), randomWander(level),
 				randomWander(level), randomWander(level), randomWander(level),
 				randomWander(level), randomWander(level), randomWander(level),
@@ -89,6 +89,7 @@ public class VaultLongRoom extends StandardRoom {
 				randomWander(level), randomWander(level), randomWander(level),
 				randomWander(level), randomWander(level), randomWander(level),
 		};
+		rat.setupStealthGameplayWanderPositions(wanderPositions, 0);
 		rat.state = rat.WANDERING;
 		level.mobs.add(rat);
 

@@ -58,7 +58,7 @@ public class VaultRingsRoom extends StandardRoom {
 		rat.state = rat.WANDERING;
 		level.mobs.add(rat);
 
-		rat.wanderPositions = new int[]{
+		int[] wanderPositions = new int[]{
 				level.pointToCell(new Point(left+1, top+1)),
 				level.pointToCell(new Point(left+1, top+5)),
 				level.pointToCell(new Point(left+1, top+9)),
@@ -69,7 +69,8 @@ public class VaultRingsRoom extends StandardRoom {
 				level.pointToCell(new Point(left+9, top+5)),
 				level.pointToCell(new Point(left+9, top+9))
 		};
-		Random.shuffle(rat.wanderPositions);
+		Random.shuffle(wanderPositions);
+		rat.setupStealthGameplayWanderPositions(wanderPositions, 0);
 
 	}
 

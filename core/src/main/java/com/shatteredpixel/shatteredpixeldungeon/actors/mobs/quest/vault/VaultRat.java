@@ -28,35 +28,12 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.RatSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SkeletonSprite;
 import com.watabou.utils.Random;
 
-public class VaultRat extends VaultMob {
+public class VaultRat extends Rat {
 
 	{
-		spriteClass = RatSprite.class;
-
-		HP = HT = 8;
-		defenseSkill = 2;
+		activateSteathGameplayBehaviour();
 
 		maxLvl = -2;
-	}
-
-	@Override
-	public int damageRoll() {
-		return 0;
-	}
-
-	@Override
-	public int attackSkill(Char target) {
-		return 8;
-	}
-
-	@Override
-	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 1);
-	}
-
-	@Override
-	public String name() {
-		return Messages.get(Rat.class, "name");
 	}
 
 	@Override
