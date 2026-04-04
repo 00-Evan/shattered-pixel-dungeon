@@ -154,6 +154,8 @@ public abstract class Mob extends Char {
 
 	private static final String ENEMY_ID	= "enemy_id";
 
+	private static final String SWARM_RANGE = "swarm_range";
+
 	//for stealth gameplay
 	private static final String USING_STEALTH = "using_stealth";
 	private static final String INVEST_TURNS = "invest_turns";
@@ -185,6 +187,8 @@ public abstract class Mob extends Char {
 		if (enemy != null) {
 			bundle.put(ENEMY_ID, enemy.id() );
 		}
+
+		bundle.put(SWARM_RANGE, swarmDetectionRange);
 
 		bundle.put( USING_STEALTH, usingStealthGamePlay );
 		if (usingStealthGamePlay){
@@ -235,6 +239,8 @@ public abstract class Mob extends Char {
 		if (bundle.contains(ENEMY_ID)) {
 			enemyID = bundle.getInt(ENEMY_ID);
 		}
+
+		swarmDetectionRange = bundle.getFloat( SWARM_RANGE );
 
 		//no need to actually save this, must be false
 		firstAdded = false;
@@ -288,6 +294,8 @@ public abstract class Mob extends Char {
 
 		boolean result = state.act( enemyInFOV, justAlerted );
 
+		processSwarmIntel( enemyInFOV );
+
 		//for updating hero FOV
 		if (buff(PowerOfMany.PowerBuff.class) != null){
 			Dungeon.level.updateFieldOfView( this, fieldOfView );
@@ -295,6 +303,32 @@ public abstract class Mob extends Char {
 		}
 
 		return result;
+	}
+
+	private float swarmDetectionRange = 0;
+
+	protected void processSwarmIntel( boolean enemyInFOV ){
+		if (alignment == Alignment.ENEMY && state == HUNTING
+				&& Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)
+				&& enemyInFOV) {
+
+			//this seems pretty brittle
+			if (sprite.isMoving) {
+				swarmDetectionRange = Math.min(12, swarmDetectionRange + (int) (2 * speed()));
+			} else {
+				swarmDetectionRange = Math.min(12, swarmDetectionRange + (int) (2 * attackDelay()));
+			}
+			for (Mob mob : Dungeon.level.mobs) {
+				if (mob.alignment == Alignment.ENEMY
+						&& mob.paralysed <= 0
+						&& Dungeon.level.distance(pos, mob.pos) <= swarmDetectionRange
+						&& mob.state != mob.HUNTING) {
+					mob.beckon(enemy.pos);
+				}
+			}
+		} else {
+			swarmDetectionRange = 0;
+		}
 	}
 	
 	//FIXME this is sort of a band-aid correction for allies needing more intelligent behaviour
@@ -1193,15 +1227,6 @@ public abstract class Mob extends Char {
 				target = Dungeon.level.randomDestination( Mob.this );
 			}
 
-			if (alignment == Alignment.ENEMY && Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) {
-				for (Mob mob : Dungeon.level.mobs) {
-					if (mob.paralysed <= 0
-							&& Dungeon.level.distance(pos, mob.pos) <= 8
-							&& mob.state != mob.HUNTING) {
-						mob.beckon(target);
-					}
-				}
-			}
 			spend(TIME_TO_WAKE_UP);
 		}
 	}
@@ -1235,16 +1260,6 @@ public abstract class Mob extends Char {
 			alerted = true;
 			state = HUNTING;
 			target = enemy.pos;
-			
-			if (alignment == Alignment.ENEMY && Dungeon.isChallenged( Challenges.SWARM_INTELLIGENCE )) {
-				for (Mob mob : Dungeon.level.mobs) {
-					if (mob.paralysed <= 0
-							&& Dungeon.level.distance(pos, mob.pos) <= 8
-							&& mob.state != mob.HUNTING) {
-						mob.beckon( target );
-					}
-				}
-			}
 			
 			return true;
 		}
