@@ -1102,7 +1102,6 @@ public class Hero extends Char {
 						}
 					} else {
 
-						//TODO make all unique items important? or just POS / SOU?
 						boolean important = item.unique && item.isIdentified() &&
 								(item instanceof Scroll || item instanceof Potion);
 						if (important) {
@@ -1581,11 +1580,6 @@ public class Hero extends Char {
 		if (buff(TimekeepersHourglass.timeStasis.class) != null
 				|| buff(TimeStasis.class) != null) {
 			return;
-		}
-
-		//TODO hero cannot take damage in the vault tester area
-		if (Dungeon.depth > 15 && Dungeon.branch == 1){
-			dmg = 0;
 		}
 
 		//regular damage interrupt, triggers on any damage except specific mild DOT effects

@@ -83,7 +83,6 @@ public class MindForm extends ClericSpell {
 		return 2 + Dungeon.hero.pointsInTalent(Talent.MIND_FORM);
 	}
 
-	//TODO selecting
 	public static class targetSelector extends CellSelector.Listener {
 
 		private Bundlable effect;
