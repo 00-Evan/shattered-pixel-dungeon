@@ -69,7 +69,6 @@ public class AmbitiousImpRoom extends SpecialRoom {
 		Imp npc = new Imp();
 		npc.pos = level.pointToCell(c);
 
-		//TODO we have imp in front for now, do we want to put him in the back?
 		if (entrance.x == left || entrance.x == right){
 			npc.pos += Random.IntRange(-1, 1)*level.width();
 			npc.pos += entrance.x == left ? -2 : 2;
@@ -80,9 +79,8 @@ public class AmbitiousImpRoom extends SpecialRoom {
 		level.mobs.add( npc );
 
 		Painter.drawInside(level, this, entrance, 1, Terrain.EMPTY);
-		entrance.set( Door.Type.REGULAR ); //TODO maybe lock?
+		entrance.set( Door.Type.REGULAR );
 
-		//TODO finalize quest entrance visuals
 		QuestEntrance vis = new QuestEntrance();
 		vis.pos(c.x - 2, c.y - 2);
 		level.customTiles.add(vis);

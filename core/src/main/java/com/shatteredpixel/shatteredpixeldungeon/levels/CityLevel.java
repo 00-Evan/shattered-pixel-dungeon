@@ -164,13 +164,9 @@ public class CityLevel extends RegularLevel {
 						protected void onSelect(int index) {
 							if (index == 0){
 
-								//for full release this will remove any non revive persists buff, but for now just do item buffs
+								//remove all buffs/debuffs which don't persist over revives
 								for (Buff b : hero.buffs()){
-									if (b instanceof Wand.Charger
-											|| b instanceof Artifact.ArtifactBuff
-											|| b instanceof Ring.RingBuff
-											//not melee charger, Duelist should retain her charge count
-											|| b instanceof ClassArmor.Charger){
+									if (!b.revivePersists){
 										b.detach();
 									}
 								}
