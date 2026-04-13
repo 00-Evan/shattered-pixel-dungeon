@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Golem;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
@@ -38,7 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.AmbitiousImpR
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ImpSprite;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndImp;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndImpOld;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
@@ -109,28 +108,38 @@ public class Imp extends NPC {
 			return true;
 		}
 
-		if (Quest.given) {
-			
-			DwarfToken tokens = Dungeon.hero.belongings.getItem( DwarfToken.class );
-			if (tokens != null && (tokens.quantity() >= 5 || (!Quest.alternative && tokens.quantity() >= 4))) {
-				Game.runOnRenderThread(new Callback() {
-					@Override
-					public void call() {
-						GameScene.show( new WndImp( Imp.this, tokens ) );
-					}
-				});
+		if (Quest.oldQuest) {
+			if (Quest.given) {
+
+				DwarfToken tokens = Dungeon.hero.belongings.getItem(DwarfToken.class);
+				if (tokens != null && (tokens.quantity() >= 5 || (!Quest.alternative && tokens.quantity() >= 4))) {
+					Game.runOnRenderThread(new Callback() {
+						@Override
+						public void call() {
+							GameScene.show(new WndImpOld(Imp.this, tokens));
+						}
+					});
+				} else {
+					tell(Quest.alternative ?
+							Messages.get(this, "old_monks_2", Messages.titleCase(Dungeon.hero.name()))
+							: Messages.get(this, "old_golems_2", Messages.titleCase(Dungeon.hero.name())));
+				}
+
 			} else {
-				tell( Quest.alternative ?
-						Messages.get(this, "monks_2", Messages.titleCase(Dungeon.hero.name()))
-						: Messages.get(this, "golems_2", Messages.titleCase(Dungeon.hero.name())) );
+				tell(Messages.get(this, "old_intro") + "\n\n" + (Quest.alternative ?
+						Messages.get(this, "old_monks_1", Messages.titleCase(Dungeon.hero.name()))
+						: Messages.get(this, "old_golems_1", Messages.titleCase(Dungeon.hero.name()))));
+				Quest.given = true;
+				Quest.completed = false;
 			}
-			
 		} else {
-			tell( Messages.get(this, "intro") + "\n\n" + (Quest.alternative ?
-					Messages.get(this, "monks_1", Messages.titleCase(Dungeon.hero.name()))
-					: Messages.get(this, "golems_1", Messages.titleCase(Dungeon.hero.name()))) );
-			Quest.given = true;
-			Quest.completed = false;
+			if (Quest.given()){
+				tell("TODO, quest was given.");
+			} else {
+				tell("TODO, giving quest.");
+				Quest.given = true;
+				Quest.completed = false;
+			}
 		}
 
 		return true;
@@ -154,14 +163,19 @@ public class Imp extends NPC {
 	}
 
 	public static class Quest {
-		
-		private static boolean alternative;
-		
+
 		private static boolean spawned;
+
+		//variables exclusive to old, pre-4.0.0 Imp quest
+		private static boolean oldQuest = false;
+		private static boolean alternative; //true= golems, false = monks
+		public static Ring reward;
+
+		//variables shared by both quests
 		private static boolean given;
 		private static boolean completed;
-		
-		public static Ring reward;
+
+		//variacles exclusive to new quest (any?)
 		
 		public static void reset() {
 			spawned = false;
@@ -172,12 +186,16 @@ public class Imp extends NPC {
 		}
 		
 		private static final String NODE		= "demon";
-		
-		private static final String ALTERNATIVE	= "alternative";
+
 		private static final String SPAWNED		= "spawned";
+
+		private static final String OLD_QUEST	= "old_quest";
+		private static final String ALTERNATIVE	= "alternative";
+		private static final String REWARD		= "reward";
+
 		private static final String GIVEN		= "given";
 		private static final String COMPLETED	= "completed";
-		private static final String REWARD		= "reward";
+
 		
 		public static void storeInBundle( Bundle bundle ) {
 			
@@ -186,6 +204,7 @@ public class Imp extends NPC {
 			node.put( SPAWNED, spawned );
 			
 			if (spawned) {
+				node.put( OLD_QUEST, oldQuest );
 				node.put( ALTERNATIVE, alternative );
 				
 				node.put( GIVEN, given );
@@ -201,11 +220,22 @@ public class Imp extends NPC {
 			Bundle node = bundle.getBundle( NODE );
 			
 			if (!node.isNull() && (spawned = node.getBoolean( SPAWNED ))) {
-				alternative	= node.getBoolean( ALTERNATIVE );
+
+				if (node.contains( OLD_QUEST )){
+					oldQuest = node.getBoolean( OLD_QUEST );
+				} else {
+					oldQuest = true;
+				}
+				if (oldQuest){
+					alternative	= node.getBoolean( ALTERNATIVE );
+					reward = (Ring)node.get( REWARD );
+				} else {
+					alternative = false;
+					reward = null;
+				}
 				
 				given = node.getBoolean( GIVEN );
 				completed = node.getBoolean( COMPLETED );
-				reward = (Ring)node.get( REWARD );
 			}
 		}
 
@@ -215,26 +245,10 @@ public class Imp extends NPC {
 				rooms.add(new AmbitiousImpRoom());
 				spawned = true;
 
-				//always assigns monks on floor 17, golems on floor 19, and 50/50 between either on 18
-				switch (Dungeon.depth){
-					case 17: default:
-						alternative = true;
-						break;
-					case 18:
-						alternative = Random.Int(2) == 0;
-						break;
-					case 19:
-						alternative = false;
-						break;
-				}
+				oldQuest = false;
+				reward = null;
 				
 				given = false;
-				
-				do {
-					reward = (Ring)Generator.random( Generator.Category.RING );
-				} while (reward.cursed);
-				reward.upgrade( 2 );
-				reward.cursed = true;
 			}
 
 			return rooms;
@@ -244,8 +258,8 @@ public class Imp extends NPC {
 			return given;
 		}
 		
-		public static void process( Mob mob ) {
-			if (spawned && given && !completed && Dungeon.depth != 20) {
+		public static void oldProcess( Mob mob ) {
+			if (spawned && oldQuest && given && !completed && Dungeon.depth != 20) {
 				if ((alternative && mob instanceof Monk) ||
 					(!alternative && mob instanceof Golem)) {
 					
@@ -254,7 +268,7 @@ public class Imp extends NPC {
 			}
 		}
 		
-		public static void complete() {
+		public static void oldComplete() {
 			reward = null;
 			completed = true;
 
