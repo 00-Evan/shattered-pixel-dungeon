@@ -52,12 +52,16 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.RainbowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.WondrousResin;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Annoying;
@@ -66,8 +70,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Displacing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Explosive;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Friendly;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Polarized;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Pressurized;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Sacrificial;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Wayward;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Wondrous;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blooming;
@@ -130,10 +136,12 @@ public class ElementalStrike extends ArmorAbility {
 		effectTypes.put(Displacing.class,   MagicMissile.SHADOW_CONE);
 		effectTypes.put(Dazzling.class,     MagicMissile.SHADOW_CONE);
 		effectTypes.put(Explosive.class,    MagicMissile.SHADOW_CONE);
+		effectTypes.put(Friendly.class,     MagicMissile.SHADOW_CONE);
+		effectTypes.put(Polarized.class,    MagicMissile.SHADOW_CONE);
+		effectTypes.put(Pressurized.class,  MagicMissile.SHADOW_CONE);
 		effectTypes.put(Sacrificial.class,  MagicMissile.SHADOW_CONE);
 		effectTypes.put(Wayward.class,      MagicMissile.SHADOW_CONE);
-		effectTypes.put(Polarized.class,    MagicMissile.SHADOW_CONE);
-		effectTypes.put(Friendly.class,     MagicMissile.SHADOW_CONE);
+		effectTypes.put(Wondrous.class,     MagicMissile.SHADOW_CONE);
 
 		effectTypes.put(null,               MagicMissile.MAGIC_MISS_CONE);
 	}
@@ -357,6 +365,15 @@ public class ElementalStrike extends ArmorAbility {
 				}
 			}
 			Dungeon.observe();
+
+		//*** Pressurized ***
+		} else if (ench instanceof Pressurized) {
+			for (int cell : cone.cells) {
+				if (Random.Float() < powerMulti/2f) {
+					Splash.at(cell, 0x5bc1e3, 5);
+					Dungeon.level.setCellToWater(true, cell);
+				}
+			}
 		}
 	}
 
@@ -584,6 +601,40 @@ public class ElementalStrike extends ArmorAbility {
 				if (Random.Float() < 0.5f*powerMulti){
 					Buff.affect(ch, Charm.class, 6f).object = hero.id();
 				}
+			}
+
+		//*** Wondrous ***
+		} else if (ench instanceof Wondrous){
+			boolean positiveOnly = Random.Float() < WondrousResin.positiveCurseEffectChance();
+			for (Char ch : affected){
+				if (Random.Float() < powerMulti/2f){
+					Ballistica aim = new Ballistica(hero.pos, ch.pos, Ballistica.STOP_TARGET);
+					ch.sprite.emitter().burst(RainbowParticle.BURST, 25);
+					CursedWand.randomValidEffect(null, hero, aim, positiveOnly).effect(null, hero, aim, positiveOnly);
+				}
+			}
+
+		//*** Pressurized ***
+		} else if (ench instanceof Pressurized){
+			//sorts affected from furthest to closest
+			Collections.sort(affected, new Comparator<Char>() {
+				@Override
+				public int compare(Char a, Char b) {
+					return Dungeon.level.distance(hero.pos, a.pos) - Dungeon.level.distance(hero.pos, b.pos);
+				}
+			});
+
+			for (Char ch : affected){
+				if (ch == primaryTarget && oldEnemyPos != primaryTarget.pos) continue;
+
+				Ballistica aim = new Ballistica(hero.pos, ch.pos, Ballistica.WONT_STOP);
+				int knockback = Math.round(2*powerMulti);
+				WandOfBlastWave.throwChar(ch,
+						new Ballistica(ch.pos, aim.collisionPos, Ballistica.MAGIC_BOLT),
+						knockback,
+						true,
+						true,
+						ElementalStrike.this);
 			}
 		}
 

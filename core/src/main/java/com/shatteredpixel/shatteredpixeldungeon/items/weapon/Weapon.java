@@ -51,8 +51,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Displacing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Explosive;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Friendly;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Polarized;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Pressurized;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Sacrificial;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Wayward;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Wondrous;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blooming;
@@ -516,14 +518,17 @@ abstract public class Weapon extends KindOfWeapon {
 	public static abstract class Enchantment implements Bundlable {
 
 		public static final Class<?>[] common = new Class<?>[]{
-				Blazing.class, Chilling.class, Kinetic.class, Shocking.class, Venomous.class};
+				Blazing.class, Chilling.class, Kinetic.class, Shocking.class, Venomous.class
+		};
 
 		public static final Class<?>[] uncommon = new Class<?>[]{
 				Blocking.class, Blooming.class, Eldritch.class, Elastic.class,
-				Lucky.class, Projecting.class, Unstable.class, Vorpal.class};
+				Lucky.class, Projecting.class, Unstable.class, Vorpal.class
+		};
 
 		public static final Class<?>[] rare = new Class<?>[]{
-				Corrupting.class, Grim.class, Vampiric.class};
+				Corrupting.class, Grim.class, Vampiric.class
+		};
 
 		public static final float[] typeChances = new float[]{
 				50, //10% each
@@ -532,10 +537,9 @@ abstract public class Weapon extends KindOfWeapon {
 		};
 
 		public static final Class<?>[] curses = new Class<?>[]{
-				Annoying.class, Displacing.class, Dazzling.class, Explosive.class,
-				Sacrificial.class, Wayward.class, Polarized.class, Friendly.class
+				Annoying.class, Displacing.class, Dazzling.class, Explosive.class, Friendly.class,
+				Polarized.class, Pressurized.class, Sacrificial.class, Wayward.class, Wondrous.class
 		};
-		
 			
 		public abstract int proc( Weapon weapon, Char attacker, Char defender, int damage );
 
