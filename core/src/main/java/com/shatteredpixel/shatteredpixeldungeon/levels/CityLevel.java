@@ -60,8 +60,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WarpingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WeakeningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ImpSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -147,7 +147,8 @@ public class CityLevel extends RegularLevel {
 	public boolean activateTransition(Hero hero, LevelTransition transition) {
 		if (transition.type == LevelTransition.Type.BRANCH_EXIT) {
 
-			if (hero.buff(AscensionChallenge.class) != null
+			if ( Imp.Quest.isOld() || Imp.Quest.isCompleted() || !Imp.Quest.given()
+					|| hero.buff(AscensionChallenge.class) != null
 					|| hero.buff(LostInventory.class) != null){
 				return false;
 			}
@@ -155,11 +156,11 @@ public class CityLevel extends RegularLevel {
 			Game.runOnRenderThread(new Callback() {
 				@Override
 				public void call() {
-					GameScene.show( new WndOptions( Icons.SHPX.get(),
-							Messages.titleCase(Messages.get(CityLevel.class, "upcoming_quest_intro_title")),
-							Messages.get(CityLevel.class, "upcoming_quest_intro_body"),
-							Messages.get(CityLevel.class, "upcoming_quest_intro_yes"),
-							Messages.get(CityLevel.class, "upcoming_quest_intro_no")){
+					GameScene.show( new WndOptions( new ImpSprite(),
+							Messages.titleCase(Messages.get(Imp.class, "name")),
+							Messages.get(Imp.class, "enter_text"),
+							Messages.get(Imp.class, "enter_yes"),
+							Messages.get(Imp.class, "enter_no")){
 						@Override
 						protected void onSelect(int index) {
 							if (index == 0){
@@ -171,13 +172,16 @@ public class CityLevel extends RegularLevel {
 									}
 								}
 
-								//not ideal handler for a crash, should improve this
 								EscapeCrystal crystal = hero.belongings.getItem(EscapeCrystal.class);
 								if (crystal == null) {
 									crystal = new EscapeCrystal();
-									crystal.storeHeroBelongings(Dungeon.hero);
-									crystal.collect();
+								} else {
+									crystal.detachAll(Dungeon.hero.belongings.backpack);
 								}
+								if (crystal.storedItems == null){
+									crystal.storeHeroBelongings(Dungeon.hero);
+								}
+								crystal.collect();
 								hero.belongings.armor = new ClothArmor();
 								hero.belongings.armor.identify();
 								hero.updateHT( false );

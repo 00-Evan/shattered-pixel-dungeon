@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Golem;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
@@ -39,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ImpSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndImpOld;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
@@ -58,7 +60,7 @@ public class Imp extends NPC {
 
 	@Override
 	public Notes.Landmark landmark() {
-		return Notes.Landmark.IMP;
+		return Quest.isCompleted() ? null : Notes.Landmark.IMP;
 	}
 
 	@Override
@@ -67,7 +69,18 @@ public class Imp extends NPC {
 			die(null);
 			return true;
 		}
-		if (!Quest.given && Dungeon.level.visited[pos]) {
+
+		//extra logic in case imp is holding the quest reward
+		if (Quest.isCompleted() && Quest.reward != null){
+			Dungeon.level.drop(Quest.reward, pos);
+			throwItems();
+			Quest.reward = null;
+		}
+
+		if (Quest.isCompleted() && Quest.score > 1500
+				&& fieldOfView != null && !fieldOfView[Dungeon.hero.pos]){
+			flee();
+		} else if (!Quest.given && Dungeon.level.visited[pos]) {
 			if (!seenBefore && Dungeon.level.heroFOV[pos]) {
 				yell(Messages.get(this, "hey", Messages.titleCase(Dungeon.hero.name())));
 				seenBefore = true;
@@ -108,6 +121,7 @@ public class Imp extends NPC {
 			return true;
 		}
 
+		//pre v4.4.0 logic
 		if (Quest.oldQuest) {
 			if (Quest.given) {
 
@@ -133,12 +147,33 @@ public class Imp extends NPC {
 				Quest.completed = false;
 			}
 		} else {
-			if (Quest.given()){
-				tell("TODO, quest was given.");
+			if (!Quest.given()){
+				Game.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						GameScene.show(new WndQuest(Imp.this, Messages.get(Imp.this, "quest_intro_1")) {
+							@Override
+							public void hide() {
+								super.hide();
+
+								Quest.given = true;
+								Quest.completed = false;
+
+								tell(Messages.get(Imp.this, "quest_intro_2"));
+							}
+						});
+					}
+				});
+			} else if (!Quest.isCompleted()) {
+				tell(Messages.get(Imp.this, "quest_in_progress"));
 			} else {
-				tell("TODO, giving quest.");
-				Quest.given = true;
-				Quest.completed = false;
+				if (Quest.score < 1500){
+					tell(Messages.get(Imp.this, "quest_completed_bad"));
+				} else if (Quest.score < 2500){
+					tell(Messages.get(Imp.this, "quest_completed_good"));
+				} else {
+					tell(Messages.get(Imp.this, "quest_completed_great"));
+				}
 			}
 		}
 
@@ -169,13 +204,14 @@ public class Imp extends NPC {
 		//variables exclusive to old, pre-4.0.0 Imp quest
 		private static boolean oldQuest = false;
 		private static boolean alternative; //true= golems, false = monks
-		public static Ring reward;
 
 		//variables shared by both quests
 		private static boolean given;
 		private static boolean completed;
+		public static Item reward;
 
-		//variacles exclusive to new quest (any?)
+		//variacles exclusive to new quest
+		private static int score; //Not the score used in rankings! This score has no penalty applied
 		
 		public static void reset() {
 			spawned = false;
@@ -183,18 +219,21 @@ public class Imp extends NPC {
 			completed = false;
 
 			reward = null;
+			score = 0;
 		}
 		
-		private static final String NODE		= "demon";
+		private static final String NODE        = "demon";
 
-		private static final String SPAWNED		= "spawned";
+		private static final String SPAWNED     = "spawned";
 
-		private static final String OLD_QUEST	= "old_quest";
-		private static final String ALTERNATIVE	= "alternative";
-		private static final String REWARD		= "reward";
+		private static final String OLD_QUEST   = "old_quest";
+		private static final String ALTERNATIVE = "alternative";
+		private static final String REWARD      = "reward";
 
-		private static final String GIVEN		= "given";
-		private static final String COMPLETED	= "completed";
+		private static final String GIVEN       = "given";
+		private static final String COMPLETED   = "completed";
+
+		private static final String SCORE       = "score";
 
 		
 		public static void storeInBundle( Bundle bundle ) {
@@ -210,6 +249,7 @@ public class Imp extends NPC {
 				node.put( GIVEN, given );
 				node.put( COMPLETED, completed );
 				node.put( REWARD, reward );
+				node.put( SCORE, score );
 			}
 			
 			bundle.put( NODE, node );
@@ -228,11 +268,13 @@ public class Imp extends NPC {
 				}
 				if (oldQuest){
 					alternative	= node.getBoolean( ALTERNATIVE );
-					reward = (Ring)node.get( REWARD );
+					score = 0;
 				} else {
 					alternative = false;
-					reward = null;
+					score = node.getInt( SCORE );
 				}
+
+				reward = (Item)node.get( REWARD );
 				
 				given = node.getBoolean( GIVEN );
 				completed = node.getBoolean( COMPLETED );
@@ -247,6 +289,7 @@ public class Imp extends NPC {
 
 				oldQuest = false;
 				reward = null;
+				score = 0;
 				
 				given = false;
 			}
@@ -257,7 +300,11 @@ public class Imp extends NPC {
 		public static boolean given(){
 			return given;
 		}
-		
+
+		public static boolean isOld(){
+			return oldQuest;
+		}
+
 		public static void oldProcess( Mob mob ) {
 			if (spawned && oldQuest && given && !completed && Dungeon.depth != 20) {
 				if ((alternative && mob instanceof Monk) ||
@@ -273,6 +320,14 @@ public class Imp extends NPC {
 			completed = true;
 
 			Statistics.questScores[3] = 4000;
+			Notes.remove( Notes.Landmark.IMP );
+		}
+
+		public static void complete(){
+			completed = true;
+
+			score = 4000; //TODO
+			Statistics.questScores[3] = 4000; //TODO
 			Notes.remove( Notes.Landmark.IMP );
 		}
 		

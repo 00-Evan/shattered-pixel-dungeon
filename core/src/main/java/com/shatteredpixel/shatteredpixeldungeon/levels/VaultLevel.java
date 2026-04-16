@@ -21,12 +21,14 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.VaultFlameTraps;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -57,6 +59,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultSi
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasure.VaultMultipleEnemyTreasureRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasure.VaultSingleEnemyTreasureRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
+import com.watabou.noosa.Game;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -155,6 +159,23 @@ public class VaultLevel extends CityLevel {
 
 	@Override
 	protected void createMobs() {
+	}
+
+	@Override
+	public void occupyCell(Char ch) {
+		super.occupyCell(ch);
+		//extra check to ensure vault is left if quest is completed or old
+		if (ch == Dungeon.hero && (Imp.Quest.isCompleted() || Imp.Quest.isOld())){
+			beforeTransition();
+			InterlevelScene.curTransition = new LevelTransition(Dungeon.level,
+					Dungeon.hero.pos,
+					LevelTransition.Type.BRANCH_ENTRANCE,
+					Dungeon.depth,
+					0,
+					LevelTransition.Type.BRANCH_EXIT);
+			InterlevelScene.mode = InterlevelScene.Mode.ASCEND;
+			Game.switchScene( InterlevelScene.class );
+		}
 	}
 
 	public Actor addRespawner() {
