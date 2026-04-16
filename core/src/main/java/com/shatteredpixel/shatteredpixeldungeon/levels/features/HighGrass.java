@@ -119,11 +119,6 @@ public class HighGrass {
 					&& Random.Int(3) != 0){
 				naturalismLevel = -1;
 			}
-
-			//grass gives no loot in vault tester area
-			if (Dungeon.level instanceof VaultLevel){
-				naturalismLevel = -1;
-			}
 			
 			if (naturalismLevel >= 0) {
 				// Seed, scales from 1/25 to 1/9
