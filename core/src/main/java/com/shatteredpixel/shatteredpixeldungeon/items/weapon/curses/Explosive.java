@@ -146,10 +146,6 @@ public class Explosive extends Weapon.Enchantment {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		durability = bundle.getInt(DURABILITY);
-		//pre-1.3 saves
-		if (durability <= 0){
-			durability = 100;
-		}
 	}
 
 	@Override

@@ -79,6 +79,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocki
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blooming;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Chilling;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Corrupting;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Crystal;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Elastic;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Eldritch;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
@@ -129,6 +130,7 @@ public class ElementalStrike extends ArmorAbility {
 		effectTypes.put(Unstable.class,     MagicMissile.RAINBOW_CONE);
 		effectTypes.put(Vorpal.class,       MagicMissile.BLOOD_CONE);
 		effectTypes.put(Corrupting.class,   MagicMissile.SHADOW_CONE);
+		effectTypes.put(Crystal.class,      MagicMissile.SPECK + Speck.LIGHT);
 		effectTypes.put(Grim.class,         MagicMissile.SHADOW_CONE);
 		effectTypes.put(Vampiric.class,     MagicMissile.BLOOD_CONE);
 
@@ -516,6 +518,15 @@ public class ElementalStrike extends ArmorAbility {
 						Corruption.corruptionHeal(ch);
 						AllyBuff.affectAndLoot((Mob) ch, hero, Corruption.class);
 					}
+				}
+			}
+
+		//*** Crystal **
+		} else if (ench instanceof Crystal){
+			for (Char ch : affected){
+				if (ch != primaryTarget) {
+					ch.damage(Math.round(powerMulti* Hero.heroDamageIntRange(10, 20)), ElementalStrike.this);
+					((Crystal) ench).repair(null, false, 4f*powerMulti);
 				}
 			}
 
