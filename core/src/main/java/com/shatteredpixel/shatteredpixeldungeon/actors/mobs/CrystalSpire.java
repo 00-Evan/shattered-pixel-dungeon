@@ -405,10 +405,13 @@ public class CrystalSpire extends Mob {
 						// cripple close sleeping guardians to give more time
 						// haste far awake guardians to punish waking them
 						if (affectingGuardians){
-							boolean[] passable = Dungeon.level.passable.clone();
+							boolean[] passable = new boolean[Dungeon.level.length()];
 							for (int i = 0; i < Dungeon.level.length(); i++){
 								if (Dungeon.level.map[i] == Terrain.MINE_CRYSTAL){
 									passable[i] = true;
+								} else {
+									//grab from tiles themselves, ignore blobs that affect terrain
+									passable[i] = (Terrain.flags[Dungeon.level.map[i]] & Terrain.PASSABLE) != 0;
 								}
 							}
 							PathFinder.buildDistanceMap(pos, passable);
@@ -433,7 +436,7 @@ public class CrystalSpire extends Mob {
 
 										//speeds up already woken guardians that aren't very close
 										if (PathFinder.distance[ch.pos] > 8){
-											Buff.affect(ch, Haste.class, Math.round((PathFinder.distance[ch.pos]-8)/2f));
+											Buff.affect(ch, Haste.class, Math.max(15, Math.round((PathFinder.distance[ch.pos]-8)/2f)));
 										}
 									}
 								}
