@@ -106,6 +106,10 @@ public class WildMagic extends ArmorAbility {
 			while (!thirds.isEmpty() && wands.size() < maxWands){
 				wands.add(thirds.remove(0));
 			}
+		} else {
+			while (wands.size() > maxWands){
+				wands.remove(0);
+			}
 		}
 
 		if (wands.size() == 0){
