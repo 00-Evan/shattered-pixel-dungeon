@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Ghoul;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 
 //does not spawn or follow a partner due to overriding AI states and partnerID
 // but will still buddy up with nearby ghouls for the purposes of survival
@@ -33,7 +34,12 @@ public class VaultGhoul extends Ghoul {
 		activateSteathGameplayBehaviour();
 		partnerID = -2; //does not spawn a partner
 
-		maxLvl = -2;
+		//uses base ghoul ACC and EVA
+
+		maxLvl = 30;
+		EXP = 0;
+		loot = DwarfToken.class;
+		lootChance = 1;
 	}
 
 }

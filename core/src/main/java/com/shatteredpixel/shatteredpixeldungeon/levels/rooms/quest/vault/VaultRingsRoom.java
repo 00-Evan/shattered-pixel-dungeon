@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultRat;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -51,12 +53,15 @@ public class VaultRingsRoom extends StandardRoom {
 			door.set( Door.Type.REGULAR );
 		}
 
-		VaultRat rat = new VaultRat();
+		Mob enemy;
 		do {
-			rat.pos = level.pointToCell(random(1));
-		} while (level.map[rat.pos] == Terrain.WALL);
-		rat.state = rat.WANDERING;
-		level.mobs.add(rat);
+			enemy = level.createMob();
+		} while (Char.hasProp(enemy, Char.Property.LARGE));
+		do {
+			enemy.pos = level.pointToCell(random(1));
+		} while (level.map[enemy.pos] == Terrain.WALL);
+		enemy.state = enemy.WANDERING;
+		level.mobs.add(enemy);
 
 		int[] wanderPositions = new int[]{
 				level.pointToCell(new Point(left+1, top+1)),
@@ -70,7 +75,7 @@ public class VaultRingsRoom extends StandardRoom {
 				level.pointToCell(new Point(left+9, top+9))
 		};
 		Random.shuffle(wanderPositions);
-		rat.setupStealthGameplayWanderPositions(wanderPositions, 0);
+		enemy.setupStealthGameplayWanderPositions(wanderPositions, 0);
 
 	}
 

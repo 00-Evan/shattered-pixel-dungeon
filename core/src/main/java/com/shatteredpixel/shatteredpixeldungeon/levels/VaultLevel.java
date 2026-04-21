@@ -29,6 +29,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.VaultFlameTraps;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultDM100;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultDM200;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultElemental;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultGhoul;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultGolem;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultShaman;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultSkeleton;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -62,8 +69,11 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class VaultLevel extends CityLevel {
 
@@ -93,6 +103,9 @@ public class VaultLevel extends CityLevel {
 			item.levelKnown = item.cursedKnown = true;
 			addItemToSpawn(item);
 		}
+		addItemToSpawn(Generator.randomUsingDefaults(Generator.Category.FOOD));
+		addItemToSpawn(Generator.randomUsingDefaults(Generator.Category.FOOD));
+		addItemToSpawn(Generator.randomUsingDefaults(Generator.Category.FOOD));
 
 		return super.build();
 	}
@@ -137,6 +150,18 @@ public class VaultLevel extends CityLevel {
 	}
 
 	@Override
+	public float levelExplorePercent(int depth) {
+		//very simple for now, we just look at all discoverable cells.
+		// Each 1% seen = 1.12% explored. 90% seem = 100% explored
+		int seen = 0, total = 0;
+		for (int i = 0; i < length; i++){
+			if (discoverable[i]) total++;
+			if (visited[i]) seen++;
+		}
+		return Math.min(1, (seen*1.12f)/total);
+	}
+
+	@Override
 	protected Builder builder() {
 		return new GridBuilder();
 	}
@@ -152,13 +177,41 @@ public class VaultLevel extends CityLevel {
 		return false;
 	}
 
+	public static Class<?extends Mob>[] T1Mobs = new Class[]{
+			VaultSkeleton.class,
+			VaultDM100.class
+	};
+
+	public static Class<?extends Mob>[] T2Mobs = new Class[]{
+			VaultShaman.class,
+			VaultDM200.class,
+			VaultGhoul.class //only if solo
+	};
+
+	public static Class<?extends Mob>[] T3Mobs = new Class[]{
+			//vault ghoul if more than one
+			VaultElemental.class,
+			VaultGolem.class
+	};
+
+	private ArrayList<Class<?extends Mob>> mobsToSpawn = new ArrayList<>();
+
 	@Override
 	public Mob createMob() {
-		return null;
+		if (mobsToSpawn.isEmpty()){
+			//rotation is a total of 4/3/2 mobs at T1/2/3 currently
+			Collections.addAll(mobsToSpawn, T1Mobs);
+			Collections.addAll(mobsToSpawn, T1Mobs);
+			Collections.addAll(mobsToSpawn, T2Mobs);
+			Collections.addAll(mobsToSpawn, T3Mobs);
+			Random.shuffle(mobsToSpawn);
+		}
+		return Reflection.newInstance(mobsToSpawn.remove(0));
 	}
 
 	@Override
 	protected void createMobs() {
+		//mob creation handled by individual rooms
 	}
 
 	@Override

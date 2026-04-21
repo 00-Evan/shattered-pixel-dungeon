@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ElementalSprite;
 
@@ -30,9 +31,13 @@ public class VaultElemental extends Elemental.ShockElemental {
 
 	{
 		activateSteathGameplayBehaviour();
-		maxLvl = -2;
-	}
 
-	//TODO stats
+		//uses base elemental ACC and EVA
+
+		maxLvl = 30;
+		EXP = 0;
+		loot = DwarfToken.class;
+		lootChance = 1;
+	}
 
 }

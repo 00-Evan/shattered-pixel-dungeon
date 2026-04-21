@@ -22,6 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Golem;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 
 //currently does not teleport due to wandering AI state changes, only teleports enemies
 public class VaultGolem extends Golem {
@@ -31,7 +33,22 @@ public class VaultGolem extends Golem {
 	{
 		activateSteathGameplayBehaviour();
 
-		maxLvl = -2;
+		//uses base golem ACC and EVA
+
+		maxLvl = 30;
+		EXP = 0;
+		loot = DwarfToken.class;
+		lootChance = 1;
+	}
+
+	@Override
+	public float lootChance() {
+		return 1;
+	}
+
+	@Override
+	public Item createLoot() {
+		return new DwarfToken();
 	}
 
 }

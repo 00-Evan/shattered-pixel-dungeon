@@ -19,32 +19,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault;
+package com.shatteredpixel.shatteredpixeldungeon.items.quest;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM100;
-import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.VaultDM100Sprite;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-public class VaultDM100 extends DM100 {
-
-	//TODO stats
+public class ImpStatue extends Item {
 
 	{
-		activateSteathGameplayBehaviour();
-		spriteClass = VaultDM100Sprite.class;
+		image = ItemSpriteSheet.STATUE;
 
-		defenseSkill = 18;
-
-		maxLvl = 30;
-		EXP = 0;
-		loot = DwarfToken.class;
-		lootChance = 1;
+		stackable = true;
+		unique = true;
 	}
 
 	@Override
-	public int attackSkill( Char target ) {
-		return 25;
+	public boolean isUpgradable() {
+		return false;
 	}
 
+	@Override
+	public boolean isIdentified() {
+		return true;
+	}
 }

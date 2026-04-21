@@ -21,7 +21,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM200;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 
 public class VaultDM200 extends DM200 {
 
@@ -30,7 +33,26 @@ public class VaultDM200 extends DM200 {
 	{
 		activateSteathGameplayBehaviour();
 
-		maxLvl = -2;
+		defenseSkill = 15;
+
+		maxLvl = 30;
+		EXP = 0;
+		loot = DwarfToken.class;
+		lootChance = 1;
 	}
 
+	@Override
+	public int attackSkill( Char target ) {
+		return 28;
+	}
+
+	@Override
+	public float lootChance() {
+		return 1;
+	}
+
+	@Override
+	public Item createLoot() {
+		return new DwarfToken();
+	}
 }

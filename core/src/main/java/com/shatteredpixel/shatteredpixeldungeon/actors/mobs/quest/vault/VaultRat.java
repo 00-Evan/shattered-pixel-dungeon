@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RatSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SkeletonSprite;
@@ -33,7 +34,17 @@ public class VaultRat extends Rat {
 	{
 		activateSteathGameplayBehaviour();
 
-		maxLvl = -2;
+		defenseSkill = 18;
+
+		maxLvl = 30;
+		EXP = 0;
+		loot = DwarfToken.class;
+		lootChance = 1;
+	}
+
+	@Override
+	public int attackSkill( Char target ) {
+		return 24;
 	}
 
 	@Override

@@ -21,7 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Skeleton;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.VaultSkeletonSprite;
 
 public class VaultSkeleton extends Skeleton {
@@ -32,7 +34,17 @@ public class VaultSkeleton extends Skeleton {
 		activateSteathGameplayBehaviour();
 		spriteClass = VaultSkeletonSprite.class;
 
-		maxLvl = -2;
+		defenseSkill = 20;
+
+		maxLvl = 30;
+		EXP = 0;
+		loot = DwarfToken.class;
+		lootChance = 1;
+	}
+
+	@Override
+	public int attackSkill( Char target ) {
+		return 24;
 	}
 
 }

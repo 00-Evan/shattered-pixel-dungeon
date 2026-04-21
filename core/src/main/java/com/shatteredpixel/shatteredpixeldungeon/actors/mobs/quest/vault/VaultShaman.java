@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shaman;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ShamanSprite;
 
 public class VaultShaman extends Shaman {
@@ -35,7 +36,17 @@ public class VaultShaman extends Shaman {
 		activateSteathGameplayBehaviour();
 		spriteClass = ShamanSprite.Vault.class;
 
-		maxLvl = -2;
+		defenseSkill = 18;
+
+		maxLvl = 30;
+		EXP = 0;
+		loot = DwarfToken.class;
+		lootChance = 1;
+	}
+
+	@Override
+	public int attackSkill( Char target ) {
+		return 25;
 	}
 
 	@Override

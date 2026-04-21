@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.ImpStatue;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -65,6 +66,8 @@ public class VaultFinalRoom extends SpecialRoom {
 			door.set( Door.Type.REGULAR );
 			Painter.drawInside(level, this, door, 2, Terrain.EMPTY_SP);
 		}
+
+		level.drop(new ImpStatue(), level.pointToCell(center()));
 	}
 
 	@Override

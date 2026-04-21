@@ -86,20 +86,35 @@ public class EscapeCrystal extends Item {
 				//1000 points for 'exploring' (maybe just seeing rooms)
 				//1000 points for collecting tokens and/or using them.
 				//2000 points for defeating boss (maybe broken up a bit based on boss progression?)
-				int score = 901;
+				int score;
 
-				if (score == 0){
+				if (hero.belongings.getItem(ImpStatue.class) != null){
+					score = 4000;
+				} else {
+					//TODO this is pretty arbitrary atm
+					//1k score for revealed rooms, 1k score for 10 tokens (1 per defeated enemy)
+					score = 0;
+					Item tokens = hero.belongings.getItem(DwarfToken.class);
+					if (tokens != null){
+						score += Math.min(1000, 100*tokens.quantity());
+					}
+					score += 1000 * Dungeon.level.levelExplorePercent(Dungeon.depth);
+				}
+
+				//TODO currently balanced around empty starting room that's always worth about 44-46 pts
+				if (score < 50){
 					GameScene.show(new WndTitledMessage(new ImpSprite(),
 							Messages.titleCase(Messages.get(Imp.class, "name")),
 							Messages.get(EscapeCrystal.class, "leaving_start")));
 				} else {
 					String message;
 					if (score < 500)        message = Messages.get(EscapeCrystal.class, "leaving_early");
-					else if (score < 900)   message = Messages.get(EscapeCrystal.class, "leaving_partly_explored");
-					else if (score < 1500)  message = Messages.get(EscapeCrystal.class, "leaving_fully_explored");
-					else if (score < 2500)  message = Messages.get(EscapeCrystal.class, "leaving_beat_miniboss");
+					else if (score < 1000)   message = Messages.get(EscapeCrystal.class, "leaving_partly_explored");
+					else if (score < 2000)  message = Messages.get(EscapeCrystal.class, "leaving_fully_explored");
+					else if (score < 4000)  message = Messages.get(EscapeCrystal.class, "leaving_beat_miniboss");
 					else                    message = Messages.get(EscapeCrystal.class, "leaving_victory");
 
+					int finalScore = score;
 					GameScene.show(new WndOptions(new ImpSprite(),
 							Messages.titleCase(Messages.get(Imp.class, "name")),
 							message,
@@ -108,7 +123,7 @@ public class EscapeCrystal extends Item {
 						@Override
 						protected void onSelect(int index) {
 							if (index == 0) {
-								if (score >= 500) {
+								if (finalScore >= 500) {
 									GameScene.selectItem(new WndBag.ItemSelector(){
 
 										@Override
@@ -121,9 +136,9 @@ public class EscapeCrystal extends Item {
 											if (item instanceof EscapeCrystal){
 												return false;
 											}
-											if (score < 900){
+											if (finalScore < 900){
 												return !(item instanceof EquipableItem || item instanceof Wand);
-											} else if (score < 2500){
+											} else if (finalScore < 2500){
 												//TODO enchants/curses
 												return item.level() == 0;
 											} else {

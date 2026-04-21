@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasure;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultRat;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -28,8 +29,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Point;
+import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 public class VaultSingleEnemyTreasureRoom extends VaultTreasureRoom {
 
@@ -41,19 +45,19 @@ public class VaultSingleEnemyTreasureRoom extends VaultTreasureRoom {
 
 		Painter.drawInside(level, this, entrance(), 3, Terrain.EMPTY);
 
-		VaultRat rat = new VaultRat();
-		rat.pos = level.pointToCell(center());
-		level.mobs.add(rat);
+		Mob enemy = Reflection.newInstance(Random.oneOf(VaultLevel.T2Mobs));
+		enemy.pos = level.pointToCell(center());
+		level.mobs.add(enemy);
 
 		int treasurePos;
 		if (entrance().x == left){
-			treasurePos = rat.pos+2;
+			treasurePos = enemy.pos+2;
 		} else if (entrance().y == top){
-			treasurePos = rat.pos+2*level.width();
+			treasurePos = enemy.pos+2*level.width();
 		} else if (entrance().x == right){
-			treasurePos = rat.pos-2;
+			treasurePos = enemy.pos-2;
 		} else {
-			treasurePos = rat.pos-2*level.width();
+			treasurePos = enemy.pos-2*level.width();
 		}
 
 		Item treasureItem = Generator.randomUsingDefaults(Generator.Category.WEP_T4);

@@ -21,19 +21,23 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultDM100;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultRat;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 public class VaultSimpleEnemyTreasureRoom extends StandardRoom {
 
@@ -85,7 +89,7 @@ public class VaultSimpleEnemyTreasureRoom extends StandardRoom {
 				break;
 		}
 
-		Item treasure = Generator.randomWeapon(true);
+		MeleeWeapon treasure = Generator.randomWeapon(true);
 		level.drop(treasure, treasurePos).type = Heap.Type.CHEST;
 		if (treasure.cursed){
 			treasure.cursed = false;
@@ -100,9 +104,17 @@ public class VaultSimpleEnemyTreasureRoom extends StandardRoom {
 			door.set( Door.Type.REGULAR );
 		}
 
-		VaultDM100 dm100 = new VaultDM100();
-		dm100.pos = enemyPos;
-		level.mobs.add(dm100);
+		Mob enemy;
+		if (treasure.tier <= 3){
+			enemy = Reflection.newInstance(Random.oneOf(VaultLevel.T1Mobs));
+		} else if (treasure.tier == 4){
+			enemy = Reflection.newInstance(Random.oneOf(VaultLevel.T2Mobs));
+		} else {
+			enemy = Reflection.newInstance(Random.oneOf(VaultLevel.T3Mobs));
+		}
+
+		enemy.pos = enemyPos;
+		level.mobs.add(enemy);
 
 	}
 

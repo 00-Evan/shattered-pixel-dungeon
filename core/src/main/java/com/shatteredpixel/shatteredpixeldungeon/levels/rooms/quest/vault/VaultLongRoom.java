@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultRat;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -79,8 +80,8 @@ public class VaultLongRoom extends StandardRoom {
 			level.drop(i, level.pointToCell(c));
 		}
 
-		VaultRat rat = new VaultRat();
-		rat.pos = randomWander(level);
+		Mob enemy = level.createMob();
+		enemy.pos = randomWander(level);
 		int[] wanderPositions = new int[]{
 				randomWander(level), randomWander(level), randomWander(level),
 				randomWander(level), randomWander(level), randomWander(level),
@@ -89,9 +90,9 @@ public class VaultLongRoom extends StandardRoom {
 				randomWander(level), randomWander(level), randomWander(level),
 				randomWander(level), randomWander(level), randomWander(level),
 		};
-		rat.setupStealthGameplayWanderPositions(wanderPositions, 0);
-		rat.state = rat.WANDERING;
-		level.mobs.add(rat);
+		enemy.setupStealthGameplayWanderPositions(wanderPositions, 0);
+		enemy.state = enemy.WANDERING;
+		level.mobs.add(enemy);
 
 		for (Door door : connected.values()) {
 			door.set( Door.Type.REGULAR );
