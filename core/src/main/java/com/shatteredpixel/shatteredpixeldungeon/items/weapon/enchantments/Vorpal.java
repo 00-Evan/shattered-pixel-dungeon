@@ -21,13 +21,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 public class Vorpal extends Weapon.Enchantment {
@@ -38,7 +37,7 @@ public class Vorpal extends Weapon.Enchantment {
 	public int proc(Weapon weapon, Char attacker, Char defender, int damage) {
 		//TODO this doesn't count kills from bonus power fx like smite
 		// should probably use a tracker. This also applies to other enchants like corrupting
-		if (damage >= defender.HP || defender.isImmune(Bleeding.class)){
+		if (defender.isImmune(Bleeding.class)){
 			return damage;
 		}
 
@@ -48,15 +47,25 @@ public class Vorpal extends Weapon.Enchantment {
 
 			float powerMulti = Math.max(1f, procChance);
 
-			//on average deals 6 + 1.5*dmg total bleed damage
-			Buff.affect(defender, Bleeding.class).set(powerMulti*(2+damage/2f));
-			Splash.at( defender.sprite.center(), -PointF.PI / 2, PointF.PI / 6,
-					defender.sprite.blood(), 10 );
-
-			return -1;
+			//we use a buff to track so we can know the final dmg
+			Buff.affect(attacker, VorpalTracker.class).powerMulti = powerMulti;
 		}
 
 		return damage;
+	}
+
+	public static class VorpalTracker extends Buff {
+		{
+			actPriority = Actor.VFX_PRIO;
+		}
+
+		public float powerMulti;
+
+		@Override
+		public boolean act() {
+			detach();
+			return true;
+		}
 	}
 
 	@Override

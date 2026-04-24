@@ -98,6 +98,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogDzewa;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.PrismaticImage;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -131,6 +132,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazin
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Kinetic;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vorpal;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sickle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
@@ -155,6 +157,7 @@ import com.watabou.utils.BArray;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -912,20 +915,22 @@ public abstract class Char extends Actor {
 			damage *= 1.25f;
 		}
 
-		if (buff(Sickle.HarvestBleedTracker.class) != null){
-			buff(Sickle.HarvestBleedTracker.class).detach();
-
+		//two separate things can convert dmg to bleed, we handle that here
+		//we do this before modifiers are applied back to dmg as we don't want to stack them twice (from this and bleed)
+		float bleedAmt = 0;
+		Class bleedSrc = null;
+		if (src instanceof Char && ((Char) src).buff(Sickle.HarvestBleedTracker.class) != null){
 			if (!isImmune(Bleeding.class)){
-				Bleeding b = buff(Bleeding.class);
-				if (b == null){
-					b = new Bleeding();
-				}
-				b.announced = false;
-				b.set(dmg, Sickle.HarvestBleedTracker.class);
-				b.attachTo(this);
-				sprite.showStatus(CharSprite.WARNING, Messages.titleCase(b.name()) + " " + dmg);
-				return;
+				bleedAmt = dmg;
+				bleedSrc = Sickle.HarvestBleedTracker.class;
 			}
+			((Char) src).buff(Sickle.HarvestBleedTracker.class).detach();
+		} else if (src instanceof Char && ((Char) src).buff(Vorpal.VorpalTracker.class) != null){
+			if (!isImmune(Bleeding.class)){
+				bleedAmt = ((Char) src).buff(Vorpal.VorpalTracker.class).powerMulti*(2+dmg/2f);
+				bleedSrc = Vorpal.class;
+			}
+			((Char) src).buff(Vorpal.VorpalTracker.class).detach();
 		}
 
 		Class<?> srcClass = src.getClass();
@@ -965,6 +970,24 @@ public abstract class Char extends Actor {
 				&& shield != null && !shield.coolingDown()){
 			sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(buff(BrokenSeal.WarriorShield.class).maxShield()), FloatingText.SHIELDING);
 			shield.activate();
+		}
+
+		//cancel bleed if the vorpal hit is going to kill
+		if (bleedSrc == Vorpal.class && dmg > (shielding() + HP)){
+			bleedAmt = 0;
+		}
+
+		if (bleedAmt > 0){
+			Bleeding b = buff(Bleeding.class);
+			if (b == null){
+				b = new Bleeding();
+			}
+			b.announced = false;
+			b.attachTo(this);
+			b.set(bleedAmt, bleedSrc);
+			sprite.showStatus(CharSprite.WARNING, Messages.titleCase(b.name()) + " " + dmg);
+			Splash.at( sprite.center(), -PointF.PI / 2, PointF.PI / 6, sprite.blood(), 10 );
+			return;
 		}
 
 		int shielded = dmg;
