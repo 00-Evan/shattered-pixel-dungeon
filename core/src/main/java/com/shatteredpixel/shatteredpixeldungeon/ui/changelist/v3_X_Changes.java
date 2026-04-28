@@ -35,8 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ImpSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.RatSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.WardSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TalentIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
@@ -47,39 +45,10 @@ import java.util.ArrayList;
 public class v3_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
-		add_Coming_Soon(changeInfos);
 		add_v3_3_Changes(changeInfos);
 		add_v3_2_Changes(changeInfos);
 		add_v3_1_Changes(changeInfos);
 		add_v3_0_Changes(changeInfos);
-	}
-
-	public static void add_Coming_Soon( ArrayList<ChangeInfo> changeInfos ) {
-
-		ChangeInfo changes = new ChangeInfo("Coming Soon", true, "");
-		changes.hardlight(0xCCCCCC);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Overview and ETA",
-				"(Note that this ETA is now a bit outdated, please look at dev commentary for v3.3.7 for the latest info)\n\n" +
-				"The next major Shattered update will be v3.4 or v4.0 (I haven't decided on a version number yet) and will, finally, feature an overhaul to the Ambitious Imp quest in the metropolis!\n" +
-				"\n" +
-				"While work has started on the new quest, I do still expect this update to take some time. You'll hear from me in patches to v3.3, and early in the new year with my usual year in review blog post. I expect I'll be able to give a more solid eta in one of those.\n" +
-				"\n" +
-				"**Please keep in mind that while I always try to keep to the ETAs I provide, they are just estimates. If you don’t hear from me by the ETA, it means I’m still busy with the update!**"));
-
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ESCAPE), "Expanding Tester Area in Patches",
-				"Just like with v3.2, I expect that v3.3 is going to have a longer than usual patch cycle. I've purposefully designed the new quest tester area such that it can be iterated on and expanded in patches to v3.3. This lets me make relatively quick experiments relating to the layout and some of the hazards in the new quest area.\n" +
-				"\n" +
-				"I don't think that the tester area will end up looking complete in v3.3 patches, but it's going to get a whole lost closer than it is currently."));
-
-		changes.addButton( new ChangeButton(new Image(new ImpSprite()), "Imp Quest Overhaul",
-				"After v3.3 patches are done and the tester area is getting closer to finished, It'll be time to step back, take a bit longer, and eventually release the overhauled imp quest as primary content in the next update!\n" +
-				"\n" +
-				"As mentioned before, the new quest will have you infiltrate a dwarven vault full of danger and treasure! It's going to be a new kind of challenge, as you won't be able to take your existing items with you, but I expect the reward will be well worth it!"));
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Other Changes",
-				"I expect the next update to be fairly light on smaller changes, as I want the focus to be on the new quest. There will surely be the usual amount of smaller tweaks and bug fixes though, and in particular I expect there will be at least a little balancing to follow up on the new items and item changes in v3.3."));
 	}
 
 	public static void add_v3_3_Changes( ArrayList<ChangeInfo> changeInfos ) {
@@ -87,137 +56,6 @@ public class v3_X_Changes {
 		ChangeInfo changes = new ChangeInfo("v3.3", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("v3.3.8", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** Updated various internal code libraries\n" +
-				"**-** Updated translations"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Existed Prior to v3.3:**\n" +
-				"**-** Fixed various cases of area-effects that affect terrain not applying properly\n" +
-				"**-** Fixed necromancers summoning skeletons into solid terrain in specific cases\n" +
-				"**-** Various rare crash bugs"));
-
-		changes = new ChangeInfo("v3.3.7", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
-				"(March 4th, 2026)\n" +
-				"\n" +
-				"Over the last ~2 months since the holidays I've added various details to the quest tester area, and now it's time to refine and expand on that until things start coming together into a new quest. Obviously it doesn't make sense to keep showcasing progress now that we're moving past a 'tester' phase, so v3.3.7 will likely be the last patch for v3.3.\n" +
-				"\n" +
-				"If all goes well you'll hear from me again in another couple of months, when the new quest will hopefully be ready for beta.\n" +
-				"\n" +
-				"**Please keep in mind that while I always try to keep to the ETAs I provide, they are just estimates. If you don’t hear from me by the ETA, it means I’m still busy with the update!**"));
-
-		changes.addButton( new ChangeButton(new Image(new ImpSprite()), "Quest Tester Area Progress",
-				"The quest tester area is now looking a lot more fully-featured! While everything is still unfinished, almost all of the ingredients for the quest are shown in the tester area in one form or another:\n" +
-				"\n" +
-				"**-** Treasure rooms have been added! These rooms contain various hazards and reward items at the end. There's no actual danger yet so the loot is pointless, but this should give an idea of how progression will work.\n" +
-				"**-** Items placed on the floor have been significantly changed. Random loot is reduced, no longer placed on top of hazards, and better weapons are now only found in treasure rooms.\n" +
-				"**-** Level generation has been improved significantly, with more variety in level shape and more interconnectedness\n" +
-				"**-** The existing hazards have had their behaviour and sfx tweaked based on feedback\n" +
-				"**-** Many existing rooms have been tweaked or refined"));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**- Necromancers** have received a change to their behaviour, and are now willing to teleport their skeleton in more cases, instead of effectively doing nothing. In compensation, skeleton teleporting now uses the same animation and delays as summoning a new skeleton.\n" +
-				"\n" +
-				"**-** Improved logic for text entry window offsetting to avoid software keyboards\n" +
-				"**-** Added a journal button to item right-click menus"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by v3.3:**\n" +
-				"**-** Freezes when using telekinetic grab on certain types of item pile\n" +
-				"**-** Rats getting placed into walls in specific cases in new vault tester area\n" +
-				"**-** Various rare crash bugs\n" +
-				"\n" +
-				"**Existed Prior to v3.3:**\n" +
-				"**-** Teleportation not triggering for dark/bright fist if they were hit to exactly half HP\n" +
-				"**-** Cases where Tengu's shocker abilities could become misaligned with their VFX\n" +
-				"**-** Item sell window being usable when hero is dead\n" +
-				"**-** 13 leaf clover not applying to cleric spells or battlemage on-hit effects"));
-
-		changes = new ChangeInfo("v3.3.5 & v3.3.6", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(new Image(new RatSprite()), "Quest Tester Area Enemies",
-				"The quest tester area now has a tester hazard: Marsupial rats!\n" +
-				"\n" +
-				"The rats won't put up much of a fight of course, even with your gear removed, but you can use them to get an idea of how enemies will work in the vault. Enemy AI in the vault has been changed to be much more exploitable for stealth gameplay, including a new 'investigating' AI state and wandering enemies not being able to see very far behind themselves as they move.\n" +
-				"\n" +
-				"There's also a few new room types in the tester area, to demonstrate enemies in different situations.\n" +
-				"\n" +
-				"Expect to see more room layouts and tester hazards in future patches."));
-
-		WardSprite sprite = new WardSprite();
-		sprite.updateTier(5);
-		changes.addButton( new ChangeButton(new Image(sprite), "Quest Tester Area Hazards",
-				"I've added three new static hazards to the quest tester area!\n" +
-				"\n" +
-				"There are now sentries which scan in a pattern, sentries that periodically fire lasers, and floor vents that periodically vent green flames. At the moment none of these hazards actually harm you, instead they just show '!!!' above your character if they hit you.\n" +
-				"\n" +
-				"I think these are enough hazards to cook with, so next I'm going to focus on more variety of room layouts and a better overall level layout (Currently room placement is mostly random). I expect there will be 1 or 2 more v3.3 patches and then I'll move onto making the new quest properly."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**-** The in-game randomize buttons now blink white as a reminder if the player is currently qualified for the randomized victory badge and outside of the very start of a run.\n" +
-				"\n" +
-				"**-** Slightly improved the visual for the existing 'alerted' and 'target lost' thought bubbles.\n" +
-				"\n" +
-				"**-** The Gnoll Geomancer is now willing to switch targets if its current target isn't within attacking range.\n" +
-				"\n" +
-				"**-** Necromancers will now move their skeleton (instead of trying and failing to push) if they attempt to summon on top of an immobile enemy."));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by v3.3:**\n" +
-				"**-** Rare freeze bugs when descending to the vault tester area\n" +
-				"**-** Rare crash bugs\n" +
-				"\n" +
-				"**Existed Prior to v3.3:**\n" +
-				"**-** Exploit where Warrior could refund his shield cooldown by unequipping armor at the right time\n" +
-				"**-** Exploit where Gladiator could cancel fury partway through, refunding remaining combo\n" +
-				"**-** Distortion traps never spawning certain rare enemies\n" +
-				"**-** Grass generated from ember after a garden room burns not being burnable until after save/load (speed of grass recovery has been adjusted to prevent permanent fires)\n" +
-				"**-** Rare cases where liquid metal could have a quantity of 0\n" +
-				"**-** Specific cases where helpful tipped darts could deal damage to allies"));
-
-		changes = new ChangeInfo("v3.3.1 - v3.3.4", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(new Image(new ImpSprite()), "Quest Tester Area Progress",
-				"Happy New Year Everyone!\n\n" +
-				"I've made some progress over the holidays on the new quest tester area. It's now entirely generated by the game's levelgen system, whereas the previous iteration was mostly hardcoded.\n\n" +
-				"The vault area now uses some basic new vault-specific rooms and the level builder it uses is now a lot more flexible.\n\n" +
-				"There's still quite a bit I plan to do in future v3.3 patches though."));
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"**- Shocking Enchantment** now has a flat 1/3 chance to trigger (instead of (lvl+1)/(lvl+4)), but damage ratio increased to 50% from 40%. Previously shocking effectively scaled based on weapon level twice, which made it disproportionally powerful at high levels and/or with arcana ring.\n\n" +
-				"**- Glyph of Swiftness** now requires a distance of 2 tiles from an enemy, up from 1. This effectively reverts its power to what is was prior to v3.3's change to speed boost logic.\n\n" +
-				"**-** The game scene now attempts to persist more windows over scene reset. This should sharply reduce cases where things like rotating your device cause scrolls to be lost. Note that items can still be lost if the game is terminated while item selection windows are open.\n\n" +
-				"**-** The main target is now prioritized for sniper's mark if a force cube hits multiple enemies\n" +
-				"**-** Improved clarity on Skeleton Key's curse text"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Existed Prior to v3.3:**\n" +
-				"**-** Crash on launch on old iOS devices with A7 and A8 processors\n" +
-				"**-** Cases where the Steam version could hang on launch on Linux\n" +
-				"**-** Reclaim trap counting as being cast for talents even when it isn't consumed\n" +
-				"**-** Pickaxe being marked as seen before it is given to the player\n" +
-				"**-** Specific cases where ghost ally could regenerate past max HP\n" +
-				"**-** Slimes always taking damage in multiples of 8 when ascending\n" +
-				"**-** Rare cases where area effects that blocked terrain could persist forever for large enemies\n" +
-				"**-** Arcane Bomb particle fx persisting when they shouldn't in a bunch of specific cases\n" +
-				"**-** Thrown weapons not IDing properly in very specific cases"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -234,7 +72,11 @@ public class v3_X_Changes {
 				"\n" +
 				"This tester area can be accessed from a new room that spawns in the city, this room also contains the Imp who gives his old quest. Simply walk onto the large vault entrance to be offered a teleport into the new area.\n" +
 				"\n" +
-				"Currently the new area has fully functional storage of your current items, very basic level generation, and no quest hazards. **I intend to continue iterating on and improving this tester area during the release of v3.3 and in followup patches. The quest itself isn't coming in a patch however.**"));
+				"This tester area was expanded over Jan-March in several patches to v3.3, with the most notable improvements being:\n" +
+				"**v3.3.4:** Tester area is now levelgen-based instead of hard-coded\n" +
+				"**v3.3.5:** Added static hazards and new rooms\n" +
+				"**v3.3.6:** Added 'vault rat' tester enemies with new AI and more rooms\n" +
+				"**v3.3.7:** Added treasure rooms and significantly improved all aspects of level generation"));
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_KEY), "New Artifact and Trinket!",
 				"**Two new equipment items have been added to the game!**\n" +
@@ -301,7 +143,28 @@ public class v3_X_Changes {
 				"**-** Adjusted ascension challenge text to make it more clear whether the player has killed any enemies so far\n" +
 				"**-** Updated various internal code libraries\n" +
 				"**-** Shattered's Windows version now requires Windows 10, up from 7\n" +
-				"**-** Sharing gameplay data on iOS now requires iOS 15+, up from 12+"));
+				"**-** Sharing gameplay data on iOS now requires iOS 15+, up from 12+"
+				,
+				"**v3.3.1 - v3.3.4:**\n" +
+				"**- Shocking Enchantment** now has a flat 1/3 chance to trigger (instead of (lvl+1)/(lvl+4)), but damage ratio increased to 50% from 40%. Previously shocking effectively scaled based on weapon level twice, which made it disproportionally powerful at high levels and/or with arcana ring.\n" +
+				"\n" +
+				"**- Glyph of Swiftness** now requires a distance of 2 tiles from an enemy, up from 1. This effectively reverts its power to what is was prior to v3.3's change to speed boost logic.\n" +
+				"\n" +
+				"**-** The game scene now attempts to persist more windows over scene reset. This should sharply reduce cases where things like rotating your device cause scrolls to be lost. Note that items can still be lost if the game is terminated while item selection windows are open.\n" +
+				"\n" +
+				"**-** The main target is now prioritized for sniper's mark if a force cube hits multiple enemies"
+				,
+				"**v3.3.5 & v3.3.6:**\n" +
+				"**-** Slightly improved the visual for the existing 'alerted' and 'target lost' thought bubbles.\n" +
+				"**-** The Gnoll Geomancer is now willing to switch targets if its current target isn't within attacking range.\n" +
+				"**-** Necromancers will now move their skeleton (instead of trying and failing to push) if they attempt to summon on top of an immobile enemy.\n" +
+				"\n" +
+				"**v3.3.7 & v3.3.8:**\n" +
+				"**- Necromancers** have received a change to their behaviour, and are now willing to teleport their skeleton in more cases, instead of effectively doing nothing. In compensation, skeleton teleporting now uses the same animation and delays as summoning a new skeleton.\n" +
+				"\n" +
+				"**-** Improved logic for text entry window offsetting to avoid software keyboards\n" +
+				"**-** Added a journal button to item right-click menus\n" +
+				"**-** Updated various internal code libraries" ));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
@@ -334,7 +197,38 @@ public class v3_X_Changes {
 				"**-** Very rare cases where tunnel rooms could generate tiny tunnels to nowhere\n" +
 				"**-** Various minor errors with multi-touch and scrolling panes\n" +
 				"**-** Various cases where translations did not fit in the UI and could be shrunken or repositioned\n" +
-				"**-** Various minor visual and textual errors"));
+				"**-** Various minor visual and textual errors"
+				,
+				"**v3.3.1 - v3.3.4:**\n" +
+				"**-** Crash on launch on old iOS devices with A7 and A8 processors\n" +
+				"**-** Cases where the Steam version could hang on launch on Linux\n" +
+				"**-** Reclaim trap counting as being cast for talents even when it isn't consumed\n" +
+				"**-** Pickaxe being marked as seen before it is given to the player\n" +
+				"**-** Specific cases where ghost ally could regenerate past max HP\n" +
+				"**-** Slimes always taking damage in multiples of 8 when ascending\n" +
+				"**-** Rare cases where area effects that blocked terrain could persist forever for large enemies\n" +
+				"**-** Arcane Bomb particle fx persisting when they shouldn't in a bunch of specific cases\n" +
+				"**-** Thrown weapons not IDing properly in very specific cases"
+				,
+				"**v3.3.5 & v3.3.6:**\n" +
+				"**-** Exploit where Warrior could refund his shield cooldown by unequipping armor at the right time\n" +
+				"**-** Exploit where Gladiator could cancel fury partway through, refunding remaining combo\n" +
+				"**-** Distortion traps never spawning certain rare enemies\n" +
+				"**-** Grass generated from ember after a garden room burns not being burnable until after save/load (speed of grass recovery has been adjusted to prevent permanent fires)\n" +
+				"**-** Rare cases where liquid metal could have a quantity of 0\n" +
+				"**-** Specific cases where helpful tipped darts could deal damage to allies"
+				,
+				"**v3.3.7:**\n" +
+				"**-** Teleportation not triggering for dark/bright fist if they were hit to exactly half HP\n" +
+				"**-** Cases where Tengu's shocker abilities could become misaligned with their VFX\n" +
+				"**-** Item sell window being usable when hero is dead\n" +
+				"**-** 13 leaf clover not applying to cleric spells or battlemage on-hit effects\n" +
+				"\n" +
+				"**v3.3.8:**\n" +
+				"**-** Fixed various cases of area-effects that affect terrain not applying properly\n" +
+				"**-** Fixed necromancers summoning skeletons into solid terrain in specific cases\n" +
+				"**-** Various rare crash bugs"));
+
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight(CharSprite.POSITIVE);
@@ -381,7 +275,7 @@ public class v3_X_Changes {
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
 				"**-** Released August 4th, 2025\n" +
-				"**-** 63 days after Shattered v3.1.0\n" +
+				"**-** 63 days after v3.1.0\n" +
 				"\n" +
 				"Dev commentary will be added here in the future."));
 
