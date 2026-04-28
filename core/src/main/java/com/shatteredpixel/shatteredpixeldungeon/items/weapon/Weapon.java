@@ -136,8 +136,6 @@ abstract public class Weapon extends KindOfWeapon {
 	@Override
 	public int proc( Char attacker, Char defender, int damage ) {
 
-		boolean becameAlly = false;
-		boolean wasAlly = defender.alignment == Char.Alignment.ALLY;
 		if (attacker.buff(MagicImmune.class) == null) {
 			Enchantment trinityEnchant = null;
 			//only when it's the hero or a char that uses the hero's weapon
@@ -154,14 +152,11 @@ abstract public class Weapon extends KindOfWeapon {
 				if (enchantment != null &&
 						(((Hero) attacker).subClass == HeroSubClass.PALADIN || hasCurseEnchant())){
 					damage = enchantment.proc(this, attacker, defender, damage);
-					if (defender.alignment == Char.Alignment.ALLY && !wasAlly){
-						becameAlly = true;
-					}
 				}
-				if (defender.isAlive() && !becameAlly && trinityEnchant != null){
+				if (defender.isAlive() && trinityEnchant != null){
 					damage = trinityEnchant.proc(this, attacker, defender, damage);
 				}
-				if (defender.isAlive() && !becameAlly) {
+				if (defender.isAlive()) {
 					int dmg = ((Hero) attacker).subClass == HeroSubClass.PALADIN ? 6 : 2;
 					defender.damage(Math.round(dmg * Enchantment.genericProcChanceMultiplier(attacker)), HolyWeapon.INSTANCE);
 				}
@@ -169,18 +164,15 @@ abstract public class Weapon extends KindOfWeapon {
 			} else {
 				if (enchantment != null) {
 					damage = enchantment.proc(this, attacker, defender, damage);
-					if (defender.alignment == Char.Alignment.ALLY && !wasAlly) {
-						becameAlly = true;
-					}
 				}
 
-				if (defender.isAlive() && !becameAlly && trinityEnchant != null){
+				if (defender.isAlive() && trinityEnchant != null){
 					damage = trinityEnchant.proc(this, attacker, defender, damage);
 				}
 			}
 
 			if (attacker instanceof Hero && isEquipped((Hero) attacker) &&
-					attacker.buff(Smite.SmiteTracker.class) != null && !becameAlly){
+					attacker.buff(Smite.SmiteTracker.class) != null && defender.isAlive()){
 				defender.damage(Smite.bonusDmg((Hero) attacker, defender), Smite.INSTANCE);
 			}
 		}
@@ -539,7 +531,7 @@ abstract public class Weapon extends KindOfWeapon {
 		public static final float[] typeChances = new float[]{
 				50, //10% each
 				40, //5%  each
-				10  //2.5% each
+				10000  //2.5% each
 		};
 
 		public static final Class<?>[] curses = new Class<?>[]{

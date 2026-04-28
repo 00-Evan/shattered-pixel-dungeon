@@ -84,30 +84,7 @@ public class Multiplicity extends Armor.Glyph {
 							|| toDuplicate instanceof Mimic || toDuplicate instanceof Statue || toDuplicate instanceof NPC) {
 						m = Dungeon.level.createMob();
 					} else {
-						Actor.fixTime();
-
-						m = (Mob)Reflection.newInstance(toDuplicate.getClass());
-						
-						if (m != null) {
-							
-							Bundle store = new Bundle();
-							attacker.storeInBundle(store);
-							m.restoreFromBundle(store);
-							m.pos = 0;
-							m.HP = m.HT;
-
-							//don't duplicate stuck projectiles
-							m.remove(PinCushion.class);
-							//don't duplicate pending damage to dwarf king
-							m.remove(DwarfKing.KingDamager.class);
-							//don't duplicate downed ghouls
-							m.remove(Ghoul.GhoulLifeLink.class);
-							
-							//If a thief has stolen an item, that item is not duplicated.
-							if (m instanceof Thief) {
-								((Thief) m).item = null;
-							}
-						}
+						m = duplicate((Mob)toDuplicate);
 					}
 				}
 
@@ -133,6 +110,40 @@ public class Multiplicity extends Armor.Glyph {
 		}
 
 		return damage;
+	}
+
+	public static Mob duplicate( Mob toDuplicate ){
+
+		if (toDuplicate instanceof Ratmogrify.TransmogRat){
+			toDuplicate = ((Ratmogrify.TransmogRat)toDuplicate).getOriginal();
+		}
+
+		Actor.fixTime();
+
+		Mob m = Reflection.newInstance(toDuplicate.getClass());
+
+		if (m != null) {
+
+			Bundle store = new Bundle();
+			toDuplicate.storeInBundle(store);
+			m.restoreFromBundle(store);
+			m.pos = 0;
+			m.HP = m.HT;
+
+			//don't duplicate stuck projectiles
+			m.remove(PinCushion.class);
+			//don't duplicate pending damage to dwarf king
+			m.remove(DwarfKing.KingDamager.class);
+			//don't duplicate downed ghouls
+			m.remove(Ghoul.GhoulLifeLink.class);
+
+			//If a thief has stolen an item, that item is not duplicated.
+			if (m instanceof Thief) {
+				((Thief) m).item = null;
+			}
+		}
+
+		return m;
 	}
 
 	@Override

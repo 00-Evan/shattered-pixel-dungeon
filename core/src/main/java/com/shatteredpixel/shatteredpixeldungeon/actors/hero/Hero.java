@@ -1484,19 +1484,16 @@ public class Hero extends Char {
 		if (wep != null) {
 			damage = wep.proc( this, enemy, damage );
 		} else {
-			boolean wasEnemy = enemy.alignment == Alignment.ENEMY;
-			if (buff(BodyForm.BodyFormBuff.class) != null
-					&& buff(BodyForm.BodyFormBuff.class).enchant() != null){
+
+			if (buff(BodyForm.BodyFormBuff.class) != null && buff(BodyForm.BodyFormBuff.class).enchant() != null){
 				damage = buff(BodyForm.BodyFormBuff.class).enchant().proc(new WornShortsword(), this, enemy, damage);
 			}
-			if (!wasEnemy || enemy.alignment == Alignment.ENEMY) {
-				if (buff(HolyWeapon.HolyWepBuff.class) != null) {
-					int dmg = subClass == HeroSubClass.PALADIN ? 6 : 2;
-					enemy.damage(Math.round(dmg * Weapon.Enchantment.genericProcChanceMultiplier(this)), HolyWeapon.INSTANCE);
-				}
-				if (buff(Smite.SmiteTracker.class) != null) {
-					enemy.damage(Smite.bonusDmg(this, enemy), Smite.INSTANCE);
-				}
+			if (enemy.isAlive() && buff(HolyWeapon.HolyWepBuff.class) != null) {
+				int dmg = subClass == HeroSubClass.PALADIN ? 6 : 2;
+				enemy.damage(Math.round(dmg * Weapon.Enchantment.genericProcChanceMultiplier(this)), HolyWeapon.INSTANCE);
+			}
+			if (enemy.isAlive() && buff(Smite.SmiteTracker.class) != null) {
+				enemy.damage(Smite.bonusDmg(this, enemy), Smite.INSTANCE);
 			}
 		}
 		
