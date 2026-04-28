@@ -197,7 +197,8 @@ public class Necromancer extends Mob {
 	}
 
 	public void summonMinion(){
-		if (Actor.findChar(summoningPos) != null || !Dungeon.level.passable[summoningPos]) {
+		Char existing = Actor.findChar(summoningPos);
+		if ((existing != null && existing != mySkeleton) || !Dungeon.level.passable[summoningPos]) {
 
 			int pushPos = pos;
 			for (int c : PathFinder.NEIGHBOURS8) {
