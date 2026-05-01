@@ -485,6 +485,11 @@ abstract public class MissileWeapon extends Weapon {
 			//in case weapon was already damaged
 			Buff.affect(Dungeon.hero, Crystal.CrystalRepair.class);
 		}
+		if (ench == null){
+			Buff.affect(Dungeon.hero, UpgradedSetTracker.class).appliedEnchants.remove(setID);
+		} else {
+			Buff.affect(Dungeon.hero, UpgradedSetTracker.class).appliedEnchants.put(setID, ench.getClass());
+		}
 		return super.enchant(ench);
 	}
 
@@ -627,6 +632,7 @@ abstract public class MissileWeapon extends Weapon {
 			return true;
 		} else {
 			extraThrownLeft = false;
+			UpgradedSetTracker.filterEnchantOnPickup(hero, this);
 			return super.doPickUp(hero, pos);
 		}
 	}
@@ -804,6 +810,7 @@ abstract public class MissileWeapon extends Weapon {
 		}
 
 		public HashMap<Long, Integer> levelThresholds = new HashMap<>();
+		public HashMap<Long, Class<? extends Enchantment>> appliedEnchants = new HashMap<>();
 
 		public static boolean pickupValid(Hero h, MissileWeapon w){
 			if (h.buff(UpgradedSetTracker.class) != null){
@@ -816,8 +823,23 @@ abstract public class MissileWeapon extends Weapon {
 			return true;
 		}
 
+		//if a picked up thrown weapon has an enchant that doesn't match with the most recent application
+		// we cleanse it, to prevent exploits. Currently this assumes enchants are only ever cleared via upgrading
+		public static void filterEnchantOnPickup(Hero h, MissileWeapon w){
+			if (h.buff(UpgradedSetTracker.class) != null){
+				Class<? extends Enchantment> enchantCLS = h.buff(UpgradedSetTracker.class).appliedEnchants.get(w.setID);
+				if (enchantCLS != null && w.enchantment != null && w.enchantment.getClass() != enchantCLS){
+					w.enchantment = null;
+					w.curseInfusionBonus = false; //must be false as no enchantment
+				}
+			}
+		}
+
 		public static final String SET_IDS = "set_ids";
 		public static final String SET_LEVELS = "set_levels";
+
+		public static final String SET_IDS_ENCHANTS = "set_ids_enchants";
+		public static final String SET_ENCHANTS = "set_enchants";
 
 		@Override
 		public void storeInBundle(Bundle bundle) {
@@ -832,6 +854,17 @@ abstract public class MissileWeapon extends Weapon {
 			}
 			bundle.put(SET_IDS, IDs);
 			bundle.put(SET_LEVELS, levels);
+
+			IDs = new long[appliedEnchants.size()];
+			Class[] enchants = new Class[appliedEnchants.size()];
+			i = 0;
+			for (Long ID : appliedEnchants.keySet()){
+				IDs[i] = ID;
+				enchants[i] = appliedEnchants.get(ID);
+				i++;
+			}
+			bundle.put(SET_IDS_ENCHANTS, IDs);
+			bundle.put(SET_ENCHANTS, enchants);
 		}
 
 		@Override
@@ -840,9 +873,22 @@ abstract public class MissileWeapon extends Weapon {
 			long[] IDs = bundle.getLongArray(SET_IDS);
 			int[] levels = bundle.getIntArray(SET_LEVELS);
 			levelThresholds.clear();
-			for (int i = 0; i <IDs.length; i++){
+			for (int i = 0; i < IDs.length; i++){
 				levelThresholds.put(IDs[i], levels[i]);
 			}
+
+			// pre-v4.0.0 saves
+			if (!bundle.contains(SET_IDS_ENCHANTS)){
+				appliedEnchants = new HashMap<>();
+			} else {
+				IDs = bundle.getLongArray(SET_IDS_ENCHANTS);
+				Class[] enchants = bundle.getClassArray(SET_ENCHANTS);
+				appliedEnchants.clear();
+				for (int i = 0; i < IDs.length; i++){
+					appliedEnchants.put(IDs[i], enchants[i]);
+				}
+			}
+
 		}
 	}
 }
