@@ -141,14 +141,13 @@ public class WndInfoCell extends Window {
 		RenderedTextBlock info = PixelScene.renderTextBlock(6);
 		add(info);
 
-		if (Dungeon.level.heroFOV[cell]) {
-			for (Blob blob : Dungeon.level.blobs.values()) {
-				if (blob.volume > 0 && blob.cur[cell] > 0 && blob.tileDesc() != null) {
-					if (desc.length() > 0) {
-						desc += "\n\n";
-					}
-					desc += blob.tileDesc();
+		for (Blob blob : Dungeon.level.blobs.values()) {
+			if ((Dungeon.level.heroFOV[cell] || blob.alwaysVisible)
+					&& blob.volume > 0 && blob.cur[cell] > 0 && blob.tileDesc() != null) {
+				if (desc.length() > 0) {
+					desc += "\n\n";
 				}
+				desc += blob.tileDesc();
 			}
 		}
 		

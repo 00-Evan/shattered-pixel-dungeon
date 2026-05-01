@@ -34,6 +34,10 @@ import com.watabou.utils.Random;
 
 public abstract class WellWater extends Blob {
 
+	{
+		alwaysVisible = true;
+	}
+
 	@Override
 	protected void evolve() {
 		int cell;
