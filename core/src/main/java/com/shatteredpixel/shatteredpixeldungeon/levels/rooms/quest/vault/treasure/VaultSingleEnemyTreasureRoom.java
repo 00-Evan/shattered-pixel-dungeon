@@ -60,15 +60,7 @@ public class VaultSingleEnemyTreasureRoom extends VaultTreasureRoom {
 			treasurePos = enemy.pos-2*level.width();
 		}
 
-		Item treasureItem = Generator.randomUsingDefaults(Generator.Category.WEP_T4);
-		if (treasureItem.cursed){
-			treasureItem.cursed = false;
-			if (((MeleeWeapon) treasureItem).hasCurseEnchant()){
-				((MeleeWeapon) treasureItem).enchant(null);
-			}
-		}
-		//not true ID
-		treasureItem.levelKnown = treasureItem.cursedKnown = true;
+		Item treasureItem = ((VaultLevel)level).createEquipment(2);
 		level.drop(treasureItem, treasurePos).type = Heap.Type.CHEST;
 
 		entrance().set(Door.Type.REGULAR);

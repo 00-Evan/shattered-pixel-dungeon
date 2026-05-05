@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.GameMath;
@@ -144,15 +145,7 @@ public class VaultLaserTreasureRoom extends VaultTreasureRoom{
 
 		Painter.fill(level, itemPlace.left, itemPlace.top, itemPlace.width()+1, itemPlace.height()+1, Terrain.EMPTY_SP);
 		int treasurePos = level.pointToCell(Random.element(itemPlace.getPoints()));
-		Item treasureItem = Generator.randomUsingDefaults(Generator.Category.WEP_T3);
-		if (treasureItem.cursed){
-			treasureItem.cursed = false;
-			if (((MeleeWeapon) treasureItem).hasCurseEnchant()){
-				((MeleeWeapon) treasureItem).enchant(null);
-			}
-		}
-		//not true ID
-		treasureItem.levelKnown = treasureItem.cursedKnown = true;
+		Item treasureItem = ((VaultLevel)level).createEquipment(1);
 		level.drop(treasureItem, treasurePos).type = Heap.Type.CHEST;
 
 		treasureItem = level.findPrizeItem();

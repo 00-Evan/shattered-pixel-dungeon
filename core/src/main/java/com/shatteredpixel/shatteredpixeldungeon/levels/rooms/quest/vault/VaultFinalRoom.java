@@ -21,7 +21,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.ImpStatue;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -68,6 +71,16 @@ public class VaultFinalRoom extends SpecialRoom {
 		}
 
 		level.drop(new ImpStatue(), level.pointToCell(center()));
+
+		//These items are meant to be taken out with you and so use levelgen logic
+		Artifact artif = Generator.randomArtifact();
+		if (artif != null){
+			artif.identify();
+			artif.transferUpgrade(5);
+			level.drop(artif, level.pointToCell(random(2)));
+		}
+		//TODO more options
+
 	}
 
 	@Override

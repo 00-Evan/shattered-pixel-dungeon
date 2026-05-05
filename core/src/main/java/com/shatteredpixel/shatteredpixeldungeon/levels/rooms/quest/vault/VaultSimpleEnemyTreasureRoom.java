@@ -89,25 +89,18 @@ public class VaultSimpleEnemyTreasureRoom extends StandardRoom {
 				break;
 		}
 
-		MeleeWeapon treasure = Generator.randomWeapon(true);
+		int tier = Random.chances(new float[]{0, 6, 3, 1});
+		Item treasure = ((VaultLevel)level).createEquipment(tier);
 		level.drop(treasure, treasurePos).type = Heap.Type.CHEST;
-		if (treasure.cursed){
-			treasure.cursed = false;
-			if (((MeleeWeapon) treasure).hasCurseEnchant()){
-				((MeleeWeapon) treasure).enchant(null);
-			}
-		}
-		//not true ID
-		treasure.levelKnown = treasure.cursedKnown = true;
 
 		for (Door door : connected.values()) {
 			door.set( Door.Type.REGULAR );
 		}
 
 		Mob enemy;
-		if (treasure.tier <= 3){
+		if (tier == 1){
 			enemy = Reflection.newInstance(Random.oneOf(VaultLevel.T1Mobs));
-		} else if (treasure.tier == 4){
+		} else if (tier == 2){
 			enemy = Reflection.newInstance(Random.oneOf(VaultLevel.T2Mobs));
 		} else {
 			enemy = Reflection.newInstance(Random.oneOf(VaultLevel.T3Mobs));

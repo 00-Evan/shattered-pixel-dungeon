@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibili
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Point;
 
@@ -71,15 +72,7 @@ public class VaultManyScansRoom extends VaultTreasureRoom {
 		}
 
 		Painter.set(level, c, Terrain.PEDESTAL);
-		Item treasureItem = Generator.randomUsingDefaults(Generator.Category.WEP_T5);
-		if (treasureItem.cursed){
-			treasureItem.cursed = false;
-			if (((MeleeWeapon) treasureItem).hasCurseEnchant()){
-				((MeleeWeapon) treasureItem).enchant(null);
-			}
-		}
-		//not true ID
-		treasureItem.levelKnown = treasureItem.cursedKnown = true;
+		Item treasureItem = ((VaultLevel)level).createEquipment(3);
 		level.drop(treasureItem, c.x + w*c.y).type = Heap.Type.CHEST;
 
 		level.addItemToSpawn(new PotionOfInvisibility());
