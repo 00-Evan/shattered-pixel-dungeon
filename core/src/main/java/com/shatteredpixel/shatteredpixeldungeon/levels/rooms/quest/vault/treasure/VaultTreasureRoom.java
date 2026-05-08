@@ -22,24 +22,15 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasure;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultRoom;
 import com.watabou.utils.Point;
+import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
-public abstract class VaultTreasureRoom extends StandardRoom {
+import java.util.ArrayList;
+import java.util.Arrays;
 
-	@Override
-	public float[] sizeCatProbs() {
-		return new float[]{0, 1, 0};
-	}
-
-	@Override
-	public int minHeight() { return 11; }
-	public int maxHeight() { return 11; }
-
-	@Override
-	public int minWidth() { return 11; }
-	public int maxWidth() { return 11; }
+public abstract class VaultTreasureRoom extends VaultRoom {
 
 	@Override
 	public int maxConnections(int direction) {
@@ -60,13 +51,52 @@ public abstract class VaultTreasureRoom extends StandardRoom {
 	}
 
 	@Override
-	public boolean canMerge(Level l, Room other, Point p, int mergeTerrain) {
+	public boolean canPlaceItem(Point p, Level l) {
 		return false;
 	}
 
-	@Override
-	public boolean canPlaceItem(Point p, Level l) {
-		return false;
+
+	private static final ArrayList<Class<? extends VaultTreasureRoom>> T1_ROOMS = new ArrayList<>( Arrays.asList(
+			VaultFlamePathRoom.class, VaultLaserTreasureRoom.class
+	));
+
+	private static final ArrayList<Class<? extends VaultTreasureRoom>> T2_ROOMS = new ArrayList<>( Arrays.asList(
+			VaultSingleEnemyTreasureRoom.class, VaultBookcaseTreasureRoom.class
+	));
+
+	private static final ArrayList<Class<? extends VaultTreasureRoom>> T3_ROOMS = new ArrayList<>( Arrays.asList(
+			VaultManyScansRoom.class, VaultMultipleEnemyTreasureRoom.class
+	));
+
+	public static ArrayList<Class<? extends VaultTreasureRoom>> treasuresToSpawn = new ArrayList<>();
+
+	//no need to persist this over time like specials, so we just generate once
+	public static void generateRoomList() {
+		ArrayList<Class<? extends VaultTreasureRoom>> T1s = new ArrayList<>(T1_ROOMS);
+		Random.shuffle(T1s);
+		ArrayList<Class<? extends VaultTreasureRoom>> T2s = new ArrayList<>(T2_ROOMS);
+		Random.shuffle(T2s);
+		ArrayList<Class<? extends VaultTreasureRoom>> T3s = new ArrayList<>(T3_ROOMS);
+		Random.shuffle(T3s);
+
+		ArrayList<ArrayList<Class<? extends VaultTreasureRoom>>> fullList = new ArrayList<>();
+		fullList.add(T1s);
+		fullList.add(T2s);
+		fullList.add(T3s);
+		Random.shuffle(fullList);
+
+		treasuresToSpawn = new ArrayList<>();
+		while (!fullList.isEmpty()){
+			ArrayList<Class<? extends VaultTreasureRoom>> current = fullList.remove(0);
+			treasuresToSpawn.add(current.remove(0));
+			if (!current.isEmpty()){
+				fullList.add(current);
+			}
+		}
+	}
+
+	public static VaultTreasureRoom nextRoom(){
+		return Reflection.newInstance(treasuresToSpawn.remove(0));
 	}
 
 }

@@ -39,8 +39,8 @@ public class GridBuilder extends Builder {
 	//TODO this shouldn't be static, could be a parameter
 	public static int ROOM_SIZE = 11;
 
-	//each adjacency is processed twice, so this gives a ~50% chance to connect two adjacent rooms
-	protected float extraConnectionChance = 0.30f;
+	//each adjacency is processed twice, so this gives a ~80% chance to connect two adjacent rooms
+	protected float extraConnectionChance = 0.55f;
 
 	@Override
 	public ArrayList<Room> build(ArrayList<Room> rooms) {

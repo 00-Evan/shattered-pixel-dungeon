@@ -45,7 +45,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
@@ -53,30 +52,15 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTransfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.GridBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.AlternatingTrapsRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultCircleRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultCrossRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultEnemyCenterRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultEntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultFinalRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultLasersRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultLongRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasure.VaultBookcaseTreasureRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasure.VaultFlamePathRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasure.VaultLaserTreasureRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasure.VaultManyScansRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultQuadrantsRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultRingRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultRingsRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultSimpleEnemyTreasureRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasure.VaultMultipleEnemyTreasureRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasure.VaultSingleEnemyTreasureRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasure.VaultTreasureRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.watabou.noosa.Game;
@@ -84,7 +68,6 @@ import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 public class VaultLevel extends CityLevel {
@@ -111,34 +94,17 @@ public class VaultLevel extends CityLevel {
 
 		initRooms.add(roomEntrance = new VaultEntranceRoom());
 
-		initRooms.add(new VaultRingRoom());
-		initRooms.add(new VaultRingRoom());
-		initRooms.add(new VaultCircleRoom());
-		initRooms.add(new VaultCircleRoom());
-		initRooms.add(new VaultCrossRoom());
-		initRooms.add(new VaultCrossRoom());
-		initRooms.add(new VaultQuadrantsRoom());
-		initRooms.add(new VaultQuadrantsRoom());
-		initRooms.add(new VaultRingsRoom());
-		initRooms.add(new VaultRingsRoom());
+		int i = 0;
+		while (i < 12){
+			VaultRoom r = VaultRoom.createRoom();
+			i += r.sizeFactor();
+			initRooms.add(r);
+		}
 
-		initRooms.add(new VaultEnemyCenterRoom());
-		initRooms.add(new VaultEnemyCenterRoom());
-		initRooms.add(new VaultSimpleEnemyTreasureRoom());
-		initRooms.add(new AlternatingTrapsRoom());
-		initRooms.add(new VaultLasersRoom());
-
-		initRooms.add(new VaultLaserTreasureRoom());
-		initRooms.add(new VaultFlamePathRoom());
-
-		initRooms.add(new VaultBookcaseTreasureRoom());
-		initRooms.add(new VaultSingleEnemyTreasureRoom());
-
-		initRooms.add(new VaultMultipleEnemyTreasureRoom());
-		initRooms.add(new VaultManyScansRoom());
-
-		initRooms.add(new VaultLongRoom());
-		initRooms.add(new VaultLongRoom());
+		VaultTreasureRoom.generateRoomList();
+		for (i = 0; i < 6; i++){
+			initRooms.add(VaultTreasureRoom.nextRoom());
+		}
 
 		initRooms.add(new VaultFinalRoom());
 		return initRooms;
@@ -147,7 +113,7 @@ public class VaultLevel extends CityLevel {
 	@Override
 	public float levelExplorePercent(int depth) {
 		//very simple for now, we just look at all discoverable cells.
-		// Each 1% seen = 1.12% explored. 90% seem = 100% explored
+		// Each 1% seen = 1.12% explored. 90% seen = 100% explored
 		int seen = 0, total = 0;
 		for (int i = 0; i < length; i++){
 			if (discoverable[i]) total++;

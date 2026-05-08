@@ -36,7 +36,7 @@ import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
 
-public class VaultLaserTreasureRoom extends VaultTreasureRoom{
+public class VaultLaserTreasureRoom extends VaultTreasureRoom {
 
 	@Override
 	public void paint(Level level) {

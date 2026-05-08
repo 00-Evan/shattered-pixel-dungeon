@@ -32,12 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRo
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
-public class VaultRingsRoom extends StandardRoom {
-
-	@Override
-	public float[] sizeCatProbs() {
-		return new float[]{0, 1, 0};
-	}
+public class VaultRingsRoom extends VaultRoom {
 
 	@Override
 	public void paint(Level level) {
@@ -77,11 +72,6 @@ public class VaultRingsRoom extends StandardRoom {
 		Random.shuffle(wanderPositions);
 		enemy.setupStealthGameplayWanderPositions(wanderPositions, 0);
 
-	}
-
-	@Override
-	public boolean canMerge(Level l, Room other, Point p, int mergeTerrain) {
-		return false;
 	}
 
 }
