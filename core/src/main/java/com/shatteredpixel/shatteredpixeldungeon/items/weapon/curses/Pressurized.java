@@ -57,8 +57,6 @@ public class Pressurized extends Weapon.Enchantment {
 		return damage;
 	}
 
-	//TODO this needs an on death message and ahould be able to trigger death by own magic curse(?)
-
 	@Override
 	public boolean curse() {
 		return true;

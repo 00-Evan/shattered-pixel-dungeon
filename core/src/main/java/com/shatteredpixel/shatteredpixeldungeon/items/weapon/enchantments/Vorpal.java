@@ -35,8 +35,6 @@ public class Vorpal extends Weapon.Enchantment {
 
 	@Override
 	public int proc(Weapon weapon, Char attacker, Char defender, int damage) {
-		//TODO this doesn't count kills from bonus power fx like smite
-		// should probably use a tracker. This also applies to other enchants like corrupting
 		if (defender.isImmune(Bleeding.class)){
 			return damage;
 		}

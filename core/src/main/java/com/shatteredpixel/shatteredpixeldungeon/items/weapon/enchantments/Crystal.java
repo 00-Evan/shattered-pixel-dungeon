@@ -104,7 +104,6 @@ public class Crystal extends Weapon.Enchantment {
 			Buff.affect(Dungeon.hero, CrystalRepair.class);
 		}
 
-		//TODO we probably want to base this off final damage, like limitations on vorpal, etc.
 		int magicDmg = (int)Math.ceil(damage * 0.25f * genericProcChanceMultiplier(attacker));
 		defender.damage(magicDmg, this);
 
