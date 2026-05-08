@@ -29,6 +29,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 public enum Music {
 	
@@ -49,6 +50,7 @@ public enum Music {
 	String[] trackList;
 	float[] trackChances;
 	private final ArrayList<String> trackQueue = new ArrayList<>();
+	private HashMap<String, com.badlogic.gdx.audio.Music> trackPlayers = new HashMap<>();
 	boolean shuffle = false;
 	
 	public synchronized void play( String assetName, boolean looping ) {
@@ -57,14 +59,17 @@ public enum Music {
 		if (assetName != null && DeviceCompat.isiOS()){
 			assetName = assetName.replace(".ogg", ".mp3");
 		}
-		
-		if (isPlaying() && lastPlayed != null && lastPlayed.equals( assetName )) {
+
+		if (player != null && lastPlayed != null && lastPlayed.equals( assetName )) {
 			player.setVolume(volumeWithFade());
+			if (!isPlaying()){
+				player.play();
+			}
 			return;
 		}
-		
-		stop();
-		
+
+		reset();
+
 		lastPlayed = assetName;
 		trackList = null;
 
@@ -92,7 +97,7 @@ public enum Music {
 			}
 		}
 
-		if (isPlaying() && this.trackList != null && tracks.length == trackList.length){
+		if (player != null && this.trackList != null && tracks.length == trackList.length){
 
 			//lists are considered the same if they are identical or merely shifted
 			// e.g. the regular title theme and the victory theme are considered equivalent
@@ -111,11 +116,14 @@ public enum Music {
 
 			if (sameList) {
 				player.setVolume(volumeWithFade());
+				if (!isPlaying()){
+					player.play();
+				}
 				return;
 			}
 		}
 
-		stop();
+		reset();
 
 		lastPlayed = null;
 		trackList = tracks;
@@ -123,6 +131,8 @@ public enum Music {
 		trackQueue.clear();
 
 		for (int i = 0; i < trackList.length; i++){
+			//create all the players we need pre-emptively, so they will be cached
+			createPlayer(trackList[i]);
 			if (Random.Float() < trackChances[i]){
 				trackQueue.add(trackList[i]);
 			}
@@ -171,18 +181,7 @@ public enum Music {
 		public void onCompletion(com.badlogic.gdx.audio.Music music) {
 			//don't play the next track if we're currently in the middle of a fade
 			if (fadeTotal == -1f) {
-				//we do this in a separate thread to avoid graphics hitching while the music is prepared
-				if (!DeviceCompat.isDesktop()) {
-					new Thread() {
-						@Override
-						public void run() {
-							playNextTrack(music);
-						}
-					}.start();
-				} else {
-					//don't use a separate thread on desktop, causes errors and makes no performance difference
-					playNextTrack(music);
-				}
+				playNextTrack(music);
 			}
 		}
 	};
@@ -214,19 +213,21 @@ public enum Music {
 		try {
 			fadeTime = fadeTotal = -1;
 
-			player = Gdx.audio.newMusic(Gdx.files.internal(track));
+			player = createPlayer(track);
 			player.setLooping(looping);
 			player.setVolume(volumeWithFade());
 			if (!paused) player.play();
 			if (listener != null) {
 				player.setOnCompletionListener(listener);
+			} else {
+				player.setOnCompletionListener(null);
 			}
 		} catch (Exception e){
 			Game.reportException(e);
 			player = null;
 		}
 	}
-	
+
 	public synchronized void end() {
 		lastPlayed = null;
 		trackList = null;
@@ -238,14 +239,14 @@ public enum Music {
 	public synchronized boolean paused(){
 		return paused;
 	}
-	
+
 	public synchronized void pause() {
 		paused = true;
 		if (player != null) {
 			player.pause();
 		}
 	}
-	
+
 	public synchronized void resume() {
 		paused = false;
 		if (player != null) {
@@ -256,8 +257,29 @@ public enum Music {
 
 	public synchronized void stop() {
 		if (player != null) {
-			player.dispose();
+			player.stop();
 			player = null;
+		}
+	}
+
+	public synchronized void reset() {
+		if (player != null) {
+			player.stop();
+			player = null;
+		}
+		for (com.badlogic.gdx.audio.Music cached : trackPlayers.values()){
+			cached.dispose();
+		}
+		trackPlayers.clear();
+	}
+
+	private com.badlogic.gdx.audio.Music createPlayer(String asset){
+		if (trackPlayers.containsKey(asset)){
+			return trackPlayers.get(asset);
+		} else {
+			com.badlogic.gdx.audio.Music player = Gdx.audio.newMusic(Gdx.files.internal(asset));
+			trackPlayers.put(asset, player);
+			return player;
 		}
 	}
 	
