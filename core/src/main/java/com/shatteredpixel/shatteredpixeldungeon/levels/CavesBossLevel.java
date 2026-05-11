@@ -851,6 +851,7 @@ public class CavesBossLevel extends Level {
 
 					//instantly spreads to water cells
 					if (off[cell] == 0 && Dungeon.level.water[cell]){
+						area.union(cell % Dungeon.level.width(), cell / Dungeon.level.width());
 						off[cell]++;
 					}
 
