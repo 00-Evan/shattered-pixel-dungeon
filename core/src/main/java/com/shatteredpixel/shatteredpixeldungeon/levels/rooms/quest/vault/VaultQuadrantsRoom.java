@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.VaultLaser;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -28,6 +29,9 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.watabou.utils.Point;
+import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class VaultQuadrantsRoom extends VaultRoom {
 
@@ -42,15 +46,33 @@ public class VaultQuadrantsRoom extends VaultRoom {
 		Painter.drawInside( level, this, new Point(c.x, top), 3, Terrain.WALL);
 		Painter.drawInside( level, this, new Point(c.x, bottom), 3, Terrain.WALL);
 
-		//TODO 4x laser?
 		Painter.set( level, c, Terrain.STATUE);
-
-		VaultLaser laser = new VaultLaser();
-		//laser.laserDirs = new int[];
 
 		for (Room.Door door : connected.values()) {
 			door.set( Room.Door.Type.REGULAR );
 		}
+
+		ArrayList<Point> spawnPositions = new ArrayList<>();
+		spawnPositions.add(new Point(left + 2, top + 2));
+		spawnPositions.add(new Point(right - 2, top + 2));
+		spawnPositions.add(new Point(right - 2, bottom - 2));
+		spawnPositions.add(new Point(left + 2, bottom - 2));
+
+		for (Point p : spawnPositions.toArray(new Point[0])){
+			for (Room.Door door : connected.values()) {
+				if (Point.distance(p, door) <= 3){
+					spawnPositions.remove(p);
+				}
+			}
+		}
+
+		if (!spawnPositions.isEmpty()) {
+			Mob enemy = level.createMob();
+			enemy.pos = level.pointToCell(Random.element(spawnPositions));
+			enemy.state = enemy.WANDERING;
+			level.mobs.add(enemy);
+		}
+
 	}
 
 	@Override
