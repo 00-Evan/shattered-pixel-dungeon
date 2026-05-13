@@ -81,6 +81,9 @@ public class AmbitiousImpRoom extends SpecialRoom {
 		Painter.drawInside(level, this, entrance, 1, Terrain.EMPTY);
 		entrance.set( Door.Type.REGULAR );
 
+		Painter.fill( level, left+1, top+3, 7, 3, Terrain.EMPTY_SP);
+		Painter.fill( level, left+3, top+1, 3, 7, Terrain.EMPTY_SP);
+
 		QuestEntrance vis = new QuestEntrance();
 		vis.pos(c.x - 2, c.y - 2);
 		level.customTiles.add(vis);
@@ -88,6 +91,10 @@ public class AmbitiousImpRoom extends SpecialRoom {
 		EntranceBarrier vis2 = new EntranceBarrier();
 		vis2.pos(c.x - 1, c.y - 1);
 		level.customTiles.add(vis2);
+
+		WallBanners vis3 = new WallBanners();
+		vis3.pos(left+1, top);
+		level.customTiles.add(vis3);
 
 		int entrancePos = level.pointToCell(c);
 
@@ -118,12 +125,12 @@ public class AmbitiousImpRoom extends SpecialRoom {
 
 	@Override
 	public boolean canPlaceGrass(Point p) {
-		return Point.distance(p, center()) >= 3;
+		return Point.distance(p, center()) >= 5;
 	}
 
 	@Override
 	public boolean canPlaceWater(Point p) {
-		return Point.distance(p, center()) >= 3;
+		return Point.distance(p, center()) >= 5;
 	}
 
 	public static class QuestEntrance extends CustomTilemap {
@@ -155,12 +162,77 @@ public class AmbitiousImpRoom extends SpecialRoom {
 
 		@Override
 		public Image image(int tileX, int tileY) {
-			//only center 3x3 gives custom image/message
-			if (tileX >= 1 && tileX < 4 && tileY >= 1 && tileY < 4){
-				return super.image(tileX, tileY);
-			} else {
+			//no custom image-msg for corner tiles
+			if ((tileX == 0 || tileX == tileW-1)
+					&& (tileY == 0 || tileY == tileH-1)){
 				return null;
+			} else {
+				return super.image(tileX, tileY);
 			}
+		}
+	}
+
+	public static class WallBanners extends CustomTilemap {
+		{
+			texture = Assets.Environment.CITY_QUEST;
+
+			tileW = 7;
+			tileH = 3;
+		}
+
+		private final int BANNER_1 = 40;
+		private final int BANNER_2 = 41;
+		private final int BANNER__BOTTOM = 42;
+
+		@Override
+		public void pos(int pos) {
+			super.pos(pos);
+		}
+
+		@Override
+		public Tilemap create() {
+			Tilemap v = super.create();
+			int[] data = new int[tileW*tileH];
+			//up to five banners, which we place unless there's a door
+			//TODO doors
+			int cell = tileX + Dungeon.level.width()*tileY;
+
+			if (Dungeon.level.solid[cell+1]){
+				data[1] = BANNER_1 + Random.Int(2);
+				data[1+tileW] = BANNER__BOTTOM;
+			}
+
+			if (Dungeon.level.solid[cell+3]) {
+				data[3] = BANNER_1 + Random.Int(2);
+				if (Dungeon.level.map[cell+3+Dungeon.level.width()] != Terrain.PEDESTAL) {
+					data[3 + tileW] = BANNER__BOTTOM;
+				}
+			}
+
+			if (Dungeon.level.solid[cell+5]) {
+				data[5] = BANNER_1 + Random.Int(2);
+				data[5 + tileW] = BANNER__BOTTOM;
+			}
+
+			cell += Dungeon.level.width();
+
+			if (Dungeon.level.solid[cell]) {
+				data[7] = BANNER_1 + Random.Int(2);
+				data[7 + tileW] = BANNER__BOTTOM;
+			}
+
+			if (Dungeon.level.solid[cell+6]) {
+				data[13] = BANNER_1 + Random.Int(2);
+				data[13 + tileW] = BANNER__BOTTOM;
+			}
+
+			v.map( data, tileW );
+			return v;
+		}
+
+		@Override
+		public Image image(int tileX, int tileY) {
+			return null;
 		}
 	}
 

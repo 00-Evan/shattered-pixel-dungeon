@@ -21,29 +21,94 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.AmbitiousImpRoom;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.watabou.noosa.Tilemap;
 import com.watabou.utils.Point;
+
+import java.util.ArrayList;
 
 public class VaultEntranceRoom extends VaultRoom {
 
 	@Override
 	public void paint(Level level) {
 		Painter.fill( level, this, Terrain.WALL);
-		Painter.fill( level, this, 1, Terrain.EMPTY );
+		Painter.fill( level, this, 2, Terrain.EMPTY );
+
+		Point c = center();
+
+		Painter.set(level, c.x-3, c.y-3, Terrain.WALL);
+		Painter.set(level, c.x+3, c.y-3, Terrain.WALL);
+		Painter.set(level, c.x-3, c.y+3, Terrain.WALL);
+		Painter.set(level, c.x+3, c.y+3, Terrain.WALL);
+
+
 
 		for (Room.Door door : connected.values()) {
 			door.set( Room.Door.Type.REGULAR );
+			if ((door.x >= c.x-1 && door.x <= c.x+1)
+					|| (door.y >= c.y-1 && door.y <= c.y+1)){
+				Painter.drawInside(level, this, door, 3, Terrain.EMPTY_SP);
+			} else {
+				Painter.drawInside(level, this, door, 3, Terrain.EMPTY);
+			}
+		}
+
+		Painter.set(level, c.x-2, c.y-2, Terrain.REGION_DECO);
+		Painter.set(level, c.x+2, c.y-2, Terrain.REGION_DECO);
+		Painter.set(level, c.x-2, c.y+2, Terrain.REGION_DECO);
+		Painter.set(level, c.x+2, c.y+2, Terrain.REGION_DECO);
+
+		Painter.fill( level, left+2, top+4, 7, 3, Terrain.EMPTY_SP);
+		Painter.fill( level, left+4, top+2, 3, 7, Terrain.EMPTY_SP);
+
+		QuestEntranceInternal vis = new QuestEntranceInternal();
+		vis.pos(c.x - 1, c.y - 1);
+		level.customTiles.add(vis);
+
+		AmbitiousImpRoom.WallBanners vis2 = new AmbitiousImpRoom.WallBanners();
+		vis2.pos(left+2, top+1);
+		level.customTiles.add(vis2);
+
+		//TODO pedestals
+		ArrayList<Point> pedestalCandidates = new ArrayList<>();
+		pedestalCandidates.add(new Point(left+2, c.y));
+		pedestalCandidates.add(new Point(right-2, c.y));
+		pedestalCandidates.add(new Point(c.x, top+2));
+		pedestalCandidates.add(new Point(c.x, bottom-2));
+
+		Point furthest = null;
+		float furthestDist = 0;
+		for (Point p : pedestalCandidates){
+			float dist = 0;
+			for (Door d : connected.values()){
+				dist += Point.distance(p, d);
+			}
+			if (furthest == null || dist > furthestDist){
+				furthest = p;
+				furthestDist = dist;
+			}
+		}
+
+		Painter.set(level, furthest, Terrain.PEDESTAL);
+
+		if (furthest.x == c.x){
+			Painter.fill(level, furthest.x-1, furthest.y, 3, 1, Terrain.PEDESTAL);
+		} else {
+			Painter.fill(level, furthest.x, furthest.y-1, 1, 3, Terrain.PEDESTAL);
 		}
 
 		int entrance;
 		do {
-			entrance = level.pointToCell(random(2));
+			entrance = level.pointToCell(center());
 		} while (level.findMob(entrance) != null);
 
 		level.transitions.add(new LevelTransition(level,
@@ -60,9 +125,45 @@ public class VaultEntranceRoom extends VaultRoom {
 	}
 
 	@Override
+	public boolean canConnect(Point p) {
+		return (p.x > left+1 && p.x < right-1) || (p.y > top+1 && p.y < bottom-1);
+	}
+
+	@Override
 	public int maxConnections(int direction) {
 		//max of two connections
-		if (direction == ALL) return 2;
+		if (direction == ALL) return 3;
 		return super.maxConnections(direction);
+	}
+
+	public static class QuestEntranceInternal extends CustomTilemap {
+
+		{
+			texture = Assets.Environment.CITY_QUEST;
+
+			tileW = tileH = 3;
+		}
+
+		final int TEX_WIDTH = 128;
+
+		@Override
+		public Tilemap create() {
+			Tilemap v = super.create();
+			v.map(mapSimpleImage(5, 5, TEX_WIDTH), 3);
+			return v;
+		}
+
+		//TODO final visuals and text for this
+
+		@Override
+		public String name(int tileX, int tileY) {
+			return Messages.get(this, "name");
+		}
+
+		@Override
+		public String desc(int tileX, int tileY) {
+			return Messages.get(this, "desc");
+		}
+
 	}
 }
