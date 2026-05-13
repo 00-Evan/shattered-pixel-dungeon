@@ -55,6 +55,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.GridBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.CityPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultEntranceRoom;
@@ -125,6 +126,18 @@ public class VaultLevel extends CityLevel {
 	@Override
 	protected Builder builder() {
 		return new GridBuilder();
+	}
+
+	@Override
+	protected Painter painter() {
+		return new CityPainter(){
+			public float hiddenDoorChance( Level l ){
+				return 0; //no hidden doors in the vault
+			}
+		//TODO what about water, grass, and traps. Adjust and maybe use traps?
+		}.setWater(feeling == Feeling.WATER ? 0.90f : 0.30f, 4)
+				.setGrass(feeling == Feeling.GRASS ? 0.80f : 0.20f, 3)
+				.setTraps(nTraps(), trapClasses(), trapChances());
 	}
 
 	@Override
