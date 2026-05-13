@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.VaultBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
@@ -33,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.watabou.noosa.Tilemap;
 import com.watabou.utils.Point;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -78,7 +80,6 @@ public class VaultEntranceRoom extends VaultRoom {
 		vis2.pos(left+2, top+1);
 		level.customTiles.add(vis2);
 
-		//TODO pedestals
 		ArrayList<Point> pedestalCandidates = new ArrayList<>();
 		pedestalCandidates.add(new Point(left+2, c.y));
 		pedestalCandidates.add(new Point(right-2, c.y));
@@ -100,10 +101,28 @@ public class VaultEntranceRoom extends VaultRoom {
 
 		Painter.set(level, furthest, Terrain.PEDESTAL);
 
+		int ofs = 0;
 		if (furthest.x == c.x){
 			Painter.fill(level, furthest.x-1, furthest.y, 3, 1, Terrain.PEDESTAL);
+			ofs = 1;
 		} else {
 			Painter.fill(level, furthest.x, furthest.y-1, 1, 3, Terrain.PEDESTAL);
+			ofs = level.width();
+		}
+
+		switch (Random.Int(3)){
+			case 0:
+				level.drop(new VaultBeacon(), level.pointToCell(furthest));
+				level.drop(new VaultBeacon(), level.pointToCell(furthest)+ofs);
+				break;
+			case 1:
+				level.drop(new VaultBeacon(), level.pointToCell(furthest)-ofs);
+				level.drop(new VaultBeacon(), level.pointToCell(furthest)+ofs);
+				break;
+			case 2:
+				level.drop(new VaultBeacon(), level.pointToCell(furthest)-ofs);
+				level.drop(new VaultBeacon(), level.pointToCell(furthest));
+				break;
 		}
 
 		int entrance;
