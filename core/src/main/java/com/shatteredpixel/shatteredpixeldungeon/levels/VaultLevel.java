@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultGho
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultGolem;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultShaman;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultSkeleton;
+import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -44,14 +45,44 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticGas;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImage;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlast;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlink;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfClairvoyance;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDeepSleep;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDetectMagic;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFear;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFlock;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfShock;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTransfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.GridBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
@@ -63,12 +94,23 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultFi
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasure.VaultTreasureRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Firebloom;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Icecap;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Mageroyal;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Sorrowmoss;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Starflower;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Stormvine;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class VaultLevel extends CityLevel {
@@ -77,10 +119,12 @@ public class VaultLevel extends CityLevel {
 	protected boolean build() {
 		itemsToSpawn.clear();
 
-		for (int i = 0; i < 8; i++){
-			Item item = createEquipment(0);
-			//TODO consumables
-			addItemToSpawn(item);
+		for (int i = 0; i < 5; i++){
+			addItemToSpawn(createEquipment(0));
+		}
+		addItemToSpawn(new Dart());
+		for (int i = 0; i < 6; i++){
+			addItemToSpawn(createConsumabe(0));
 		}
 		addItemToSpawn(Generator.randomUsingDefaults(Generator.Category.FOOD));
 		addItemToSpawn(Generator.randomUsingDefaults(Generator.Category.FOOD));
@@ -292,6 +336,88 @@ public class VaultLevel extends CityLevel {
 			loot.identify(false);
 		}
 		return loot;
+	}
+
+	//only occurs in levelgen, no need to bundle these
+	ArrayList<ArrayList<Item>> consumableLoot = new ArrayList<>();
+
+	private void setupConsumables(){
+		if (consumableLoot.isEmpty()) {
+			consumableLoot.add(new ArrayList<>());
+			consumableLoot.add(new ArrayList<>());
+			consumableLoot.add(new ArrayList<>());
+			consumableLoot.add(new ArrayList<>());
+		}
+
+		//T0, floor loot
+		if (consumableLoot.get(0).isEmpty()){
+			consumableLoot.get(0).addAll(Arrays.asList(
+					Reflection.newInstance(Random.oneOf(PotionOfFrost.class, PotionOfLevitation.class)),
+					Reflection.newInstance(Random.oneOf(Mageroyal.Seed.class, Icecap.Seed.class, Stormvine.Seed.class)),
+					Reflection.newInstance(Random.oneOf(ScrollOfMirrorImage.class, ScrollOfTeleportation.class)),
+					Reflection.newInstance(Random.oneOf(StoneOfFlock.class, StoneOfShock.class, StoneOfFear.class)),
+					new PotionOfHealing()));
+			Collections.shuffle(consumableLoot.get(0));
+			//first item in each tier (except T3) is always a potion of healing
+			consumableLoot.get(0).add(new PotionOfHealing());
+		}
+
+		//T1
+		if (consumableLoot.get(1).isEmpty()){
+			consumableLoot.get(1).addAll(Arrays.asList(
+					Reflection.newInstance(Random.oneOf(PotionOfToxicGas.class, PotionOfParalyticGas.class)),
+					Reflection.newInstance(Random.oneOf(Firebloom.Seed.class, Sorrowmoss.Seed.class, Blindweed.Seed.class)),
+					Reflection.newInstance(Random.oneOf(ScrollOfRecharging.class, ScrollOfTerror.class)),
+					Reflection.newInstance(Random.oneOf(StoneOfDeepSleep.class, StoneOfClairvoyance.class, StoneOfAggression.class)),
+					new PotionOfHealing()));
+			Collections.shuffle(consumableLoot.get(1));
+			consumableLoot.get(1).add(new PotionOfHealing());
+		}
+
+		//T2
+		if (consumableLoot.get(2).isEmpty()){
+			consumableLoot.get(2).addAll(Arrays.asList(
+					Reflection.newInstance(Random.oneOf(PotionOfMindVision.class, PotionOfLiquidFlame.class)),
+					Reflection.newInstance(Random.oneOf(Swiftthistle.Seed.class, Sungrass.Seed.class)),
+					Reflection.newInstance(Random.oneOf(ScrollOfLullaby.class, ScrollOfMagicMapping.class)),
+					Reflection.newInstance(Random.oneOf(StoneOfBlast.class, StoneOfBlink.class)),
+					new PotionOfHealing()));
+			Collections.shuffle(consumableLoot.get(2));
+			consumableLoot.get(2).add(new PotionOfHealing());
+		}
+
+		//T3
+		if (consumableLoot.get(3).isEmpty()){
+			consumableLoot.get(3).addAll(Arrays.asList(
+					Reflection.newInstance(Random.oneOf(PotionOfExperience.class, PotionOfInvisibility.class)),
+					Reflection.newInstance(Random.oneOf(Earthroot.Seed.class, Starflower.Seed.class)),
+					Reflection.newInstance(Random.oneOf(ScrollOfRetribution.class, ScrollOfTransmutation.class)),
+					Reflection.newInstance(Random.oneOf(StoneOfEnchantment.class, StoneOfAugmentation.class)),
+					new PotionOfHealing()));
+			Collections.shuffle(consumableLoot.get(3));
+		}
+	}
+
+	public Item createConsumabe(int tier){
+		if (consumableLoot.isEmpty() || consumableLoot.get(tier).isEmpty()){
+			setupConsumables();
+		}
+		return consumableLoot.get(tier).remove(0);
+	}
+
+	@Override
+	public Item findPrizeItem() {
+		//tries to use solution potions as prizes first, then consumables
+		Item bestCandidate = null;
+		Collections.shuffle(itemsToSpawn);
+		for (Item i : itemsToSpawn){
+			if (i instanceof Potion && !(bestCandidate instanceof Potion)){
+				bestCandidate = i;
+			} else if (!(i instanceof EquipableItem) && bestCandidate == null){
+				bestCandidate = i;
+			}
+		}
+		return bestCandidate;
 	}
 
 	public static Class<?extends Mob>[] T1Mobs = new Class[]{

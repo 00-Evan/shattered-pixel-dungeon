@@ -31,6 +31,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.GameMath;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 public class VaultBookcaseTreasureRoom extends VaultTreasureRoom {
 
@@ -80,6 +82,9 @@ public class VaultBookcaseTreasureRoom extends VaultTreasureRoom {
 
 		treasureItem = ((VaultLevel)level).createEquipment(2);
 		level.drop(treasureItem,secondItem).type = Heap.Type.CHEST;
+
+		treasureItem = ((VaultLevel)level).createConsumabe(2);
+		level.drop(treasureItem, secondItem + PathFinder.NEIGHBOURS8[Random.Int(PathFinder.NEIGHBOURS8.length)]);
 
 		level.addItemToSpawn(new PotionOfLiquidFlame());
 

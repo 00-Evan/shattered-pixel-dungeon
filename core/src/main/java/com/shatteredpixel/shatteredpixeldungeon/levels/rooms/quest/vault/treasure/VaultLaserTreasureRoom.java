@@ -25,14 +25,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.VaultLaser;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.GameMath;
-import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
 
@@ -148,7 +145,11 @@ public class VaultLaserTreasureRoom extends VaultTreasureRoom {
 		Item treasureItem = ((VaultLevel)level).createEquipment(1);
 		level.drop(treasureItem, treasurePos).type = Heap.Type.CHEST;
 
+		//TODO prefer generating with a solution potion
 		treasureItem = level.findPrizeItem();
+		if (treasureItem == null){
+			treasureItem = ((VaultLevel)level).createConsumabe(1);
+		}
 		if (treasureItem != null){
 			do {
 				treasurePos = level.pointToCell(Random.element(itemPlace.getPoints()));

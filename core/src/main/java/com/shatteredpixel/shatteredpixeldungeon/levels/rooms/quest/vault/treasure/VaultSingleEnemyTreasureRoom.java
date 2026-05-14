@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
@@ -62,6 +63,14 @@ public class VaultSingleEnemyTreasureRoom extends VaultTreasureRoom {
 
 		Item treasureItem = ((VaultLevel)level).createEquipment(2);
 		level.drop(treasureItem, treasurePos).type = Heap.Type.CHEST;
+
+		int i;
+		do {
+			i = PathFinder.NEIGHBOURS8[Random.Int(PathFinder.NEIGHBOURS8.length)];
+		} while (level.map[treasurePos+i] == Terrain.WALL);
+
+		treasureItem = ((VaultLevel)level).createConsumabe(2);
+		level.drop(treasureItem, treasurePos+i);
 
 		entrance().set(Door.Type.REGULAR);
 
