@@ -57,7 +57,7 @@ public class Swiftness extends Armor.Glyph {
 		if (enemyNear){
 			return 1;
 		} else {
-			if (owner.sprite != null){
+			if (owner.sprite != null && owner.sprite.visible){
 				int particles = 1 + (int)Random.Float(1+level/5f);
 				owner.sprite.emitter().startDelayed(Speck.factory(Speck.YELLOW_LIGHT), 0.02f, particles, 0.05f);
 			}
