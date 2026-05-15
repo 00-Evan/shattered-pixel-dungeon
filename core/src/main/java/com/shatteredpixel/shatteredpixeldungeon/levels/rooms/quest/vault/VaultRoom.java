@@ -21,10 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.SewerPipeRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -76,16 +74,25 @@ public abstract class VaultRoom extends StandardRoom {
 		rooms.add(VaultEnemyCenterRoom.class);
 
 		rooms.add(VaultLongRoom.class);
-
-		rooms.add(AlternatingTrapsRoom.class);
+		rooms.add(VaultAlternatingFireRoom.class);
 		rooms.add(VaultLasersRoom.class);
 		rooms.add(VaultSimpleEnemyTreasureRoom.class);
 	}
 
-	private static final float[] chances = new float[]{4,4,4,4,4,4,  3,  2,2,2};
+	private static float[] chances = new float[0];
+
+	public static void setupChances(){
+		chances = new float[]{3,3,3,3,3,3, 2,2,2,2};
+	}
 
 	public static VaultRoom createRoom(){
-		return Reflection.newInstance(rooms.get(Random.chances(chances)));
+		int idx = Random.chances(chances);
+		if (idx == -1){
+			setupChances();
+			idx = Random.chances(chances);
+		}
+		chances[idx]--;
+		return Reflection.newInstance(rooms.get(idx));
 	}
 
 }

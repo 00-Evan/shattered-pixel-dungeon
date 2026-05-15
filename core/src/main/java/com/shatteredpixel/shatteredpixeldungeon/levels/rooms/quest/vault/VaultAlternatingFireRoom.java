@@ -27,10 +27,9 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.watabou.utils.Point;
 
-public class AlternatingTrapsRoom extends VaultRoom {
+public class VaultAlternatingFireRoom extends VaultRoom {
 
 	@Override
 	public void paint(Level level) {
@@ -44,7 +43,7 @@ public class AlternatingTrapsRoom extends VaultRoom {
 		Point c = center();
 		Painter.set(level, c, Terrain.PEDESTAL);
 
-		Item i = level.findPrizeItem();
+		Item i = ((VaultLevel)level).createEquipment(0);
 		if (i != null){
 			level.drop( i, level.pointToCell(c) );
 		}
