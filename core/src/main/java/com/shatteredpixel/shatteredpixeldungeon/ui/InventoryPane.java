@@ -60,7 +60,6 @@ import java.util.ArrayList;
 public class InventoryPane extends Component {
 
 	private NinePatch bg;
-	private NinePatch bg2; //2 backgrounds to reduce transparency
 
 	//used to prevent clicks through the BG normally, or to cancel selectors if they're enabled
 	private PointerArea blocker;
