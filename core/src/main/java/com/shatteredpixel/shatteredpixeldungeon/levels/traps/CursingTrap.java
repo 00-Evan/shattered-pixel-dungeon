@@ -118,5 +118,6 @@ public class CursingTrap extends Trap {
 				a.inscribe(Armor.Glyph.randomCurse());
 			}
 		}
+		Item.updateQuickslot();
 	}
 }
