@@ -80,37 +80,37 @@ public class VaultFlameTraps extends Blob {
 				cell = i + j* Dungeon.level.width();
 				if (cur[cell] > 0) {
 
-					//similar to fire.burn(), but Tengu is immune, and hero loses score
 					Char ch = Actor.findChar( cell );
-					if (ch == Dungeon.hero){
-						Sample.INSTANCE.play(Assets.Sounds.BURNING);
-						SFXLastPlayed = ShatteredPixelDungeon.realTime;
-						ch.sprite.showStatus(CharSprite.NEGATIVE, "!!!");
-					}
-					/*if (ch != null && !ch.isImmune(Fire.class)) {
+					if (ch != null && !ch.isImmune(getClass())) {
+						if (ch == Dungeon.hero) {
+							Sample.INSTANCE.play(Assets.Sounds.BURNING);
+							SFXLastPlayed = ShatteredPixelDungeon.realTime;
+							ch.sprite.showStatus(CharSprite.NEGATIVE, "!!!");
+						}
+
+						//TODO damage and fire fx
+
+						/*if (ch != null && !ch.isImmune(Fire.class)) {
 						Buff.affect( ch, Burning.class ).reignite( ch );
+						}
+
+						Heap heap = Dungeon.level.heaps.get( cell );
+						if (heap != null) {
+							heap.burn();
+						}
+
+						Plant plant = Dungeon.level.plants.get( cell );
+						if (plant != null){
+							plant.wither();
+						}*/
+
 					}
 
-					Heap heap = Dungeon.level.heaps.get( cell );
-					if (heap != null) {
-						heap.burn();
-					}
-
-					Plant plant = Dungeon.level.plants.get( cell );
-					if (plant != null){
-						plant.wither();
-					}
-
-					if (Dungeon.level.flamable[cell]){
-						Dungeon.level.destroy( cell );
-
-						GameScene.updateMap( cell );
-					}*/
-
-					if (Dungeon.level.heroFOV[cell]){
+					if (Dungeon.level.heroFOV[cell]) {
 						CellEmitter.get(cell).start(ElmoParticle.FACTORY, 0.02f, 10);
 						playSfx = true;
 					}
+
 					off[cell] = cur[cell] - 1;
 					volume += off[cell];
 				} else {

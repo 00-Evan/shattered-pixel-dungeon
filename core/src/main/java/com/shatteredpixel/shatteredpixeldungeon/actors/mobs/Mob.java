@@ -1551,13 +1551,13 @@ public abstract class Mob extends Char {
 
 			float movementDir = PointF.angle(Dungeon.level.cellToPoint(previousPos), Dungeon.level.cellToPoint(pos))/PointF.G2R;;
 			float enemyDir = PointF.angle(Dungeon.level.cellToPoint(pos), Dungeon.level.cellToPoint(enemy.pos))/PointF.G2R;
-			//classic wandering detection if enemy is within (or touching) a 90 degree cone of vision
-			if (Math.abs(enemyDir - movementDir) <= 45f){
+			//classic wandering detection if enemy is touching a 75 degree cone of vision
+			if (Math.abs(enemyDir - movementDir) <= 37.5f){
 				return 1 / (distance( enemy ) / 2f + enemy.stealth());
-				//classic sleeping (i.e. default) detection if enemy is within a 180 degree vision cone
-			} else if (Math.abs(enemyDir - movementDir) < 90f){
+			//classic sleeping (i.e. default) detection if enemy is touching a 150 degree vision cone
+			} else if (Math.abs(enemyDir - movementDir) <= 75f){
 				return 1 / (distance( enemy ) + enemy.stealth());
-				//otherwise uses very low chance detection (1/8 at 2 tiles, 0% at 3+)
+			//otherwise uses very low chance detection (1/8 at 2 tiles, 0% at 3+)
 			} else {
 				float chance = 1 / (float)Math.pow((distance( enemy ) + enemy.stealth()), 3);
 				if (chance < 0.1f){

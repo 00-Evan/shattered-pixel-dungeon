@@ -113,7 +113,7 @@ public class VaultFlamePathRoom extends VaultTreasureRoom {
 		level.drop(treasureItem, treasurePos).type = Heap.Type.CHEST;
 
 		//TODO prefer generating with a solution potion
-		treasureItem = level.findPrizeItem();
+		treasureItem = ((VaultLevel) level).findT2SolveItem();
 		if (treasureItem == null){
 			treasureItem = ((VaultLevel)level).createConsumabe(1);
 		}

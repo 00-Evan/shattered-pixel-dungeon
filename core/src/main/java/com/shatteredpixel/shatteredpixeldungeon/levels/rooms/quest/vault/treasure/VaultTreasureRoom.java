@@ -57,15 +57,15 @@ public abstract class VaultTreasureRoom extends VaultRoom {
 
 
 	private static final ArrayList<Class<? extends VaultTreasureRoom>> T1_ROOMS = new ArrayList<>( Arrays.asList(
-			VaultFlamePathRoom.class, VaultLaserTreasureRoom.class
+			VaultFlamePathRoom.class, VaultLaserTreasureRoom.class, VaultCircleScanTreasureRoom.class
 	));
 
 	private static final ArrayList<Class<? extends VaultTreasureRoom>> T2_ROOMS = new ArrayList<>( Arrays.asList(
-			VaultSingleEnemyTreasureRoom.class, VaultBookcaseTreasureRoom.class
+			VaultSingleEnemyTreasureRoom.class, VaultBookcaseTreasureRoom.class, VaultFlamesTreasureRoom.class
 	));
 
 	private static final ArrayList<Class<? extends VaultTreasureRoom>> T3_ROOMS = new ArrayList<>( Arrays.asList(
-			VaultManyScansRoom.class, VaultMultipleEnemyTreasureRoom.class
+			VaultManyScansRoom.class, VaultMultipleEnemyTreasureRoom.class, VaultHardLaserTreasureRoom.class
 	));
 
 	public static ArrayList<Class<? extends VaultTreasureRoom>> treasuresToSpawn = new ArrayList<>();

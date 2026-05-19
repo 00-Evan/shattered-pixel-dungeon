@@ -402,22 +402,43 @@ public class VaultLevel extends CityLevel {
 		if (consumableLoot.isEmpty() || consumableLoot.get(tier).isEmpty()){
 			setupConsumables();
 		}
-		return consumableLoot.get(tier).remove(0);
+		Item result = consumableLoot.get(tier).remove(0);
+		return result;
 	}
 
-	@Override
-	public Item findPrizeItem() {
-		//tries to use solution potions as prizes first, then consumables
-		Item bestCandidate = null;
-		Collections.shuffle(itemsToSpawn);
-		for (Item i : itemsToSpawn){
-			if (i instanceof Potion && !(bestCandidate instanceof Potion)){
-				bestCandidate = i;
-			} else if (!(i instanceof EquipableItem) && bestCandidate == null){
-				bestCandidate = i;
+	static Class<?extends Item>[] T3SolveItems = new Class[]{
+			StoneOfBlink.class,
+			PotionOfInvisibility.class
+	};
+
+	public Item findT3SolveItem(){
+		Random.shuffle(T3SolveItems);
+		Item result = null;
+		for (Class<?extends Item> itemCls : T3SolveItems){
+			result = findPrizeItem(itemCls);
+			if (result != null){
+				return result;
 			}
 		}
-		return bestCandidate;
+		return null;
+	}
+
+	static Class<?extends Item>[] T2SolveItems = new Class[]{
+			StoneOfBlink.class,
+			PotionOfInvisibility.class
+	};
+
+	public Item findT2SolveItem(){
+		Random.shuffle(T2SolveItems);
+		Item result = null;
+		for (Class<?extends Item> itemCls : T2SolveItems){
+			result = findPrizeItem(itemCls);
+			if (result != null){
+				return result;
+			}
+		}
+		//if we can't find a T2 solve, try to place a T3 solve instead (instead of having it be floor loot)
+		return findT3SolveItem();
 	}
 
 	public static Class<?extends Mob>[] T1Mobs = new Class[]{

@@ -83,7 +83,10 @@ public class VaultBookcaseTreasureRoom extends VaultTreasureRoom {
 		treasureItem = ((VaultLevel)level).createEquipment(2);
 		level.drop(treasureItem,secondItem).type = Heap.Type.CHEST;
 
-		treasureItem = ((VaultLevel)level).createConsumabe(2);
+		treasureItem = ((VaultLevel)level).findT3SolveItem();
+		if (treasureItem == null){
+			treasureItem = ((VaultLevel) level).createConsumabe(2);
+		}
 		level.drop(treasureItem, secondItem + PathFinder.NEIGHBOURS8[Random.Int(PathFinder.NEIGHBOURS8.length)]);
 
 		level.addItemToSpawn(new PotionOfLiquidFlame());

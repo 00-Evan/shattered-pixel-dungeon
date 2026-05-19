@@ -66,6 +66,11 @@ public class VaultSentry extends NPC {
 	@Override
 	protected boolean act() {
 
+		if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
+			fieldOfView = new boolean[Dungeon.level.length()];
+		}
+		Dungeon.level.updateFieldOfView( this, fieldOfView );
+
 		curCooldown--;
 
 		if (curCooldown <= 0) {
@@ -73,21 +78,28 @@ public class VaultSentry extends NPC {
 
 			boolean visible = false;
 			for (int scanDir : scanDirsThisTurn) {
+				Ballistica aim = new Ballistica(pos, scanDir, Ballistica.WONT_STOP);
 				ConeAOE scan = new ConeAOE(
-						new Ballistica(pos, scanDir, Ballistica.STOP_SOLID),
+						aim,
 						scanLength,
 						scanWidth,
 						Ballistica.STOP_SOLID | Ballistica.STOP_TARGET);
 
+				if (scan.cells.isEmpty() && aim.path.size() >= 2){
+					scan.cells.add(aim.path.get(1));
+				}
+
 				for (int cell : scan.cells) {
-					if (Actor.findChar(cell) == Dungeon.hero && Dungeon.hero.invisible == 0) {
-						Dungeon.hero.sprite.showStatus(CharSprite.NEGATIVE, "!!!");
-						Sample.INSTANCE.play(Assets.Sounds.ZAP);
-						SFXLastPlayed = ShatteredPixelDungeon.realTime;
-					}
-					if (Dungeon.level.heroFOV[cell]) {
-						GameScene.checkedCell(cell, pos);
-						visible = true;
+					if (fieldOfView[cell]) {
+						if (Actor.findChar(cell) == Dungeon.hero && Dungeon.hero.invisible == 0) {
+							Dungeon.hero.sprite.showStatus(CharSprite.NEGATIVE, "!!!");
+							Sample.INSTANCE.play(Assets.Sounds.ZAP);
+							SFXLastPlayed = ShatteredPixelDungeon.realTime;
+						}
+						if (Dungeon.level.heroFOV[cell]) {
+							GameScene.checkedCell(cell, pos);
+							visible = true;
+						}
 					}
 				}
 			}
@@ -115,14 +127,19 @@ public class VaultSentry extends NPC {
 		if (curCooldown == 1 && giveWarning){
 			int[] scanDirsNextTurn = scanDirs[scanDirIdx];
 			for (int scanDir : scanDirsNextTurn) {
+				Ballistica aim = new Ballistica(pos, scanDir, Ballistica.WONT_STOP);
 				ConeAOE scan = new ConeAOE(
-						new Ballistica(pos, scanDir, Ballistica.STOP_SOLID),
+						aim,
 						scanLength,
 						scanWidth,
 						Ballistica.STOP_SOLID | Ballistica.STOP_TARGET);
 
+				if (scan.cells.isEmpty() && aim.path.size() >= 2){
+					scan.cells.add(aim.path.get(1));
+				}
+
 				for (int cell : scan.cells) {
-					if (Dungeon.level.heroFOV[cell]) {
+					if (Dungeon.level.heroFOV[cell] && fieldOfView[cell]) {
 						sprite.parent.add(new TargetedCell(cell, 0xFF0000));
 					}
 				}
