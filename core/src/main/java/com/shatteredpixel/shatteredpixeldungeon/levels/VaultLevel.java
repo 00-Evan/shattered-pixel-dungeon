@@ -92,6 +92,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultEntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultFinalRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultTokensRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasure.VaultTreasureRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed;
@@ -145,6 +146,7 @@ public class VaultLevel extends CityLevel {
 			i += r.sizeFactor();
 			initRooms.add(r);
 		}
+		initRooms.add( new VaultTokensRoom() );
 
 		VaultTreasureRoom.generateRoomList();
 		for (i = 0; i < 6; i++){

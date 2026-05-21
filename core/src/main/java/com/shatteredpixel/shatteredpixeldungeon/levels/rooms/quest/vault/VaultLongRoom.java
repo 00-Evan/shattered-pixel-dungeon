@@ -33,13 +33,22 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRo
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
-public class VaultLongRoom extends VaultRoom {
+public abstract class VaultLongRoom extends VaultRoom {
 
+	//just used during init, afterward we refer to the width and height themselves
 	private boolean wide = Random.Int(2) == 0;
+
+	protected boolean wide(){
+		if (width() == height()){
+			return wide;
+		} else {
+			return width() > height();
+		}
+	}
 
 	@Override
 	public int minWidth() {
-		return wide ? 21 : 11;
+		return wide() ? 21 : 11;
 	}
 
 	@Override
@@ -49,7 +58,7 @@ public class VaultLongRoom extends VaultRoom {
 
 	@Override
 	public int minHeight() {
-		return wide ? 11: 21;
+		return wide() ? 11: 21;
 	}
 
 	@Override
@@ -60,53 +69,6 @@ public class VaultLongRoom extends VaultRoom {
 	@Override
 	public int sizeFactor() {
 		return 2;
-	}
-
-
-	@Override
-	public void paint(Level level) {
-		Painter.fill( level, this, Terrain.WALL );
-		Painter.fill( level, this, 1 , Terrain.EMPTY );
-
-		Painter.fill(level, this, 4, Terrain.WALL);
-
-		if (wide){
-			Painter.fill(level, this, 8, 4, 8, 4, Terrain.EMPTY);
-		} else {
-			Painter.fill(level, this, 4, 8, 4, 8, Terrain.EMPTY);
-		}
-
-		Point c = center();
-		Item i = ((VaultLevel)level).createEquipment(0);
-		if (i != null){
-			level.drop(i, level.pointToCell(c));
-		}
-
-		Mob enemy = level.createMob();
-		enemy.pos = randomWander(level);
-		int[] wanderPositions = new int[]{
-				randomWander(level), randomWander(level), randomWander(level),
-				randomWander(level), randomWander(level), randomWander(level),
-				randomWander(level), randomWander(level), randomWander(level),
-				randomWander(level), randomWander(level), randomWander(level),
-				randomWander(level), randomWander(level), randomWander(level),
-				randomWander(level), randomWander(level), randomWander(level),
-		};
-		enemy.setupStealthGameplayWanderPositions(wanderPositions, 0);
-		enemy.state = enemy.WANDERING;
-		level.mobs.add(enemy);
-
-		for (Door door : connected.values()) {
-			door.set( Door.Type.REGULAR );
-		}
-	}
-
-	private int randomWander(Level level){
-		int pos;
-		do {
-			pos = level.pointToCell(random(1));
-		} while (level.map[pos] == Terrain.WALL);
-		return pos;
 	}
 
 }

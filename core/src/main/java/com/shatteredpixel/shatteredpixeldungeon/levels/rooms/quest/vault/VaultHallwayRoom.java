@@ -30,40 +30,13 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
-public class VaultHallwayRoom extends VaultRoom {
-
-	private boolean wide = Random.Int(2) == 0;
-
-	@Override
-	public int minWidth() {
-		return wide ? 21 : 11;
-	}
-
-	@Override
-	public int maxWidth() {
-		return minWidth();
-	}
-
-	@Override
-	public int minHeight() {
-		return wide ? 11: 21;
-	}
-
-	@Override
-	public int maxHeight() {
-		return minHeight();
-	}
-
-	@Override
-	public int sizeFactor() {
-		return 2;
-	}
+public class VaultHallwayRoom extends VaultLongRoom {
 
 	@Override
 	public void paint(Level level) {
 		Painter.fill( level, this, Terrain.WALL );
 
-		if (wide){
+		if (wide()){
 			Painter.fill(level, left+1, top+4, width()-2, 3, Terrain.EMPTY);
 			Painter.fill(level, left+6, top+1, 1, height()-2, Terrain.EMPTY);
 			Painter.fill(level, right-7, top+1, 1, height()-2, Terrain.EMPTY);
@@ -80,7 +53,7 @@ public class VaultHallwayRoom extends VaultRoom {
 		}
 
 		Mob enemy = level.createMob();
-		if (wide) {
+		if (wide()) {
 			enemy.setupStealthGameplayWanderPositions(
 					new int[]{level.pointToCell(new Point(left + 2, c.y)),
 							level.pointToCell(new Point(right - 2, c.y))}, Random.Int(2));
@@ -95,7 +68,7 @@ public class VaultHallwayRoom extends VaultRoom {
 
 		for (Door door : connected.values()) {
 			door.set( Door.Type.REGULAR );
-			if (wide) {
+			if (wide()) {
 				if (door.x == left){
 					Painter.drawLine(level, new Point(door.x+1, door.y), new Point(left+1, c.y), Terrain.EMPTY);
 				} else if (door.x == right) {
