@@ -706,7 +706,8 @@ public class Generator {
 			case ARTIFACT:
 				Item item = randomArtifact();
 				//if we're out of artifacts, return a ring instead.
-				return item != null ? item : random(Category.RING);
+				//do not use decks for that ring, as the # of artifacts genned can vary by gameplay
+				return item != null ? item : randomUsingDefaults(Category.RING);
 			default:
 				if (cat.defaultProbs != null && cat.seed != null){
 					Random.pushGenerator(cat.seed);
