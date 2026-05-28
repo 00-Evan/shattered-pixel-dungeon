@@ -55,6 +55,7 @@ public class CleansingDart extends TippedDart {
 			//do nothing to the hero when processing charged shot
 		} else if (attacker.alignment == defender.alignment){
 			PotionOfCleansing.cleanse(defender, PotionOfCleansing.Cleanse.DURATION*2f);
+			return 0; //also skips on-hit fx like enchants for allies
 		} else {
 			for (Buff b : defender.buffs()){
 				if (!(b instanceof ChampionEnemy)

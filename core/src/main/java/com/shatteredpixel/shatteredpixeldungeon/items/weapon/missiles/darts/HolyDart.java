@@ -58,6 +58,7 @@ public class HolyDart extends TippedDart {
 
 		if (attacker.alignment == defender.alignment){
 			Buff.affect(defender, Bless.class, Math.round(Bless.DURATION));
+			return 0; //also skips on-hit fx like enchants for allies
 		}
 
 		if (Char.hasProp(defender, Char.Property.UNDEAD) || Char.hasProp(defender, Char.Property.DEMONIC)){

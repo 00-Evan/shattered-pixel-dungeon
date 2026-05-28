@@ -57,6 +57,11 @@ public class HealingDart extends TippedDart {
 		PotionOfHealing.cure( defender );
 		Buff.affect( defender, Healing.class ).setHeal((int)(0.5f*defender.HT + 30), 0.25f, 0);
 
+		//also skips on-hit fx like enchants for allies
+		if (attacker.alignment == defender.alignment){
+			return 0;
+		}
+
 		return super.proc(attacker, defender, damage);
 	}
 	
