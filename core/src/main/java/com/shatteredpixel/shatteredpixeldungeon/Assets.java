@@ -33,9 +33,11 @@ public class Assets {
 
 	public static class Environment {
 		public static final String TERRAIN_FEATURES = "environment/terrain_features.png";
+		public static final String RAISED_TERRAIN = "environment/raised_terrain.png";
 
-		public static final String VISUAL_GRID  = "environment/visual_grid.png";
-		public static final String WALL_BLOCKING= "environment/wall_blocking.png";
+		public static final String VISUAL_GRID          = "environment/visual_grid.png";
+		public static final String WALL_BLOCKING        = "environment/wall_blocking.png";
+		public static final String OCCLUSION_SHADOWS    = "environment/occlusion_shadows.png";
 
 		public static final String TILES_SEWERS = "environment/tiles_sewers.png";
 		public static final String TILES_PRISON = "environment/tiles_prison.png";

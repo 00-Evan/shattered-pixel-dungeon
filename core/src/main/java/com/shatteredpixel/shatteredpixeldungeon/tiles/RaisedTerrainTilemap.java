@@ -21,13 +21,14 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.tiles;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 
 public class RaisedTerrainTilemap extends DungeonTilemap {
 	
 	public RaisedTerrainTilemap() {
-		super(Dungeon.level.tilesTex());
+		super(Assets.Environment.RAISED_TERRAIN);
 		map( Dungeon.level.map, Dungeon.level.width() );
 	}
 	
@@ -40,14 +41,42 @@ public class RaisedTerrainTilemap extends DungeonTilemap {
 			return -1;
 		}
 
+		int region = (Dungeon.depth-1)/5;
+		int regionOffset = region*16;
+
 		if (tile == Terrain.HIGH_GRASS){
-			return DungeonTileSheet.getVisualWithAlts(
-					DungeonTileSheet.HIGH_GRASS_UNDERHANG,
-					pos);
+			return regionOffset + (DungeonTileSheet.tileVariance[pos] >= 50 ? 2 : 0);
 		} else if (tile == Terrain.FURROWED_GRASS){
-			return DungeonTileSheet.getVisualWithAlts(
-					DungeonTileSheet.FURROWED_UNDERHANG,
-					pos);
+			return regionOffset + 1 + (DungeonTileSheet.tileVariance[pos] >= 50 ? 2 : 0);
+		} else if (tile == Terrain.BARRICADE){
+			return regionOffset + 4;
+		} else if (tile == Terrain.ALCHEMY){
+			return regionOffset + 5;
+		} else if (tile == Terrain.STATUE || tile == Terrain.STATUE_SP){
+			return regionOffset + 6;
+		} else if (tile == Terrain.REGION_DECO){
+			return regionOffset + 7;
+		} else if (tile == Terrain.REGION_DECO_ALT){
+			return regionOffset + 8;
+		}
+
+		//specific cases for mine quest
+		if (tile == Terrain.MINE_CRYSTAL){
+			if (DungeonTileSheet.tileVariance[pos] >= 95){
+				return regionOffset + 11;
+			} else if (DungeonTileSheet.tileVariance[pos] >= 50){
+				return regionOffset + 10;
+			} else {
+				return regionOffset + 9;
+			}
+		} else if (tile == Terrain.MINE_BOULDER){
+			if (DungeonTileSheet.tileVariance[pos] >= 95){
+				return regionOffset + 14;
+			} else if (DungeonTileSheet.tileVariance[pos] >= 50){
+				return regionOffset + 13;
+			} else {
+				return regionOffset + 12;
+			}
 		}
 		
 		return -1;
