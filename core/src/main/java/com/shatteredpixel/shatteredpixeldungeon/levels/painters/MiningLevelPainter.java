@@ -79,8 +79,11 @@ public class MiningLevelPainter extends CavesPainter {
 
 						for (int j : PathFinder.NEIGHBOURS4){
 							if (level.insideMap(i+j) && map[i+j] != Terrain.WALL){
-								goldPosCandidates.add(i);
-								break;
+								Point o = level.cellToPoint(i+j);
+								if (r.inside(o)) {
+									goldPosCandidates.add(i);
+									break;
+								}
 							}
 						}
 					}
