@@ -29,6 +29,7 @@ import com.watabou.input.KeyEvent;
 import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.Group;
 import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Signal;
@@ -101,7 +102,11 @@ public class Button extends Component {
 						text += " _(" + KeyBindings.getKeyName(key) + ")_";
 					}
 					hoverTip = new Tooltip(Button.this, text, 80);
-					Button.this.parent.addToFront(hoverTip);
+					Group parent = Button.this.parent;
+					while (parent.parent != null){
+						parent = parent.parent;
+					}
+					parent.addToFront(hoverTip);
 					hoverTip.camera = camera();
 					alignTooltip(hoverTip);
 				}
