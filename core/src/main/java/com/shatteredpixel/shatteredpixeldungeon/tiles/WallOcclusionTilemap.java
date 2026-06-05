@@ -58,9 +58,8 @@ public class WallOcclusionTilemap extends Tilemap {
 	public synchronized void updateMap() {
 		for (int cell = 0; cell < data.length; cell++) {
 			//force all top/bottom row, and none-discoverable cells to cleared
-			if (!Dungeon.level.discoverable[cell]
-					|| (cell - mapWidth) <= 0
-					|| (cell + mapWidth) >= size){
+			if (!Dungeon.level.insideMap(cell)
+					|| !Dungeon.level.discoverable[cell]){
 				data[cell] = CLEARED;
 			} else {
 				data[cell] = getTileVisual(cell);
