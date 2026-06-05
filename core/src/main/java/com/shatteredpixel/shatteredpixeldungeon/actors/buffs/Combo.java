@@ -441,6 +441,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 				if (count > 0){
 					furyHitsLeft = count;
 					count = 0;
+					detach();
 					hero.spend(hero.attackDelay());
 				}
 				furyHitsLeft--;
@@ -455,7 +456,6 @@ public class Combo extends Buff implements ActionIndicator.Action {
 					});
 				} else {
 					furyHitsLeft = 0;
-					detach();
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 					ActionIndicator.clearAction(Combo.this);
 					hero.next();
