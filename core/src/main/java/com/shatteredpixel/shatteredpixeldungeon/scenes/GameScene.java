@@ -1714,10 +1714,7 @@ public class GameScene extends PixelScene {
 	private static ArrayList<Object> getObjectsAtCell( int cell ){
 		ArrayList<Object> objects = new ArrayList<>();
 
-		if (cell == Dungeon.hero.pos) {
-			objects.add(Dungeon.hero);
-
-		} else if (Dungeon.level.heroFOV[cell]) {
+		if (Dungeon.level.heroFOV[cell] && cell != Dungeon.hero.pos) {
 			Mob mob = (Mob) Actor.findChar(cell);
 			if (mob != null) objects.add(mob);
 		}
@@ -1727,6 +1724,10 @@ public class GameScene extends PixelScene {
 
 		Plant plant = Dungeon.level.plants.get( cell );
 		if (plant != null) objects.add(plant);
+
+		if (cell == Dungeon.hero.pos) {
+			objects.add(Dungeon.hero);
+		}
 
 		Trap trap = Dungeon.level.traps.get( cell );
 		if (trap != null && trap.visible) objects.add(trap);
@@ -1820,7 +1821,7 @@ public class GameScene extends PixelScene {
 			if (objects.isEmpty()) {
 				textLines.add(0, Messages.get(GameScene.class, "go_here"));
 			} else if (objects.get(0) instanceof Hero) {
-				textLines.add(0, Messages.get(GameScene.class, "go_here"));
+				textLines.add(0, Messages.get(GameScene.class, "cancel"));
 			} else if (objects.get(0) instanceof Mob) {
 				if (((Mob) objects.get(0)).alignment != Char.Alignment.ENEMY) {
 					textLines.add(0, Messages.get(GameScene.class, "interact"));
