@@ -95,6 +95,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
@@ -155,7 +156,7 @@ public abstract class Mob extends Char {
 
 	private static final String ENEMY_ID	= "enemy_id";
 
-	private static final String SWARM_RANGE = "swarm_range";
+	private static final String SWARM_TIME = "swarm_time";
 
 	//for stealth gameplay
 	private static final String USING_STEALTH = "using_stealth";
@@ -189,7 +190,7 @@ public abstract class Mob extends Char {
 			bundle.put(ENEMY_ID, enemy.id() );
 		}
 
-		bundle.put(SWARM_RANGE, swarmDetectionRange);
+		bundle.put(SWARM_TIME, timeSeenAt);
 
 		bundle.put( USING_STEALTH, usingStealthGamePlay );
 		if (usingStealthGamePlay){
@@ -241,7 +242,7 @@ public abstract class Mob extends Char {
 			enemyID = bundle.getInt(ENEMY_ID);
 		}
 
-		swarmDetectionRange = bundle.getFloat( SWARM_RANGE );
+		timeSeenAt = bundle.getFloat( SWARM_TIME );
 
 		//no need to actually save this, must be false
 		firstAdded = false;
@@ -308,37 +309,45 @@ public abstract class Mob extends Char {
 		return result;
 	}
 
-	private float swarmDetectionRange = 0;
+	private float timeSeenAt = Float.MAX_VALUE;
 
 	protected void processSwarmIntel( boolean enemyInFOV ){
 		if (alignment == Alignment.ENEMY && state == HUNTING
 				&& Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)
 				&& enemyInFOV) {
 
-			//this seems pretty brittle
-			if (sprite.isMoving) {
-				swarmDetectionRange = Math.min(12, swarmDetectionRange + (int) (2 * speed()));
-			} else {
-				swarmDetectionRange = Math.min(12, swarmDetectionRange + (int) (2 * attackDelay()));
+			if (timeSeenAt >= now()){
+				timeSeenAt = now()-1; //starts at 2
 			}
+
+			int range = swarmAlertRange();
 			for (Mob mob : Dungeon.level.mobs) {
 				if (mob.alignment == Alignment.ENEMY
 						&& mob.paralysed <= 0
-						&& Dungeon.level.distance(pos, mob.pos) <= swarmDetectionRange
+						&& Dungeon.level.distance(pos, mob.pos) <= range
 						&& mob.state != mob.HUNTING) {
 					mob.beckon(enemy.pos);
 				}
 			}
 			Buff.affect( Dungeon.hero, SwarmIntelTracker.class );
 		} else {
-			swarmDetectionRange = 0;
+			timeSeenAt = Float.MAX_VALUE;
 		}
 	}
 
 	public int swarmAlertRange(){
-		return (int)swarmDetectionRange;
+		int range = 2*(int)Math.max(now() - timeSeenAt, 0);
+		return (int)GameMath.gate(0, range, 12);
 	}
-	
+
+	@Override
+	public void fixTime(float decrement) {
+		if (swarmAlertRange() > 0){
+			timeSeenAt -= decrement;
+		}
+		super.fixTime(decrement);
+	}
+
 	//FIXME this is sort of a band-aid correction for allies needing more intelligent behaviour
 	protected boolean intelligentAlly = false;
 	

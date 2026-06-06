@@ -103,6 +103,11 @@ public abstract class Actor implements Bundlable {
 	public void timeToNow() {
 		time = now;
 	}
+
+	//used when now is being cleared as a part of statix fixTime()
+	public void fixTime(float decrement){
+		time -= decrement;
+	}
 	
 	protected void diactivate() {
 		time = Float.MAX_VALUE;
@@ -182,7 +187,7 @@ public abstract class Actor implements Bundlable {
 		//So that turns always align with a whole number
 		min = (int)min;
 		for (Actor a : all) {
-			a.time -= min;
+			a.fixTime(min);
 		}
 
 		if (Dungeon.hero != null && all.contains( Dungeon.hero )) {
