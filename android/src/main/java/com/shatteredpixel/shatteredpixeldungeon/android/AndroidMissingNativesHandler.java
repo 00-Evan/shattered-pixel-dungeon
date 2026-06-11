@@ -60,6 +60,7 @@ public class AndroidMissingNativesHandler extends Activity {
 			} else {
 				installer = getPackageManager().getInstallerPackageName(getPackageName());
 			}
+			if (installer == null) installer = "???";
 		} catch (Exception e) {
 			installer = "???";
 		}

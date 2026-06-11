@@ -317,8 +317,10 @@ public class SPDSettings extends GameSettings {
 		put(KEY_NEWS, value);
 	}
 
+	public static boolean newsDefault = true;
+
 	public static boolean news(){
-		return getBoolean(KEY_NEWS, true);
+		return getBoolean(KEY_NEWS, newsDefault);
 	}
 
 	public static void updates(boolean value){
