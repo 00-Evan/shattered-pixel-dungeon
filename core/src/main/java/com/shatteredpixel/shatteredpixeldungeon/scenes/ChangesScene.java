@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.ChangeInfo;
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.Pixel_Dungeon_Changes;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.WndChanges;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.WndChangesTabbed;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_1_X_Changes;
@@ -186,6 +187,7 @@ public class ChangesScene extends PixelScene {
 				v0_3_X_Changes.addAllChanges(changeInfos);
 				v0_2_X_Changes.addAllChanges(changeInfos);
 				v0_1_X_Changes.addAllChanges(changeInfos);
+				Pixel_Dungeon_Changes.addAllChanges(changeInfos);
 				break;
 		}
 
