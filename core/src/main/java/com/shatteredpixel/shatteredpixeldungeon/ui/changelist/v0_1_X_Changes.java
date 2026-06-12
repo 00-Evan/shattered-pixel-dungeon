@@ -21,11 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
-import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
 import java.util.ArrayList;
@@ -48,7 +43,7 @@ public class v0_1_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+		changes.addButton( new ChangeButton(ChangeIcons.V010_SHPX, "Developer Commentary",
 				"_-_ Released August 15th, 2014\n" +
 				"_-_ 10 days after Shattered v0.1.0\n" +
 				"\n" +
@@ -58,11 +53,11 @@ public class v0_1_X_Changes {
 				"\n" +
 				"These early updates were much smaller and less polished compared to more modern ones, which meant I released them much faster. I eventually shifted towards slower updates with more size and quality."));
 		
-		changes.addButton( new ChangeButton(new Blandfruit(),
+		changes.addButton( new ChangeButton(ChangeIcons.V011_BLANDFRUIT, "Blandfruit",
 				"Players who chance upon gardens or who get lucky while trampling grass may come across a new plant: the _Blandfruit._\n\n" +
 				"As the name implies, the fruit from this plant is pretty unexceptional, and will barely do anything for you on its own. Perhaps there is some way to prepare the fruit with another ingredient..."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(new Ankh()), "Revival Item Changes",
+		changes.addButton( new ChangeButton(ChangeIcons.V011_ANKH, "Revival Item Changes",
 				"When the Dew Vial was initially added to Pixel Dungeon, its essentially free revive made ankhs pretty useless by comparison. " +
 				"To fix this, both items have been adjusted to combine to create a more powerful revive.\n\n" +
 				"Dew Vial nerfed:\n" +
@@ -71,7 +66,7 @@ public class v0_1_X_Changes {
 				"Ankh buffed:\n" +
 				"_-_ Can now be blessed with a full dew vial, to gain the vial's old revive effect."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCROLL_BERKANAN, null), "Misc Item Changes",
+		changes.addButton( new ChangeButton(ChangeIcons.V011_SCROLL_LAGUZ, "Misc Item Changes",
 				"Sungrass buffed:\n" +
 				"_-_ Heal scaling now scales with max hp.\n\n" +
 				"Scroll of Psionic Blast rebalanced:\n" +
@@ -89,7 +84,7 @@ public class v0_1_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+		changes.addButton( new ChangeButton(ChangeIcons.V010_SHPX, "Developer Commentary",
 				"_-_ Released August 5th, 2014\n" +
 				"_-_ 9 days after Pixel Dungeon source release\n" +
 				"_-_ 69 days after Pixel Dungeon v1.7.1\n" +
@@ -100,17 +95,17 @@ public class v0_1_X_Changes {
 				"\n" +
 				"At the time I didn't have any plans to add new content, I thought I was just going to spend a couple months rebalancing the game and that was it!"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SEED_EARTHROOT, null), "Seed Changes",
+		changes.addButton( new ChangeButton(ChangeIcons.V010_EARTHROOT, "Seed Changes",
 				"_-_ Blindweed buffed, now cripples as well as blinds.\n\n" +
 				"_-_ Sungrass nerfed, heal scales up over time, total heal reduced by combat.\n\n" +
 				"_-_ Earthroot nerfed, damage absorb down to 50% from 100%, total shield unchanged.\n\n" +
 				"_-_ Icecap buffed, freeze effect is now much stronger in water."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.POTION_SILVER, null), "Potion Changes",
+		changes.addButton( new ChangeButton(ChangeIcons.V010_POTION_SILVER, "Potion Changes",
 				"_-_ Potion of Purity buffed, immunity duration increased to 10 turns from 5, clear effect radius increased.\n\n" +
 				"_-_ Potion of Frost buffed, freeze effect is now much stronger in water."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCROLL_BERKANAN, null), "Scroll Changes",
+		changes.addButton( new ChangeButton(ChangeIcons.V010_SCROLL_BERKANAN, "Scroll Changes",
 				"_-_ Scroll of Psionic blast reworked, now rarer and much stronger, but deals damage to the hero.\n\n" +
 				"_-_ Scroll of Challenge renamed to Scroll of Rage, now amoks nearby enemies."));
 		

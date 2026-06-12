@@ -21,17 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
-import com.shatteredpixel.shatteredpixeldungeon.sprites.BatSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.EyeSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.MonkSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.RatSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.SkeletonSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.watabou.noosa.Image;
 
 import java.util.ArrayList;
 
@@ -47,7 +37,7 @@ public class Pixel_Dungeon_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.AMULET), "v1.9.X & v1.8.X",
+		changes.addButton( new ChangeButton( ChangeIcons.PD_AMULET, "v1.9.X & v1.8.X",
 				"_Developer Commentary:_\n" +
 				"Shattered Pixel Dungeon is based on the open source code of Pixel Dungeon, which was developed by Watabou from 2012 to 2015.\n" +
 				"\n" +
@@ -110,7 +100,7 @@ public class Pixel_Dungeon_Changes {
 				"\n" +
 				"and much more..."));
 
-		changes.addButton( new ChangeButton( Icons.get(Icons.CHALLENGE_COLOR), "v1.7.X",
+		changes.addButton( new ChangeButton( ChangeIcons.PD_CHALLENGES, "v1.7.X",
 				"**v1.7.5:** (January 22nd, 2015)\n" +
 				"**-** Added: New monster type\n" +
 				"**-** Added: New sounds\n" +
@@ -196,7 +186,7 @@ public class Pixel_Dungeon_Changes {
 				"\n" +
 				"and much more... "));
 
-		changes.addButton( new ChangeButton( new Image(new GhostSprite()), "v1.6.X",
+		changes.addButton( new ChangeButton( ChangeIcons.PD_GHOST, "v1.6.X",
 				"**v1.6.4:** (March 5th, 2014)\n" +
 				"**-** Added: Ring of Power (replaces Ring of Energy)\n" +
 				"**-** Added: Ring of Elements (replaces Rings of Cleansing and Resistance)\n" +
@@ -277,7 +267,7 @@ public class Pixel_Dungeon_Changes {
 				"\n" +
 				"...and more... "));
 
-		changes.addButton( new ChangeButton( new Image(new EyeSprite()), "v0.5.X",
+		changes.addButton( new ChangeButton( ChangeIcons.PD_EYE, "v0.5.X",
 				"**v0.5.4:** (October 24th, 2013)\n" +
 				"Pixel Dungeon 0.5.4 released! The focus of this update was mainly on visual aspect of the game, I tried to make it a little more animated. But there are also some new features in a sense of gameplay. For example, now you can find remains of your previous hero, perhaps even with some of his equipment.\n" +
 				"\n" +
@@ -357,7 +347,7 @@ public class Pixel_Dungeon_Changes {
 				"\n" +
 				"and more... "));
 
-		changes.addButton( new ChangeButton( new Image(new MonkSprite()), "v0.4.X",
+		changes.addButton( new ChangeButton( ChangeIcons.PD_MONK, "v0.4.X",
 				"**v0.4.5:** (July 4th, 2013)\n" +
 				"This is another small update, hopefully it will be the last one before the next content update (0.5). Here is the list of changes from Google Play:\n" +
 				"\n" +
@@ -446,7 +436,7 @@ public class Pixel_Dungeon_Changes {
 				"\n" +
 				"...and more "));
 
-		changes.addButton( new ChangeButton( new Image(new BatSprite()), "v0.3.X",
+		changes.addButton( new ChangeButton( ChangeIcons.PD_BAT, "v0.3.X",
 				"**v0.3.5:** (April 16th, 2013)\n" +
 				"(Note from Evan: I'm pretty sure this was the first version I played!)\n" +
 				"\n" +
@@ -513,7 +503,7 @@ public class Pixel_Dungeon_Changes {
 				"\n" +
 				"and more..."));
 
-		changes.addButton( new ChangeButton( new Image(new SkeletonSprite()), "v0.2.X",
+		changes.addButton( new ChangeButton( ChangeIcons.PD_SKELETON, "v0.2.X",
 				"**v0.2.4:** (February 5th, 2013)\n" +
 				"Pixel Dungeon 0.2.4 released. This update is dedicated to UI improvements. Here is the list of changes from Google Play:\n" +
 				"\n" +
@@ -578,7 +568,7 @@ public class Pixel_Dungeon_Changes {
 				"**-** Fixed bugs that sometimes caused the game to slow down or crash\n" +
 				"**-** Oh, and one more little thing..."));
 
-		changes.addButton( new ChangeButton( new Image(new RatSprite()), "v0.1.X",
+		changes.addButton( new ChangeButton( ChangeIcons.PD_RAT, "v0.1.X",
 				"**v0.1.4:** (December 19th, 2012)\n" +
 				"Pixel Dungeon 0.1.4 released:\n" +
 				"\n" +

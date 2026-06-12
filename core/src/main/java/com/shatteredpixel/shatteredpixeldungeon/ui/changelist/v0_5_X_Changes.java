@@ -21,12 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
-import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
 import java.util.ArrayList;
@@ -43,7 +39,7 @@ public class v0_5_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+		changes.addButton( new ChangeButton(ChangeIcons.V021_SHPX, "Developer Commentary",
 				"_-_ Released February 8th, 2017\n" +
 				"_-_ 115 days after Shattered v0.4.3\n" +
 				"_-_ 233 days after Shattered v0.4.0\n" +
@@ -52,24 +48,24 @@ public class v0_5_X_Changes {
 				"\n" +
 				"v0.5.0 was also Shattered's longest-developed update yet. While I don't think there was much I could do about this for v0.5.0 and v0.6.0, it started an unfortunate trend of major updates taking up to half a year! I eventually broke this trend in v0.9.0 by splitting these larger updates into smaller parts."));
 		
-		changes.addButton( new ChangeButton( Icons.get(Icons.STAIRS), "New Dungeon Visual Style!",
+		changes.addButton( new ChangeButton(ChangeIcons.V050_STAIRS, "New Dungeon Visual Style!",
 				"_-_ Walls and some terrain now have depth\n" +
 				"_-_ Characters & items are raised & cast shadows\n" +
 				"_-_ Added a visible tile grid in the settings menu"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(new Quarterstaff()), "Equipment Balance Changes",
+		changes.addButton( new ChangeButton(ChangeIcons.V050_QUARTERSTAFF, "Equipment Balance Changes",
 				"_-_ Quarterstaff armor bonus increased from 2 to 3\n\n" +
 				"_-_ Wand of Frost damage against chilled enemies reduced from -7.5% per turn of chill to -10%\n\n" +
 				"_-_ Wand of Transfusion self-damage reduced from 15% max hp to 10% max hp per zap\n\n" +
 				"_-_ Dried Rose charges 20% faster and the ghost hero is stronger, especially at low levels"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(new Stylus()), "Glyph Balance Changes",
+		changes.addButton( new ChangeButton(ChangeIcons.V040_STYLUS, "Glyph Balance Changes",
 				"_-_ Glyph of Entanglement activates less often but grants significantly more herbal armor\n\n" +
 				"_-_ Glyph of Stone armor bonus reduced from 2+level to 0+level\n\n" +
 				"_-_ Glyph of Antimagic magical damage resist reduced from 50% of armor to 33% of armor\n\n" +
 				"_-_ Glyph of Viscosity damage rate increased from 10% of deferred damage to 15%"));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(ChangesScene.class, "language"),
+		changes.addButton( new ChangeButton(ChangeIcons.V034_TRANSLATIONS, Messages.get(ChangesScene.class, "language"),
 				"_-_ Added new Language: Esperanto\n" +
 				"_-_ Added new Language: Indonesian\n"));
 	}

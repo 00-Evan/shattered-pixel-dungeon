@@ -51,6 +51,10 @@ public class ChangeButton extends Component {
 	public ChangeButton(Item item, String message ){
 		this( new ItemSprite(item), item.name(), message);
 	}
+
+	public ChangeButton(ChangeIcons icon, String title, String... message){
+		this( icon.get(), title, message );
+	}
 	
 	protected void onClick() {
 		ChangesScene.showChangeInfo(new Image(icon), title, messages);

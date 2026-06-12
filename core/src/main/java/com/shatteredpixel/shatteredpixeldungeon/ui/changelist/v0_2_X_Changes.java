@@ -21,17 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.watabou.noosa.Image;
 
 import java.util.ArrayList;
 
@@ -59,7 +51,7 @@ public class v0_2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+		changes.addButton( new ChangeButton(ChangeIcons.V021_SHPX, "Developer Commentary",
 				"_-_ Released February 23rd, 2015\n" +
 				"_-_ 48 days after Shattered v0.2.3\n" +
 				"\n" +
@@ -69,7 +61,7 @@ public class v0_2_X_Changes {
 				"\n" +
 				"After a lot of consideration, I decided to not implement degradation into Shattered. Instead I started planning other changes to solve this problem without restricting gameplay quite as much. Those changes would eventually show up in updates like v0.4.0 and v0.8.0."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(new Honeypot()), "Pixel Dungeon v1.7.5",
+		changes.addButton( new ChangeButton(ChangeIcons.V024_HONEYPOT, "Pixel Dungeon v1.7.5",
 				"v1.7.3 - v1.7.5 Source Implemented, with exceptions:\n" +
 				"_-_ Degredation not implemented.\n\n" +
 				"_-_ Badge syncing not implemented.\n\n" +
@@ -78,14 +70,14 @@ public class v0_2_X_Changes {
 				"_-_ Honey pots now shatter in a new item: shattered honeypot. A bee will defend its shattered pot to the death against anything that gets near.\n\n" +
 				"_-_ Bombs have been reworked/nerfed: they explode after a delay, no longer stun, deal more damage at the center of the blast, affect the world (destroy items, blow up other bombs)."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.BANDOLIER, null), "New Content",
+		changes.addButton( new ChangeButton(ChangeIcons.V024_BANDOLIER, "New Content",
 				"_-_ The huntress has been buffed: starts with Potion of Mind Vision identified, now benefits from strength on melee attacks, and has a chance to reclaim a single used ranged weapon from each defeated enemy.\n\n" +
 				"_-_ A new container: The Potion Bandolier! Potions can now shatter from frost, but the bandolier can protect them.\n\n" +
 				"_-_ Shops now stock a much greater variety of items, some item prices have been rebalanced.\n\n" +
 				"_-_ Added Merchant's Beacon.\n\n" +
 				"_-_ Added initials for IDed scrolls/potions."));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+		changes.addButton( new ChangeButton(ChangeIcons.V020_MISC, Messages.get(ChangesScene.class, "misc"),
 				"_-_ Going down stairs no longer increases hunger, going up still does.\n\n" +
 				"_-_ Many, many bugfixes.\n" +
 				"_-_ Some UI improvements.\n" +
@@ -100,7 +92,7 @@ public class v0_2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+		changes.addButton( new ChangeButton(ChangeIcons.V021_SHPX, "Developer Commentary",
 				"_-_ Released January 6th, 2015\n" +
 				"_-_ 64 days after Shattered v0.2.2\n" +
 				"\n" +
@@ -110,7 +102,7 @@ public class v0_2_X_Changes {
 				"\n" +
 				"Lastly, v0.2.3 brought the addition of the game's supporter system! While monetization isn't as exciting as new game content, the supporter system is the primary reason why I've been able to work on the game for so long."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(new TimekeepersHourglass()), "Artifact Changes",
+		changes.addButton( new ChangeButton(ChangeIcons.V023_HOURGLASS, "Artifact Changes",
 				"Added 4 new artifacts:\n" +
 				"_-_ Alchemist's Toolkit\n" +
 				"_-_ Unstable Spellbook\n" +
@@ -121,7 +113,7 @@ public class v0_2_X_Changes {
 				"_-_ Cloak of Shadows is now exclusive to the rogue\n" +
 				"_-_ Smaller Balance Changes and QOL improvements to almost every artifact"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.POTION_CRIMSON, null), "Balance Changes",
+		changes.addButton( new ChangeButton(ChangeIcons.V023_POTION_CRIMSON, "Balance Changes",
 				"_-_ Health potion farming has been nerfed from all sources\n" +
 				"_-_ Freerunner now moves at very high speeds when invisible\n" +
 				"_-_ Ring of Force buffed significantly\n" +
@@ -129,7 +121,7 @@ public class v0_2_X_Changes {
 				"_-_ Improved the effects of some blandfruit types\n" +
 				"_-_ Using throwing weapons now cancels stealth"));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+		changes.addButton( new ChangeButton(ChangeIcons.V020_MISC, Messages.get(ChangesScene.class, "misc"),
 				"_-_ Implemented a donation system in the Google Play version of Shattered\n\n" +
 				"_-_ Significantly increased the stability of the save system\n\n" +
 				"_-_ Increased the number of visible rankings to 11 from 6\n\n" +
@@ -141,7 +133,7 @@ public class v0_2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+		changes.addButton( new ChangeButton(ChangeIcons.V021_SHPX, "Developer Commentary",
 				"_-_ Released November 3rd, 2014\n" +
 				"_-_ 21 days after Shattered v0.2.1\n" +
 				"\n" +
@@ -151,7 +143,7 @@ public class v0_2_X_Changes {
 				"\n" +
 				"Heroes remains also received big changes this update. In Pixel Dungeon you could use remains to consistently pass highly upgraded armor from one run to the next. I felt this violated the roguelike nature of the game, and so I nerfed remains to prevent this."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.STONE_AUGMENTATION, null), "Pixel Dungeon v1.7.2",
+		changes.addButton( new ChangeButton(ChangeIcons.V022_WEIGHTSTONE, "Pixel Dungeon v1.7.2",
 				"Implemented directly from v1.7.2:\n" +
 				"_-_ Synchronous Movement\n" +
 				"_-_ Challenges\n" +
@@ -163,14 +155,14 @@ public class v0_2_X_Changes {
 				"_-_ Key ring and unstackable keys\n" +
 				"_-_ Blindweed has not been removed"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.Environment.TERRAIN_FEATURES, 112, 112, 16, 16), "New Plants",
+		changes.addButton( new ChangeButton(ChangeIcons.V022_DREAMFOIL, "New Plants",
 				"Added two new plants:\n" +
 				"_-_ Stormvine, which brews into levitation\n" +
 				"_-_ Dreamfoil, which brews into purity\n\n" +
 				"_-_ Potion of levitation can now be thrown to make a cloud of confusion gas\n\n" +
 				"_-_ Removed gas collision logic, gasses can now stack without limitation."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.REMAINS, null), "Heroes Remains",
+		changes.addButton( new ChangeButton(ChangeIcons.V022_REMAINS, "Heroes Remains",
 				"Heroes remains have been significantly adjusted to prevent strategies that exploit them, but also to increase their average loot.\n\n" +
 				"Remains have additional limitations:\n" +
 				"_-_ Heros will no longer drop remains if they have obtained the amulet of yendor, or die 5 or more floors above the deepest floor they have reached\n" +
@@ -187,7 +179,7 @@ public class v0_2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+		changes.addButton( new ChangeButton(ChangeIcons.V021_SHPX, "Developer Commentary",
 				"_-_ Released October 13th, 2014\n" +
 				"_-_ 28 days after Shattered v0.2.0\n" +
 				"\n" +
@@ -195,17 +187,17 @@ public class v0_2_X_Changes {
 				"\n" +
 				"This update also continued v0.2.0's trend of expanding Shattered's scope. I was no longer just planning to change items, but was now making additions and reworks to regions of the dungeon as well!"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.Sprites.GHOST, 0, 0, 14, 15), "New Sewer Quests",
+		changes.addButton( new ChangeButton(ChangeIcons.PD_GHOST, "New Sewer Quests",
 				"_-_ Removed the dried rose quest (the rose will return...)\n\n" +
 				"_-_ Tweaked the mechanics of the fetid rat quest\n\n" +
 				"_-_ Added a gnoll trickster quest\n\n" +
 				"_-_ Added a great crab quest"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.Sprites.GOO, 43, 3, 14, 11), "Goo Changes",
+		changes.addButton( new ChangeButton(ChangeIcons.V021_GOO, "Goo Changes",
 				"Goo's animations have been overhauled, including a particle effect for the area of its pumped up attack.\n\n" +
 				"Goo's arena has been updated to give more room to maneuver, and to be more variable."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.GUIDE_PAGE, null), "Story & Signpost Changes",
+		changes.addButton( new ChangeButton(ChangeIcons.V021_SIGNPOST, "Story & Signpost Changes",
 				"Most text in the sewers has been overhauled, including descriptions, quest dialogues, signposts, and story scrolls"));
 	}
 	
@@ -214,7 +206,7 @@ public class v0_2_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+		changes.addButton( new ChangeButton(ChangeIcons.V010_SHPX, "Developer Commentary",
 				"_-_ Released September 15th, 2014\n" +
 				"_-_ 31 days after Shattered v0.1.1\n" +
 				"_-_ 41 days after Shattered v0.1.0\n" +
@@ -227,7 +219,7 @@ public class v0_2_X_Changes {
 				"\n" +
 				"Giving the Cloak of Shadows to the Rogue was also my first attempt at a class rework. It was a much more simple change than later reworks, and I ended up revisiting the Rogue in v0.6.2."));
 
-		changes.addButton( new ChangeButton(new ItemSprite(new HornOfPlenty()), "Artifacts!",
+		changes.addButton( new ChangeButton(ChangeIcons.V020_HORN, "Artifacts!",
 				"Added artifacts to the game!\n\n" +
 				"Artifacts are unique items which offer new gameplay opportunities and grow stronger through unique means.\n\n" +
 				"Removed 7 Rings... And Replaced them with 7 Artifacts!\n" +
@@ -238,7 +230,7 @@ public class v0_2_X_Changes {
 				"_-_ Ring of Haggler becomes Master Thieves' Armband\n" +
 				"_-_ Ring of Naturalism becomes Sandals of Nature"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_DIAMOND, null), "New Rings!",
+		changes.addButton( new ChangeButton(ChangeIcons.V020_RING_DIAMOND, "New Rings!",
 				"To replace the lost rings, 6 new rings have been added:\n" +
 				"_-_ Ring of Force\n" +
 				"_-_ Ring of Furor\n" +
@@ -252,7 +244,7 @@ public class v0_2_X_Changes {
 				"_-_ Ring of Evasion\n" +
 				"_-_ Ring of Haste"));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+		changes.addButton( new ChangeButton(ChangeIcons.V020_MISC, Messages.get(ChangesScene.class, "misc"),
 				"-Nerfed farming health potions from fly swarms.\n\n" +
 				"-Buffed crazed bandit and his drops.\n\n" +
 				"-Made Blandfruit more common.\n\n" +

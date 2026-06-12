@@ -21,16 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
-import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Glaive;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
 import java.util.ArrayList;
@@ -54,7 +46,7 @@ public class v0_4_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+		changes.addButton( new ChangeButton(ChangeIcons.V021_SHPX, "Developer Commentary",
 				"_-_ Released October 16th, 2016\n" +
 				"_-_ 37 days after Shattered v0.4.2\n" +
 				"\n" +
@@ -62,7 +54,7 @@ public class v0_4_X_Changes {
 				"\n" +
 				"While it doesn't affect the content of the game, I also massively improved how Shattered is built from its source code in v0.4.2 and v0.4.3. This makes Shattered easier to compile for people who want to work with its open source, and also results in a compiled game that's a bit smaller and more efficient."));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Technical Improvements",
+		changes.addButton( new ChangeButton(ChangeIcons.V020_MISC, "Technical Improvements",
 				"_-_ Added rankings and hall of heroes sync via Google Play Games, for the Google Play version of Shattered.\n\n" +
 				"_-_ Added Power Saver mode in settings\n" +
 				"_-_ Download size reduced by ~25%\n" +
@@ -70,7 +62,7 @@ public class v0_4_X_Changes {
 				"_-_ Performance improvements\n" +
 				"_-_ Improved variety of level visuals"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.FLAIL, null), "Balance Changes",
+		changes.addButton( new ChangeButton(ChangeIcons.V043_FLAIL, "Balance Changes",
 				"_-_ Flail max damage increased by ~15%\n" +
 				"_-_ Wand of Frost damage reduction increased from 5% per turn of chill to 7.5%\n" +
 				"_-_ Ring of Furor speed bonus reduced by ~15% for slow weapons, ~0% for fast weapons\n" +
@@ -85,7 +77,7 @@ public class v0_4_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+		changes.addButton( new ChangeButton(ChangeIcons.V021_SHPX, "Developer Commentary",
 				"_-_ Released September 9th, 2016\n" +
 				"_-_ 46 days after Shattered v0.4.1\n" +
 				"\n" +
@@ -95,14 +87,14 @@ public class v0_4_X_Changes {
 						"\n" +
 						"Behind the scenes, the biggest changes were probably to various bits of game logic that assumed a constant map size of 32x32. After v0.4.2 many of these operations were made more efficient, and could work on variably sized maps, up to a new theoretical max of about 144x144."));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Technical Improvements",
+		changes.addButton( new ChangeButton(ChangeIcons.V020_MISC, "Technical Improvements",
 				"_-_ Many general performance improvements\n" +
 				"_-_ Game now uses 2 CPU cores, up from 1\n" +
 				"_-_ Reduced hitching on many devices\n" +
 				"_-_ Framerate improvements for older devices\n" +
 				"_-_ Game size reduced by ~10%"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(new Glaive()), "Balance Changes",
+		changes.addButton( new ChangeButton(ChangeIcons.V042_GLAIVE, "Balance Changes",
 				"_-_ Spear and Glaive damage reduced\n" +
 				"_-_ Runic blade damage reduced\n" +
 				"_-_ Grim enchant now procs more often\n" +
@@ -119,7 +111,7 @@ public class v0_4_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+		changes.addButton( new ChangeButton(ChangeIcons.V021_SHPX, "Developer Commentary",
 				"_-_ Released July 25th, 2016\n" +
 				"_-_ 35 days after Shattered v0.4.0\n" +
 				"\n" +
@@ -127,7 +119,7 @@ public class v0_4_X_Changes {
 				"\n" +
 				"Aside from the obvious numbers changes in this update, I also made armor much more reliable. In Shattered damage calculations have always used a 'triangular distribution', where the middle value is the most likely result, and the max or min are quite rare. Armor didn't use this prior to v0.4.1, which meant that even highly upgraded armor could be quite unreliable. Since v0.4.1, and other updates like v0.8.0, I now feel that armor is well-balanced versus weapons."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(new PlateArmor()), "Item Changes pt.1",
+		changes.addButton( new ChangeButton(ChangeIcons.V041_PLATE, "Item Changes pt.1",
 				"Armor and Enemy Balance Changes:\n" +
 				"_-_ Armor now has a min damage block value\n" +
 				"_-_ Armor gains more blocking from upgrades\n" +
@@ -151,7 +143,7 @@ public class v0_4_X_Changes {
 				"_-_ Corrupted enemies live longer & no longer attack eachother\n" +
 				"_-_ Wands in the holster now charge faster"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(new RunicBlade()), "Item Changes pt.2",
+		changes.addButton( new ChangeButton(ChangeIcons.V041_RUNICBLADE, "Item Changes pt.2",
 				"Ring Balance Changes:\n" +
 				"_-_ Ring of Force weaker at 18+ strength, stronger otherwise\n" +
 				"_-_ Ring of Tenacity reduces more damage\n" +
@@ -173,7 +165,7 @@ public class v0_4_X_Changes {
 				"_-_ Extra reach weapons no longer penetrate\n" +
 				"_-_ Runic blade damage decreased"));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+		changes.addButton( new ChangeButton(ChangeIcons.V020_MISC, Messages.get(ChangesScene.class, "misc"),
 				"_-_ Added a new journal button with key display\n" +
 				"_-_ Keys now exist in the journal, not inventory\n" +
 				"_-_ Improved donator menu button visuals\n" +
@@ -188,7 +180,7 @@ public class v0_4_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+		changes.addButton( new ChangeButton(ChangeIcons.V021_SHPX, "Developer Commentary",
 				"_-_ Released June 20th, 2016\n" +
 				"_-_ 50 days after Shattered v0.3.5\n" +
 				"_-_ 391 days after Shattered v0.3.0\n" +
@@ -199,7 +191,7 @@ public class v0_4_X_Changes {
 				"\n" +
 				"I also retooled curses to try and make them more about negative effects than negative stats. This meant the player had more flexibility when it came to trying gear out, as equipping a cursed item wasn't an almost certain game over."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(new Longsword()), "Equipment Overhaul!",
+		changes.addButton( new ChangeButton(ChangeIcons.V040_LONGSWORD, "Equipment Overhaul!",
 				"_-_ 13 new weapons, 12 rebalanced weapons\n" +
 				"\n" +
 				"Equipment Balance:\n" +
@@ -218,7 +210,7 @@ public class v0_4_X_Changes {
 				"_-_ Arcane styli slightly more common\n" +
 				"_-_ Better item drops on floors 22-24"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(new Stylus()), "Curse, Enchant, & Glyph Overhaul!",
+		changes.addButton( new ChangeButton(ChangeIcons.V040_STYLUS, "Curse, Enchant, & Glyph Overhaul!",
 				"_-_ 3 new enchants, 10 rebalanced enchants\n" +
 				"_-_ 8 new glyphs, 5 rebalanced glyphs\n" +
 				"_-_ 12 new curse effects\n" +
@@ -229,7 +221,7 @@ public class v0_4_X_Changes {
 				"_-_ Upgrades now weaken curses\n" +
 				"_-_ Remove curse scrolls now affect 1 item"));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+		changes.addButton( new ChangeButton(ChangeIcons.V020_MISC, Messages.get(ChangesScene.class, "misc"),
 				"Class Balance:\n" +
 				"_-_ Huntress now starts with knuckleduster\n" +
 				"_-_ Assassin sneak bonus damage reduced\n" +
