@@ -100,7 +100,7 @@ public class Pixel_Dungeon_Changes {
 				"\n" +
 				"and much more..."));
 
-		changes.addButton( new ChangeButton( ChangeIcons.PD_CHALLENGES, "v1.7.X",
+		changes.addButton( new ChangeButton( ChangeIcons.PD_BADGE_ASCENT, "v1.7.X",
 				"**v1.7.5:** (January 22nd, 2015)\n" +
 				"**-** Added: New monster type\n" +
 				"**-** Added: New sounds\n" +
