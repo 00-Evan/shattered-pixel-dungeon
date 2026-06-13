@@ -21,37 +21,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
-import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImage;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTransfusion;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gauntlet;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Tomahawk;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.watabou.noosa.Image;
 
 import java.util.ArrayList;
 
@@ -75,7 +48,7 @@ public class v0_7_X_Changes {
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+		changes.addButton( new ChangeButton(ChangeIcons.V074_SHPX, "Developer Commentary",
 				"_-_ Released October 2nd, 2019\n" +
 				"_-_ 76 days after Shattered v0.7.4\n" +
 				"\n" +
@@ -83,14 +56,14 @@ public class v0_7_X_Changes {
 				"\n" +
 				"The only major correction to these changes that I needed to make in the future were to Tengu's boss fight. In the second phase of the fight in v0.7.5 the player had to navigate around traps while Tengu was offscreen. I wanted this to be a bit of a break, but it felt more like it interrupted the fight than anything else. After v0.8.0 it was clear to me that multi-phase bosses did not need break phases, and so I removed the second phase from Tengu."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SNAKE, 12, 0, 12, 11), "Sewer Enemies",
+		changes.addButton( new ChangeButton( ChangeIcons.V075_SNAKE, "Sewer Enemies",
 				"Two new enemies have been added to the sewers!\n\n" +
 				"_- Snakes_ are an evasive enemy which mainly shows up on early floors, they help teach the importance of surprise attacks.\n" +
 				"_- Slimes_ primarily appear on floor 4, and are an enemy type which rewards defense over damage.\n\n" +
 				"Goo's level has also received significant changes. It now uses a new unique level layout pattern, and Goo itself always spawns in a new unique room type.\n\n" +
 				"I have also made slight balance changes to the Goo fight itself. 1x1 pillars have been mostly removed from Goo's arena to reduce surprise-attack spam, but Goo's damage has been reduced by 20% to compensate."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.Sprites.TENGU, 0, 0, 14, 16), "Prison Enemies",
+		changes.addButton( new ChangeButton( ChangeIcons.V075_TENGU, "Prison Enemies",
 				"_Necromancers_ have been added to the prison! These powerful enemies fight by summoning and buffing undead.\n\n" +
 				"The _Tengu_ boss fight has been totally reworked! The fight still takes place over 3 stages, and has a similar core theme, but I have totally ditched the tedious maze and chasing mechanics from stages 2&3, and have given Tengu several new abilities. Watch your step!\n\n" +
 				"As a part of this rework, Tengu's stats have also been adjusted:\n" +
@@ -99,7 +72,7 @@ public class v0_7_X_Changes {
 				"_-_ Damage reduced by 30%\n" +
 				"_-_ Accuracy reduced by 10%"));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.LIBGDX), "libGDX Text Rendering!",
+		changes.addButton( new ChangeButton( ChangeIcons.V074_LIBGDX, "libGDX Text Rendering!",
 				"The game's text renderer is now using libGDX freetype. This looks almost identical to the existing text but is slightly crisper, platform-independent, and much more efficient!\n\n" +
 				"Text rendering was the last bit of android-dependant code, so the game's core code modules (~98% of its code) are now being compiled as general code and not android-specific code!"));
 
@@ -107,7 +80,7 @@ public class v0_7_X_Changes {
 		changes.hardlight( CharSprite.WARNING );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(new Image(Assets.Sprites.RAT, 0, 15, 16, 15), "Enemy Changes",
+		changes.addButton( new ChangeButton( ChangeIcons.V075_ALBINO_RAT, "Enemy Changes",
 				"_-_ Significantly improved the consistency of enemy spawns (large numbers of the same enemy and large enemy groups should be less common)\n\n" +
 				"_-_ Adjusted enemy spawn chances on floors 1-10 to make room for new enemies\n\n" +
 				"_-_ Skeletons no longer rarely appear on floor 4\n\n" +
@@ -117,13 +90,13 @@ public class v0_7_X_Changes {
 				"_-_ Albino rats now grant 2 exp, up from 1\n" +
 				"_-_ Albino rats now drop mystery meat"));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+		changes.addButton( new ChangeButton(ChangeIcons.V020_MISC, Messages.get(ChangesScene.class, "misc"),
 				"_-_ The game camera now smoothly follows the hero while they are moving, instead of snapping to their location.\n\n" +
 				"_-_ Standardized word use when attacks miss to reduce confusion. Enemies now always 'block' or 'dodge'.\n\n" +
 				"_-_ Various improvements to wording on the supporter menu for Google Play users.\n\n" +
 				"_-_ Various internal code improvements"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton( new ChangeButton(ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
 				"_-_ Various stability issues caused by the libGDX conversion\n" +
 				"_-_ Bolts from wand of lightning not spreading in many cases where they should\n" +
@@ -137,7 +110,7 @@ public class v0_7_X_Changes {
 				"_-_ Small amounts of stuttering when the hero moves\n" +
 				"_-_ Various rare crash bugs"));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(ChangesScene.class, "language"),
+		changes.addButton( new ChangeButton(ChangeIcons.V034_TRANSLATIONS, Messages.get(ChangesScene.class, "language"),
 				"Added new Language: Japanese!\n\n" +
 				"Updated Translations and Translator Credits!"));
 		
@@ -145,20 +118,20 @@ public class v0_7_X_Changes {
 		changes.hardlight( CharSprite.POSITIVE );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAND_BLAST_WAVE, null), "Wand Buffs",
+		changes.addButton( new ChangeButton( ChangeIcons.V075_BLASTWAVE, "Wand Buffs",
 				"Blast wave is an excellent sidearm wand, but not as good when invested in. I'm making the wand a bit stronger and less risky to hopefully make it more worthy of upgrades.\n" +
 				"_-_ Increased AOE damage from 67% to 100%, AOE knockback force is unchanged\n" +
 				"_-_ AOE no longer damages hero/allies, but still knocks them back\n\n" +
 				"Corrosion is a very powerful wand in the right hands, but is currently a bit too hard to use right. I'm lightly buffing it to make its power a bit more accessible.\n" +
 				"_-_ Corrosion gas starting damage increased to 2+lvl from 1+lvl"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_AMETHYST, null), "Ring Buffs",
+		changes.addButton( new ChangeButton( ChangeIcons.V061_RING_AMETHYST, "Ring Buffs",
 				"Based on their performance, I'm giving a light buff to ring of energy, and a more significant buff to ring of wealth:\n\n" +
 				"_-_ Ring of energy charge boost increased to 30% per level, from 25%\n\n" +
 				"_-_ Ring of wealth exclusive drops are 20% more common\n" +
 				"_-_ Rare ring of wealth exclusive drops are now 33% more common"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.LONGSWORD, new ItemSprite.Glowing( 0x440066 )), "Glyph/Enchant Buffs",
+		changes.addButton( new ChangeButton( ChangeIcons.V075_LONGSWORD_CORRUPTING, "Glyph/Enchant Buffs",
 				"I'm giving some significant buffs to underperforming rare enchants/glyphs:\n\n" +
 				"_-_ Proc chance for corruption enchant increased by ~25% at all levels\n\n" +
 				"_-_ Proc chance for glyph of affection increased by ~50% at +0, scaling to ~10% at +10"));
@@ -167,13 +140,13 @@ public class v0_7_X_Changes {
 		changes.hardlight( CharSprite.NEGATIVE );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(new WandOfLivingEarth(),
+		changes.addButton( new ChangeButton( ChangeIcons.V074_LIVING_EARTH, "Wand of Living Earth",
 				"I'm adjusting the wand of living earth to make it less able to stand on its own as a run-winning item. It should excel at providing defensive power, but shouldn't also give good offense.\n\n" +
 				"_-_ Guardian average damage decreased by 33%\n" +
 				"_-_ Base wand damage up to 4-6 from 3-6\n" +
 				"_-_ Wand damage scaling down to 0-2 from 1-2"));
 		
-		changes.addButton( new ChangeButton(new WandOfCorruption(),
+		changes.addButton( new ChangeButton( ChangeIcons.V062_CORRUPTION, "Wand of Corruption",
 				"Corruption is performing extremely well when invested in, so I'm buffing its base power but reducing its upgraded power. I'm also putting more emphasis on debuffs helping corruption chances:\n\n" +
 				"_-_ Corruption resistance reduction from minor debuffs up to 25% from 20%\n" +
 				"_-_ Corruption resistance reduction from major debuffs up to 50% from 33%\n" +
@@ -191,7 +164,7 @@ public class v0_7_X_Changes {
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+		changes.addButton( new ChangeButton(ChangeIcons.V021_SHPX, "Developer Commentary",
 				"_-_ Released July 18th, 2019\n" +
 				"_-_ 56 days after Shattered v0.7.3\n" +
 				"\n" +
@@ -201,15 +174,15 @@ public class v0_7_X_Changes {
 				"\n" +
 				"v0.7.4 was also the first update to begin laying groundwork for releasing Shattered on other platforms! While it would still take a while after this to actually release there, these technical changes were an important first step."));
 
-		changes.addButton( new ChangeButton(new WandOfWarding(),
+		changes.addButton( new ChangeButton( ChangeIcons.V074_WARDING, "Wand of Warding",
 				"This brand new wand spawns autonomous wards which attack enemies. Wards can be upgraded by being zapped again, and eventually form up into sentry turrets.\n\n" +
 				"The Wand of Warding does very consistent damage, but requires some setup first."));
 
-		changes.addButton( new ChangeButton(new WandOfLivingEarth(),
+		changes.addButton( new ChangeButton( ChangeIcons.V074_LIVING_EARTH, "Wand of Living Earth",
 				"This new wand has a lower damage output, but grants significant defensive power. The rocks the wand shoots at enemies reform around the hero and absorb damage. If enough rock is built, it will form up into a rock guardian which fights with the player.\n\n" +
 				"The Wand of Living Earth is lacking in offensive output, but does a great job of pulling focus and damage away from the player."));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LIBGDX), "libGDX",
+		changes.addButton( new ChangeButton( ChangeIcons.V074_LIBGDX, "libGDX",
 				"Large sections of Shattered's codebase is now using the multiplatform game library _libGDX._ Making the game's codebase less heavily tied to Android is a big step towards making the game available on other platforms!\n\n" +
 				"Keyboard input handling and text rendering are still coupled to Android however. I will convert these game systems to use libGDX in a later update.\n\n" +
 				"Note that Shattered will not immediately release on other platforms once libGDX conversion is complete, but it is a big step towards that."));
@@ -218,13 +191,13 @@ public class v0_7_X_Changes {
 		changes.hardlight( CharSprite.WARNING );
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.EXOTIC_BERKANAN), "Ally AI improvements",
+		changes.addButton( new ChangeButton( ChangeIcons.V074_EXOTIC_BERKANAN, "Ally AI improvements",
 				"Allies which follow the player are now considered to be 'intelligent', and have the following improved behaviours:\n" +
 				"_-_ Intelligent allies will not attack enemies which are asleep, or which haven't noticed the player yet.\n" +
 				"_-_ Intelligent allies will follow the hero through stairs so long as they are near to them.\n\n" +
 				"Lastly, the hero can now swap places with any ally, even unintelligent ones."));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+		changes.addButton( new ChangeButton(ChangeIcons.V020_MISC, Messages.get(ChangesScene.class, "misc"),
 				"_-_ Overhauled main menu interface to allow for more expandability.\n" +
 				"_-_ Updated hero icons in rankings and saved game screens.\n\n" +
 				"_-_ Class armor abilities no longer affect allies\n" +
@@ -236,7 +209,7 @@ public class v0_7_X_Changes {
 				"_-_ Shattered Pixel Dungeon now requires Android 2.3+ to run, up from Android 2.2+.\n" +
 				"_-_ Google Play Games and sharing gameplay data now requires android 4.1+, up from 4.0+."));
 
-		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton( new ChangeButton(ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
 				"_-_ Talisman of foresight warn effect not being saved/loaded\n" +
 				"_-_ Level visuals (e.g. prison torches) rarely bugging out\n" +
@@ -251,21 +224,21 @@ public class v0_7_X_Changes {
 				"_-_ Various rare bugs with heavy boomerangs\n" +
 				"_-_ Various minor text errors"));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(ChangesScene.class, "language"),
+		changes.addButton( new ChangeButton(ChangeIcons.V034_TRANSLATIONS, Messages.get(ChangesScene.class, "language"),
 				"Updated Translations"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight( CharSprite.POSITIVE );
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(new DriedRose(),
+		changes.addButton( new ChangeButton( ChangeIcons.V061_ROSE, "Dried Rose",
 				"The Dried Rose's ghost hero has received some buffs and adjustments to go along with other ally improvements:\n\n" +
 				"_-_ The ghost hero can now be given instructions by using the rose after summoning them, and tapping on a location.\n\n" +
 				"_-_ Ghost HP scaling increased to 8 per petal, from 4.\n" +
 				"_-_ Ghost evasion reduced to 1x hero evasion from 2x.\n" +
 				"_-_ Ghost now heals over time while they are summoned."));
 
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.NOISEMAKER, null), "Enhanced Bomb Buffs",
+		changes.addButton( new ChangeButton( ChangeIcons.V074_NOISEMAKER, "Enhanced Bomb Buffs",
 				"Many enchant bombs are performing poorly compared to some of the more popular ones, such as holy bombs and boss bombs. While I am toning down the strongest bombs a bit, I'm also making some pretty significant buffs to weaker bombs:\n\n" +
 				"_-_ Frost bomb cost down to 2 from 3, now instantly freezes enemies caught in the blast in addition to chilling.\n" +
 				"_-_ Woolly bomb cost down to 2 from 3, now does regular bomb damage in addition to spawning sheep.\n" +
@@ -274,7 +247,7 @@ public class v0_7_X_Changes {
 				"_-_ Shock bomb cost increased to 6 from 5, now stuns/damages immediately instead of over time with electricity.\n" +
 				"_-_ Regrowth bomb cost increased to 8 from 6, now heals significantly more and spawns more plants."));
 
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.LONGSWORD, new ItemSprite.Glowing(0xFF4400)), "Enchant/Glyph Buffs",
+		changes.addButton( new ChangeButton( ChangeIcons.V074_LONGSWORD_BLAZING, "Enchant/Glyph Buffs",
 				"Continuing from the changes in 0.7.3, I'm still watching enchantment balance and making buffs where there's room to do so:\n\n" +
 				"_-_ Blazing Enchantment bonus damage increased to 2/3 of burning damage, from 1-3.\n" +
 				"_-_ Shocking Enchantment damage increased to 40% from 33%.\n" +
@@ -283,7 +256,7 @@ public class v0_7_X_Changes {
 				"_-_ Corrupting Enchantment base proc chance increased to 15% from 10%, scaling reduced to compensate.\n\n" +
 				"_-_ Glyph of Flow now grants a flat 2x speed boost in water, up from 1.5x + 0.1x per level."));
 
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WILD_ENERGY, null), "Misc Item Buffs",
+		changes.addButton( new ChangeButton( ChangeIcons.V074_WILD_ENERGY, "Misc Item Buffs",
 				"_-_ Wild energy now gives 4 turns of charging instantly, and 8 turns over time. Up from 10 turns over time.\n\n" +
 				"_-_ Stone of Clairvoyance radius increased to 12 from 8. This increases the area by ~2.25x.\n\n" +
 				"_-_ Allies are now healed by magical sleep, just like the hero."));
@@ -292,7 +265,7 @@ public class v0_7_X_Changes {
 		changes.hardlight( CharSprite.NEGATIVE );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton( new Image(Assets.Sprites.MAGE, 0, 90, 12, 15), "Subclass Adjustments",
+		changes.addButton( new ChangeButton( ChangeIcons.V063_MAGE_HEROARM, "Subclass Adjustments",
 				"The Warlock is intended to require a source of physical damage in addition to a wand to be successful. Upgradeable ally wands are problematic for warlock as you can get magical power and physical damage in one item, which makes his abilities absurdly useful with them. The warlock should synergize with allies, but I have scaled the amount down to more reasonable levels:\n\n" +
 				"_-_ Soul mark healing increased to 40% of damage from 33%\n" +
 				"_-_ Soul mark is now 2/5 as effective when the damage-dealer isn't the hero.\n\n" +
@@ -300,12 +273,12 @@ public class v0_7_X_Changes {
 				"_-_ Berserker rate of rage loss over time increased by 33% (it is now 2/3 of what it was pre-0.7.3).\n\n" +
 				"_-_ Freerunner bonus evasion reduced by 20%."));
 
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARMOR_MAIL, new ItemSprite.Glowing(0x88EEFF)), "Glyph Nerfs",
+		changes.addButton( new ChangeButton( ChangeIcons.V074_MAIL_ANTIMAGIC, "Glyph Nerfs",
 				"_-_ Glyph of Thorns bleed amount reduced to 4+lvl from 4+2*lvl, proc rate increased.\n\n" +
 				"_-_ Glyph of Antimagic base damage reduction reduced to 0-4 from 2-4.\n\n" +
 				"_-_ Glyph of Brimstone shield generation removed. The glyph now only protects the user from fire and does not also grant shielding when the user is aflame."));
 
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARCANE_BOMB, null), "Enhanced Bomb Nerfs",
+		changes.addButton( new ChangeButton( ChangeIcons.V074_ARCANE_BOMB, "Enhanced Bomb Nerfs",
 				"_-_ Holy Bomb no longer blinds characters caught in the blast, recipe cost up to 8 from 6.\n\n" +
 				"_-_ Arcane Bomb damage now falls off based on distance. Reduced to 100%/83%/67% from all 100%.\n\n" +
 				"_-_ Shrapnel Bomb damage now slightly falls off based on distance. Damage is reduced by 5% per tile of distance."));
@@ -321,7 +294,7 @@ public class v0_7_X_Changes {
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+		changes.addButton( new ChangeButton(ChangeIcons.V021_SHPX, "Developer Commentary",
 				"_-_ Released May 23rd, 2019\n" +
 				"_-_ 66 days after Shattered v0.7.2\n" +
 				"\n" +
@@ -329,21 +302,21 @@ public class v0_7_X_Changes {
 				"\n" +
 				"There were also significant additions and improvements to alchemy and thrown weapons. Just like with enchantments, I was still working on finding the best balancing for many alchemy recipes. v0.7.3 helped, but more changes were needed to the system itself in future updates. One notable change was allowing players to create tipped darts anywhere, instead of having it by part of the alchemy system. This led to a huge increase to the usage of tipped darts."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.LONGSWORD, new ItemSprite.Glowing(0xFFFF00)), "Enchantment Changes",
+		changes.addButton( new ChangeButton( ChangeIcons.V073_LONGSWORD_SWIFT, "Enchantment Changes",
 				"Several changes have been made to enchantments, based on feedback from 0.7.2:\n\n" +
 				"_-_ Precise and swift enchantments have been removed.\n\n" +
 				"_-_ Lucky and blooming are now uncommon enchants, instead of rare and common.\n\n" +
 				"_-_ Kinetic is a new common enchantment! This enchantment preserves excess damage when an enemy is killed and applies it to your next hit.\n\n" +
 				"_-_ Corrupting is a new rare enchantment! When killing an enemy, there is a chance you will corrupt it instead."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.KUNAI, null), "New Thrown Weapons",
+		changes.addButton( new ChangeButton( ChangeIcons.V073_KUNAI, "New Thrown Weapons",
 				"Four new thrown weapons have been added!\n\n" +
 				"_-_ Throwing clubs are a tier-2 weapon with extra durability\n\n" +
 				"_-_ Kunai are a tier-3 weapon with bonus damage on sneak attacks\n\n" +
 				"_-_ Heavy boomerangs are a tier-4 weapon which returns after being thrown\n\n" +
 				"_-_ Force cubes are a tier-5 weapon which damage enemies in a 3x3 area"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ELIXIR_ARCANE, null), "New Boss Recipes",
+		changes.addButton( new ChangeButton( ChangeIcons.V073_ARCANE_ARMOR, "New Boss Recipes",
 				"Two new recipes have been added, one which uses goo blobs and another which uses metal shards.\n\n" +
 				"_-_ Elixir of arcane armor requires a goo blob and a potion of earthen armor. It grants a long-lasting resistance to magic.\n\n" +
 				"_-_ Wild energy requires a metal shard and a scroll of mystical energy. It grants large amounts of recharging, but with some unpredictable effects attached!"));
@@ -352,12 +325,12 @@ public class v0_7_X_Changes {
 		changes.hardlight( CharSprite.WARNING );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(new Dart(),
+		changes.addButton( new ChangeButton( ChangeIcons.V073_DART, "Darts",
 				"Dart tipping has been removed from the alchemy system. Darts can instead be tipped right from the inventory.\n\n" +
 				"Tipped darts have had their shop price reduced by 33%, and can now be cleaned if you don't wish to use the effect.\n\n" +
 				"The alchemy guide has been adjusted due to the removal of dart tipping from alchemy. It now has 9 pages (down from 10), and the order of pages have been adjusted to put some simpler recipes earlier."));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+		changes.addButton( new ChangeButton(ChangeIcons.V020_MISC, Messages.get(ChangesScene.class, "misc"),
 				"_-_ Shattered honeypots are now stackable, and can be sold for a small amount of gold.\n\n" +
 				"_-_ The changes list has been split into three separate groups, so that the game's entire change history isn't loaded all at once.\n\n" +
 				"_-_ Tengu now throws his shurikens one at a time, just like other ranged enemies. The speed of the shurikens has been increased to compensate, so that the player doesn't need to keep waiting while Tengu's attacks are in flight.\n\n" +
@@ -367,7 +340,7 @@ public class v0_7_X_Changes {
 				"_-_ Scrolls of transmutation can now be used on thrown weapons.\n\n" +
 				"_-_ Improved the coloration of crystal keys. They should now be more distinct from iron keys."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton( new ChangeButton(ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
 				"_-_ Prismatic images causing errors when falling into pits\n" +
 				"_-_ Secret rooms never spawning in the earlier parts of a region\n" +
@@ -380,14 +353,14 @@ public class v0_7_X_Changes {
 				"_-_ Various minor visual bugs\n" +
 				"_-_ Various rare crash bugs"));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(ChangesScene.class, "language"),
+		changes.addButton( new ChangeButton(ChangeIcons.V034_TRANSLATIONS, Messages.get(ChangesScene.class, "language"),
 				"Updated Translations"));
 		
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight( CharSprite.POSITIVE );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton( new Image(Assets.Sprites.WARRIOR, 0, 90, 12, 15), "Berserker & Gladiator",
+		changes.addButton( new ChangeButton( ChangeIcons.V035_WARRIOR_HEROARM, "Berserker & Gladiator",
 				"Because of nerfs I have made to the scaling of the warrior's shield regen, I have some power budget to give to his subclasses!\n\n" +
 				"Berserker rate of rage loss decreased by 50%. It should now be easier to hold onto rage at higher health, but being injured will still help to retain it longer.\n\n" +
 				"Gladiator is now significantly more flexible:\n" +
@@ -395,20 +368,20 @@ public class v0_7_X_Changes {
 				"_-_ Throwing weapons now increment combo\n" +
 				"_-_ Slam ability now deals damage based on armor, instead of simply increasing damage."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CURSE_INFUSE, null), "Boss Recipe Buffs",
+		changes.addButton( new ChangeButton( ChangeIcons.V073_CURSE_INFUSION, "Boss Recipe Buffs",
 				"All recipes made with ingredients dropped by bosses have been buffed (except bombs):\n\n" +
 				"_-_ Caustic brew now affects a 7x7 area, up from 5x5. Energy cost of caustic brew reduced to 4 from 8.\n\n" +
 				"_-_ Elixir of aquatic rejuvenation now heals faster, and does not waste healing if the hero is not in water. Total amount of healing reduced to compensate.\n\n" +
 				"_-_ Curse Infusion now grants a single upgrade to wands/weapons/armor in addition to cursing. This upgrade is lost if the item is uncursed.\n\n" +
 				"_-_ Reclaim trap no longer grants recharging, now stores the trap instead. The trap can then be triggered anywhere the player likes."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_EMERALD, null), "Other Item Buffs",
+		changes.addButton( new ChangeButton( ChangeIcons.V063_RING_EMERALD, "Other Item Buffs",
 				"_-_ Ring of elements now grants 20% resistance per level, up from 16%. However, ring of elements also no longer applies to melee attacks from magic-wielding enemies.\n\n" +
 				"_-_ Throwing stone base damage increased to 2-5 from 1-5\n" +
 				"_-_ Throwing stone durability increased to 5 from 3\n\n" +
 				"_-_ Throwing hammer base damage increased to 10-20 from 8-20"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARMOR_SCALE, new ItemSprite.Glowing( 0x663300 )), "Enchant/Glyph Buffs",
+		changes.addButton( new ChangeButton( ChangeIcons.V073_SCALE_AFFECTION, "Enchant/Glyph Buffs",
 				"_-_ Vampiric now has a chance to heal for large amounts, instead of always healing for small amounts.\n\n" +
 				"_-_ Entanglement no longer roots, now only applies herbal armor buff. Amount of herbal armor granted reduced to compensate.\n\n" +
 				"_-_ Affection charm duration up to 8-12 from 4-12. This means an affection proc now guarantees a free hit.\n\n" +
@@ -418,16 +391,16 @@ public class v0_7_X_Changes {
 		changes.hardlight( CharSprite.NEGATIVE );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(new Tomahawk(),
+		changes.addButton( new ChangeButton( ChangeIcons.V073_TOMAHAWK, "Tomahawk",
 				"The Tomahawk has been adjusted to make its damage more upfront, but also to reduce its extreme damage scaling with upgrades.\n\n" +
 				"_-_ Tomahawk damage scaling increased to 2-4 per level, up from 2-2\n" +
 				"_-_ Tomahawk bleed damage now starts at 60% of damage, down from 100%"));
 		
-		changes.addButton( new ChangeButton( new Image(Assets.Sprites.WARRIOR, 0, 15, 12, 15), "Warrior Nerfs",
+		changes.addButton( new ChangeButton( ChangeIcons.V035_WARRIOR_CLOTH, "Warrior Nerfs",
 				"Warrior shielding regeneration scaling reduced. It is now a flat 1 shield every 30 turns. This is a very slight buff to the earlygame, and a significant nerf to the lategame.\n\n" +
 				"I made this change as too much of the warrior's power was put into his base class, and into a passive ability that players tend to ignore. By removing this power, I can put more power into the warrior's subclasses, which should make the warrior feel more fun and interesting without significantly nerfing him overall."));
 		
-		changes.addButton( new ChangeButton( new Image(Assets.Environment.TERRAIN_FEATURES, 16, 0, 16, 16), "Trap Adjustments!",
+		changes.addButton( new ChangeButton( ChangeIcons.V062_FIRE_TRAP, "Trap Adjustments!",
 				"Several traps have been slightly adjusted due to reclaim trap's new functionality:\n\n" +
 				"_-_ Disintegration trap no longer deals damage based on target HP\n" +
 				"_-_ Flock trap duration no longer scales with depth\n" +
@@ -437,7 +410,7 @@ public class v0_7_X_Changes {
 				"_-_ Rockfall traps trigger in a 5x5 AOE when cast from reclaim trap\n" +
 				"_-_ Bosses will resist weakening traps"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARMOR_PLATE, new ItemSprite.Glowing( 0x660022 )), "Enchant/Glyph Nerfs",
+		changes.addButton( new ChangeButton( ChangeIcons.V073_PLATE_BRIMSTONE, "Enchant/Glyph Nerfs",
 				"_-_ Chilling now only stacks the chilled debuff up to 6 turns.\n\n" +
 				"_-_ Thorns now bleeds enemies for a set amount based on armor level, instead of scaling with damage dealt.\n\n" +
 				"_-_ Antimagic no longer affects the melee attacks of magic wielding enemies.\n" +
@@ -453,7 +426,7 @@ public class v0_7_X_Changes {
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+		changes.addButton( new ChangeButton(ChangeIcons.V021_SHPX, "Developer Commentary",
 				"_-_ Released Mar 18th, 2019\n" +
 				"_-_ 90 days after Shattered v0.7.1\n" +
 				"\n" +
@@ -461,14 +434,14 @@ public class v0_7_X_Changes {
 				"\n" +
 				"This update also made some substantial design changes to enchantments. Since enchantments were more accessible after v0.7.0, I wanted to adjust them to be more about gameplay variety and less about raw damage. Prior to this update several of the most common enchantments were essentially direct increases to damage. Changing this was a good overall direction, but some of the specific changes in v0.7.2 missed the mark, and so I had to revisit enchantment mechanics shortly after."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.BREW_UNSTABLE, null), "Catalysts!",
+		changes.addButton( new ChangeButton( ChangeIcons.V072_ALCHEMICAL_CATALYST, "Catalysts!",
 				"Added two new recipes: _Alchemical Catalysts_ and _Arcane Catalysts._\n\n" +
 				"These catalysts are made with any potion/scroll, and a seed/runestone. They replace many specific items for higher-cost recipes. Alchemy should be much more flexible now!\n\n" +
 				"Additional Alchemy Changes:\n\n" +
 				"When a recipe asks for any item of a certain type that item no longer has to be identified.\n\n" +
 				"Alchemy guidebook pages now spawn more slowly at earlier stages of the game, and significantly faster at later stages of the game."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.LONGSWORD, new ItemSprite.Glowing(0x0000FF)), "Enchantment Overhaul!",
+		changes.addButton( new ChangeButton( ChangeIcons.V072_LONGSWORD_BLOCKING, "Enchantment Overhaul!",
 				"Enchantments have been significantly rebalanced to be less about direct damage and more about utility and situational power. Their design should now be more similar to glyphs.\n\n" +
 				"Buffed Enchants: Chilling, Lucky.\n\n" +
 				"Nerfed Enchants: Blazing, Shocking, Grim, Vampiric\n\n" +
@@ -477,7 +450,7 @@ public class v0_7_X_Changes {
 				"New Curse: Polarized.\n\n" +
 				"Some battlemage effects have been adjusted to accommodate these new enchantments. Most of these are very minor, except staff of regrowth, which now procs blooming."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.MAGIC_INFUSE, null), "Enchantment Adjustments",
+		changes.addButton( new ChangeButton( ChangeIcons.V072_MAGICAL_INFUSION, "Enchantment Adjustments",
 				"_-_ Significantly adjusted when enchants/glyphs are lost when items are upgraded. Items are now always safe up to +4, then have a growing chance until +8 where enchantment loss is guaranteed.\n\n" +
 				"_-_ Upgrades now have a set 33% chance to cleanse curses, instead of a chance which scales with level.\n\n" +
 				"Magical Infusion spell adjusted:\n" +
@@ -488,7 +461,7 @@ public class v0_7_X_Changes {
 		changes.hardlight( CharSprite.WARNING );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.BREW_INFERNAL, null), "Combination Items",
+		changes.addButton( new ChangeButton(ChangeIcons.V072_FROSTFIRE_BREW, "Combination Items",
 				"The following combination items are no longer craftable, and are effectively removed from the game:\n" +
 				"_-_ Wicked Brew\n" +
 				"_-_ Frigid Brew\n" +
@@ -497,7 +470,7 @@ public class v0_7_X_Changes {
 				"_-_ Elixir of Vitality\n\n" +
 				"These items offered no unique gameplay and existed purely to give a few cheap recipes. Thanks to catalysts filling that role, they no longer have a reason to exist. FrostFire Brew in particular may return in some form."));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+		changes.addButton( new ChangeButton(ChangeIcons.V020_MISC, Messages.get(ChangesScene.class, "misc"),
 				"_-_ The Identification system has been adjusted to require EXP gain in addition to item uses. " +
 				"This change prevents exploits where an item could be used in unintended ways to rapidly ID it. " +
 				"Items should ID at about the same rate if exp is gained while using them.\n\n" +
@@ -517,7 +490,7 @@ public class v0_7_X_Changes {
 				"_-_ Improved how the game handles orientation changes and window resizing.\n" +
 				"_-_ Shocking enchantment no longer visually arcs lightning to the hero."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton( new ChangeButton(ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
 				"_-_ Various rare crash bugs\n" +
 				"_-_ Various minor visual bugs\n" +
@@ -550,7 +523,7 @@ public class v0_7_X_Changes {
 				"_-_ Tengu spawning on top of other characters\n" +
 				"_-_ Cloak of shadows only being usable from quickslots if it has 1 charge"));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(ChangesScene.class, "language"),
+		changes.addButton( new ChangeButton(ChangeIcons.V034_TRANSLATIONS, Messages.get(ChangesScene.class, "language"),
 				"Updated Translations\n\n" +
 				"Updated Translator Credits"));
 		
@@ -558,23 +531,23 @@ public class v0_7_X_Changes {
 		changes.hardlight( CharSprite.POSITIVE );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(new WandOfTransfusion(),
+		changes.addButton( new ChangeButton( ChangeIcons.V070_TRANSFUSION, "Wand of Transfusion",
 				"Wand of Transfusion changed significantly when used on enemies:\n" +
 				"_-_ No longer self-harms, now grants a mild self-shield instead\n" +
 				"_-_ Charm duration no longer scales with level, damage to undead enemies reduced"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_AMETHYST, null), Messages.get(RingOfWealth.class, "name"),
+		changes.addButton( new ChangeButton( ChangeIcons.V061_RING_AMETHYST, "Ring of Waalth",
 				"Ring of Wealth significantly buffed:\n" +
 				"_-_ Special item drops now happen ~50% more often\n" +
 				"_-_ The ring of wealth now awards a greater variety of items from special drops\n" +
 				"_-_ special wealth drops have a 1/10 chance to award a high value item\n" +
 				"_-_ Wraiths and minion enemies no longer have a chance to generate wealth items"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SPEAR, new ItemSprite.Glowing(0x00FFFF)), "Buffed Enchants",
+		changes.addButton( new ChangeButton( ChangeIcons.V072_SPEAR_CHILLING, "Buffed Enchants",
 				"_-_ Chilling now stacks with itself over multiple procs\n\n" +
 				"_-_ Lucky buffed/reworked. No longer affects damage, now generates bonus items when enemies are killed with a lucky weapon."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SEED_SWIFTTHISTLE, null), "Item Balance Adjustments",
+		changes.addButton( new ChangeButton( ChangeIcons.V072_SEED_SWIFTTHISTLE, "Item Balance Adjustments",
 				"Several seeds and stones have been buffed:\n" +
 				"_-_ Player can now move without cancelling swiftthistle's effect\n" +
 				"_-_ Duration of poison from sorrowmoss increased by ~33%\n" +
@@ -592,7 +565,7 @@ public class v0_7_X_Changes {
 		changes.hardlight( CharSprite.NEGATIVE );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.DIRK, new ItemSprite.Glowing(0xFF4400)), "Nerfed Enchants",
+		changes.addButton( new ChangeButton( ChangeIcons.V072_DIRK_BLAZING, "Nerfed Enchants",
 				"_-_ Blazing no longer deals direct damage, now instead is more likely to set enemies on fire.\n\n" +
 				"_-_ Shocking no longer deals damage to enemy being attacked, deals more damage to surrounding enemies.\n\n" +
 				"_-_ Vampiric now grants less health when hero is at higher HP.\n\n" +
@@ -608,7 +581,7 @@ public class v0_7_X_Changes {
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+		changes.addButton( new ChangeButton(ChangeIcons.V021_SHPX, "Developer Commentary",
 				"_-_ Released Dec 18th, 2018\n" +
 				"_-_ 61 days after Shattered v0.7.0\n" +
 				"\n" +
@@ -616,19 +589,19 @@ public class v0_7_X_Changes {
 				"\n" +
 				"I also finally made throwing weapons proper equipment in v0.7.1 by letting the player upgrade them! Upgraded thrown weapons are pretty niche, but its great to let the player invest in these items just like other pieces of equipment."));
 		
-		changes.addButton( new ChangeButton( new Image(Assets.Sprites.HUNTRESS, 0, 15, 12, 15), "Huntress Reworked!",
+		changes.addButton( new ChangeButton( ChangeIcons.V063_HUNTRESS_CLOTH, "Huntress Reworked!",
 				"The Huntress has received a class overhaul!\n\n" +
 				"Her boomerang has been replaced with a bow. The bow has infinite uses, like the boomerang, but cannot be upgraded directly, instead it will grow stronger as the huntress levels up.\n\n" +
 				"Her knuckledusters have been replaced with studded gloves. This change is purely cosmetic.\n\n" +
 				"Those with runs in progress will have their boomerang turn into a bow, and will regain most of the scrolls of upgrade spent on the boomerang.\n\n" +
 				"The huntress can now also move through grass without trampling it (she 'furrows' it instead)."));
 		
-		changes.addButton( new ChangeButton( new Image(Assets.Sprites.HUNTRESS, 0, 90, 12, 15), "Huntress Subclasses Reworked!",
+		changes.addButton( new ChangeButton( ChangeIcons.V071_HUNTRESS_HEROARM, "Huntress Subclasses Reworked!",
 				"Huntress subclasses have also received overhauls:\n\n" +
 				"The Sniper can now see 50% further, penetrates armor with ranged attacks, and can perform a special attack with her bow.\n\n" +
 				"The Warden can now see through grass and gains a variety of bonuses to plant interaction."));
 		
-		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.TRIDENT, null), "Thrown Weapon Improvements",
+		changes.addButton( new ChangeButton( ChangeIcons.V063_TRIDENT, "Thrown Weapon Improvements",
 				"Thrown weapons now show their tier, ranging from 1-5 like with melee weapons.\n\n" +
 				"All Heroes now benefit from excess strength on thrown weapons.\n\n" +
 				"Thrown weapons now get +50% accuracy when used at range.\n\n" +
@@ -644,18 +617,18 @@ public class v0_7_X_Changes {
 		changes.hardlight( CharSprite.WARNING );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(BadgeBanner.image(Badges.Badge.UNLOCK_MAGE.image), "Hero Class changes",
+		changes.addButton( new ChangeButton( ChangeIcons.V071_BADGE_MAGE_UNLOCK, "Hero Class changes",
 				"All heroes except the warrior now need to be unlocked via new badges. The requirements are quite simple, with the goal of giving new players some early goals. Players who have already unlocked characters will not need to re-unlock them.\n\n" +
 				"To help accelerate item identification for alchemy, all heroes now start with 3 identified items: The scroll of identify, a potion, and another scroll."));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+		changes.addButton( new ChangeButton(ChangeIcons.V020_MISC, Messages.get(ChangesScene.class, "misc"),
 				"Added a partial turn indicator to the game interface, which occupies the same spot as the busy icon. This should make it much easier to plan actions that take more or less than 1 turn.\n\n" +
 				"Rings now have better descriptions for their stats! All rings now show exactly how they affect you in a similar way to how other equipment gives direct stats.\n\n" +
 				"Precise descriptions have been added for weapons which block damage.\n\n" +
 				"Added item stats to the item catalog.\n\n" +
 				"Dropping an item now takes 1 turn, up from 0.5 turns."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton( new ChangeButton(ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
 				"_-_ various crash bugs\n" +
 				"_-_ various minor visual bugs\n" +
@@ -674,7 +647,7 @@ public class v0_7_X_Changes {
 				"_-_ various specific errors when actions took more than 1 turn\n" +
 				"_-_ various freeze bugs caused by Tengu"));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(ChangesScene.class, "language"),
+		changes.addButton( new ChangeButton(ChangeIcons.V034_TRANSLATIONS, Messages.get(ChangesScene.class, "language"),
 				"Updated translations\n\n" +
 				"Updated translator credits"));
 		
@@ -682,12 +655,12 @@ public class v0_7_X_Changes {
 		changes.hardlight( CharSprite.POSITIVE );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton( new Image(Assets.Sprites.ROGUE, 0, 15, 12, 15), "Hero Buffs",
+		changes.addButton( new ChangeButton( ChangeIcons.V062_ROGUE_CLOTH, "Hero Buffs",
 				"_-_ Rogue's cloak of shadows base charge speed increased by ~11%, scaling reduced to compensate.\n\n" +
 				"_-_ Warlock's soul mark base chance increased to 15% from 10%, scaling reduced to compensate.\n\n" +
 				"_-_ Warlock's soul mark hunger restoration increased by 100%, health restoration increased by 33%."));
 		
-		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_TOPAZ, null), "Various Item Buffs",
+		changes.addButton( new ChangeButton( ChangeIcons.V061_RING_TOPAZ, "Various Item Buffs",
 				"_-_ Ring of energy simplified/buffed. Now grants a flat +25% charge speed per level, instead of +1 effective missing charge per level\n\n" +
 				"_-_ Ring of elements power increased to 16% from 12.5%\n\n" +
 				"_-_ Ring of wealth 'luck' bonus increased to 20% from 15%\n\n" +
@@ -698,12 +671,12 @@ public class v0_7_X_Changes {
 				"_-_ damage at 1 charge reduced slightly\n" +
 				"_-_ damage at 2/3 charges increased by ~15%"));
 		
-		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.ARMOR_LEATHER, new ItemSprite.Glowing(0x222222)), "Other Buffs",
+		changes.addButton( new ChangeButton( ChangeIcons.V071_LEATHER_STONE, "Other Buffs",
 				"_-_ vorpal enchant bleed reduced by 20%\n\n" +
 				"_-_ glyph of potential wand charge bonus increased by 20%\n\n" +
 				"_-_ glyph of stone evasion conversion efficiency increased to 75% from 60%"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.Sprites.KING, 1, 0, 14, 16), "Dwarf King",
+		changes.addButton( new ChangeButton( ChangeIcons.V071_DWARF_KING, "Dwarf King",
 				"While I would like to make more extensive changes to Dwarf King in the future, I've made a couple smaller tweaks for now to make him harder to cheese:\n\n" +
 				"_-_ Dwarf King is now able to summon skeletons even if he cannot see the hero\n" +
 				"_-_ Dwarf King is now resistant to fire and toxic gas"));
@@ -712,22 +685,22 @@ public class v0_7_X_Changes {
 		changes.hardlight( CharSprite.NEGATIVE );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton( new Image(Assets.Sprites.WARRIOR, 0, 15, 12, 15), "Warrior Nerfs",
+		changes.addButton( new ChangeButton( ChangeIcons.V035_WARRIOR_CLOTH, "Warrior Nerfs",
 				"_-_ Warrior's shielding regen scaling reduced by ~15%. This is primarily a lategame nerf."));
 		
-		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_RUBY, null), "Ring Nerfs",
+		changes.addButton( new ChangeButton( ChangeIcons.V071_RING_RUBY, "Ring Nerfs",
 				"Ring of furor has been nerfed/simplified:\n" +
 				"_-_ Now provides a flat +10.5% attack speed per level, instead of speed which scales based on how slow the weapon is.\n\n" +
 				"This means the ring is effectively nerfed for slow weapons and regular weapons, and slightly buffed for fast weapons. A +6 ring grants almost exactly doubled attack speed.\n\n\n" +
 				"The ring of force's equipped weapon bonus was always meant as a small boost so it wasn't useless if the player already had a better weapon. It wasn't intended to be used to both replace melee and then boost thrown weapons.\n" +
 				"_-_ The ring of force no longer gives bonus damage to thrown weapons."));
 		
-		changes.addButton( new ChangeButton( new Gauntlet(),
+		changes.addButton( new ChangeButton( ChangeIcons.V071_GAUNTLET, "Stone Gauntlet",
 				"As furor now works much better with fast weapons, I've taken the opportunity to very slightly nerf sai and gauntlets\n\n" +
 				"_-_ Sai blocking down to 0-2 from 0-3\n" +
 				"_-_ Gauntlet blocking down to 0-4 from 0-5"));
 		
-		changes.addButton( new ChangeButton( new Shuriken(),
+		changes.addButton( new ChangeButton( ChangeIcons.V071_SHURIKEN, "Shuriken",
 				"Shuriken have been adjusted due to the new upgrade system:\n\n" +
 				"_-_ Base damage increased to 4-8 from 4-6\n" +
 				"_-_ Durability reduced to 5 from 10"));
@@ -742,7 +715,7 @@ public class v0_7_X_Changes {
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+		changes.addButton( new ChangeButton(ChangeIcons.V021_SHPX, "Developer Commentary",
 				"_-_ Released Oct 18th, 2018\n" +
 				"_-_ 168 days after Shattered v0.6.5\n" +
 				"_-_ 501 days after Shattered v0.6.0\n" +
@@ -753,39 +726,39 @@ public class v0_7_X_Changes {
 				"\n" +
 				"Also, before v0.7.0 there were a few unique artifacts which only dropped from particular enemies. I standardized these items in v0.7.0 to either be universal, or scrapped them entirely and put some of their functionality into other game systems."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_SEWERS, 0, 64, 16, 16 ), "Alchemy Overhaul!",
+		changes.addButton( new ChangeButton( ChangeIcons.V070_ALCHEMY_POT, "Alchemy Overhaul!",
 				"The game's alchemy system has been entirely overhauled!\n\n" +
 				"Alchemy is now a full consumable crafting system which lets you create all kinds of new items.\n\n" +
 				"There is also a new resource: alchemical energy. Every alchemy pot has some energy within it. Some recipes require this energy, so make sure to use it wisely!\n\n" +
 				"All of this is explained in a new guidebook specifically for alchemy. Pages of it can be found in alchemy rooms. Existing players will be given some pages automatically to get started."));
 		
-		changes.addButton( new ChangeButton(new AlchemistsToolkit(),
+		changes.addButton( new ChangeButton( ChangeIcons.V070_TOOLKIT, "Alchemist's Toolkit",
 				"The Alchemist's Toolkit returns!\n\n" +
 				"The toolkit can be found like any other artifact, and acts as a sort of horn of plenty for the new alchemical energy resource."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.Environment.TERRAIN_FEATURES, 32, 112, 16, 16), "New Consumables",
+		changes.addButton( new ChangeButton( ChangeIcons.V070_SWIFTTHISTLE, "New Consumables",
 				"Added a new scroll, potion, and plant!\n\n" +
 				"_-_ Scroll of transmutation is a rare scroll which allows the user to change an item into another one of the same type. Note that it cannot be used to make scrolls of magical infusion.\n\n" +
 				"_-_ Potion of haste is an uncommon potion which grants a temporary burst of speed.\n\n" +
 				"_-_ Swiftthistle is the plant counterpart to potions of haste. Both the plant and tipped dart give various speed or time-based buffs."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.STONE_BLINK, null), "Runestones",
+		changes.addButton( new ChangeButton( ChangeIcons.V070_STONE_BLINK, "Runestones",
 				"Added 10 new runestones, and runestone crafting!\n\n" +
 				"Two or three runestones can be crafted by using a scroll with an alchemy pot.\n\n" +
 				"Runestones give various effects that are similar in theme to their scroll counterpart.\n\n" +
 				"Runestones also naturally appear in alchemy rooms, and a new special room type."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.EXOTIC_AMBER, null), "Exotic Potions",
+		changes.addButton( new ChangeButton( ChangeIcons.V070_EXOTIC_AMBER, "Exotic Potions",
 				"Added 12 new potions which can be created through alchemy!\n\n" +
 				"Mix a potion and any two seeds to create an exotic potion with unique effects.\n\n" +
 				"Exotic Potions are only available through alchemy, or by transmuting a regular potion."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.EXOTIC_ISAZ, null), "Exotic Scrolls",
+		changes.addButton( new ChangeButton( ChangeIcons.V070_EXOTIC_ISAZ, "Exotic Scrolls",
 				"Added 12 new scrolls which can be created through alchemy!\n\n" +
 				"Mix a scroll and any two runestones to create an exotic scroll with unique effects.\n\n" +
 				"Exotic Scrolls are only available through alchemy, or by transmuting a regular scroll."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RETURN_BEACON, null), "New Recipes!",
+		changes.addButton( new ChangeButton( ChangeIcons.V070_RETURN_BEACON, "New Recipes!",
 				"Added ~40 other items which can be created through alchemy!\n\n" +
 				"Most of these recipes require alchemical energy, and information about them can be found within alchemy guidebook pages in the prison and deeper in the dungeon.\n\n" +
 				"All of these items are only available through alchemy."));
@@ -794,7 +767,7 @@ public class v0_7_X_Changes {
 		changes.hardlight( CharSprite.WARNING );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_ARMBAND, null), "Spawn Rate Changes",
+		changes.addButton( new ChangeButton( ChangeIcons.V070_ARMBAND, "Spawn Rate Changes",
 				"_-_ Master Thieves' Armband is now a regularly dropping artifact.\n" +
 				"_-_ Thieves now rarely drop a random ring or artifact instead of the armband.\n\n" +
 				"_-_ Blandfruit seeds and wells of transmutation have been removed.\n" +
@@ -806,26 +779,26 @@ public class v0_7_X_Changes {
 				"_-_ Adjusted enchant/glyph probabilities slightly. rare ones should be slightly more common.\n\n" +
 				"_-_ There is now a guaranteed alchemy room every chapter."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_BEACON, null), "Boss reward changes",
+		changes.addButton( new ChangeButton( ChangeIcons.V070_BEACON, "Boss reward changes",
 				"Boss rewards have been significantly adjusted:\n\n" +
 				"_-_ Lloyd's beacon and Cape of Thorns no longer drop, they are effectively removed from the game.\n\n" +
 				"_-_ Goo and DM-300 now drop unique alchemy ingredients instead.\n\n" +
 				"_-_ Lloyd's beacon has been replaced by alchemy recipes, Cape of Thorns will likely return in some form in the future."));
 		
-		changes.addButton( new ChangeButton(new Blandfruit(),
+		changes.addButton( new ChangeButton( ChangeIcons.V011_BLANDFRUIT, "Blandfruit",
 				"Blandfruit has been changed to be more consistent with potions.\n\n" +
 				"All blandfruit types now exactly mimic their potion counterparts, there are now no blandfruit-exclusive effects.\n\n" +
 				"When a thrown blandfruit shatters, it will now leave behind blandfruit chunks, which can be eaten. This allows offensive blandfruits to be used without losing their food value.\n\n" +
 				"The previous unique mechanics of earthfruit, sorrowfruit, and firefruit have been recycled into the new alchemy system."));
 		
-		changes.addButton( new ChangeButton(new UnstableSpellbook(),
+		changes.addButton( new ChangeButton( ChangeIcons.V061_SPELLBOOK, "Unstable Spellbook",
 				"The unstable spellbook has received a mini-rework to go along with the new exotic scrolls.\n\n" +
 				"_-_ Previous enhanced scroll mechanic removed.\n\n" +
 				"_-_ Feeding a scroll to the spellbook now allows you to use either that scroll, or its exotic equivalent.\n\n" +
 				"_-_ Using the exotic variant of a scroll costs 2 charges instead of 1.\n\n" +
 				"_-_ Charge speed at low levels increased. Max charges increased to 8 from 6."));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+		changes.addButton( new ChangeButton(ChangeIcons.V020_MISC, Messages.get(ChangesScene.class, "misc"),
 				"_-_ Potions which should be thrown can now be thrown from the quickslot, if they are IDed.\n" +
 				"_-_ Thrown items and wand zaps now go through tall grass.\n" +
 				"_-_ Expanded what items bags can carry. Most alchemy produce can fit in a bag, magical holster now holds bombs.\n\n" +
@@ -840,7 +813,7 @@ public class v0_7_X_Changes {
 				"_-_ Improved payment & sync functions on Google Play version.\n\n" +
 				"_-_ Adjusted bone pile functionality to make it more clear that a spawning wraith means an item is cursed."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton( new ChangeButton(ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
 				"_-_ Various rare crash and freeze bugs\n" +
 				"_-_ Various audio and visual bugs\n" +
@@ -872,14 +845,14 @@ public class v0_7_X_Changes {
 				"_-_ Magical sleep rarely cancelling paralysis\n" +
 				"_-_ Exploits where bone piles could be used to check if an item was cursed"));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(ChangesScene.class, "language"),
+		changes.addButton( new ChangeButton(ChangeIcons.V034_TRANSLATIONS, Messages.get(ChangesScene.class, "language"),
 				"Updated Translations\n\nUpdated translator credits\n\nAdded new language: Basque!"));
 		
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight( CharSprite.POSITIVE );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(new WandOfTransfusion(),
+		changes.addButton( new ChangeButton( ChangeIcons.V070_TRANSFUSION, "Wand of Transfusion",
 				"Wand of transfusion has been rebalanced, with an emphasis on making it much more useful in conjunction with weaker allies:\n\n" +
 				"_-_ Using the wand still costs 10% max hp\n\n" +
 				"_-_ Ally healing adjusted to 10% of user max HP + a flat 3 per level, from 30% + 3%/lvl missing hp\n\n" +
@@ -888,17 +861,17 @@ public class v0_7_X_Changes {
 				"_-_ Charming is now more powerful at higher wand levels\n\n" +
 				"_-_ All other transfusion functionality has been removed"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCROLL_KAUNAN, null), new ScrollOfTeleportation().trueName(),
+		changes.addButton( new ChangeButton( ChangeIcons.V070_SCROLL_KAUNAN, "Scroll of Teleportation",
 				"The scroll of teleportation has been buffed. It now prioritizes sending the user to rooms they have not seen yet, and can teleport to secret rooms."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCROLL_ODAL, null), new ScrollOfMirrorImage().trueName(),
+		changes.addButton( new ChangeButton( ChangeIcons.V070_SCROLL_ODAL, "Scroll of Mirror Image",
 				"Scroll of mirror image has been adjusted to have more interactions with other items, but to also be less powerful at base:\n\n" +
 				"_-_ Scroll now spawns 2 images, down from 3\n\n" +
 				"_-_ Mirror images now attack with the hero's weapon, at 50% damage\n\n" +
 				"_-_ Images no longer fade after a successful attack, instead they pull enemy aggro\n\n" +
 				"_-_ Images start out invisible, have 1 hp, no blocking power, but do inherit some of the hero's evasion."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCROLL_NAUDIZ, null), new ScrollOfTerror().trueName(),
+		changes.addButton( new ChangeButton( ChangeIcons.V070_SCROLL_NAUDIZ, "Scroll of Terror",
 				"Terror now has it's duration reduced by 5 whenever damage is taken, rather than being removed entirely. Scroll of terror duration has been increased to 20 from 10.\n\n" +
 				"Charm now has it's duration reduced by 5 whenever damage is taken, rather than not losing any duration. Succubi have been given a life-drain ability in compensation, and various charming effects have had their durations adjusted."));
 		
@@ -906,21 +879,21 @@ public class v0_7_X_Changes {
 		changes.hardlight( CharSprite.NEGATIVE );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(new WandOfRegrowth(),
+		changes.addButton( new ChangeButton( ChangeIcons.V070_REGROWTH, "Wand of Regrowth",
 				"Wand of regrowth will now cease producing plants if it is overused. Charges spent before it begins degrading will increase if the wand is upgraded. At +12 the wand will function infinitely.\n\n" +
 				"This change is made to combat farming with low-levelled wands of regrowth. Especially with the alchemy changes this would be far too powerful. Infinite farming is still possible, but requires upgrades."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCROLL_GYFU, null), new ScrollOfRetribution().trueName(),
+		changes.addButton( new ChangeButton( ChangeIcons.V070_SCROLL_GYFU, "Scroll of Retribution",
 				"The scroll of psionic blast is now known as the scroll of retribution:\n" +
 				"_-_ removed damage and stun penalty, now self-weakens instead\n" +
 				"_-_ now blinds enemies as well as the player\n" +
 				"_-_ damage dealt now scales with missing player HP. At very low HP scroll is still an instakill on most enemies\n\n" +
 				"Scroll of psionic blast still exists however. It is now an exotic scroll!"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.POTION_CRIMSON, null), new PotionOfHealing().trueName(),
+		changes.addButton( new ChangeButton( ChangeIcons.V070_POTION_CRIMSON, "Potion of Healing",
 				"_-_ Speed of healing effects (e.g. potion of healing) have been reduced slightly. Overall heal amounts unchanged."));
 		
-		changes.addButton( new ChangeButton(new Honeypot(),
+		changes.addButton( new ChangeButton( ChangeIcons.V024_HONEYPOT, "Honeypot",
 				"Bees were never intended to be used as a boss-killing tool by stacking many of them onto one area. This use has now been restricted:\n" +
 				"_-_ Bees are now hostile to eachother\n\n" +
 				"Note that the new alchemy system may have a recipe which helps calm angry bees down..."));
