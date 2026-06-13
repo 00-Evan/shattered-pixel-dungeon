@@ -37,7 +37,7 @@ public class Healing extends Buff {
 	private float percentHealPerTick;
 	private int flatHealPerTick;
 
-	private boolean healingLimited = false;
+	private int bloodVialLimitingLevel = -1;
 	
 	{
 		//unlike other buffs, this one acts after the hero and takes priority against other effects
@@ -77,24 +77,27 @@ public class Healing extends Buff {
 		int heal = (int)GameMath.gate(1,
 				Math.round(healingLeft * percentHealPerTick) + flatHealPerTick,
 				healingLeft);
-		if (healingLimited && heal > VialOfBlood.maxHealPerTurn()){
-			heal = VialOfBlood.maxHealPerTurn();
+		if (bloodVialLimitingLevel != -1 && heal > VialOfBlood.maxHealPerTurn(bloodVialLimitingLevel)){
+			heal = VialOfBlood.maxHealPerTurn(bloodVialLimitingLevel);
 		}
 		return heal;
 	}
 
 	public void setHeal(int amount, float percentPerTick, int flatPerTick){
+		setHeal(amount, percentPerTick, flatPerTick, false);
+	}
+
+	public void setHeal(int amount, float percentPerTick, int flatPerTick, boolean applyVialEffect){
+		if (applyVialEffect && VialOfBlood.delayBurstHealing()){
+			amount = Math.round(amount*VialOfBlood.totalHealMultiplier());
+			bloodVialLimitingLevel = VialOfBlood.bloodVialLevel();
+		} else {
+			bloodVialLimitingLevel = -1;
+		}
 		//multiple sources of healing do not overlap, but do combine the best of their properties
 		healingLeft = Math.max(healingLeft, amount);
 		percentHealPerTick = Math.max(percentHealPerTick, percentPerTick);
 		flatHealPerTick = Math.max(flatHealPerTick, flatPerTick);
-	}
-
-	public void applyVialEffect(){
-		healingLimited = VialOfBlood.delayBurstHealing();
-		if (healingLimited){
-			healingLeft = Math.round(healingLeft*VialOfBlood.totalHealMultiplier());
-		}
 	}
 	
 	public void increaseHeal( int amount ){
@@ -111,7 +114,7 @@ public class Healing extends Buff {
 	private static final String PERCENT = "percent";
 	private static final String FLAT = "flat";
 
-	private static final String HEALING_LIMITED = "healing_limited";
+	private static final String VIAL_LEVEL = "vial_level";
 	
 	@Override
 	public void storeInBundle(Bundle bundle) {
@@ -119,7 +122,7 @@ public class Healing extends Buff {
 		bundle.put(LEFT, healingLeft);
 		bundle.put(PERCENT, percentHealPerTick);
 		bundle.put(FLAT, flatHealPerTick);
-		bundle.put(HEALING_LIMITED, healingLimited);
+		bundle.put(VIAL_LEVEL, bloodVialLimitingLevel);
 	}
 	
 	@Override
@@ -128,7 +131,10 @@ public class Healing extends Buff {
 		healingLeft = bundle.getInt(LEFT);
 		percentHealPerTick = bundle.getFloat(PERCENT);
 		flatHealPerTick = bundle.getInt(FLAT);
-		healingLimited = bundle.getBoolean(HEALING_LIMITED);
+		//pre-v4.0
+		if (bundle.contains(VIAL_LEVEL)){
+			bloodVialLimitingLevel = bundle.getInt(VIAL_LEVEL);
+		}
 	}
 	
 	@Override

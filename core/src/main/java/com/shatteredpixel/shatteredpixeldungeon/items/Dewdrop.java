@@ -106,8 +106,7 @@ public class Dewdrop extends Item {
 
 			if (heal > 0 && quantity > 1 && VialOfBlood.delayBurstHealing()){
 				Healing healing = Buff.affect(hero, Healing.class);
-				healing.setHeal(heal, 0, VialOfBlood.maxHealPerTurn());
-				healing.applyVialEffect();
+				healing.setHeal(heal, 0, VialOfBlood.maxHealPerTurn(), true);
 			} else {
 				hero.HP += heal;
 				if (heal > 0){

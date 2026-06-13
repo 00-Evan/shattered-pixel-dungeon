@@ -56,6 +56,10 @@ public class VialOfBlood extends Trinket {
 		return trinketLevel(VialOfBlood.class) != -1;
 	}
 
+	public static int bloodVialLevel(){
+		return trinketLevel(VialOfBlood.class);
+	}
+
 	public static float totalHealMultiplier(){
 		return totalHealMultiplier(trinketLevel(VialOfBlood.class));
 	}
