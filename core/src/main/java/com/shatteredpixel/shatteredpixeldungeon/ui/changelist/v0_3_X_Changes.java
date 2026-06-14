@@ -114,7 +114,8 @@ public class v0_3_X_Changes {
 				"_-_ French\n" +
 				"_-_ Italian\n" +
 				"_-_ Polish\n" +
-				"_-_ Spanish"));
+				"_-_ Spanish\n\n" +
+				"Note that translations are not currently supported on desktop."));
 		
 		changes.addButton( new ChangeButton(ChangeIcons.V020_MISC, Messages.get(ChangesScene.class, "misc"),
 				"Completely redesigned the text rendering system to support none-english characters\n\n" +

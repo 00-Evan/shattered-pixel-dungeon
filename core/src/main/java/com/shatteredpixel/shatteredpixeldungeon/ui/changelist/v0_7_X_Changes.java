@@ -74,7 +74,8 @@ public class v0_7_X_Changes {
 
 		changes.addButton( new ChangeButton( ChangeIcons.V074_LIBGDX, "libGDX Text Rendering!",
 				"The game's text renderer is now using libGDX freetype. This looks almost identical to the existing text but is slightly crisper, platform-independent, and much more efficient!\n\n" +
-				"Text rendering was the last bit of android-dependant code, so the game's core code modules (~98% of its code) are now being compiled as general code and not android-specific code!"));
+				"Text rendering was the last bit of android-dependant code, so the game's core code modules (~98% of its code) are now being compiled as general code and not android-specific code!\n\n" +
+				"Because this system isn't android-dependant, all latin and cyrillic languages are now supported on desktop! Asian script languages coming soon."));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
 		changes.hardlight( CharSprite.WARNING );
@@ -184,8 +185,8 @@ public class v0_7_X_Changes {
 		
 		changes.addButton( new ChangeButton( ChangeIcons.V074_LIBGDX, "libGDX",
 				"Large sections of Shattered's codebase is now using the multiplatform game library _libGDX._ Making the game's codebase less heavily tied to Android is a big step towards making the game available on other platforms!\n\n" +
-				"Keyboard input handling and text rendering are still coupled to Android however. I will convert these game systems to use libGDX in a later update.\n\n" +
-				"Note that Shattered will not immediately release on other platforms once libGDX conversion is complete, but it is a big step towards that."));
+				"Keyboard input handling and text rendering are still coupled to Android however. My plan is to back-port those desktop features to the Android codebase, and use that as a universal codebase moving forward.\n\n" +
+				"This will likely happen slowly over the next few updates, but when its done the desktop version will permanently be at feature parity with the android version!"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
 		changes.hardlight( CharSprite.WARNING );
