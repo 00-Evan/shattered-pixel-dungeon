@@ -42,7 +42,7 @@ public class Pixel_Dungeon_Changes {
 				"Shattered Pixel Dungeon is based on the open source code of Pixel Dungeon, which was developed by Watabou from 2012 to 2015.\n" +
 				"\n" +
 				"This section contain's Watabou's original release notes (with minor edits) for every numbered update to the original Pixel Dungeon.\n" +
-						"\n" +
+				"\n" +
 				"Note that the timelines for Pixel Dungeon and Shattered Pixel Dungeon overlap a bit during 2014-2016:\n" +
 				"**-** v0.1.0 was based on PD v1.7.1\n"+
 				"**-** v0.2.2 added most changes from PD v1.7.2\n"+
@@ -552,21 +552,21 @@ public class Pixel_Dungeon_Changes {
 				"**-** Fixed: Several bugs are fixed (including major ones - loss of a key, pinch-to-zoom lock)"
 				,
 				"**v0.2:** (January 11th, 2013)\n" +
-				"I’m glad to announce that Pixel Dungeon 0.2 is now available on Google Play!\n" +
+				"I'm glad to announce that a new major update for Pixel Dungeon is now available on Google Play. There are many changes in this update but most importantly it includes new levels with new monsters :)\n" +
 				"\n" +
-				"(Note from Evan: the below changes were translated from Russian. This update also included the Prison area.)\n" +
-				"\n" +
+				"Here is the list of changes from Google Play:\n" +
 				"**-** New types of special rooms\n" +
-				"**-** New Items\n" +
-				"**-** Slightly weakened gnolls and crabs\n" +
-				"**-** Swarms of flies and Goo, on the contrary, are made a little stronger\n" +
-				"**-** It takes a little longer to go from full satiety to a state of exhaustion\n" +
-				"**-** Increased the time it takes to search...\n" +
-				"**-** ...but a repeated search greatly increases the likelihood of success\n" +
-				"**-** The power of traps increases with the level of the dungeon\n" +
-				"**-** Movement can now be interrupted by clicking anywhere on the map\n" +
-				"**-** Fixed bugs that sometimes caused the game to slow down or crash\n" +
-				"**-** Oh, and one more little thing..."));
+				"**-** New items\n" +
+				"**-** Gnoll scouts and sewer crabs nerfed\n" +
+				"**-** Swarm's of flies and Goo buffed\n" +
+				"**-** Hunger weakened\n" +
+				"**-** Time to search increased\n" +
+				"**-** Traps get tougher with each depth\n" +
+				"**-** Searching twice in the same place increases chances significantly\n" +
+				"**-** Tap-to-move command can be interrupted by tapping anywhere on map\n" +
+				"**-** Bug that could cause slowing down fixed\n" +
+				"**-** Bug that could cause a crash when cancelling an attack fixed\n" +
+				"and more..."));
 
 		changes.addButton( new ChangeButton( ChangeIcons.PD_RAT, "v0.1.X",
 				"**v0.1.4:** (December 19th, 2012)\n" +
@@ -603,7 +603,13 @@ public class Pixel_Dungeon_Changes {
 				"Pixel Dungeon 0.1.1 released. Nothing particularly interesting there, just some bug fixes, but now it should be playable on froyo devices. And that bug with two chars on the same tile, hopefully, is fixed too."
 				,
 				"**v0.1:** (December 4th 2012)\n" +
-				"Finally released!\n\n" +
+				"Hi guys!\n" +
+				"\n" +
+				"I'm very glad to announce that Pixel Dungeon is now available on Google Play.\n" +
+				"\n" +
+				"Pixel Dungeon is a traditional roguelike game with pixel-art graphics and simple interface.\n" +
+				"\n" +
+				"It's still very short but fully playable and I'm going to add new levels, items and monsters in every major release.\n\n" +
 				"(Note from Evan: In its original release, Pixel Dungeon contained 5 floors going down to Goo. There were no: hero classes, quests, music or sfx, badges, seeds, dewdrops, or thrown weapons (aside from darts). All content that was in the game was in an earlier more basic form too."));
 
 	}
