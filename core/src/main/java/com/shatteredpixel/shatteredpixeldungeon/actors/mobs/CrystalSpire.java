@@ -171,7 +171,7 @@ public class CrystalSpire extends Mob {
 
 			if (!targetedCells.isEmpty()){
 				for (int i : targetedCells.get(0)){
-					sprite.parent.add(new TargetedCell(i, 0xFF0000));
+					GameScene.targetedCell(i, TICK);
 				}
 			}
 
@@ -190,13 +190,15 @@ public class CrystalSpire extends Mob {
 					lineAttack();
 				}
 
+				float delay = GameMath.gate(TICK, (int)Math.ceil(Dungeon.hero.cooldown()), 3*TICK);
+
 				for (int i : targetedCells.get(0)){
-					sprite.parent.add(new TargetedCell(i, 0xFF0000));
+					GameScene.targetedCell(i, delay);
 				}
 
 				abilityCooldown += ABILITY_CD;
 
-				spend(GameMath.gate(TICK, (int)Math.ceil(Dungeon.hero.cooldown()), 3*TICK));
+				spend(delay);
 				Dungeon.hero.interrupt();
 			} else {
 				abilityCooldown -= 1;

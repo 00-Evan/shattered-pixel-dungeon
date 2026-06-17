@@ -63,6 +63,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogFist;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SacrificialParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WindParticle;
@@ -450,6 +451,17 @@ public abstract class Level implements Bundlable {
 			respawner = (MobSpawner) bundle.get("respawner");
 		}
 
+		TargetedCell.cells.clear();
+		if (bundle.contains( "targeted_cells" )){
+			collection = bundle.getCollection( "targeted_cells" );
+			for (Bundlable c : collection) {
+				TargetedCell cell = (TargetedCell)c;
+				if (cell != null) {
+					TargetedCell.cells.put(cell.pos, cell);
+				}
+			}
+		}
+
 		buildFlagMaps();
 		cleanWalls();
 
@@ -475,6 +487,7 @@ public abstract class Level implements Bundlable {
 		bundle.put( FEELING, feeling );
 		bundle.put( "mobs_to_spawn", mobsToSpawn.toArray(new Class[0]));
 		bundle.put( "respawner", respawner );
+		bundle.put( "targeted_cells", TargetedCell.cells.valueList() );
 	}
 	
 	public int tunnelTile() {

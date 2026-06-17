@@ -90,16 +90,19 @@ public class VaultSentry extends NPC {
 				}
 
 				for (int cell : scan.cells) {
-					if (fieldOfView[cell]) {
+					if (fieldOfView[cell] && Dungeon.level.heroFOV[cell]) {
+						visible = true;
+						break;
+					}
+				}
+				if (visible){
+					for (int cell : scan.cells) {
 						if (Actor.findChar(cell) == Dungeon.hero && Dungeon.hero.invisible == 0) {
 							Dungeon.hero.sprite.showStatus(CharSprite.NEGATIVE, "!!!");
 							Sample.INSTANCE.play(Assets.Sounds.ZAP);
 							SFXLastPlayed = ShatteredPixelDungeon.realTime;
 						}
-						if (Dungeon.level.heroFOV[cell]) {
-							GameScene.checkedCell(cell, pos);
-							visible = true;
-						}
+						GameScene.checkedCell(cell, pos);
 					}
 				}
 			}
@@ -138,11 +141,20 @@ public class VaultSentry extends NPC {
 					scan.cells.add(aim.path.get(1));
 				}
 
+				boolean visible = false;
 				for (int cell : scan.cells) {
 					if (Dungeon.level.heroFOV[cell] && fieldOfView[cell]) {
-						sprite.parent.add(new TargetedCell(cell, 0xFF0000));
+						visible = true;
 					}
 				}
+				if (visible){
+					for (int cell : scan.cells) {
+						if (fieldOfView[cell]) {
+							GameScene.targetedCell(cell, 0xFF0000, TICK);
+						}
+					}
+				}
+
 			}
 		}
 

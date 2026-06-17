@@ -21,33 +21,86 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
+import com.watabou.utils.Bundlable;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.SparseArray;
 
-public class TargetedCell extends Image {
+public class TargetedCell extends Image implements Bundlable {
+
+	public int pos;
+	public float time;
 
 	private float alpha;
 
-	public TargetedCell( int pos, int color ) {
-		super(Icons.get(Icons.TARGET));
-		hardlight(color);
+	public static SparseArray<TargetedCell> cells = new SparseArray<>();
 
-		origin.set( width/2f );
+	public void reset( int pos, float delay ){
+		if (width == 0) {
+			copy(Icons.get(Icons.TARGET));
+			origin.set( width/2f );
+		}
 
+		this.pos = pos;
 		point( DungeonTilemap.tileToWorld( pos ) );
 
+		hardlight(0xFF0000);
+
 		alpha = 1f;
+		time = Actor.now()+delay;
+
+		alpha(1f);
+		scale.set(1f);
+
+		synchronized (cells) {
+			cells.put(pos, this);
+		}
 	}
 
 	@Override
 	public void update() {
-		if ((alpha -= Game.elapsed/2f) > 0) {
+		alpha -= Game.elapsed;
+		if (time >= Actor.now()){
+			alpha = Math.max(alpha, 0.6f);
+		}
+		if (alpha > 0) {
 			alpha( alpha );
-			scale.set( alpha );
+			scale.set( (float)Math.pow(alpha, 0.33f) );
 		} else {
+			time = 0;
+			synchronized (cells) {
+				cells.remove(pos);
+			}
 			killAndErase();
 		}
 	}
+
+	public static void fixTime(float min){
+		synchronized (cells){
+			for (TargetedCell c : cells.valueList()){
+				c.time -= min;
+			}
+		}
+	}
+
+	private static final String POS = "pos";
+	private static final String COLOR = "color";
+	private static final String TIME = "time";
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		bundle.put(POS, pos);
+		bundle.put(TIME, time);
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		pos = bundle.getInt(POS);
+		time = bundle.getInt(TIME);
+	}
+
 }

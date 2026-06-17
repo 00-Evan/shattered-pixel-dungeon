@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.WardSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
@@ -104,9 +105,16 @@ public class VaultLaser extends NPC {
 		if (curCooldown == 1 && giveWarning){
 
 			Ballistica nextBeam = new Ballistica(pos, laserDirs[laserDirIdx], Ballistica.STOP_SOLID);
+			boolean visible = false;
 			for (int cell : nextBeam.subPath(1, nextBeam.dist)){
 				if (Dungeon.level.heroFOV[cell]) {
-					sprite.parent.add(new TargetedCell(cell, 0xFF0000));
+					visible = true;
+					break;
+				}
+			}
+			if (visible){
+				for (int cell : nextBeam.subPath(1, nextBeam.dist)) {
+					GameScene.targetedCell(cell, 1);
 				}
 			}
 
