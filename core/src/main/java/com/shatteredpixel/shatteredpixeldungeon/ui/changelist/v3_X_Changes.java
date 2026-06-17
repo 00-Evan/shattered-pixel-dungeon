@@ -61,13 +61,13 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
+		changes.addButton( new ChangeButton(ChangeIcons.V074_SHPX, "Dev Commentary",
 				"**-** Released December 4th, 2025\n" +
 				"**-** 122 days after v3.2.0 (66 days after v3.2.5)\n" +
 				"\n" +
 				"Dev commentary will be added here in the future."));
 
-		changes.addButton( new ChangeButton(new Image(new ImpSprite()), "Initial Imp Quest Tester Area",
+		changes.addButton( new ChangeButton( ChangeIcons.V33_IMP, "Initial Imp Quest Tester Area",
 				"**While v3.3 does not include the new quest, it does include a tester area for it, similar to the tester area that existed before the new caves quest!**\n" +
 				"\n" +
 				"This tester area can be accessed from a new room that spawns in the city, this room also contains the Imp who gives his old quest. Simply walk onto the large vault entrance to be offered a teleport into the new area.\n" +
@@ -78,14 +78,14 @@ public class v3_X_Changes {
 				"**v3.3.6:** Added 'vault rat' tester enemies with new AI and more rooms\n" +
 				"**v3.3.7:** Added treasure rooms and significantly improved all aspects of level generation"));
 
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_KEY), "New Artifact and Trinket!",
+		changes.addButton( new ChangeButton( ChangeIcons.V33_SKELETON_KEY, "New Artifact and Trinket!",
 				"**Two new equipment items have been added to the game!**\n" +
 				"\n" +
 				"The **Skeleton Key** is a new Artifact that grants the player new ways to control the dungeon environment! It can be used to open almost any lock in the dungeon, lock doors that weren't previously locked, and create temporary magical walls! The existing skeleton key item (dropped by Goo) has been renamed to 'worn key',\n" +
 				"\n" +
 				"The **Cracked Spyglass** is a new Trinket that's a sort of milder version of the Mimic's Tooth. It generates extra items in the dungeon, but those items are very hard to see, so keep your eyes peeled!"));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHUFFLE), "Randomize Options",
+		changes.addButton( new ChangeButton( ChangeIcons.V33_RANDOMIZE, "Randomize Options",
 				"**It's now possible to play runs with randomly selected game options!**\n" +
 				"\n" +
 				"This includes a random class and challenges (optionally) in hero select, and random talents, subclass, and armor ability within the game! This add some replayability for experienced players, or just another option for people who aren't sure about what they want.\n" +
@@ -96,7 +96,7 @@ public class v3_X_Changes {
 		changes.hardlight(CharSprite.WARNING);
 		changeInfos.add(changes);
 
-		changes.addButton(new ChangeButton(new Image(new AlbinoSprite()), "Hostile Champions and Albino Rats",
+		changes.addButton(new ChangeButton( ChangeIcons.V075_ALBINO_RAT, "Hostile Champions and Albino Rats",
 				"I'm making a few early game tweaks, mainly meant at smoothing out difficulty spikes caused by hostile champions and floor 1 albino rats. In exchange though, the hostile champs challenge is getting a bit harsher later in the game.\n" +
 				"\n" +
 				"**Hostile Champions:**\n" +
@@ -107,14 +107,14 @@ public class v3_X_Changes {
 				"**-** HP down to 12 from 15\n" +
 				"**-** Bleed damage now always starts at 2-3 if the rat did damage, instead of being based on damage dealt. This means it no longer benefits excessively from bonus damage effects."));
 
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_CHALICE3), "Chalice of Blood Upgrading",
+		changes.addButton(new ChangeButton( ChangeIcons.V33_CHALICE_UPGRADED, "Chalice of Blood Upgrading",
 				"The Chalice of Blood has received significant changes to how its upgrade mechanics work. Previously the player was given no direct info about the damage it would deal when upgraded, which led to most people just looking the numbers up on the internet.\n" +
 				"\n" +
 				"The player is now told the damage the chalice will deal, but the chalice deals a range of ~83% to ~117% of its current static damage. The player is told the exact % chance this damage has of killing them before damage-reducing effects are considered.\n" +
 				"\n" +
 				"Additionally, damage from the chalice is now reduced by ALL damage-reducing effects, instead of just ones that apply to physical damage."));
 
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+		changes.addButton(new ChangeButton(ChangeIcons.V081_MISC, Messages.get(ChangesScene.class, "misc"),
 				"**Highlights:**\n" +
 				"**-** The 4th trinket option is no longer hidden until selected.\n" +
 				"**-** Damage-dealing Cleric spells (holy lance, most notably) now disqualify for the \"No Weapons in His Presence\" badge.\n" +
@@ -166,7 +166,7 @@ public class v3_X_Changes {
 				"**-** Added a journal button to item right-click menus\n" +
 				"**-** Updated various internal code libraries" ));
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton(new ChangeButton(ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
 				"**Highlights:**\n" +
 				"**-** Freezes caused by enemies dieing to DOT effects while thrown weapons were attached to them\n" +
@@ -234,7 +234,7 @@ public class v3_X_Changes {
 		changes.hardlight(CharSprite.POSITIVE);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(new TalentIcon(Talent.PROJECTILE_MOMENTUM), "Thrown Weapon Talents",
+		changes.addButton( new ChangeButton( ChangeIcons.V33_PROJECTILE_MOMENTUM, "Thrown Weapon Talents",
 				"A lot more data has come in after v3.2 increased thrown weapon usage, and there's room to buff up some of the changed talents after that update:\n" +
 				"\n" +
 				"**- Projectile Momentum** bonus damage nerf reverted, damage bonus up to 15/30/45% at +1/2/3, from 10/20/30% at +1/2/3\n" +
@@ -242,7 +242,7 @@ public class v3_X_Changes {
 				"**- Durable Projectiles** nerf reverted, bonus durability up to +50%/+75% at +1/+2, from +33%/+50% at +1/+2\n" +
 				"**- Point Blank Shot** Accuracy boost up to +25/50/75% at +1/2/3, from +20/40/60% at +1/2/3"));
 
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.TOMAHAWK), "Thrown Weapon Buffs",
+		changes.addButton( new ChangeButton( ChangeIcons.V073_TOMAHAWK, "Thrown Weapon Buffs",
 				"Thrown weapons are mostly in a pretty good place balance-wise since the patches to v3.2, but I'm making two targeted buffs regardless:\n" +
 				"\n" +
 				"**- Telekinetic Grab** is now cast instantly if the only items it picks up can be instantly collected (i.e. throwing clubs and throwing hammers)\n" +
@@ -252,7 +252,7 @@ public class v3_X_Changes {
 		changes.hardlight(CharSprite.NEGATIVE);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.BOLAS), "Bolas and Boomerangs",
+		changes.addButton( new ChangeButton( ChangeIcons.V33_BOLAS, "Bolas and Boomerangs",
 				"There are also a few targeted nerfs to specific thrown weapons:\n" +
 				"\n" +
 				"**Bolas** continue to do really well despite their nerfs in v3.2. Clearly the cripple effect they have is almost worth it on its own, so I'm scaling back the damage further:\n" +
@@ -273,13 +273,13 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
+		changes.addButton( new ChangeButton(ChangeIcons.V074_SHPX, "Dev Commentary",
 				"**-** Released August 4th, 2025\n" +
 				"**-** 63 days after v3.1.0\n" +
 				"\n" +
 				"Dev commentary will be added here in the future."));
 
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.JAVELIN), "Thrown Weapon Sets",
+		changes.addButton(new ChangeButton( ChangeIcons.V32_JAVELIN, "Thrown Weapon Sets",
 				"**Thrown weapons have been majorly overhauled to be more worthwhile to upgrade!**\n" +
 				"\n" +
 				"**-** Thrown weapons now spawn in sets of three, sets do not mix.\n" +
@@ -294,7 +294,7 @@ public class v3_X_Changes {
 				"\n" +
 				"Note that darts are not affected by these changes, they effectively all belong to the same set and still cannot be upgraded."));
 
-		changes.addButton(new ChangeButton(Icons.get(Icons.DISPLAY_LAND), "New Title Background and Text Banners!",
+		changes.addButton(new ChangeButton( ChangeIcons.V12_DISPLAY_HORIZ, "New Title Background and Text Banners!",
 				"(v3.2.4) **Shattered Pixel Dungeon has a new title screen background, with art by Aleksandar Komitov!**\n" +
 				"\n" +
 				"This new background is meant to both extend the classis archs, and tie the title screens more directly to the region splash arts! It features randomly selected floating fully rendered chunks of dungeon in front of an arch back-layer.\n" +
@@ -303,7 +303,7 @@ public class v3_X_Changes {
 				"\n" +
 				"**New visuals have also been added for the 'boss slain' and 'game over' text banners!** They should now match the newer text visuals in the title screen. This also includes some detail adjustments such as centering the sword in 'boss slain' vertically instead of horizontally."));
 
-		changes.addButton(new ChangeButton(Icons.get(Icons.BUFFS), "Hit and Miss Icons",
+		changes.addButton(new ChangeButton( ChangeIcons.V23_ARROWS, "Hit and Miss Icons",
 				"**Pretty much every effect that changes accuracy or evasion now has an icon that shows up when that effect is the reason an attack hit or missed!**\n" +
 				"\n" +
 				"This is an extension of the green bow icon that was used to make the Ferret Tuft's evasion boost more visible in v3.1. It should make it much easier to tell how much of a difference various buffs/debuffs are making to hit chance.\n" +
@@ -314,7 +314,7 @@ public class v3_X_Changes {
 		changes.hardlight(CharSprite.WARNING);
 		changeInfos.add(changes);
 
-		changes.addButton(new ChangeButton(Icons.get(Icons.DISPLAY_PORT), "Interface Changes",
+		changes.addButton(new ChangeButton( ChangeIcons.V081_DISPLAY_VERT, "Interface Changes",
 				"**Shattered's menu screens** (v3.2.2) **and in-game UI** (v3.2.4) **now render in true fullscreen on most mobile devices!**\n" +
 				"\n" +
 				"The status bar at the top of the in-game UI has been modified to work around small and medium sized hole punches and rounded corners on modern displays! This includes the dynamic island on modern iPhones. Thanks to these adjustments it's now possible for the UI to move up and for the game to display in true fullscreen during gameplay! Devices with larger cutouts like full-sized notches will unfortunately still have a dark bar on the top, as there isn't room for the UI.\n" +
@@ -329,12 +329,12 @@ public class v3_X_Changes {
 				"**-** The Boss health bar is now larger on full size UI, taking advantage of the bigger space.\n" +
 				"**-** Health bars now display shielding in addition to HP, instead of on top of it."));
 
-		changes.addButton(new ChangeButton(new TalentIcon(Talent.SURVIVALISTS_INTUITION), "Survivalist's Intuition",
+		changes.addButton(new ChangeButton( ChangeIcons.V32_SURVIVE_INUITION, "Survivalist's Intuition",
 				"Now that thrown weapons can be identified, there is design space for the Huntress to have a non-generic identification talent:\n" +
 				"\n" +
 				"**- Survivalist's Intuition** now lets the Huntress ID thrown weapons at 3x speed at +1 or on-use at +2. Previously it increased ID speed of all items by 1.75x at +1 or 2.5x at +2."));
 
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+		changes.addButton(new ChangeButton(ChangeIcons.V081_MISC, Messages.get(ChangesScene.class, "misc"),
 				"**Highlights:**\n" +
 				"**-** Blacksmith's smith option now offers a thrown weapon in addition to 2 melee weapons and an armor\n" +
 				"**-** Thrown weapons (including the bow) now always have a throw delay of 1 turn if they aren't aimed at a target\n" +
@@ -375,7 +375,7 @@ public class v3_X_Changes {
 				"**-** DM-300's rockfall attack now deals 6-12 damage (10-20 with badder bosses). This is for consistency with other rockfall effects, and to prevent exploits where DM-300 couldn't damage hiding inorganic allies.\n" +
 				"**-** Levelling up the dried rose while the ghost hero is summoned now heals them slightly."));
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton(new ChangeButton(ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
 				"**Gameplay:**\n" +
 				"**-** Cases where sacrificial fire would not apply just after a character steps into it\n" +
@@ -424,7 +424,7 @@ public class v3_X_Changes {
 		changes.hardlight(CharSprite.POSITIVE);
 		changeInfos.add(changes);
 
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.THROWING_HAMMER), "Thrown Weapon Buffs",
+		changes.addButton(new ChangeButton( ChangeIcons.V32_THROWING_HAMMER, "Thrown Weapon Buffs",
 				"Some talents that interact with thrown weapons are getting buffs as part of the thrown weapon changes:\n" +
 				"**- Projectile Momentum** accuracy boost up substantially, to +50/100/150% at +1/2/3, from +20/40/60% at +1/2/3.\n" +
 				"**- Shared Enchantments** no longer prevents multiple enchantment triggers. Both enchants can now trigger if the thrown weapon and the Huntress' bow are both enchanted.\n" +
@@ -433,7 +433,7 @@ public class v3_X_Changes {
 				"**- Throwing Clubs and Hammers** have a new upside: they can now be picked up from the ground instantly!\n" +
 				"**- Kunai** base durability up to 8 from 5."));
 
-		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 6), "Cleric & Priest Buffs",
+		changes.addButton(new ChangeButton(ChangeIcons.V30_CLERIC_HEROARM, "Cleric & Priest Buffs",
 				"Firstly, a quick buff to the Cleric's worst performing T2 spell:\n" +
 				"**- Divine Sense** duration up to 50 turns from 30.\n" +
 				"\n" +
@@ -441,7 +441,7 @@ public class v3_X_Changes {
 				"**- Guiding Light** free use cooldown down to 50 turns from 100.\n" +
 				"**- Illuminate** is now inflicted on directly targeted enemies by all spells."));
 
-		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.WARRIOR, 6), "Warrior & Gladiator Buffs",
+		changes.addButton(new ChangeButton( ChangeIcons.V035_WARRIOR_HEROARM, "Warrior & Gladiator Buffs",
 				"Firstly, I'm making a change to the Warrior in general, to improve tactical flexibility and to make the Hold Fast talent more interesting:\n" +
 				"**- Hold Fast** now slows the decay of combo and shielding buffs by 33/67/100% at +1/2/3. This includes the broken seal shield and Berserker's enrage shield!\n" +
 				"\n" +
@@ -449,7 +449,7 @@ public class v3_X_Changes {
 				"**- Combo** now lasts for 15 turns after killing an enemy.\n" +
 				"**- Cleave** combo duration boost increased to 30/45/60 turns at +1/2/3, from 15/30/45 turns."));
 
-		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.MAGE, 6), "Battlemage Buffs/Changes",
+		changes.addButton(new ChangeButton( ChangeIcons.V063_MAGE_HEROARM, "Battlemage Buffs/Changes",
 				"Some Battlemage staff on-hit effects have been changed to be more interesting and more powerful. Most notably this removes three effects that were previously just copies of enchantments:\n" +
 				"\n" +
 				"**- Staff of Fireblast** effect reworked, now has a chance to explode away flames, dealing damage to enemies.\n" +
@@ -463,7 +463,7 @@ public class v3_X_Changes {
 		changes.hardlight(CharSprite.NEGATIVE);
 		changeInfos.add(changes);
 
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.TOMAHAWK), "Thrown Weapon Nerfs",
+		changes.addButton(new ChangeButton( ChangeIcons.V073_TOMAHAWK, "Thrown Weapon Nerfs",
 				"Various thrown weapons are getting targeted nerfs, mainly focused around compensating for lower durability weapons now effectively having +50% base uses, or certain weapons now being much more spammable.\n" +
 				"\n" +
 				"**- Shuriken** instant-throw condition changed to a simple 20 turn cooldown\n" +
@@ -478,7 +478,7 @@ public class v3_X_Changes {
 				"**- Heavy Boomerang** damage scaling down to 1-3 from 1-4\n" +
 				"**- Heavy Boomerang** circle back delay up to 4 from 3. This should make them a bit less spammable."));
 
-		changes.addButton(new ChangeButton(new TalentIcon(Talent.SHARED_UPGRADES), "Thrown Weapon Talent Nerfs",
+		changes.addButton(new ChangeButton( ChangeIcons.V30_SHARED_UPGRADES, "Thrown Weapon Talent Nerfs",
 				"Some talents are also getting nerfed as part of the thrown weapon changes:\n" +
 				"\n" +
 				"**- Projectile Momentum** damage boost down to +10/20/30% at +1/2/3, from +15/30/45% at +1/2/3\n" +
@@ -486,7 +486,7 @@ public class v3_X_Changes {
 				"**- Durable Projectiles** durability boost down to +33%/+50% at +1/+2, from +50%/+75% at +1/+2\n" +
 				"**- Shared Upgrades** slightly reworked, now grants a flat +16.67% damage boost and +1 duration per thrown weapon level, but caps at +33/67/100% damage and +2/4/6 duration at talent level 1/2/3."));
 
-		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.WARRIOR, 6), "Berserker Nerfs",
+		changes.addButton(new ChangeButton( ChangeIcons.V035_WARRIOR_HEROARM, "Berserker Nerfs",
 				"The Berserker is doing quite well after v3.1, given that the new shield naturally synergizes with him. I'm scaling back the base subclass power a bit to compensate:\n" +
 				"\n" +
 				"**-** Rate of rage gain and loss reduced by 25%\n" +
@@ -504,13 +504,13 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
+		changes.addButton( new ChangeButton(ChangeIcons.V074_SHPX, "Dev Commentary",
 				"**-** Released June 2nd, 2025\n" +
 				"**-** 95 days after v3.0.0\n" +
 				"\n" +
 				"Dev commentary will be added here in the future"));
 
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SEAL), "Warrior Mini Rework",
+		changes.addButton( new ChangeButton( ChangeIcons.V31_SEAL, "Warrior Mini Rework",
 				"**The Warrior has had a mini overhaul to his broken seal ability, and new visuals for his splash art and broken seal!**\n" +
 				"\n" +
 				"The seal's shielding now triggers in bursts with a cooldown, when the Warrior is below 50% HP. It should feel more impactful and interactive while still being easy to use for new players.\n" +
@@ -534,7 +534,7 @@ public class v3_X_Changes {
 				"**- Gladiator** will retain any active shielding from his broken seal as long as he has combo.\n" +
 				"**- Berserker** enrage shield is now its own separate shielding buff, and has its own scaling separate from the seal's max shield."));
 
-		changes.addButton( new ChangeButton(Icons.STAIRS.get(), "New Rooms and Terrain Types",
+		changes.addButton( new ChangeButton( ChangeIcons.V31_STAIRS, "New Rooms and Terrain Types",
 				"This update includes an **expansion to the dungeon's standard rooms!**\n" +
 				"\n" +
 				"**- New decorative terrain** has been added to each region, largely inspired by details from the region splash arts. \n" +
@@ -544,14 +544,14 @@ public class v3_X_Changes {
 				"**- Boss Arenas** also use these new terrain types in a few places\n" +
 				"**- Plain empty rooms** no longer spawn normally."));
 
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.FERRET_TUFT), "Ferret Tuft",
+		changes.addButton( new ChangeButton( ChangeIcons.V31_LIMES, "Ferret Tuft",
 				"**A new trinket has been added to the game!**\n" +
 				"\n" +
 				"The **Ferret Tuft** is a simpler evasion-boosting trinket with more of a cute aesthetic. It's a little reference to a favourite lime ferret.\n" +
 				"\n" +
 				"Choosing and upgrading the trinket will cause all characters to gain evasion, including enemies! That might sound like a mixed bag, but keep in mind that there are lots of ways to counter enemy evasion."));
 
-		changes.addButton( new ChangeButton(BadgeBanner.image( Badges.Badge.TAKING_THE_MICK.image ), "New Badges",
+		changes.addButton( new ChangeButton( ChangeIcons.V31_BADGE_MICK, "New Badges",
 				"v3.1 also includes **four new badges**, each themed around a specific challenge:\n" +
 				"\n" +
 				"**- Safety Hazard** is a gold-tier badge that requires using terrain against enemies\n" +
@@ -561,7 +561,7 @@ public class v3_X_Changes {
 				"\n" +
 				"I've also reduced the difficulty of the **Big Game Hunter** badge. It now requires discovering 10 types of rare enemies, down from all of them."));
 
-		changes.addButton( new ChangeButton(new Image(new GnollExileSprite()), "New Rare Enemies",
+		changes.addButton( new ChangeButton( ChangeIcons.V31_GNOLL_EXILE, "New Rare Enemies",
 				"**Two new rare enemies** have been added to the sewers:\n" +
 				"\n" +
 				"**Gnoll Exiles** are exceptionally strong, but also wary of combat. They won't attack unprovoked, so you can just let them pass, but maybe you'll be interested in the loot they carry...\n" +
@@ -572,14 +572,14 @@ public class v3_X_Changes {
 		changes.hardlight(CharSprite.WARNING);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.RANKINGS), "Exploration and Quest Score",
+		changes.addButton( new ChangeButton( ChangeIcons.V31_BADGE_SCORE_GOLD, "Exploration and Quest Score",
 				"I've made adjustments to how score is calculated to balance the difficulty of the various score categories a little better:\n" +
 				"\n" +
 				"**Exploration Score** is no longer all-or-nothing for each floor. It is now based on how many rooms were not fully explored. For each floor, score is reduced to 50%/20%/0% for 1/2/3+ missed rooms. The criteria for whether something is 'fully explored' is unchanged.\n" +
 				"\n" +
 				"**Quest Score** can now be reduced in a similar manner to boss score. Make sure to position well to avoid penalties! This reduction includes telegraphed attacks/effects (e.g. crystal spire, gnoll geomancer), and regular attacks that you should be able to always avoid (e.g. rot lashers, fetid rat's ooze). Cases where attacks are sometimes unavoidable (e.g. corpse dust wraiths, gnoll trickster) have some leeway before penalties apply."));
 
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+		changes.addButton(new ChangeButton(ChangeIcons.V081_MISC, Messages.get(ChangesScene.class, "misc"),
 				"**Highlights:**\n" +
 				"**-** Various small color tweaks to health bars, inventory buttons, and flare vfx to improve the experience for colorblind players\n" +
 				"**-** Custom notes for items can now be created or edited from the item's info window\n" +
@@ -621,7 +621,7 @@ public class v3_X_Changes {
 				"\n" +
 				"**-** Increased the HP threshold for status pane blinking red to 33% from 30%, for consistency with hearty meal change."));
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton(new ChangeButton(ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
 				"**Highlights:**\n" +
 				"**-** Thrown weapons gaining or losing more accuracy than intended based on enemy adjacency\n" +
@@ -675,7 +675,7 @@ public class v3_X_Changes {
 		changes.hardlight(CharSprite.POSITIVE);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 6), "Cleric Buffs",
+		changes.addButton( new ChangeButton(ChangeIcons.V30_CLERIC_HEROARM, "Cleric Buffs",
 				"Overall the Cleric is doing well following their initial release. Their winrate is low currently, but they are also very popular so I expect some of that is people still figuring them out. For the moment I'm focusing on multiple targeted buffs to specific Cleric mechanics that are weaker vs. others.\n" +
 				"\n" +
 				"**Base class:**\n" +
@@ -707,7 +707,7 @@ public class v3_X_Changes {
 		changes.hardlight(CharSprite.NEGATIVE);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 6), "Cleric Nerfs",
+		changes.addButton( new ChangeButton(ChangeIcons.V30_CLERIC_HEROARM, "Cleric Nerfs",
 				"A few Cleric mechanics are standouts in terms of power though, so I am scaling some of those back:\n" +
 				"\n" +
 				"**- Searing Light** dmg down to +3/+5 from +4/+6\n" +
@@ -729,27 +729,27 @@ public class v3_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+		changes.addButton( new ChangeButton(ChangeIcons.V074_SHPX, "Developer Commentary",
 				"_-_ Released February 27th, 2025\n" +
 				"_-_ 197 days after Shattered v2.5.0\n" +
 				"_-_ 548 days after Shattered v2.0.0\n\n" +
 				"Dev commentary will be added here in the future."));
 
-		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 1), "The Cleric!",
+		changes.addButton( new ChangeButton(ChangeIcons.V30_CLERIC_CLOTH, "The Cleric!",
 				"**Shattered Pixel Dungeon has another new hero, making for six total!!**\n" +
 				"\n" +
 				"The Cleric is an entire new hero class **with a variety of unique spells that they learn via talents!** They can be unlocked by removing the curse on any piece of equipment, but existing players who already have a win will automatically unlock them!\n" +
 				"\n" +
 				"Much like how the Duelist can use a bunch of weapon abilities, I want the Cleric to be an ability-centric hero focused on Magic. Unlike the Duelist, these abilities are tied into the hero and their talents, instead of equipment items."));
 
-		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 4), "Cleric Subclasses",
+		changes.addButton( new ChangeButton(ChangeIcons.V30_CLERIC_SCALE, "Cleric Subclasses",
 				"**The Cleric has two subclasses, each with their own emphasis!**\n" +
 				"\n" +
 				"**The Priest** is focused on ranged spell combat, effects that synergize with magical items like wands and artifacts.\n" +
 				"\n" +
 				"**The Paladin** is focused on melee spell combat and defensive power. Their effects most strongly synergize with weapons and armor."));
 
-		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CLERIC, 6), "Cleric Armor Abilities",
+		changes.addButton( new ChangeButton(ChangeIcons.V30_CLERIC_HEROARM, "Cleric Armor Abilities",
 				"**The Cleric has three lategame armor abilities as well!**\n" +
 				"\n" +
 				"**Ascended Form** grants the Cleric access to new spells, extra attack ranged, and shielding whenever they cast spells.\n" +
@@ -762,7 +762,7 @@ public class v3_X_Changes {
 		changes.hardlight(CharSprite.WARNING);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(Icons.DISPLAY.get(), "Visual & Interface Changes",
+		changes.addButton( new ChangeButton( ChangeIcons.V12_DISPLAY_HORIZ, "Visual & Interface Changes",
 				"**Shattered's title graphic has been totally redrawn!** The new title graphic, by Aleksandar Komitov, improves on text quality and style while trying to stay true to the original title. There is now a landscape and portrait variant of this title as well.\n" +
 				"\n" +
 				"The game's **Hero Splash Arts** have been improved as well! After so many years, Aleksandar has revised some of the game's hero splash arts to bring them up to his current standards:\n" +
@@ -773,7 +773,7 @@ public class v3_X_Changes {
 				"\n" +
 				"The **Games in Progress screen** has been expanded too, with up to 6 runs at once, info about recency, and sorting options."));
 
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+		changes.addButton(new ChangeButton(ChangeIcons.V081_MISC, Messages.get(ChangesScene.class, "misc"),
 				"**Highlights:**\n" +
 				"**-** Turned off auto-targeting in cases where it was almost always wrong (Bless spell, Wand of Warding, etc.)\n" +
 				"**-** Enemies are now more willing to switch targets if their target is retreating and they are being attacked by something else\n" +
@@ -812,7 +812,7 @@ public class v3_X_Changes {
 				"**-** Improved number rounding logic when damage hero takes is affected by several modifiers at once\n" +
 				"**-** Updated translations and translator credits"));
 
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton(new ChangeButton(ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
 				"**Highlights:**\n" +
 				"**-** Various issues with system gestures registering as game inputs on Android and iOS\n" +
@@ -879,7 +879,7 @@ public class v3_X_Changes {
 		changes.hardlight(CharSprite.POSITIVE);
 		changeInfos.add(changes);
 
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.CHAOTIC_CENSER), "Trinket Buffs",
+		changes.addButton(new ChangeButton( ChangeIcons.V30_CENSER, "Trinket Buffs",
 				"Overall trinket balance is in a much better place since v2.5, but there are still some that can do with being more powerful or fun to use:\n" +
 				"\n" +
 				"**- Chaotic Censer** now only spawns gasses when enemies are present, and gives a warning one moment before the gas is spewed.\n" +
@@ -888,7 +888,7 @@ public class v3_X_Changes {
 				"**- Trap Mechanism** now also makes 10% of a level's traps spawn visible per level.\n" +
 				"**- Shard of Oblivion** now prevents ID effects such as scroll of ID and wells of knowledge. Items are instead set to be ready to be IDed by the shard."));
 
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.SAI), "Weapon Ability Buffs",
+		changes.addButton(new ChangeButton( ChangeIcons.V30_SAI, "Weapon Ability Buffs",
 				"The Duelist continues to do better following all the changes in v2.X updates. A couple of weapon abilities are still lagging behind though, and so I'm giving them a little help:\n" +
 				"\n" +
 				"**- Combo Strike** ability damage boost buffed by 25% for Gauntlets. 33% for Sai, 50% for Gloves.\n" +
@@ -898,13 +898,13 @@ public class v3_X_Changes {
 		changes.hardlight(CharSprite.NEGATIVE);
 		changeInfos.add(changes);
 
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.MOSSY_CLUMP), "Trinket Nerfs",
+		changes.addButton(new ChangeButton( ChangeIcons.V25_MOSSY_CLUMP, "Trinket Nerfs",
 				"Despite nerfs in v2.5 the Mossy Clump is still far and away the strongest trinket. For now I'm going to experiment with adjusting the ratios on the floors it grants.\n" +
 				"\n" +
 				"**- Mossy Clump** now generates grassy floors 1/3 of the time and water floors 2/3 of the time, instead of 1/2 each. This will usually result in one fewer grassy floor over a whole run.\n" +
 				"**- Mossy Clump** upgrade energy cost reduced to 10/15/20 from 20/25/30. This is now the same as other 'higher cost' trinkets."));
 
-		changes.addButton(new ChangeButton(new TalentIcon(Talent.SHARED_UPGRADES), "Shared Upgrades Nerf",
+		changes.addButton(new ChangeButton( ChangeIcons.V30_SHARED_UPGRADES, "Shared Upgrades Nerf",
 				"Thrown weapons aren't an especially popular category of item to upgrade, and I would like to make more extensive changes to them in the future, but for the moment I'm making a targeted adjustment to the Shared Upgrades talent. The bonus damage it provided wasn't tied to the tier of thrown weapon used, which made T2 thrown weapons disproportionally powerful for the Sniper.\n" +
 				"\n" +
 				"**- Shared Upgrades** now grants 2.5%/5%/7.5% bonus damage per upgrade per tier, instead of a flat 10%/20%/30% bonus damage per upgrade. Functionally, this means -50% bonus dmg for T2 thrown weapons, -25% for T3, no changes for T4, and +25% for T5."));

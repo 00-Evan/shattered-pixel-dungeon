@@ -42,7 +42,7 @@ public class v4_X_Changes {
 		changes.hardlight(0xCCCCCC);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Overview and ETA",
+		changes.addButton( new ChangeButton( ChangeIcons.V074_SHPX, "Overview and ETA",
 				"..."));
 	}
 
@@ -56,7 +56,7 @@ public class v4_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Dev Commentary",
+		changes.addButton( new ChangeButton( ChangeIcons.V074_SHPX, "Dev Commentary",
 				"..."));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);

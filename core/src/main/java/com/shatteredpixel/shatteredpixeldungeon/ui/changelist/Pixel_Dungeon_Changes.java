@@ -610,7 +610,7 @@ public class Pixel_Dungeon_Changes {
 				"Pixel Dungeon is a traditional roguelike game with pixel-art graphics and simple interface.\n" +
 				"\n" +
 				"It's still very short but fully playable and I'm going to add new levels, items and monsters in every major release.\n\n" +
-				"(Note from Evan: In its original release, Pixel Dungeon contained 5 floors going down to Goo. There were no: hero classes, quests, music or sfx, badges, seeds, dewdrops, or thrown weapons (aside from darts). All content that was in the game was in an earlier more basic form too."));
+				"(Note from Evan: In its original release, Pixel Dungeon contained 5 floors going down to Goo. There were no hero classes, quests, music or sfx, badges, seeds, dewdrops, or shops. All content that was in the game was in an earlier more basic form too.)"));
 
 	}
 

@@ -165,7 +165,7 @@ public class v0_7_X_Changes {
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(ChangeIcons.V021_SHPX, "Developer Commentary",
+		changes.addButton( new ChangeButton(ChangeIcons.V074_SHPX, "Developer Commentary",
 				"_-_ Released July 18th, 2019\n" +
 				"_-_ 56 days after Shattered v0.7.3\n" +
 				"\n" +
