@@ -282,10 +282,6 @@ public class GameScene extends PixelScene {
 		customTiles = new Group();
 		terrain.add(customTiles);
 
-		for( CustomTilemap visual : Dungeon.level.customTiles){
-			addCustomTile(visual);
-		}
-
 		visualGrid = new GridTileMap();
 		terrain.add( visualGrid );
 
@@ -335,10 +331,6 @@ public class GameScene extends PixelScene {
 		customWalls = new Group();
 		add(customWalls);
 
-		for( CustomTilemap visual : Dungeon.level.customWalls){
-			addCustomWall(visual);
-		}
-
 		levelWallVisuals = Dungeon.level.addWallVisuals();
 		add( levelWallVisuals );
 
@@ -373,6 +365,15 @@ public class GameScene extends PixelScene {
 		for (TargetedCell cell : TargetedCell.cells.valueList()){
 			cell.reset(cell.pos, cell.time);
 			targetedCells.add(cell);
+		}
+
+		//set thes up later so that they can influence previous tilemaps if needed
+		for( CustomTilemap visual : Dungeon.level.customTiles){
+			addCustomTile(visual);
+		}
+
+		for( CustomTilemap visual : Dungeon.level.customWalls){
+			addCustomWall(visual);
 		}
 		
 		statuses = new Group();

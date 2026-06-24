@@ -51,6 +51,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.PylonSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.RaisedTerrainTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
@@ -694,6 +695,16 @@ public class CavesBossLevel extends Level {
 					} else {
 						data[i] = -1;
 					}
+				}
+			}
+
+			//turned off raised terrain tilemap for statues due to conflict
+			for (int i = 0; i < data.length; i++){
+				if (data[i] == 17 || data[i] == 19){
+					int x = tileX + (i % tileW);
+					int y = tileY + (i / tileW);
+					RaisedTerrainTilemap.skipCells.add(x + Dungeon.level.width()*y);
+					GameScene.updateMap(x + Dungeon.level.width()*y);
 				}
 			}
 			v.map( data, tileW );
