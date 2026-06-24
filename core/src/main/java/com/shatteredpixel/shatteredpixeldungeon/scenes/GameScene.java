@@ -1496,9 +1496,10 @@ public class GameScene extends PixelScene {
 				if (mob.sprite != null) {
 					if (mob instanceof Mimic && mob.state == mob.PASSIVE && ((Mimic) mob).stealthy() && Dungeon.level.visited[mob.pos]){
 						//mimics stay visible in fog of war after being first seen
+						//TODO can probably migrate this to Charsprite.visibleOutOfFFOV
 						mob.sprite.visible = true;
 					} else {
-						mob.sprite.visible = Dungeon.level.heroFOV[mob.pos];
+						mob.sprite.visible = mob.sprite.visibleOutOfFFOV || Dungeon.level.heroFOV[mob.pos];
 					}
 				}
 				if (mob instanceof Ghoul){

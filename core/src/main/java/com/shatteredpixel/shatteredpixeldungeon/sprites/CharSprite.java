@@ -83,6 +83,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected float shadowHeight    = 0.25f;
 	protected float shadowOffset    = 0.25f;
 
+	public boolean visibleOutOfFFOV = false;
+
 	public enum State {
 		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, HEARTS, GLOWING, AURA
 	}

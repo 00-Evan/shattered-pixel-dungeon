@@ -21,10 +21,14 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.VaultMirror;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.VaultTokenDoor;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -82,7 +86,28 @@ public class VaultTokensRoom extends VaultLongRoom {
 		Painter.fill(level, c.x-1, c.y-1, 3, 3, Terrain.EMPTY_SP);
 
 		Painter.fill(level, c.x-2, c.y, 5, 1, Terrain.EMPTY_SP);
-		Painter.fill(level, c.x, c.y-2, 1, 6, Terrain.EMPTY_SP);
+		Painter.fill(level, c.x, c.y-1, 1, 5, Terrain.EMPTY_SP);
+
+		Painter.set(level, c.x-1, c.y-1, Terrain.REGION_DECO_ALT);
+		Painter.set(level, c.x+1, c.y-1, Terrain.REGION_DECO_ALT);
+
+		Painter.set(level, c.x, c.y+3, Terrain.DOOR);
+		VaultTokenDoor door = new VaultTokenDoor();
+		door.pos = c.x + (c.y+3)*level.width();
+		level.mobs.add(door);
+
+		VaultMirror mirror = new VaultMirror();
+		mirror.createReward(Dungeon.hero.heroClass);
+		mirror.pos = c.x + (c.y-1)*level.width();
+		level.mobs.add(mirror);
+
+		if (Random.Int(2) == 0) {
+			level.drop(((VaultLevel) level).createEquipment(3), c.x - 2 + c.y * level.width());
+			level.drop(((VaultLevel) level).createConsumabe(3), c.x + 2 + c.y * level.width());
+		} else {
+			level.drop(((VaultLevel) level).createEquipment(3), c.x + 2 + c.y * level.width());
+			level.drop(((VaultLevel) level).createConsumabe(3), c.x - 2 + c.y * level.width());
+		}
 
 		Mob enemy;
 		do {
