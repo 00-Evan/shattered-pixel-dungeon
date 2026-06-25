@@ -103,8 +103,8 @@ public class ItemSpriteSheet {
 		assignItemRect(GOLD,        15, 13);
 		assignItemRect(ENERGY,      16, 16);
 
-		assignItemRect(DEWDROP,     10, 10);
-		assignItemRect(PETAL,       8,  8);
+		assignItemRect(DEWDROP,     10,  9);
+		assignItemRect(PETAL,        8,  8);
 		assignItemRect(SANDBAG,     10, 10);
 		assignItemRect(SPIRIT_ARROW,11, 11);
 		
@@ -509,7 +509,7 @@ public class ItemSpriteSheet {
 	static{
 		assignItemRect(RAT_SKULL,       16, 11);
 		assignItemRect(PARCHMENT_SCRAP, 10, 14);
-		assignItemRect(PETRIFIED_SEED,  10, 10);
+		assignItemRect(PETRIFIED_SEED,   9,  9);
 		assignItemRect(EXOTIC_CRYSTALS, 14, 13);
 		assignItemRect(MOSSY_CLUMP,     12, 11);
 		assignItemRect(SUNDIAL,         16, 12);
@@ -680,18 +680,18 @@ public class ItemSpriteSheet {
 	public static final int SUMMON_ELE      = SPELLS+12;
 
 	static{
-		assignItemRect(WILD_ENERGY,     12, 11);
-		assignItemRect(PHASE_SHIFT,     12, 11);
-		assignItemRect(TELE_GRAB,       12, 11);
+		assignItemRect(WILD_ENERGY,     12, 12);
+		assignItemRect(PHASE_SHIFT,     12, 10);
+		assignItemRect(TELE_GRAB,       10, 10);
 		assignItemRect(UNSTABLE_SPELL,  12, 13);
 
-		assignItemRect(CURSE_INFUSE,    10, 15);
-		assignItemRect(MAGIC_INFUSE,    10, 15);
-		assignItemRect(ALCHEMIZE,       10, 15);
-		assignItemRect(RECYCLE,         10, 15);
+		assignItemRect(CURSE_INFUSE,    10, 16);
+		assignItemRect(MAGIC_INFUSE,    10, 14);
+		assignItemRect(ALCHEMIZE,       10, 16);
+		assignItemRect(RECYCLE,         10, 16);
 
 		assignItemRect(RECLAIM_TRAP,     8, 16);
-		assignItemRect(RETURN_BEACON,    8, 16);
+		assignItemRect(RETURN_BEACON,    6, 16);
 		assignItemRect(SUMMON_ELE,       8, 16);
 	}
 	
