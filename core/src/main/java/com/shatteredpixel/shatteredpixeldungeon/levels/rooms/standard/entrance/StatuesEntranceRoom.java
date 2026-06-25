@@ -46,7 +46,7 @@ public class StatuesEntranceRoom extends StatuesRoom {
 		super.paint(level);
 
 		int entrance = -1;
-		if (width() > 11 || height() > 11){
+		if (width() >= 11 || height() >= 11){
 			entrance = level.pointToCell(center());
 			for (int i : PathFinder.NEIGHBOURS8){
 				if (level.map[entrance + i] == Terrain.STATUE ){
