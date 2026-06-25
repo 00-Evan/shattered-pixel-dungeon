@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.custom.Carpet;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
@@ -49,6 +50,28 @@ public class SegmentedLibraryRoom extends StandardRoom {
 		}
 
 		createWalls( level, new Rect(left+2, top+2, right-2, bottom-2));
+
+		for (int x = left+1; x < right-2; x++){
+			for (int y = top+1; y < bottom-2; y++){
+				int cell = x + y*level.width();
+				if (level.map[cell] == Terrain.EMPTY_SP
+						&& (level.map[cell-1] == Terrain.BOOKSHELF || level.map[cell-1+level.width()] == Terrain.BOOKSHELF)){
+					int width = 1, height = 1;
+					while (level.map[cell+width] == Terrain.EMPTY_SP && level.map[cell+width+level.width()] == Terrain.EMPTY_SP) {
+						width++;
+					}
+					while (level.map[cell+(height*level.width())] == Terrain.EMPTY_SP && level.map[cell+(height*level.width())+1] == Terrain.EMPTY_SP) {
+						height++;
+					}
+					if (width > 1 && height > 1){
+						Carpet carpet = new Carpet();
+						carpet.setRect(x, y, width, height);
+						level.customTiles.add(carpet);
+						y += height-1;
+					}
+				}
+			}
+		}
 	}
 
 	private void createWalls( Level level, Rect area ){

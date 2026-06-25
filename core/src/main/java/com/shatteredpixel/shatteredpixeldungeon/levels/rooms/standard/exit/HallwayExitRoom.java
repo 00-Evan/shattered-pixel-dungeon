@@ -41,13 +41,11 @@ public class HallwayExitRoom extends HallwayRoom {
 
 		int exit = -1;
 		for ( Point p : getPoints()){
-			if (level.map[level.pointToCell(p)] == Terrain.STATUE_SP
-					|| level.map[level.pointToCell(p)] == Terrain.REGION_DECO_ALT){
+			if (level.map[level.pointToCell(p)] == Terrain.EXIT){
 				exit = level.pointToCell(p);
 				break;
 			}
 		}
-		Painter.set( level, exit, Terrain.EXIT );
 		level.transitions.add(new LevelTransition(level, exit, LevelTransition.Type.REGULAR_EXIT));
 
 	}

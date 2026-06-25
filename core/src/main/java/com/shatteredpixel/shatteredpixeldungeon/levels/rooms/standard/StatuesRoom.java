@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.custom.Carpet;
 import com.watabou.utils.Random;
 
 public class StatuesRoom extends StandardRoom {
@@ -52,7 +53,6 @@ public class StatuesRoom extends StandardRoom {
 			door.set( Door.Type.REGULAR );
 		}
 
-
 		int rows = (width() + 1)/6;
 		int cols = (height() + 1)/6;
 
@@ -67,15 +67,23 @@ public class StatuesRoom extends StandardRoom {
 				int left = this.left + 2 + (x * (w + Wspacing));
 				int top = this.top + 2 + (y * (h + Hspacing));
 
-				Painter.fill(level, left, top, w, h, Terrain.EMPTY_SP);
+				Painter.fill(level, left, top, w, h, Terrain.CUSTOM_DECO_EMPTY);
 
-				Painter.set(level, left, top, Terrain.STATUE_SP);
-				Painter.set(level, left + w-1, top, Terrain.STATUE_SP);
-				Painter.set(level, left, top + h-1, Terrain.STATUE_SP);
-				Painter.set(level, left + w-1, top + h-1, Terrain.STATUE_SP);
+				Painter.set(level, left, top, Terrain.STATUE);
+				Painter.set(level, left + w-1, top, Terrain.STATUE);
+				Painter.set(level, left, top + h-1, Terrain.STATUE);
+				Painter.set(level, left + w-1, top + h-1, Terrain.STATUE);
 
-				//place a flaming pedestal in the center
-				if (w >= 5 && h >= 5){
+				Carpet carpet = new Carpet();
+				carpet.setRect(left, top, w, h);
+				carpet.overrideTile(0, 0, Carpet.CITY_STATUE_TL);
+				carpet.overrideTile(carpet.tileW-1, 0, Carpet.CITY_STATUE_TR);
+				carpet.overrideTile(0, carpet.tileH-1, Carpet.CITY_STATUE_BL);
+				carpet.overrideTile(carpet.tileW-1, carpet.tileH-1, Carpet.CITY_STATUE_BR);
+				level.customTiles.add(carpet);
+
+				//place a flaming pedestal or entrance/exit in the center
+				if (w >= 5 && h >= 5 || ((isEntrance() || isExit()) && rows == 1 && cols == 1)){
 					int cx = left + w/2;
 					if (w % 2 == 0 && Random.Int(2) == 0){
 						cx--;
@@ -84,7 +92,16 @@ public class StatuesRoom extends StandardRoom {
 					if (h % 2 == 0 && Random.Int(2) == 0){
 						cy--;
 					}
-					Painter.set(level, cx, cy, Terrain.REGION_DECO_ALT);
+					if (isEntrance() && rows == 1 && cols == 1){
+						Painter.set(level, cx, cy, Terrain.ENTRANCE);
+						carpet.overrideTile(level, cx, cy, Carpet.CITY_ENTRANCE);
+					} else if (isExit() && rows == 1 && cols == 1){
+						Painter.set(level, cx, cy, Terrain.EXIT);
+						carpet.overrideTile(level, cx, cy, Carpet.SKIP);
+					} else {
+						Painter.set(level, cx, cy, Terrain.REGION_DECO);
+						carpet.overrideTile(level, cx, cy, Carpet.CITY_PEDESTAL);
+					}
 				}
 			}
 		}

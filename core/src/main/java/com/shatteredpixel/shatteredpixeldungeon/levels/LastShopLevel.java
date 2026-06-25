@@ -177,8 +177,6 @@ public class LastShopLevel extends RegularLevel {
 			case Terrain.WALL_DECO:
 			case Terrain.EMPTY_DECO:
 				return Messages.get(CityLevel.class, "deco_desc");
-			case Terrain.EMPTY_SP:
-				return Messages.get(CityLevel.class, "sp_desc");
 			case Terrain.STATUE:
 			case Terrain.STATUE_SP:
 				return Messages.get(CityLevel.class, "statue_desc");

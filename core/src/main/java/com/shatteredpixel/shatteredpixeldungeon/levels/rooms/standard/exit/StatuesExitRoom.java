@@ -45,15 +45,23 @@ public class StatuesExitRoom extends StatuesRoom {
 	public void paint(Level level) {
 		super.paint(level);
 
-		int exit = level.pointToCell(center());
-
-		if (width() <= 10 && height()<= 10){
-			Painter.fill(level, this, 3, Terrain.EMPTY_SP);
-		}
-
-		for (int i : PathFinder.NEIGHBOURS8){
-			if (level.map[exit + i] != Terrain.STATUE_SP) {
-				Painter.set(level, exit + i, Terrain.EMPTY_SP);
+		int exit = -1;
+		if (width() >= 11 || height() >= 11){
+			exit = level.pointToCell(center());
+			for (int i : PathFinder.NEIGHBOURS8){
+				if (level.map[exit + i] == Terrain.STATUE ){
+					Painter.set(level, exit + i, Terrain.STATUE_SP);
+				} else {
+					Painter.set(level, exit + i, Terrain.EMPTY_SP);
+				}
+			}
+		} else {
+			//already have an exit placed in this case
+			for ( Point p : getPoints()){
+				if (level.map[level.pointToCell(p)] == Terrain.EXIT){
+					exit = level.pointToCell(p);
+					break;
+				}
 			}
 		}
 

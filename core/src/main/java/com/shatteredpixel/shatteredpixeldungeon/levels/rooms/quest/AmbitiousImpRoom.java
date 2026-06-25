@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.custom.Carpet;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NoosaScript;
@@ -81,8 +82,16 @@ public class AmbitiousImpRoom extends SpecialRoom {
 		Painter.drawInside(level, this, entrance, 1, Terrain.EMPTY);
 		entrance.set( Door.Type.REGULAR );
 
-		Painter.fill( level, left+1, top+3, 7, 3, Terrain.EMPTY_SP);
-		Painter.fill( level, left+3, top+1, 3, 7, Terrain.EMPTY_SP);
+		Painter.fill( level, left+1, top+3, 7, 3, Terrain.CUSTOM_DECO_EMPTY);
+		Painter.fill( level, left+3, top+1, 3, 7, Terrain.CUSTOM_DECO_EMPTY);
+
+		Carpet carpet = new Carpet();
+		carpet.setRect(left+1, top+3, 7, 3);
+		level.customTiles.add(carpet);
+
+		carpet = new Carpet();
+		carpet.setRect(left+3, top+1, 3, 7);
+		level.customTiles.add(carpet);
 
 		QuestEntrance vis = new QuestEntrance();
 		vis.pos(c.x - 2, c.y - 2);
@@ -194,34 +203,33 @@ public class AmbitiousImpRoom extends SpecialRoom {
 			Tilemap v = super.create();
 			int[] data = new int[tileW*tileH];
 			//up to five banners, which we place unless there's a door
-			//TODO doors
 			int cell = tileX + Dungeon.level.width()*tileY;
 
-			if (Dungeon.level.solid[cell+1]){
+			if (!Dungeon.level.passable[cell+1]){
 				data[1] = BANNER_1 + Random.Int(2);
 				data[1+tileW] = BANNER__BOTTOM;
 			}
 
-			if (Dungeon.level.solid[cell+3]) {
+			if (!Dungeon.level.passable[cell+3]) {
 				data[3] = BANNER_1 + Random.Int(2);
 				if (Dungeon.level.map[cell+3+Dungeon.level.width()] != Terrain.PEDESTAL) {
 					data[3 + tileW] = BANNER__BOTTOM;
 				}
 			}
 
-			if (Dungeon.level.solid[cell+5]) {
+			if (!Dungeon.level.passable[cell+5]) {
 				data[5] = BANNER_1 + Random.Int(2);
 				data[5 + tileW] = BANNER__BOTTOM;
 			}
 
 			cell += Dungeon.level.width();
 
-			if (Dungeon.level.solid[cell]) {
+			if (!Dungeon.level.passable[cell]) {
 				data[7] = BANNER_1 + Random.Int(2);
 				data[7 + tileW] = BANNER__BOTTOM;
 			}
 
-			if (Dungeon.level.solid[cell+6]) {
+			if (!Dungeon.level.passable[cell+6]) {
 				data[13] = BANNER_1 + Random.Int(2);
 				data[13 + tileW] = BANNER__BOTTOM;
 			}

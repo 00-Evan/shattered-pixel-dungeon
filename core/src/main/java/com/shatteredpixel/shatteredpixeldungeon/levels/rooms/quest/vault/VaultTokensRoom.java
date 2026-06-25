@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.custom.Carpet;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -90,6 +91,10 @@ public class VaultTokensRoom extends VaultLongRoom {
 
 		Painter.set(level, c.x-1, c.y-1, Terrain.REGION_DECO_ALT);
 		Painter.set(level, c.x+1, c.y-1, Terrain.REGION_DECO_ALT);
+
+		Carpet carpet = new Carpet();
+		carpet.setRect(c.x-1, c.y-1, 3, 3);
+		level.customTiles.add(carpet);
 
 		Painter.set(level, c.x, c.y+3, Terrain.DOOR);
 		VaultTokenDoor door = new VaultTokenDoor();

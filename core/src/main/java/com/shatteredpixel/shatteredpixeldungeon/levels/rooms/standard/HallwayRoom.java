@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.custom.Carpet;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
@@ -103,11 +104,22 @@ public class HallwayRoom extends StandardRoom {
 		}
 
 		Painter.fill( level, c.left, c.top, 3, 3, Terrain.EMPTY_SP );
-		if (Random.Int(2) == 0) {
+		Carpet carpet = new Carpet();
+		carpet.setRect(c.left, c.top, 3, 3);
+		if (isEntrance()){
+			Painter.fill(level, c.left + 1, c.top + 1, 1, 1, Terrain.ENTRANCE_SP);
+			carpet.overrideTile(1, 1, Carpet.CITY_ENTRANCE);
+		} else if (isExit()){
+			Painter.fill(level, c.left + 1, c.top + 1, 1, 1, Terrain.EXIT);
+			carpet.overrideTile(1, 1, Carpet.SKIP);
+		} else if (Random.Int(2) == 0) {
 			Painter.fill(level, c.left + 1, c.top + 1, 1, 1, Terrain.STATUE_SP);
+			carpet.overrideTile(1, 1, Carpet.CITY_STATUE);
 		} else {
 			Painter.fill(level, c.left + 1, c.top + 1, 1, 1, Terrain.REGION_DECO_ALT);
+			carpet.overrideTile(1, 1, Carpet.CITY_PEDESTAL);
 		}
+		level.customTiles.add(carpet);
 
 		for (Door door : connected.values()) {
 			door.set( Door.Type.REGULAR );
