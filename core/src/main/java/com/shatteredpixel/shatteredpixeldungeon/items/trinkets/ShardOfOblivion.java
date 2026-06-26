@@ -200,6 +200,9 @@ public class ShardOfOblivion extends Trinket {
 		if (Dungeon.hero.belongings.weapon() != null && !Dungeon.hero.belongings.weapon().isIdentified()){
 			wornUnIDed++;
 		}
+		if (Dungeon.hero.belongings.secondWep() != null && !Dungeon.hero.belongings.secondWep().isIdentified()){
+			wornUnIDed++;
+		}
 		if (Dungeon.hero.belongings.armor() != null && !Dungeon.hero.belongings.armor().isIdentified()){
 			wornUnIDed++;
 		}
