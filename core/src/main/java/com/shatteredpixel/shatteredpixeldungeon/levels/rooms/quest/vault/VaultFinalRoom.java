@@ -30,7 +30,10 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.custom.Carpet;
 import com.watabou.utils.Point;
+import com.watabou.utils.Rect;
 
 public class VaultFinalRoom extends SpecialRoom {
 
@@ -60,24 +63,68 @@ public class VaultFinalRoom extends SpecialRoom {
 	}
 
 	@Override
+	public boolean canConnect(Point p) {
+		return (Math.abs(p.x - center().x) <= 5 || Math.abs(p.y - center().y) <= 5);
+	}
+
+	@Override
+	public boolean canPlaceGrass(Point p) {
+		return false;
+	}
+
+	@Override
+	public boolean canPlaceWater(Point p) {
+		return false;
+	}
+
+	@Override
 	public void paint(Level level) {
 		Painter.fill( level, this, Terrain.WALL );
-		Painter.fill( level, this, 1 , Terrain.REGION_DECO_ALT );
-		Painter.fill( level, this, 2 , Terrain.EMPTY_SP );
+		Painter.fillEllipse( level, this, 5, Terrain.EMPTY_SP );
 
-		for (Door door : connected.values()) {
-			door.set( Door.Type.REGULAR );
-			Painter.drawInside(level, this, door, 2, Terrain.EMPTY_SP);
+		Point c = center();
+
+		Door entrance = entrance();
+		entrance.set( Door.Type.REGULAR );
+		Room entry = new EmptyRoom();
+		Room treasure = new EmptyRoom();;
+		if (entrance.x == left) {
+			entry.set(left + 1, top + 5, left + 3, bottom - 5);
+			Painter.set(level, left+4, c.y, Terrain.DOOR);
+			treasure.set(right - 3,  top + 5, right - 1, bottom - 5);
+			Painter.set(level, right-4, c.y, Terrain.LOCKED_DOOR);
+		} else if (entrance.x == right){
+			treasure.set(left + 1, top + 5, left + 3, bottom - 5);
+			Painter.set(level, left+4, c.y, Terrain.LOCKED_DOOR);
+			entry.set(right - 3,  top + 5, right - 1, bottom - 5);
+			Painter.set(level, right-4, c.y, Terrain.DOOR);
+		} else if (entrance.y == top) {
+			entry.set(left + 5, top + 1, right-5, top + 3);
+			Painter.set(level, c.x, top+4, Terrain.DOOR);
+			treasure.set(left + 5, bottom - 3, right-5, bottom - 1);
+			Painter.set(level, c.x, bottom-4, Terrain.LOCKED_DOOR);
+		} else {
+			treasure.set(left + 5, top + 1, right-5, top + 3);
+			Painter.set(level, c.x, top+4, Terrain.LOCKED_DOOR);
+			entry.set(left + 5, bottom - 3, right-5, bottom - 1);
+			Painter.set(level, c.x, bottom-4, Terrain.DOOR);
 		}
+		Painter.fill(level, entry, Terrain.CUSTOM_DECO_EMPTY);
 
-		level.drop(new ImpStatue(), level.pointToCell(center()));
+		Carpet carpet = new Carpet();
+		carpet.setRect(entry.left, entry.top, entry.width(), entry.height());
+		level.customTiles.add(carpet);
+
+		Painter.fill(level, treasure, Terrain.EMPTY_SP);
+
+		level.drop(new ImpStatue(), level.pointToCell(treasure.random(1)));
 
 		//These items are meant to be taken out with you and so use levelgen logic
 		Artifact artif = Generator.randomArtifact();
 		if (artif != null){
 			artif.identify();
 			artif.transferUpgrade(5);
-			level.drop(artif, level.pointToCell(random(2)));
+			level.drop(artif, level.pointToCell(treasure.random(1)));
 		}
 		//TODO more options
 
