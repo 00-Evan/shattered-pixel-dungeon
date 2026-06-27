@@ -97,7 +97,7 @@ public class WallOcclusionTilemap extends Tilemap {
 				curr = DOOR_VERT;
 			}
 
-		} else if (!wall(cell)) {
+		} else if (!wall(cell) && !Dungeon.level.pit[cell]) {
 
 			//branch for above wall
 			//we specifically skip this for alchemy pots to preserve their passthrough to water layer
