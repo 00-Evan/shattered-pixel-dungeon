@@ -494,6 +494,11 @@ public class VaultLevel extends CityLevel {
 					LevelTransition.Type.BRANCH_EXIT);
 			InterlevelScene.mode = InterlevelScene.Mode.ASCEND;
 			Game.switchScene( InterlevelScene.class );
+		} else if (ch == Dungeon.hero) {
+			Room r = room(ch.pos);
+			if (r instanceof VaultFinalRoom){
+				((VaultFinalRoom) r).processHeroStep((Hero) ch);
+			}
 		}
 	}
 
