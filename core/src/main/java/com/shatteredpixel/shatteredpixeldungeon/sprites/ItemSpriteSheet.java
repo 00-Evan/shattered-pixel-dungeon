@@ -669,30 +669,36 @@ public class ItemSpriteSheet {
 	public static final int PHASE_SHIFT     = SPELLS+1;
 	public static final int TELE_GRAB       = SPELLS+2;
 	public static final int UNSTABLE_SPELL  = SPELLS+3;
-
-	public static final int CURSE_INFUSE    = SPELLS+5;
-	public static final int MAGIC_INFUSE    = SPELLS+6;
-	public static final int ALCHEMIZE       = SPELLS+7;
-	public static final int RECYCLE         = SPELLS+8;
-
-	public static final int RECLAIM_TRAP    = SPELLS+10;
-	public static final int RETURN_BEACON   = SPELLS+11;
-	public static final int SUMMON_ELE      = SPELLS+12;
+	public static final int CURSE_INFUSE    = SPELLS+4;
+	public static final int MAGIC_INFUSE    = SPELLS+5;
+	public static final int ALCHEMIZE       = SPELLS+6;
+	public static final int RECYCLE         = SPELLS+7;
+	public static final int RECLAIM_TRAP    = SPELLS+8;
+	public static final int RETURN_BEACON   = SPELLS+9;
+	public static final int SUMMON_ELE      = SPELLS+10;
+	public static final int SUMMON_ELE_FIRE = SPELLS+11;
+	public static final int SUMMON_ELE_FROST= SPELLS+12;
+	public static final int SUMMON_ELE_SHOCK= SPELLS+13;
+	public static final int SUMMON_ELE_CHAOS= SPELLS+14;
 
 	static{
-		assignItemRect(WILD_ENERGY,     12, 12);
+		assignItemRect(WILD_ENERGY,     10, 10);
 		assignItemRect(PHASE_SHIFT,     12, 10);
-		assignItemRect(TELE_GRAB,       10, 10);
+		assignItemRect(TELE_GRAB,       12, 12);
 		assignItemRect(UNSTABLE_SPELL,  12, 13);
 
 		assignItemRect(CURSE_INFUSE,    10, 16);
 		assignItemRect(MAGIC_INFUSE,    10, 14);
 		assignItemRect(ALCHEMIZE,       10, 16);
-		assignItemRect(RECYCLE,         10, 16);
+		assignItemRect(RECYCLE,          8, 16);
 
-		assignItemRect(RECLAIM_TRAP,     8, 16);
+		assignItemRect(RECLAIM_TRAP,    10, 16);
 		assignItemRect(RETURN_BEACON,    6, 16);
 		assignItemRect(SUMMON_ELE,       8, 16);
+		assignItemRect(SUMMON_ELE_FIRE,  8, 16);
+		assignItemRect(SUMMON_ELE_FROST, 8, 16);
+		assignItemRect(SUMMON_ELE_SHOCK, 8, 16);
+		assignItemRect(SUMMON_ELE_CHAOS, 8, 16);
 	}
 	
 	private static final int FOOD       =                                   xy(1, 28);  //16 slots
