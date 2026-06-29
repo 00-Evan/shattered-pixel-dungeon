@@ -130,11 +130,13 @@ public enum Icons {
 	LIBGDX,
 	ALEKS,
 	WATA,
+	PUMPKINVOLT,
 	CELESTI,
 	LUMINE,
 	CUBE_CODE,
 	PURIGRO,
-	ARCNOR;
+	ARCNOR,
+	ALASTAIR;
 
 	public Image get() {
 		return get( this );
@@ -411,6 +413,9 @@ public enum Icons {
 			case WATA:
 				icon.frame( icon.texture.uvRectBySize( 0, 112, 17, 12 ) );
 				break;
+			case PUMPKINVOLT:
+				icon.frame( icon.texture.uvRectBySize( 17, 112, 14, 15 ) );
+				break;
 
 			//large icons are scaled down to match game's size
 			case CELESTI:
@@ -431,6 +436,10 @@ public enum Icons {
 				break;
 			case CUBE_CODE:
 				icon.frame( icon.texture.uvRectBySize( 160, 96, 27, 30 ) );
+				icon.scale.set(PixelScene.align(0.49f));
+				break;
+			case ALASTAIR:
+				icon.frame( icon.texture.uvRectBySize( 192, 96, 32, 32 ) );
 				icon.scale.set(PixelScene.align(0.49f));
 				break;
 
