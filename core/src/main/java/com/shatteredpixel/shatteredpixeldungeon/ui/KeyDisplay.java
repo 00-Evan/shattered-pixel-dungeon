@@ -76,7 +76,7 @@ public class KeyDisplay extends Visual {
 			if (rec.depth() < Dungeon.depth){
 				//only ever 1 black key
 				keys[0] = 1;
-			} else if (rec.depth() == Dungeon.depth){
+			} else if (rec.depth() == Dungeon.depth && Dungeon.branch == 0){
 				keys[keyMap.get(rec.type())] += rec.quantity();
 			}
 		}
