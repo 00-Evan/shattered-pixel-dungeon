@@ -158,8 +158,8 @@ public class Emitter extends Group {
 				factory.emit(
 						this,
 						index,
-						target.x + Random.Float( target.width ),
-						target.y + Random.Float( target.height ) );
+						target.x + Random.Float( target.width() ),
+						target.y + Random.Float( target.height() ) );
 			} else {
 				factory.emit(
 						this,

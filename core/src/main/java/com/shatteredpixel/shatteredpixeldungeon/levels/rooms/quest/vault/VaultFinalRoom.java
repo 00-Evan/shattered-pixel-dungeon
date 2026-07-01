@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultBossElemental;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.ImpStatue;
@@ -48,6 +49,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Point;
+import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
 
 public class VaultFinalRoom extends SpecialRoom {
@@ -186,10 +188,14 @@ public class VaultFinalRoom extends SpecialRoom {
 			int distance = Math.max(Math.abs(heroPos.x - lockedDoor.x), Math.abs(heroPos.y - lockedDoor.y));
 			//clear warned state if hero leaves
 			if (distance <= 2){
-				//TODO fight start!
-				Painter.set(Dungeon.level, entryDoor, Terrain.LOCKED_DOOR);
+				Level.set(Dungeon.level.pointToCell(entryDoor), Terrain.LOCKED_DOOR);
 				GameScene.updateMap(Dungeon.level.pointToCell(entryDoor));
 				GLog.w("fight start!");
+				VaultBossElemental boss = new VaultBossElemental();
+				boss.state = boss.WANDERING;
+				boss.pos = Dungeon.level.pointToCell(center());
+				GameScene.add(boss);
+				boss.setElementalForm(VaultBossElemental.ElementalForm.values()[Random.Int(3)]);
 				lockTriggered = true;
 			} else if (distance == 3 && warnState < 2) {
 				GLog.n(Messages.get(VaultFinalRoom.class, "final_warning"));
@@ -207,8 +213,8 @@ public class VaultFinalRoom extends SpecialRoom {
 						int score = 0;
 						if (score >= 1600) {
 							GameScene.show(new WndTitledMessage(new ImpSprite(),
-									Messages.titleCase(Messages.get(Imp.class, "imp_warning_prepared")),
-									"test warning!"));
+									Messages.titleCase(Messages.get(Imp.class, "name")),
+									Messages.get(VaultFinalRoom.class, "imp_warning_prepared")));
 						} else {
 							GameScene.show(new WndTitledMessage(new ImpSprite(),
 									Messages.titleCase(Messages.get(Imp.class, "name")),
@@ -221,6 +227,13 @@ public class VaultFinalRoom extends SpecialRoom {
 				warnState = 0;
 			}
 		}
+	}
+
+	public void unlock(){
+		Level.set(Dungeon.level.pointToCell(entryDoor), Terrain.DOOR);
+		GameScene.updateMap(Dungeon.level.pointToCell(entryDoor));
+		Level.set(Dungeon.level.pointToCell(lockedDoor), Terrain.DOOR);
+		GameScene.updateMap(Dungeon.level.pointToCell(lockedDoor));
 	}
 
 	private static final String ENTRY_DOOR_X = "entry_door_x";
