@@ -40,27 +40,31 @@ public class RatKingSprite extends MobSprite {
 
 	public void resetAnims(){
 
+		int height = 16;
+
 		int c;
 		switch (Holiday.getCurrentHoliday()){
 			default:
 				c = 0;
 				break;
 			case APRIL_FOOLS:
-				c = 8;
+				height = 17;
+				c = 16;
 				break;
 			case WINTER_HOLIDAYS:
-				c = 16;
+				height = 17;
+				c = 24;
 				break;
 		}
 
 		if (Dungeon.hero != null && Dungeon.hero.armorAbility instanceof Ratmogrify){
-			c = 24;
+			c = 8;
 			if (parent != null) aura(0xFFFF00, 5);
 		}
 
 		texture( Assets.Sprites.RATKING );
 
-		TextureFilm frames = new TextureFilm( texture, 16, 17 );
+		TextureFilm frames = new TextureFilm( texture, 16, height );
 
 		idle = new Animation( 2, true );
 		idle.frames( frames, c+0, c+0, c+0, c+1 );

@@ -21,15 +21,20 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.RatKing;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.sewerboss.SewerBossEntranceRoom;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.custom.Carpet;
+import com.watabou.noosa.Tilemap;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 public class RatKingRoom extends SecretRoom {
@@ -39,48 +44,175 @@ public class RatKingRoom extends SecretRoom {
 		//never connects at the entrance
 		return !(r instanceof SewerBossEntranceRoom) && super.canConnect(r);
 	}
-	
-	//reduced max size to limit chest numbers.
-	// normally would gen with 8-28, this limits it to 8-16
+
 	@Override
-	public int maxHeight() { return 7; }
+	public boolean canPlaceWater(Point p) {
+		return false;
+	}
+
+	@Override
+	public boolean canPlaceGrass(Point p) {
+		return false;
+	}
+
+	@Override
+	public boolean canPlaceTrap(Point p) {
+		return false;
+	}
+
+	//force internal size to 5x5 for consistency of layout
+	@Override
+	public int minWidth() { return 7; }
 	public int maxWidth() { return 7; }
+	public int minHeight() { return 7; }
+	public int maxHeight() { return 7; }
 	
 	public void paint(Level level ) {
 
 		Painter.fill( level, this, Terrain.WALL );
-		Painter.fill( level, this, 1, Terrain.EMPTY_SP );
+		Painter.fill( level, this, 1, Terrain.EMPTY );
+		Painter.fill( level, this, 2, Terrain.EMPTY_SP );
 		
 		Door entrance = entrance();
 		entrance.set( Door.Type.HIDDEN );
-		int door = entrance.x + entrance.y * level.width();
-		
-		for (int i=left + 1; i < right; i++) {
-			addChest( level, (top + 1) * level.width() + i, door );
-			addChest( level, (bottom - 1) * level.width() + i, door );
-		}
-		
-		for (int i=top + 2; i < bottom - 1; i++) {
-			addChest( level, i * level.width() + left + 1, door );
-			addChest( level, i * level.width() + right - 1, door );
+		int door = level.pointToCell(entrance);
+
+		int center = level.pointToCell(center());
+		int w = level.width();
+
+		int[] statuePositions = new int[]{
+				center - 2 - 2*w,
+				center - 2*w,
+				center + 2 - 2*w,
+				center + 2,
+				center + 2 + 2*w,
+				center + 2*w,
+				center - 2 + 2*w,
+				center -2,
+		};
+
+		for (int cell : statuePositions){
+			if (level.distance(door, cell) >= 2) {
+				Painter.set(level, cell, Terrain.CUSTOM_DECO);
+			}
 		}
 
+		//old was technically 8-16 x 10-25: 80-400, but would heavily tend toward avg of 210
+		//new would be 17-18 x 5-20: 85-360, avg of 218
+
+		//makes around 17-18 gold piles, up from average of 12, perhaps have each pile give... 5-20?
+
+		Carpet c = new Carpet();
+		c.setRect(left+2, top+2, width()-4, height()-4);
+		level.customTiles.add(c);
+
+		RatKingRoomDeco deco = new RatKingRoomDeco();
+		deco.setRect(left+1, top+1, width()-2, height()-2);
+		level.customTiles.add(deco);
+
+		//this slightly dousn't work, do we need to add a 3rd custom layer for raised tiles? blegh
+		RatKingStatues statues = new RatKingStatues();
+		statues.setRect(left+1, top, width()-2, height());
+		level.customWalls.add(statues);
+
 		RatKing king = new RatKing();
-		king.pos = level.pointToCell(random( 2 ));
+		king.pos = center;
 		level.mobs.add( king );
-	}
-	
-	private static void addChest( Level level, int pos, int door ) {
-		
-		if (pos == door - 1 ||
-			pos == door + 1 ||
-			pos == door - level.width() ||
-			pos == door + level.width()) {
-			return;
+
+		for (Point p : getPoints()){
+			int cell = level.pointToCell(p);
+			if (cell != center && (level.map[cell] == Terrain.EMPTY || level.map[cell] == Terrain.EMPTY_SP)){
+				level.drop( new Gold( Random.IntRange( 5, 20 ) ), cell );
+			}
 		}
-		
-		Item prize = new Gold( Random.IntRange( 10, 25 ) );
-		
-		level.drop( prize, pos ).type = Heap.Type.CHEST;
+	}
+
+	public static class RatKingRoomDeco extends CustomTilemap {
+
+		{
+			texture = Assets.Environment.RAT_KING_ROOM;
+		}
+
+		@Override
+		public Tilemap create() {
+			Tilemap v = super.create();
+			int[] data = new int[tileW*tileH];
+			int i = 0;
+			for (int y = 0; y < tileH; y++){
+				int cell = tileX + (tileY+y)*Dungeon.level.width();
+				for (int x = 0; x < tileW; x++){
+					if (x == 2 && y == 2){
+						//center, pillow
+						data[i] = 3;
+					} else if (Dungeon.level.map[cell] == Terrain.CUSTOM_DECO){
+						//statue
+						data[i] = 0;
+					} else {
+						data[i] = -1;
+					}
+					cell++;
+					i++;
+				}
+			}
+			v.map( data, tileW );
+			return v;
+		}
+
+		@Override
+		public String name(int tileX, int tileY) {
+			int cell = this.tileX+tileX + (this.tileY + tileY)*Dungeon.level.width();
+			if (Dungeon.level.map[cell] == Terrain.CUSTOM_DECO){
+				return Messages.get(this, "statue_name");
+			} else if (tileX == 2 && tileY == 2){
+				return Messages.get(this, "pillow_name");
+			} else {
+				return super.name(tileX, tileY);
+			}
+		}
+
+		@Override
+		public String desc(int tileX, int tileY) {
+			int cell = this.tileX+tileX + (this.tileY + tileY)*Dungeon.level.width();
+			if (Dungeon.level.map[cell] == Terrain.CUSTOM_DECO){
+				return Messages.get(this, "statue_desc");
+			} else if (tileX == 2 && tileY == 2){
+				return Messages.get(this, "pillow_desc");
+			} else {
+				return super.desc(tileX, tileY);
+			}
+		}
+	}
+
+	public static class RatKingStatues extends CustomTilemap {
+
+		{
+			texture = Assets.Environment.RAT_KING_ROOM;
+		}
+
+		@Override
+		public Tilemap create() {
+			Tilemap v = super.create();
+			int[] data = new int[tileW*tileH];
+			int i = 0;
+			for (int y = 0; y < tileH; y++){
+				int cell = tileX + (tileY+y)*Dungeon.level.width();
+				for (int x = 0; x < tileW; x++){
+					if (Dungeon.level.map[cell] == Terrain.CUSTOM_DECO){
+						//statue
+						data[i] = 1;
+					} else if (Dungeon.level.map[cell + Dungeon.level.width()] == Terrain.CUSTOM_DECO){
+						//statue overhang
+						data[i] = 2;
+					} else {
+						data[i] = -1;
+					}
+					cell++;
+					i++;
+				}
+			}
+			v.map( data, tileW );
+			return v;
+		}
+
 	}
 }
