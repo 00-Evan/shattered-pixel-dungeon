@@ -68,7 +68,7 @@ public class EscapeCrystal extends Item {
 
 	@Override
 	public ArrayList<String> actions(Hero hero) {
-		ArrayList<String> actions = super.actions( hero );
+		ArrayList<String> actions = new ArrayList<>(); //no drop or throw
 		actions.add(AC_USE);
 		return actions;
 	}
