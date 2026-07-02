@@ -431,7 +431,8 @@ public class v3_X_Changes {
 				"\n" +
 				"**v3.2.1:**\n" +
 				"**- Throwing Clubs and Hammers** have a new upside: they can now be picked up from the ground instantly!\n" +
-				"**- Kunai** base durability up to 8 from 5."));
+				"**- Kunai** base durability up to 8 from 5.\n" +
+				"**- Force Cube** base damage up to 5-25 from 5-20"));
 
 		changes.addButton(new ChangeButton(ChangeIcons.V30_CLERIC_HEROARM, "Cleric & Priest Buffs",
 				"Firstly, a quick buff to the Cleric's worst performing T2 spell:\n" +
