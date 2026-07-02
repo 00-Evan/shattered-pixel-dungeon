@@ -74,7 +74,7 @@ public class Carpet extends CustomTilemap {
 	public Tilemap create() {
 		Tilemap v = super.create();
 		int[] data = new int[tileW*tileH];
-		int regionOfs = 16 * (int)(Dungeon.depth/5);
+		int regionOfs = 16 * (int)((Dungeon.depth-1)/5);
 		int i = 0;
 		for (int y = 0; y < tileH; y++){
 			for (int x = 0; x < tileW; x++){
