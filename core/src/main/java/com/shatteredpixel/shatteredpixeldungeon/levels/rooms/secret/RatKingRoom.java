@@ -97,11 +97,6 @@ public class RatKingRoom extends SecretRoom {
 			}
 		}
 
-		//old was technically 8-16 x 10-25: 80-400, but would heavily tend toward avg of 210
-		//new would be 17-18 x 5-20: 85-360, avg of 218
-
-		//makes around 17-18 gold piles, up from average of 12, perhaps have each pile give... 5-20?
-
 		Carpet c = new Carpet();
 		c.setRect(left+2, top+2, width()-4, height()-4);
 		level.customTiles.add(c);
@@ -110,10 +105,9 @@ public class RatKingRoom extends SecretRoom {
 		deco.setRect(left+1, top+1, width()-2, height()-2);
 		level.customTiles.add(deco);
 
-		//this slightly dousn't work, do we need to add a 3rd custom layer for raised tiles? blegh
 		RatKingStatues statues = new RatKingStatues();
 		statues.setRect(left+1, top, width()-2, height());
-		level.customWalls.add(statues);
+		level.customRaised.add(statues);
 
 		RatKing king = new RatKing();
 		king.pos = center;
