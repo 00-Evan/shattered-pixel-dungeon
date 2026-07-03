@@ -38,18 +38,20 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.Tilemap;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MassGraveRoom extends SpecialRoom {
-	
+
 	@Override
-	public int minWidth() { return 7; }
-	
-	@Override
-	public int minHeight() { return 7; }
-	
+	public int minWidth() { return 11; }
+	public int maxWidth() { return 11; }
+	public int minHeight() { return 10; }
+	public int maxHeight() { return 10; }
+
 	public void paint(Level level){
 
 		Door entrance = entrance();
@@ -59,19 +61,39 @@ public class MassGraveRoom extends SpecialRoom {
 		Painter.fill(level, this, Terrain.WALL);
 		Painter.fill(level, this, 1, Terrain.CUSTOM_DECO_EMPTY);
 
-		Bones b = new Bones();
+		Painter.fill(level, left+1, top+1, 3, 1, Terrain.WALL);
+		Painter.fill(level, left+1, top+2, 2, 1, Terrain.WALL);
+		Painter.fill(level, right-3, top+1, 3, 1, Terrain.WALL);
+		Painter.fill(level, right-2, top+2, 2, 1, Terrain.WALL);
+		Painter.set(level, left+5, top, Terrain.WALL_DECO);
 
+		Painter.set(level, left+3, top+2, Terrain.STATUE);
+		Painter.set(level, right-3, top+2, Terrain.STATUE);
+
+		MassGraveDeco b = new MassGraveDeco();
 		b.setRect(left+1, top, width()-2, height()-1);
 		level.customTiles.add(b);
+
+		StatueRaised statue = new StatueRaised();
+		statue.setRect(left+3, top+2, 1, 1);
+		level.customRaised.add(statue);
+
+		statue = new StatueRaised();
+		statue.setRect(right-3, top+2, 1, 1);
+		level.customRaised.add(statue);
 
 		//50% 1 skeleton, 50% 2 skeletons
 		for (int i = 0; i <= Random.Int(2); i++){
 			Skeleton skele = new Skeleton();
 
 			int pos;
+			Point p;
 			do {
-				pos = level.pointToCell(random());
-			} while (level.map[pos] != Terrain.CUSTOM_DECO_EMPTY || level.findMob(pos) != null);
+				p = random(1);
+				//pull in range for top two rows
+				if (p.y <= top+2) p.x = Random.IntRange(left+4, right-4);
+				pos = level.pointToCell(p);
+			} while (p.y > top+3 || level.findMob(pos) != null);
 			skele.pos = pos;
 			level.mobs.add( skele );
 		}
@@ -88,13 +110,27 @@ public class MassGraveRoom extends SpecialRoom {
 
 		for (Item item : items){
 			int pos;
+			Point p;
 			do {
-				pos = level.pointToCell(random());
-			} while (level.map[pos] != Terrain.CUSTOM_DECO_EMPTY || level.heaps.get(pos) != null);
+				p = random(1);
+				//pull in range for top two rows
+				if (p.y <= top+2) p.x = Random.IntRange(left+4, right-4);
+				pos = level.pointToCell(p);
+			} while (p.y > top+5 || level.heaps.get(pos) != null);
 			Heap h = level.drop(item, pos);
 			h.setHauntedIfCursed();
 			h.type = Heap.Type.SKELETON;
 		}
+	}
+
+	@Override
+	public boolean canConnect(int direction) {
+		return direction == BOTTOM;
+	}
+
+	@Override
+	public boolean canConnect(Point p) {
+		return Math.abs(p.x- center().x) <= 2;
 	}
 
 	@Override
@@ -123,6 +159,7 @@ public class MassGraveRoom extends SpecialRoom {
 		return super.canConnect(r);
 	}
 
+	// for pre-v4.0 saves, which still use the old room layout
 	public static class Bones extends CustomTilemap {
 
 		private static final int WALL_OVERLAP   = 3;
@@ -152,12 +189,80 @@ public class MassGraveRoom extends SpecialRoom {
 
 		@Override
 		public String name(int tileX, int tileY) {
-			return Messages.get(this, "name");
+			return Messages.get(MassGraveDeco.class, "name");
 		}
 
 		@Override
 		public String desc(int tileX, int tileY) {
-			return Messages.get(this, "desc");
+			return Messages.get(MassGraveDeco.class, "desc");
+		}
+	}
+
+	public static class MassGraveDeco extends CustomTilemap {
+
+		{
+			texture = Assets.Environment.PRISON_QUEST;
+
+			tileW = 9;
+			tileH = 9;
+		}
+
+		private static byte[] render = new byte[]{
+				0, 0, 0, 1, 1, 1, 0, 0, 0,
+				0, 0, 1, 1, 1, 1, 1, 0, 0,
+				1, 1, 1, 1, 1, 1, 1, 1, 1,
+				1, 1, 1, 1, 1, 1, 1, 1, 1,
+				1, 1, 1, 1, 1, 1, 1, 1, 1,
+				1, 1, 1, 1, 1, 1, 1, 1, 1,
+				1, 1, 1, 1, 1, 1, 1, 1, 1,
+				1, 1, 1, 0, 0, 0, 1, 1, 1,
+				1, 1, 0, 0, 0, 0, 0, 1, 1
+		};
+
+		@Override
+		public Tilemap create() {
+			Tilemap v = super.create();
+			int[] data = mapSimpleImage( 4, 0, 256);
+			for (int i = 0; i < data.length; i++){
+				if (render[i] == 0) data[i] = -1;
+			}
+			v.map(data, tileW);
+			return v;
+		}
+
+		@Override
+		public String name(int tileX, int tileY) {
+			if (render[tileX + tileY*tileH] == 1) {
+				return Messages.get(this, "name");
+			} else {
+				return super.name(tileX, tileY);
+			}
+		}
+
+		@Override
+		public String desc(int tileX, int tileY) {
+			if (render[tileX + tileY*tileH] == 1) {
+				return Messages.get(this, "desc");
+			} else {
+				return super.desc(tileX, tileY);
+			}
+		}
+
+	}
+
+	public static class StatueRaised extends CustomTilemap {
+
+		{
+			texture = Assets.Environment.PRISON_QUEST;
+		}
+
+		@Override
+		public Tilemap create() {
+			Tilemap v = super.create();
+			int[] data = new int[tileW*tileH];
+			Arrays.fill(data,4); //constant for statues in tilesheet
+			v.map(data, tileW);
+			return v;
 		}
 	}
 }
