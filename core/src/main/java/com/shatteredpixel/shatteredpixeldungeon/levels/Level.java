@@ -420,7 +420,7 @@ public abstract class Level implements Bundlable {
 			customTiles.add(vis);
 		}
 
-		collection = bundle.getCollection( CUSTOM_TILES );
+		collection = bundle.getCollection( CUSTOM_RAISED );
 		for (Bundlable p : collection) {
 			CustomTilemap vis = (CustomTilemap)p;
 			customRaised.add(vis);
