@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.BlacksmithRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
 import com.watabou.utils.Random;
@@ -48,7 +49,7 @@ public class CavesPainter extends RegularPainter {
 		}
 
 		for (Room room : rooms) {
-			if (!(room instanceof StandardRoom)) {
+			if (!(room instanceof StandardRoom) || room instanceof BlacksmithRoom) {
 				continue;
 			}
 			

@@ -38,58 +38,67 @@ import com.watabou.noosa.Tilemap;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
+import java.util.Arrays;
+
 public class BlacksmithRoom extends StandardRoom {
 	
 	@Override
 	public int minWidth() {
-		return Math.max(super.minWidth(), 6);
+		return Math.max(super.minWidth(), 8);
 	}
-	
+
 	@Override
 	public int minHeight() {
-		return Math.max(super.minHeight(), 6);
+		return Math.max(super.minHeight(), 8);
 	}
-	
+
 	public void paint(Level level ) {
 
 		Painter.fill( level, this, Terrain.WALL );
-		Painter.fill( level, this, 1, Terrain.TRAP );
+		Painter.fill( level, this, 1, Terrain.EMPTY );
+		Painter.fill( level, this, 2, Terrain.EMPTY_SP );
+		Painter.fill( level, left+2, top+1, width()-4, 1, Terrain.REGION_DECO_ALT);
 
 		for (Door door : connected.values()) {
 			door.set( Door.Type.REGULAR );
-			Painter.drawInside( level, this, door, 2, Terrain.EMPTY );
+			Painter.drawInside( level, this, door, 1, Terrain.EMPTY );
 		}
 
 		Painter.fill( level, this, 2, Terrain.EMPTY_SP );
 		
-		for (int i=0; i < 2; i++) {
-			int pos;
-			do {
-				pos = level.pointToCell(random());
-			} while (level.map[pos] != Terrain.EMPTY_SP);
-			level.drop(
-				Generator.random( Random.oneOf(
-					Generator.Category.ARMOR,
-					Generator.Category.WEAPON,
-					Generator.Category.MISSILE
-				) ), pos );
-		}
-		
 		Blacksmith npc = new Blacksmith();
-		do {
-			npc.pos = level.pointToCell(random( 2 ));
-		} while (level.heaps.get( npc.pos ) != null);
+		npc.pos = left + 3 + (level.width()*(top+3));
 		level.mobs.add( npc );
 
-		int entrancePos;
-		do {
-			entrancePos = level.pointToCell(random( 2 ));
-		} while (level.heaps.get( npc.pos ) != null || entrancePos == npc.pos);
+		Painter.set(level, npc.pos+1, Terrain.CUSTOM_DECO_WTR);
+		Painter.set(level, npc.pos+1-level.width(), Terrain.CUSTOM_DECO);
+		Painter.set(level, npc.pos-level.width(), Terrain.CUSTOM_DECO);
+		Painter.set(level, npc.pos-1-level.width(), Terrain.CUSTOM_DECO);
 
-		QuestEntrance vis = new QuestEntrance();
-		vis.pos(entrancePos, level);
-		level.customTiles.add(vis);
+		int equipPos = right-3 + (bottom-3)*level.width();
+		for (int i=0; i < 2; i++) {
+			level.drop(
+					Generator.random( Random.oneOf(
+							Generator.Category.ARMOR,
+							Generator.Category.WEAPON,
+							Generator.Category.MISSILE
+					) ), equipPos );
+			Painter.set(level, equipPos, Terrain.PEDESTAL);
+			equipPos--;
+		}
 
+		boolean entranceOnLeft = Random.Int(2) == 0;
+		for (Door d : connected.values()){
+			if (d.y <= top+2){
+				if (d.x <= left+1){
+					entranceOnLeft = false;
+				} else if (d.x >= right-1){
+					entranceOnLeft = true;
+				}
+			}
+		}
+
+		int entrancePos = (top+1)*level.width() + (entranceOnLeft ? left+1 : right-1);
 		level.transitions.add(new LevelTransition(level,
 				entrancePos,
 				LevelTransition.Type.BRANCH_EXIT,
@@ -98,12 +107,14 @@ public class BlacksmithRoom extends StandardRoom {
 				LevelTransition.Type.BRANCH_ENTRANCE));
 		Painter.set(level, entrancePos, Terrain.EXIT);
 
-		for(Point p : getPoints()) {
-			int cell = level.pointToCell(p);
-			if (level.map[cell] == Terrain.TRAP){
-				level.setTrap(new BurningTrap().reveal(), cell);
-			}
-		}
+		SmithyVisuals vis = new SmithyVisuals();
+		vis.setRect(left+2, top+2, width()-4, height()-4);
+		level.customTiles.add(vis);
+
+		FurnaceOverhang furnace = new FurnaceOverhang();
+		Point p = level.cellToPoint(npc.pos);
+		furnace.setRect(p.x-1, p.y-2, 1, 1);
+		level.customWalls.add(furnace);
 	}
 
 	@Override
@@ -116,14 +127,57 @@ public class BlacksmithRoom extends StandardRoom {
 	}
 
 	@Override
-	public boolean canPlaceCharacter(Point p, Level l) {
-		if (l.map[l.pointToCell(p)] == Terrain.EXIT){
-			return false;
+	public int maxConnections(int direction) {
+		if (direction == top){
+			return 1;
 		} else {
-			return super.canPlaceCharacter(p, l);
+			return super.maxConnections(direction);
 		}
 	}
 
+	//single top connection can only be at corners, no left/right connection at corner
+	@Override
+	public boolean canConnect(Point p) {
+		if (p.y == top && p.x != left+1 && p.x != right-1){
+			return false;
+		} else if (p.y == top+1){
+			return false;
+		}
+		return super.canConnect(p);
+	}
+
+	@Override
+	public boolean canPlaceCharacter(Point p, Level l) {
+		return false;
+	}
+
+	@Override
+	public boolean canPlaceItem(Point p, Level l) {
+		return l.map[l.pointToCell(p)] == Terrain.EMPTY;
+	}
+
+	@Override
+	public boolean canPlaceGrass(Point p) {
+		return false;
+	}
+
+	@Override
+	public boolean canPlaceTrap(Point p) {
+		return false;
+	}
+
+	@Override
+	public boolean canPlaceWater(Point p) {
+		return false;
+	}
+
+	@Override
+	public boolean canMerge(Level l, Room other, Point p, int mergeTerrain) {
+		return false;
+	}
+
+	//for pre-v4.0 saves
+	//TODO maybe give the entrance a visual in v4.0 too?
 	public static class QuestEntrance extends CustomTilemap {
 
 		{
@@ -150,4 +204,73 @@ public class BlacksmithRoom extends StandardRoom {
 		}
 
 	}
+
+	public static class SmithyVisuals extends CustomTilemap {
+
+		{
+			texture = Assets.Environment.CAVES_QUEST;
+		}
+
+		@Override
+		public Tilemap create() {
+			Tilemap v = super.create();
+			int[] data = new int[tileW*tileH];
+			for (int i = 0; i < data.length; i++){
+				//smithy
+				if (i == 0)                                 data[i] = 7;
+				else if (i == 1)                            data[i] = 16;
+				else if (i == 2)                            data[i] = 17;
+				else if (i / tileW == 1 && i % tileW == 2)  data[i] = 18;
+				//floor tiles (bottom layer first)
+				else if (i >= data.length-tileW){
+					if (i % tileW == 0)             data[i] = 12;
+					else if (i % tileW == tileW-1)  data[i] = 14;
+					else                            data[i] = 13;
+				} else {
+					if (i % tileW == 0)             data[i] = 8;
+					else if (i % tileW == tileW-1)  data[i] = 10;
+					else                            data[i] = -1;
+				}
+
+			}
+			v.map( data, tileW );
+			return v;
+		}
+
+		@Override
+		public String name(int tileX, int tileY) {
+			int cell = (this.tileX+tileX) + (this.tileY+tileY)*Dungeon.level.width();
+			if (Dungeon.level.map[cell] == Terrain.CUSTOM_DECO || Dungeon.level.map[cell] == Terrain.CUSTOM_DECO_WTR){
+				return Messages.get(this, "name");
+			}
+			return super.name(tileX, tileY);
+		}
+
+		@Override
+		public String desc(int tileX, int tileY) {
+			int cell = (this.tileX+tileX) + (this.tileY+tileY)*Dungeon.level.width();
+			if (Dungeon.level.map[cell] == Terrain.CUSTOM_DECO || Dungeon.level.map[cell] == Terrain.CUSTOM_DECO_WTR){
+				return Messages.get(this, "desc");
+			}
+			return super.desc(tileX, tileY);
+		}
+	}
+
+	public static class FurnaceOverhang extends CustomTilemap{
+
+		{
+			texture = Assets.Environment.CAVES_QUEST;
+		}
+
+		@Override
+		public Tilemap create() {
+			Tilemap v = super.create();
+			int[] data = new int[tileW*tileH];
+			Arrays.fill(data, 3);
+			v.map( data, tileW );
+			return v;
+		}
+
+	}
+
 }
