@@ -176,6 +176,8 @@ public class CityBossLevel extends Level {
 		Painter.set(this, pedestals[2], Terrain.PEDESTAL);
 		Painter.set(this, pedestals[3], Terrain.PEDESTAL);
 
+		Painter.fill(this, c.x, c.y+2, 1, 4, Terrain.EMPTY_SP);
+
 		Painter.set(this, c.x, arena.top, Terrain.LOCKED_DOOR);
 
 		//exit hallway
@@ -542,11 +544,39 @@ public class CityBossLevel extends Level {
 				if (map[i] == Terrain.PEDESTAL){
 					data[i] = 13*8 + 4;
 
-				//statues that should face left instead of right
-				} else if (map[i] == Terrain.STATUE && i%tileW > 7) {
-					data[i] = 15 * 8 + 4;
-					RaisedTerrainTilemap.skipCells.add(i);
-					GameScene.updateMap(i);
+				//statues
+				} else if (map[i] == Terrain.STATUE) {
+
+					//throne statues
+					if (i < tileW*32){
+						//facing left
+						if (i%tileW > 7) {
+							data[i] = 10 * 8 + 7;
+							RaisedTerrainTilemap.skipCells.add(i);
+							GameScene.updateMap(i);
+
+							i++;
+							data[i] = 11 * 8 + 7;
+							RaisedTerrainTilemap.skipCells.add(i);
+							GameScene.updateMap(i);
+
+						} else {
+							data[i] = 8 * 8 + 7;
+							i++;
+							data[i] = 9 * 8 + 7;
+						}
+					} else {
+
+						//regular statues facing left
+						if (i % tileW > 7) {
+							data[i] = 15 * 8 + 4;
+							RaisedTerrainTilemap.skipCells.add(i);
+							GameScene.updateMap(i);
+						} else {
+							data[i] = -1;
+						}
+
+					}
 
 				//carpet tiles
 				} else if (map[i] == Terrain.EMPTY_SP) {
@@ -568,8 +598,8 @@ public class CityBossLevel extends Level {
 						data[++i] = 15*8 + 2;
 						data[++i] = 15*8 + 3;
 
-					//otherwise entrance carpet
-					} else if (map[i-tileW] != Terrain.EMPTY_SP){
+					//otherwise entrance carpets
+					} else if (map[i-tileW] != Terrain.EMPTY_SP || map[i-2*tileW] == Terrain.CUSTOM_DECO){
 						data[i] = 13*8 + 0;
 					} else if (map[i+tileW] != Terrain.EMPTY_SP){
 						data[i] = 15*8 + 0;
@@ -577,8 +607,15 @@ public class CityBossLevel extends Level {
 						data[i] = 14*8 + 0;
 					}
 
-					//otherwise no tile here
+				//banners along walls
+				} else if (i < tileW*32 && map[i] == Terrain.WALL_DECO && map[i+tileW] != Terrain.WALL) {
+					data[i] = 6*8 + 7;
+				} else if (i < tileW*32 && map[i] == Terrain.EMPTY && map[i-tileW] == Terrain.WALL_DECO) {
+					data[i] = 7*8 + 7;
+
+				//otherwise no tile here
 				} else {
+
 					data[i] = -1;
 				}
 			}
@@ -597,7 +634,7 @@ public class CityBossLevel extends Level {
 					return Messages.get(HallsLevel.class, "statue_name");
 				}
 
-				//DK arena tiles
+			//DK arena tiles
 			} else {
 				if (Dungeon.level.map[cell] == Terrain.CUSTOM_DECO){
 					return Messages.get(CityBossLevel.class, "throne_name");
