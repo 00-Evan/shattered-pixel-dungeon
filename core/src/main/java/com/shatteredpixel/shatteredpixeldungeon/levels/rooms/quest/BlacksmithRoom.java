@@ -76,6 +76,9 @@ public class BlacksmithRoom extends StandardRoom {
 		Painter.set(level, npc.pos-1-level.width(), Terrain.CUSTOM_DECO);
 
 		int equipPos = right-3 + (bottom-3)*level.width();
+		if (height() == 8){
+			equipPos += level.width();
+		}
 		for (int i=0; i < 2; i++) {
 			level.drop(
 					Generator.random( Random.oneOf(
@@ -107,7 +110,11 @@ public class BlacksmithRoom extends StandardRoom {
 				LevelTransition.Type.BRANCH_ENTRANCE));
 		Painter.set(level, entrancePos, Terrain.EXIT);
 
-		SmithyVisuals vis = new SmithyVisuals();
+		CustomTilemap vis = new QuestEntrance();
+		vis.pos(entrancePos, level);
+		level.customTiles.add(vis);
+
+		vis = new SmithyVisuals();
 		vis.setRect(left+2, top+2, width()-4, height()-4);
 		level.customTiles.add(vis);
 
@@ -176,8 +183,6 @@ public class BlacksmithRoom extends StandardRoom {
 		return false;
 	}
 
-	//for pre-v4.0 saves
-	//TODO maybe give the entrance a visual in v4.0 too?
 	public static class QuestEntrance extends CustomTilemap {
 
 		{
@@ -221,17 +226,25 @@ public class BlacksmithRoom extends StandardRoom {
 				else if (i == 1)                            data[i] = 16;
 				else if (i == 2)                            data[i] = 17;
 				else if (i / tileW == 1 && i % tileW == 2)  data[i] = 18;
-				//floor tiles (bottom layer first)
-				else if (i >= data.length-tileW){
-					if (i % tileW == 0)             data[i] = 12;
-					else if (i % tileW == tileW-1)  data[i] = 14;
-					else                            data[i] = 13;
-				} else {
-					if (i % tileW == 0)             data[i] = 8;
-					else if (i % tileW == tileW-1)  data[i] = 10;
-					else                            data[i] = -1;
+				//floor and pedestal tiles
+				else {
+					int cell = tileX + i % tileW;
+					cell += (tileY + i / tileW)*Dungeon.level.width();
+					if (Dungeon.level.map[cell] == Terrain.EMPTY_SP) {
+						if (i >= data.length - tileW) {
+							if (i % tileW == 0) data[i] = 12;
+							else if (i % tileW == tileW - 1) data[i] = 14;
+							else data[i] = 13;
+						} else {
+							if (i % tileW == 0) data[i] = 8;
+							else if (i % tileW == tileW - 1) data[i] = 10;
+							else data[i] = -1;
+						}
+					} else if (Dungeon.level.map[cell] == Terrain.PEDESTAL) {
+						if (i >= data.length - tileW)   data[i] = 20;
+						else                            data[i] = 21;
+					}
 				}
-
 			}
 			v.map( data, tileW );
 			return v;
