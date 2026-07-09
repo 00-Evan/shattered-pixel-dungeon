@@ -187,7 +187,7 @@ public class VaultFinalRoom extends SpecialRoom {
 			Point heroPos = Dungeon.level.cellToPoint(hero.pos);
 			int distance = Math.max(Math.abs(heroPos.x - lockedDoor.x), Math.abs(heroPos.y - lockedDoor.y));
 			//clear warned state if hero leaves
-			if (distance <= 2){
+			if (distance <= 3){
 				Level.set(Dungeon.level.pointToCell(entryDoor), Terrain.LOCKED_DOOR);
 				GameScene.updateMap(Dungeon.level.pointToCell(entryDoor));
 				GLog.w("fight start!");
@@ -197,12 +197,12 @@ public class VaultFinalRoom extends SpecialRoom {
 				GameScene.add(boss);
 				boss.setElementalForm(VaultBossElemental.ElementalForm.values()[Random.Int(3)]);
 				lockTriggered = true;
-			} else if (distance == 3 && warnState < 2) {
+			} else if (distance == 4 && warnState < 2) {
 				GLog.n(Messages.get(VaultFinalRoom.class, "final_warning"));
 				Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
 				hero.interrupt();
 				warnState = 2;
-			} else if (distance >= 4 && warnState == 2){
+			} else if (distance >= 5 && warnState == 2){
 				warnState = 1;
 			} else if (distance <= 10 && warnState < 1){
 				hero.interrupt();
