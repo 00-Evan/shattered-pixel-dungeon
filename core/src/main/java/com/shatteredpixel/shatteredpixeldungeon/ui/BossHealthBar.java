@@ -128,18 +128,8 @@ public class BossHealthBar extends Component {
 		if (boss != null && large) {
 			skull = boss.sprite();
 			if (skull.height() > 26 || skull.width() > 26){
-				RectF frame = skull.frame();
-				float excessW = frame.right - (26f/skull.texture.width);
-				if (excessW > 0){
-					frame.left += excessW/2f;
-					frame.right -= excessW/2f;
-				}
-				float excessH = frame.bottom - (26f/skull.texture.height);
-				if (excessH > 0){
-					frame.top += excessH/2f;
-					frame.bottom -= excessH/2f;
-				}
-				skull.frame(frame);
+				float excess = Math.max(skull.height()/26f, skull.width()/26f);
+				skull.scale.set(PixelScene.align(skull.scale.x * (1f/excess)));
 			}
 		} else {
 			skull = new Image(asset, 64, 0, 6, 6);
