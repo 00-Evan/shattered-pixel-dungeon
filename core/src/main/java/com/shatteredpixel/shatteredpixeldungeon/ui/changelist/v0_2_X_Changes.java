@@ -238,11 +238,12 @@ public class v0_2_X_Changes {
 				"_-_ Ring of Tenacity\n" +
 				"_-_ Ring of Sharpshooting\n" +
 				"_-_ Ring of Wealth\n\n" +
-				"The 4 remaining rings have also been tweaked or reworked entirely:\n" +
+				"The 5 remaining rings have also been tweaked or reworked entirely:\n" +
 				"_-_ Ring of Accuracy\n" +
 				"_-_ Ring of Elements\n" +
 				"_-_ Ring of Evasion\n" +
-				"_-_ Ring of Haste"));
+				"_-_ Ring of Haste\n" +
+				"_-_ Ring of Magic (formerly Power)"));
 		
 		changes.addButton( new ChangeButton(ChangeIcons.V020_MISC, Messages.get(ChangesScene.class, "misc"),
 				"-Nerfed farming health potions from fly swarms.\n\n" +

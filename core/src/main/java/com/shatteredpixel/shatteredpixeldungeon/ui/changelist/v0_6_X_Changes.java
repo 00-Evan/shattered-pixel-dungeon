@@ -720,7 +720,7 @@ public class v0_6_X_Changes {
 				"_-_ Ascending stairs, descending stairs, and mining no longer increase hunger."));
 		
 		changes.addButton( new ChangeButton( ChangeIcons.V061_RING_TOPAZ, "Ring of Energy",
-				"_-_ Added the ring of energy."));
+				"_-_ Added the ring of energy, which replaces the ring of power."));
 		
 		changes.addButton( new ChangeButton( ChangeIcons.V061_CHEST, "Sprites",
 				"New sprites for the following:\n" +
