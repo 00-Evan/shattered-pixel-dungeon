@@ -23,20 +23,18 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ClericSpell;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM100;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
-import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SnowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
@@ -44,22 +42,24 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultFinalRoom;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ElementalSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.VaultBossElementalSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
@@ -67,13 +67,12 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Currency;
 import java.util.HashSet;
 
 public class VaultBossElemental extends Mob {
 
 	{
-		spriteClass = ElementalSprite.Fire.class;
+		spriteClass = VaultBossElementalSprite.Fire.class;
 
 		HP = HT = 600;
 
@@ -88,9 +87,16 @@ public class VaultBossElemental extends Mob {
 	}
 	private ElementalForm form = ElementalForm.FIRE;
 
+	protected int envAttackCooldown = Random.NormalIntRange( 8000, 120000 );
+	protected int spAttackCooldown = Random.NormalIntRange( 3, 5 );
+	protected int spTargetCell = -1;
+
+	protected int lastEnemyPos = -1; //used for tracking targeting on some attacks
+
 	public void setElementalForm( ElementalForm form ){
 		//always remove pincushion as we're either leaving or entering frost form
 		Buff.affect(this, PinCushionRemover.class);
+		form = ElementalForm.SHOCK;
 
 		this.form = form;
 		boolean wasTurned = sprite.flipHorizontal;
@@ -99,24 +105,111 @@ public class VaultBossElemental extends Mob {
 			GameScene.addSprite(this);
 			sprite.emitter().burst(FlameParticle.FACTORY, 100);
 
-			setupFireWall();
-
 		} else if (form == ElementalForm.FROST){
 			sprite.killAndErase();
 			GameScene.addSprite(this);
 			sprite.emitter().burst(MagicMissile.MagicParticle.FACTORY, 100);
 
-			setupFrostVortex();
-
 		} else if (form == ElementalForm.SHOCK){
 			sprite.killAndErase();
 			GameScene.addSprite(this);
 			sprite.emitter().burst(SparkParticle.FACTORY, 100);
-
-			setupLightningChase();
 		}
+
+		//don't want to follow through now that form changed, so force a new sp attack instead
+		if (spTargetCell != -1){
+			spTargetCell = -1;
+			spAttackCooldown = 0;
+		}
+
+		//significanlty reduce environment attack cooldown
+		envAttackCooldown /= 2;
+
 		sprite.flipHorizontal = wasTurned;
 		BossHealthBar.assignBoss(this);
+	}
+
+	@Override
+	protected boolean act() {
+		if (spTargetCell != -1){
+			if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
+				sprite.zap( spTargetCell );
+				return false;
+			} else {
+				zap();
+				return true;
+			}
+		}
+
+		if (state == HUNTING){
+			spAttackCooldown--;
+			if (spAttackCooldown <= 0){
+				spend(TICK);
+				if (form == ElementalForm.FIRE){
+					setupFireBall(enemy);
+				} else if (form == ElementalForm.FROST){
+					setupFrostCone(enemy);
+				} else if (form == ElementalForm.SHOCK){
+					setupLightningBolt(enemy);
+				}
+
+				Dungeon.hero.interrupt();
+				return true;
+			} else {
+				envAttackCooldown--;
+				if (envAttackCooldown <= 0){
+					spend(TICK);
+					if (form == ElementalForm.FIRE){
+						setupFireWall();
+					} else if (form == ElementalForm.FROST){
+						setupFrostVortex();
+					} else if (form == ElementalForm.SHOCK){
+						setupLightningChase();
+					}
+					//not an actual attack, do nothing
+					sprite.operate(enemy.pos);
+					envAttackCooldown = Random.NormalIntRange( 8, 12 );
+
+					Dungeon.hero.interrupt();
+					return true;
+				}
+			}
+		}
+
+		AiState lastState = state;
+		boolean result = super.act();
+
+		//if state changed from wandering to hunting, we haven't acted yet, don't update.
+		if (!(lastState == WANDERING && state == HUNTING)) {
+			if (enemy != null) {
+				lastEnemyPos = enemy.pos;
+			} else {
+				lastEnemyPos = Dungeon.hero.pos;
+			}
+		}
+
+		return result;
+	}
+
+	protected void zap() {
+		spend( Actor.TICK );
+
+		Invisibility.dispel(this);
+		if (form == ElementalForm.FIRE){
+			doFireBall(spTargetCell);
+		} else if (form == ElementalForm.FROST){
+			doFrostCone(spTargetCell);
+		} else if (form == ElementalForm.SHOCK){
+			doLightningBolt(spTargetCell);
+		}
+
+		spAttackCooldown = Random.NormalIntRange( 3, 5 );
+		spTargetCell = -1;
+	}
+
+	public void onZapComplete() {
+		zap();
+		next();
 	}
 
 	@Override
@@ -193,6 +286,7 @@ public class VaultBossElemental extends Mob {
 				spend(TICK);
 			}
 		}
+		//TODO reduce cooldowns based on damage? That's very common in boss designs
 	}
 
 	@Override
@@ -209,13 +303,12 @@ public class VaultBossElemental extends Mob {
 	@Override
 	public CharSprite sprite() {
 		switch (form){
-			case FIRE: spriteClass = ElementalSprite.Fire.class; break;
-			case FROST: spriteClass = ElementalSprite.Frost.class; break;
-			case SHOCK: spriteClass = ElementalSprite.Shock.class; break;
-			case UNSTABLE: spriteClass = ElementalSprite.Chaos.class; break;
+			case FIRE: spriteClass = VaultBossElementalSprite.Fire.class; break;
+			case FROST: spriteClass = VaultBossElementalSprite.Frost.class; break;
+			case SHOCK: spriteClass = VaultBossElementalSprite.Shock.class; break;
+			case UNSTABLE: spriteClass = VaultBossElementalSprite.Chaos.class; break;
 		}
 		CharSprite sprite = super.sprite();
-		sprite.scale.set(2f);
 		return sprite;
 	}
 
@@ -242,16 +335,35 @@ public class VaultBossElemental extends Mob {
 
 	private static final String FORM = "elemental_form";
 
+	private static final String ENV_ATK_COOLDOWN = "env_atk_cooldown";
+	private static final String SP_ATK_COOLDOWN = "sp_atk_cooldown";
+	private static final String SP_TARGET_CELL = "sp_target_cell";
+
+	private static final String LAST_ENEMY_POS = "last_enemy_pos";
+
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
 		bundle.put(FORM, form);
+
+		bundle.put(ENV_ATK_COOLDOWN, envAttackCooldown);
+		bundle.put(SP_ATK_COOLDOWN, spAttackCooldown);
+		bundle.put(SP_TARGET_CELL, spTargetCell);
+
+		bundle.put(LAST_ENEMY_POS, lastEnemyPos);
 	}
 
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		form = bundle.getEnum(FORM, ElementalForm.class);
+
+		envAttackCooldown = bundle.getInt(ENV_ATK_COOLDOWN);
+		spAttackCooldown = bundle.getInt(SP_ATK_COOLDOWN);
+		spTargetCell = bundle.getInt(SP_TARGET_CELL);
+
+		lastEnemyPos = bundle.getInt(LAST_ENEMY_POS);
+
 		BossHealthBar.assignBoss(this);
 	}
 
@@ -310,6 +422,32 @@ public class VaultBossElemental extends Mob {
 	/***************************
 	 *** Fire Form Abilities ***
 	 **************************/
+
+	public void setupFireBall( Char enemy ){
+		//aim at direction enemy is moving
+		if (Dungeon.level.adjacent(enemy.pos, lastEnemyPos)){
+			spTargetCell = enemy.pos + (enemy.pos - lastEnemyPos);
+		} else {
+			//random otherwise
+			spTargetCell = enemy.pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
+		}
+
+		for (int i : PathFinder.NEIGHBOURS9){
+			GameScene.targetedCell(spTargetCell+i, cooldown());
+		}
+		GLog.w("Fireball!");
+	}
+
+	public void doFireBall( int cell ){
+
+		for (int i : PathFinder.NEIGHBOURS9){
+			CellEmitter.get(cell+i).burst(FlameParticle.FACTORY, 20);
+			GameScene.add(Blob.seed(cell+i, 5, Fire.class));
+
+			//TODO process hero getting hit, score loss, etc.
+		}
+
+	}
 
 	public void setupFireWall(){
 		FireWall wall = Buff.append(this, FireWall.class);
@@ -460,6 +598,127 @@ public class VaultBossElemental extends Mob {
 	 *** Frost Form Abilities ***
 	 ***************************/
 
+	public void setupFrostCone( Char enemy ){
+
+		spTargetCell = enemy.pos;
+		Ballistica core = new Ballistica(pos, enemy.pos, Ballistica.WONT_STOP);
+
+		ConeAOE cone = new ConeAOE(core, 10, 50, Ballistica.STOP_SOLID);
+		for (int cell : cone.cells){
+			if (Dungeon.level.trueDistance(cell, pos) <= 2){
+				GameScene.targetedCell(cell, cooldown());
+			}
+		}
+
+	}
+
+	public void doFrostCone( int cell ){
+
+		FrostCone cone = Buff.append(this, FrostCone.class);
+
+		Ballistica core = new Ballistica(pos, cell, Ballistica.WONT_STOP);
+		cone.cells = new ConeAOE(core, 10, 50, Ballistica.STOP_SOLID).cells;
+		cone.startPos = pos;
+
+	}
+
+	public static class FrostCone extends Buff {
+
+		private int startPos;
+		private HashSet<Integer> cells = new HashSet<>();
+		private int distance = 2;
+
+		private HashSet<Emitter> emitters = new HashSet<>();
+
+		@Override
+		public boolean act() {
+
+			for (int cell : cells.toArray(new Integer[0])){
+				if (Dungeon.level.trueDistance(cell, startPos) <= distance){
+					CellEmitter.get(cell).burst(MagicMissile.WhiteParticle.FACTORY, 20);
+					//TODO damage
+					if (Dungeon.level.trueDistance(cell, startPos) <= distance-4){
+						cells.remove(cell);
+					}
+				}
+			}
+
+			updateFX();
+			distance += 2;
+
+			if (cells.isEmpty()){
+				detach();
+			} else {
+				spend(TICK);
+				for (int cell : cells){
+					if (Dungeon.level.trueDistance(cell, startPos) <= distance
+						&& Dungeon.level.trueDistance(cell, startPos) > distance-2){
+						GameScene.targetedCell(cell, cooldown());
+					}
+				}
+			}
+
+			return true;
+		}
+
+		private void updateFX(){
+			for (Emitter e : emitters){
+				e.on = false;
+			}
+			emitters.clear();
+
+			for (int cell : cells) {
+				if (Dungeon.level.trueDistance(cell, startPos) <= distance){
+						Emitter e = CellEmitter.get(cell);
+						e.pour(SnowParticle.FACTORY, 0.05f);
+						emitters.add(e);
+					}
+				}
+			}
+
+		@Override
+		public void fx(boolean on) {
+			if (on) {
+				updateFX();
+			} else {
+				for (Emitter e : emitters){
+					e.on = false;
+				}
+				emitters.clear();
+			}
+		}
+
+		public static final String START_POS = "start_pos";
+		public static final String CELLS = "cells";
+		public static final String DISTANCE = "distance";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(START_POS, startPos);
+
+			int[] bundleCells = new int[cells.size()];
+			int i = 0;
+			for (int cell : cells){
+				bundleCells[i] = cell;
+				i++;
+			}
+			bundle.put(CELLS, bundleCells);
+			bundle.put(DISTANCE, distance);
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			startPos = bundle.getInt(START_POS);
+			for (int cell : bundle.getIntArray(CELLS)){
+				cells.add(cell);
+			}
+			distance = bundle.getInt(DISTANCE);
+		}
+
+	}
+
 	public void setupFrostVortex(){
 		FrostVortex vortex = Buff.append(this, FrostVortex.class);
 		vortex.targetCell = Dungeon.hero.pos;
@@ -606,6 +865,42 @@ public class VaultBossElemental extends Mob {
 	/****************************
 	 *** Shock Form Abilities ***
 	 ***************************/
+
+	public void setupLightningBolt(Char enemy){
+
+		spTargetCell = enemy.pos;
+		spAttackCooldown = Random.Int(2); //we re-use this variable to store x or + shape
+
+		Ballistica bolt = new Ballistica(pos, spTargetCell, Ballistica.STOP_SOLID);
+		for (int cell : bolt.subPath(0, bolt.dist)){
+			GameScene.targetedCell(cell, cooldown());
+		}
+
+		for (int i = spAttackCooldown % 2; i < PathFinder.CIRCLE8.length; i+=2){
+			GameScene.targetedCell(spTargetCell + PathFinder.CIRCLE8[i], cooldown());
+		}
+
+	}
+
+	public void doLightningBolt(int cell){
+
+		Ballistica bolt = new Ballistica(pos, cell, Ballistica.STOP_SOLID);
+		for (int c : bolt.subPath(0, bolt.dist)){
+			CellEmitter.get(c).burst(SparkParticle.FACTORY, 5);
+		}
+
+		int lightningOfs = spAttackCooldown;
+
+		for (int i = lightningOfs % 2; i < PathFinder.CIRCLE8.length; i+=2){
+			CellEmitter.get(cell + PathFinder.CIRCLE8[i]).burst(SparkParticle.FACTORY, 5);
+		}
+
+		sprite.parent.add(new Lightning(cell + PathFinder.CIRCLE8[lightningOfs],
+				cell + PathFinder.CIRCLE8[lightningOfs+4], null));
+		sprite.parent.add(new Lightning(cell + PathFinder.CIRCLE8[lightningOfs+2],
+				cell + PathFinder.CIRCLE8[lightningOfs+6], null));
+
+	}
 
 	//TODO this one isn't really working well at all atm, seems far too confusing
 	public void setupLightningChase(){
