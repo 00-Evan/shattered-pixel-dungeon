@@ -73,9 +73,15 @@ public class VaultLaser extends NPC {
 
 			Ballistica beam = new Ballistica(pos, laserDirs[laserDirIdx], Ballistica.STOP_SOLID);
 			boolean visible = false;
+			boolean observe = false;
 			for (int cell : beam.subPath(1, beam.dist)){
 				if (Dungeon.level.heroFOV[cell]){
 					visible = true;
+				}
+				if (Dungeon.level.flamable[cell]){
+					Dungeon.level.destroy( cell );
+					observe = true;
+					GameScene.updateMap( cell );
 				}
 				Char ch = Actor.findChar(cell);
 				if (ch != null && ch.alignment == Alignment.ALLY){
@@ -101,6 +107,10 @@ public class VaultLaser extends NPC {
 					Sample.INSTANCE.play(Assets.Sounds.RAY, 0.5f);
 					SFXLastPlayed = ShatteredPixelDungeon.realTime;
 				}
+			}
+
+			if (observe){
+				Dungeon.observe();
 			}
 
 			laserDirIdx++;

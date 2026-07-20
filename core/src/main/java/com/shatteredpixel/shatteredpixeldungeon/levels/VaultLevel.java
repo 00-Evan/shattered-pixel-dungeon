@@ -36,7 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultGho
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultGolem;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultShaman;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultSkeleton;
-import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -45,7 +44,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
@@ -72,7 +70,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlink;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfClairvoyance;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDeepSleep;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDetectMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFear;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFlock;
@@ -180,9 +177,8 @@ public class VaultLevel extends CityLevel {
 			public float hiddenDoorChance( Level l ){
 				return 0; //no hidden doors in the vault
 			}
-		//TODO what about water, grass, and traps. Adjust and maybe use traps?
-		}.setWater(feeling == Feeling.WATER ? 0.90f : 0.30f, 4)
-				.setGrass(feeling == Feeling.GRASS ? 0.80f : 0.20f, 3)
+		}.setWater(0.15f, 12) //water is less common and more clustered (a few leaks with lack of maintenance)
+				.setGrass(0.30f, 3) //grass is a little more common (overgrowth over time)
 				.setTraps(nTraps(), trapClasses(), trapChances());
 	}
 
