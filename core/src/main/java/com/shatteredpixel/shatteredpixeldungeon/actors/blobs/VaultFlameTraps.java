@@ -26,12 +26,15 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
@@ -85,13 +88,10 @@ public class VaultFlameTraps extends Blob {
 						if (ch == Dungeon.hero) {
 							Sample.INSTANCE.play(Assets.Sounds.BURNING);
 							SFXLastPlayed = ShatteredPixelDungeon.realTime;
-							ch.sprite.showStatus(CharSprite.NEGATIVE, "!!!");
 						}
 
-						//TODO damage and fire fx
-
-						/*if (ch != null && !ch.isImmune(Fire.class)) {
-						Buff.affect( ch, Burning.class ).reignite( ch );
+						if (!ch.isImmune(Fire.class)) {
+							Buff.affect( ch, Burning.class ).reignite( ch, 4 );
 						}
 
 						Heap heap = Dungeon.level.heaps.get( cell );
@@ -102,7 +102,7 @@ public class VaultFlameTraps extends Blob {
 						Plant plant = Dungeon.level.plants.get( cell );
 						if (plant != null){
 							plant.wither();
-						}*/
+						}
 
 					}
 

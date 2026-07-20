@@ -22,17 +22,20 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CheckedCell;
-import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM100;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.WardSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.SentrySprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -40,7 +43,7 @@ import com.watabou.utils.Random;
 public class VaultSentry extends NPC {
 
 	{
-		spriteClass = WardSprite.class;
+		spriteClass = SentrySprite.VaultScan.class;
 
 		properties.add(Property.IMMOVABLE);
 	}
@@ -97,12 +100,26 @@ public class VaultSentry extends NPC {
 				}
 				if (visible){
 					for (int cell : scan.cells) {
-						if (Actor.findChar(cell) == Dungeon.hero && Dungeon.hero.invisible == 0) {
-							Dungeon.hero.sprite.showStatus(CharSprite.NEGATIVE, "!!!");
-							Sample.INSTANCE.play(Assets.Sounds.ZAP);
-							SFXLastPlayed = ShatteredPixelDungeon.realTime;
+						if (fieldOfView[cell]) {
+							Char ch = Actor.findChar(cell);
+							if (ch != null && ch.alignment == Alignment.ALLY && ch.invisible == 0) {
+								ch.damage(Random.NormalIntRange(6, 12), new DM100.LightningBolt());
+								if (ch.sprite.visible || sprite.visible) {
+									Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);
+									sprite.parent.add(new Lightning(sprite.center(), ch.sprite.destinationCenter(), null));
+									if (ch.sprite.visible) {
+										ch.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);
+										ch.sprite.flash();
+									}
+								}
+								if (ch == Dungeon.hero && !ch.isAlive()) {
+									Badges.validateDeathFromEnemyMagic();
+									Dungeon.fail(this);
+									GLog.n(Messages.get(this, "ondeath"));
+								}
+							}
+							GameScene.checkedCell(cell, pos);
 						}
-						GameScene.checkedCell(cell, pos);
 					}
 				}
 			}
@@ -150,6 +167,8 @@ public class VaultSentry extends NPC {
 				if (visible){
 					for (int cell : scan.cells) {
 						if (fieldOfView[cell]) {
+							//mainly to prevent the hero from auto-picking up items when targeted
+							Dungeon.hero.interrupt();
 							GameScene.targetedCell(cell, 0xFF0000, TICK);
 						}
 					}
@@ -235,13 +254,6 @@ public class VaultSentry extends NPC {
 			scansMade = bundle.getInt(SCANS_MADE);
 			giveWarning = bundle.getBoolean(WARNING);
 		}
-	}
-
-	@Override
-	public CharSprite sprite() {
-		WardSprite sprite = (WardSprite) super.sprite();
-		sprite.linkVisuals(this);
-		return sprite;
 	}
 
 }

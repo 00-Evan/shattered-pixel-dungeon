@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasure;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.VaultLaser;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -59,11 +58,12 @@ public class VaultLaserTreasureRoom extends VaultTreasureRoom {
 					Painter.set(level, sentry.pos, Terrain.PEDESTAL);
 					level.mobs.add(sentry);
 
+					//second row is only visual, to avoid double damage
 					sentry = new VaultLaser();
 					sentry.pos = x + level.width()*(areaTop+5);
 					sentry.laserDirs = new int[]{sentry.pos-level.width()};
-					sentry.curCooldown = right-x;
-					sentry.afterShotCooldown = 3;
+					sentry.curCooldown = Integer.MAX_VALUE;
+					sentry.afterShotCooldown = Integer.MAX_VALUE;
 					sentry.giveWarning = false;
 					Painter.set(level, sentry.pos, Terrain.PEDESTAL);
 					level.mobs.add(sentry);
@@ -80,11 +80,12 @@ public class VaultLaserTreasureRoom extends VaultTreasureRoom {
 					Painter.set(level, sentry.pos, Terrain.PEDESTAL);
 					level.mobs.add(sentry);
 
+					//second row is only visual, to avoid double damage
 					sentry = new VaultLaser();
 					sentry.pos = x + level.width()*(areaTop+5);
 					sentry.laserDirs = new int[]{sentry.pos-level.width()};
-					sentry.curCooldown = x-left;
-					sentry.afterShotCooldown = 3;
+					sentry.curCooldown = Integer.MAX_VALUE;
+					sentry.afterShotCooldown = Integer.MAX_VALUE;
 					sentry.giveWarning = false;
 					Painter.set(level, sentry.pos, Terrain.PEDESTAL);
 					level.mobs.add(sentry);
@@ -105,11 +106,12 @@ public class VaultLaserTreasureRoom extends VaultTreasureRoom {
 					Painter.set(level, sentry.pos, Terrain.PEDESTAL);
 					level.mobs.add(sentry);
 
+					//second row is only visual, to avoid double damage
 					sentry = new VaultLaser();
 					sentry.pos = areaLeft+5 + level.width()*(y);
 					sentry.laserDirs = new int[]{sentry.pos-1};
-					sentry.curCooldown = bottom-y;
-					sentry.afterShotCooldown = 3;
+					sentry.curCooldown = Integer.MAX_VALUE;
+					sentry.afterShotCooldown = Integer.MAX_VALUE;
 					sentry.giveWarning = false;
 					Painter.set(level, sentry.pos, Terrain.PEDESTAL);
 					level.mobs.add(sentry);
@@ -126,11 +128,12 @@ public class VaultLaserTreasureRoom extends VaultTreasureRoom {
 					Painter.set(level, sentry.pos, Terrain.PEDESTAL);
 					level.mobs.add(sentry);
 
+					//second row is only visual, to avoid double damage
 					sentry = new VaultLaser();
 					sentry.pos = areaLeft+5 + level.width()*(y);
 					sentry.laserDirs = new int[]{sentry.pos-1};
-					sentry.curCooldown = y-top;
-					sentry.afterShotCooldown = 3;
+					sentry.curCooldown = Integer.MAX_VALUE;
+					sentry.afterShotCooldown = Integer.MAX_VALUE;
 					sentry.giveWarning = false;
 					Painter.set(level, sentry.pos, Terrain.PEDESTAL);
 					level.mobs.add(sentry);

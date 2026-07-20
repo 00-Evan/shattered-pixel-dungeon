@@ -22,17 +22,21 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Eye;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
-import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.WardSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.SentrySprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -40,7 +44,7 @@ import com.watabou.utils.Random;
 public class VaultLaser extends NPC {
 
 	{
-		spriteClass = WardSprite.class;
+		spriteClass = SentrySprite.VaultLaser.class;
 
 		properties.add(Char.Property.IMMOVABLE);
 	}
@@ -73,10 +77,22 @@ public class VaultLaser extends NPC {
 				if (Dungeon.level.heroFOV[cell]){
 					visible = true;
 				}
-				if (Actor.findChar(cell) == Dungeon.hero){
-					Dungeon.hero.sprite.showStatus(CharSprite.NEGATIVE, "!!!");
-					Sample.INSTANCE.play( Assets.Sounds.RAY );
-					SFXLastPlayed = ShatteredPixelDungeon.realTime;
+				Char ch = Actor.findChar(cell);
+				if (ch != null && ch.alignment == Alignment.ALLY){
+					ch.damage(Random.NormalIntRange(10, 20), new Eye.DeathGaze());
+					if (ch.sprite.visible){
+						ch.sprite.flash();
+						CellEmitter.center( pos ).burst( PurpleParticle.BURST, Random.IntRange( 1, 2 ) );
+					}
+					if (ch == Dungeon.hero){
+						Sample.INSTANCE.play( Assets.Sounds.RAY );
+						SFXLastPlayed = ShatteredPixelDungeon.realTime;
+						if (!ch.isAlive()){
+							Badges.validateDeathFromEnemyMagic();
+							Dungeon.fail( this );
+							GLog.n( Messages.get(this, "ondeath") );
+						}
+					}
 				}
 			}
 			if (visible){
@@ -115,6 +131,10 @@ public class VaultLaser extends NPC {
 			if (visible){
 				for (int cell : nextBeam.subPath(1, nextBeam.dist)) {
 					GameScene.targetedCell(cell, 1);
+					if (Actor.findChar(cell) == Dungeon.hero){
+						//mainly to prevent the hero from auto-picking up items when targeted
+						Dungeon.hero.interrupt();
+					}
 				}
 			}
 
@@ -187,10 +207,4 @@ public class VaultLaser extends NPC {
 		}
 	}
 
-	@Override
-	public CharSprite sprite() {
-		WardSprite sprite = (WardSprite) super.sprite();
-		sprite.linkVisuals(this);
-		return sprite;
-	}
 }
