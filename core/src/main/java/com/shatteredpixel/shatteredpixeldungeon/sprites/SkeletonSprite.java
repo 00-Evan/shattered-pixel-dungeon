@@ -33,21 +33,31 @@ public class SkeletonSprite extends MobSprite {
 		
 		texture( Assets.Sprites.SKELETON );
 		
-		TextureFilm frames = new TextureFilm( texture, 12, 15 );
-		
+		TextureFilm frames = new TextureFilm( texture, 12, texHeight() );
+
+		int c = texOffset();
+
 		idle = new Animation( 12, true );
-		idle.frames( frames, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3 );
+		idle.frames( frames, 0+c, 0+c, 0+c, 0+c, 0+c, 0+c, 0+c, 0+c, 0+c, 0+c, 0+c, 0+c, 0+c, 1+c, 2+c, 3+c );
 		
 		run = new Animation( 15, true );
-		run.frames( frames, 4, 5, 6, 7, 8, 9 );
+		run.frames( frames, 4+c, 5+c, 6+c, 7+c, 8+c, 9+c );
 		
 		attack = new Animation( 15, false );
-		attack.frames( frames, 14, 15, 16 );
+		attack.frames( frames, 14+c, 15+c, 16+c );
 		
 		die = new Animation( 12, false );
-		die.frames( frames, 10, 11, 12, 13 );
+		die.frames( frames, 10+c, 11+c, 12+c, 13+c );
 		
 		play( idle );
+	}
+
+	protected int texOffset() {
+		return 0;
+	}
+
+	protected int texHeight() {
+		return 15;
 	}
 	
 	@Override
@@ -62,4 +72,18 @@ public class SkeletonSprite extends MobSprite {
 	public int blood() {
 		return 0xFFcccccc;
 	}
+
+	public static class Vault extends SkeletonSprite {
+
+		@Override
+		protected int texOffset() {
+			return 21;
+		}
+
+		@Override
+		protected int texHeight() {
+			return 16; //1px taller due to beard
+		}
+	}
+
 }

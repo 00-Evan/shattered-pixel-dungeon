@@ -24,15 +24,13 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Skeleton;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.VaultSkeletonSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.SkeletonSprite;
 
 public class VaultSkeleton extends Skeleton {
 
-	//TODO stat refinement
-
 	{
 		activateSteathGameplayBehaviour();
-		spriteClass = VaultSkeletonSprite.class;
+		spriteClass = SkeletonSprite.Vault.class;
 
 		defenseSkill = 20;
 
