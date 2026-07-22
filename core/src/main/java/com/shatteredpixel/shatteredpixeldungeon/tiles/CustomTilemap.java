@@ -100,6 +100,11 @@ public abstract class CustomTilemap implements Bundlable {
 		return vis;
 	}
 
+	//TODO we need broader support for being able to alter terrain on custom tilemaps, this is a bit of a bandaid for DK fight changes atm.
+	public boolean allowWater(int tileX, int tileY){
+		return image(tileX, tileY) == null;
+	}
+
 	//x and y here are the coordinates tapped within the tile visual
 	public Image image(int tileX, int tileY){
 		if (vis == null){

@@ -151,7 +151,7 @@ public class CityBossLevel extends Level {
 		Painter.fill(this, c.x-1, c.y-2, 3, 1, Terrain.STATUE);
 		Painter.fill(this, c.x-1, c.y, 3, 1, Terrain.STATUE);
 		Painter.fill(this, c.x-1, c.y+2, 3, 1, Terrain.STATUE);
-		Painter.fill(this, c.x, entry.top+1, 1, 6, Terrain.EMPTY_SP);
+		Painter.fill(this, c.x, entry.top+1, 1, 6, Terrain.CUSTOM_DECO_EMPTY);
 
 		Painter.set(this, c.x, entry.top, Terrain.DOOR);
 
@@ -162,7 +162,7 @@ public class CityBossLevel extends Level {
 		//DK's throne room
 		Painter.fillDiamond(this, arena, 1, Terrain.EMPTY);
 
-		Painter.fill(this, arena, 5, Terrain.EMPTY_SP);
+		Painter.fill(this, arena, 5, Terrain.CUSTOM_DECO_EMPTY);
 		Painter.fill(this, arena, 6, Terrain.CUSTOM_DECO);
 
 		c = arena.center();
@@ -176,7 +176,7 @@ public class CityBossLevel extends Level {
 		Painter.set(this, pedestals[2], Terrain.PEDESTAL);
 		Painter.set(this, pedestals[3], Terrain.PEDESTAL);
 
-		Painter.fill(this, c.x, c.y+2, 1, 4, Terrain.EMPTY_SP);
+		Painter.fill(this, c.x, c.y+2, 1, 4, Terrain.CUSTOM_DECO_EMPTY);
 
 		Painter.set(this, c.x, arena.top, Terrain.LOCKED_DOOR);
 
@@ -578,10 +578,11 @@ public class CityBossLevel extends Level {
 
 					}
 
-				//carpet tiles
-				} else if (map[i] == Terrain.EMPTY_SP) {
+				//carpet tiles, uses both terrain types for compatibility with pre-v4.0 saves
+				} else if (map[i] == Terrain.CUSTOM_DECO_EMPTY || map[i] == Terrain.EMPTY_SP) {
 					//top row of DK's throne
-					if (map[i + 1] == Terrain.EMPTY_SP && map[i + tileW] == Terrain.EMPTY_SP) {
+					if ((map[i + 1] == Terrain.CUSTOM_DECO_EMPTY && map[i + tileW] == Terrain.CUSTOM_DECO_EMPTY)
+						|| (map[i + 1] == Terrain.EMPTY_SP && map[i + tileW] == Terrain.EMPTY_SP)) {
 						data[i] = 13 * 8 + 1;
 						data[++i] = 13 * 8 + 2;
 						data[++i] = 13 * 8 + 3;
@@ -593,15 +594,16 @@ public class CityBossLevel extends Level {
 						data[++i] = 14 * 8 + 3;
 
 					//bottom row of DK's throne
-					} else if (map[i+1] == Terrain.EMPTY_SP && map[i-tileW] == Terrain.EMPTY_SP){
+					} else if ((map[i+1] == Terrain.CUSTOM_DECO_EMPTY && map[i-tileW] == Terrain.CUSTOM_DECO_EMPTY)
+						|| (map[i+1] == Terrain.EMPTY_SP && map[i-tileW] == Terrain.EMPTY_SP) ){
 						data[i] = 15*8 + 1;
 						data[++i] = 15*8 + 2;
 						data[++i] = 15*8 + 3;
 
 					//otherwise entrance carpets
-					} else if (map[i-tileW] != Terrain.EMPTY_SP || map[i-2*tileW] == Terrain.CUSTOM_DECO){
+					} else if ((map[i-tileW] != Terrain.CUSTOM_DECO_EMPTY && map[i-tileW] != Terrain.EMPTY_SP) || map[i-2*tileW] == Terrain.CUSTOM_DECO){
 						data[i] = 13*8 + 0;
-					} else if (map[i+tileW] != Terrain.EMPTY_SP){
+					} else if (map[i+tileW] != Terrain.CUSTOM_DECO_EMPTY && map[i+tileW] != Terrain.EMPTY_SP){
 						data[i] = 15*8 + 0;
 					} else {
 						data[i] = 14*8 + 0;
@@ -610,7 +612,7 @@ public class CityBossLevel extends Level {
 				//banners along walls
 				} else if (i < tileW*32 && map[i] == Terrain.WALL_DECO && map[i+tileW] != Terrain.WALL) {
 					data[i] = 6*8 + 7;
-				} else if (i < tileW*32 && map[i] == Terrain.EMPTY && map[i-tileW] == Terrain.WALL_DECO) {
+				} else if (i < tileW*32 && (map[i] == Terrain.EMPTY || map[i] == Terrain.EMPTY_DECO) && map[i-tileW] == Terrain.WALL_DECO) {
 					data[i] = 7*8 + 7;
 
 				//otherwise no tile here
@@ -622,6 +624,18 @@ public class CityBossLevel extends Level {
 
 			v.map( data, tileW );
 			return v;
+		}
+
+		@Override
+		public boolean allowWater(int tileX, int tileY) {
+			if (super.allowWater(tileX, tileY)){
+				return true;
+			} else {
+				//allow curtain tails
+				int i = tileX + tileY*tileH;
+				int[] map = Dungeon.level.map;
+				return !(i < tileW*32 && (map[i] == Terrain.EMPTY || map[i] == Terrain.EMPTY_DECO) && map[i-tileW] == Terrain.WALL_DECO);
+			}
 		}
 
 		@Override
