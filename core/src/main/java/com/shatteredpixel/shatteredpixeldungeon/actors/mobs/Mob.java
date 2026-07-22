@@ -677,7 +677,7 @@ public abstract class Mob extends Char {
 			if (newPath) {
 				//If we aren't hunting, always take a full path
 				PathFinder.Path full = Dungeon.findPath(this, target, Dungeon.level.passable, fieldOfView, true);
-				if (state != HUNTING){
+				if (state != HUNTING && state != INVESTIGATING){
 					path = full;
 				} else {
 					//otherwise, check if other characters are forcing us to take a very slow route
@@ -1627,13 +1627,19 @@ public abstract class Mob extends Char {
 	}
 
 	protected class StealthGameplaySleeping extends Sleeping {
-		protected void awaken(boolean enemyInFOV) {
-			super.awaken(enemyInFOV);
+
+		@Override
+		public boolean act(boolean enemyInFOV, boolean justAlerted) {
 			//stay still by default if given no other wandering behaviour
 			if (wanderPositions == null){
 				wanderPositions = new int[1];
 				wanderPositions[0] = pos;
 			}
+			return super.act(enemyInFOV, justAlerted);
+		}
+
+		protected void awaken(boolean enemyInFOV) {
+			super.awaken(enemyInFOV);
 			if (state == HUNTING){
 				alerted = false;
 				state = INVESTIGATING;
