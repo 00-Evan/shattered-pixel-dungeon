@@ -103,7 +103,7 @@ public class AmbitiousImpRoom extends SpecialRoom {
 
 		WallBanners vis3 = new WallBanners();
 		vis3.pos(left+1, top);
-		level.customRaised.add(vis3);
+		level.customTiles.add(vis3);
 
 		int entrancePos = level.pointToCell(c);
 
