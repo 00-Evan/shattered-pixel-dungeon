@@ -136,6 +136,7 @@ public class VaultLevel extends CityLevel {
 		ArrayList<Room> initRooms = new ArrayList<>();
 
 		initRooms.add(roomEntrance = new VaultEntranceRoom());
+		VaultRoom.setupChances();
 
 		int i = 0;
 		while (i < 12){
@@ -461,11 +462,12 @@ public class VaultLevel extends CityLevel {
 	@Override
 	public Mob createMob() {
 		if (mobsToSpawn.isEmpty()){
-			//rotation is a total of 4/3/2 mobs at T1/2/3 currently
+			//rotation is 3 mobs at each tier
 			Collections.addAll(mobsToSpawn, T1Mobs);
-			Collections.addAll(mobsToSpawn, T1Mobs);
+			mobsToSpawn.add(Random.oneOf(T1Mobs));
 			Collections.addAll(mobsToSpawn, T2Mobs);
 			Collections.addAll(mobsToSpawn, T3Mobs);
+			mobsToSpawn.add(Random.oneOf(T3Mobs));
 			Random.shuffle(mobsToSpawn);
 		}
 		Class<? extends Mob> cls = mobsToSpawn.remove(0);
@@ -473,6 +475,11 @@ public class VaultLevel extends CityLevel {
 			cls = VaultElemental.random();
 		}
 		return Reflection.newInstance(cls);
+	}
+
+	//important to try and preserve mobs that can't spawn in a certain place (e.g. corridors)
+	public void returnMob( Class<?extends Mob> cls){
+		mobsToSpawn.add(0, cls);
 	}
 
 	@Override

@@ -34,6 +34,8 @@ import com.shatteredpixel.shatteredpixeldungeon.tiles.custom.Carpet;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
+
 public class VaultTokensRoom extends VaultLongRoom {
 
 	@Override
@@ -115,8 +117,12 @@ public class VaultTokensRoom extends VaultLongRoom {
 		}
 
 		Mob enemy;
+		ArrayList<Class<?extends Mob>> toReturn = new ArrayList<>();
 		do {
 			enemy = level.createMob();
+			if (Char.hasProp(enemy, Char.Property.LARGE)){
+				toReturn.add(enemy.getClass());
+			}
 		} while (Char.hasProp(enemy, Char.Property.LARGE));
 		int[] wanderPositions;
 		if (Random.Int(2) == 0) {
@@ -139,6 +145,10 @@ public class VaultTokensRoom extends VaultLongRoom {
 		enemy.setupStealthGameplayWanderPositions(wanderPositions, idx);
 		enemy.state = enemy.WANDERING;
 		level.mobs.add(enemy);
+
+		for (Class<?extends Mob> cls : toReturn){
+			((VaultLevel) level).returnMob(cls);
+		}
 
 		//TODO okay lots of token stuff to do here!
 

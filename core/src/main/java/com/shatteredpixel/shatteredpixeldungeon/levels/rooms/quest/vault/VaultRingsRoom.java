@@ -23,14 +23,14 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultRat;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class VaultRingsRoom extends VaultRoom {
 
@@ -49,8 +49,12 @@ public class VaultRingsRoom extends VaultRoom {
 		}
 
 		Mob enemy;
+		ArrayList<Class<?extends Mob>> toReturn = new ArrayList<>();
 		do {
 			enemy = level.createMob();
+			if (Char.hasProp(enemy, Char.Property.LARGE)){
+				toReturn.add(enemy.getClass());
+			}
 		} while (Char.hasProp(enemy, Char.Property.LARGE));
 		do {
 			enemy.pos = level.pointToCell(random(1));
@@ -71,6 +75,10 @@ public class VaultRingsRoom extends VaultRoom {
 		};
 		Random.shuffle(wanderPositions);
 		enemy.setupStealthGameplayWanderPositions(wanderPositions, 0);
+
+		for (Class<?extends Mob> cls : toReturn){
+			((VaultLevel) level).returnMob(cls);
+		}
 
 	}
 
