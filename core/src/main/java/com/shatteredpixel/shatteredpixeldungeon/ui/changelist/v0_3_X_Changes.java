@@ -317,9 +317,10 @@ public class v0_3_X_Changes {
 				"_-_ Ethereal Chains (replaces wand of blink)\n" +
 				"_-_ Lloyd's Beacon (replaces wand of teleportation)\n" +
 				"\n" +
-				"Misc. Balance changes:\n" +
+				"Misc. Balance Changes:\n" +
 				"_-_ Blessed Ankhs now revive at 1/4hp, but also grant initiative.\n" +
 				"_-_ Alchemist's Toolkit removed (will be reworked)\n" +
+				"_-_ Ring of Magic removed (will be reworked)\n" +
 				"_-_ Chalice of blood nerfed, now regens less hp at high levels.\n" +
 				"_-_ Cape of Thorns buffed, now absorbs all damage, but only deflects adjacent attacks.\n" +
 				"_-_ Sandals of nature adjusted, now give more seeds, less dew.\n" +
