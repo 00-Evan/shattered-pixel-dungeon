@@ -28,8 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 //currently does not teleport due to wandering AI state changes, only teleports enemies
 public class VaultGolem extends Golem {
 
-	//TODO stats
-
 	{
 		activateSteathGameplayBehaviour();
 

@@ -25,13 +25,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM200;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.DM200Sprite;
 
 public class VaultDM200 extends DM200 {
 
-	//TODO stats
-
 	{
 		activateSteathGameplayBehaviour();
+		spriteClass = DM200Sprite.Vault.class;
 
 		defenseSkill = 15;
 

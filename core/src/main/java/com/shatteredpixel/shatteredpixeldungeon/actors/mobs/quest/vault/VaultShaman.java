@@ -23,14 +23,16 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shaman;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ShamanSprite;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 public class VaultShaman extends Shaman {
-
-	//TODO stats
 
 	{
 		activateSteathGameplayBehaviour();
@@ -49,10 +51,34 @@ public class VaultShaman extends Shaman {
 		return 25;
 	}
 
+	int type = Random.Int(5);
+
 	@Override
 	protected void debuff( Char enemy ) {
-		//TODO
-		Buff.prolong( enemy, Weakness.class, Weakness.DURATION );
+		switch (type){
+			case 0: case 1:
+				Buff.prolong( enemy, Weakness.class, Weakness.DURATION );
+				break;
+			case 2: case 3:
+				Buff.prolong( enemy, Vulnerable.class, Vulnerable.DURATION );
+				break;
+			case 4:
+				Buff.prolong( enemy, Hex.class, Hex.DURATION );
+				break;
+		}
 	}
 
+	public static final String TYPE = "type";
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put(TYPE, type);
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		type = bundle.getInt(TYPE);
+	}
 }

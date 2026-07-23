@@ -21,14 +21,14 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Ghoul;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 
 //does not spawn or follow a partner due to overriding AI states and partnerID
 // but will still buddy up with nearby ghouls for the purposes of survival
 public class VaultGhoul extends Ghoul {
-
-	//TODO stats
 
 	{
 		activateSteathGameplayBehaviour();
@@ -42,4 +42,20 @@ public class VaultGhoul extends Ghoul {
 		lootChance = 1;
 	}
 
+	@Override
+	protected boolean act() {
+		if (state == WANDERING || state == SLEEPING){
+			//finds nearby ghouls and is drawn to whatever they're targeting
+			// to simulate normal ghoul behaviour of partners sharing aggro
+			for (Mob m : Dungeon.level.mobs){
+				if (m instanceof VaultGhoul
+						&& Dungeon.level.distance(pos, m.pos) < 4
+						&& (m.state == m.INVESTIGATING || m.state == m.HUNTING)){
+					beckon(m.pos);
+					break;
+				}
+			}
+		}
+		return super.act();
+	}
 }

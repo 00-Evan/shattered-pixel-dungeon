@@ -23,21 +23,63 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ElementalSprite;
+import com.watabou.utils.Random;
 
-//TODO just copy shock or something unique?
-public class VaultElemental extends Elemental.ShockElemental {
+public abstract class VaultElemental extends Elemental {
 
-	{
-		activateSteathGameplayBehaviour();
-
-		//uses base elemental ACC and EVA
-
-		maxLvl = 30;
-		EXP = 0;
-		loot = DwarfToken.class;
-		lootChance = 1;
+	public static Class<? extends Elemental> random(){
+		float roll = Random.Float();
+		if (roll < 0.4f){
+			return Fire.class;
+		} else if (roll < 0.8f){
+			return Frost.class;
+		} else {
+			return Shock.class;
+		}
 	}
 
+	public static class Fire extends FireElemental {
+
+		{
+			activateSteathGameplayBehaviour();
+
+			//uses base elemental ACC and EVA
+
+			maxLvl = 30;
+			EXP = 0;
+			loot = DwarfToken.class;
+			lootChance = 1;
+		}
+
+	}
+
+	public static class Frost extends FrostElemental {
+
+		{
+			activateSteathGameplayBehaviour();
+
+			//uses base elemental ACC and EVA
+
+			maxLvl = 30;
+			EXP = 0;
+			loot = DwarfToken.class;
+			lootChance = 1;
+		}
+
+	}
+
+	public static class Shock extends ShockElemental {
+
+		{
+			activateSteathGameplayBehaviour();
+
+			//uses base elemental ACC and EVA
+
+			maxLvl = 30;
+			EXP = 0;
+			loot = DwarfToken.class;
+			lootChance = 1;
+		}
+
+	}
 }

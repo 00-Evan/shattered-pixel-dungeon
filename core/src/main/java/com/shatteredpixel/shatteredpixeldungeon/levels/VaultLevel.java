@@ -468,7 +468,11 @@ public class VaultLevel extends CityLevel {
 			Collections.addAll(mobsToSpawn, T3Mobs);
 			Random.shuffle(mobsToSpawn);
 		}
-		return Reflection.newInstance(mobsToSpawn.remove(0));
+		Class<? extends Mob> cls = mobsToSpawn.remove(0);
+		if (cls == VaultElemental.class){
+			cls = VaultElemental.random();
+		}
+		return Reflection.newInstance(cls);
 	}
 
 	@Override
