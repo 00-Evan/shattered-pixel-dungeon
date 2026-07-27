@@ -80,7 +80,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Snake;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CheckedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
@@ -2417,15 +2416,15 @@ public class Hero extends Char {
 				boolean hasKey = true;
 				if (heap.type == Type.SKELETON || heap.type == Type.REMAINS) {
 					Sample.INSTANCE.play( Assets.Sounds.BONES );
-				} else if (Dungeon.branch != 0){
-					hasKey = false; //keys currently do not work in sub-floors
 				} else if (heap.type == Type.LOCKED_CHEST){
-					hasKey = Notes.remove(new GoldenKey(Dungeon.depth));
+					//keys currently do not work in sub-floors
+					hasKey = Dungeon.branch != 0 && Notes.remove(new GoldenKey(Dungeon.depth));
 					if (hasKey && keyUseTrack != null){
 						keyUseTrack.processGoldLockOpened();
 					}
 				} else if (heap.type == Type.CRYSTAL_CHEST){
-					hasKey = Notes.remove(new CrystalKey(Dungeon.depth));
+					//keys currently do not work in sub-floors
+					hasKey = Dungeon.branch != 0 && Notes.remove(new CrystalKey(Dungeon.depth));
 					if (hasKey && keyUseTrack != null){
 						keyUseTrack.processCrystalLockOpened();
 					}
