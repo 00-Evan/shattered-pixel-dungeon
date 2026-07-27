@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Eye;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -65,8 +66,15 @@ public class VaultLaser extends NPC {
 	//laser sentries will collectively play a SFX at most every 80 ms
 	private static long SFXLastPlayed = 0;
 
+	//to avoid many sentries calling setSeen every turn
+	private boolean seen = false;
+
 	@Override
 	protected boolean act() {
+		if (!seen && Dungeon.level.heroFOV[pos]){
+			Bestiary.setSeen(getClass());
+			seen = true;
+		}
 
 		curCooldown--;
 		if (curCooldown <= 0){

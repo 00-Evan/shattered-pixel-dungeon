@@ -99,7 +99,17 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.PrismaticImage;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.RatKing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.VaultLaser;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.VaultSentry;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultBossElemental;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultDM100;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultDM200;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultElemental;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultGhoul;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultGolem;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultShaman;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultSkeleton;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
@@ -231,7 +241,8 @@ public enum Bestiary {
 
 		QUEST.addEntities(FetidRat.class, GnollTrickster.class, GreatCrab.class,
 				Elemental.NewbornFireElemental.class, RotLasher.class, RotHeart.class,
-				CrystalWisp.class, CrystalGuardian.class, CrystalSpire.class, GnollGuard.class, GnollSapper.class, GnollGeomancer.class);
+				CrystalWisp.class, CrystalGuardian.class, CrystalSpire.class, GnollGuard.class, GnollSapper.class, GnollGeomancer.class,
+				VaultSkeleton.class, VaultDM100.class, VaultShaman.class, VaultDM200.class, VaultSentry.class, VaultLaser.class, VaultBossElemental.class);
 
 		NEUTRAL.addEntities(Ghost.class, RatKing.class, Shopkeeper.class, Wandmaker.class, Blacksmith.class, Imp.class, Sheep.class, Bee.class);
 
@@ -259,21 +270,27 @@ public enum Bestiary {
 	//some mobs and traps have different internal classes in some cases, so need to convert here
 	private static final HashMap<Class<?>, Class<?>> classConversions = new HashMap<>();
 	static {
-		classConversions.put(CorpseDust.DustWraith.class,      Wraith.class);
+		classConversions.put(CorpseDust.DustWraith.class,       Wraith.class);
 
-		classConversions.put(Necromancer.NecroSkeleton.class,  Skeleton.class);
+		classConversions.put(Necromancer.NecroSkeleton.class,   Skeleton.class);
 
-		classConversions.put(TenguDartTrap.class,              PoisonDartTrap.class);
-		classConversions.put(GnollRockfallTrap.class,          RockfallTrap.class);
+		classConversions.put(TenguDartTrap.class,               PoisonDartTrap.class);
+		classConversions.put(GnollRockfallTrap.class,           RockfallTrap.class);
 
-		classConversions.put(DwarfKing.DKGhoul.class,          Ghoul.class);
-		classConversions.put(DwarfKing.DKWarlock.class,        Warlock.class);
-		classConversions.put(DwarfKing.DKMonk.class,           Monk.class);
-		classConversions.put(DwarfKing.DKGolem.class,          Golem.class);
+		classConversions.put(VaultGhoul.class,                  Ghoul.class);
+		classConversions.put(VaultElemental.Fire.class,         Elemental.FireElemental.class);
+		classConversions.put(VaultElemental.Frost.class,        Elemental.FrostElemental.class);
+		classConversions.put(VaultElemental.Shock.class,        Elemental.ShockElemental.class);
+		classConversions.put(VaultGolem.class,                  Golem.class);
 
-		classConversions.put(YogDzewa.YogRipper.class,         RipperDemon.class);
-		classConversions.put(YogDzewa.YogEye.class,            Eye.class);
-		classConversions.put(YogDzewa.YogScorpio.class,        Scorpio.class);
+		classConversions.put(DwarfKing.DKGhoul.class,           Ghoul.class);
+		classConversions.put(DwarfKing.DKWarlock.class,         Warlock.class);
+		classConversions.put(DwarfKing.DKMonk.class,            Monk.class);
+		classConversions.put(DwarfKing.DKGolem.class,           Golem.class);
+
+		classConversions.put(YogDzewa.YogRipper.class,          RipperDemon.class);
+		classConversions.put(YogDzewa.YogEye.class,             Eye.class);
+		classConversions.put(YogDzewa.YogScorpio.class,         Scorpio.class);
 	}
 
 	public static boolean isSeen(Class<?> cls){

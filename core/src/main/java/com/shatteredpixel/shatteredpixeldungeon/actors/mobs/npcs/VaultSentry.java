@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM100;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -66,8 +67,15 @@ public class VaultSentry extends NPC {
 	//scan sentries will collectively play a SFX at most every 80 ms
 	private static long SFXLastPlayed = 0;
 
+	//to avoid many sentries calling setSeen every turn
+	private boolean seen = false;
+
 	@Override
 	protected boolean act() {
+		if (!seen && Dungeon.level.heroFOV[pos]){
+			Bestiary.setSeen(getClass());
+			seen = true;
+		}
 
 		if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
 			fieldOfView = new boolean[Dungeon.level.length()];
