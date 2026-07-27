@@ -139,7 +139,7 @@ public class VaultLevel extends CityLevel {
 		VaultRoom.setupChances();
 
 		int i = 0;
-		while (i < 12){
+		while (i < 10){
 			VaultRoom r = VaultRoom.createRoom();
 			i += r.sizeFactor();
 			initRooms.add(r);
@@ -157,14 +157,13 @@ public class VaultLevel extends CityLevel {
 
 	@Override
 	public float levelExplorePercent(int depth) {
-		//very simple for now, we just look at all discoverable cells.
-		// Each 1% seen = 1.12% explored. 90% seen = 100% explored
+		// Each 1% of tiles seen = 1.25% explored. 80% seen = 100% explored
 		int seen = 0, total = 0;
 		for (int i = 0; i < length; i++){
 			if (discoverable[i]) total++;
 			if (visited[i]) seen++;
 		}
-		return Math.min(1, (seen*1.12f)/total);
+		return Math.min(1, (seen*1.25f)/total);
 	}
 
 	@Override

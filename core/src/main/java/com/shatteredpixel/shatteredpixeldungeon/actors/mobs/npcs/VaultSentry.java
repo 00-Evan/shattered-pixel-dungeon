@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM100;
@@ -120,10 +121,17 @@ public class VaultSentry extends NPC {
 										ch.sprite.flash();
 									}
 								}
-								if (ch == Dungeon.hero && !ch.isAlive()) {
-									Badges.validateDeathFromEnemyMagic();
-									Dungeon.fail(this);
-									GLog.n(Messages.get(this, "ondeath"));
+								if (ch == Dungeon.hero) {
+									if (Imp.Quest.hazardFreebies > 0){
+										Imp.Quest.hazardFreebies--;
+									} else {
+										Statistics.questScores[3] -= 100;
+									}
+									if (!ch.isAlive()) {
+										Badges.validateDeathFromEnemyMagic();
+										Dungeon.fail(this);
+										GLog.n(Messages.get(this, "ondeath"));
+									}
 								}
 							}
 							GameScene.checkedCell(cell, pos);

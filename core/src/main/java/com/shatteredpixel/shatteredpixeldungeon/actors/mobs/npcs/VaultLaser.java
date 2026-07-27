@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Eye;
@@ -101,6 +102,11 @@ public class VaultLaser extends NPC {
 					if (ch == Dungeon.hero){
 						Sample.INSTANCE.play( Assets.Sounds.RAY );
 						SFXLastPlayed = ShatteredPixelDungeon.realTime;
+						if (Imp.Quest.hazardFreebies > 0){
+							Imp.Quest.hazardFreebies--;
+						} else {
+							Statistics.questScores[3] -= 100;
+						}
 						if (!ch.isAlive()){
 							Badges.validateDeathFromEnemyMagic();
 							Dungeon.fail( this );

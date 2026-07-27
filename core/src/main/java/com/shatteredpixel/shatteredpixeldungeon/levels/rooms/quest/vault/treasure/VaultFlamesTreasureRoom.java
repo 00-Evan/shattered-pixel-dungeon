@@ -21,18 +21,16 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasure;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfPurity;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
-import com.watabou.utils.Reflection;
 
 public class VaultFlamesTreasureRoom extends VaultTreasureRoom {
 
@@ -92,7 +90,9 @@ public class VaultFlamesTreasureRoom extends VaultTreasureRoom {
 		}
 		if (Random.Int(2) == 0){
 			level.drop(treasureItem, treasurePositions[treasureIdx-1]);
+			level.drop(new DwarfToken(), treasurePositions[treasureIdx+1]);
 		} else {
+			level.drop(new DwarfToken(), treasurePositions[treasureIdx-1]);
 			level.drop(treasureItem, treasurePositions[treasureIdx+1]);
 		}
 

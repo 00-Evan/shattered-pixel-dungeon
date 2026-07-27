@@ -24,10 +24,12 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
@@ -88,6 +90,11 @@ public class VaultFlameTraps extends Blob {
 						if (ch == Dungeon.hero) {
 							Sample.INSTANCE.play(Assets.Sounds.BURNING);
 							SFXLastPlayed = ShatteredPixelDungeon.realTime;
+							if (Imp.Quest.hazardFreebies > 0){
+								Imp.Quest.hazardFreebies--;
+							} else {
+								Statistics.questScores[3] -= 100;
+							}
 						}
 
 						if (!ch.isImmune(Fire.class)) {

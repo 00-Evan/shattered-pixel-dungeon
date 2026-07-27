@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -41,6 +41,11 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class VaultMirror extends NPC {
 
@@ -54,11 +59,9 @@ public class VaultMirror extends NPC {
 		switch (cls) {
 			case WARRIOR:
 				reward = new BrokenSeal().upgrade(1).identify(false);
-				reward.level(1);
 				break;
 			case MAGE:
 				reward = new MagesStaff().upgrade(1).identify(false);
-				reward.level(1);
 				break;
 			case ROGUE:
 				reward = new CloakOfShadows().upgrade(8).identify(false);
@@ -68,9 +71,15 @@ public class VaultMirror extends NPC {
 				reward = new SpiritBow().identify(false);
 				break;
 			case DUELIST:
-				reward = new Longsword().upgrade(5).identify(false);
-				((Weapon)reward).enchant();
-				//TODO decide on final properties here, e.g. weapon type, should we make a rare enchant more likely?
+				reward = new MirrorSword().upgrade(Random.NormalIntRange(2, 4)).identify(false);
+
+				// 50/50 between an uncommon on rare enchant, rares are doubled here as there are half as many
+				ArrayList<Class<?>> enchants = new ArrayList<>();
+				enchants.addAll(Arrays.asList(Weapon.Enchantment.uncommon));
+				enchants.addAll(Arrays.asList(Weapon.Enchantment.rare));
+				enchants.addAll(Arrays.asList(Weapon.Enchantment.rare));
+
+				((Weapon)reward).enchant((Weapon.Enchantment) Reflection.newInstance(Random.element(enchants)));
 				break;
 			case CLERIC:
 				reward = new HolyTome().upgrade(8).identify(false);
@@ -155,4 +164,14 @@ public class VaultMirror extends NPC {
 			reward = (Item) bundle.get(REWARD);
 		}
 	}
+
+	public static class MirrorSword extends Greatsword {
+
+		{
+			//cannot be taken out of the vault
+			unique = true;
+		}
+
+	}
+
 }

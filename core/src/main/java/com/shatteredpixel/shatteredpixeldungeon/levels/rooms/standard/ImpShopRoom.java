@@ -154,7 +154,7 @@ public class ImpShopRoom extends ShopRoom {
 	public void onLevelLoad(Level level) {
 		super.onLevelLoad(level);
 
-		if (Imp.Quest.isCompleted() && !impSpawned){
+		if (Imp.Quest.isCompleted() && Imp.Quest.earnedShop() && !impSpawned){
 			spawnShop(level);
 		}
 	}

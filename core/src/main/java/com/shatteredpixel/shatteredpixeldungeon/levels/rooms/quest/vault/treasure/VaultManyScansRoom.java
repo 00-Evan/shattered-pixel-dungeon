@@ -22,11 +22,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasure;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.VaultSentry;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
@@ -79,6 +78,7 @@ public class VaultManyScansRoom extends VaultTreasureRoom {
 
 		treasureItem = ((VaultLevel)level).createConsumabe(3);
 		level.drop(treasureItem, c.x + w*c.y + PathFinder.NEIGHBOURS8[Random.Int(PathFinder.NEIGHBOURS8.length)]);
+		level.drop(new DwarfToken(), c.x + w*c.y + PathFinder.NEIGHBOURS8[Random.Int(PathFinder.NEIGHBOURS8.length)]);
 
 		level.addItemToSpawn(new PotionOfInvisibility());
 

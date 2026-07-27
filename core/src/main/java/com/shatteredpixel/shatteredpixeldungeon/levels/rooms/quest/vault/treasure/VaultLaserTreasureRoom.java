@@ -152,12 +152,15 @@ public class VaultLaserTreasureRoom extends VaultTreasureRoom {
 		if (treasureItem == null){
 			treasureItem = ((VaultLevel)level).createConsumabe(1);
 		}
-		if (treasureItem != null){
-			do {
-				treasurePos = level.pointToCell(Random.element(itemPlace.getPoints()));
-			} while (level.heaps.get(treasurePos) != null);
-			level.drop(treasureItem, treasurePos);
-		}
+		do {
+			treasurePos = level.pointToCell(Random.element(itemPlace.getPoints()));
+		} while (level.heaps.get(treasurePos) != null);
+		level.drop(treasureItem, treasurePos);
+
+		do {
+			treasurePos = level.pointToCell(Random.element(itemPlace.getPoints()));
+		} while (level.heaps.get(treasurePos) != null);
+		level.drop(treasureItem, treasurePos);
 
 	}
 }

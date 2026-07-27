@@ -21,11 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasure;
 
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
@@ -112,15 +110,19 @@ public class VaultFlamePathRoom extends VaultTreasureRoom {
 		Item treasureItem = ((VaultLevel)level).createEquipment(1);
 		level.drop(treasureItem, treasurePos).type = Heap.Type.CHEST;
 
-		//TODO prefer generating with a solution potion
 		treasureItem = ((VaultLevel) level).findT2SolveItem();
-		if (treasureItem == null){
-			treasureItem = ((VaultLevel)level).createConsumabe(1);
+		if (treasureItem == null) {
+			treasureItem = ((VaultLevel) level).createConsumabe(1);
 		}
 		do {
 			treasurePos = level.pointToCell(Random.element(treasure.getPoints()));
 		} while (level.heaps.get(treasurePos) != null);
 		level.drop(treasureItem, treasurePos);
+
+		do {
+			treasurePos = level.pointToCell(Random.element(treasure.getPoints()));
+		} while (level.heaps.get(treasurePos) != null);
+		level.drop(new DwarfToken(), treasurePos);
 
 	}
 

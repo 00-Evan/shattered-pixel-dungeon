@@ -23,34 +23,36 @@ package com.shatteredpixel.shatteredpixeldungeon.items.quest;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.VaultTokenDoor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultBossElemental;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultFinalRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ImpSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndBadge;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
@@ -82,26 +84,54 @@ public class EscapeCrystal extends Item {
 
 			if (Dungeon.level instanceof VaultLevel){
 
-				//TODO actually do score calculation:
-				//1000 points for 'exploring' (maybe just seeing rooms)
-				//1000 points for collecting tokens and/or using them.
-				//2000 points for defeating boss (maybe broken up a bit based on boss progression?)
-				int score;
+				int score = 0;
 
+				//firstly, score is always a full 4k if the hero had the statue
 				if (hero.belongings.getItem(ImpStatue.class) != null){
 					score = 4000;
 				} else {
-					//TODO this is pretty arbitrary atm
-					//1k score for revealed rooms, 1k score for 10 tokens (1 per defeated enemy)
-					score = 0;
-					Item tokens = hero.belongings.getItem(DwarfToken.class);
-					if (tokens != null){
-						score += Math.min(1000, 100*tokens.quantity());
+					//otherwise there is partial score, to a max of 3k:
+
+					//1,000 for exploring up to 80% of the level
+					score += (int) (1000 * Dungeon.level.levelExplorePercent(Dungeon.depth));
+
+					//1,000 for collecting tokens (100 each), plus a 250 bonus for opening the door
+					boolean doorOpened = true;
+					for (Char ch : Dungeon.level.mobs){
+						if (ch instanceof VaultTokenDoor){
+							doorOpened = false;
+							break;
+						}
 					}
-					score += 1000 * Dungeon.level.levelExplorePercent(Dungeon.depth);
+					if (doorOpened){
+						score += 1250;
+					} else {
+						Item tokens = hero.belongings.getItem(DwarfToken.class);
+						if (tokens != null){
+							score += Math.min(1000, 100*tokens.quantity());
+						}
+					}
+
+					//up to 750 for damaging/killing the boss elemental
+					VaultFinalRoom r = (VaultFinalRoom) ((VaultLevel) Dungeon.level).room(VaultFinalRoom.class);
+					if (r.elementalWasSummoned()){
+						boolean elementalFound = false;
+						for (Char ch : Dungeon.level.mobs){
+							if (ch instanceof VaultBossElemental){
+								elementalFound = true;
+								score += (int) (750 * (ch.HP/(float)ch.HT));
+								break;
+							}
+						}
+						if (!elementalFound){
+							//some poor sucker is absolutely going to kill the boss, not take the statue,
+							// and then be forced to leave by a golem or something
+							score += 750;
+						}
+					}
+
 				}
 
-				//TODO currently balanced around empty starting room that's always worth about 44-46 pts
 				if (score < 50){
 					GameScene.show(new WndTitledMessage(new ImpSprite(),
 							Messages.titleCase(Messages.get(Imp.class, "name")),
@@ -109,9 +139,9 @@ public class EscapeCrystal extends Item {
 				} else {
 					String message;
 					if (score < 500)        message = Messages.get(EscapeCrystal.class, "leaving_early");
-					else if (score < 1000)   message = Messages.get(EscapeCrystal.class, "leaving_partly_explored");
-					else if (score < 2000)  message = Messages.get(EscapeCrystal.class, "leaving_fully_explored");
-					else if (score < 4000)  message = Messages.get(EscapeCrystal.class, "leaving_beat_miniboss");
+					else if (score <= 1000) message = Messages.get(EscapeCrystal.class, "leaving_partly_explored");
+					else if (score <= 2000) message = Messages.get(EscapeCrystal.class, "leaving_fully_explored");
+					else if (score < 4000)  message = Messages.get(EscapeCrystal.class, "leaving_partial_victory");
 					else                    message = Messages.get(EscapeCrystal.class, "leaving_victory");
 
 					int finalScore = score;
@@ -128,7 +158,7 @@ public class EscapeCrystal extends Item {
 
 										@Override
 										public String textPrompt() {
-											return "Select an Item";
+											return Messages.get(EscapeCrystal.class, "prompt");
 										}
 
 										@Override
@@ -136,12 +166,24 @@ public class EscapeCrystal extends Item {
 											if (item instanceof EscapeCrystal){
 												return false;
 											}
-											if (finalScore < 900){
-												return !(item instanceof EquipableItem || item instanceof Wand);
-											} else if (finalScore < 2500){
-												//TODO enchants/curses
-												return item.level() == 0;
+											//lowest reward, just a consumable
+											if (finalScore <= 1000){
+												return !item.unique && (item instanceof EquipableItem || item instanceof Wand);
+											//mid rewards, item at a max of +0 or +1
+											} else if (finalScore < 4000){
+												int maxLevel = finalScore > 2000 ? 1 : 0;
+												if (item instanceof MagesStaff){
+													return ((MagesStaff) item).wandClass() != null
+															&& item.level() <= maxLevel+1; //+1 to account for staff's level
+												} else if (item instanceof Armor && ((Armor) item).checkSeal() != null){
+													return item.level() <= maxLevel+1; //+1 to account for seal's level
+												} else {
+													return item.level() <= maxLevel && !item.unique;
+												}
 											} else {
+												if (item instanceof MagesStaff){
+													return ((MagesStaff) item).wandClass() != null;
+												}
 												return !item.unique;
 											}
 										}
@@ -150,12 +192,34 @@ public class EscapeCrystal extends Item {
 										public void onSelect(Item item) {
 											if (item != null){
 
-												leaveVault(item);
+												String desc = Messages.get(EscapeCrystal.class, "leaving_item");
+
+												if (item instanceof Armor && ((Armor) item).checkSeal() != null){
+													desc += "\n\n" + Messages.get(EscapeCrystal.class, "leaving_seal");
+												} else if (item instanceof MagesStaff){
+													desc += "\n\n" + Messages.get(EscapeCrystal.class, "leaving_staff");
+												}
+
+												GameScene.show(new WndOptions(
+														new ItemSprite(item),
+														Messages.titleCase(item.title()),
+														desc,
+														Messages.get(EscapeCrystal.class, "leaving_yes"),
+														Messages.get(EscapeCrystal.class, "leaving_no")){
+													@Override
+													protected void onSelect(int index) {
+														if (index == 0){
+															leaveVault(item, finalScore);
+														}
+														super.onSelect(index);
+													}
+												});
+
 											}
 										}
 									});
 								} else {
-									leaveVault(null);
+									leaveVault(null, finalScore);
 								}
 							}
 						}
@@ -178,7 +242,7 @@ public class EscapeCrystal extends Item {
 
 	}
 
-	private void leaveVault( Item preserve ){
+	private void leaveVault( Item preserve, int score ){
 		Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 
 		//remove all buffs/debuffs which don't persist over revives
@@ -188,10 +252,20 @@ public class EscapeCrystal extends Item {
 			}
 		}
 
+		//logic for removing Warrior's Seal or Mage's staff
+		if (preserve instanceof Armor && ((Armor) preserve).checkSeal() != null){
+			((Armor) preserve).detachSeal();
+		} else if (preserve instanceof MagesStaff){
+			Wand w = Reflection.newInstance(((MagesStaff) preserve).wandClass());
+			w.identify(false);
+			w.upgrade(preserve.level()-1);
+			preserve = w;
+		}
+
 		restoreHeroBelongings(Dungeon.hero, preserve);
 		Dungeon.hero.updateHT(false);
 		detachAll(Dungeon.hero.belongings.backpack);
-		Imp.Quest.complete();
+		Imp.Quest.complete(score);
 
 		Level.beforeTransition();
 		InterlevelScene.curTransition = new LevelTransition(Dungeon.level,

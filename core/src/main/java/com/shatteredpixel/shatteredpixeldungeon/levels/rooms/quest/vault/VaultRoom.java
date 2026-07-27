@@ -85,7 +85,7 @@ public abstract class VaultRoom extends StandardRoom {
 	private static float[] chances = new float[0];
 
 	public static void setupChances(){
-		chances = new float[]{3,3,3,3,3,3, 1,1, 2,2,2};
+		chances = new float[]{2,2,2,2,2,2, 1,1, 1,1,1};
 	}
 
 	public static VaultRoom createRoom(){

@@ -22,10 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasure;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultGhoul;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
@@ -54,10 +52,12 @@ public class VaultMultipleEnemyTreasureRoom extends VaultTreasureRoom {
 			Painter.fill(level, left+4, areaTop, 3, 5, Terrain.EMPTY_SP);
 
 			VaultGhoul ghoul = new VaultGhoul();
+			ghoul.maxLvl = 0; //no token
 			ghoul.pos = c.x + areaTop*level.width();
 			level.mobs.add(ghoul);
 
 			ghoul = new VaultGhoul();
+			ghoul.maxLvl = 0; //no token
 			ghoul.pos = c.x + (areaTop+4)*level.width();
 			level.mobs.add(ghoul);
 
@@ -77,10 +77,12 @@ public class VaultMultipleEnemyTreasureRoom extends VaultTreasureRoom {
 			Painter.fill(level, areaLeft, top+4, 5, 3, Terrain.EMPTY_SP);
 
 			VaultGhoul ghoul = new VaultGhoul();
+			ghoul.maxLvl = 0; //no token
 			ghoul.pos = areaLeft + c.y*level.width();
 			level.mobs.add(ghoul);
 
 			ghoul = new VaultGhoul();
+			ghoul.maxLvl = 0; //no token
 			ghoul.pos = areaLeft+4 + c.y*level.width();
 			level.mobs.add(ghoul);
 

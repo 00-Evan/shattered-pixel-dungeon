@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.AmbitiousImpRoom;
@@ -40,7 +39,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ImpSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndImpOld;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
@@ -211,6 +209,7 @@ public class Imp extends NPC {
 		public static Item reward;
 
 		//variacles exclusive to new quest
+		public static int hazardFreebies; //player gets two free hits from hazards before they start penalizing score
 		private static int score; //Not the score used in rankings! This score has no penalty applied
 		
 		public static void reset() {
@@ -219,6 +218,7 @@ public class Imp extends NPC {
 			completed = false;
 
 			reward = null;
+			hazardFreebies = 2;
 			score = 0;
 		}
 		
@@ -233,6 +233,7 @@ public class Imp extends NPC {
 		private static final String GIVEN       = "given";
 		private static final String COMPLETED   = "completed";
 
+		private static final String HAZRD_FREEBIES = "hazard_freebies";
 		private static final String SCORE       = "score";
 
 		
@@ -249,6 +250,8 @@ public class Imp extends NPC {
 				node.put( GIVEN, given );
 				node.put( COMPLETED, completed );
 				node.put( REWARD, reward );
+
+				node.put( HAZRD_FREEBIES, hazardFreebies );
 				node.put( SCORE, score );
 			}
 			
@@ -271,6 +274,7 @@ public class Imp extends NPC {
 					score = 0;
 				} else {
 					alternative = false;
+					hazardFreebies = node.getInt( HAZRD_FREEBIES );
 					score = node.getInt( SCORE );
 				}
 
@@ -323,11 +327,11 @@ public class Imp extends NPC {
 			Notes.remove( Notes.Landmark.IMP );
 		}
 
-		public static void complete(){
+		public static void complete( int score ){
 			completed = true;
 
-			score = 4000; //TODO
-			Statistics.questScores[3] = 4000; //TODO
+			Imp.Quest.score = score;
+			Statistics.questScores[3] += score;
 			Notes.remove( Notes.Landmark.IMP );
 		}
 		
@@ -336,7 +340,7 @@ public class Imp extends NPC {
 		}
 
 		public static boolean earnedShop() {
-			return completed && (oldQuest || score >= 2000);
+			return completed && (oldQuest || score > 2000);
 		}
 	}
 }

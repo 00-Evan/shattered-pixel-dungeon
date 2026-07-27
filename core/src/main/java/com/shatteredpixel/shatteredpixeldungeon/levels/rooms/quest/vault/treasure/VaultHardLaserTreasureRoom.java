@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasu
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.VaultLaser;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlink;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -156,12 +157,15 @@ public class VaultHardLaserTreasureRoom extends VaultTreasureRoom {
 		level.drop(treasureItem, treasurePos).type = Heap.Type.CHEST;
 
 		treasureItem = ((VaultLevel) level).createConsumabe(3);
-		if (treasureItem != null) {
-			do {
-				treasurePos = level.pointToCell(Random.element(itemPlace.getPoints()));
-			} while (level.heaps.get(treasurePos) != null);
-			level.drop(treasureItem, treasurePos);
-		}
+		do {
+			treasurePos = level.pointToCell(Random.element(itemPlace.getPoints()));
+		} while (level.heaps.get(treasurePos) != null);
+		level.drop(treasureItem, treasurePos);
+
+		do {
+			treasurePos = level.pointToCell(Random.element(itemPlace.getPoints()));
+		} while (level.heaps.get(treasurePos) != null);
+		level.drop(new DwarfToken(), treasurePos);
 
 		level.addItemToSpawn(new StoneOfBlink());
 	}

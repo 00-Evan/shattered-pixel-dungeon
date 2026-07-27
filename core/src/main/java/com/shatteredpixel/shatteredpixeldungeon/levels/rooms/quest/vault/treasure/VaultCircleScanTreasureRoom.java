@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasu
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.VaultSentry;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
@@ -31,8 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
-
-import java.util.Collections;
 
 public class VaultCircleScanTreasureRoom extends VaultTreasureRoom {
 
@@ -162,6 +161,11 @@ public class VaultCircleScanTreasureRoom extends VaultTreasureRoom {
 			treasurePos = level.pointToCell(Random.element(treasure.getPoints()));
 		} while (level.heaps.get(treasurePos) != null);
 		level.drop(treasureItem, treasurePos);
+
+		do {
+			treasurePos = level.pointToCell(Random.element(treasure.getPoints()));
+		} while (level.heaps.get(treasurePos) != null);
+		level.drop(new DwarfToken(), treasurePos);
 	}
 
 	@Override
