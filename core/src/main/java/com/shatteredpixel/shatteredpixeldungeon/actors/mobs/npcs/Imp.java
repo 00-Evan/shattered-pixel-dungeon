@@ -29,8 +29,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Golem;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.AmbitiousImpRoom;
@@ -45,6 +49,7 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class Imp extends NPC {
 
@@ -206,9 +211,10 @@ public class Imp extends NPC {
 		//variables shared by both quests
 		private static boolean given;
 		private static boolean completed;
-		public static Item reward;
+		public static Item reward; //just used to hold the reward if her's inventory is full in new version
 
 		//variacles exclusive to new quest
+		public static ArrayList<Item> rewardOptions = new ArrayList<>();
 		public static int hazardFreebies; //player gets two free hits from hazards before they start penalizing score
 		private static int score; //Not the score used in rankings! This score has no penalty applied
 		
@@ -235,6 +241,7 @@ public class Imp extends NPC {
 
 		private static final String HAZRD_FREEBIES = "hazard_freebies";
 		private static final String SCORE       = "score";
+		private static final String REWARD_OPTIONS = "reward_options";
 
 		
 		public static void storeInBundle( Bundle bundle ) {
@@ -253,6 +260,7 @@ public class Imp extends NPC {
 
 				node.put( HAZRD_FREEBIES, hazardFreebies );
 				node.put( SCORE, score );
+				node.put( REWARD_OPTIONS, rewardOptions );
 			}
 			
 			bundle.put( NODE, node );
@@ -272,10 +280,12 @@ public class Imp extends NPC {
 				if (oldQuest){
 					alternative	= node.getBoolean( ALTERNATIVE );
 					score = 0;
+					rewardOptions.clear();
 				} else {
 					alternative = false;
 					hazardFreebies = node.getInt( HAZRD_FREEBIES );
 					score = node.getInt( SCORE );
+					rewardOptions = new ArrayList<>((Collection<Item>) (Collection<?>) node.getCollection( REWARD_OPTIONS ));
 				}
 
 				reward = (Item)node.get( REWARD );
@@ -296,6 +306,38 @@ public class Imp extends NPC {
 				score = 0;
 				
 				given = false;
+
+				rewardOptions.clear();
+				Item artif = Generator.randomArtifact();
+				//generate a ring instead
+				if (artif != null){
+					((Artifact)artif.identify(false)).transferUpgrade(5);
+				} else {
+					artif = Generator.random(Generator.Category.RING);
+					artif.identify(false).upgrade(Random.IntRange(2, 4));
+				}
+				rewardOptions.add(artif);
+
+				Item ring;
+				do {
+					ring = Generator.random(Generator.Category.RING);
+				} while (ring.getClass() == artif.getClass()); //rare cases of the same kind of ring twice
+				ring.identify(false).upgrade(Random.IntRange(2, 4));
+				rewardOptions.add(ring);
+
+				if (Random.Int(2) == 0) {
+					rewardOptions.add(((Weapon)Generator.random(Generator.Category.WEP_T5)).enchant().identify(false).level(Random.IntRange(2, 4)));
+					rewardOptions.add(((Weapon)Generator.random(Generator.Category.MIS_T4)).enchant().identify(false).level(Random.IntRange(3, 5)));
+				} else {
+					rewardOptions.add(((Weapon)Generator.random(Generator.Category.MIS_T5)).enchant().identify(false).level(Random.IntRange(2, 4)));
+					rewardOptions.add(((Weapon)Generator.random(Generator.Category.WEP_T4)).enchant().identify(false).level(Random.IntRange(3, 5)));
+				}
+				rewardOptions.add(new PlateArmor().inscribe().identify(false).level(Random.IntRange(2, 4)));
+				rewardOptions.add(Generator.random(Generator.Category.WAND).identify(false).level(Random.IntRange(2, 4)));
+
+				for (Item i : rewardOptions){
+					i.cursed = false;
+				}
 			}
 
 			return rooms;

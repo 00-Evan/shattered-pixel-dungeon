@@ -64,9 +64,10 @@ public class RingOfMight extends Ring {
 	}
 
 	@Override
-	public void level(int value) {
+	public Item level(int value) {
 		super.level(value);
 		updateTargetHT();
+		return this;
 	}
 	
 	private void updateTargetHT(){

@@ -27,8 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultBossElemental;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.ImpStatue;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -39,14 +38,20 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ImpSprite;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.custom.Carpet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.Tilemap;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class VaultFinalRoom extends SpecialRoom {
 
@@ -112,26 +117,25 @@ public class VaultFinalRoom extends SpecialRoom {
 		if (entrance.x == left) {
 			entry.set(left + 1, top + 5, left + 3, bottom - 5);
 			entryDoor = new Point(left+4, c.y);
-			treasure.set(right - 3,  top + 5, right - 1, bottom - 5);
+			treasure.set(right - 3,  top + 3, right - 1, bottom - 3);
 			lockedDoor = new Point(right-4, c.y);
 		} else if (entrance.x == right){
-			treasure.set(left + 1, top + 5, left + 3, bottom - 5);
+			treasure.set(left + 1, top + 3, left + 3, bottom - 3);
 			lockedDoor = new Point(left+4, c.y);
 			entry.set(right - 3,  top + 5, right - 1, bottom - 5);
 			entryDoor = new Point(right-4, c.y);
 		} else if (entrance.y == top) {
 			entry.set(left + 5, top + 1, right-5, top + 3);
 			entryDoor = new Point(c.x, top+4);
-			treasure.set(left + 5, bottom - 3, right-5, bottom - 1);
+			treasure.set(left + 3, bottom - 3, right-3, bottom - 1);
 			lockedDoor = new Point(c.x, bottom-4);
 		} else {
-			treasure.set(left + 5, top + 1, right-5, top + 3);
+			treasure.set(left + 3, top + 1, right-3, top + 3);
 			lockedDoor = new Point(c.x, top+4);
 			entry.set(left + 5, bottom - 3, right-5, bottom - 1);
 			entryDoor = new Point(c.x, bottom-4);
 		}
-		//TODO if we're going to use locked doors in the final impl make sure the hero can't use
-		// keys from branch 0 to open them
+
 		Painter.set(level, entryDoor, Terrain.DOOR);
 		Painter.set(level, lockedDoor, Terrain.LOCKED_DOOR);
 		Painter.fill(level, entry, Terrain.CUSTOM_DECO_EMPTY);
@@ -139,6 +143,8 @@ public class VaultFinalRoom extends SpecialRoom {
 		Carpet carpet = new Carpet();
 		carpet.setRect(entry.left, entry.top, entry.width(), entry.height());
 		level.customTiles.add(carpet);
+
+		ArrayList<Integer> treasureSpots = new ArrayList<>();
 
 		if (entry.width() > entry.height()){
 			Painter.set(level, entry.left+1, entry.top+1, Terrain.REGION_DECO);
@@ -149,6 +155,14 @@ public class VaultFinalRoom extends SpecialRoom {
 			carpet.overrideTile(level, entry.left+7, entry.top+1, Carpet.CITY_PEDESTAL);
 			Painter.set(level, entry.left+9, entry.top+1, Terrain.REGION_DECO);
 			carpet.overrideTile(level, entry.left+9, entry.top+1, Carpet.CITY_PEDESTAL);
+
+			treasureSpots.add(treasure.left+1 + (treasure.top+1)*level.width());
+			treasureSpots.add(treasure.left+3 + (treasure.top+1)*level.width());
+			treasureSpots.add(treasure.left+5 + (treasure.top+1)*level.width());
+			treasureSpots.add(treasure.left+7 + (treasure.top+1)*level.width());
+			treasureSpots.add(treasure.left+9 + (treasure.top+1)*level.width());
+			treasureSpots.add(treasure.left+11 + (treasure.top+1)*level.width());
+			treasureSpots.add(treasure.left+13 + (treasure.top+1)*level.width());
 		} else {
 			Painter.set(level, entry.left+1, entry.top+1, Terrain.REGION_DECO);
 			carpet.overrideTile(level, entry.left+1, entry.top+1, Carpet.CITY_PEDESTAL);
@@ -158,20 +172,63 @@ public class VaultFinalRoom extends SpecialRoom {
 			carpet.overrideTile(level, entry.left+1, entry.top+7, Carpet.CITY_PEDESTAL);
 			Painter.set(level, entry.left+1, entry.top+9, Terrain.REGION_DECO);
 			carpet.overrideTile(level, entry.left+1, entry.top+9, Carpet.CITY_PEDESTAL);
+
+			treasureSpots.add(treasure.left+1 + (treasure.top+1)*level.width());
+			treasureSpots.add(treasure.left+1 + (treasure.top+3)*level.width());
+			treasureSpots.add(treasure.left+1 + (treasure.top+5)*level.width());
+			treasureSpots.add(treasure.left+1 + (treasure.top+7)*level.width());
+			treasureSpots.add(treasure.left+1 + (treasure.top+9)*level.width());
+			treasureSpots.add(treasure.left+1 + (treasure.top+11)*level.width());
+			treasureSpots.add(treasure.left+1 + (treasure.top+13)*level.width());
 		}
 
 		Painter.fill(level, treasure, Terrain.EMPTY_SP);
 
-		level.drop(new ImpStatue(), level.pointToCell(treasure.random(1)));
-
-		//These items are meant to be taken out with you and so use levelgen logic
-		Artifact artif = Generator.randomArtifact();
-		if (artif != null){
-			artif.identify();
-			artif.transferUpgrade(5);
-			level.drop(artif, level.pointToCell(treasure.random(1)));
+		for (int cell : treasureSpots){
+			Painter.set(level, cell, Terrain.PEDESTAL);
 		}
-		//TODO more options
+
+		//always place imp statue in the center
+		level.drop(new ImpStatue(), treasureSpots.remove(3));
+
+		Random.shuffle(treasureSpots);
+
+		/*
+		final loot is:
+			- +5 Artifact (or another ring if all artifacts are generated?)
+			- Ring? (necessary, given old loot)
+			- Wand
+			- Weapon
+			- Armor
+			- Thrown Wep
+			we DO use generators here?
+
+			OG reward was:
+			- opens up shop
+			- random cursed ring: 67/27/7% chance of +2/3/4
+
+			Current Vault loot (T3): (all level ranges are equal)
+			- T4 wep at +3/4 (always enchanted)
+			- T5 wep at +2/3 (always enchanted)
+			- T5 mis at +2/3 (always enchanted)
+			- T5 arm at +2/3 (always enchanted)
+			- Wand at +2/3 (some excluded)
+			- Ring at +2/3 (some excluded)
+
+			So perhaps final room should basically be same as T3 regular loot, but:
+			- no T4 wep
+			- no exclusions
+			- all are now +2/3/4, equal chance
+		 */
+
+		for (Item i : Imp.Quest.rewardOptions){
+			level.drop(i, treasureSpots.remove(0));
+		}
+		Imp.Quest.rewardOptions.clear();
+
+		VaultTreasure vis = new VaultTreasure();
+		vis.setRect(treasure.left, treasure.top-1, treasure.width(), treasure.height()+1);
+		level.customTiles.add(vis);
 
 	}
 
@@ -271,5 +328,70 @@ public class VaultFinalRoom extends SpecialRoom {
 
 		warnState = bundle.getInt(WARN_STATE);
 		lockTriggered = bundle.getBoolean(LOCK_TRIGGERED);
+	}
+
+	public static class VaultTreasure extends CustomTilemap {
+
+		{
+			texture = Assets.Environment.CITY_QUEST;
+		}
+
+		@Override
+		public Tilemap create() {
+			Tilemap v = super.create();
+			int[] data = new int[tileW*tileH];
+			//up to five banners, which we place unless there's a door
+
+			for (int i = 0; i < data.length; i++){
+				data[i] = -1;
+				if (i < tileW) {
+					if (i == 0)         data[i] = 5*8 + 4;
+					if (i == tileW-1)   data[i] = 5*8 + 3;
+				} else {
+					int cell = tileX + Dungeon.level.width()*tileY;
+					cell += i%tileW + (i/tileW)*Dungeon.level.width();
+					if (Dungeon.level.map[cell] == Terrain.PEDESTAL){
+						data[i] = 7*8 + 3;
+					} else if (Dungeon.level.map[cell-Dungeon.level.width()] == Terrain.WALL
+							|| Dungeon.level.map[cell-Dungeon.level.width()] == Terrain.WALL_DECO) {
+						data[i] = 6 * 8 + 2;
+						if (Dungeon.level.map[cell+1] == Terrain.WALL){
+							data[i] += 1;
+						} else if (Dungeon.level.map[cell-1] == Terrain.WALL){
+							data[i] += 2;
+						}
+					} else {
+						if (Dungeon.level.map[cell+1] == Terrain.WALL){
+							data[i] = 6 * 8 + 0;
+						} else if (Dungeon.level.map[cell-1] == Terrain.WALL){
+							data[i] = 6 * 8 + 1;
+						} else {
+							//plus 0 1 or 2
+							data[i] = 7*8 + DungeonTileSheet.tileVariance[cell]/34;
+						}
+					}
+				}
+			}
+			v.map(data, tileW);
+			return v;
+		}
+
+		@Override
+		public Image image(int tileX, int tileY) {
+			if (tileY < 1){
+				return null;
+			}
+			return super.image(tileX, tileY);
+		}
+
+		@Override
+		public String desc(int tileX, int tileY) {
+			int cell = tileX+this.tileX + (tileY+this.tileY)*Dungeon.level.width();
+			if (Dungeon.level.map[cell] != Terrain.PEDESTAL){
+				return Messages.get(this, "desc");
+			} else {
+				return super.desc(tileX, tileY);
+			}
+		}
 	}
 }
