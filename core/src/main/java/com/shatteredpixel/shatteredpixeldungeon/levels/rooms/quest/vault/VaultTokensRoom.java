@@ -96,6 +96,8 @@ public class VaultTokensRoom extends VaultLongRoom {
 
 		Carpet carpet = new Carpet();
 		carpet.setRect(c.x-1, c.y-1, 3, 3);
+		carpet.overrideTile(0, 0, Carpet.CITY_PEDESTAL_TL);
+		carpet.overrideTile(2, 0, Carpet.CITY_PEDESTAL_TR);
 		level.customTiles.add(carpet);
 
 		Painter.set(level, c.x, c.y+3, Terrain.DOOR);

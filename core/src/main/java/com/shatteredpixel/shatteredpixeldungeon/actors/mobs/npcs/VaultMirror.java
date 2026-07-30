@@ -71,9 +71,9 @@ public class VaultMirror extends NPC {
 				reward = new SpiritBow().identify(false);
 				break;
 			case DUELIST:
-				reward = new MirrorSword().upgrade(Random.NormalIntRange(2, 4)).identify(false);
+				reward = new MirrorSword().upgrade(Random.IntRange(2, 4)).identify(false);
 
-				// 50/50 between an uncommon on rare enchant, rares are doubled here as there are half as many
+				// 50/50 between an uncommon or rare enchant, rares are doubled here as there are half as many
 				ArrayList<Class<?>> enchants = new ArrayList<>();
 				enchants.addAll(Arrays.asList(Weapon.Enchantment.uncommon));
 				enchants.addAll(Arrays.asList(Weapon.Enchantment.rare));
@@ -122,8 +122,7 @@ public class VaultMirror extends NPC {
 						GameScene.show(new WndOptions(sprite(),
 								Messages.titleCase(name()),
 								sceneText,
-								Messages.get(VaultMirror.class, "take"),
-								Messages.get(VaultMirror.class, "leave")) {
+								Messages.get(VaultMirror.class, "take")) {
 							@Override
 							protected void onSelect(int index) {
 								super.onSelect(index);
@@ -133,8 +132,6 @@ public class VaultMirror extends NPC {
 										Dungeon.level.drop(reward, c.pos).sprite.drop();
 									}
 									reward = null;
-								} else if (index == 1){
-									GameScene.show(new WndTitledMessage(sprite(), Messages.titleCase(name()), Messages.get(VaultMirror.class, "scene_leave")));
 								}
 							}
 						});

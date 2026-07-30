@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
-import com.watabou.noosa.Image;
 import com.watabou.noosa.Tilemap;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.SparseArray;
@@ -50,6 +49,8 @@ public class Carpet extends CustomTilemap {
 	public static final int CITY_STATUE_BR = 84;
 	public static final int CITY_STATUE_TL = 85;
 	public static final int CITY_STATUE_BL = 86;
+	public static final int CITY_PEDESTAL_TR = 87;
+	public static final int CITY_PEDESTAL_TL = 88;
 
 	//specify a tile (in carpet coordinates) to override. 0,0 is top-left
 	public void overrideTile(int x, int y, int override){
