@@ -36,7 +36,6 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Callback;
-import com.watabou.utils.RectF;
 
 public class BossHealthBar extends Component {
 
@@ -127,10 +126,6 @@ public class BossHealthBar extends Component {
 
 		if (boss != null && large) {
 			skull = boss.sprite();
-			if (skull.height() > 26 || skull.width() > 26){
-				float excess = Math.max(skull.height()/26f, skull.width()/26f);
-				skull.scale.set(PixelScene.align(skull.scale.x * (1f/excess)));
-			}
 		} else {
 			skull = new Image(asset, 64, 0, 6, 6);
 		}
@@ -171,6 +166,11 @@ public class BossHealthBar extends Component {
 		}
 
 		int paneSize = large ? 30 : 16;
+
+		if (skull.height() > 26 || skull.width() > 26){
+			skull.scale.set(skull.scale.x * PixelScene.align(26f/Math.max(skull.width(), skull.height())));
+		}
+
 		skull.x = bar.x + (paneSize - skull.width())/2f;
 		skull.y = bar.y + (paneSize - skull.height())/2f;
 	}
