@@ -193,34 +193,6 @@ public class VaultFinalRoom extends SpecialRoom {
 
 		Random.shuffle(treasureSpots);
 
-		/*
-		final loot is:
-			- +5 Artifact (or another ring if all artifacts are generated?)
-			- Ring? (necessary, given old loot)
-			- Wand
-			- Weapon
-			- Armor
-			- Thrown Wep
-			we DO use generators here?
-
-			OG reward was:
-			- opens up shop
-			- random cursed ring: 67/27/7% chance of +2/3/4
-
-			Current Vault loot (T3): (all level ranges are equal)
-			- T4 wep at +3/4 (always enchanted)
-			- T5 wep at +2/3 (always enchanted)
-			- T5 mis at +2/3 (always enchanted)
-			- T5 arm at +2/3 (always enchanted)
-			- Wand at +2/3 (some excluded)
-			- Ring at +2/3 (some excluded)
-
-			So perhaps final room should basically be same as T3 regular loot, but:
-			- no T4 wep
-			- no exclusions
-			- all are now +2/3/4, equal chance
-		 */
-
 		for (Item i : Imp.Quest.rewardOptions){
 			level.drop(i, treasureSpots.remove(0));
 		}
@@ -249,6 +221,7 @@ public class VaultFinalRoom extends SpecialRoom {
 				boss.pos = Dungeon.level.pointToCell(center());
 				GameScene.add(boss);
 				boss.setElementalForm(VaultBossElemental.ElementalForm.values()[Random.Int(3)]);
+				Dungeon.level.seal();
 				lockTriggered = true;
 			} else if (distance == 4 && warnState < 2) {
 				GLog.n(Messages.get(VaultFinalRoom.class, "final_warning"));

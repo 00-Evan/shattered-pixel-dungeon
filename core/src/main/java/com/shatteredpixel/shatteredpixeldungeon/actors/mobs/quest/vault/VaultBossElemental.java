@@ -292,12 +292,7 @@ public class VaultBossElemental extends Mob {
 	@Override
 	public void die(Object cause) {
 		super.die(cause);
-		if (Dungeon.level instanceof RegularLevel){
-			Room r = ((RegularLevel) Dungeon.level).room(pos);
-			if (r instanceof VaultFinalRoom){
-				((VaultFinalRoom) r).unlock();
-			}
-		}
+		Dungeon.level.unseal();
 	}
 
 	@Override

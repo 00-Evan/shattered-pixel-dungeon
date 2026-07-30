@@ -526,8 +526,27 @@ public class VaultLevel extends CityLevel {
 	}
 
 	@Override
+	public void seal() {
+		if (!locked) {
+			locked = true;
+			//don't apply locked floor buff here
+			// no need to restrict regen and the player IS able to leave
+		}
+	}
+
+	@Override
+	public void unseal() {
+		super.unseal();
+		for (Room r : rooms){
+			if (r instanceof VaultFinalRoom){
+				((VaultFinalRoom) r).unlock();
+			}
+		}
+	}
+
+	@Override
 	public int randomRespawnCell( Char ch ) {
-		return entrance()-width();
+		return entrance();
 	}
 
 	public static class VaultFlameTrap extends Trap {

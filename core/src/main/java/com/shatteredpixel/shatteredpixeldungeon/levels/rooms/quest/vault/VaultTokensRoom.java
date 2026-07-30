@@ -170,4 +170,10 @@ public class VaultTokensRoom extends VaultLongRoom {
 	public boolean canPlaceItem(Point p, Level l) {
 		return super.canPlaceItem(p, l) && l.map[l.pointToCell(p)] != Terrain.EMPTY_SP;
 	}
+
+	@Override
+	public boolean canPlaceCharacter(Point p, Level l) {
+		//no random placement in inner area
+		return super.canPlaceCharacter(p, l) && l.map[l.pointToCell(p)] != Terrain.EMPTY_SP;
+	}
 }
