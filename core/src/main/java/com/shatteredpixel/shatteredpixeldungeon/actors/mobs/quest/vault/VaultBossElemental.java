@@ -45,13 +45,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocki
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultFinalRoom;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ElementalSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.VaultBossElementalSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
@@ -59,14 +57,12 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 
 public class VaultBossElemental extends Mob {
@@ -87,7 +83,7 @@ public class VaultBossElemental extends Mob {
 	}
 	private ElementalForm form = ElementalForm.FIRE;
 
-	protected int envAttackCooldown = Random.NormalIntRange( 8000, 120000 );
+	protected int envAttackCooldown = Random.NormalIntRange( 8, 12 );
 	protected int spAttackCooldown = Random.NormalIntRange( 3, 5 );
 	protected int spTargetCell = -1;
 
@@ -96,7 +92,6 @@ public class VaultBossElemental extends Mob {
 	public void setElementalForm( ElementalForm form ){
 		//always remove pincushion as we're either leaving or entering frost form
 		Buff.affect(this, PinCushionRemover.class);
-		form = ElementalForm.SHOCK;
 
 		this.form = form;
 		boolean wasTurned = sprite.flipHorizontal;
@@ -256,13 +251,13 @@ public class VaultBossElemental extends Mob {
 		//shock form is resistant to melee and weak to magic
 		//TODO what about magical consumables, mainly retribution?
 		} else if ( form == ElementalForm.SHOCK ){
-			if (src instanceof Char && !(src == Dungeon.hero && Dungeon.hero.belongings.attackingWeapon() instanceof MissileWeapon)){
-				GLog.w("Resisted!");
-				dmg /= 4;
-			} else if (AntiMagic.RESISTS.contains(src.getClass())){
+			if (AntiMagic.RESISTS.contains(src.getClass())){
 				GLog.w("Weak!");
 				dmg += 10;
 				//TODO slightly charge wands?
+			} else if (src instanceof Char && !(src == Dungeon.hero && Dungeon.hero.belongings.attackingWeapon() instanceof MissileWeapon)){
+				GLog.w("Resisted!");
+				dmg /= 4;
 			}
 		}
 
