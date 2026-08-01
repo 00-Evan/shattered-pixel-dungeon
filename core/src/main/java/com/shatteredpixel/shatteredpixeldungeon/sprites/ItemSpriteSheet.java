@@ -510,7 +510,7 @@ public class ItemSpriteSheet {
 		assignItemRect(RAT_SKULL,       16, 11);
 		assignItemRect(PARCHMENT_SCRAP, 10, 14);
 		assignItemRect(PETRIFIED_SEED,   9,  9);
-		assignItemRect(EXOTIC_CRYSTALS, 14, 13);
+		assignItemRect(EXOTIC_CRYSTALS, 15, 13);
 		assignItemRect(MOSSY_CLUMP,     12, 11);
 		assignItemRect(SUNDIAL,         16, 12);
 		assignItemRect(CLOVER,          11, 15);
@@ -682,18 +682,18 @@ public class ItemSpriteSheet {
 	public static final int SUMMON_ELE_CHAOS= SPELLS+14;
 
 	static{
-		assignItemRect(WILD_ENERGY,     10, 10);
+		assignItemRect(WILD_ENERGY,     6, 15);
 		assignItemRect(PHASE_SHIFT,     12, 10);
-		assignItemRect(TELE_GRAB,       12, 12);
+		assignItemRect(TELE_GRAB,       10, 10);
 		assignItemRect(UNSTABLE_SPELL,  12, 13);
 
 		assignItemRect(CURSE_INFUSE,    10, 16);
 		assignItemRect(MAGIC_INFUSE,    10, 14);
-		assignItemRect(ALCHEMIZE,       10, 16);
-		assignItemRect(RECYCLE,          8, 16);
+		assignItemRect(ALCHEMIZE,       12, 12);
+		assignItemRect(RECYCLE,         10, 16);
 
 		assignItemRect(RECLAIM_TRAP,    10, 16);
-		assignItemRect(RETURN_BEACON,    6, 16);
+		assignItemRect(RETURN_BEACON,    8, 16);
 		assignItemRect(SUMMON_ELE,       8, 16);
 		assignItemRect(SUMMON_ELE_FIRE,  8, 16);
 		assignItemRect(SUMMON_ELE_FROST, 8, 16);
@@ -776,7 +776,7 @@ public class ItemSpriteSheet {
 		assignItemRect(BLOB,    10,  9);
 		assignItemRect(SHARD,    8, 10);
 		assignItemRect(ESCAPE,   8, 16);
-		assignItemRect(STATUE,  10, 15);
+		assignItemRect(STATUE,  10, 16);
 	}
 
 	private static final int BAGS       =                                   xy(1, 31);  //16 slots

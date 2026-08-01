@@ -85,6 +85,7 @@ public class v4_X_Changes {
 				"**-** Runestones, scrolls, & spell items\n" +
 				"**-** Dewdrops & petrified seed (related to seeds)\n" +
 				"**-** Liquid metal & blood vial (related to potions)\n" +
+				"**-** Energy crystals & exotic crystals (related to spells)\n" +
 				"**-** Dwarf Tokens & other new quest items\n" +
 				"\n" +
 				"I expect to continue releasing waves of new art and tweaks each major update for the forseeable future, **please let me know what you think!**"));
