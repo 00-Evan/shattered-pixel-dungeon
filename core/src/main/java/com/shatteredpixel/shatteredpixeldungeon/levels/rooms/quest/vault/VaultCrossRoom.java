@@ -25,8 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.VaultSentry;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.watabou.utils.Point;
 
 public class VaultCrossRoom extends VaultRoom {
@@ -40,15 +38,13 @@ public class VaultCrossRoom extends VaultRoom {
 
 		Painter.set( level, center(), Terrain.PEDESTAL);
 
-		//TODO only shapes for sides with doors?
-
 		VaultSentry sentry = new VaultSentry();
 		sentry.pos = level.pointToCell(center());
 
 		sentry.scanLength = 4;
 		sentry.scanWidth = 90;
 
-		sentry.afterScanCooldown = 2;
+		sentry.afterScanCooldown = 3;
 
 		sentry.scanDirs = new int[][]{
 				new int[]{sentry.pos-1},

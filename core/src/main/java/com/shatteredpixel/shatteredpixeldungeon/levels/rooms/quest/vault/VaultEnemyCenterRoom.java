@@ -22,13 +22,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultRat;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.watabou.utils.Point;
+import com.watabou.utils.Random;
 
 public class VaultEnemyCenterRoom extends VaultRoom {
 
@@ -43,15 +41,33 @@ public class VaultEnemyCenterRoom extends VaultRoom {
 		Painter.drawLine( level, new Point(left+1, bottom-3), new Point(right-1, bottom-3), Terrain.EMPTY);
 		Painter.drawLine( level, new Point(left+3, top+1), new Point(left+3, bottom-1), Terrain.EMPTY);
 		Painter.drawLine( level, new Point(right-3, top+1), new Point(right-3, bottom-1), Terrain.EMPTY);
-		//TODO maybe better without corner pillars? they sorta just bait you...
-		// Need to think a little more about layout here
 
 		for (Door door : connected.values()) {
 			door.set( Door.Type.REGULAR );
 		}
 
 		Mob enemy = level.createMob();
-		enemy.pos = level.pointToCell(center());
+
+		int[] wanderPositions;
+		Point c = center();
+		if (Random.Int(2) == 0) {
+			wanderPositions = new int[]{
+					level.pointToCell(new Point(c.x-1, c.y-1)),
+					level.pointToCell(new Point(c.x+1, c.y-1)),
+					level.pointToCell(new Point(c.x+1, c.y+1)),
+					level.pointToCell(new Point(c.x-1, c.y+1))
+			};
+		} else {
+			wanderPositions = new int[]{
+					level.pointToCell(new Point(c.x-1, c.y-1)),
+					level.pointToCell(new Point(c.x-1, c.y+1)),
+					level.pointToCell(new Point(c.x+1, c.y+1)),
+					level.pointToCell(new Point(c.x+1, c.y-1))
+			};
+		}
+		int idx = Random.Int(4);
+		enemy.pos = wanderPositions[idx];
+		enemy.setupStealthGameplayWanderPositions(wanderPositions, idx);
 		enemy.state = enemy.WANDERING;
 		level.mobs.add(enemy);
 

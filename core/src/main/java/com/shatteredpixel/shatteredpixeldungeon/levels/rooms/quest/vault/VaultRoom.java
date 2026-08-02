@@ -67,7 +67,6 @@ public abstract class VaultRoom extends StandardRoom {
 	private static ArrayList<Class<?extends VaultRoom>> rooms = new ArrayList<>();
 	static {
 		rooms.add(VaultRingRoom.class);
-		rooms.add(VaultCircleRoom.class);
 		rooms.add(VaultCrossRoom.class);
 		rooms.add(VaultQuadrantsRoom.class);
 		rooms.add(VaultRingsRoom.class);
@@ -77,6 +76,7 @@ public abstract class VaultRoom extends StandardRoom {
 		rooms.add(VaultLongRingsRoom.class);
 		//tokens room is garunteed and added in VaultLevel
 
+		rooms.add(VaultCircleRoom.class);
 		rooms.add(VaultAlternatingFireRoom.class);
 		rooms.add(VaultLasersRoom.class);
 		rooms.add(VaultSimpleEnemyTreasureRoom.class);
@@ -85,7 +85,7 @@ public abstract class VaultRoom extends StandardRoom {
 	private static float[] chances = new float[0];
 
 	public static void setupChances(){
-		chances = new float[]{2,2,2,2,2,2, 1,1, 1,1,1};
+		chances = new float[]{2,2,2,2,2, 1,1, 1,1,1,1};
 	}
 
 	public static VaultRoom createRoom(){

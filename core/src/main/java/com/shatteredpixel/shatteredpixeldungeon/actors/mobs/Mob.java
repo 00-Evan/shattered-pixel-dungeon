@@ -1532,8 +1532,7 @@ public abstract class Mob extends Char {
 		}
 
 		@Override
-		//TODO balance this
-		//chance is 1 in (distance/2 + stealth) as base, but reduced if enemy was only just seen
+		//chance is 1 in (distance/2 + stealth) at base (classic wandering), but reduced if enemy was only just seen
 		protected float detectionChance( Char enemy ){
 			float chance = 1 / (distance( enemy ) / 2f + enemy.stealth());
 			if (investigatingTurns == 1 && chance <= 1){
@@ -1568,8 +1567,8 @@ public abstract class Mob extends Char {
 
 			float movementDir = PointF.angle(Dungeon.level.cellToPoint(previousPos), Dungeon.level.cellToPoint(pos))/PointF.G2R;;
 			float enemyDir = PointF.angle(Dungeon.level.cellToPoint(pos), Dungeon.level.cellToPoint(enemy.pos))/PointF.G2R;
-			//classic wandering detection if enemy is touching a 75 degree cone of vision
-			if (Math.abs(enemyDir - movementDir) <= 37.5f){
+			//classic wandering detection if enemy is touching a 75 degree cone of vision and within 6 tiles
+			if (Math.abs(enemyDir - movementDir) <= 37.5f && Dungeon.level.distance(pos, enemy.pos) <= 6){
 				return 1 / (distance( enemy ) / 2f + enemy.stealth());
 			//classic sleeping (i.e. default) detection if enemy is touching a 150 degree vision cone
 			} else if (Math.abs(enemyDir - movementDir) <= 75f){

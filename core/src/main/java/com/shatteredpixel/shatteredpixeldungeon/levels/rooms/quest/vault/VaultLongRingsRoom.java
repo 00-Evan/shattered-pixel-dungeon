@@ -50,30 +50,34 @@ public class VaultLongRingsRoom extends VaultLongRoom {
 			level.drop(i, level.pointToCell(c));
 		}
 
-		Mob enemy = level.createMob();
-		enemy.pos = randomWander(level);
-		int[] wanderPositions = new int[]{
-				randomWander(level), randomWander(level), randomWander(level),
-				randomWander(level), randomWander(level), randomWander(level),
-				randomWander(level), randomWander(level), randomWander(level),
-				randomWander(level), randomWander(level), randomWander(level),
-				randomWander(level), randomWander(level), randomWander(level),
-				randomWander(level), randomWander(level), randomWander(level),
-		};
-		enemy.setupStealthGameplayWanderPositions(wanderPositions, 0);
-		enemy.state = enemy.WANDERING;
-		level.mobs.add(enemy);
+		//two enemies
+		for (int n = 0; n < 2; n++) {
+			Mob enemy = level.createMob();
+			int[] wanderPositions = new int[20];
+			wanderPositions[0] = randomWander(level, -1);
+
+			for (int idx = 1; idx < wanderPositions.length; idx++) {
+				wanderPositions[idx] = randomWander(level, wanderPositions[idx - 1]);
+			}
+
+			enemy.pos = wanderPositions[0];
+			enemy.setupStealthGameplayWanderPositions(wanderPositions, 0);
+			enemy.state = enemy.WANDERING;
+			level.mobs.add(enemy);
+		}
 
 		for (Door door : connected.values()) {
 			door.set( Door.Type.REGULAR );
 		}
 	}
 
-	private int randomWander(Level level){
+	private int randomWander(Level level, int previous){
 		int pos;
 		do {
 			pos = level.pointToCell(random(1));
-		} while (level.map[pos] == Terrain.WALL);
+		} while (level.map[pos] == Terrain.WALL
+				|| level.map[pos] == Terrain.WALL_DECO
+				|| level.distance(pos, previous) < 6);
 		return pos;
 	}
 
