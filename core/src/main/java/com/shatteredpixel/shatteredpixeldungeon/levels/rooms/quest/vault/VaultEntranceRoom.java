@@ -151,13 +151,6 @@ public class VaultEntranceRoom extends VaultRoom {
 		return (p.x > left+1 && p.x < right-1) || (p.y > top+1 && p.y < bottom-1);
 	}
 
-	@Override
-	public int maxConnections(int direction) {
-		//max of two connections
-		if (direction == ALL) return 3;
-		return super.maxConnections(direction);
-	}
-
 	public static class QuestEntranceInternal extends CustomTilemap {
 
 		{

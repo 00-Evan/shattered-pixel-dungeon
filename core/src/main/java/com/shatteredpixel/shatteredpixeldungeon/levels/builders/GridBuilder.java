@@ -21,9 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.builders;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasure.VaultTreasureRoom;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
@@ -33,7 +31,7 @@ import com.watabou.utils.SparseArray;
 import java.util.ArrayList;
 
 //a builder with static room sizes aligned to a grid
-//TODO extend regular builder?
+//placement of rooms is largely random, but with size limits to ensure compactness
 public class GridBuilder extends Builder {
 
 	//TODO this shouldn't be static, could be a parameter
@@ -77,6 +75,20 @@ public class GridBuilder extends Builder {
 			}
 		}
 
+		//we set a boundary based on the total number of rooms
+		// (atm this assumes all rooms are 1x1, but very large rooms are allowed to
+		// 'poke' out of the boundary and also are handled by the extra multiplier)
+		int maxWidth = 0, maxHeight = 0;
+		while ((maxWidth * maxHeight) < rooms.size()*1.25f){
+			if (maxWidth < maxHeight || (maxWidth == maxHeight && Random.Int(2) == 0)){
+				maxWidth++;
+			} else {
+				maxHeight++;
+			}
+		}
+
+		ArrayList<Room> placed = new ArrayList<>();
+
 		if (!multis.isEmpty()) toPlace.add(multis.remove(0));
 		if (!multis.isEmpty()) toPlace.add(multis.remove(0));
 		while (!multis.isEmpty() || !singles.isEmpty()){
@@ -85,7 +97,32 @@ public class GridBuilder extends Builder {
 			if (!multis.isEmpty()) toPlace.add(multis.remove(0));
 			if (!singles.isEmpty()) toPlace.add(singles.remove(0));
 		}
+
 		toPlace.remove(entrance);
+		int entryX;
+		int entryY;
+		//always place entrance along the perimeter
+		//yes this intentionally makes corners a bit more likely)
+		switch (Random.Int(4)){
+			case 0: default:
+				entryX = 0;
+				entryY = Random.Int(0, maxHeight);
+				break;
+			case 1:
+				entryX = Random.Int(0, maxWidth);
+				entryY = 0;
+				break;
+			case 2:
+				entryX = maxWidth-1;
+				entryY = Random.Int(0, maxHeight);
+				break;
+			case 3:
+				entryX = Random.Int(0, maxWidth);
+				entryY = maxHeight-1;
+				break;
+		}
+		entrance.setPos(entryX*(ROOM_SIZE-1), entryY*(ROOM_SIZE-1));
+		placed.add(entrance);
 
 		//move the exit to the back
 		if (exit != null) {
@@ -93,17 +130,13 @@ public class GridBuilder extends Builder {
 			toPlace.add(exit);
 		}
 
-		ArrayList<Room> placed = new ArrayList<>();
-		placed.add(entrance);
-
-		PointF aimCenter = new PointF();
-		aimCenter.polar(Random.Float(PointF.PI2), Random.Float(2, 4));
+		PointF aimCenter = new PointF(maxWidth/2f, maxHeight/2f);
 
 		//use a sparse array to track room positions, with a mapping of x + 1000*y = cell
 		// and an index offset of 100,100 (x=y=100) to ensure we aren't dealing with negative indexes
 		//this effectively puts a limit of -99 < x < 999 and -99 < y < inf. on level sizes in rooms
 		SparseArray<Room> gridCells = new SparseArray<>();
-		gridCells.put(100_100, entrance);
+		gridCells.put(getIdx(entryX, entryY), entrance);
 		int roomPlacementFailures = 0;
 		while (!toPlace.isEmpty()) {
 			Room r = toPlace.remove(0);
@@ -141,9 +174,18 @@ public class GridBuilder extends Builder {
 					}
 					break;
 				}
-				int[] keys = gridCells.keyArray();
-				int nIdx = keys[Random.Int(keys.length)];
-				Room n =  gridCells.get(nIdx, null);
+
+				Room n;
+				int nIdx;
+				//first two placed rooms always connect to the entrance.
+				if (placed.size() < 3){
+					n = entrance;
+					nIdx = getIdx(entryX, entryY);
+				} else {
+					int[] keys = gridCells.keyArray();
+					nIdx = keys[Random.Int(keys.length)];
+					n = gridCells.get(nIdx, null);
+				}
 				int rIdx = nIdx;
 				float xDiff = aimCenter.x - ((rIdx % 1000) - 100);
 				float yDiff = aimCenter.y - ((rIdx / 1000) - 100);
@@ -190,31 +232,57 @@ public class GridBuilder extends Builder {
 				int y = (rIdx / 1000) - 100;
 				boolean valid;
 
-				if (!gridCells.containsKey(rIdx)) {
-					if (cellWidth == 1 && cellHeight == 1){
-						valid = true;
+				//invalid if starting cell is outside max area
+				if (x < 0 || x >= maxHeight || y < 0 || y >= maxHeight) {
+					valid = false;
 
-					//more complex check for larger rooms
-					} else {
-						Rect space = findFreeGridSpace(new Point(x, y), gridCells, cellWidth, cellHeight);
-						//add 1 to width/height as it's inclusive
-						int excessWidth = (space.width() + 1) - cellWidth;
-						int excessHeight = (space.height() + 1) - cellHeight;
-						valid = excessWidth >= 0 && excessHeight >= 0;
-						if (valid) {
-							//randomly place the room within available space.
-							// We could do more with this probably, e.g. preferred DIR
-							x = space.left + Random.Int(excessWidth+1);
-							y = space.top + Random.Int(excessHeight+1);
-							rIdx = getIdx(x, y);
-						}
+				//invalid if starting cell is inside another room
+				} else if (gridCells.containsKey(rIdx)) {
+					valid = false;
+
+				//more complex check for larger rooms, need to check all cells they occupy
+				} else if (cellWidth > 1 || cellHeight > 1) {
+
+					Rect space = findFreeGridSpace(new Point(x, y), gridCells, cellWidth, cellHeight);
+
+					//1x2 or 2x1 rooms have to fit entirely, larger ones are allowed to stick out a bit
+					if (cellWidth * cellHeight <= 2) {
+						space.left = Math.max(0, space.left);
+						space.top = Math.max(0, space.top);
+						space.right = Math.min(maxWidth - 1, space.right);
+						space.bottom = Math.min(maxHeight - 1, space.bottom);
+					}
+
+					//add 1 to width/height as it's inclusive
+					int excessWidth = (space.width() + 1) - cellWidth;
+					int excessHeight = (space.height() + 1) - cellHeight;
+					valid = excessWidth >= 0 && excessHeight >= 0;
+					if (valid) {
+						//randomly place the room within available space.
+						// We could do more with this probably, e.g. preferred DIR
+						x = space.left + Random.Int(excessWidth+1);
+						y = space.top + Random.Int(excessHeight+1);
+						rIdx = getIdx(x, y);
 					}
 				} else {
-					valid = false;
+					valid = true;
+				}
+
+				//two of the same kind of room cannot share a side
+				//the more regular layouts of grid rooms makes this look very repetative
+				if (valid){
+					r.setPos(x*(ROOM_SIZE-1), y*(ROOM_SIZE-1));
+					for (Room other : placed){
+						if (other.getClass() == r.getClass()){
+							Rect i = r.intersect(other);
+							if (i.width() > 0 || i.height() > 0){
+								valid = false;
+							}
+						}
+					}
 				}
 
 				if (valid){
-					r.setPos(x*(ROOM_SIZE-1), y*(ROOM_SIZE-1));
 					if (r.connect(n)) {
 						placed.add(r);
 						for (int i = 0; i < cellWidth; i++){

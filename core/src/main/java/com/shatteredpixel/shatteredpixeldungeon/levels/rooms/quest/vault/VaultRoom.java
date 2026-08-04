@@ -58,12 +58,6 @@ public abstract class VaultRoom extends StandardRoom {
 		return 1;
 	}
 
-	@Override
-	public boolean canConnect(Room r) {
-		//two rooms of the same kind can't be adjacent
-		return r.getClass() != getClass() && super.canConnect(r);
-	}
-
 	private static ArrayList<Class<?extends VaultRoom>> rooms = new ArrayList<>();
 	static {
 		rooms.add(VaultRingRoom.class);

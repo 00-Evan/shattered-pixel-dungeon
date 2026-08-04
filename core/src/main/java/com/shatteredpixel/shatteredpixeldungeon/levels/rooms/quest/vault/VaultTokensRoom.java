@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.custom.Carpet;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -166,6 +167,27 @@ public class VaultTokensRoom extends VaultLongRoom {
 		} else {
 			return p.y < top+5 || p.y > bottom-5;
 		}
+	}
+
+	@Override
+	public boolean canConnect(Room r) {
+		if (r.isEntrance()){
+			return false;
+		}
+
+		//must have at least 2 rooms between it and the entrance room
+		for (Room r1 : r.connected.keySet()) {
+			if (r1.isEntrance()){
+				return false;
+			}
+			for (Room r2 : r1.connected.keySet()) {
+				if (r2.isEntrance()){
+					return false;
+				}
+			}
+		}
+
+		return super.canConnect(r);
 	}
 
 	@Override

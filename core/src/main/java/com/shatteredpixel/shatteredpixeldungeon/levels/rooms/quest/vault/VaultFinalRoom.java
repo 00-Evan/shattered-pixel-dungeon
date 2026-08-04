@@ -86,6 +86,32 @@ public class VaultFinalRoom extends SpecialRoom {
 	}
 
 	@Override
+	public boolean canConnect(Room r) {
+		if (r.isEntrance()){
+			return false;
+		}
+
+		//must have at least 3 rooms between it and the entrance room
+		for (Room r1 : r.connected.keySet()) {
+			if (r1.isEntrance()){
+				return false;
+			}
+			for (Room r2 : r1.connected.keySet()) {
+				if (r2.isEntrance()){
+					return false;
+				}
+				for (Room r3 : r2.connected.keySet()) {
+					if (r3.isEntrance()){
+						return false;
+					}
+				}
+			}
+		}
+
+		return super.canConnect(r);
+	}
+
+	@Override
 	public boolean canPlaceGrass(Point p) {
 		return false;
 	}
