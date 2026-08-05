@@ -73,13 +73,13 @@ public abstract class VaultRoom extends StandardRoom {
 		rooms.add(VaultCircleRoom.class);
 		rooms.add(VaultAlternatingFireRoom.class);
 		rooms.add(VaultLasersRoom.class);
-		rooms.add(VaultSimpleEnemyTreasureRoom.class);
+		// a simple enemy treasure room is also always generated
 	}
 
 	private static float[] chances = new float[0];
 
 	public static void setupChances(){
-		chances = new float[]{2,2,2,2,2, 1,1, 1,1,1,1};
+		chances = new float[]{2,2,2,2,2, 1,1, 1,1,1};
 	}
 
 	public static VaultRoom createRoom(){

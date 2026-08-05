@@ -21,9 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Point;
@@ -66,9 +70,45 @@ public class VaultQuadrantsRoom extends VaultRoom {
 
 		if (!spawnPositions.isEmpty()) {
 			Mob enemy = level.createMob();
-			enemy.pos = level.pointToCell(Random.element(spawnPositions));
+			Point enemyCorner = Random.element(spawnPositions);
+			enemy.pos = level.pointToCell(enemyCorner);
 			enemy.state = enemy.WANDERING;
 			level.mobs.add(enemy);
+
+			int tier = 1;
+			for (Class<?extends Mob> cls : VaultLevel.T1Mobs){
+				if (cls.equals(enemy.getClass())){
+					tier = 1;
+				}
+			}
+			for (Class<?extends Mob> cls : VaultLevel.T2Mobs){
+				if (cls.equals(enemy.getClass())){
+					tier = 2;
+				}
+			}
+			for (Class<?extends Mob> cls : VaultLevel.T3Mobs){
+				if (cls.equals(enemy.getClass())){
+					tier = 3;
+				}
+			}
+			//special case for elementals
+			if (enemy instanceof Elemental){
+				tier = 3;
+			}
+
+			Item treasure = ((VaultLevel)level).createEquipment(tier);
+			int treasurePos = enemy.pos;
+			if (enemyCorner.x < c.x){
+				treasurePos--;
+			} else {
+				treasurePos++;
+			}
+			if (enemyCorner.y < c.y){
+				treasurePos -= level.width();
+			} else {
+				treasurePos += level.width();
+			}
+			level.drop(treasure, treasurePos).type = Heap.Type.CHEST;
 		}
 
 	}

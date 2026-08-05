@@ -22,13 +22,15 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class VaultHallwayRoom extends VaultLongRoom {
 
@@ -47,9 +49,34 @@ public class VaultHallwayRoom extends VaultLongRoom {
 		}
 
 		Point c = center();
-		Item i = ((VaultLevel)level).createEquipment(0);
+
+		ArrayList<Integer> lootPositions = new ArrayList<>();
+
+		if (wide()){
+			lootPositions.add(left+2 + c.y*level.width());
+			lootPositions.add(right-2 + c.y*level.width());
+		} else {
+			lootPositions.add(c.x + (top+2)*level.width());
+			lootPositions.add(c.x + (bottom-2)*level.width());
+		}
+
+		//place a single treasure item
+		// either in a side without doors or in center if doors are on both side
+		for (Door d : connected.values()){
+			for (int i : lootPositions.toArray(new Integer[0])){
+				if (level.distance(i, level.pointToCell(d)) <= 6){
+					lootPositions.remove((Integer)i);
+				}
+			}
+		}
+
+		if (lootPositions.isEmpty()){
+			lootPositions.add(level.pointToCell(c));
+		}
+
+		Item i = level.findPrizeItem(EquipableItem.class);
 		if (i != null){
-			level.drop(i, level.pointToCell(c));
+			level.drop(i, lootPositions.get(0));
 		}
 
 		Mob enemy = level.createMob();

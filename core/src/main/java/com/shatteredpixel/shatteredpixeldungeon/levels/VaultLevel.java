@@ -89,6 +89,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultEntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultFinalRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultSimpleEnemyTreasureRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultTokensRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasure.VaultTreasureRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
@@ -117,11 +118,11 @@ public class VaultLevel extends CityLevel {
 	protected boolean build() {
 		itemsToSpawn.clear();
 
-		for (int i = 0; i < 5; i++){
+		for (int i = 0; i < 4; i++){
 			addItemToSpawn(createEquipment(0));
 		}
 		addItemToSpawn(new Dart());
-		for (int i = 0; i < 6; i++){
+		for (int i = 0; i < 5; i++){
 			addItemToSpawn(createConsumabe(0));
 		}
 		addItemToSpawn(Generator.randomUsingDefaults(Generator.Category.FOOD));
@@ -139,15 +140,16 @@ public class VaultLevel extends CityLevel {
 		VaultRoom.setupChances();
 
 		int i = 0;
-		while (i < 10){
+		while (i < 9){
 			VaultRoom r = VaultRoom.createRoom();
 			i += r.sizeFactor();
 			initRooms.add(r);
 		}
 		initRooms.add( new VaultTokensRoom() );
+		initRooms.add( new VaultSimpleEnemyTreasureRoom() );
 
 		VaultTreasureRoom.generateRoomList();
-		for (i = 0; i < 6; i++){
+		for (i = 0; i < 7; i++){
 			initRooms.add(VaultTreasureRoom.nextRoom());
 		}
 
@@ -194,145 +196,192 @@ public class VaultLevel extends CityLevel {
 	}
 
 	//only occurs in levelgen, no need to bundle these
-	ArrayList<ArrayList<Item>> equipmentLoot = new ArrayList<>();
-	{
-		equipmentLoot.add(new ArrayList<>());
-		equipmentLoot.add(new ArrayList<>());
-		equipmentLoot.add(new ArrayList<>());
-		equipmentLoot.add(new ArrayList<>());
+	// use arrays here as we want to be able to track and access indices
+	// this lets us garuntee an even distribution of loot
+	// more specifically, every 6 items generated from T2/3 and T0/1 are garunteed to be:
+	// 2x melee weapon, 1x armor, 1x thrown weapon, 1x wand, 1x ring
+	Item[][] equipmentLoot = new Item[4][];
+	int higherTierIdx = 0;
+	int lowerTierIdx = 0;
+
+	public void setupEquipment(){
+		for (int i = 0; i < equipmentLoot.length; i++){
+			boolean empty = true;
+			if (equipmentLoot[i] != null) {
+				for (int j = 0; j < equipmentLoot[i].length; j++) {
+					if (equipmentLoot[i][j] != null) {
+						empty = false;
+					}
+				}
+			}
+			if (empty){
+				setupEquipmentAtTier(i);
+			}
+		}
+	}
+
+	public void setupEquipmentAtTier(int lootTier){
+
+		ArrayList<Item> lootList = new ArrayList<>();
+
+		Item loot;
+		//first weapon (lower tier, more upgrades)
+		switch (lootTier) {
+			default:
+			case 0:
+				loot = Generator.randomUsingDefaults(Generator.Category.WEP_T2);
+				break;
+			case 1:
+				loot = Generator.randomUsingDefaults(Generator.Category.WEP_T2);
+				break;
+			case 2:
+				loot = Generator.randomUsingDefaults(Generator.Category.WEP_T3);
+				break;
+			case 3:
+				loot = Generator.randomUsingDefaults(Generator.Category.WEP_T4);
+				break;
+		}
+		if (lootTier == 0) { //always +0 at T0
+			loot.level(lootTier);
+		} else {
+			loot.level(lootTier+1);
+		}
+		if (Random.Int(3) >= lootTier) {
+			((Weapon) loot).enchant(null);
+		} else {
+			((Weapon) loot).enchant();
+		}
+		lootList.add(loot);
+
+		//second weapon (higher tier, fewer upgrades)
+		switch (lootTier) {
+			default:
+			case 0:
+				loot = Generator.randomUsingDefaults(Generator.Category.WEP_T2);
+				break;
+			case 1:
+				loot = Generator.randomUsingDefaults(Generator.Category.WEP_T3);
+				break;
+			case 2:
+				loot = Generator.randomUsingDefaults(Generator.Category.WEP_T4);
+				break;
+			case 3:
+				loot = Generator.randomUsingDefaults(Generator.Category.WEP_T5);
+				break;
+		}
+		loot.level(lootTier);
+		if (Random.Int(3) >= lootTier) {
+			((Weapon) loot).enchant(null);
+		} else {
+			((Weapon) loot).enchant();
+		}
+		lootList.add(loot);
+
+		//missile weapon (same level/tiering as 2nd weapon)
+		switch (lootTier) {
+			default:
+			case 0:
+				loot = Generator.randomUsingDefaults(Generator.Category.MIS_T2);
+				break;
+			case 1:
+				loot = Generator.randomUsingDefaults(Generator.Category.MIS_T3);
+				break;
+			case 2:
+				loot = Generator.randomUsingDefaults(Generator.Category.MIS_T4);
+				break;
+			case 3:
+				loot = Generator.randomUsingDefaults(Generator.Category.MIS_T5);
+				break;
+		}
+		loot.level(lootTier);
+		if (Random.Int(3) >= lootTier) {
+			((Weapon) loot).enchant(null);
+		} else {
+			((Weapon) loot).enchant();
+		}
+		lootList.add(loot);
+
+		//armor (same level/tiering as 2nd weapon)
+		switch (lootTier) {
+			default:
+			case 0:
+				loot = new LeatherArmor();
+				break;
+			case 1:
+				loot = new MailArmor();
+				break;
+			case 2:
+				loot = new ScaleArmor();
+				break;
+			case 3:
+				loot = new PlateArmor();
+				break;
+		}
+		loot.level(lootTier);
+		if (Random.Int(3) >= lootTier) {
+			((Armor) loot).inscribe(null);
+		} else {
+			((Armor) loot).inscribe();
+		}
+		lootList.add(loot);
+
+		//wand (some wands are banned)
+		do {
+			loot = Generator.randomUsingDefaults(Generator.Category.WAND);
+		} while (loot instanceof WandOfRegrowth || loot instanceof WandOfTransfusion || loot instanceof WandOfCorruption);
+		loot.level(lootTier);
+		((Wand)loot).curCharges = ((Wand)loot).maxCharges;
+		lootList.add(loot);
+
+		//ring (some rings are banned)
+		do {
+			loot = Generator.randomUsingDefaults(Generator.Category.RING);
+		} while (loot instanceof RingOfWealth || loot instanceof RingOfMight || loot instanceof RingOfForce);
+		loot.level(lootTier);
+		lootList.add(loot);
+
+		equipmentLoot[lootTier] = lootList.toArray(new Item[0]);
 	}
 
 	public Item createEquipment(int lootTier) {
 
-		ArrayList<Item> lootList = equipmentLoot.get(lootTier);
+		//ensure we don't have any empty loot lists
+		setupEquipment();
 
-		if (lootList.isEmpty()) {
-			Item loot;
-			//first weapon (lower tier, more upgrades)
-			switch (lootTier) {
-				default:
-				case 0:
-					loot = Generator.randomUsingDefaults(Generator.Category.WEP_T2);
-					break;
-				case 1:
-					loot = Generator.randomUsingDefaults(Generator.Category.WEP_T2);
-					break;
-				case 2:
-					loot = Generator.randomUsingDefaults(Generator.Category.WEP_T3);
-					break;
-				case 3:
-					loot = Generator.randomUsingDefaults(Generator.Category.WEP_T4);
-					break;
-			}
-			if (lootTier == 0) { //always +0 at T0
-				loot.level(lootTier);
+		int idx;
+		if (lootTier >= 2){
+			idx = higherTierIdx;
+			if (idx >= equipmentLoot[lootTier].length){
+				idx = 0;
+				higherTierIdx = 0;
 			} else {
-				loot.level(lootTier + Random.Int(2));
+				higherTierIdx++;
 			}
-			if (Random.Int(3) >= lootTier) {
-				((Weapon) loot).enchant(null);
+
+		} else {
+			idx = lowerTierIdx;
+			if (idx >= equipmentLoot[lootTier].length){
+				idx = 0;
+				lowerTierIdx = 0;
 			} else {
-				((Weapon) loot).enchant();
-			}
-			lootList.add(loot);
-
-			//second weapon (higher tier, fewer upgrades)
-			switch (lootTier) {
-				default:
-				case 0:
-					loot = Generator.randomUsingDefaults(Generator.Category.WEP_T2);
-					break;
-				case 1:
-					loot = Generator.randomUsingDefaults(Generator.Category.WEP_T3);
-					break;
-				case 2:
-					loot = Generator.randomUsingDefaults(Generator.Category.WEP_T4);
-					break;
-				case 3:
-					loot = Generator.randomUsingDefaults(Generator.Category.WEP_T5);
-					break;
-			}
-			loot.level(Math.max(0, Random.Int(2) + lootTier - 1));
-			if (Random.Int(3) >= lootTier) {
-				((Weapon) loot).enchant(null);
-			} else {
-				((Weapon) loot).enchant();
-			}
-			lootList.add(loot);
-
-			//missile weapon (same level/tiering as 2nd weapon)
-			switch (lootTier) {
-				default:
-				case 0:
-					loot = Generator.randomUsingDefaults(Generator.Category.MIS_T2);
-					break;
-				case 1:
-					loot = Generator.randomUsingDefaults(Generator.Category.MIS_T3);
-					break;
-				case 2:
-					loot = Generator.randomUsingDefaults(Generator.Category.MIS_T4);
-					break;
-				case 3:
-					loot = Generator.randomUsingDefaults(Generator.Category.MIS_T5);
-					break;
-			}
-			loot.level(Math.max(0, Random.Int(2) + lootTier - 1));
-			if (Random.Int(3) >= lootTier) {
-				((Weapon) loot).enchant(null);
-			} else {
-				((Weapon) loot).enchant();
-			}
-			lootList.add(loot);
-
-			//armor (same level/tiering as 2nd weapon)
-			switch (lootTier) {
-				default:
-				case 0:
-					loot = new LeatherArmor();
-					break;
-				case 1:
-					loot = new MailArmor();
-					break;
-				case 2:
-					loot = new ScaleArmor();
-					break;
-				case 3:
-					loot = new PlateArmor();
-					break;
-			}
-			loot.level(Math.max(0, Random.Int(2) + lootTier - 1));
-			if (Random.Int(3) >= lootTier) {
-				((Armor) loot).inscribe(null);
-			} else {
-				((Armor) loot).inscribe();
-			}
-			lootList.add(loot);
-
-			//wand (some wands are banned)
-			do {
-				loot = Generator.randomUsingDefaults(Generator.Category.WAND);
-			} while (loot instanceof WandOfRegrowth || loot instanceof WandOfTransfusion || loot instanceof WandOfCorruption);
-			loot.level(Math.max(0, Random.Int(2) + lootTier - 1));
-			((Wand)loot).curCharges = ((Wand)loot).maxCharges;
-			lootList.add(loot);
-
-			//ring (no ring at T0, some rings are banned)
-			if (lootTier > 0) {
-				do {
-					loot = Generator.randomUsingDefaults(Generator.Category.RING);
-				} while (loot instanceof RingOfWealth || loot instanceof RingOfMight || loot instanceof RingOfForce);
-				loot.level(Math.max(0, Random.Int(2) + lootTier - 1));
-				lootList.add(loot);
+				lowerTierIdx++;
 			}
 
-			Random.shuffle(lootList);
 		}
 
-		Item loot = lootList.remove(0);
-		if (loot != null) {
-			loot.cursed = false;
-			loot.identify(false);
+		while(equipmentLoot[lootTier][idx] ==  null){
+			idx++;
+			if (idx >= equipmentLoot[lootTier].length){
+				idx = 0;
+			}
 		}
+
+		Item loot = equipmentLoot[lootTier][idx];
+		equipmentLoot[lootTier][idx] = null;
+
+		loot.cursed = false;
+		loot.identify(false);
+
 		return loot;
 	}
 

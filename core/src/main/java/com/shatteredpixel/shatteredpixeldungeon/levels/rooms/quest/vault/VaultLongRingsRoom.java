@@ -22,10 +22,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Point;
 
@@ -45,7 +45,7 @@ public class VaultLongRingsRoom extends VaultLongRoom {
 		}
 
 		Point c = center();
-		Item i = ((VaultLevel)level).createEquipment(0);
+		Item i = level.findPrizeItem(EquipableItem.class);
 		if (i != null){
 			level.drop(i, level.pointToCell(c));
 		}

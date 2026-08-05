@@ -21,9 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -71,6 +75,38 @@ public class VaultEnemyCenterRoom extends VaultRoom {
 		enemy.state = enemy.WANDERING;
 		level.mobs.add(enemy);
 
+		int tier = 1;
+		for (Class<?extends Mob> cls : VaultLevel.T1Mobs){
+			if (cls.equals(enemy.getClass())){
+				tier = 1;
+			}
+		}
+		for (Class<?extends Mob> cls : VaultLevel.T2Mobs){
+			if (cls.equals(enemy.getClass())){
+				tier = 2;
+			}
+		}
+		for (Class<?extends Mob> cls : VaultLevel.T3Mobs){
+			if (cls.equals(enemy.getClass())){
+				tier = 3;
+			}
+		}
+		//special case for elementals
+		if (enemy instanceof Elemental){
+			tier = 3;
+		}
+
+		Item treasure = ((VaultLevel)level).createEquipment(tier);
+		level.drop(treasure, level.pointToCell(c)).type = Heap.Type.CHEST;
+
 	}
 
+	@Override
+	//no random items in the center
+	public boolean canPlaceItem(Point p, Level l) {
+		Point c = center();
+		if (Math.abs(c.x - p.x) <= 2) return false;
+		if (Math.abs(c.y - p.y) <= 2) return false;
+		return super.canPlaceItem(p, l);
+	}
 }

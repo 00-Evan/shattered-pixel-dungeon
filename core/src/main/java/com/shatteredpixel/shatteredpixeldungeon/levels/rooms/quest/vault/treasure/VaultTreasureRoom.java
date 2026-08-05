@@ -80,10 +80,10 @@ public abstract class VaultTreasureRoom extends VaultRoom {
 		Random.shuffle(T3s);
 
 		ArrayList<ArrayList<Class<? extends VaultTreasureRoom>>> fullList = new ArrayList<>();
+		//always generate in order of T1, T2, T3
 		fullList.add(T1s);
 		fullList.add(T2s);
 		fullList.add(T3s);
-		Random.shuffle(fullList);
 
 		treasuresToSpawn = new ArrayList<>();
 		while (!fullList.isEmpty()){

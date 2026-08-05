@@ -32,6 +32,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
+
 public class VaultSimpleEnemyTreasureRoom extends VaultRoom {
 
 	@Override
@@ -77,14 +79,25 @@ public class VaultSimpleEnemyTreasureRoom extends VaultRoom {
 				break;
 		}
 
-		Mob enemy = level.createMob();
-
-		int tier = 1;
-		for (Class<?extends Mob> cls : VaultLevel.T1Mobs){
-			if (cls.equals(enemy.getClass())){
-				tier = 1;
+		//no T1 mobs, only T2+
+		Mob enemy;
+		ArrayList<Class<?extends Mob>> toReturn = new ArrayList<>();
+		boolean valid = true;
+		do {
+			enemy = level.createMob();
+			valid = true;
+			for (Class<?extends Mob> cls : VaultLevel.T1Mobs){
+				if (cls.equals(enemy.getClass())){
+					valid = false;
+					toReturn.add(enemy.getClass());
+				}
 			}
+		} while (!valid);
+		for (Class<?extends Mob> cls : toReturn){
+			((VaultLevel) level).returnMob(cls);
 		}
+
+		int tier = 2;
 		for (Class<?extends Mob> cls : VaultLevel.T2Mobs){
 			if (cls.equals(enemy.getClass())){
 				tier = 2;
@@ -107,16 +120,18 @@ public class VaultSimpleEnemyTreasureRoom extends VaultRoom {
 			door.set( Door.Type.REGULAR );
 		}
 
-
-
 		enemy.pos = enemyPos;
 		level.mobs.add(enemy);
 
 	}
 
 	@Override
+	//no random items in the center
 	public boolean canPlaceItem(Point p, Level l) {
-		return false;
+		Point c = center();
+		if (Math.abs(c.x - p.x) <= 2) return false;
+		if (Math.abs(c.y - p.y) <= 2) return false;
+		return super.canPlaceItem(p, l);
 	}
 
 }
