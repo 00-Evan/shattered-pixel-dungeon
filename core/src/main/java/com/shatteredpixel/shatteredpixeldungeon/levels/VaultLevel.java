@@ -55,6 +55,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlam
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticGas;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
@@ -113,6 +114,7 @@ import com.watabou.utils.Reflection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 
 public class VaultLevel extends CityLevel {
 
@@ -222,27 +224,36 @@ public class VaultLevel extends CityLevel {
 		}
 	}
 
+	//cannot generate two of the same equipment item (except armor)
+	// note that this does currently result in infinite loops if too many items are generated
+	// currently we're designing around a theoretical max of about 12 genereated from each tier, which is almost 2x the actual max
+	private HashSet<Class<? extends Item>> generatedClasses = new HashSet<>();
+
 	public void setupEquipmentAtTier(int lootTier){
 
 		ArrayList<Item> lootList = new ArrayList<>();
 
 		Item loot;
 		//first weapon (lower tier, more upgrades)
-		switch (lootTier) {
-			default:
-			case 0:
-				loot = Generator.randomUsingDefaults(Generator.Category.WEP_T2);
-				break;
-			case 1:
-				loot = Generator.randomUsingDefaults(Generator.Category.WEP_T2);
-				break;
-			case 2:
-				loot = Generator.randomUsingDefaults(Generator.Category.WEP_T3);
-				break;
-			case 3:
-				loot = Generator.randomUsingDefaults(Generator.Category.WEP_T4);
-				break;
-		}
+		do {
+			switch (lootTier) {
+				default:
+				case 0:
+					loot = Generator.randomUsingDefaults(Generator.Category.WEP_T2);
+					break;
+				case 1:
+					loot = Generator.randomUsingDefaults(Generator.Category.WEP_T2);
+					break;
+				case 2:
+					loot = Generator.randomUsingDefaults(Generator.Category.WEP_T3);
+					break;
+				case 3:
+					loot = Generator.randomUsingDefaults(Generator.Category.WEP_T4);
+					break;
+			}
+		//T2 weapon duplicates allowed, because so many can be generated
+		} while (lootTier > 1 && generatedClasses.contains(loot.getClass()));
+		generatedClasses.add(loot.getClass());
 		if (lootTier == 0) { //always +0 at T0
 			loot.level(lootTier);
 		} else {
@@ -256,21 +267,25 @@ public class VaultLevel extends CityLevel {
 		lootList.add(loot);
 
 		//second weapon (higher tier, fewer upgrades)
-		switch (lootTier) {
-			default:
-			case 0:
-				loot = Generator.randomUsingDefaults(Generator.Category.WEP_T2);
-				break;
-			case 1:
-				loot = Generator.randomUsingDefaults(Generator.Category.WEP_T3);
-				break;
-			case 2:
-				loot = Generator.randomUsingDefaults(Generator.Category.WEP_T4);
-				break;
-			case 3:
-				loot = Generator.randomUsingDefaults(Generator.Category.WEP_T5);
-				break;
-		}
+		do {
+			switch (lootTier) {
+				default:
+				case 0:
+					loot = Generator.randomUsingDefaults(Generator.Category.WEP_T2);
+					break;
+				case 1:
+					loot = Generator.randomUsingDefaults(Generator.Category.WEP_T3);
+					break;
+				case 2:
+					loot = Generator.randomUsingDefaults(Generator.Category.WEP_T4);
+					break;
+				case 3:
+					loot = Generator.randomUsingDefaults(Generator.Category.WEP_T5);
+					break;
+			}
+		//T2 weapon duplicates allowed, because so many can be generated
+		} while (lootTier > 0 && generatedClasses.contains(loot.getClass()));
+		generatedClasses.add(loot.getClass());
 		loot.level(lootTier);
 		if (Random.Int(3) >= lootTier) {
 			((Weapon) loot).enchant(null);
@@ -280,21 +295,24 @@ public class VaultLevel extends CityLevel {
 		lootList.add(loot);
 
 		//missile weapon (same level/tiering as 2nd weapon)
-		switch (lootTier) {
-			default:
-			case 0:
-				loot = Generator.randomUsingDefaults(Generator.Category.MIS_T2);
-				break;
-			case 1:
-				loot = Generator.randomUsingDefaults(Generator.Category.MIS_T3);
-				break;
-			case 2:
-				loot = Generator.randomUsingDefaults(Generator.Category.MIS_T4);
-				break;
-			case 3:
-				loot = Generator.randomUsingDefaults(Generator.Category.MIS_T5);
-				break;
-		}
+		do {
+			switch (lootTier) {
+				default:
+				case 0:
+					loot = Generator.randomUsingDefaults(Generator.Category.MIS_T2);
+					break;
+				case 1:
+					loot = Generator.randomUsingDefaults(Generator.Category.MIS_T3);
+					break;
+				case 2:
+					loot = Generator.randomUsingDefaults(Generator.Category.MIS_T4);
+					break;
+				case 3:
+					loot = Generator.randomUsingDefaults(Generator.Category.MIS_T5);
+					break;
+			}
+		} while (generatedClasses.contains(loot.getClass()));
+		generatedClasses.add(loot.getClass());
 		loot.level(lootTier);
 		if (Random.Int(3) >= lootTier) {
 			((Weapon) loot).enchant(null);
@@ -319,6 +337,8 @@ public class VaultLevel extends CityLevel {
 				loot = new PlateArmor();
 				break;
 		}
+		//skip duplicate check, only 1 armor per tier atm anyway
+		generatedClasses.add(loot.getClass());
 		loot.level(lootTier);
 		if (Random.Int(3) >= lootTier) {
 			((Armor) loot).inscribe(null);
@@ -330,7 +350,9 @@ public class VaultLevel extends CityLevel {
 		//wand (some wands are banned)
 		do {
 			loot = Generator.randomUsingDefaults(Generator.Category.WAND);
-		} while (loot instanceof WandOfRegrowth || loot instanceof WandOfTransfusion || loot instanceof WandOfCorruption);
+		} while (generatedClasses.contains(loot.getClass()) || loot instanceof WandOfRegrowth
+				|| loot instanceof WandOfTransfusion || loot instanceof WandOfCorruption);
+		generatedClasses.add(loot.getClass());
 		loot.level(lootTier);
 		((Wand)loot).curCharges = ((Wand)loot).maxCharges;
 		lootList.add(loot);
@@ -338,7 +360,9 @@ public class VaultLevel extends CityLevel {
 		//ring (some rings are banned)
 		do {
 			loot = Generator.randomUsingDefaults(Generator.Category.RING);
-		} while (loot instanceof RingOfWealth || loot instanceof RingOfMight || loot instanceof RingOfForce);
+		} while (generatedClasses.contains(loot.getClass()) || loot instanceof RingOfWealth
+				|| loot instanceof RingOfMight || loot instanceof RingOfForce);
+		generatedClasses.add(loot.getClass());
 		loot.level(lootTier);
 		lootList.add(loot);
 
@@ -382,7 +406,11 @@ public class VaultLevel extends CityLevel {
 		equipmentLoot[lootTier][idx] = null;
 
 		loot.cursed = false;
-		loot.identify(false);
+		if (loot instanceof Ring){
+			loot.levelKnown = loot.cursedKnown = true;
+		} else {
+			loot.identify(false);
+		}
 
 		return loot;
 	}
