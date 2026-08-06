@@ -22,11 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasure;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultRat;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
@@ -53,12 +50,16 @@ public class VaultSingleEnemyTreasureRoom extends VaultTreasureRoom {
 		int treasurePos;
 		if (entrance().x == left){
 			treasurePos = enemy.pos+2;
+			enemy.pos -= 1;
 		} else if (entrance().y == top){
 			treasurePos = enemy.pos+2*level.width();
+			enemy.pos -= level.width();
 		} else if (entrance().x == right){
 			treasurePos = enemy.pos-2;
+			enemy.pos += 1;
 		} else {
 			treasurePos = enemy.pos-2*level.width();
+			enemy.pos += level.width();
 		}
 
 		Item treasureItem = ((VaultLevel)level).createEquipment(2);
