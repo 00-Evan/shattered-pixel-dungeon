@@ -68,6 +68,18 @@ public class VaultShaman extends Shaman {
 		}
 	}
 
+	@Override
+	public int damageRoll() {
+		//buff to melee damage, equal to a brute (no rage), as shamans are otherwise weak in melee
+		return Random.NormalIntRange( 5, 25 );
+	}
+
+	@Override
+	public int drRoll() {
+		//buff to DR to help offset high hero HP and bonus dmg from excess str
+		return super.drRoll() + 5;
+	}
+
 	public static final String TYPE = "type";
 
 	@Override

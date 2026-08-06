@@ -45,4 +45,9 @@ public class VaultDM100 extends DM100 {
 		return 25;
 	}
 
+	@Override
+	public int drRoll() {
+		//buff to DR to help offset high hero HP and bonus dmg from excess str
+		return super.drRoll() + 4;
+	}
 }

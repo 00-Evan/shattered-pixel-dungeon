@@ -45,4 +45,9 @@ public class VaultSkeleton extends Skeleton {
 		return 24;
 	}
 
+	@Override
+	public int drRoll() {
+		//buff to DR to help offset high hero HP and bonus dmg from excess str
+		return super.drRoll() + 4;
+	}
 }
