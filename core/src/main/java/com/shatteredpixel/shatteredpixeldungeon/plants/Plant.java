@@ -63,6 +63,9 @@ public abstract class Plant implements Bundlable {
 
 		if (ch instanceof Hero){
 			((Hero) ch).interrupt();
+			if(((Hero) ch).hasTalent(Talent.BARKSKIN)){
+				Barkskin.conditionallyAppend(ch, (((Hero) ch).lvl* ((Hero) ch).pointsInTalent(Talent.BARKSKIN))/3, 1 );
+			}
 		}
 
 		if (Dungeon.level.heroFOV[pos] && Dungeon.hero.hasTalent(Talent.NATURES_AID)){

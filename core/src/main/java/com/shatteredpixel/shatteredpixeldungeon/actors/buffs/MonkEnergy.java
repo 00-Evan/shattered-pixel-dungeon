@@ -61,7 +61,6 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 	{
 		type = buffType.POSITIVE;
-		revivePersists = true;
 	}
 
 	public float energy = 0;
