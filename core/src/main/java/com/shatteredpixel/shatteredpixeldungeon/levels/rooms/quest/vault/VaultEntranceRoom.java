@@ -22,7 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.VaultBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -113,18 +115,22 @@ public class VaultEntranceRoom extends VaultRoom {
 			ofs = level.width();
 		}
 
+		boolean addTorch = Dungeon.isChallenged(Challenges.DARKNESS);
 		switch (Random.Int(3)){
 			case 0:
+				if (addTorch) level.drop(new Torch(), level.pointToCell(furthest)-ofs);
 				level.drop(new VaultBeacon(), level.pointToCell(furthest));
 				level.drop(new VaultBeacon(), level.pointToCell(furthest)+ofs);
 				break;
 			case 1:
 				level.drop(new VaultBeacon(), level.pointToCell(furthest)-ofs);
+				if (addTorch) level.drop(new Torch(), level.pointToCell(furthest));
 				level.drop(new VaultBeacon(), level.pointToCell(furthest)+ofs);
 				break;
 			case 2:
 				level.drop(new VaultBeacon(), level.pointToCell(furthest)-ofs);
 				level.drop(new VaultBeacon(), level.pointToCell(furthest));
+				if (addTorch)level.drop(new Torch(), level.pointToCell(furthest)+ofs);
 				break;
 		}
 
