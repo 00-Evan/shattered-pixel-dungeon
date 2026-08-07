@@ -27,8 +27,10 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultBossElemental;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.ImpStatue;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -290,6 +292,13 @@ public class VaultFinalRoom extends SpecialRoom {
 		GameScene.updateMap(Dungeon.level.pointToCell(entryDoor));
 		Level.set(Dungeon.level.pointToCell(lockedDoor), Terrain.DOOR);
 		GameScene.updateMap(Dungeon.level.pointToCell(lockedDoor));
+		for (Heap h : Dungeon.level.heaps.valueList()){
+			Item i = h.peek();
+			//only final treasure rings don't have level known
+			if (i instanceof Ring && !i.levelKnown){
+				i.identify(false);
+			}
+		}
 	}
 
 	private static final String ENTRY_DOOR_X = "entry_door_x";

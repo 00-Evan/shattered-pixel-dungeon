@@ -407,6 +407,7 @@ public class VaultLevel extends CityLevel {
 
 		loot.cursed = false;
 		if (loot instanceof Ring){
+			//rings in the vault get 20% of ID for each defeated enemy. See Mob.destroy()
 			loot.levelKnown = loot.cursedKnown = true;
 		} else {
 			loot.identify(false);

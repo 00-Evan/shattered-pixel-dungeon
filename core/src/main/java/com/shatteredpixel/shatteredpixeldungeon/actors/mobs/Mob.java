@@ -86,6 +86,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart
 import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -960,6 +961,17 @@ public abstract class Mob extends Char {
 					Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(exp), FloatingText.EXPERIENCE);
 				}
 				Dungeon.hero.earnExp(exp, getClass());
+				//in the vault level we manually progress ring IDing. 5 enemies defeated to an ID
+				if (exp == 0 && Dungeon.level instanceof VaultLevel){
+					Item ring = Dungeon.hero.belongings.ring();
+					if (ring != null){
+						ring.onHeroGainExp(0.2f, Dungeon.hero);
+					}
+					Item misc = Dungeon.hero.belongings.misc();
+					if (misc instanceof Ring){
+						misc.onHeroGainExp(0.2f, Dungeon.hero);
+					}
+				}
 
 				if (Dungeon.hero.subClass == HeroSubClass.MONK){
 					Buff.affect(Dungeon.hero, MonkEnergy.class).gainEnergy(this);
