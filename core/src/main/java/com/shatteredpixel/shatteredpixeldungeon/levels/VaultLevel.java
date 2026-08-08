@@ -433,11 +433,10 @@ public class VaultLevel extends CityLevel {
 					Reflection.newInstance(Random.oneOf(PotionOfFrost.class, PotionOfLevitation.class)),
 					Reflection.newInstance(Random.oneOf(Mageroyal.Seed.class, Icecap.Seed.class, Stormvine.Seed.class)),
 					Reflection.newInstance(Random.oneOf(ScrollOfMirrorImage.class, ScrollOfTeleportation.class)),
-					Reflection.newInstance(Random.oneOf(StoneOfFlock.class, StoneOfShock.class, StoneOfFear.class)),
-					new PotionOfHealing()));
+					Reflection.newInstance(Random.oneOf(StoneOfFlock.class, StoneOfShock.class, StoneOfFear.class))));
 			Collections.shuffle(consumableLoot.get(0));
-			//first item in each tier (except T3) is always a potion of healing
-			consumableLoot.get(0).add(new PotionOfHealing());
+			//first item in each tier is always a potion of healing (except T3, which has one randomly)
+			consumableLoot.get(0).add(0, new PotionOfHealing());
 		}
 
 		//T1
@@ -446,10 +445,9 @@ public class VaultLevel extends CityLevel {
 					Reflection.newInstance(Random.oneOf(PotionOfToxicGas.class, PotionOfParalyticGas.class)),
 					Reflection.newInstance(Random.oneOf(Firebloom.Seed.class, Sorrowmoss.Seed.class, Blindweed.Seed.class)),
 					Reflection.newInstance(Random.oneOf(ScrollOfRecharging.class, ScrollOfTerror.class)),
-					Reflection.newInstance(Random.oneOf(StoneOfDeepSleep.class, StoneOfClairvoyance.class, StoneOfAggression.class)),
-					new PotionOfHealing()));
+					Reflection.newInstance(Random.oneOf(StoneOfDeepSleep.class, StoneOfClairvoyance.class, StoneOfAggression.class))));
 			Collections.shuffle(consumableLoot.get(1));
-			consumableLoot.get(1).add(new PotionOfHealing());
+			consumableLoot.get(1).add(0, new PotionOfHealing());
 		}
 
 		//T2
@@ -458,10 +456,9 @@ public class VaultLevel extends CityLevel {
 					Reflection.newInstance(Random.oneOf(PotionOfMindVision.class, PotionOfLiquidFlame.class)),
 					Reflection.newInstance(Random.oneOf(Swiftthistle.Seed.class, Sungrass.Seed.class)),
 					Reflection.newInstance(Random.oneOf(ScrollOfLullaby.class, ScrollOfMagicMapping.class)),
-					Reflection.newInstance(Random.oneOf(StoneOfBlast.class, StoneOfBlink.class)),
-					new PotionOfHealing()));
+					Reflection.newInstance(Random.oneOf(StoneOfBlast.class, StoneOfBlink.class))));
 			Collections.shuffle(consumableLoot.get(2));
-			consumableLoot.get(2).add(new PotionOfHealing());
+			consumableLoot.get(2).add(0, new PotionOfHealing());
 		}
 
 		//T3
