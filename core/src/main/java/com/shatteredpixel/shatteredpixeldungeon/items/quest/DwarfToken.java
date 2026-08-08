@@ -21,10 +21,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.quest;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class DwarfToken extends Item {
 	
@@ -45,6 +47,15 @@ public class DwarfToken extends Item {
 		return true;
 	}
 
+	@Override
+	public boolean doPickUp(Hero hero, int pos) {
+		if (Imp.Quest.mirrorUsed){
+			GLog.i(Messages.get(this, "discard"));
+			hero.next();
+			return true;
+		}
+		return super.doPickUp(hero, pos);
+	}
 
 	@Override
 	public String desc() {

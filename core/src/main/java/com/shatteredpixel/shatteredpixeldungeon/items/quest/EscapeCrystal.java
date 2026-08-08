@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.VaultTokenDoor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultBossElemental;
+import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
@@ -254,7 +255,13 @@ public class EscapeCrystal extends Item {
 
 		//logic for removing Warrior's Seal or Mage's staff
 		if (preserve instanceof Armor && ((Armor) preserve).checkSeal() != null){
+			BrokenSeal seal = ((Armor) preserve).checkSeal();
+			Armor.Glyph attached = seal.getGlyph();
 			((Armor) preserve).detachSeal();
+			//glyph always gets preserved
+			if (((Armor) preserve).glyph == null && attached != null){
+				((Armor) preserve).inscribe(attached);
+			}
 		} else if (preserve instanceof MagesStaff){
 			Wand w = Reflection.newInstance(((MagesStaff) preserve).wandClass());
 			w.identify(false);

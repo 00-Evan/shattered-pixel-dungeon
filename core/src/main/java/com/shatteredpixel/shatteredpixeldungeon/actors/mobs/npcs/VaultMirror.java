@@ -28,12 +28,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.VaultMirrorSprite;
@@ -41,11 +42,6 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
-import com.watabou.utils.Random;
-import com.watabou.utils.Reflection;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class VaultMirror extends NPC {
 
@@ -58,10 +54,12 @@ public class VaultMirror extends NPC {
 	public void createReward(HeroClass cls){
 		switch (cls) {
 			case WARRIOR:
-				reward = new BrokenSeal().upgrade(1).identify(false);
+				reward = new BrokenSeal().upgrade().identify(false);
+				((BrokenSeal)reward).setGlyph(Armor.Glyph.random());
 				break;
 			case MAGE:
-				reward = new MagesStaff().upgrade(1).identify(false);
+				reward = new MagesStaff().upgrade(3).identify(false);
+				((MagesStaff)reward).enchant();
 				break;
 			case ROGUE:
 				reward = new CloakOfShadows().upgrade(8).identify(false);
@@ -69,17 +67,11 @@ public class VaultMirror extends NPC {
 				break;
 			case HUNTRESS:
 				reward = new SpiritBow().identify(false);
+				((SpiritBow)reward).enchant();
 				break;
 			case DUELIST:
-				reward = new MirrorSword().upgrade(Random.IntRange(2, 4)).identify(false);
-
-				// 50/50 between an uncommon or rare enchant, rares are doubled here as there are half as many
-				ArrayList<Class<?>> enchants = new ArrayList<>();
-				enchants.addAll(Arrays.asList(Weapon.Enchantment.uncommon));
-				enchants.addAll(Arrays.asList(Weapon.Enchantment.rare));
-				enchants.addAll(Arrays.asList(Weapon.Enchantment.rare));
-
-				((Weapon)reward).enchant((Weapon.Enchantment) Reflection.newInstance(Random.element(enchants)));
+				reward = new MirrorSword().upgrade(3).identify(false);
+				((MeleeWeapon)reward).enchant();
 				break;
 			case CLERIC:
 				reward = new HolyTome().upgrade(8).identify(false);
@@ -131,6 +123,7 @@ public class VaultMirror extends NPC {
 									if (!reward.doPickUp((Hero) c)) {
 										Dungeon.level.drop(reward, c.pos).sprite.drop();
 									}
+									Imp.Quest.mirrorUsed = true;
 									reward = null;
 								}
 							}
