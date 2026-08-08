@@ -80,7 +80,7 @@ public class Imp extends NPC {
 			Quest.reward = null;
 		}
 
-		if (Quest.isCompleted() && Quest.score > 1500
+		if (Quest.isCompleted() && Quest.score > 2000
 				&& fieldOfView != null && !fieldOfView[Dungeon.hero.pos]){
 			flee();
 		} else if (!Quest.given && Dungeon.level.visited[pos]) {
@@ -170,9 +170,9 @@ public class Imp extends NPC {
 			} else if (!Quest.isCompleted()) {
 				tell(Messages.get(Imp.this, "quest_in_progress"));
 			} else {
-				if (Quest.score < 1500){
+				if (Quest.score <= 2000){
 					tell(Messages.get(Imp.this, "quest_completed_bad"));
-				} else if (Quest.score < 2500){
+				} else if (Quest.score < 4000){
 					tell(Messages.get(Imp.this, "quest_completed_good"));
 				} else {
 					tell(Messages.get(Imp.this, "quest_completed_great"));
@@ -191,7 +191,7 @@ public class Imp extends NPC {
 			}
 		});
 	}
-	
+
 	public void flee() {
 		
 		yell( Messages.get(this, "cya", Messages.titleCase(Dungeon.hero.name())) );

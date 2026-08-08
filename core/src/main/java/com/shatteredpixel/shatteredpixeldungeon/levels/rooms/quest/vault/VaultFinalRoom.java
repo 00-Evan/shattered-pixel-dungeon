@@ -29,8 +29,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultBossElemental;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.ImpStatue;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -263,16 +267,34 @@ public class VaultFinalRoom extends SpecialRoom {
 				ShatteredPixelDungeon.runOnRenderThread(new Callback() {
 					@Override
 					public void call() {
-						//TODO vary based on quest score
-						int score = 0;
-						if (score >= 1600) {
-							GameScene.show(new WndTitledMessage(new ImpSprite(),
-									Messages.titleCase(Messages.get(Imp.class, "name")),
-									Messages.get(VaultFinalRoom.class, "imp_warning_prepared")));
-						} else {
+						//we check to ensure the hero has at least a T2 each of:
+						// melee weapon, thrown weapon, armor, and wand
+
+						boolean[] prepCriteria = new boolean[4];
+						for (Item i : Dungeon.hero.belongings){
+							//+2 or higher items means they're T2 or T3 vault loot
+							if (i.level() >= 2){
+								if (i instanceof MeleeWeapon) prepCriteria[0] = true;
+								if (i instanceof MissileWeapon) prepCriteria[1] = true;
+								if (i instanceof Armor) prepCriteria[2] = true;
+								if (i instanceof Wand) prepCriteria[3] = true;
+							}
+						}
+
+						boolean prepared = true;
+						for (Boolean b : prepCriteria){
+							prepared = prepared && b;
+						}
+
+						//if they don't, they are likely unprepared, and get a warning
+						if (!prepared) {
 							GameScene.show(new WndTitledMessage(new ImpSprite(),
 									Messages.titleCase(Messages.get(Imp.class, "name")),
 									Messages.get(VaultFinalRoom.class, "imp_warning_unprepared")));
+						} else {
+							GameScene.show(new WndTitledMessage(new ImpSprite(),
+									Messages.titleCase(Messages.get(Imp.class, "name")),
+									Messages.get(VaultFinalRoom.class, "imp_warning_prepared")));
 						}
 					}
 				});
