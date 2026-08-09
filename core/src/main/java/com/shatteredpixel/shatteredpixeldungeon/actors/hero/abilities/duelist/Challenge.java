@@ -55,7 +55,7 @@ import com.watabou.utils.PathFinder;
 public class Challenge extends ArmorAbility {
 
 	{
-		baseChargeUse = 35;
+		baseChargeUse = 50;
 	}
 
 	@Override
