@@ -50,16 +50,16 @@ public class VaultSingleEnemyTreasureRoom extends VaultTreasureRoom {
 		int treasurePos;
 		if (entrance().x == left){
 			treasurePos = enemy.pos+2;
-			enemy.pos -= 1;
+			enemy.pos += 1;
 		} else if (entrance().y == top){
 			treasurePos = enemy.pos+2*level.width();
-			enemy.pos -= level.width();
+			enemy.pos += level.width();
 		} else if (entrance().x == right){
 			treasurePos = enemy.pos-2;
-			enemy.pos += 1;
+			enemy.pos -= 1;
 		} else {
 			treasurePos = enemy.pos-2*level.width();
-			enemy.pos += level.width();
+			enemy.pos -= level.width();
 		}
 
 		Item treasureItem = ((VaultLevel)level).createEquipment(2);
@@ -67,8 +67,8 @@ public class VaultSingleEnemyTreasureRoom extends VaultTreasureRoom {
 
 		int i;
 		do {
-			i = PathFinder.NEIGHBOURS8[Random.Int(PathFinder.NEIGHBOURS8.length)];
-		} while (level.map[treasurePos+i] == Terrain.WALL);
+			i = PathFinder.NEIGHBOURS4[Random.Int(PathFinder.NEIGHBOURS4.length)];
+		} while (level.map[treasurePos+i] == Terrain.WALL && treasurePos+i != enemy.pos);
 
 		treasureItem = ((VaultLevel)level).createConsumabe(2);
 		level.drop(treasureItem, treasurePos+i);
