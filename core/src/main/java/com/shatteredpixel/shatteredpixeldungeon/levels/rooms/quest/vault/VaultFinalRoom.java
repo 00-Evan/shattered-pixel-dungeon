@@ -142,6 +142,10 @@ public class VaultFinalRoom extends SpecialRoom {
 
 		Point c = center();
 
+		MarkerTiles marker = new MarkerTiles();
+		marker.pos(c.x-3, c.y-3);
+		level.customTiles.add(marker);
+
 		Door entrance = entrance();
 		entrance.set( Door.Type.REGULAR );
 		Room entry = new EmptyRoom();
@@ -358,6 +362,34 @@ public class VaultFinalRoom extends SpecialRoom {
 
 		warnState = bundle.getInt(WARN_STATE);
 		lockTriggered = bundle.getBoolean(LOCK_TRIGGERED);
+	}
+
+	public static class MarkerTiles extends CustomTilemap {
+
+		{
+			texture = Assets.Environment.CITY_QUEST;
+			tileW = tileH = 7;
+		}
+
+		final int TEX_WIDTH = 128;
+
+		@Override
+		public Tilemap create() {
+			Tilemap v = super.create();
+			v.map(mapSimpleImage(0, 8, TEX_WIDTH), 7);
+			return v;
+		}
+
+		@Override
+		public String name(int tileX, int tileY) {
+			return Messages.get(this, "name");
+		}
+
+		@Override
+		public String desc(int tileX, int tileY) {
+			return Messages.get(this, "desc");
+		}
+
 	}
 
 	public static class VaultTreasure extends CustomTilemap {
