@@ -593,7 +593,7 @@ public class DriedRose extends Artifact {
 			//same dodge as the hero
 			defenseSkill = (Dungeon.hero.lvl+4);
 			if (rose == null) return;
-			HT = 20 + 8*rose.level();
+			HT = 40 + 10*rose.level();
 		}
 
 		public Weapon weapon(){
@@ -659,8 +659,15 @@ public class DriedRose extends Artifact {
 			int dmg = 0;
 			if (weapon() != null){
 				dmg += weapon().damageRoll(this);
-			} else {
-				dmg += Random.NormalIntRange(0, 5);
+				if (rose != null){
+					int excessStr = rose.ghostStrength()-weapon().STRReq();
+					if (excessStr > 0){
+						dmg += Random.NormalIntRange(0, excessStr);
+					}
+				}
+			} else if (rose != null) {
+				//1-5 to 1-10
+				dmg += Random.NormalIntRange(1, rose.ghostStrength()-8);
 			}
 			
 			return dmg;
