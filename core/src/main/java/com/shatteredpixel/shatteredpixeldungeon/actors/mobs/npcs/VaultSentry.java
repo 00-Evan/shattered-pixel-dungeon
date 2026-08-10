@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SentrySprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -117,7 +118,11 @@ public class VaultSentry extends NPC {
 									Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);
 									sprite.parent.add(new Lightning(sprite.center(), ch.sprite.destinationCenter(), null));
 									if (ch.sprite.visible) {
-										ch.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);
+										Emitter e = GameScene.emitter();
+										if (e != null) {
+											e.pos(ch.sprite.destinationCenter());
+											e.burst(SparkParticle.FACTORY, 3);
+										}
 										ch.sprite.flash();
 									}
 								}
