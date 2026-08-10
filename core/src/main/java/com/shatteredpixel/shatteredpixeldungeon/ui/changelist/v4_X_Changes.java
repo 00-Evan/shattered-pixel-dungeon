@@ -90,17 +90,6 @@ public class v4_X_Changes {
 				"\n" +
 				"I expect to continue releasing waves of new art and tweaks each major update for the forseeable future, **please let me know what you think!**"));
 
-		changes.addButton( new ChangeButton( ChangeIcons.V40_VAULTSKELE_INVESTIGATING, "New Enemy AI",
-				"As part of the new vault quest, I've added a separate style of enemy behaviour that's meant to work with stealth gameplay! Enemies using this AI mode have these differences:\n" +
-				"\n" +
-				"**-** Nearby enemy movement can be seen through walls.\n" +
-				"**- Sleeping** enemies have reduced detection range.\n" +
-				"**- Wandering** enemies patrol pre-set routes and have a sharply reduced detection range behind themselves if they are moving.\n" +
-				"**- Investigating** is a new AI state that exists between wandering/sleeping and attacking. Investigating enemies will move toward you, but don't attack until they detect you again. Investigating enemies can lose sight of the player easily, so ducking behind doors or corners is very effective.\n" +
-				"**-** If an enemy is attacked, they skip investigating and immediately start retaliating, just like normal.\n" +
-				"\n" +
-				"Currently this new AI mode is only used in the new vault quest, all other enemies in the dungeon should be unchanged."));
-
 		changes.addButton( new ChangeButton( ChangeIcons.V40_GREATSWORD_CRYSTAL, "New Enchantments!",
 				"**Four new enchantments and two new curses** have been added for weapons! Long-time players will recognize several of these as reworked enchantments that were previously removed years ago.\n" +
 				"\n" +
@@ -117,6 +106,17 @@ public class v4_X_Changes {
 				"Prior to v4.0 swarm triggered with a static 8 tiles of range only when an enemy initially notices you. Experienced players have found a bunch of ways to avoid triggering the effect entirely though.\n" +
 				"\n" +
 				"The challenge is being adjusted to now trigger constantly whenever an enemy sees you, but with a range of only 2 tiles that increases up to 12 over time. Breaking sight in any way, even for a moment, resets this range. A visual buff is also added that shows you the current alert range. This way tricksy gameplay is still rewarded, but in a way that's more visible and easy to access."));
+
+		changes.addButton( new ChangeButton( ChangeIcons.V40_VAULTSKELE_INVESTIGATING, "New Enemy AI",
+				"As part of the new vault quest, I've added a separate style of enemy behaviour that's meant to work with stealth gameplay! Enemies using this AI mode have these differences:\n" +
+				"\n" +
+				"**-** Nearby enemy movement can be seen through walls.\n" +
+				"**- Sleeping** enemies have reduced detection range.\n" +
+				"**- Wandering** enemies patrol pre-set routes and have a sharply reduced detection range behind themselves if they are moving.\n" +
+				"**- Investigating** is a new AI state that exists between wandering/sleeping and attacking. Investigating enemies will move toward you, but don't attack until they detect you again. Investigating enemies can lose sight of the player easily, so ducking behind doors or corners is very effective.\n" +
+				"**-** If an enemy is attacked, they skip investigating and immediately start retaliating, just like normal.\n" +
+				"\n" +
+				"Currently this new AI mode is only used in the new vault quest, all other enemies in the dungeon should be unchanged."));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
 		changes.hardlight(CharSprite.WARNING);
@@ -146,13 +146,48 @@ public class v4_X_Changes {
 		changes.hardlight(CharSprite.POSITIVE);
 		changeInfos.add(changes);
 
-		//
+		changes.addButton( new ChangeButton( ChangeIcons.V14_SANDALS, "Item Buffs",
+				"While v4.0 is mainly focused on new content, there are a few balance changes I'm making as well. Several items are getting some boosts:\n" +
+				"\n" +
+				"**- Force Cube** base damage up to 10-30 from 10-25\n" +
+				"\n" +
+				"**- Footwear of Nature** charge speed scaling with level increased, up to +50% at +10\n" +
+				"**- Dried Rose** ghost HP up to 40+10*lvl, from 20+8*lvl, and ghost damage now scales with strength, just like the hero\n" +
+				"**- Master Thieves' Armband** charge speed now scales with level, up to +50% at +10\n" +
+				"\n" +
+				"**- Exotic Crystals** conversion chance up to 20% per level, from 12.5%\n" +
+				"**- Chaotic Censer** is now much more likely to spew gasses that actually harm the enemy"));
+
+		changes.addButton( new ChangeButton( ChangeIcons.V40_COMBO_STRIKE, "Talent/Ability Buffs",
+				"A couple of abilities/talents are also getting buffs:\n" +
+				"\n" +
+				"**- Combo Strike** Duelist ability now grants 15 turns of duration on-kill, just like Gladiator's combo\n" +
+				"**- Feint** armor ability base cost decreased to 35 from 50 (cost swapped with challenge)"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
 		changes.hardlight(CharSprite.NEGATIVE);
 		changeInfos.add(changes);
 
-		// stone of aggro again?
+		changes.addButton( new ChangeButton( ChangeIcons.V40_STONE_AGGRESSION, "Item Nerfs",
+				"A few items were also showing as quite strong and are getting scaled back a bit.\n" +
+				"\n" +
+				"Most notably, I'm returning runestones of aggression back to their pre-v1.0 behaviour vs. bosses. In retrospect, while I do want them to be usable to redirect aggression during boss fights, letting them apply directly to bosses was a mistake. You can still use aggro stones on boss minions to take aggression of yourself during boss fights, and everthing ganging up on one minion is a more suitable scaled-back version of the scroll of aggression effect.\n" +
+				"\n" +
+				"**- Stone of Aggression** can no longer be directly applied to bosses\n" +
+				"**- Ring of Haste** speed boost per level down to +15%, from +17.5%\n" +
+				"**- Spyglass** downside made more signiciant, bonus item opacity down to 10% from 15%"));
+
+		changes.addButton( new ChangeButton( ChangeIcons.V40_BARKSKIN, "Talent/Ability Nerfs",
+				"A few targeted nerfs/adjustments to hero abilities or talents. Some of these are general and some are aimed at preventing cheese in the early stages of the new quest:\n" +
+				"\n" +
+				"These changes are general (although barkskin was also far too strong in the vault):\n" +
+				"**- Barkskin** talent no longer triggers from furrowed grass, but does now trigger from plants\n" +
+				"**- Barkskin** talent amount per level reduced to 33% of hero level, from 50%\n" +
+				"**- Challenge** armor ability base cost increased to 50 from 35 (cost swapped with feint)\n" +
+				"\n" +
+				"These adjustments are aimed at the new vault area specifically:\n" +
+				"**- Hold Fast** talent now requires the Warrior's seal, or has a cap based on worn armor if used by other heroes\n" +
+				"**- Monk** no longer retains energy over revives or entry into the vault"));
 
 	}
 
