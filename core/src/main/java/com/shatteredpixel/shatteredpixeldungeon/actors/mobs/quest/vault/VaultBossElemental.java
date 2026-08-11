@@ -23,13 +23,19 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ClericSpell;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -42,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
@@ -63,16 +70,67 @@ import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 
 public class VaultBossElemental extends Mob {
 
 	{
+		HP = HT = 600;
 		spriteClass = VaultBossElementalSprite.Fire.class;
 
-		HP = HT = 600;
+		EXP = 30;
+		defenseSkill = 20;
 
 		properties.add(Property.BOSS);
+	}
+
+	public VaultBossElemental(){
+		super();
+		switch (Random.Int(3)){
+			case 0:
+				spriteClass = VaultBossElementalSprite.Fire.class;
+				break;
+			case 1:
+				spriteClass = VaultBossElementalSprite.Frost.class;
+				break;
+			case 2:
+				spriteClass = VaultBossElementalSprite.Shock.class;
+				break;
+		}
+	}
+
+	@Override
+	public int damageRoll() {
+		return Random.NormalIntRange( 20, 25 );
+	}
+
+	@Override
+	public int attackSkill( Char target ) {
+		return 28;
+	}
+
+	@Override
+	public int drRoll() {
+		return super.drRoll() + Random.NormalIntRange(0, 10);
+	}
+
+	@Override
+	public int defenseSkill(Char enemy) {
+		if (form == ElementalForm.FIRE
+				&& enemy instanceof Hero
+				&& ((Hero) enemy).belongings.attackingWeapon() instanceof MissileWeapon
+				&& !Dungeon.level.adjacent(pos, enemy.pos)){
+			//always gets hit by a thrown weapon attack when not adjacent
+			return 0;
+		} else if (form == ElementalForm.FROST
+				&& enemy instanceof Hero
+				&& ((Hero) enemy).belongings.attackingWeapon() instanceof MeleeWeapon) {
+			//halved evasion in frost form vs. melee attacks
+			return super.defenseSkill(enemy)/2;
+		} else {
+			return super.defenseSkill(enemy);
+		}
 	}
 
 	public enum ElementalForm {
@@ -81,17 +139,29 @@ public class VaultBossElemental extends Mob {
 		SHOCK,
 		UNSTABLE //currently unused
 	}
-	private ElementalForm form = ElementalForm.FIRE;
+	private ElementalForm form = null; //only initially
+	private float[] formChances = new float[]{2, 2, 2}; //up to 2 uses of each form per fight
 
-	protected int envAttackCooldown = Random.NormalIntRange( 8, 12 );
-	protected int spAttackCooldown = Random.NormalIntRange( 3, 5 );
+	protected int envAttackCooldown = Random.NormalIntRange( 10, 15 );
+	protected int spAttackCooldown = Random.NormalIntRange( 6, 10 );
 	protected int spTargetCell = -1;
 
 	protected int lastEnemyPos = -1; //used for tracking targeting on some attacks
 
+	public void changeForm(){
+		ElementalForm newForm;
+		do {
+			newForm = ElementalForm.values()[Random.chances(formChances)];
+		} while (newForm == form);
+		formChances[newForm.ordinal()]--;
+		setElementalForm(newForm);
+	}
+
 	public void setElementalForm( ElementalForm form ){
 		//always remove pincushion as we're either leaving or entering frost form
 		Buff.affect(this, PinCushionRemover.class);
+
+		//form = ElementalForm.SHOCK;
 
 		this.form = form;
 		boolean wasTurned = sprite.flipHorizontal;
@@ -163,7 +233,7 @@ public class VaultBossElemental extends Mob {
 					}
 					//not an actual attack, do nothing
 					sprite.operate(enemy.pos);
-					envAttackCooldown = Random.NormalIntRange( 8, 12 );
+					envAttackCooldown = Random.NormalIntRange( 10, 15 );
 
 					Dungeon.hero.interrupt();
 					return true;
@@ -198,7 +268,12 @@ public class VaultBossElemental extends Mob {
 			doLightningBolt(spTargetCell);
 		}
 
-		spAttackCooldown = Random.NormalIntRange( 3, 5 );
+		if (form == ElementalForm.SHOCK){
+			//lightning form attack is faster
+			spAttackCooldown = Random.NormalIntRange( 4, 6 );
+		} else {
+			spAttackCooldown = Random.NormalIntRange( 6, 10 );
+		}
 		spTargetCell = -1;
 	}
 
@@ -211,7 +286,7 @@ public class VaultBossElemental extends Mob {
 	public int defenseProc(Char enemy, int damage) {
 		if (form == ElementalForm.SHOCK && enemy == Dungeon.hero && !(Dungeon.hero.belongings.attackingWeapon() instanceof MissileWeapon)){
 			enemy.sprite.parent.addToFront( new Lightning( sprite.center(), enemy.sprite.center(), null ) );
-			enemy.damage( Random.IntRange(2, 5), new Shocking() ); //TODO final dmg
+			enemy.damage( Random.IntRange(10, 15), new Shocking() ); //TODO final dmg
 			Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);
 			PixelScene.shake( 2, 0.3f );
 			enemy.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);
@@ -261,11 +336,17 @@ public class VaultBossElemental extends Mob {
 			}
 		}
 
-		//TODO do we want brackets like Tengu, or maybe just count up to 120 HP lost?
-		int hpBracket = HT / 5; //120, is that right?
+		int hpBracket = HT / 5; //120 HP
 		int curbracket = (int) Math.ceil(HP / (float)hpBracket);
 
+		int preHP = HP;
 		super.damage(dmg, src);
+
+		int dmgTaken = preHP - HP;
+		if (dmgTaken > 0) {
+			envAttackCooldown -= dmgTaken/24f;
+			spAttackCooldown -= dmgTaken/12f;
+		}
 
 		if (HP <= (curbracket-1)*hpBracket){
 			//cannot be hit through multiple brackets at a time
@@ -277,11 +358,10 @@ public class VaultBossElemental extends Mob {
 				do {
 					newForm = ElementalForm.values()[Random.Int(3)];
 				} while (newForm == form);
-				setElementalForm(newForm);
+				changeForm();
 				spend(TICK);
 			}
 		}
-		//TODO reduce cooldowns based on damage? That's very common in boss designs
 	}
 
 	@Override
@@ -292,11 +372,13 @@ public class VaultBossElemental extends Mob {
 
 	@Override
 	public CharSprite sprite() {
-		switch (form){
-			case FIRE: spriteClass = VaultBossElementalSprite.Fire.class; break;
-			case FROST: spriteClass = VaultBossElementalSprite.Frost.class; break;
-			case SHOCK: spriteClass = VaultBossElementalSprite.Shock.class; break;
-			case UNSTABLE: spriteClass = VaultBossElementalSprite.Chaos.class; break;
+		if (form != null) {
+			switch (form) {
+				case FIRE: spriteClass = VaultBossElementalSprite.Fire.class; break;
+				case FROST: spriteClass = VaultBossElementalSprite.Frost.class; break;
+				case SHOCK: spriteClass = VaultBossElementalSprite.Shock.class; break;
+				case UNSTABLE: spriteClass = VaultBossElementalSprite.Chaos.class; break;
+			}
 		}
 		CharSprite sprite = super.sprite();
 		return sprite;
@@ -307,6 +389,7 @@ public class VaultBossElemental extends Mob {
 		if (buff instanceof PinCushion && form != ElementalForm.FROST){
 			Buff.affect(this, PinCushionRemover.class);
 		}
+		//TODO weaknesses like base elementals (but not as extreme)
 		return super.add(buff);
 	}
 
@@ -423,18 +506,30 @@ public class VaultBossElemental extends Mob {
 		}
 
 		for (int i : PathFinder.NEIGHBOURS9){
-			GameScene.targetedCell(spTargetCell+i, cooldown());
+			if (!Dungeon.level.solid[spTargetCell+i]) {
+				GameScene.targetedCell(spTargetCell + i, cooldown());
+			}
 		}
-		GLog.w("Fireball!");
 	}
 
 	public void doFireBall( int cell ){
 
 		for (int i : PathFinder.NEIGHBOURS9){
-			CellEmitter.get(cell+i).burst(FlameParticle.FACTORY, 20);
-			GameScene.add(Blob.seed(cell+i, 5, Fire.class));
+			if (Dungeon.level.solid[cell+i]) {
+				continue;
+			}
 
-			//TODO process hero getting hit, score loss, etc.
+			CellEmitter.get(cell+i).burst(FlameParticle.FACTORY, 20);
+			GameScene.add(Blob.seed(cell+i, 2, Fire.class));
+
+			Char ch = Actor.findChar(cell+i);
+			if (ch != null && !(ch instanceof VaultBossElemental)){
+				//at this depth fire deals ~32 damage, already loads
+				Buff.affect(ch, Burning.class).reignite(ch);
+				if (ch == Dungeon.hero){
+					Statistics.questScores[3] -= 100;
+				}
+			}
 		}
 
 	}
@@ -446,17 +541,55 @@ public class VaultBossElemental extends Mob {
 		Point c = r.center();
 		int i = 0;
 
-		//TODO currently wall and skip are random, it should vary based on player location and difficulty
-		if (Random.Int(2) == 0){
+		ArrayList<Integer> wallDistances = new ArrayList<>();
+
+		//0,1,2,3 for left,top,right,bottom
+		Point heroPos = Dungeon.level.cellToPoint(Dungeon.hero.pos);
+		wallDistances.add(0, heroPos.x - (c.x-6));
+		wallDistances.add(1, heroPos.y - (c.y-6));
+		wallDistances.add(2, (c.x+6) - heroPos.x);
+		wallDistances.add(3, (c.y+6) - heroPos.y);
+
+		ArrayList<Integer> sortedDistances = (ArrayList<Integer>) wallDistances.clone();
+		Collections.shuffle(sortedDistances);
+		Collections.sort(sortedDistances);
+
+		int wallFrom = 0;
+
+		//always pick between 1st and 2nd furthest wall when above half HP
+		if (HP > HT/2){
+			do {
+				wallFrom = Random.Int(4);
+			} while (wallDistances.get(wallFrom) < sortedDistances.get(2));
+		//otherwise always pick between 2nd and 3rd furthest
+		} else {
+			//in the specific cases of 2x2 walls being equidistant (or all 4 walls equidistant) just pick a random wall
+			if (sortedDistances.get(0).equals(sortedDistances.get(1))
+					&& sortedDistances.get(2).equals(sortedDistances.get(3))){
+				wallFrom = Random.Int(4);
+			} else{
+				do {
+					wallFrom = Random.Int(4);
+				} while (wallDistances.get(wallFrom).equals(sortedDistances.get(0))
+						|| wallDistances.get(wallFrom).equals(sortedDistances.get(3)));
+			}
+		}
+
+		//TODO currently the skip distance is always 3-6
+		// maybe vary that a bit based on wall dist in other dimension and HP?
+		if (wallFrom == 1 || wallFrom == 3){
 			int y;
-			if (Random.Int(2) == 0){
+			if (wallFrom == 1){
 				y = c.y - 6;
 				wall.direction = Dungeon.level.width();
 			} else {
 				y = c.y + 6;
 				wall.direction = -Dungeon.level.width();
 			}
-			int skip = Random.IntRange(c.x-5, c.x+5);
+			int skip;
+			do {
+				skip = Random.IntRange(c.x-5, c.x+5);
+			} while (Math.abs(skip - heroPos.x) > 6 || Math.abs(skip - heroPos.x) < 3);
 			for (int x = c.x-5; x <= c.x+5; x++){
 				if (x == skip) continue;
 				wall.cells[i] = x + (y*Dungeon.level.width());
@@ -464,14 +597,17 @@ public class VaultBossElemental extends Mob {
 			}
 		} else {
 			int x;
-			if (Random.Int(2) == 0){
+			if (wallFrom == 0){
 				x = c.x - 6;
 				wall.direction = 1;
 			} else {
 				x = c.x + 6;
 				wall.direction = -1;
 			}
-			int skip = Random.IntRange(c.y-5, c.y+5);
+			int skip;
+			do {
+				skip = Random.IntRange(c.y-5, c.y+5);
+			} while (Math.abs(skip - heroPos.y) > 6 || Math.abs(skip - heroPos.y) < 3);
 			for (int y = c.y-5; y <= c.y+5; y++){
 				if (y == skip) continue;
 				wall.cells[i] = x + (y*Dungeon.level.width());
@@ -499,7 +635,13 @@ public class VaultBossElemental extends Mob {
 				for (int j = 0; j < 2; j++) {
 					if (!Dungeon.level.solid[cells[i]+j*direction]) {
 						CellEmitter.get(cells[i]+j*direction).burst(FlameParticle.FACTORY, 20);
-						//TODO process damage, score change, etc.
+						Char ch = Actor.findChar(cells[i]+j*direction);
+						if (ch != null && !(ch instanceof VaultBossElemental)){
+							Buff.affect(ch, Burning.class).reignite(ch);
+							if (ch == Dungeon.hero){
+								Statistics.questScores[3] -= 100;
+							}
+						}
 					}
 				}
 
@@ -626,7 +768,19 @@ public class VaultBossElemental extends Mob {
 			for (int cell : cells.toArray(new Integer[0])){
 				if (Dungeon.level.trueDistance(cell, startPos) <= distance){
 					CellEmitter.get(cell).burst(MagicMissile.WhiteParticle.FACTORY, 20);
-					//TODO damage
+					Char ch = Actor.findChar(cell);
+					if (ch != null && !(ch instanceof VaultBossElemental) && ch.buff(Frost.class) == null){
+						ch.damage(Random.NormalIntRange(10, 20), new Frost());
+						Buff.affect(ch, Frost.class, Frost.DURATION);
+						//TODO we need some kind of freeze tracker to prevent re-applications and give a bit of breathing room
+						if (ch == Dungeon.hero){
+							Statistics.questScores[3] -= 100;
+							if (!ch.isAlive()){
+								//TODO text
+								Dungeon.fail(target);
+							}
+						}
+					}
 					if (Dungeon.level.trueDistance(cell, startPos) <= distance-4){
 						cells.remove(cell);
 					}
@@ -712,16 +866,15 @@ public class VaultBossElemental extends Mob {
 	public void setupFrostVortex(){
 		FrostVortex vortex = Buff.append(this, FrostVortex.class);
 		vortex.targetCell = Dungeon.hero.pos;
-
-		//TODO no positional or difficulty variance atm
-		// also doesn't end up playing as well with melee as I thought it might
-
 	}
 
 	public static class FrostVortex extends Buff {
 
 		private int targetCell = -1;
 		private int distance = -1000;
+
+		private boolean fullVortex = false;
+		private boolean altDirection = false;
 
 		private ArrayList<Emitter> emitters = new ArrayList<>();
 
@@ -739,13 +892,26 @@ public class VaultBossElemental extends Mob {
 				dist = getFurthestValid(targetCell, 1, -1);
 				if (dist > furthestDist) furthestDist = dist;
 				distance = Math.min(furthestDist, 5); //won't it always be 4 now?
+
+				fullVortex = target.HP <= target.HT/2;
+				altDirection = Random.Int(2) == 0;
 			}
 
 			HashSet<Integer> cells = new HashSet<>();
-			cells.addAll(getCells(targetCell, distance, -1, -1));
-			cells.addAll(getCells(targetCell, distance, -1, 1));
-			cells.addAll(getCells(targetCell, distance, 1, 1));
-			cells.addAll(getCells(targetCell, distance, 1, -1));
+			if (fullVortex) {
+				cells.addAll(getCells(targetCell, distance, -1, -1));
+				cells.addAll(getCells(targetCell, distance, -1, 1));
+				cells.addAll(getCells(targetCell, distance, 1, 1));
+				cells.addAll(getCells(targetCell, distance, 1, -1));
+			} else {
+				if (altDirection) {
+					cells.addAll(getCells(targetCell, distance, -1, -1));
+					cells.addAll(getCells(targetCell, distance, 1, 1));
+				} else {
+					cells.addAll(getCells(targetCell, distance, -1, 1));
+					cells.addAll(getCells(targetCell, distance, 1, -1));
+				}
+			}
 
 			distance--;
 
@@ -757,6 +923,14 @@ public class VaultBossElemental extends Mob {
 			} else {
 				for (Integer cell : cells){
 					CellEmitter.get(cell).burst(MagicMissile.WhiteParticle.FACTORY, 20);
+					Char ch = Actor.findChar(cell);
+					if (ch != null && !(ch instanceof VaultBossElemental) && ch.buff(Frost.class) == null){
+						Buff.affect(ch, Frost.class, Frost.DURATION);
+						//TODO we need some kind of freeze tracker to prevent re-applications and give a bit of breathing room
+						if (ch == Dungeon.hero){
+							Statistics.questScores[3] -= 100;
+						}
+					}
 				}
 				spend(TICK);
 				return true;
@@ -771,10 +945,20 @@ public class VaultBossElemental extends Mob {
 
 			if (targetCell != -1) {
 				HashSet<Integer> cells = new HashSet<>();
-				cells.addAll(getCells(targetCell, distance, -1, -1));
-				cells.addAll(getCells(targetCell, distance, -1, 1));
-				cells.addAll(getCells(targetCell, distance, 1, 1));
-				cells.addAll(getCells(targetCell, distance, 1, -1));
+				if (fullVortex) {
+					cells.addAll(getCells(targetCell, distance, -1, -1));
+					cells.addAll(getCells(targetCell, distance, -1, 1));
+					cells.addAll(getCells(targetCell, distance, 1, 1));
+					cells.addAll(getCells(targetCell, distance, 1, -1));
+				} else {
+					if (altDirection) {
+						cells.addAll(getCells(targetCell, distance, -1, -1));
+						cells.addAll(getCells(targetCell, distance, 1, 1));
+					} else {
+						cells.addAll(getCells(targetCell, distance, -1, 1));
+						cells.addAll(getCells(targetCell, distance, 1, -1));
+					}
+				}
 
 				for (Integer cell : cells) {
 					Emitter pour = CellEmitter.get(cell);
@@ -836,11 +1020,16 @@ public class VaultBossElemental extends Mob {
 		private static String TARGET_CELL = "target_cell";
 		private static String DISTANCE = "distance";
 
+		private static String FULL_VORTEX = "full_fortex";
+		private static String ALT_DIR = "alt_direction";
+
 		@Override
 		public void storeInBundle(Bundle bundle) {
 			super.storeInBundle(bundle);
 			bundle.put(TARGET_CELL, targetCell);
 			bundle.put(DISTANCE, distance);
+			bundle.put(FULL_VORTEX, fullVortex);
+			bundle.put(ALT_DIR, altDirection);
 		}
 
 		@Override
@@ -848,6 +1037,8 @@ public class VaultBossElemental extends Mob {
 			super.restoreFromBundle(bundle);
 			targetCell = bundle.getInt(TARGET_CELL);
 			distance = bundle.getInt(DISTANCE);
+			fullVortex = bundle.getBoolean(FULL_VORTEX);
+			altDirection = bundle.getBoolean(ALT_DIR);
 		}
 
 	}
@@ -874,15 +1065,34 @@ public class VaultBossElemental extends Mob {
 
 	public void doLightningBolt(int cell){
 
+		HashSet<Integer> affectedCells = new HashSet<>();
+
 		Ballistica bolt = new Ballistica(pos, cell, Ballistica.STOP_SOLID);
 		for (int c : bolt.subPath(0, bolt.dist)){
 			CellEmitter.get(c).burst(SparkParticle.FACTORY, 5);
+			affectedCells.add(c);
 		}
 
 		int lightningOfs = spAttackCooldown;
 
 		for (int i = lightningOfs % 2; i < PathFinder.CIRCLE8.length; i+=2){
 			CellEmitter.get(cell + PathFinder.CIRCLE8[i]).burst(SparkParticle.FACTORY, 5);
+			affectedCells.add(cell + PathFinder.CIRCLE8[i]);
+		}
+
+		for (int c : affectedCells){
+			Char ch = Actor.findChar(c);
+			if (ch != null && !(ch instanceof VaultBossElemental)){
+				ch.damage(Random.NormalIntRange(15, 30), new Electricity());
+				Buff.prolong(ch, Paralysis.class, 1f);
+				if (ch == Dungeon.hero){
+					Statistics.questScores[3] -= 100;
+					if (!ch.isAlive()){
+						//TODO text
+						Dungeon.fail(target);
+					}
+				}
+			}
 		}
 
 		sprite.parent.add(new Lightning(cell + PathFinder.CIRCLE8[lightningOfs],
@@ -896,17 +1106,26 @@ public class VaultBossElemental extends Mob {
 	public void setupLightningChase(){
 		Room r = ((RegularLevel)Dungeon.level).room(pos);
 		Point c = r.center();
-		LightningChase chase = Buff.append(this, LightningChase.class);
-		chase.curCell = c.x + (c.y-5)*Dungeon.level.width();
 
-		chase = Buff.append(this, LightningChase.class);
-		chase.curCell = c.x + (c.y+5)*Dungeon.level.width();
+		boolean alt = Random.Int(2) == 0;
 
-		chase = Buff.append(this, LightningChase.class);
-		chase.curCell = c.x-5 + (c.y)*Dungeon.level.width();
+		if (alt || HP <= HT/2) {
+			LightningChase chase = Buff.append(this, LightningChase.class);
+			chase.curCell = c.x + (c.y - 5) * Dungeon.level.width();
 
-		chase = Buff.append(this, LightningChase.class);
-		chase.curCell = c.x+5 + (c.y)*Dungeon.level.width();
+			chase = Buff.append(this, LightningChase.class);
+			chase.curCell = c.x + (c.y + 5) * Dungeon.level.width();
+		}
+
+		if (!alt || HP <= HT/2) {
+
+			LightningChase chase = Buff.append(this, LightningChase.class);
+			chase.curCell = c.x - 5 + (c.y) * Dungeon.level.width();
+
+			chase = Buff.append(this, LightningChase.class);
+			chase.curCell = c.x + 5 + (c.y) * Dungeon.level.width();
+
+		}
 	}
 
 	public static class LightningChase extends Buff {
@@ -938,13 +1157,24 @@ public class VaultBossElemental extends Mob {
 
 			} else {
 
-				//TODO process damage for current cells here
 				target.sprite.parent.addToFront(new Lightning(DungeonTilemap.tileCenterToWorld(curCell), DungeonTilemap.tileCenterToWorld(endCell), null));
-				//TODO curCell damage
+				Char ch = Actor.findChar(curCell);
+				if (ch != null && !(ch instanceof VaultBossElemental)){
+					Buff.prolong(ch, Paralysis.class, 1f);
+					if (ch == Dungeon.hero) Statistics.questScores[3] -= 100;
+				}
 				if (!Dungeon.level.solid[midCell]) {
-					//TODO midcell damage
+					ch = Actor.findChar(midCell);
+					if (ch != null && !(ch instanceof VaultBossElemental)){
+						Buff.prolong(ch, Paralysis.class, 1f);
+						if (ch == Dungeon.hero) Statistics.questScores[3] -= 100;
+					}
 					if (!Dungeon.level.solid[endCell]) {
-						//TODO dmg
+						ch = Actor.findChar(endCell);
+						if (ch != null && !(ch instanceof VaultBossElemental)){
+							Buff.prolong(ch, Paralysis.class, 1f);
+							if (ch == Dungeon.hero) Statistics.questScores[3] -= 100;
+						}
 					} else {
 						detach();
 						return true;

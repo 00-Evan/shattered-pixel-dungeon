@@ -255,8 +255,8 @@ public class VaultFinalRoom extends SpecialRoom {
 				VaultBossElemental boss = new VaultBossElemental();
 				boss.state = boss.WANDERING;
 				boss.pos = Dungeon.level.pointToCell(center());
-				GameScene.add(boss);
-				boss.setElementalForm(VaultBossElemental.ElementalForm.values()[Random.Int(3)]);
+				GameScene.add(boss, 1);
+				boss.changeForm();
 				Dungeon.level.seal();
 				lockTriggered = true;
 			} else if (distance == 4 && warnState < 2) {
