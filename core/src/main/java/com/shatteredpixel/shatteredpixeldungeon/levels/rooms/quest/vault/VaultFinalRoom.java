@@ -251,7 +251,6 @@ public class VaultFinalRoom extends SpecialRoom {
 			if (distance <= 3){
 				Level.set(Dungeon.level.pointToCell(entryDoor), Terrain.LOCKED_DOOR);
 				GameScene.updateMap(Dungeon.level.pointToCell(entryDoor));
-				GLog.w("fight start!");
 				VaultBossElemental boss = new VaultBossElemental();
 				boss.state = boss.WANDERING;
 				boss.pos = Dungeon.level.pointToCell(center());

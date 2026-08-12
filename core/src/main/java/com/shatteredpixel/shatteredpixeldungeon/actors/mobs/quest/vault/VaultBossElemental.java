@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -31,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
@@ -54,6 +56,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -165,19 +168,26 @@ public class VaultBossElemental extends Mob {
 
 		this.form = form;
 		boolean wasTurned = sprite.flipHorizontal;
+
+		sprite.killAndErase();
+		GameScene.addSprite(this);
 		if (form == ElementalForm.FIRE){
-			sprite.killAndErase();
-			GameScene.addSprite(this);
 			sprite.emitter().burst(FlameParticle.FACTORY, 100);
 
+			for (Buff b : buffs()){
+				if (b instanceof Chill || b instanceof Frost){
+					b.detach();
+				}
+			}
 		} else if (form == ElementalForm.FROST){
-			sprite.killAndErase();
-			GameScene.addSprite(this);
 			sprite.emitter().burst(MagicMissile.MagicParticle.FACTORY, 100);
 
+			for (Buff b : buffs()){
+				if (b instanceof Burning){
+					b.detach();
+				}
+			}
 		} else if (form == ElementalForm.SHOCK){
-			sprite.killAndErase();
-			GameScene.addSprite(this);
 			sprite.emitter().burst(SparkParticle.FACTORY, 100);
 		}
 
@@ -192,6 +202,7 @@ public class VaultBossElemental extends Mob {
 
 		sprite.flipHorizontal = wasTurned;
 		BossHealthBar.assignBoss(this);
+		bonusAnnounced = false;
 	}
 
 	@Override
@@ -286,52 +297,68 @@ public class VaultBossElemental extends Mob {
 	public int defenseProc(Char enemy, int damage) {
 		if (form == ElementalForm.SHOCK && enemy == Dungeon.hero && !(Dungeon.hero.belongings.attackingWeapon() instanceof MissileWeapon)){
 			enemy.sprite.parent.addToFront( new Lightning( sprite.center(), enemy.sprite.center(), null ) );
-			enemy.damage( Random.IntRange(10, 15), new Shocking() ); //TODO final dmg
+			enemy.damage( Random.IntRange(5, 10), new Shocking() );
 			Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);
 			PixelScene.shake( 2, 0.3f );
 			enemy.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);
 			enemy.sprite.flash();
-			if (enemy == Dungeon.hero && !enemy.isAlive()){
+			if (!enemy.isAlive()){
+				Badges.validateDeathFromEnemyMagic();
 				Dungeon.fail(this);
-				//TODO magic death badge?
+			} else {
+				GLog.w(Messages.get(this, "shock_resist"));
 			}
-			GLog.w("Shocked!");
 		}
 		return super.defenseProc(enemy, damage);
 	}
+
+	private boolean bonusAnnounced = false;
 
 	@Override
 	public void damage(int dmg, Object src) {
 		//fire form is resistant to magic and weak to thrown weapons
 		if (form == ElementalForm.FIRE){
 			if (AntiMagic.RESISTS.contains(src.getClass())){
-				GLog.w("Resisted!");
 				dmg /= 4;
+				//prompts faster attacks, only do this if it's from the hero
 				if (src instanceof Wand || src instanceof ClericSpell){
-					//TODO additional penalty, perhaps prompt more fire attacks?
+					GLog.w(Messages.get(this, "fire_resist"));
+					spAttackCooldown -= 3;
+					envAttackCooldown -= 5;
 				}
 			} else if (src == Dungeon.hero && Dungeon.hero.belongings.attackingWeapon() instanceof MissileWeapon){
-				GLog.w("Weak!");
+				if (!bonusAnnounced){
+					GLog.p(Messages.get(this, "fire_weak"));
+					bonusAnnounced = true;
+				}
+				Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				dmg += 10;
 			}
 		//frost form is resistant to thrown weapons and weak to melee (only from the hero though!)
 		} else if ( form == ElementalForm.FROST ){
 			if (src == Dungeon.hero && Dungeon.hero.belongings.attackingWeapon() instanceof MissileWeapon){
-				GLog.w("Resisted!");
+				GLog.w(Messages.get(this, "frost_resist"));
+				//penalty is that the weapon sticks
 				dmg /= 4;
 			} else if (src == Dungeon.hero && !(Dungeon.hero.belongings.attackingWeapon() instanceof MissileWeapon)){
-				GLog.w("Weak!");
+				if (!bonusAnnounced){
+					GLog.p(Messages.get(this, "frost_weak"));
+					bonusAnnounced = true;
+				}
+				Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				dmg += 10;
 			}
 		//shock form is resistant to melee and weak to magic
-		//TODO what about magical consumables, mainly retribution?
 		} else if ( form == ElementalForm.SHOCK ){
 			if (AntiMagic.RESISTS.contains(src.getClass())){
-				GLog.w("Weak!");
+				if (!bonusAnnounced){
+					GLog.p(Messages.get(this, "shock_weak"));
+					bonusAnnounced = true;
+				}
+				Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				dmg += 10;
-				//TODO slightly charge wands?
 			} else if (src instanceof Char && !(src == Dungeon.hero && Dungeon.hero.belongings.attackingWeapon() instanceof MissileWeapon)){
-				GLog.w("Resisted!");
+				//resisted text already in defenseproc, as well as shock penalty (only for the hero)
 				dmg /= 4;
 			}
 		}
@@ -389,7 +416,20 @@ public class VaultBossElemental extends Mob {
 		if (buff instanceof PinCushion && form != ElementalForm.FROST){
 			Buff.affect(this, PinCushionRemover.class);
 		}
-		//TODO weaknesses like base elementals (but not as extreme)
+
+		boolean harmful = false;
+		if (form == ElementalForm.FIRE){
+			harmful = buff instanceof Frost || buff instanceof Chill;
+		} else if (form == ElementalForm.FROST){
+			harmful = buff instanceof Burning;
+		}
+
+		//damaged by these, but much less so than regular elementals
+		if (harmful){
+			damage( Random.NormalIntRange( 5, 10 ), buff );
+			return false;
+		}
+
 		return super.add(buff);
 	}
 
@@ -404,6 +444,17 @@ public class VaultBossElemental extends Mob {
 			props.add(Property.ELECTRIC);
 		}
 		return props;
+	}
+
+	@Override
+	public String description() {
+		String desc = super.description();
+		switch (form){
+			default:
+			case FIRE: return desc + "\n\n" + Messages.get(this, "desc_fire");
+			case FROST: return desc + "\n\n" + Messages.get(this, "desc_frost");
+			case SHOCK: return desc + "\n\n" + Messages.get(this, "desc_shock");
+		}
 	}
 
 	private static final String FORM = "elemental_form";
@@ -776,7 +827,7 @@ public class VaultBossElemental extends Mob {
 						if (ch == Dungeon.hero){
 							Statistics.questScores[3] -= 100;
 							if (!ch.isAlive()){
-								//TODO text
+								Badges.validateDeathFromEnemyMagic();
 								Dungeon.fail(target);
 							}
 						}
@@ -1088,7 +1139,7 @@ public class VaultBossElemental extends Mob {
 				if (ch == Dungeon.hero){
 					Statistics.questScores[3] -= 100;
 					if (!ch.isAlive()){
-						//TODO text
+						Badges.validateDeathFromEnemyMagic();
 						Dungeon.fail(target);
 					}
 				}
@@ -1159,6 +1210,7 @@ public class VaultBossElemental extends Mob {
 
 				target.sprite.parent.addToFront(new Lightning(DungeonTilemap.tileCenterToWorld(curCell), DungeonTilemap.tileCenterToWorld(endCell), null));
 				Char ch = Actor.findChar(curCell);
+				//TODO these can stack and freeze you for several turns, a bit much
 				if (ch != null && !(ch instanceof VaultBossElemental)){
 					Buff.prolong(ch, Paralysis.class, 1f);
 					if (ch == Dungeon.hero) Statistics.questScores[3] -= 100;
