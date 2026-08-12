@@ -2420,13 +2420,13 @@ public class Hero extends Char {
 					Sample.INSTANCE.play( Assets.Sounds.BONES );
 				} else if (heap.type == Type.LOCKED_CHEST){
 					//keys currently do not work in sub-floors
-					hasKey = Dungeon.branch != 0 && Notes.remove(new GoldenKey(Dungeon.depth));
+					hasKey = Dungeon.branch == 0 && Notes.remove(new GoldenKey(Dungeon.depth));
 					if (hasKey && keyUseTrack != null){
 						keyUseTrack.processGoldLockOpened();
 					}
 				} else if (heap.type == Type.CRYSTAL_CHEST){
 					//keys currently do not work in sub-floors
-					hasKey = Dungeon.branch != 0 && Notes.remove(new CrystalKey(Dungeon.depth));
+					hasKey = Dungeon.branch == 0 && Notes.remove(new CrystalKey(Dungeon.depth));
 					if (hasKey && keyUseTrack != null){
 						keyUseTrack.processCrystalLockOpened();
 					}
