@@ -110,6 +110,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Music;
+import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
@@ -641,6 +642,17 @@ public class VaultLevel extends CityLevel {
 				((VaultFinalRoom) r).unlock();
 			}
 		}
+		Game.runOnRenderThread(new Callback() {
+			@Override
+			public void call() {
+				Music.INSTANCE.fadeOut(5f, new Callback() {
+					@Override
+					public void call() {
+						Music.INSTANCE.end();
+					}
+				});
+			}
+		});
 	}
 
 	@Override

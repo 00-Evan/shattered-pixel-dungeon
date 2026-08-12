@@ -415,6 +415,7 @@ public class VaultBossElemental extends Mob {
 	public void die(Object cause) {
 		super.die(cause);
 		Dungeon.level.unseal();
+		GameScene.bossSlain();
 	}
 
 	@Override
@@ -623,6 +624,7 @@ public class VaultBossElemental extends Mob {
 
 	public void doFireBall( int cell ){
 
+		Sample.INSTANCE.play(Assets.Sounds.BURNING);
 		for (int i : PathFinder.NEIGHBOURS9){
 			if (Dungeon.level.solid[cell+i]) {
 				continue;
@@ -749,6 +751,7 @@ public class VaultBossElemental extends Mob {
 						if (ch != null && !(ch instanceof VaultBossElemental)){
 							Buff.affect(ch, Burning.class).reignite(ch, 5); //~20 effective damage
 							if (ch == Dungeon.hero){
+								Sample.INSTANCE.play(Assets.Sounds.BURNING);
 								Statistics.questScores[3] -= 100;
 							}
 						}
@@ -758,7 +761,7 @@ public class VaultBossElemental extends Mob {
 				cells[i] += direction;
 			}
 
-			Sample.INSTANCE.play(Assets.Sounds.BURNING);
+			Sample.INSTANCE.play(Assets.Sounds.BURNING, 0.5f);
 
 			if (left-- <= 0){
 				detach();
@@ -904,6 +907,7 @@ public class VaultBossElemental extends Mob {
 						Buff.affect(ch, FrostResist.class);
 						if (ch == Dungeon.hero){
 							Statistics.questScores[3] -= 100;
+							Sample.INSTANCE.play(Assets.Sounds.SHATTER);
 							if (!ch.isAlive()){
 								Badges.validateDeathFromEnemyMagic();
 								Dungeon.fail(target);
@@ -1057,10 +1061,12 @@ public class VaultBossElemental extends Mob {
 						Buff.affect(ch, Frost.class, 5f);
 						Buff.affect(ch, FrostResist.class);
 						if (ch == Dungeon.hero){
+							Sample.INSTANCE.play(Assets.Sounds.SHATTER);
 							Statistics.questScores[3] -= 100;
 						}
 					}
 				}
+				Sample.INSTANCE.play(Assets.Sounds.GAS, 0.25f);
 				spend(TICK);
 				return true;
 			}
@@ -1283,6 +1289,8 @@ public class VaultBossElemental extends Mob {
 
 	public static class LightningChase extends Buff {
 
+		private static float lastSFXTime = -1;
+
 		float direction = -1;
 
 		int curCell = -1;
@@ -1377,6 +1385,12 @@ public class VaultBossElemental extends Mob {
 			midCell = Dungeon.level.pointToCell(midPos.floor());
 			curCell = Dungeon.level.pointToCell(curPos.floor());
 
+			//prevents many instances from all making their sfx at once
+			if (Actor.now() > lastSFXTime) {
+				Sample.INSTANCE.play(Assets.Sounds.LIGHTNING, 0.5f);
+				lastSFXTime = Actor.now();
+			}
+
 			updateFX();
 
 			spend(TICK);
@@ -1459,6 +1473,7 @@ public class VaultBossElemental extends Mob {
 			curCell = bundle.getInt(CUR_CELL);
 			midCell = bundle.getInt(MID_CELL);
 			endCell = bundle.getInt(END_CELL);
+			lastSFXTime = -1;
 		}
 	}
 
