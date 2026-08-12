@@ -131,8 +131,7 @@ public class BrokenSeal extends Item {
 			} else if (armor.cursed && (getGlyph() == null || !getGlyph().curse())){
 				GLog.w(Messages.get(BrokenSeal.class, "cursed_armor"));
 
-			}else if (armor.glyph != null && getGlyph() != null
-					&& canTransferGlyph()
+			} else if (armor.glyph != null && getGlyph() != null
 					&& armor.glyph.getClass() != getGlyph().getClass()) {
 
 				GameScene.show(new WndOptions(new ItemSprite(ItemSpriteSheet.SEAL),
