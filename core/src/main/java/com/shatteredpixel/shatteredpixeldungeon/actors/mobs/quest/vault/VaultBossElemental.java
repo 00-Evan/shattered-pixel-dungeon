@@ -106,7 +106,12 @@ public class VaultBossElemental extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 20, 25 );
+		//frost form does less melee damage, as you're meant to fight it up-close
+		if (form == ElementalForm.FROST){
+			return Random.NormalIntRange( 15, 20 );
+		} else {
+			return Random.NormalIntRange( 20, 25 );
+		}
 	}
 
 	@Override
@@ -853,6 +858,25 @@ public class VaultBossElemental extends Mob {
 
 	}
 
+	//tracker buff to ensure that hero gets a chance to act after freezing
+	public static class FrostResist extends Buff{
+
+		{
+			actPriority = Actor.BUFF_PRIO-1; //after other buffs
+		}
+
+		@Override
+		public boolean act() {
+			if (target.buff(Frost.class) != null){
+				spend(target.cooldown());
+				return true;
+			} else {
+				detach();
+				return true;
+			}
+		}
+	}
+
 	public static class FrostCone extends Buff {
 
 		private int startPos;
@@ -868,10 +892,10 @@ public class VaultBossElemental extends Mob {
 				if (Dungeon.level.trueDistance(cell, startPos) <= distance){
 					CellEmitter.get(cell).burst(MagicMissile.WhiteParticle.FACTORY, 20);
 					Char ch = Actor.findChar(cell);
-					if (ch != null && !(ch instanceof VaultBossElemental) && ch.buff(Frost.class) == null){
-						ch.damage(Random.NormalIntRange(10, 20), new Frost());
-						Buff.affect(ch, Frost.class, Frost.DURATION);
-						//TODO we need some kind of freeze tracker to prevent re-applications and give a bit of breathing room
+					if (ch != null && !(ch instanceof VaultBossElemental) && ch.buff(FrostResist.class) == null){
+						ch.damage(Random.NormalIntRange(10, 15), new Frost());
+						Buff.affect(ch, Frost.class, 4f);
+						Buff.affect(ch, FrostResist.class);
 						if (ch == Dungeon.hero){
 							Statistics.questScores[3] -= 100;
 							if (!ch.isAlive()){
@@ -1023,9 +1047,9 @@ public class VaultBossElemental extends Mob {
 				for (Integer cell : cells){
 					CellEmitter.get(cell).burst(MagicMissile.WhiteParticle.FACTORY, 20);
 					Char ch = Actor.findChar(cell);
-					if (ch != null && !(ch instanceof VaultBossElemental) && ch.buff(Frost.class) == null){
-						Buff.affect(ch, Frost.class, Frost.DURATION);
-						//TODO we need some kind of freeze tracker to prevent re-applications and give a bit of breathing room
+					if (ch != null && !(ch instanceof VaultBossElemental) && ch.buff(FrostResist.class) == null){
+						Buff.affect(ch, Frost.class, 4f);
+						Buff.affect(ch, FrostResist.class);
 						if (ch == Dungeon.hero){
 							Statistics.questScores[3] -= 100;
 						}
