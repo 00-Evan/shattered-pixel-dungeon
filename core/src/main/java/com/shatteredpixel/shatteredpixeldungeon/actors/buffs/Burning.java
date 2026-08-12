@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -117,7 +118,8 @@ public class Burning extends Buff implements Hero.Doom, Buff.DOTbuff {
 				burnIncrement++;
 
 				//at 4+ turns, there is a (turns-3)/3 chance an item burns
-				if (Random.Int(3) < (burnIncrement - 3)){
+				//...except in the vault level, as the player can't access the scroll holder there
+				if (Random.Int(3) < (burnIncrement - 3) && !(Dungeon.level instanceof VaultLevel)){
 					burnIncrement = 0;
 
 					ArrayList<Item> burnable = new ArrayList<>();
