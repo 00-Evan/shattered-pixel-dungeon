@@ -61,7 +61,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.VaultBossElementalSprite;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -170,8 +169,6 @@ public class VaultBossElemental extends Mob {
 		//always remove pincushion as we're either leaving or entering frost form
 		Buff.affect(this, PinCushionRemover.class).preferGrouping = this.form == ElementalForm.FIRE;
 
-		form = ElementalForm.FROST;
-
 		this.form = form;
 		boolean wasTurned = sprite.flipHorizontal;
 
@@ -208,7 +205,7 @@ public class VaultBossElemental extends Mob {
 
 		sprite.flipHorizontal = wasTurned;
 		BossHealthBar.assignBoss(this);
-		bonusAnnounced = false;
+		weakAnnounced = false;
 	}
 
 	@Override
@@ -260,6 +257,10 @@ public class VaultBossElemental extends Mob {
 					//not an actual attack, do nothing
 					sprite.operate(enemy.pos);
 					envAttackCooldown = Random.NormalIntRange( 10, 15 );
+					//shock form gets faster abilities
+					if (form == ElementalForm.SHOCK){
+						spAttackCooldown = (int) (spAttackCooldown*0.67f);
+					}
 
 					Dungeon.hero.interrupt();
 					lastEnemyPos = enemy.pos;
@@ -295,11 +296,10 @@ public class VaultBossElemental extends Mob {
 			doLightningBolt(spTargetCell);
 		}
 
+		spAttackCooldown = Random.NormalIntRange( 6, 10 );
+		//shock form gets faster abilities
 		if (form == ElementalForm.SHOCK){
-			//lightning form attack is faster
-			spAttackCooldown = Random.NormalIntRange( 4, 6 );
-		} else {
-			spAttackCooldown = Random.NormalIntRange( 6, 10 );
+			spAttackCooldown = (int) (spAttackCooldown*0.67f);
 		}
 		spTargetCell = -1;
 	}
@@ -328,7 +328,7 @@ public class VaultBossElemental extends Mob {
 		return super.defenseProc(enemy, damage);
 	}
 
-	private boolean bonusAnnounced = false;
+	private boolean weakAnnounced = false;
 
 	@Override
 	public void damage(int dmg, Object src) {
@@ -343,9 +343,9 @@ public class VaultBossElemental extends Mob {
 					envAttackCooldown -= 5;
 				}
 			} else if (src == Dungeon.hero && Dungeon.hero.belongings.attackingWeapon() instanceof MissileWeapon){
-				if (!bonusAnnounced){
+				if (!weakAnnounced){
 					GLog.p(Messages.get(this, "fire_weak"));
-					bonusAnnounced = true;
+					weakAnnounced = true;
 				}
 				Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				dmg += 10;
@@ -357,9 +357,9 @@ public class VaultBossElemental extends Mob {
 				//penalty is that the weapon sticks
 				dmg /= 4;
 			} else if (src == Dungeon.hero && !(Dungeon.hero.belongings.attackingWeapon() instanceof MissileWeapon)){
-				if (!bonusAnnounced){
+				if (!weakAnnounced){
 					GLog.p(Messages.get(this, "frost_weak"));
-					bonusAnnounced = true;
+					weakAnnounced = true;
 				}
 				Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				dmg += 10;
@@ -367,9 +367,13 @@ public class VaultBossElemental extends Mob {
 		//shock form is resistant to melee and weak to magic
 		} else if ( form == ElementalForm.SHOCK ){
 			if (AntiMagic.RESISTS.contains(src.getClass())){
-				if (!bonusAnnounced){
+				if (!weakAnnounced){
 					GLog.p(Messages.get(this, "shock_weak"));
-					bonusAnnounced = true;
+					weakAnnounced = true;
+				}
+				//all wands get a little charge
+				if (src instanceof Wand || src instanceof ClericSpell){
+					Dungeon.hero.belongings.charge(0.2f);
 				}
 				Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				dmg += 10;
@@ -1207,10 +1211,15 @@ public class VaultBossElemental extends Mob {
 
 		for (int c : affectedCells){
 			Char ch = Actor.findChar(c);
-			if (ch != null && !(ch instanceof VaultBossElemental)){
-				ch.damage(Random.NormalIntRange(15, 30), new Electricity());
+			if (ch != null && !(ch instanceof VaultBossElemental) && ch.buff(ShockResist.class) == null){
+				ch.damage(Random.NormalIntRange(20, 30), new Electricity());
 				Buff.prolong(ch, Paralysis.class, 1f);
+				Buff.affect(ch, ShockResist.class);
+				ch.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);
+				ch.sprite.flash();
 				if (ch == Dungeon.hero){
+					Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);
+					PixelScene.shake( 2, 0.3f );
 					Statistics.questScores[3] -= 100;
 					if (!ch.isAlive()){
 						Badges.validateDeathFromEnemyMagic();
@@ -1227,7 +1236,26 @@ public class VaultBossElemental extends Mob {
 
 	}
 
-	//TODO this one isn't really working well at all atm, seems far too confusing
+	//tracker buff to ensure that hero gets a chance to act after freezing
+	public static class ShockResist extends Buff {
+
+		{
+			actPriority = Actor.BUFF_PRIO-1; //after other buffs
+		}
+
+		@Override
+		public boolean act() {
+			if (target.buff(Paralysis.class) != null){
+				spend(target.cooldown());
+				return true;
+			} else {
+				detach();
+				return true;
+			}
+		}
+	}
+
+	//TODO these aren't working great atm, perhaps it's better to use more but always go straight?
 	public void setupLightningChase(){
 		Room r = ((RegularLevel)Dungeon.level).room(pos);
 		Point c = r.center();
@@ -1282,24 +1310,22 @@ public class VaultBossElemental extends Mob {
 
 			} else {
 
-				target.sprite.parent.addToFront(new Lightning(DungeonTilemap.tileCenterToWorld(curCell), DungeonTilemap.tileCenterToWorld(endCell), null));
+				CellEmitter.get(curCell).burst(SparkParticle.FACTORY, 10);
 				Char ch = Actor.findChar(curCell);
-				//TODO these can stack and freeze you for several turns, a bit much
-				if (ch != null && !(ch instanceof VaultBossElemental)){
-					Buff.prolong(ch, Paralysis.class, 1f);
-					if (ch == Dungeon.hero) Statistics.questScores[3] -= 100;
+				if (ch != null && !(ch instanceof VaultBossElemental) && ch.buff(ShockResist.class) == null){
+					shockChar(ch);
 				}
 				if (!Dungeon.level.solid[midCell]) {
+					CellEmitter.get(midCell).burst(SparkParticle.FACTORY, 10);
 					ch = Actor.findChar(midCell);
-					if (ch != null && !(ch instanceof VaultBossElemental)){
-						Buff.prolong(ch, Paralysis.class, 1f);
-						if (ch == Dungeon.hero) Statistics.questScores[3] -= 100;
+					if (ch != null && !(ch instanceof VaultBossElemental) && ch.buff(ShockResist.class) == null){
+						shockChar(ch);
 					}
 					if (!Dungeon.level.solid[endCell]) {
+						CellEmitter.get(endCell).burst(SparkParticle.FACTORY, 10);
 						ch = Actor.findChar(endCell);
-						if (ch != null && !(ch instanceof VaultBossElemental)){
-							Buff.prolong(ch, Paralysis.class, 1f);
-							if (ch == Dungeon.hero) Statistics.questScores[3] -= 100;
+						if (ch != null && !(ch instanceof VaultBossElemental) && ch.buff(ShockResist.class) == null){
+							shockChar(ch);
 						}
 					} else {
 						detach();
@@ -1324,7 +1350,7 @@ public class VaultBossElemental extends Mob {
 					}
 				}
 
-				float maxMove = Random.Float(PointF.PI/10, PointF.PI/5);
+				float maxMove = Random.Float(PointF.PI/8, PointF.PI/6);
 				if (direction > targetAngle){
 					direction -= Math.min(direction - targetAngle, maxMove);
 				} else {
@@ -1355,6 +1381,23 @@ public class VaultBossElemental extends Mob {
 
 			spend(TICK);
 			return true;
+		}
+
+		private void shockChar(Char ch){
+			ch.damage(Random.NormalIntRange(10, 15), new Electricity());
+			Buff.prolong(ch, Paralysis.class, 1f);
+			Buff.affect(ch, ShockResist.class);
+			ch.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);
+			ch.sprite.flash();
+			if (ch == Dungeon.hero){
+				Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);
+				PixelScene.shake( 2, 0.3f );
+				Statistics.questScores[3] -= 100;
+				if (!ch.isAlive()){
+					Badges.validateDeathFromEnemyMagic();
+					Dungeon.fail(target);
+				}
+			}
 		}
 
 		private void updateFX(){
