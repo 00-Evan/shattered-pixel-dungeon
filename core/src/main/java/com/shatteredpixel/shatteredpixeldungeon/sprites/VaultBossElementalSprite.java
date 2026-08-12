@@ -63,7 +63,7 @@ public abstract class VaultBossElementalSprite extends ElementalSprite {
 			zap( cell, null );
 
 			MagicMissile.boltFromChar( parent,
-					MagicMissile.FIRE_CONE,
+					MagicMissile.FIRE,
 					this,
 					cell,
 					new Callback() {

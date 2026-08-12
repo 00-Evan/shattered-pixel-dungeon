@@ -67,6 +67,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
@@ -162,9 +163,7 @@ public class VaultBossElemental extends Mob {
 
 	public void setElementalForm( ElementalForm form ){
 		//always remove pincushion as we're either leaving or entering frost form
-		Buff.affect(this, PinCushionRemover.class);
-
-		//form = ElementalForm.SHOCK;
+		Buff.affect(this, PinCushionRemover.class).preferGrouping = this.form == ElementalForm.FIRE;
 
 		this.form = form;
 		boolean wasTurned = sprite.flipHorizontal;
@@ -206,13 +205,21 @@ public class VaultBossElemental extends Mob {
 	}
 
 	@Override
+	public void aggro(Char ch) {
+		super.aggro(ch);
+		enemySeen = true; //to prevent opening surprise attack
+	}
+
+	@Override
 	protected boolean act() {
 		if (spTargetCell != -1){
 			if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
 				sprite.zap( spTargetCell );
+				lastEnemyPos = enemy.pos;
 				return false;
 			} else {
 				zap();
+				lastEnemyPos = enemy.pos;
 				return true;
 			}
 		}
@@ -220,7 +227,7 @@ public class VaultBossElemental extends Mob {
 		if (state == HUNTING){
 			spAttackCooldown--;
 			if (spAttackCooldown <= 0){
-				spend(TICK);
+				spend(GameMath.gate(attackDelay(), (int)Math.ceil(Dungeon.hero.cooldown()), 3*attackDelay()));
 				if (form == ElementalForm.FIRE){
 					setupFireBall(enemy);
 				} else if (form == ElementalForm.FROST){
@@ -230,6 +237,7 @@ public class VaultBossElemental extends Mob {
 				}
 
 				Dungeon.hero.interrupt();
+				lastEnemyPos = enemy.pos;
 				return true;
 			} else {
 				envAttackCooldown--;
@@ -247,6 +255,7 @@ public class VaultBossElemental extends Mob {
 					envAttackCooldown = Random.NormalIntRange( 10, 15 );
 
 					Dungeon.hero.interrupt();
+					lastEnemyPos = enemy.pos;
 					return true;
 				}
 			}
@@ -414,7 +423,7 @@ public class VaultBossElemental extends Mob {
 	@Override
 	public boolean add(Buff buff) {
 		if (buff instanceof PinCushion && form != ElementalForm.FROST){
-			Buff.affect(this, PinCushionRemover.class);
+			Buff.affect(this, PinCushionRemover.class).preferGrouping = this.form == ElementalForm.FIRE;
 		}
 
 		boolean harmful = false;
@@ -498,8 +507,16 @@ public class VaultBossElemental extends Mob {
 			actPriority = VFX_PRIO;
 		}
 
+		//triggered when elemental is currently in or leaving fire form, making collecting easier
+		public boolean preferGrouping = false;
+
 		@Override
 		public boolean act() {
+
+			if (target.buff(PinCushion.class) == null){
+				detach();
+				return true;
+			}
 
 			PathFinder.buildDistanceMap(target.pos, Dungeon.level.passable, 2);
 			ArrayList<Integer> candidates = new ArrayList<>();
@@ -525,17 +542,27 @@ public class VaultBossElemental extends Mob {
 				closestDist--;
 			}
 
+			ArrayList<Integer> existingStacks = new ArrayList<>();
+
 			for (int i : candidates.toArray(new Integer[0])){
 				int dist = Dungeon.level.distance(i, Dungeon.hero.pos);
 				if (dist <= closestDist || dist >= furthestDist){
 					candidates.remove((Integer)i);
+				} else {
+					if (Dungeon.level.heaps.get(i) != null){
+						existingStacks.add(i);
+					}
 				}
+			}
+
+			//always place thrown weapons onto each other if possible, but only in fire form
+			if (preferGrouping && !existingStacks.isEmpty()) {
+				candidates = existingStacks;
 			}
 
 			while (target.buff(PinCushion.class) != null) {
 				Item item = target.buff(PinCushion.class).grabOne();
 
-				//TODO drop around, 2 tile distance favouring medium near the hero?
 				Dungeon.level.drop(item, Random.element(candidates)).sprite.drop(target.pos);
 			}
 			detach();
@@ -554,6 +581,26 @@ public class VaultBossElemental extends Mob {
 		} else {
 			//random otherwise
 			spTargetCell = enemy.pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
+		}
+
+		//if there's a firewall, fiddle with fireball position so that it cannot be inside a firewall cell
+		FireWall wall = buff(FireWall.class);
+		if (wall != null){
+			int ofs = 0;
+			boolean valid;
+			do {
+				valid = true;
+				for (int i : wall.cells){
+					if (i == spTargetCell+ofs){
+						do {
+							ofs = PathFinder.NEIGHBOURS8[Random.Int(4)];
+						} while (Actor.findChar(ofs) != null);
+						valid = false;
+						break;
+					}
+				}
+			} while (!valid);
+			spTargetCell += ofs;
 		}
 
 		for (int i : PathFinder.NEIGHBOURS9){
@@ -606,14 +653,19 @@ public class VaultBossElemental extends Mob {
 		Collections.sort(sortedDistances);
 
 		int wallFrom = 0;
+		int minSkipDist, maxSkipDist;
 
-		//always pick between 1st and 2nd furthest wall when above half HP
+		//always pick the furthest wall when above half HP
 		if (HP > HT/2){
+			minSkipDist = 1;
+			maxSkipDist = 3;
 			do {
 				wallFrom = Random.Int(4);
-			} while (wallDistances.get(wallFrom) < sortedDistances.get(2));
+			} while (wallDistances.get(wallFrom) < sortedDistances.get(1));
 		//otherwise always pick between 2nd and 3rd furthest
 		} else {
+			minSkipDist = 4;
+			maxSkipDist = 6;
 			//in the specific cases of 2x2 walls being equidistant (or all 4 walls equidistant) just pick a random wall
 			if (sortedDistances.get(0).equals(sortedDistances.get(1))
 					&& sortedDistances.get(2).equals(sortedDistances.get(3))){
@@ -626,8 +678,6 @@ public class VaultBossElemental extends Mob {
 			}
 		}
 
-		//TODO currently the skip distance is always 3-6
-		// maybe vary that a bit based on wall dist in other dimension and HP?
 		if (wallFrom == 1 || wallFrom == 3){
 			int y;
 			if (wallFrom == 1){
@@ -640,7 +690,7 @@ public class VaultBossElemental extends Mob {
 			int skip;
 			do {
 				skip = Random.IntRange(c.x-5, c.x+5);
-			} while (Math.abs(skip - heroPos.x) > 6 || Math.abs(skip - heroPos.x) < 3);
+			} while (Math.abs(skip - heroPos.x) > maxSkipDist || Math.abs(skip - heroPos.x) < minSkipDist);
 			for (int x = c.x-5; x <= c.x+5; x++){
 				if (x == skip) continue;
 				wall.cells[i] = x + (y*Dungeon.level.width());
@@ -658,7 +708,7 @@ public class VaultBossElemental extends Mob {
 			int skip;
 			do {
 				skip = Random.IntRange(c.y-5, c.y+5);
-			} while (Math.abs(skip - heroPos.y) > 6 || Math.abs(skip - heroPos.y) < 3);
+			} while (Math.abs(skip - heroPos.y) > maxSkipDist || Math.abs(skip - heroPos.y) < minSkipDist);
 			for (int y = c.y-5; y <= c.y+5; y++){
 				if (y == skip) continue;
 				wall.cells[i] = x + (y*Dungeon.level.width());
@@ -671,8 +721,6 @@ public class VaultBossElemental extends Mob {
 
 		private int[] cells = new int[0];
 		private int direction;
-
-		//variable width maybe? for now it's always 2
 
 		private int left = 11; //always the same amount
 
@@ -688,7 +736,7 @@ public class VaultBossElemental extends Mob {
 						CellEmitter.get(cells[i]+j*direction).burst(FlameParticle.FACTORY, 20);
 						Char ch = Actor.findChar(cells[i]+j*direction);
 						if (ch != null && !(ch instanceof VaultBossElemental)){
-							Buff.affect(ch, Burning.class).reignite(ch);
+							Buff.affect(ch, Burning.class).reignite(ch, 5); //~20 effective damage
 							if (ch == Dungeon.hero){
 								Statistics.questScores[3] -= 100;
 							}

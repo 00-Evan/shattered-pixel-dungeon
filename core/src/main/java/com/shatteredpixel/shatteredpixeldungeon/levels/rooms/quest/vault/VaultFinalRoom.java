@@ -252,9 +252,12 @@ public class VaultFinalRoom extends SpecialRoom {
 				Level.set(Dungeon.level.pointToCell(entryDoor), Terrain.LOCKED_DOOR);
 				GameScene.updateMap(Dungeon.level.pointToCell(entryDoor));
 				VaultBossElemental boss = new VaultBossElemental();
-				boss.state = boss.WANDERING;
 				boss.pos = Dungeon.level.pointToCell(center());
 				GameScene.add(boss, 1);
+				//we add a 1 turn delay, but compute FOV to prevent an opening surprise attack
+				boss.fieldOfView = new boolean[Dungeon.level.length()];
+				Dungeon.level.updateFieldOfView( boss, boss.fieldOfView );
+				boss.aggro(Dungeon.hero);
 				boss.changeForm();
 				Dungeon.level.seal();
 				lockTriggered = true;
