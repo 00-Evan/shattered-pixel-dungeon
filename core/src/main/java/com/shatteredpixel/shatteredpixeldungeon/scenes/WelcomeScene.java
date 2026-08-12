@@ -35,9 +35,9 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
-import com.shatteredpixel.shatteredpixeldungeon.ui.TitleBackground;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.TitleBackground;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndHardNotification;
 import com.watabou.glwrap.Blending;
@@ -54,7 +54,7 @@ import java.util.Collections;
 
 public class WelcomeScene extends PixelScene {
 
-	private static final int LATEST_UPDATE = ShatteredPixelDungeon.v3_3_0;
+	private static final int LATEST_UPDATE = 838;
 
 	//used so that the game does not keep showing the window forever if cleaning fails
 	private static boolean triedCleaningTemp = false;
@@ -212,6 +212,9 @@ public class WelcomeScene extends PixelScene {
 				message += "\n" + Messages.get(this, "patch_translations");
 
 			}
+			message = "Greeting Alpha Testers, after far too long v4.0.0 is finally ready for playtesting!" +
+					"\n\nThis massive update includes Shattered's biggest new quest ever, plus a bunch of new art, new enchantments, and several smaller changes and adjustments." +
+					"\n\nThe update is content-complete, but I expect there will be some refinements needed before release. Let me know what you think!";
 		} else {
 			message = Messages.get(this, "what_msg");
 		}

@@ -55,11 +55,28 @@ public class v4_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton( ChangeIcons.V074_SHPX, "Dev Commentary",
-				"TODO"));
+		changes.addButton( new ChangeButton( ChangeIcons.V074_SHPX, "Alpha To-Do",
+				"Hey Alpha testers!\n" +
+				"\n" +
+				"v4.0 is releasing in a pretty much content-complete state, but there are still a few things to finish up before launch:\n" +
+				"\n" +
+				"**-** Some new visuals in the quest area are still a WIP, most notably the visuals for the boss fight.\n" +
+				"**-** There are finished new visuals for the Newborn Elemental quest and both caves quests that I have yet to implement.\n" +
+				"**-** I would like to make some tweaks to new visuals based on feedback, so please let me know what tou think! In particular I'm aware there's been a lot of feedback on scrolls and runestones.\n" +
+				"**-** There will of course be bugs to fix and balance tweaks to make."));
 
 		changes.addButton( new ChangeButton( ChangeIcons.V33_IMP, "New City Quest",
-				"TODO"));
+				"**The Ambitious Imp's quest has been totally redone, into easily the largest quest yet!**\n" +
+				"\n" +
+				"The Imp now tasks you with raiding an ancient dwarven vault, filled with hazards and loot! Be careful though, as you won't be able to take your gear with you! The quest includes:\n" +
+				"\n" +
+				"**-** A massive sub-region the size of ~3 dungeon floors, featuring over 20 new room types!\n" +
+				"**-** Three new static hazards that are integrated into 10 of the new rooms!\n" +
+				"**-** New variants of enemies ranging from the prisons to the city!\n" +
+				"**-** An entire second progression experience, with easy low tier loot and well-defended high tier loot!\n" +
+				"**-** A new boss that's specially designed to test the skills of vault pluderers!\n" +
+				"\n" +
+				"Of course, adventurers need a suitable reward ;). If you're successful in the vault, the Imp will let you take **a single item out with you!** Many items in the vault are at a similar power level to his classic reward of a highly upgraded ring, but you'll get a much bigger variety of choice. He'll also continue to set up shop later as usual."));
 
 		changes.addButton( new ChangeButton( ChangeIcons.V40_CITY_CARPET, "New Environment Visuals!",
 				"**After almost two years since I initially teased it, the first wave of visual improvements to Shattered's in-game pixel art are finally here!**\n" +
@@ -71,7 +88,7 @@ public class v4_X_Changes {
 				"**-** Carpets are now a custom visual that can be applied on top of regular tiles anywhere! They are currently only used in the dwarven city.\n" +
 				"**-** Enhanced visuals at the city entrance and exit.\n" +
 				"**-** Overhauled the Blacksmith's room.\n" +
-				"**-** Overhauled Mass Grave and Ritual rooms from the prison quest.\n" +
+				"**-** Overhauled Mass Grave room from the prison quest.\n" +
 				"**-** Improvements to sewer barrels, barricades, and city flaming pedestals.\n" +
 				"\n" +
 				"I expect to continue releasing waves of new art and tweaks each major update for the forseeable future, **please let me know what you think!**"));
@@ -103,9 +120,11 @@ public class v4_X_Changes {
 		changes.addButton( new ChangeButton( ChangeIcons.V13_BUFF_AGGRESSION, "Swarm Intelligence Overhaul",
 				"The swarm intelligence challenge is getting adjustments to improve counterplay and consistency.\n" +
 				"\n" +
-				"Prior to v4.0 swarm triggered with a static 8 tiles of range only when an enemy initially notices you. Experienced players have found a bunch of ways to avoid triggering the effect entirely though.\n" +
+				"Prior to v4.0 swarm triggered with a static 8 tiles of range only when an enemy initially noticed you. Experienced players found a bunch of ways to avoid triggering the effect entirely though.\n" +
 				"\n" +
-				"The challenge is being adjusted to now trigger constantly whenever an enemy sees you, but with a range of only 2 tiles that increases up to 12 over time. Breaking sight in any way, even for a moment, resets this range. A visual buff is also added that shows you the current alert range. This way tricksy gameplay is still rewarded, but in a way that's more visible and easy to access."));
+				"The challenge is being adjusted to now trigger constantly whenever an enemy sees you, but with a range of only 2 tiles that increases up to 12 over time. Breaking sight in any way, even for a moment, resets this range. This way tricksy gameplay is still rewarded, but in a way that's more visible and easy to access.\n" +
+				"\n" +
+				"A visual buff has also been added that shows you the current alert range."));
 
 		changes.addButton( new ChangeButton( ChangeIcons.V40_VAULTSKELE_INVESTIGATING, "New Enemy AI",
 				"As part of the new vault quest, I've added a separate style of enemy behaviour that's meant to work with stealth gameplay! Enemies using this AI mode have these differences:\n" +
@@ -134,13 +153,65 @@ public class v4_X_Changes {
 				"\n" +
 				"**-** Changes screen is now split into post-release (v1.0+) and pre-release (v0.9.3-), this gives enough space for tabs for each major version (with v0.5 and older still grouped together)\n" +
 				"**-** Change screen icons now use historical visuals that are accurate to the update being covered. I felt this change was especially important now that we're starting a big in-game art expansion.\n" +
-				"**-** Added change history for the original Pixel Dungeon at the end of the list. This includes original comments made by Watabou for each update.!"));
+				"**-** Added change history for the original Pixel Dungeon at the end of the list. This includes original comments made by Watabou for each update!"));
 
 		changes.addButton( new ChangeButton( ChangeIcons.V081_MISC, Messages.get(ChangesScene.class, "misc"),
-				"..."));
+				"**Highlights:**\n" +
+				"**-** Health bars now visually darken to show the total amount of incoming damage over time\n" +
+				"**-** Targeted cell VFX for incoming enemy attacks now persist until the attack occurs\n" +
+				"**-** Added better support for 3rd party Android appstores that handle updates themselves\n" +
+				"**-** Various internal code improvements to music playback, should reduce stuttering/glitching\n" +
+				"**-** Made UI/UX improvements to stone of augmentation\n" +
+				"\n" +
+				"**Other:**\n" +
+				"**-** Updated credits based on new artist contributions\n" +
+				"**-** Alchemy and well water VFX are now visible in the fog of war\n" +
+				"**-** Items are now pushed out of doors that become locked by bosses\n" +
+				"**-** Dropped support for savegames prior to v3.1.1 \n" +
+				"**-** Significant performance improvements to blue 'checked cell' visuals and red targeted cell indicators.\n" +
+				"**-** Updated various code dependancies"));
 
 		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
-				"..."));
+				"Fixed the following bugs:\n" +
+				"**Highlights:**\n" +
+				"**-** Cases where necromancer skeleton visuals could become desynced from their actual location\n" +
+				"**-** Specific cases where generating extra artifacts (e.g. via wealth farming) could affect ring generation in later depths.\n" +
+				"**-** Blood vial causing healing effects to stack when they shouldn't\n" +
+				"\n" +
+				"**Effects:**\n" +
+				"**-** Damage from Radiance's illuminate proc not counting as magical\n" +
+				"**-** Battlemage's wand of lightning effect lasting for less time than intended\n" +
+				"**-** Champion's second weapon not being counted as equipped by some effects\n" +
+				"**-** Partial damage buildup from Corruption being lost on save/load\n" +
+				"**-** Telefrag ability not interacting properly with some on-kill effects\n" +
+				"**-** Spectral walls from skeleton key using the wrong vfx on boss floors"
+				,
+				"**Items:**\n" +
+				"**-** Helpful darts triggering on-hit fx on allies since v3.3.5\n" +
+				"**-** Weapon state becoming bugged if the rapier's lunge attack failed to find a target\n" +
+				"**-** VFX from flow and swiftness glyph being visible in the fog of war\n" +
+				"**-** Specific cases where enchantment changes could be reverted on thrown weapons\n" +
+				"**-** Wild magic zapping with more wands than intended in some cases\n" +
+				"**-** Value of elixir of honeyed healing not scaling properly with quantity\n" +
+				"**-** Skeleton key not pushing enemies behind doors it locked in some cases\n" +
+				"**-** Lost backpack item being usable to manipulate item stacks in shops\n" +
+				"**-** Potions counting as being used when they splash harmlessly"
+				,
+				"**Enemies:**\n" +
+				"**-** Specific cases where electricity VFX would not appear in the DM-300 fight\n" +
+				"**-** Necromancers being able to visually push their own skeleton when teleporting it\n" +
+				"**-** Specific cases where crystal guardians could get infinite haste\n" +
+				"**-** Necromancers being a bit too eager to teleport their skeletons in some cases\n" +
+				"**-** Various cases where chasms could cause enemy deaths to trigger twice\n" +
+				"**-** Assassination and combined lethality not working on armored brutes\n" +
+				"**-** Death by shocking elemental damage not counting as death by enemy magic\n" +
+				"\n" +
+				"**Misc.:**\n" +
+				"**-** Large bosses appearing outside the bounds of desktop boss HP bar\n" +
+				"**-** Incorrect text relating to potions of healing or waterskin in hero epitaphs\n" +
+				"**-** Various rare and minor bugs in level generation\n" +
+				"**-** Various minor visual and textual errors\n" +
+				"**-** Various rare crash bugs"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight(CharSprite.POSITIVE);
@@ -171,7 +242,7 @@ public class v4_X_Changes {
 		changes.addButton( new ChangeButton( ChangeIcons.V40_STONE_AGGRESSION, "Item Nerfs",
 				"A few items were also showing as quite strong and are getting scaled back a bit.\n" +
 				"\n" +
-				"Most notably, I'm returning runestones of aggression back to their pre-v1.0 behaviour vs. bosses. In retrospect, while I do want them to be usable to redirect aggression during boss fights, letting them apply directly to bosses was a mistake. You can still use aggro stones on boss minions to take aggression of yourself during boss fights, and everthing ganging up on one minion is a more suitable scaled-back version of the scroll of aggression effect.\n" +
+				"Most notably, I'm returning runestones of aggression back to their pre-v1.0 behaviour vs. bosses. In retrospect, while I do want them to be usable to redirect aggression during boss fights, letting them apply directly to bosses was a mistake. You can still use aggro stones on boss minions to take aggression off yourself during boss fights, and everthing ganging up on one minion is a more suitable scaled-back version of the scroll of rage effect.\n" +
 				"\n" +
 				"**- Stone of Aggression** can no longer be directly applied to bosses\n" +
 				"**- Ring of Haste** speed boost per level down to +15%, from +17.5%\n" +
