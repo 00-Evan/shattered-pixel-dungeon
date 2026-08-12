@@ -170,6 +170,8 @@ public class VaultBossElemental extends Mob {
 		//always remove pincushion as we're either leaving or entering frost form
 		Buff.affect(this, PinCushionRemover.class).preferGrouping = this.form == ElementalForm.FIRE;
 
+		form = ElementalForm.FROST;
+
 		this.form = form;
 		boolean wasTurned = sprite.flipHorizontal;
 
@@ -894,7 +896,7 @@ public class VaultBossElemental extends Mob {
 					Char ch = Actor.findChar(cell);
 					if (ch != null && !(ch instanceof VaultBossElemental) && ch.buff(FrostResist.class) == null){
 						ch.damage(Random.NormalIntRange(10, 15), new Frost());
-						Buff.affect(ch, Frost.class, 4f);
+						Buff.affect(ch, Frost.class, 5f);
 						Buff.affect(ch, FrostResist.class);
 						if (ch == Dungeon.hero){
 							Statistics.questScores[3] -= 100;
@@ -1048,7 +1050,7 @@ public class VaultBossElemental extends Mob {
 					CellEmitter.get(cell).burst(MagicMissile.WhiteParticle.FACTORY, 20);
 					Char ch = Actor.findChar(cell);
 					if (ch != null && !(ch instanceof VaultBossElemental) && ch.buff(FrostResist.class) == null){
-						Buff.affect(ch, Frost.class, 4f);
+						Buff.affect(ch, Frost.class, 5f);
 						Buff.affect(ch, FrostResist.class);
 						if (ch == Dungeon.hero){
 							Statistics.questScores[3] -= 100;
