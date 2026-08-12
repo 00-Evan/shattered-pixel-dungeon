@@ -108,14 +108,13 @@ public class AndroidLauncher extends AndroidApplication {
 
 			//if we were installed by a known 3rd party appstore that auto-updates, disable update checking
 			if (UpdateImpl.supportsUpdates()
-					&& !installer.contains("org.fdroid") && !installer.contains("dev.imranr.obtanium")
-					&& !installer.contains("com.looker.droidify") && !installer.contains("com.uptodown")) {
+					&& !installer.contains("fdroid") && !installer.contains("com.looker.droidify") && !installer.contains("com.uptodown")) {
 				Updates.service = UpdateImpl.getUpdateService();
 			}
 
 			//F-Droid specifically considers auto news checking to be an 'anti-feature', so default it to false
 			if (NewsImpl.supportsNews()) {
-				if (installer.contains("org.fdroid") || installer.contains("com.looker.droidify")){
+				if (installer.contains("fdroid") || installer.contains("com.looker.droidify")){
 					SPDSettings.newsDefault = false;
 				}
 				News.service = NewsImpl.getNewsService();
