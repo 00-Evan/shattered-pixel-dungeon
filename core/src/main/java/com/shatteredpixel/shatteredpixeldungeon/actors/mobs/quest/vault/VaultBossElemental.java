@@ -228,8 +228,9 @@ public class VaultBossElemental extends Mob {
 			}
 		}
 
+		spAttackCooldown--;
+		envAttackCooldown--;
 		if (state == HUNTING){
-			spAttackCooldown--;
 			if (spAttackCooldown <= 0){
 				spend(GameMath.gate(attackDelay(), (int)Math.ceil(Dungeon.hero.cooldown()), 3*attackDelay()));
 				if (form == ElementalForm.FIRE){
@@ -243,31 +244,29 @@ public class VaultBossElemental extends Mob {
 				Dungeon.hero.interrupt();
 				lastEnemyPos = enemy.pos;
 				return true;
-			} else {
-				envAttackCooldown--;
-				if (envAttackCooldown <= 0){
-					spend(TICK);
-					if (form == ElementalForm.FIRE){
-						setupFireWall();
-					} else if (form == ElementalForm.FROST){
-						setupFrostVortex();
-					} else if (form == ElementalForm.SHOCK){
-						setupLightningChase();
-					}
-					//not an actual attack, do nothing
-					sprite.operate(enemy.pos);
-					envAttackCooldown = Random.NormalIntRange( 10, 15 );
-					//shock form gets faster abilities
-					if (form == ElementalForm.SHOCK){
-						spAttackCooldown = (int) (spAttackCooldown*0.67f);
-					}
-
-					Dungeon.hero.interrupt();
-					lastEnemyPos = enemy.pos;
-					return true;
+			} else if (envAttackCooldown <= 0){
+				spend(TICK);
+				if (form == ElementalForm.FIRE){
+					setupFireWall();
+				} else if (form == ElementalForm.FROST){
+					setupFrostVortex();
+				} else if (form == ElementalForm.SHOCK){
+					setupLightningChase();
 				}
+				//not an actual attack, do nothing
+				sprite.operate(enemy.pos);
+				envAttackCooldown = Random.NormalIntRange( 10, 15 );
+				//shock form gets faster abilities
+				if (form == ElementalForm.SHOCK){
+					spAttackCooldown = (int) (spAttackCooldown*0.67f);
+				}
+
+				Dungeon.hero.interrupt();
+				lastEnemyPos = enemy.pos;
+				return true;
 			}
 		}
+
 
 		AiState lastState = state;
 		boolean result = super.act();
