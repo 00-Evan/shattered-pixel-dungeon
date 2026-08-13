@@ -51,9 +51,21 @@ public class v4_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("ALPHA-3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**-** Crashes when rotting fist is damaged\n" +
+				"**-** Crash when loading bestiary\n" +
+				"**-** Crashes when failing to apply DOTs to DOT-immune enemies\n" +
+				"**-** Grim enchantment not proccing\n" +
+				"**-** Armored statues not dropping their armor\n" +
+				"**-** Visual errors in prison ritual marker\n" +
+				"**-** Various cases where DOT in health bars wouldn't clear correctly\n" +
+				"**-** Mind Vision working on objects in the vault\n" +
+				"**-** Various typos"));
 
 		changes = new ChangeInfo("ALPHA-2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
