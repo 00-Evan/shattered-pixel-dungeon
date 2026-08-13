@@ -145,6 +145,12 @@ public class Bleeding extends Buff implements Buff.DOTbuff {
 	}
 
 	@Override
+	public void detach() {
+		target.needsIncomingDOTUpdate = true;
+		super.detach();
+	}
+
+	@Override
 	public String desc() {
 		return Messages.get(this, "desc", Math.round(level));
 	}

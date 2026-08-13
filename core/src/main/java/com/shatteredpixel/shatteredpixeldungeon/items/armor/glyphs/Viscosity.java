@@ -173,6 +173,12 @@ public class Viscosity extends Glyph {
 		}
 
 		@Override
+		public void detach() {
+			target.needsIncomingDOTUpdate = true;
+			super.detach();
+		}
+
+		@Override
 		public String desc() {
 			return Messages.get(this, "desc", damage);
 		}

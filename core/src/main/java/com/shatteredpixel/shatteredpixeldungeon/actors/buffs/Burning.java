@@ -184,6 +184,12 @@ public class Burning extends Buff implements Hero.Doom, Buff.DOTbuff {
 		
 		return true;
 	}
+
+	@Override
+	public void detach() {
+		target.needsIncomingDOTUpdate = true;
+		super.detach();
+	}
 	
 	public void reignite( Char ch ) {
 		reignite( ch, DURATION );
@@ -205,12 +211,16 @@ public class Burning extends Buff implements Hero.Doom, Buff.DOTbuff {
 				}
 			}
 		}
-		if (left < duration) left = duration;
+		if (left < duration) {
+			left = duration;
+			ch.needsIncomingDOTUpdate = true;
+		}
 		acted = false;
 	}
 
 	public void extend( float duration ) {
 		left += duration;
+		if (target != null) target.needsIncomingDOTUpdate = true;
 	}
 	
 	@Override

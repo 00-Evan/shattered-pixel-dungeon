@@ -100,6 +100,12 @@ public class Poison extends Buff implements Hero.Doom, Buff.DOTbuff {
 	}
 
 	@Override
+	public void detach() {
+		target.needsIncomingDOTUpdate = true;
+		super.detach();
+	}
+
+	@Override
 	public boolean act() {
 		if (target.isAlive()) {
 			

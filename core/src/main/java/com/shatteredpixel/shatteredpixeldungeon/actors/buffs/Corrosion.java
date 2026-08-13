@@ -121,6 +121,12 @@ public class Corrosion extends Buff implements Hero.Doom, Buff.DOTbuff {
 		target.needsIncomingDOTUpdate = true;
 		return true;
 	}
+
+	@Override
+	public void detach() {
+		target.needsIncomingDOTUpdate = true;
+		super.detach();
+	}
 	
 	@Override
 	public void onDeath() {
