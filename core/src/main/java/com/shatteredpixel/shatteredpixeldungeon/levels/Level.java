@@ -62,6 +62,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Piranha;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogFist;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.VaultMirror;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.VaultTokenDoor;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlowParticle;
@@ -1424,46 +1426,42 @@ public abstract class Level implements Bundlable {
 			}
 
 			Dungeon.hero.mindVisionEnemies.clear();
-			if (c.buff( MindVision.class ) != null) {
-				for (Mob mob : mobs) {
-					if (mob instanceof Mimic && mob.alignment == Char.Alignment.NEUTRAL&& ((Mimic) mob).stealthy()){
-						continue;
-					}
-					for (int i : PathFinder.NEIGHBOURS9) {
-						heroMindFov[mob.pos + i] = true;
-					}
-				}
-			} else {
 
-				int mindVisRange = 0;
-				if (((Hero) c).hasTalent(Talent.HEIGHTENED_SENSES)){
-					mindVisRange = 1+((Hero) c).pointsInTalent(Talent.HEIGHTENED_SENSES);
+			int mindVisRange = 0;
+			if (c.buff(MindVision.class) != null) {
+				mindVisRange = Integer.MAX_VALUE;
+			} else {
+				if (((Hero) c).hasTalent(Talent.HEIGHTENED_SENSES)) {
+					mindVisRange = 1 + ((Hero) c).pointsInTalent(Talent.HEIGHTENED_SENSES);
 				}
-				if (c.buff(DivineSense.DivineSenseTracker.class) != null){
-					if (((Hero) c).heroClass == HeroClass.CLERIC){
-						mindVisRange = 4+4*((Hero) c).pointsInTalent(Talent.DIVINE_SENSE);
+				if (c.buff(DivineSense.DivineSenseTracker.class) != null) {
+					if (((Hero) c).heroClass == HeroClass.CLERIC) {
+						mindVisRange = 4 + 4 * ((Hero) c).pointsInTalent(Talent.DIVINE_SENSE);
 					} else {
-						mindVisRange = 1+2*((Hero) c).pointsInTalent(Talent.DIVINE_SENSE);
+						mindVisRange = 1 + 2 * ((Hero) c).pointsInTalent(Talent.DIVINE_SENSE);
 					}
 				}
 				mindVisRange = Math.max(mindVisRange, EyeOfNewt.mindVisionRange());
+			}
+
+			if (mindVisRange >= 1) {
 
 				//power of many's life link spell allows allies to get divine sense
 				Char ally = PowerOfMany.getPoweredAlly();
-				if (ally != null && ally.buff(DivineSense.DivineSenseTracker.class) == null){
+				if (ally != null && ally.buff(DivineSense.DivineSenseTracker.class) == null) {
 					ally = null;
 				}
 
-				if (mindVisRange >= 1) {
-					for (Mob mob : mobs) {
-						if (mob instanceof Mimic && mob.alignment == Char.Alignment.NEUTRAL && ((Mimic) mob).stealthy()){
-							continue;
-						}
-						int p = mob.pos;
-						if (!fieldOfView[p] && (distance(c.pos, p) <= mindVisRange || (ally != null && distance(ally.pos, p) <= mindVisRange))) {
-							for (int i : PathFinder.NEIGHBOURS9) {
-								heroMindFov[mob.pos + i] = true;
-							}
+				for (Mob mob : mobs) {
+					//TODO maybe add a mob property for this
+					if ((mob instanceof Mimic && mob.alignment == Char.Alignment.NEUTRAL && ((Mimic) mob).stealthy())
+						|| mob instanceof VaultTokenDoor || mob instanceof VaultMirror){
+						continue;
+					}
+					int p = mob.pos;
+					if (!fieldOfView[p] && (distance(c.pos, p) <= mindVisRange || (ally != null && distance(ally.pos, p) <= mindVisRange))) {
+						for (int i : PathFinder.NEIGHBOURS9) {
+							heroMindFov[mob.pos + i] = true;
 						}
 					}
 				}
