@@ -312,6 +312,7 @@ public class Imp extends NPC {
 				score = 0;
 				
 				given = false;
+				mirrorUsed = false;
 
 				rewardOptions.clear();
 				Item artif = Generator.randomArtifact();

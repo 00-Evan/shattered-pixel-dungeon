@@ -60,6 +60,7 @@ public class v4_X_Changes {
 				"**-** Crashes when rotting fist is damaged\n" +
 				"**-** Crash when loading bestiary\n" +
 				"**-** Crashes when failing to apply DOTs to DOT-immune enemies\n" +
+				"**-** Dwarf tokens in new quest being incorrectly discarded in specific cases\n" +
 				"**-** Grim enchantment not proccing\n" +
 				"**-** Armored statues not dropping their armor\n" +
 				"**-** Visual errors in prison ritual marker\n" +
