@@ -72,12 +72,12 @@ public class Corrosion extends Buff implements Hero.Doom, Buff.DOTbuff {
 		this.left = Math.max(duration, left);
 		if (this.damage < damage) this.damage = damage;
 		this.source = source;
-		target.needsIncomingDOTUpdate = true;
+		if (target != null) target.needsIncomingDOTUpdate = true;
 	}
 
 	public void extend( float duration ) {
 		left += duration;
-		target.needsIncomingDOTUpdate = true;
+		if (target != null) target.needsIncomingDOTUpdate = true;
 	}
 	
 	@Override

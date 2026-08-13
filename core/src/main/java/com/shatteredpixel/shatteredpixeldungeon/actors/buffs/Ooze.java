@@ -79,12 +79,12 @@ public class Ooze extends Buff implements Buff.DOTbuff {
 	public void set(float left){
 		this.left = left;
 		acted = false;
-		target.needsIncomingDOTUpdate = true;
+		if (target != null) target.needsIncomingDOTUpdate = true;
 	}
 
 	public void extend( float duration ) {
 		left += duration;
-		target.needsIncomingDOTUpdate = true;
+		if (target != null) target.needsIncomingDOTUpdate = true;
 	}
 
 	@Override
