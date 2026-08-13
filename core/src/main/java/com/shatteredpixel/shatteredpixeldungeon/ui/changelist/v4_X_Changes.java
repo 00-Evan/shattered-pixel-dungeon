@@ -51,6 +51,20 @@ public class v4_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("ALPHA-2", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**-** Major game stability issues when Tengu's 1st phase is defeated\n" +
+				"**-** Locked chests not being openable\n" +
+				"**-** Various minor typos"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
@@ -74,7 +88,7 @@ public class v4_X_Changes {
 				"**-** Three new static hazards that are integrated into 10 of the new rooms!\n" +
 				"**-** New variants of enemies ranging from the prisons to the city!\n" +
 				"**-** An entire second progression experience, with easy low tier loot and well-defended high tier loot!\n" +
-				"**-** A new boss that's specially designed to test the skills of vault pluderers!\n" +
+				"**-** A new boss that's specially designed to test the skills of vault plunderers!\n" +
 				"\n" +
 				"Of course, adventurers need a suitable reward ;). If you're successful in the vault, the Imp will let you take **a single item out with you!** Many items in the vault are at a similar power level to his classic reward of a highly upgraded ring, but you'll get a much bigger variety of choice. He'll also continue to set up shop later as usual."));
 
