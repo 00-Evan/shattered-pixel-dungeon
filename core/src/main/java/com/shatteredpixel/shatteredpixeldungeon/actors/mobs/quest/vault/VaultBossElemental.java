@@ -469,11 +469,18 @@ public class VaultBossElemental extends Mob {
 	@Override
 	public String description() {
 		String desc = super.description();
-		switch (form){
-			default:
-			case FIRE: return desc + "\n\n" + Messages.get(this, "desc_fire");
-			case FROST: return desc + "\n\n" + Messages.get(this, "desc_frost");
-			case SHOCK: return desc + "\n\n" + Messages.get(this, "desc_shock");
+		if (form != null){
+			switch (form) {
+				default:
+				case FIRE:
+					return desc + "\n\n" + Messages.get(this, "desc_fire");
+				case FROST:
+					return desc + "\n\n" + Messages.get(this, "desc_frost");
+				case SHOCK:
+					return desc + "\n\n" + Messages.get(this, "desc_shock");
+			}
+		} else {
+			return desc;
 		}
 	}
 
