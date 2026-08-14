@@ -25,9 +25,9 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
-import com.shatteredpixel.shatteredpixeldungeon.ui.TitleBackground;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
+import com.shatteredpixel.shatteredpixeldungeon.ui.TitleBackground;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Camera;
@@ -125,8 +125,8 @@ public class AboutScene extends PixelScene {
 				"Additional Pixel Art:",
 				Icons.ALASTAIR.get(),
 				"Alastair Braun",
-				"alastairbraun.bsky.social",
-				"https://bsky.app/profile/alastairbraun.bsky.social");
+				null,
+				null);
 		alastair.setSize(colWidth/2f, 0);
 		alastair.setRect(pumpkin.left(), celesti.bottom()+6, colWidth/2f, 0);
 		content.add(alastair);
