@@ -24,14 +24,20 @@ package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.utils.DeviceCompat;
 
 import java.util.ArrayList;
 
 public class v4_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
-		//add_Coming_Soon(changeInfos);
+
+		if (DeviceCompat.isiOS() && DeviceCompat.getPlatformVersion() <= 15) {
+			//only iOS 12 for the moment
+			add_Coming_Soon(changeInfos);
+		}
 		add_v4_0_Changes(changeInfos);
 	}
 
@@ -41,56 +47,38 @@ public class v4_X_Changes {
 		changes.hardlight(0xCCCCCC);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton( ChangeIcons.V074_SHPX, "Overview and ETA",
-				"..."));
+		/*changes.addButton( new ChangeButton( ChangeIcons.V074_SHPX, "Overview and ETA",
+				"..."));*/
+
+		if (DeviceCompat.isiOS() && DeviceCompat.getPlatformVersion() <= 15) {
+			changes.addButton(new ChangeButton(Icons.WARNING.get(), "iOS 12 end of support",
+					"Unfortunately, due to an impending requirement by Apple, v4.0.0 and any immediate patches will be the last versions of Shattered compatible with iOS 12.\n" +
+					"\n" +
+					"iOS 13 and 14 support will also have to be dropped around this time next year due to the same requirements."));
+		}
 	}
 
 	public static void add_v4_0_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v4.0", true, "");
+		ChangeInfo changes = new ChangeInfo("v4.0-BETA", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("ALPHA-3", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**-** Crashes when rotting fist is damaged\n" +
-				"**-** Crash when loading bestiary\n" +
-				"**-** Crashes when failing to apply DOTs to DOT-immune enemies\n" +
-				"**-** Dwarf tokens in new quest being incorrectly discarded in specific cases\n" +
-				"**-** Grim enchantment not proccing\n" +
-				"**-** Armored statues not dropping their armor\n" +
-				"**-** Visual errors in prison ritual marker\n" +
-				"**-** Various cases where DOT in health bars wouldn't clear correctly\n" +
-				"**-** Mind Vision working on objects in the vault\n" +
-				"**-** Various typos"));
-
-		changes = new ChangeInfo("ALPHA-2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**-** Major game stability issues when Tengu's 1st phase is defeated\n" +
-				"**-** Locked chests not being openable\n" +
-				"**-** Various minor typos"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton( ChangeIcons.V074_SHPX, "Alpha To-Do",
-				"Hey Alpha testers!\n" +
+		changes.addButton( new ChangeButton( ChangeIcons.V074_SHPX, "Beta To-Do",
+				"Greetings Beta Testers!\n" +
 				"\n" +
 				"v4.0 is releasing in a pretty much content-complete state, but there are still a few things to finish up before launch:\n" +
 				"\n" +
 				"**-** Some new visuals in the quest area are still a WIP, most notably the visuals for the boss fight.\n" +
 				"**-** There are finished new visuals for the Newborn Elemental quest and both caves quests that I have yet to implement.\n" +
 				"**-** I would like to make some tweaks to new visuals based on feedback, so please let me know what tou think! In particular I'm aware there's been a lot of feedback on scrolls and runestones.\n" +
-				"**-** There will of course be bugs to fix and balance tweaks to make."));
+				"**-** There will of course be bugs to fix and balance tweaks to make, especially with so much more content.\n" +
+				"\n" +
+				"I expect this beta to last 2-3 weeks."));
 
 		changes.addButton( new ChangeButton( ChangeIcons.V33_IMP, "New City Quest",
 				"**The Ambitious Imp's quest has been totally redone, into easily the largest quest yet!**\n" +
