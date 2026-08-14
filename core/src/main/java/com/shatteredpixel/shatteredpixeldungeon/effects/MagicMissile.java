@@ -637,10 +637,15 @@ public class MagicMissile extends Emitter {
 			public void emit( Emitter emitter, int index, float x, float y ) {
 				((ForceParticle)emitter.recycle( ForceParticle.class )).reset( index, x, y );
 			}
+
+			@Override
+			public boolean lightMode() {
+				return true;
+			}
 		};
 
 		public void reset( int index, float x, float y ) {
-			super.reset( x, y, 0xFFFFFF, 8, 0.5f );
+			super.reset( x, y, ColorMath.interpolate(0xFFCC99, 0xBB4411, Random.Float()), 8, 0.5f );
 
 			speed.polar( PointF.PI2 / 8 * index, 12 );
 			this.x -= speed.x * lifespan;
