@@ -491,6 +491,7 @@ public class VaultBossElemental extends Mob {
 	private static final String SP_TARGET_CELL = "sp_target_cell";
 
 	private static final String LAST_ENEMY_POS = "last_enemy_pos";
+	private static final String LIGHTNING_OFS = "lightning_ofs";
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
@@ -502,6 +503,7 @@ public class VaultBossElemental extends Mob {
 		bundle.put(SP_TARGET_CELL, spTargetCell);
 
 		bundle.put(LAST_ENEMY_POS, lastEnemyPos);
+		bundle.put(LIGHTNING_OFS, lightningOfs);
 	}
 
 	@Override
@@ -514,6 +516,7 @@ public class VaultBossElemental extends Mob {
 		spTargetCell = bundle.getInt(SP_TARGET_CELL);
 
 		lastEnemyPos = bundle.getInt(LAST_ENEMY_POS);
+		lightningOfs = bundle.getInt(LIGHTNING_OFS);
 
 		BossHealthBar.assignBoss(this);
 	}
@@ -1188,17 +1191,19 @@ public class VaultBossElemental extends Mob {
 	 *** Shock Form Abilities ***
 	 ***************************/
 
+	private int lightningOfs;
+
 	public void setupLightningBolt(Char enemy){
 
 		spTargetCell = enemy.pos;
-		spAttackCooldown = Random.Int(2); //we re-use this variable to store x or + shape
+		lightningOfs = Random.Int(2);
 
 		Ballistica bolt = new Ballistica(pos, spTargetCell, Ballistica.STOP_SOLID);
 		for (int cell : bolt.subPath(0, bolt.dist)){
 			GameScene.targetedCell(cell, cooldown());
 		}
 
-		for (int i = spAttackCooldown % 2; i < PathFinder.CIRCLE8.length; i+=2){
+		for (int i = lightningOfs % 2; i < PathFinder.CIRCLE8.length; i+=2){
 			GameScene.targetedCell(spTargetCell + PathFinder.CIRCLE8[i], cooldown());
 		}
 
@@ -1213,8 +1218,6 @@ public class VaultBossElemental extends Mob {
 			CellEmitter.get(c).burst(SparkParticle.FACTORY, 5);
 			affectedCells.add(c);
 		}
-
-		int lightningOfs = spAttackCooldown;
 
 		for (int i = lightningOfs % 2; i < PathFinder.CIRCLE8.length; i+=2){
 			CellEmitter.get(cell + PathFinder.CIRCLE8[i]).burst(SparkParticle.FACTORY, 5);
