@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items.quest;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.VaultTokenDoor;
@@ -246,12 +245,7 @@ public class EscapeCrystal extends Item {
 	private void leaveVault( Item preserve, int score ){
 		Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 
-		//remove all buffs/debuffs which don't persist over revives
-		for (Buff b : Dungeon.hero.buffs()) {
-			if (!b.revivePersists) {
-				b.detach();
-			}
-		}
+		Dungeon.hero.live(); //clears all non-persist buffs, resets hunger/regen
 		Dungeon.hero.HP = Dungeon.hero.HT; //full heal
 
 		//logic for removing Warrior's Seal or Mage's staff

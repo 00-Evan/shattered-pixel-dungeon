@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
@@ -160,12 +159,7 @@ public class CityLevel extends RegularLevel {
 						protected void onSelect(int index) {
 							if (index == 0){
 
-								//remove all buffs/debuffs which don't persist over revives
-								for (Buff b : hero.buffs()){
-									if (!b.revivePersists){
-										b.detach();
-									}
-								}
+								Dungeon.hero.live(); //clears all non-persist buffs, resets hunger/regen
 								hero.HP = hero.HT; //full heal
 
 								EscapeCrystal crystal = hero.belongings.getItem(EscapeCrystal.class);
