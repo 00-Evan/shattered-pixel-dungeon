@@ -104,7 +104,7 @@ public class EscapeCrystal extends Item {
 						}
 					}
 					if (doorOpened){
-						score += 1250;
+						score += 1250; //1000 for tokens, 250 for door
 					} else {
 						Item tokens = hero.belongings.getItem(DwarfToken.class);
 						if (tokens != null){
@@ -129,6 +129,9 @@ public class EscapeCrystal extends Item {
 							score += 750;
 						}
 					}
+
+					//finally, score is rounded down to the nearest 50 points
+					score = (score/50)*50;
 
 				}
 
