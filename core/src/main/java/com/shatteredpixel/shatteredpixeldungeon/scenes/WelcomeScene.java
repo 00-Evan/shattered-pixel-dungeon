@@ -54,7 +54,7 @@ import java.util.Collections;
 
 public class WelcomeScene extends PixelScene {
 
-	private static final int LATEST_UPDATE = 838;
+	private static final int LATEST_UPDATE = 902;
 
 	//used so that the game does not keep showing the window forever if cleaning fails
 	private static boolean triedCleaningTemp = false;
@@ -212,7 +212,7 @@ public class WelcomeScene extends PixelScene {
 				message += "\n" + Messages.get(this, "patch_translations");
 
 			}
-			message = "Greeting Alpha Testers, after far too long v4.0.0 is finally ready for playtesting!" +
+			message = "Greetings Beta Testers, after far too long v4.0.0 is finally ready for playtesting!" +
 					"\n\nThis massive update includes Shattered's biggest new quest ever, plus a bunch of new art, new enchantments, and several smaller changes and adjustments." +
 					"\n\nThe update is content-complete, but I expect there will be some refinements needed before release. Let me know what you think!";
 		} else {

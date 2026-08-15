@@ -34,7 +34,7 @@ public class v4_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
 
-		if (DeviceCompat.isiOS() && DeviceCompat.getPlatformVersion() <= 15) {
+		if (DeviceCompat.isiOS() && DeviceCompat.getPlatformVersion() <= 12) {
 			//only iOS 12 for the moment
 			add_Coming_Soon(changeInfos);
 		}
@@ -50,7 +50,7 @@ public class v4_X_Changes {
 		/*changes.addButton( new ChangeButton( ChangeIcons.V074_SHPX, "Overview and ETA",
 				"..."));*/
 
-		if (DeviceCompat.isiOS() && DeviceCompat.getPlatformVersion() <= 15) {
+		if (DeviceCompat.isiOS() && DeviceCompat.getPlatformVersion() <= 12) {
 			changes.addButton(new ChangeButton(Icons.WARNING.get(), "iOS 12 end of support",
 					"Unfortunately, due to an impending requirement by Apple, v4.0.0 and any immediate patches will be the last versions of Shattered compatible with iOS 12.\n" +
 					"\n" +
