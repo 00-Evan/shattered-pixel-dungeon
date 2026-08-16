@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
@@ -135,6 +136,26 @@ public class VaultMirror extends NPC {
 			});
 		}
 		return false;
+	}
+
+	@Override
+	public int defenseSkill( Char enemy ) {
+		return INFINITE_EVASION;
+	}
+
+	@Override
+	public void damage( int dmg, Object src ) {
+		//do nothing
+	}
+
+	@Override
+	public boolean add( Buff buff ) {
+		return false;
+	}
+
+	@Override
+	public boolean reset() {
+		return true;
 	}
 
 	private static final String REWARD = "reward";

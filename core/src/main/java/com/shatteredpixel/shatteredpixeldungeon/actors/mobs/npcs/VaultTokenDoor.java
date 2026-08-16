@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -101,5 +102,25 @@ public class VaultTokenDoor extends NPC {
 		}
 
 		return false;
+	}
+
+	@Override
+	public int defenseSkill( Char enemy ) {
+		return INFINITE_EVASION;
+	}
+
+	@Override
+	public void damage( int dmg, Object src ) {
+		//do nothing
+	}
+
+	@Override
+	public boolean add( Buff buff ) {
+		return false;
+	}
+
+	@Override
+	public boolean reset() {
+		return true;
 	}
 }
