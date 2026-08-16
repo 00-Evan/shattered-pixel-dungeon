@@ -315,7 +315,7 @@ public abstract class Mob extends Char {
 	protected void processSwarmIntel( boolean enemyInFOV ){
 		if (alignment == Alignment.ENEMY && state == HUNTING
 				&& Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)
-				&& enemyInFOV) {
+				&& enemyInFOV && enemy != null && enemy.alignment == Alignment.ALLY) {
 
 			if (timeSeenAt >= now()){
 				timeSeenAt = now()-1; //starts at 2
@@ -327,7 +327,7 @@ public abstract class Mob extends Char {
 						&& mob.paralysed <= 0
 						&& Dungeon.level.distance(pos, mob.pos) <= range
 						&& mob.state != mob.HUNTING) {
-					mob.beckon(enemy.pos);
+					mob.beckon(	enemy.pos);
 				}
 			}
 			Buff.affect( Dungeon.hero, SwarmIntelTracker.class );
