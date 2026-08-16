@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
@@ -322,7 +323,7 @@ public class Imp extends NPC {
 				} else {
 					artif = Generator.random(Generator.Category.RING);
 					//we delay the ID on rings until the boss is defeated
-					artif.upgrade(Random.IntRange(2, 4));
+					artif.level(Random.IntRange(2, 4));
 				}
 				rewardOptions.add(artif);
 
@@ -331,7 +332,7 @@ public class Imp extends NPC {
 					ring = Generator.random(Generator.Category.RING);
 				} while (ring.getClass() == artif.getClass()); //rare cases of the same kind of ring twice
 				//we delay the ID on rings until the boss is defeated
-				ring.upgrade(Random.IntRange(2, 4));
+				ring.level(Random.IntRange(2, 4));
 				rewardOptions.add(ring);
 
 				if (Random.Int(2) == 0) {
@@ -342,7 +343,10 @@ public class Imp extends NPC {
 					rewardOptions.add(((Weapon)Generator.random(Generator.Category.WEP_T4)).enchant().identify(false).level(Random.IntRange(3, 5)));
 				}
 				rewardOptions.add(new PlateArmor().inscribe().identify(false).level(Random.IntRange(2, 4)));
-				rewardOptions.add(Generator.random(Generator.Category.WAND).identify(false).level(Random.IntRange(2, 4)));
+				Wand w = (Wand) Generator.random(Generator.Category.WAND);
+				w.identify(false).level(Random.IntRange(2, 4));
+				w.curCharges = w.maxCharges;
+				rewardOptions.add(w);
 
 				for (Item i : rewardOptions){
 					i.cursed = false;
