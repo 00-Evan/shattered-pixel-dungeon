@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.ImpStatue;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -280,16 +281,25 @@ public class VaultFinalRoom extends SpecialRoom {
 						for (Item i : Dungeon.hero.belongings){
 							//+2 or higher items means they're T2 or T3 vault loot
 							if (i.level() >= 2){
-								if (i instanceof MeleeWeapon) prepCriteria[0] = true;
-								if (i instanceof MissileWeapon) prepCriteria[1] = true;
-								if (i instanceof Armor) prepCriteria[2] = true;
-								if (i instanceof Wand) prepCriteria[3] = true;
+								if (i instanceof MagesStaff){
+									if (((MagesStaff) i).wandClass() != null){
+										prepCriteria[2] = true;
+									}
+								}
+								else if (i instanceof MeleeWeapon) prepCriteria[0] = true;
+								else if (i instanceof MissileWeapon) prepCriteria[1] = true;
+								else if (i instanceof Armor) prepCriteria[2] = true;
+								else if (i instanceof Wand) prepCriteria[3] = true;
 							}
 						}
 
 						boolean prepared = true;
 						for (Boolean b : prepCriteria){
 							prepared = prepared && b;
+						}
+
+						if (!Imp.Quest.mirrorUsed){
+							prepared = false;
 						}
 
 						//if they don't, they are likely unprepared, and get a warning
