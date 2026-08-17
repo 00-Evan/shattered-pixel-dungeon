@@ -263,7 +263,7 @@ public class Armor extends EquipableItem {
 				if (seal != null && (!cursed || (seal.getGlyph() != null && seal.getGlyph().curse()))){
 
 					GameScene.show(new WndOptions(new ItemSprite(ItemSpriteSheet.SEAL),
-							Messages.titleCase(seal.title()),
+							Messages.titleCase(seal.trueName()),
 							Messages.get(Armor.class, "seal_transfer"),
 							Messages.get(Armor.class, "seal_transfer_yes"),
 							Messages.get(Armor.class, "seal_transfer_no")){

@@ -131,7 +131,8 @@ public class BrokenSeal extends Item {
 			} else if (armor.cursed && (getGlyph() == null || !getGlyph().curse())){
 				GLog.w(Messages.get(BrokenSeal.class, "cursed_armor"));
 
-			} else if (armor.glyph != null && getGlyph() != null
+			} else if (armor.glyph != null && getGlyph() != null &&
+					(canTransferGlyph() || outgoing instanceof BrokenSeal) //if glyph is on the seal in isolation, always allow xfer
 					&& armor.glyph.getClass() != getGlyph().getClass()) {
 
 				GameScene.show(new WndOptions(new ItemSprite(ItemSpriteSheet.SEAL),
