@@ -44,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.Random;
 
 public class VaultMirror extends NPC {
 
@@ -54,32 +55,35 @@ public class VaultMirror extends NPC {
 	public Item reward = null;
 
 	public void createReward(HeroClass cls){
-		switch (cls) {
-			case WARRIOR:
-				reward = new BrokenSeal().upgrade().identify(false);
-				((BrokenSeal)reward).setGlyph(Armor.Glyph.random());
-				break;
-			case MAGE:
-				reward = new MagesStaff().upgrade(3).identify(false);
-				((MagesStaff)reward).enchant();
-				break;
-			case ROGUE:
-				reward = new CloakOfShadows().upgrade(8).identify(false);
-				((CloakOfShadows) reward).directCharge(8);
-				break;
-			case HUNTRESS:
-				reward = new SpiritBow().identify(false);
-				((SpiritBow)reward).enchant();
-				break;
-			case DUELIST:
-				reward = new MirrorSword().upgrade(3).identify(false);
-				((MeleeWeapon)reward).enchant();
-				break;
-			case CLERIC:
-				reward = new HolyTome().upgrade(8).identify(false);
-				((HolyTome) reward).directCharge(8);
-				break;
-		}
+		//we create a new generator here as some heroes call RNG here and some don't
+		Random.pushGenerator(Random.Long());
+			switch (cls) {
+				case WARRIOR:
+					reward = new BrokenSeal().upgrade().identify(false);
+					((BrokenSeal)reward).setGlyph(Armor.Glyph.random());
+					break;
+				case MAGE:
+					reward = new MagesStaff().upgrade(3).identify(false);
+					((MagesStaff)reward).enchant();
+					break;
+				case ROGUE:
+					reward = new CloakOfShadows().upgrade(8).identify(false);
+					((CloakOfShadows) reward).directCharge(8);
+					break;
+				case HUNTRESS:
+					reward = new SpiritBow().identify(false);
+					((SpiritBow)reward).enchant();
+					break;
+				case DUELIST:
+					reward = new MirrorSword().upgrade(3).identify(false);
+					((MeleeWeapon)reward).enchant();
+					break;
+				case CLERIC:
+					reward = new HolyTome().upgrade(8).identify(false);
+					((HolyTome) reward).directCharge(8);
+					break;
+			}
+		Random.popGenerator();
 	}
 
 	@Override
