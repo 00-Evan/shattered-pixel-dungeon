@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.VaultMirrorSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.watabou.utils.Bundle;
@@ -121,7 +122,9 @@ public class VaultMirror extends NPC {
 								super.onSelect(index);
 								if (index == 0) {
 									GameScene.show(new WndTitledMessage(sprite(), Messages.titleCase(name()), Messages.get(VaultMirror.class, "scene_take")));
-									if (!reward.doPickUp((Hero) c)) {
+									if (reward.doPickUp((Hero) c)) {
+										GLog.i( Messages.capitalize(Messages.get(Dungeon.hero, "you_now_have", reward.name())) );
+									} else {
 										Dungeon.level.drop(reward, c.pos).sprite.drop();
 									}
 									Imp.Quest.mirrorUsed = true;
