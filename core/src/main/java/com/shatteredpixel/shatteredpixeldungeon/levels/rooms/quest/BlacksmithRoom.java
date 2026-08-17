@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.watabou.noosa.Tilemap;
@@ -243,6 +242,8 @@ public class BlacksmithRoom extends StandardRoom {
 					} else if (Dungeon.level.map[cell] == Terrain.PEDESTAL) {
 						if (i >= data.length - tileW)   data[i] = 20;
 						else                            data[i] = 21;
+					} else {
+						data[i] = -1;
 					}
 				}
 			}
