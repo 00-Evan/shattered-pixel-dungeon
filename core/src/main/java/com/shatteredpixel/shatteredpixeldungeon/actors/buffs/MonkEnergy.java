@@ -111,6 +111,12 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 	}
 
 	@Override
+	public void detach() {
+		super.detach();
+		ActionIndicator.clearAction();
+	}
+
+	@Override
 	public String desc() {
 		String desc = Messages.get(this, "desc", (int)energy, energyCap());
 		if (cooldown > 0){
