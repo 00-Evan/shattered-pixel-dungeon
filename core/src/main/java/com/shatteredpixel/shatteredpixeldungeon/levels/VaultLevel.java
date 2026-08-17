@@ -574,8 +574,8 @@ public class VaultLevel extends CityLevel {
 	@Override
 	public void occupyCell(Char ch) {
 		super.occupyCell(ch);
-		//extra check to ensure vault is left if quest is completed or old
-		if (ch == Dungeon.hero && (Imp.Quest.isCompleted() || Imp.Quest.isOld())){
+		//extra check to ensure vault is left if quest is completed
+		if (ch == Dungeon.hero && (Imp.Quest.isCompleted() && !Imp.Quest.isOld())){
 			beforeTransition();
 			InterlevelScene.curTransition = new LevelTransition(Dungeon.level,
 					Dungeon.hero.pos,

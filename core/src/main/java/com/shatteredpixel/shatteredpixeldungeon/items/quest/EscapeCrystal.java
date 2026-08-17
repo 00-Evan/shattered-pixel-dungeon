@@ -84,6 +84,12 @@ public class EscapeCrystal extends Item {
 
 			if (Dungeon.level instanceof VaultLevel){
 
+				//pre-v4.0.0 saves still in the vault tester area
+				if (Imp.Quest.isOld()){
+					leaveVault(null, 0);
+					return;
+				}
+
 				int score = 0;
 
 				//firstly, score is always a full 4k if the hero had the statue
@@ -270,7 +276,7 @@ public class EscapeCrystal extends Item {
 		restoreHeroBelongings(Dungeon.hero, preserve);
 		Dungeon.hero.updateHT(false);
 		detachAll(Dungeon.hero.belongings.backpack);
-		Imp.Quest.complete(score);
+		if (!Imp.Quest.isOld()) Imp.Quest.complete(score);
 
 		Level.beforeTransition();
 		InterlevelScene.curTransition = new LevelTransition(Dungeon.level,
