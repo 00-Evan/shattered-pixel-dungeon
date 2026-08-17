@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.sewerboss.SewerBoss
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.custom.Carpet;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.Tilemap;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -150,6 +151,20 @@ public class RatKingRoom extends SecretRoom {
 			}
 			v.map( data, tileW );
 			return v;
+		}
+
+		@Override
+		public Image image(int tileX, int tileY) {
+			int cell = this.tileX+tileX + (this.tileY + tileY)*Dungeon.level.width();
+			if (Dungeon.level.map[cell] == Terrain.CUSTOM_DECO){
+				//custom visual for rat king statue examine
+				//TODO should make a method for this if we have to do it with any frequency
+				Image img = new Image(texture);
+				img.frame(64, 0, 16, 16);
+				return img;
+			} else {
+				return super.image(tileX, tileY);
+			}
 		}
 
 		@Override
