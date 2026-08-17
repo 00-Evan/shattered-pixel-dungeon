@@ -219,6 +219,7 @@ public abstract class Level implements Bundlable {
 
 	public void create() {
 
+		TargetedCell.cells.clear();
 		Random.pushGenerator( Dungeon.seedCurDepth() );
 
 		//TODO maybe just make this part of RegularLevel?
