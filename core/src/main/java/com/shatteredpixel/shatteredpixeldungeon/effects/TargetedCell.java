@@ -39,11 +39,10 @@ public class TargetedCell extends Image implements Bundlable {
 
 	public static SparseArray<TargetedCell> cells = new SparseArray<>();
 
-	public void reset( int pos, float delay ){
-		if (width == 0) {
-			copy(Icons.get(Icons.TARGET));
-			origin.set( width/2f );
-		}
+	public void reset( int pos, float time ){
+		copy(Icons.get(Icons.TARGET));
+		origin.set( width/2f );
+		camera = null;
 
 		this.pos = pos;
 		point( DungeonTilemap.tileToWorld( pos ) );
@@ -51,7 +50,7 @@ public class TargetedCell extends Image implements Bundlable {
 		hardlight(0xFF0000);
 
 		alpha = 1f;
-		time = Actor.now()+delay;
+		this.time = time;
 
 		alpha(1f);
 		scale.set(1f);

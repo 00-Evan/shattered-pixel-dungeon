@@ -1238,12 +1238,12 @@ public class GameScene extends PixelScene {
 			synchronized (TargetedCell.cells) {
 				if (TargetedCell.cells.containsKey(pos)) {
 					cell = TargetedCell.cells.get(pos);
-					cell.reset(pos, delay);
+					cell.reset(pos, Actor.now()+delay);
 					return cell;
 				}
 			}
 			cell = (TargetedCell) scene.targetedCells.recycle(TargetedCell.class);
-			cell.reset(pos, delay);
+			cell.reset(pos, Actor.now()+delay);
 			return cell;
 		} else {
 			return null;
