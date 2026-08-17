@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shaman;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ShamanSprite;
 import com.watabou.utils.Bundle;
@@ -49,6 +50,16 @@ public class VaultShaman extends Shaman {
 	@Override
 	public int attackSkill( Char target ) {
 		return 25;
+	}
+
+	@Override
+	public float lootChance() {
+		return 1;
+	}
+
+	@Override
+	public Item createLoot() {
+		return new DwarfToken();
 	}
 
 	int type = Random.Int(5);
