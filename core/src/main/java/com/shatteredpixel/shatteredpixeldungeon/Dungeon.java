@@ -454,7 +454,7 @@ public class Dungeon {
 
 	public static boolean interfloorTeleportAllowed(){
 		if (Dungeon.level.locked
-				|| Dungeon.level instanceof MiningLevel
+				|| Dungeon.level instanceof MiningLevel || Dungeon.level instanceof VaultLevel
 				|| (Dungeon.hero != null && Dungeon.hero.belongings.getItem(Amulet.class) != null)){
 			return false;
 		}
