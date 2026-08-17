@@ -64,6 +64,36 @@ public class v4_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-2", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs caused by BETA-1:\n" +
+				"**Vault Quest related:**\n" +
+				"**-** Crashes in new quest relating to Wand Preservation talent\n" +
+				"**-** Monk being able to use her abilities with 0 energy in the vault\n" +
+				"**-** Rings in final quest treasure room sometimes being higher level than intended\n" +
+				"**-** Some inter-floor teleports working in vault quest area\n" +
+				"**-** Paralysis not fully affecting vault quest boss\n" +
+				"**-** Vault area layout with the same seed varying slightly based on selected hero\n" +
+				"**-** Loot appearing under an enemy in one vault treasure room\n" +
+				"**-** Glitches involving old saves that were in the vault tester area\n" +
+				"**-** Vault Skeletons and Shamans not always dropping tokens\n" +
+				"**-** Objects in the vault being killable when they shouldn't"
+				,
+				"**Others:**\n" +
+				"**-** Various errors and visual corruptions when saving/loading with targeted cells active\n" +
+				"**-** Various minor errors with broken seal glyph transferring\n" +
+				"**-** Alchemy bubbles being visible from the fog of war\n" +
+				"**-** New Mass Grave room allowing multiple entrances\n" +
+				"**-** Swarm Intel triggering on enemy vs. enemy fights\n" +
+				"**-** Various minor textual and visual errors"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
