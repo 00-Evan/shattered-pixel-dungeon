@@ -75,7 +75,7 @@ public class v4_X_Changes {
 				"\n" +
 				"**-** Some new visuals in the quest area are still a WIP, most notably the visuals for the boss fight.\n" +
 				"**-** There are finished new visuals for the Newborn Elemental quest and both caves quests that I have yet to implement.\n" +
-				"**-** I would like to make some tweaks to new visuals based on feedback, so please let me know what tou think! In particular I'm aware there's been a lot of feedback on scrolls and runestones.\n" +
+				"**-** I would like to make some tweaks to new visuals based on feedback, so please let me know what you think! In particular I'm aware there's been a lot of feedback on scrolls and runestones.\n" +
 				"**-** There will of course be bugs to fix and balance tweaks to make, especially with so much more content.\n" +
 				"\n" +
 				"I expect this beta to last 2-3 weeks."));
@@ -125,7 +125,7 @@ public class v4_X_Changes {
 		changes.addButton( new ChangeButton( ChangeIcons.V40_GREATSWORD_CRYSTAL, "New Enchantments!",
 				"**Four new enchantments and two new curses** have been added for weapons! Long-time players will recognize several of these as reworked enchantments that were previously removed years ago.\n" +
 				"\n" +
-				"**- Venemous** is a returning common enchant that can apply stacking poison on a delay.\n" +
+				"**- Venomous** is a returning common enchant that can apply stacking poison on a delay.\n" +
 				"**- Vorpal** is a returning uncommon enchant that can convert damage into non-stacking bleed.\n" +
 				"**- Eldritch** is a returning uncommon enchant that can apply fear to all nearby enemies except your primary target.\n" +
 				"**- Crystal** is a new rare enchant that boosts damage, but requires you to work around limited durability.\n" +
@@ -261,7 +261,7 @@ public class v4_X_Changes {
 				"\n" +
 				"**- Stone of Aggression** can no longer be directly applied to bosses\n" +
 				"**- Ring of Haste** speed boost per level down to +15%, from +17.5%\n" +
-				"**- Spyglass** downside made more signiciant, bonus item opacity down to 10% from 15%"));
+				"**- Spyglass** downside made more significant, bonus item opacity down to 10% from 15%"));
 
 		changes.addButton( new ChangeButton( ChangeIcons.V40_BARKSKIN, "Talent/Ability Nerfs",
 				"A few targeted nerfs/adjustments to hero abilities or talents. Some of these are general and some are aimed at preventing cheese in the early stages of the new quest:\n" +
