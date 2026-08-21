@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
-import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -118,7 +117,9 @@ public class SuperNovaTracker extends Buff {
 
 		} else {
 			for (int i = 0; i < Dungeon.level.length(); i++){
-				GameScene.targetedCell(i, Actor.TICK);
+				if (fieldOfView[i] && !Dungeon.level.solid[i]){
+					GameScene.targetedCell(i, Actor.TICK);
+				}
 			}
 		}
 
