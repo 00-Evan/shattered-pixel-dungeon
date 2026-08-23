@@ -557,7 +557,7 @@ public class SkeletonKey extends Artifact {
 		@Override
 		public void use(BlobEmitter emitter) {
 			super.use( emitter );
-			emitter.pour(SpectralWallParticle.FACTORY, 0.02f );
+			emitter.pour(SpectralWallParticle.FACTORY, 0.05f );
 		}
 
 		@Override
