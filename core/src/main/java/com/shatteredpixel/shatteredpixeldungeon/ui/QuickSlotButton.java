@@ -392,7 +392,9 @@ public class QuickSlotButton extends Button {
 	}
 	
 	public static void target( Char target ) {
-		if (target != null && target.alignment != Char.Alignment.ALLY) {
+		if (target != null
+				&& target.alignment != Char.Alignment.ALLY
+				&& !Char.hasProp(target, Char.Property.OBJECT)) {
 			lastTarget = target;
 			
 			TargetHealthIndicator.instance.target( target );

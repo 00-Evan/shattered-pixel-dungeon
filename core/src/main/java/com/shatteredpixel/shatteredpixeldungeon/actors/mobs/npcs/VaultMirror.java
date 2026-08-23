@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
@@ -50,6 +51,17 @@ public class VaultMirror extends NPC {
 
 	{
 		spriteClass = VaultMirrorSprite.class;
+
+		properties.add(Property.IMMOVABLE);
+		properties.add(Property.OBJECT);
+	}
+
+	@Override
+	protected void throwItems() {
+		Heap heap = Dungeon.level.heaps.get( pos );
+		if (heap != null) {
+			Dungeon.level.drop( heap.pickUp(), pos+Dungeon.level.width() ).sprite.drop( pos );
+		}
 	}
 
 	public Item reward = null;

@@ -1759,9 +1759,11 @@ public class GameScene extends PixelScene {
 	private static ArrayList<Object> getObjectsAtCell( int cell ){
 		ArrayList<Object> objects = new ArrayList<>();
 
-		if (Dungeon.level.heroFOV[cell] && cell != Dungeon.hero.pos) {
-			Mob mob = (Mob) Actor.findChar(cell);
-			if (mob != null) objects.add(mob);
+		Char ch = Actor.findChar(cell);
+		if (ch != null && ch != Dungeon.hero){
+			if (Dungeon.level.heroFOV[cell] || Char.hasProp(ch, Char.Property.OBJECT)){
+				objects.add(ch);
+			}
 		}
 
 		Heap heap = Dungeon.level.heaps.get(cell);

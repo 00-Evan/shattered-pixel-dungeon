@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -58,10 +59,10 @@ public class WndInfoMob extends WndTitledMessage {
 
 			health = new HealthBar();
 			health.level(mob);
-			add( health );
+			if (!Char.hasProp(mob, Char.Property.OBJECT)) add( health );
 
 			buffs = new BuffIndicator( mob, false );
-			add( buffs );
+			if (!Char.hasProp(mob, Char.Property.OBJECT)) add( buffs );
 		}
 		
 		@Override

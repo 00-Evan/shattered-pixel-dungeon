@@ -22,13 +22,17 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.VaultTokenDoorSprite;
@@ -38,12 +42,21 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 
-//TODO might want to have an Interactable class for cases like this?
-// would be weird for that to except Mob/NPC/Char but works well
 public class VaultTokenDoor extends NPC {
 
 	{
 		spriteClass = VaultTokenDoorSprite.class;
+
+		properties.add(Property.IMMOVABLE);
+		properties.add(Property.OBJECT);
+	}
+
+	@Override
+	protected void throwItems() {
+		Heap heap = Dungeon.level.heaps.get( pos );
+		if (heap != null) {
+			Dungeon.level.drop( heap.pickUp(), pos+Dungeon.level.width() ).sprite.drop( pos );
+		}
 	}
 
 	@Override
@@ -82,6 +95,8 @@ public class VaultTokenDoor extends NPC {
 									Sample.INSTANCE.playDelayed(Assets.Sounds.UNLOCK, 0.25f);
 									GLog.p(Messages.get(VaultTokenDoor.class, "unlocked"));
 									VaultTokenDoor.this.destroy();
+									Level.set(pos, Terrain.DOOR);
+									GameScene.updateMap(pos);
 									ScrollOfMagicMapping.discover(pos);
 									sprite.killAndErase();
 									tokens.detachAll(h.belongings.backpack);
