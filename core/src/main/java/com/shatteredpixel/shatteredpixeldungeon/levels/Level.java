@@ -1548,9 +1548,11 @@ public abstract class Level implements Bundlable {
 		return (float)Math.sqrt(Math.pow(Math.abs( ax - bx ), 2) + Math.pow(Math.abs( ay - by ), 2));
 	}
 
-	//usually just if a cell is solid, but other cases exist too
+	//usually just if the base terrain of a cell is solid, but other cases exist too
+	//only check on base terrain, we want to ignore temporary changes from blobs (e.g. light wall)
 	public boolean invalidHeroPos( int tile ){
-		return !passable[tile] && !avoid[tile];
+		int flags = Terrain.flags[map[tile]];
+		return (flags & Terrain.PASSABLE) != 0 && (flags & Terrain.AVOID) != 0;
 	}
 
 	//returns true if the input is a valid tile within the level
