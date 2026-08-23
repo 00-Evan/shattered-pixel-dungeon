@@ -54,6 +54,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsi
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
+import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.AlchemyScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
@@ -126,7 +127,8 @@ public class DriedRose extends Artifact {
 		if (ghostID != 0){
 			actions.add(AC_DIRECT);
 		}
-		if (isIdentified() && !cursed){
+		//cannot outfit a rose that's cursed, unIDed, or in the vault to prevent smuggling exploits
+		if (isIdentified() && !cursed && !(Dungeon.level instanceof VaultLevel)){
 			actions.add(AC_OUTFIT);
 		}
 		
