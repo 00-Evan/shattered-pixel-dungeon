@@ -175,7 +175,7 @@ public class VaultBossElemental extends Mob {
 		sprite.killAndErase();
 		GameScene.addSprite(this);
 		if (form == ElementalForm.FIRE){
-			sprite.emitter().burst(FlameParticle.FACTORY, 100);
+			sprite.emitter().burst(FlameParticle.FACTORY, 50);
 
 			for (Buff b : buffs()){
 				if (b instanceof Chill || b instanceof Frost){
@@ -183,7 +183,7 @@ public class VaultBossElemental extends Mob {
 				}
 			}
 		} else if (form == ElementalForm.FROST){
-			sprite.emitter().burst(MagicMissile.MagicParticle.FACTORY, 100);
+			sprite.emitter().burst(MagicMissile.MagicParticle.FACTORY, 50);
 
 			for (Buff b : buffs()){
 				if (b instanceof Burning){
@@ -191,7 +191,7 @@ public class VaultBossElemental extends Mob {
 				}
 			}
 		} else if (form == ElementalForm.SHOCK){
-			sprite.emitter().burst(SparkParticle.FACTORY, 100);
+			sprite.emitter().burst(SparkParticle.FACTORY, 50);
 		}
 
 		//don't want to follow through now that form changed, so force a new sp attack instead
@@ -639,7 +639,7 @@ public class VaultBossElemental extends Mob {
 				continue;
 			}
 
-			CellEmitter.get(cell+i).burst(FlameParticle.FACTORY, 20);
+			CellEmitter.get(cell+i).burst(FlameParticle.FACTORY, 10);
 			GameScene.add(Blob.seed(cell+i, 2, Fire.class));
 
 			Char ch = Actor.findChar(cell+i);
@@ -755,7 +755,7 @@ public class VaultBossElemental extends Mob {
 
 				for (int j = 0; j < 2; j++) {
 					if (!Dungeon.level.solid[cells[i]+j*direction]) {
-						CellEmitter.get(cells[i]+j*direction).burst(FlameParticle.FACTORY, 20);
+						CellEmitter.get(cells[i]+j*direction).burst(FlameParticle.FACTORY, 10);
 						Char ch = Actor.findChar(cells[i]+j*direction);
 						if (ch != null && !(ch instanceof VaultBossElemental)){
 							Buff.affect(ch, Burning.class).reignite(ch, 5); //~20 effective damage
@@ -908,7 +908,7 @@ public class VaultBossElemental extends Mob {
 
 			for (int cell : cells.toArray(new Integer[0])){
 				if (Dungeon.level.trueDistance(cell, startPos) <= distance){
-					CellEmitter.get(cell).burst(MagicMissile.WhiteParticle.FACTORY, 20);
+					CellEmitter.get(cell).burst(MagicMissile.WhiteParticle.FACTORY, 10);
 					Char ch = Actor.findChar(cell);
 					if (ch != null && !(ch instanceof VaultBossElemental) && ch.buff(FrostResist.class) == null){
 						ch.damage(Random.NormalIntRange(10, 15), new Frost());
@@ -956,7 +956,7 @@ public class VaultBossElemental extends Mob {
 			for (int cell : cells) {
 				if (Dungeon.level.trueDistance(cell, startPos) <= distance){
 						Emitter e = CellEmitter.get(cell);
-						e.pour(SnowParticle.FACTORY, 0.05f);
+						e.pour(SnowParticle.FACTORY, 0.1f);
 						emitters.add(e);
 					}
 				}
@@ -1064,7 +1064,7 @@ public class VaultBossElemental extends Mob {
 				return true;
 			} else {
 				for (Integer cell : cells){
-					CellEmitter.get(cell).burst(MagicMissile.WhiteParticle.FACTORY, 20);
+					CellEmitter.get(cell).burst(MagicMissile.WhiteParticle.FACTORY, 10);
 					Char ch = Actor.findChar(cell);
 					if (ch != null && !(ch instanceof VaultBossElemental) && ch.buff(FrostResist.class) == null){
 						Buff.affect(ch, Frost.class, 5f);
@@ -1106,7 +1106,7 @@ public class VaultBossElemental extends Mob {
 
 				for (Integer cell : cells) {
 					Emitter pour = CellEmitter.get(cell);
-					pour.pour(SnowParticle.FACTORY, 0.05f);
+					pour.pour(SnowParticle.FACTORY, 0.1f);
 					emitters.add(pour);
 				}
 			}
