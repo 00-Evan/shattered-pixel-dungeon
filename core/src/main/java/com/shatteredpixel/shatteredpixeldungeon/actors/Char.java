@@ -805,7 +805,7 @@ public abstract class Char extends Actor {
 	}
 
 	//just as above, used to avoid excess calls to buffs()
-	private int cachedIncomingDOT = 0;
+	protected int cachedIncomingDOT = 0;
 	public boolean needsIncomingDOTUpdate = true;
 
 	public int incomingDOT(){

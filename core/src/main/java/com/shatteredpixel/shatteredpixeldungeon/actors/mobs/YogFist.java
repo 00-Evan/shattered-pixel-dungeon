@@ -342,6 +342,21 @@ public abstract class YogFist extends Mob {
 		}
 
 		@Override
+		public int incomingDOT() {
+			if (!needsIncomingDOTUpdate){
+				return cachedIncomingDOT;
+			}
+			int total = super.incomingDOT();
+			//we have special immunity rules to burning, so account for that here
+			Burning b = buff(Burning.class);
+			if (b != null){
+				total -= b.totalIncomingDMG();
+			}
+			cachedIncomingDOT = total;
+			return total;
+		}
+
+		@Override
 		protected void zap() {
 			spend( 1f );
 
