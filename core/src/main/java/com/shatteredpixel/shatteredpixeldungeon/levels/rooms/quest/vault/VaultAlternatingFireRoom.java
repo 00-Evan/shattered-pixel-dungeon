@@ -69,4 +69,9 @@ public class VaultAlternatingFireRoom extends VaultRoom {
 		return super.canPlaceItem(p, l) && p == center();
 	}
 
+	@Override
+	public boolean canPlaceCharacter(Point p, Level l) {
+		return false;
+	}
+
 }

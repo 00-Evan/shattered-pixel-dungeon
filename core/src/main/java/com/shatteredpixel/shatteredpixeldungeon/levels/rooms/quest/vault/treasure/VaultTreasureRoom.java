@@ -55,6 +55,10 @@ public abstract class VaultTreasureRoom extends VaultRoom {
 		return false;
 	}
 
+	@Override
+	public boolean canPlaceCharacter(Point p, Level l) {
+		return false;
+	}
 
 	private static final ArrayList<Class<? extends VaultTreasureRoom>> T1_ROOMS = new ArrayList<>( Arrays.asList(
 			VaultFlamePathRoom.class, VaultLaserTreasureRoom.class, VaultCircleScanTreasureRoom.class

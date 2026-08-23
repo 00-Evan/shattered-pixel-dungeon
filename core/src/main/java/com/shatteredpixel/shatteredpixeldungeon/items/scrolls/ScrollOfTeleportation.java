@@ -97,7 +97,8 @@ public class ScrollOfTeleportation extends Scroll {
 
 	public static boolean teleportChar( Char ch, Class source ) {
 
-		if (!(Dungeon.level instanceof RegularLevel)){
+		//in locked levels, we must do a pathfind check, so just default to non-regular level logic
+		if (!(Dungeon.level instanceof RegularLevel) || Dungeon.level.locked){
 			return teleportInNonRegularLevel( ch, false );
 		}
 
@@ -140,7 +141,7 @@ public class ScrollOfTeleportation extends Scroll {
 	
 	public static boolean teleportPreferringUnseen( Hero hero ){
 
-		//in locked levels, we must do a pathfin check, so just default to non-regular level logic
+		//in locked levels, we must do a pathfind check, so just default to non-regular level logic
 		if (!(Dungeon.level instanceof RegularLevel) || Dungeon.level.locked){
 			return teleportInNonRegularLevel( hero, true );
 		}
