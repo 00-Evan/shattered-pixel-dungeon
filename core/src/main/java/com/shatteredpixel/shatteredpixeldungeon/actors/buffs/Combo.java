@@ -289,7 +289,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	public void useMove(ComboMove move){
 		if (move == ComboMove.PARRY){
 			parryUsed = true;
-			comboTime = 5f;
+			comboTime = Math.max(comboTime, 5f);
 			Invisibility.dispel();
 			Buff.affect(target, ParryTracker.class, Actor.TICK);
 			((Hero)target).spendAndNext(Actor.TICK);
