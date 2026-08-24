@@ -97,6 +97,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultSi
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultTokensRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasure.VaultTreasureRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Firebloom;
@@ -668,6 +669,11 @@ public class VaultLevel extends CityLevel {
 		@Override
 		public void activate() {
 			//does nothing, this trap is just decoration and is always deactivated
+		}
+
+		@Override
+		public String desc() {
+			return Messages.get(this, "desc");
 		}
 
 		public static void setupTrap(Level level, int cell, int initialCD, int afterTriggerCD, int triggers){
