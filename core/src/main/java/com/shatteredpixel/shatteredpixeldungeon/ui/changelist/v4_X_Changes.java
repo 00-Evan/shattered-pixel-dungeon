@@ -64,9 +64,41 @@ public class v4_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("BETA-3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton( ChangeIcons.V081_MISC, Messages.get(ChangesScene.class, "misc"),
+				"**-** Added some additional hints to the descriptions of vault hazards\n" +
+				"**-** Roughly halved the particle cound for greater elemental frost abilities, reducing their performance impact\n" +
+				"**-** Substantially reduced the perticle density for skeleton key spectral walls, reducing their performance impact\n" +
+				"\n" +
+				"Expect some more refinements in another few days, now that most of the bugs have been fixed!"));
+
+		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
+				"Note: A couple of players have reported wands not recharging after they leave the vault, but I haven't been able to reproduce this. If you encounter this issue, let me know!\n" +
+				"\n" +
+				"Fixed the following bugs\n" +
+				"**Caused by BETA:**\n" +
+				"**-** Fadeleaf softlocking the vault if triggered during the boss fight\n" +
+				"**-** Exploits involving using the dried rose to take additional items out of the vault\n" +
+				"**-** Various bugs with vault mirror and token door\n" +
+				"**-** Swarm intelligence going out of sync with its indicator in some cases\n" +
+				"**-** Softlocks if Gladiator is frozen by wondrous curse while using fury\n" +
+				"**-** Soiled Fist showing incorrect DOT damage for burning\n" +
+				"**-** Cursed wand supernova effect spamming targeted cells everywhere\n" +
+				"**-** Various rare crash bugs\n" +
+				"**-** Various minor visual errors"
+				,
+				"**Existed prior to BETA:**\n" +
+				"**-** Windows made by right clicking or middle clicking not centering on inventory pane when they should\n" +
+				"**-** Duelist's feint ability awakening sleeping enemies nearby\n" +
+				"**-** Combo parry into riposte move setting combo time to 5 when it was previously higher\n" +
+				"**-** Empowered clobber triggering at 6 combo instead of 7\n" +
+				"**-** Fireblast applying paralysis to downed ghouls\n" +
+				"**-** Specific cases where the player could jump into chasm on floor 26\n" +
+				"**-** Exploit allowing players to be at a floor entrance when ascending to it, instead of exit\n" +
+				"**-** Minor textual errors"));
 
 		changes = new ChangeInfo("BETA-2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
