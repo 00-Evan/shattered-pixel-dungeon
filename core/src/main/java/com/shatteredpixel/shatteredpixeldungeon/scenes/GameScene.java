@@ -1482,6 +1482,12 @@ public class GameScene extends PixelScene {
 		}
 	}
 
+	public static void nextWndOffset(Point ofs){
+		if (scene != null){
+			lastOffset = ofs;
+		}
+	}
+
 	public static void updateFog(){
 		if (scene != null) {
 			scene.fog.updateFog();
