@@ -449,7 +449,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 				furyHitsLeft--;
 				//fury attacks as many times as you have combo count
 				if (furyHitsLeft > 0 && enemy.isAlive() && hero.canAttack(enemy) &&
-						(wasAlly || enemy.alignment != target.alignment)){
+						hero.paralysed == 0 && (wasAlly || enemy.alignment != target.alignment)){
 					target.sprite.attack(enemy.pos, new Callback() {
 						@Override
 						public void call() {
