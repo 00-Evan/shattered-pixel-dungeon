@@ -276,6 +276,7 @@ public abstract class Mob extends Char {
 		
 		if (paralysed > 0) {
 			enemySeen = false;
+			processSwarmIntel(false);
 			spend( TICK );
 			return true;
 		}

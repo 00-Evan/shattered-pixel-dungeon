@@ -37,11 +37,15 @@ public class SwarmIntelTracker extends Buff {
 	public boolean act() {
 
 		alertRange = 0;
+		float lowestCooldown = 1;
 		for (Mob m : Dungeon.level.mobs){
 			if (target.fieldOfView != null
 					&& target.fieldOfView.length == Dungeon.level.length()
 					&& target.fieldOfView[m.pos]) {
 				alertRange = Math.max(alertRange, m.swarmAlertRange());
+			}
+			if (m.cooldown() < lowestCooldown){
+				lowestCooldown = m.cooldown();
 			}
 		}
 
@@ -51,8 +55,8 @@ public class SwarmIntelTracker extends Buff {
 			leftAtZero -= target.cooldown();
 		}
 
-		//always acts right after the hero
-		spend(target.cooldown());
+		//always acts right after the next mob, or 1 turn at most
+		spend(lowestCooldown);
 		return true;
 	}
 
