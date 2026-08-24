@@ -754,7 +754,7 @@ public class VaultBossElemental extends Mob {
 			for (int i = 0; i < cells.length; i++){
 
 				for (int j = 0; j < 2; j++) {
-					if (!Dungeon.level.solid[cells[i]+j*direction]) {
+					if (Dungeon.level.insideMap(cells[i]+j*direction) && !Dungeon.level.solid[cells[i]+j*direction]) {
 						CellEmitter.get(cells[i]+j*direction).burst(FlameParticle.FACTORY, 10);
 						Char ch = Actor.findChar(cells[i]+j*direction);
 						if (ch != null && !(ch instanceof VaultBossElemental)){
@@ -791,7 +791,7 @@ public class VaultBossElemental extends Mob {
 			for (int cell : cells) {
 				boolean oneOpen = false;
 				for (int j = 0; j < 2; j++) {
-					if (!Dungeon.level.solid[cell + j * direction]) {
+					if (Dungeon.level.insideMap(cell + j * direction) && !Dungeon.level.solid[cell + j * direction]) {
 						Emitter pour = CellEmitter.get(cell + j * direction);
 						pour.pour(FlameParticle.FACTORY, 0.1f);
 
@@ -803,7 +803,7 @@ public class VaultBossElemental extends Mob {
 				if (!oneOpen) {
 					//do a tiny flame further ahead to show player the entire wall pattern
 					for (int j = 1; j <= left; j++) {
-						if (!Dungeon.level.solid[cell + direction * j]) {
+						if (Dungeon.level.insideMap(cell + j * direction) && !Dungeon.level.solid[cell + direction * j]) {
 							Emitter pour = CellEmitter.center(cell + direction * j);
 							pour.pour(FlameParticle.FACTORY, 0.5f);
 							emitters.add(pour);
@@ -1134,7 +1134,7 @@ public class VaultBossElemental extends Mob {
 					start += dirY*Dungeon.level.width();
 				}
 				dist++;
-			} while (!Dungeon.level.solid[start]);
+			} while (Dungeon.level.insideMap(start) && !Dungeon.level.solid[start]);
 			return dist;
 		}
 
@@ -1151,12 +1151,12 @@ public class VaultBossElemental extends Mob {
 			do {
 				cells.add(cell);
 				cell += -dirX + dirY*Dungeon.level.width();
-			} while (!Dungeon.level.solid[cell]);
+			} while (Dungeon.level.insideMap(cell) && !Dungeon.level.solid[cell]);
 			cell = initialOfsCell;
 			do {
 				cells.add(cell);
 				cell += +dirX - dirY*Dungeon.level.width();
-			} while (!Dungeon.level.solid[cell]);
+			} while (Dungeon.level.insideMap(cell) && !Dungeon.level.solid[cell]);
 
 			return cells;
 		}
@@ -1332,13 +1332,13 @@ public class VaultBossElemental extends Mob {
 				if (ch != null && !(ch instanceof VaultBossElemental) && ch.buff(ShockResist.class) == null){
 					shockChar(ch);
 				}
-				if (!Dungeon.level.solid[midCell]) {
+				if ( Dungeon.level.insideMap(midCell) && !Dungeon.level.solid[midCell]) {
 					CellEmitter.get(midCell).burst(SparkParticle.FACTORY, 10);
 					ch = Actor.findChar(midCell);
 					if (ch != null && !(ch instanceof VaultBossElemental) && ch.buff(ShockResist.class) == null){
 						shockChar(ch);
 					}
-					if (!Dungeon.level.solid[endCell]) {
+					if (Dungeon.level.insideMap(endCell) && !Dungeon.level.solid[endCell]) {
 						CellEmitter.get(endCell).burst(SparkParticle.FACTORY, 10);
 						ch = Actor.findChar(endCell);
 						if (ch != null && !(ch instanceof VaultBossElemental) && ch.buff(ShockResist.class) == null){
@@ -1429,19 +1429,19 @@ public class VaultBossElemental extends Mob {
 			}
 			emitters.clear();
 
-			if (endCell != -1 && !Dungeon.level.solid[endCell]){
+			if (endCell != -1 && Dungeon.level.insideMap(endCell) && !Dungeon.level.solid[endCell]){
 				Emitter e = CellEmitter.get(endCell);
 				e.pour(SparkParticle.STATIC, 0.1f);
 				emitters.add(e);
 			}
 
-			if (midCell != -1 && !Dungeon.level.solid[midCell]){
+			if (midCell != -1 && Dungeon.level.insideMap(midCell) && !Dungeon.level.solid[midCell]){
 				Emitter e = CellEmitter.get(midCell);
 				e.pour(SparkParticle.STATIC, 0.1f);
 				emitters.add(e);
 			}
 
-			if (curCell != -1 && !Dungeon.level.solid[curCell]){
+			if (curCell != -1 && Dungeon.level.insideMap(curCell) && !Dungeon.level.solid[curCell]){
 				Emitter e = CellEmitter.get(curCell);
 				e.pour(SparkParticle.STATIC, 0.1f);
 				emitters.add(e);
