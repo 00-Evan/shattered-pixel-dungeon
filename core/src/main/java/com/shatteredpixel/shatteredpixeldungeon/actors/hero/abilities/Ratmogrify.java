@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfSirensSong;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -259,8 +260,11 @@ public class Ratmogrify extends ArmorAbility {
 			allied = true;
 			alignment = Alignment.ALLY;
 			timeLeft = Float.POSITIVE_INFINITY;
-			Bestiary.setSeen(original.getClass());
-			Bestiary.countEncounter(original.getClass());
+			if (original != null){
+				original.pos = pos;
+				//the specific ally buff doesn't matter here, we just want to process ally effects
+				AllyBuff.affectAndLoot(original, Dungeon.hero, ScrollOfSirensSong.Enthralled.class);
+			}
 		}
 
 		public int attackSkill(Char target) {

@@ -1231,7 +1231,7 @@ public abstract class Char extends Actor {
 		buffs.add( buff );
 		if (Actor.chars().contains(this)) Actor.add( buff );
 
-		if (sprite != null && buff.announced) {
+		if (sprite != null && sprite.alive && buff.announced) {
 			switch (buff.type) {
 				case POSITIVE:
 					sprite.showStatus(CharSprite.POSITIVE, Messages.titleCase(buff.name()));
