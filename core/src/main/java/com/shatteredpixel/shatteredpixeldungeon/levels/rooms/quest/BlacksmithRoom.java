@@ -134,7 +134,7 @@ public class BlacksmithRoom extends StandardRoom {
 
 	@Override
 	public int maxConnections(int direction) {
-		if (direction == top){
+		if (direction == TOP){
 			return 1;
 		} else {
 			return super.maxConnections(direction);
