@@ -315,6 +315,9 @@ public class EscapeCrystal extends Item {
 	}
 
 	public void restoreHeroBelongings( Hero hero, Item preserve ){
+		//we detach the item being preserved first, to cancel any equip-based buffs (e.g. wand charging)
+		preserve.detachAll(hero.belongings.backpack);
+
 		hero.belongings.clear();
 
 		Dungeon.quickslot.reset();
