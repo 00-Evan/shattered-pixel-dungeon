@@ -58,8 +58,8 @@ public class Crystal extends Weapon.Enchantment {
 			if (weapon instanceof MissileWeapon) {
 				setThrownWep(); //we piggyback on thrown weapon durability, don't change our own
 			} else {
-				//lasts for an average of ~30 attacks at normal speed
-				durability -= Random.Float(2, 5) * weapon.delayFactor(attacker);
+				//lasts for an average of ~33 attacks at normal speed
+				durability -= Random.Float(2, 4) * weapon.delayFactor(attacker);
 
 				float prevHeuristicDur = visualDurability;
 				visualDurability = GameMath.gate(durability-10, visualDurability, durability);
@@ -116,6 +116,7 @@ public class Crystal extends Weapon.Enchantment {
 
 	public void repair(Weapon w, boolean inRose, float amount){
 		if (w instanceof MissileWeapon){
+			amount /= 2; //crystal thrown weapons have more uses, they repair more slowly
 			if (((MissileWeapon) w).durabilityLeft() < 100) {
 				((MissileWeapon) w).repair(amount);
 				if (((MissileWeapon) w).durabilityLeft() == 100){
@@ -210,12 +211,12 @@ public class Crystal extends Weapon.Enchantment {
 				if (target instanceof Hero) {
 					for (Weapon w : ((Hero) target).belongings.getAllItems(Weapon.class)) {
 						if (w.enchantment instanceof Crystal) {
-							((Crystal) w.enchantment).repair(w, false, 0.1f);
+							((Crystal) w.enchantment).repair(w, false, 0.2f);
 						}
 					}
 					DriedRose rose = ((Hero) target).belongings.getItem(DriedRose.class);
 					if (rose != null && rose.ghostWeapon() != null && rose.ghostWeapon().enchantment instanceof Crystal){
-						((Crystal) rose.ghostWeapon().enchantment).repair(rose.ghostWeapon(), true, 0.1f);
+						((Crystal) rose.ghostWeapon().enchantment).repair(rose.ghostWeapon(), true, 0.2f);
 					}
 				}
 			}
