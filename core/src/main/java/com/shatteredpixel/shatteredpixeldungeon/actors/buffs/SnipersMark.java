@@ -50,14 +50,12 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 	public void set(int object, float bonus){
 		this.object = object;
 		this.percentDmgBonus = bonus;
+		SpiritBow bow = Dungeon.hero.belongings.getItem(SpiritBow.class);
+		if (bow != null) {
+			ActionIndicator.setAction(this);
+		}
 	}
-	
-	@Override
-	public boolean attachTo(Char target) {
-		ActionIndicator.setAction(this);
-		return super.attachTo(target);
-	}
-	
+
 	@Override
 	public void detach() {
 		super.detach();
