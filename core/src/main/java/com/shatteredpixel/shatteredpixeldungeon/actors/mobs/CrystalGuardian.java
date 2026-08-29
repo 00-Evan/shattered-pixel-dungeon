@@ -73,6 +73,7 @@ public class CrystalGuardian extends Mob{
 			if (buff(PinCushion.class) != null){
 				buff(PinCushion.class).detach();
 			}
+			processSwarmIntel(false);
 			throwItems();
 			HP = Math.min(HT, HP+5);
 			if (Dungeon.level.heroFOV[pos]) {
