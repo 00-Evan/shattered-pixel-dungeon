@@ -483,58 +483,60 @@ public class DungeonTileSheet {
 		Random.popGenerator();
 	}
 
-	//These alt visuals will trigger 50% of the time (45% of the time if a rare alt is also present)
-	public static SparseArray<Integer> commonAltVisuals = new SparseArray<>();
-	static {
-		commonAltVisuals.put(FLOOR,                 FLOOR_ALT_1);
-		commonAltVisuals.put(GRASS,                 GRASS_ALT);
-		commonAltVisuals.put(FLAT_WALL,             FLAT_WALL_ALT);
-		commonAltVisuals.put(EMBERS,                EMBERS_ALT);
-		commonAltVisuals.put(FLAT_WALL_DECO,        FLAT_WALL_DECO_ALT);
-		commonAltVisuals.put(FLOOR_SP,              FLOOR_SP_ALT);
-		commonAltVisuals.put(FLOOR_DECO,            FLOOR_DECO_ALT);
-
-		commonAltVisuals.put(FLAT_BOOKSHELF,        FLAT_BOOKSHELF_ALT);
-		commonAltVisuals.put(FLAT_HIGH_GRASS,       FLAT_HIGH_GRASS_ALT);
-		commonAltVisuals.put(FLAT_FURROWED_GRASS,   FLAT_FURROWED_ALT);
-		commonAltVisuals.put(FLAT_MINE_CRYSTAL,     FLAT_MINE_CRYSTAL_ALT);
-		commonAltVisuals.put(FLAT_MINE_BOULDER,     FLAT_MINE_BOULDER_ALT);
-
-		commonAltVisuals.put(RAISED_WALL,           RAISED_WALL_ALT);
-		commonAltVisuals.put(RAISED_WALL_DECO,      RAISED_WALL_DECO_ALT);
-		commonAltVisuals.put(RAISED_WALL_BOOKSHELF, RAISED_WALL_BOOKSHELF_ALT);
-
-		commonAltVisuals.put(RAISED_HIGH_GRASS,     RAISED_HIGH_GRASS_ALT);
-		commonAltVisuals.put(RAISED_FURROWED_GRASS, RAISED_FURROWED_ALT);
-		commonAltVisuals.put(HIGH_GRASS_OVERHANG,   HIGH_GRASS_OVERHANG_ALT);
-		commonAltVisuals.put(FURROWED_OVERHANG,     FURROWED_OVERHANG_ALT);
-		commonAltVisuals.put(RAISED_MINE_CRYSTAL,   RAISED_MINE_CRYSTAL_ALT);
-		commonAltVisuals.put(RAISED_MINE_BOULDER,   RAISED_MINE_BOULDER_ALT);
-		commonAltVisuals.put(HIGH_GRASS_UNDERHANG,  HIGH_GRASS_UNDERHANG_ALT);
-		commonAltVisuals.put(FURROWED_UNDERHANG,    FURROWED_UNDERHANG_ALT);
-		commonAltVisuals.put(MINE_CRYSTAL_OVERHANG, MINE_CRYSTAL_OVERHANG_ALT);
-		commonAltVisuals.put(MINE_BOULDER_OVERHANG, MINE_BOULDER_OVERHANG_ALT);
+	private static class tileAlt {
+		float[] chances;
+		int[] alts;
+		public tileAlt(float[] chances, int... alts){
+			this.chances = chances;
+			this.alts = alts;
+		}
 	}
 
-	//These alt visuals trigger 5% of the time (and also override common alts when they show up)
-	public static SparseArray<Integer> rareAltVisuals = new SparseArray<>();
+	private static SparseArray<tileAlt> tileAltVisuals = new SparseArray<>();
 	static {
-		rareAltVisuals.put(FLOOR,                   FLOOR_ALT_2);
-		rareAltVisuals.put(FLAT_MINE_CRYSTAL,       FLAT_MINE_CRYSTAL_ALT_2);
-		rareAltVisuals.put(FLAT_MINE_BOULDER,       FLAT_MINE_BOULDER_ALT_2);
-		rareAltVisuals.put(RAISED_MINE_CRYSTAL,     RAISED_MINE_CRYSTAL_ALT_2);
-		rareAltVisuals.put(RAISED_MINE_BOULDER,     RAISED_MINE_BOULDER_ALT_2);
-		rareAltVisuals.put(MINE_CRYSTAL_OVERHANG,   MINE_CRYSTAL_OVERHANG_ALT_2);
-		rareAltVisuals.put(MINE_BOULDER_OVERHANG,   MINE_BOULDER_OVERHANG_ALT_2);
+		tileAltVisuals.put(FLOOR,           new tileAlt(new float[]{52.5f, 5f}, FLOOR_ALT_1, FLOOR_ALT_2));
+		tileAltVisuals.put(GRASS,           new tileAlt(new float[]{50f}, GRASS_ALT));
+		tileAltVisuals.put(FLAT_WALL,       new tileAlt(new float[]{50f}, FLAT_WALL_ALT));
+		tileAltVisuals.put(EMBERS,          new tileAlt(new float[]{50f}, EMBERS_ALT));
+		tileAltVisuals.put(FLAT_WALL_DECO,  new tileAlt(new float[]{50f}, FLAT_WALL_DECO_ALT));
+		tileAltVisuals.put(FLOOR_SP,        new tileAlt(new float[]{50f}, FLOOR_SP_ALT));
+		tileAltVisuals.put(FLOOR_DECO,      new tileAlt(new float[]{50f}, FLOOR_DECO_ALT));
+		tileAltVisuals.put(GRASS,           new tileAlt(new float[]{50f}, GRASS_ALT));
+
+		tileAltVisuals.put(FLAT_BOOKSHELF,      new tileAlt(new float[]{50f}, FLAT_BOOKSHELF_ALT));
+		tileAltVisuals.put(FLAT_HIGH_GRASS,     new tileAlt(new float[]{50f}, FLAT_HIGH_GRASS_ALT));
+		tileAltVisuals.put(FLAT_FURROWED_GRASS, new tileAlt(new float[]{50f}, FLAT_FURROWED_ALT));
+		tileAltVisuals.put(FLAT_MINE_CRYSTAL,   new tileAlt(new float[]{52.5f, 5f}, FLAT_MINE_CRYSTAL_ALT, FLAT_MINE_CRYSTAL_ALT_2));
+		tileAltVisuals.put(FLAT_MINE_BOULDER,   new tileAlt(new float[]{52.5f, 5f}, FLAT_MINE_BOULDER_ALT, FLAT_MINE_BOULDER_ALT_2));
+
+		tileAltVisuals.put(RAISED_WALL,             new tileAlt(new float[]{50f}, RAISED_WALL_ALT));
+		tileAltVisuals.put(RAISED_WALL_DECO,        new tileAlt(new float[]{50f}, RAISED_WALL_DECO_ALT));
+		tileAltVisuals.put(RAISED_WALL_BOOKSHELF,   new tileAlt(new float[]{50f}, RAISED_WALL_BOOKSHELF_ALT));
+
+		tileAltVisuals.put(RAISED_HIGH_GRASS,       new tileAlt(new float[]{50f}, RAISED_HIGH_GRASS_ALT));
+		tileAltVisuals.put(RAISED_FURROWED_GRASS,   new tileAlt(new float[]{50f}, RAISED_FURROWED_ALT));
+		tileAltVisuals.put(HIGH_GRASS_OVERHANG,     new tileAlt(new float[]{50f}, HIGH_GRASS_OVERHANG_ALT));
+		tileAltVisuals.put(FURROWED_OVERHANG,       new tileAlt(new float[]{50f}, FURROWED_OVERHANG_ALT));
+		tileAltVisuals.put(RAISED_MINE_CRYSTAL,     new tileAlt(new float[]{52.5f, 5f}, RAISED_MINE_CRYSTAL_ALT, RAISED_MINE_CRYSTAL_ALT_2));
+		tileAltVisuals.put(RAISED_MINE_BOULDER,     new tileAlt(new float[]{52.5f, 5f}, RAISED_MINE_BOULDER_ALT, RAISED_MINE_BOULDER_ALT_2));
+		tileAltVisuals.put(HIGH_GRASS_UNDERHANG,    new tileAlt(new float[]{50f}, HIGH_GRASS_UNDERHANG_ALT));
+		tileAltVisuals.put(FURROWED_UNDERHANG,      new tileAlt(new float[]{50f}, FURROWED_UNDERHANG_ALT));
+		tileAltVisuals.put(MINE_CRYSTAL_OVERHANG,   new tileAlt(new float[]{52.5f, 5f}, MINE_CRYSTAL_OVERHANG_ALT, MINE_CRYSTAL_OVERHANG_ALT_2));
+		tileAltVisuals.put(MINE_BOULDER_OVERHANG,   new tileAlt(new float[]{52.5f, 5f}, MINE_BOULDER_OVERHANG_ALT, MINE_BOULDER_OVERHANG_ALT_2));
 	}
 
+	//alt visual priority is back to front, so put lowest chance ones last
+	//e.g. a 67% and a 33% chance work out to 33% chance each with a 33% chance of no alt
 	public static int getVisualWithAlts(int visual, int pos){
-		if (tileVariance[pos] >= 95 && rareAltVisuals.containsKey(visual))
-			return rareAltVisuals.get(visual);
-		else if (tileVariance[pos] >= 50 && commonAltVisuals.containsKey(visual))
-			return commonAltVisuals.get(visual);
-		else
-			return visual;
+		if (tileAltVisuals.containsKey(visual)){
+			tileAlt alts = tileAltVisuals.get(visual);
+			for (int i = 0; i < alts.chances.length; i++){
+				if (tileVariance[pos] < alts.chances[i]){
+					visual = alts.alts[i];
+				}
+			}
+		}
+		return visual;
 	}
 
 }

@@ -50,9 +50,17 @@ public class RaisedTerrainTilemap extends DungeonTilemap {
 		int regionOffset = region*16;
 
 		if (tile == Terrain.HIGH_GRASS){
-			return regionOffset + (DungeonTileSheet.tileVariance[pos] >= 50 ? 2 : 0);
+			if (DungeonTileSheet.getVisualWithAlts(DungeonTileSheet.RAISED_HIGH_GRASS, pos) == DungeonTileSheet.RAISED_HIGH_GRASS_ALT){
+				return regionOffset + 2;
+			} else {
+				return regionOffset;
+			}
 		} else if (tile == Terrain.FURROWED_GRASS){
-			return regionOffset + 1 + (DungeonTileSheet.tileVariance[pos] >= 50 ? 2 : 0);
+			if (DungeonTileSheet.getVisualWithAlts(DungeonTileSheet.RAISED_FURROWED_GRASS, pos) == DungeonTileSheet.RAISED_FURROWED_ALT){
+				return regionOffset + 1 + 2;
+			} else {
+				return regionOffset + 1;
+			}
 		} else if (tile == Terrain.BARRICADE){
 			return regionOffset + 4;
 		} else if (tile == Terrain.ALCHEMY){
@@ -67,18 +75,18 @@ public class RaisedTerrainTilemap extends DungeonTilemap {
 
 		//specific cases for mine quest
 		if (tile == Terrain.MINE_CRYSTAL){
-			if (DungeonTileSheet.tileVariance[pos] >= 95){
-				return regionOffset + 11;
-			} else if (DungeonTileSheet.tileVariance[pos] >= 50){
+			if (DungeonTileSheet.getVisualWithAlts(DungeonTileSheet.RAISED_MINE_CRYSTAL, pos) == DungeonTileSheet.RAISED_MINE_CRYSTAL_ALT) {
 				return regionOffset + 10;
+			} else if (DungeonTileSheet.getVisualWithAlts(DungeonTileSheet.RAISED_MINE_CRYSTAL, pos) == DungeonTileSheet.RAISED_MINE_CRYSTAL_ALT_2){
+				return regionOffset + 11;
 			} else {
 				return regionOffset + 9;
 			}
 		} else if (tile == Terrain.MINE_BOULDER){
-			if (DungeonTileSheet.tileVariance[pos] >= 95){
-				return regionOffset + 14;
-			} else if (DungeonTileSheet.tileVariance[pos] >= 50){
+			if (DungeonTileSheet.getVisualWithAlts(DungeonTileSheet.RAISED_MINE_BOULDER, pos) == DungeonTileSheet.RAISED_MINE_BOULDER_ALT){
 				return regionOffset + 13;
+			} else if (DungeonTileSheet.getVisualWithAlts(DungeonTileSheet.RAISED_MINE_BOULDER, pos) == DungeonTileSheet.RAISED_MINE_BOULDER_ALT_2){
+				return regionOffset + 14;
 			} else {
 				return regionOffset + 12;
 			}
