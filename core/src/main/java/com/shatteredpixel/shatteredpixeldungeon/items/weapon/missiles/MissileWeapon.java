@@ -299,7 +299,12 @@ abstract public class MissileWeapon extends Weapon {
 		if (attacker == Dungeon.hero && Random.Int(3) < Dungeon.hero.pointsInTalent(Talent.SHARED_ENCHANTMENT)){
 			SpiritBow bow = Dungeon.hero.belongings.getItem(SpiritBow.class);
 			if (bow != null && bow.enchantment != null && Dungeon.hero.buff(MagicImmune.class) == null) {
-				damage = bow.enchantment.proc(this, attacker, defender, damage);
+				if (bow.enchantment instanceof Crystal){
+					//crystal specifically needs to proc on the bow, but it's just based on dmg so it doesn't really matter
+					damage = bow.enchantment.proc(bow, attacker, defender, damage);
+				} else {
+					damage = bow.enchantment.proc(this, attacker, defender, damage);
+				}
 			}
 		}
 
@@ -485,8 +490,10 @@ abstract public class MissileWeapon extends Weapon {
 	public Weapon enchant(Enchantment ench) {
 		if (ench instanceof Crystal){
 			((Crystal) ench).setThrownWep();
-			//in case weapon was already damaged
-			Buff.affect(Dungeon.hero, Crystal.CrystalRepair.class);
+			//start repairing if thrown wep was already damaged
+			if (durability < MAX_DURABILITY) {
+				Buff.affect(Dungeon.hero, Crystal.CrystalRepair.class);
+			}
 		}
 		if (ench == null){
 			Buff.affect(Dungeon.hero, UpgradedSetTracker.class).appliedEnchants.remove(setID);

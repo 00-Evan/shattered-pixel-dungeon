@@ -52,12 +52,15 @@ public class Crystal extends Weapon.Enchantment {
 	//essentially it has a 'lag' of up to 10 points while self-repairing
 	private float visualDurability = 100;
 
+	private boolean thrownWeapon = false;
+
 	@Override
 	public int proc(Weapon weapon, Char attacker, Char defender, int damage) {
 		if (attacker == Dungeon.hero || attacker instanceof DriedRose.GhostHero) {
 			if (weapon instanceof MissileWeapon) {
 				setThrownWep(); //we piggyback on thrown weapon durability, don't change our own
 			} else {
+				thrownWeapon = false;
 				//lasts for an average of ~33 attacks at normal speed
 				durability -= Random.Float(2, 4) * weapon.delayFactor(attacker);
 
@@ -75,6 +78,7 @@ public class Crystal extends Weapon.Enchantment {
 					durability = Math.max(durability, 1);
 					visualDurability = Math.max(visualDurability, 1);
 
+					Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 					if (attacker instanceof Hero) {
 						GLog.n(Messages.get(this, "alert_cracked"));
 					} else if (attacker instanceof DriedRose.GhostHero){
@@ -111,7 +115,7 @@ public class Crystal extends Weapon.Enchantment {
 	}
 
 	public void setThrownWep(){
-		durability = -1;
+		thrownWeapon = true;
 	}
 
 	public void repair(Weapon w, boolean inRose, float amount){
@@ -158,7 +162,7 @@ public class Crystal extends Weapon.Enchantment {
 
 	@Override
 	public ItemSprite.Glowing glowing() {
-		if (visualDurability > 50 || durability == -1){
+		if (visualDurability > 50 || thrownWeapon){
 			return LIGHT_BLUE;
 		} else if (visualDurability > 10){
 			return FLAW;
@@ -170,7 +174,7 @@ public class Crystal extends Weapon.Enchantment {
 	@Override
 	public String desc() {
 		String desc = super.desc();
-		if (durability == -1){
+		if (thrownWeapon){
 			desc += " " + Messages.get(this, "desc_thrown");
 		} else if (visualDurability == 100){
 			desc += " " + Messages.get(this, "desc_perfect");
@@ -186,17 +190,20 @@ public class Crystal extends Weapon.Enchantment {
 
 	private static final String DURABILITY = "durability";
 	private static final String VISUAL_DUR = "visual_dur";
+	private static final String THROWN_WEP = "thrown_wep";
 
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		durability = bundle.getFloat(DURABILITY);
 		visualDurability = bundle.getFloat(VISUAL_DUR);
+		thrownWeapon = bundle.getBoolean(THROWN_WEP);
 	}
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		bundle.put(DURABILITY, durability);
 		bundle.put(VISUAL_DUR, visualDurability);
+		bundle.put(THROWN_WEP, thrownWeapon);
 	}
 
 	public static class CrystalRepair extends Buff {
