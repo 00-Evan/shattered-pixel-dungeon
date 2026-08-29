@@ -144,7 +144,7 @@ public class VaultFinalRoom extends SpecialRoom {
 		Point c = center();
 
 		MarkerTiles marker = new MarkerTiles();
-		marker.pos(c.x-3, c.y-3);
+		marker.pos(c.x-4, c.y-4);
 		level.customTiles.add(marker);
 
 		Door entrance = entrance();
@@ -380,16 +380,29 @@ public class VaultFinalRoom extends SpecialRoom {
 
 		{
 			texture = Assets.Environment.CITY_QUEST;
-			tileW = tileH = 7;
+			tileW = tileH = 9;
 		}
 
-		final int TEX_WIDTH = 128;
+		final int TEX_WIDTH = 256;
 
 		@Override
 		public Tilemap create() {
 			Tilemap v = super.create();
-			v.map(mapSimpleImage(0, 8, TEX_WIDTH), 7);
+			v.map(mapSimpleImage(5, 4, TEX_WIDTH), 9);
 			return v;
+		}
+
+		@Override
+		public Image image(int tileX, int tileY) {
+			//no examine image on sides
+			if (tileX == 0 || tileY == 0 || tileX == tileW-1 || tileY == tileH-1){
+				return null;
+			}
+			//...or corners 1 in from the sides
+			if ((tileX == 1 || tileX == tileW-2) && (tileY == 1 || tileY == tileH-2)){
+				return null;
+			}
+			return super.image(tileX, tileY);
 		}
 
 		@Override
@@ -402,6 +415,18 @@ public class VaultFinalRoom extends SpecialRoom {
 			return Messages.get(this, "desc");
 		}
 
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+
+			//prior to BETA-4
+			if (tileW == 7){
+				tileW = tileH = 9;
+				tileX -= 1;
+				tileY -= 1;
+			}
+
+		}
 	}
 
 	public static class VaultTreasure extends CustomTilemap {
@@ -419,16 +444,16 @@ public class VaultFinalRoom extends SpecialRoom {
 			for (int i = 0; i < data.length; i++){
 				data[i] = -1;
 				if (i < tileW) {
-					if (i == 0)         data[i] = 5*8 + 4;
-					if (i == tileW-1)   data[i] = 5*8 + 3;
+					if (i == 0)         data[i] = 5*16 + 4;
+					if (i == tileW-1)   data[i] = 5*16 + 3;
 				} else {
 					int cell = tileX + Dungeon.level.width()*tileY;
 					cell += i%tileW + (i/tileW)*Dungeon.level.width();
 					if (Dungeon.level.map[cell] == Terrain.PEDESTAL){
-						data[i] = 7*8 + 3;
+						data[i] = 7*16 + 3;
 					} else if (Dungeon.level.map[cell-Dungeon.level.width()] == Terrain.WALL
 							|| Dungeon.level.map[cell-Dungeon.level.width()] == Terrain.WALL_DECO) {
-						data[i] = 6 * 8 + 2;
+						data[i] = 6 * 16 + 2;
 						if (Dungeon.level.map[cell+1] == Terrain.WALL){
 							data[i] += 1;
 						} else if (Dungeon.level.map[cell-1] == Terrain.WALL){
@@ -436,12 +461,12 @@ public class VaultFinalRoom extends SpecialRoom {
 						}
 					} else {
 						if (Dungeon.level.map[cell+1] == Terrain.WALL){
-							data[i] = 6 * 8 + 0;
+							data[i] = 6 * 16 + 0;
 						} else if (Dungeon.level.map[cell-1] == Terrain.WALL){
-							data[i] = 6 * 8 + 1;
+							data[i] = 6 * 16 + 1;
 						} else {
 							//plus 0 1 or 2
-							data[i] = 7*8 + DungeonTileSheet.tileVariance[cell]/34;
+							data[i] = 7*16 + DungeonTileSheet.tileVariance[cell]/34;
 						}
 					}
 				}

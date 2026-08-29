@@ -165,12 +165,12 @@ public class VaultEntranceRoom extends VaultRoom {
 			tileW = tileH = 3;
 		}
 
-		final int TEX_WIDTH = 128;
+		final int TEX_WIDTH = 256;
 
 		@Override
 		public Tilemap create() {
 			Tilemap v = super.create();
-			v.map(mapSimpleImage(5, 5, TEX_WIDTH), 3);
+			v.map(mapSimpleImage(8, 1, TEX_WIDTH), 3);
 			return v;
 		}
 
