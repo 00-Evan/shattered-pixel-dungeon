@@ -212,7 +212,10 @@ public class RingOfForce extends Ring {
 	@Override
 	public void execute(Hero hero, String action) {
 		if (action.equals(AC_ABILITY)){
-			if (hero.buff(BrawlersStance.class) != null){
+			if (!isEquipped(hero)) {
+				GLog.w(Messages.get(MeleeWeapon.class, "ability_need_equip"));
+
+			} else if (hero.buff(BrawlersStance.class) != null){
 				if (!hero.buff(BrawlersStance.class).active){
 					hero.buff(BrawlersStance.class).reset();
 				} else {
@@ -221,9 +224,6 @@ public class RingOfForce extends Ring {
 				BuffIndicator.refreshHero();
 				AttackIndicator.updateState();
 				hero.sprite.operate(hero.pos);
-			} else if (!isEquipped(hero)) {
-				GLog.w(Messages.get(MeleeWeapon.class, "ability_need_equip"));
-
 			} else {
 				Buff.affect(hero, BrawlersStance.class).reset();
 				AttackIndicator.updateState();
