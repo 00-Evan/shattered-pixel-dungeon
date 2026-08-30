@@ -41,7 +41,17 @@ public class DungeonTerrainTilemap extends DungeonTilemap {
 	@Override
 	protected int getTileVisual(int pos, int tile, boolean flat) {
 		int visual = DungeonTileSheet.directVisuals.get(tile, -1);
-		if (visual != -1) return DungeonTileSheet.getVisualWithAlts(visual, pos);
+		if (visual != -1) {
+			if (visual == DungeonTileSheet.FLOOR_DECO) {
+				for (int i : PathFinder.NEIGHBOURS4) {
+					if (map[pos + i] == Terrain.MINE_BOULDER) {
+						visual = DungeonTileSheet.MINE_FLOOR_DECO_HEAVY;
+						break;
+					}
+				}
+			}
+			return DungeonTileSheet.getVisualWithAlts(visual, pos);
+		}
 
 		if (tile == Terrain.WATER) {
 			return DungeonTileSheet.stitchWaterTile(

@@ -110,7 +110,7 @@ public class ItemSpriteSheet {
 		
 		assignItemRect(TENGU_BOMB,      10, 10);
 		assignItemRect(TENGU_SHOCKER,   10, 10);
-		assignItemRect(GEO_BOULDER,     16, 14);
+		assignItemRect(GEO_BOULDER,     16, 15);
 	}
 
 	private static final int CONTAINERS     =                               xy(1, 3);   //16 slots

@@ -54,11 +54,15 @@ public class DungeonTileSheet {
 	public static final int EMBERS          = GROUND +3;
 	public static final int FLOOR_SP        = GROUND +4;
 
+	public static final int MINE_FLOOR_DECO_HEAVY   = GROUND +5;
+
 	public static final int FLOOR_ALT_1     = GROUND +6;
 	public static final int FLOOR_DECO_ALT  = GROUND +7;
 	public static final int GRASS_ALT       = GROUND +8;
 	public static final int EMBERS_ALT      = GROUND +9;
 	public static final int FLOOR_SP_ALT    = GROUND +10;
+
+	public static final int MINE_FLOOR_DECO_HEAVY_ALT   = GROUND +11;
 
 	public static final int FLOOR_ALT_2     = GROUND +12;
 
@@ -401,12 +405,6 @@ public class DungeonTileSheet {
 	public static final int MINE_BOULDER_OVERHANG_ALT   = OTHER_OVERHANG+13;
 	public static final int MINE_BOULDER_OVERHANG_ALT_2 = OTHER_OVERHANG+14;
 
-	public static final int HIGH_GRASS_UNDERHANG        = OTHER_OVERHANG+18;
-	public static final int FURROWED_UNDERHANG          = OTHER_OVERHANG+19;
-
-	public static final int HIGH_GRASS_UNDERHANG_ALT    = OTHER_OVERHANG+21;
-	public static final int FURROWED_UNDERHANG_ALT      = OTHER_OVERHANG+22;
-
 	/**********************************************************************
 	 * Logic for the selection of tile visuals
 	 **********************************************************************/
@@ -431,6 +429,7 @@ public class DungeonTileSheet {
 		directVisuals.put(Terrain.CUSTOM_DECO_EMPTY,directVisuals.get(Terrain.EMPTY));
 		directVisuals.put(Terrain.CUSTOM_DECO_WTR,  WATER);
 
+		directVisuals.put(Terrain.EMPTY_DECO,       FLOOR_DECO);
 		directVisuals.put(Terrain.EMPTY_DECO,       FLOOR_DECO);
 		directVisuals.put(Terrain.LOCKED_EXIT,      LOCKED_EXIT);
 		directVisuals.put(Terrain.UNLOCKED_EXIT,    UNLOCKED_EXIT);
@@ -506,8 +505,6 @@ public class DungeonTileSheet {
 		tileAltVisuals.put(FLAT_BOOKSHELF,      new tileAlt(new float[]{50f}, FLAT_BOOKSHELF_ALT));
 		tileAltVisuals.put(FLAT_HIGH_GRASS,     new tileAlt(new float[]{50f}, FLAT_HIGH_GRASS_ALT));
 		tileAltVisuals.put(FLAT_FURROWED_GRASS, new tileAlt(new float[]{50f}, FLAT_FURROWED_ALT));
-		tileAltVisuals.put(FLAT_MINE_CRYSTAL,   new tileAlt(new float[]{52.5f, 5f}, FLAT_MINE_CRYSTAL_ALT, FLAT_MINE_CRYSTAL_ALT_2));
-		tileAltVisuals.put(FLAT_MINE_BOULDER,   new tileAlt(new float[]{52.5f, 5f}, FLAT_MINE_BOULDER_ALT, FLAT_MINE_BOULDER_ALT_2));
 
 		tileAltVisuals.put(RAISED_WALL,             new tileAlt(new float[]{50f}, RAISED_WALL_ALT));
 		tileAltVisuals.put(RAISED_WALL_DECO,        new tileAlt(new float[]{50f}, RAISED_WALL_DECO_ALT));
@@ -517,12 +514,15 @@ public class DungeonTileSheet {
 		tileAltVisuals.put(RAISED_FURROWED_GRASS,   new tileAlt(new float[]{50f}, RAISED_FURROWED_ALT));
 		tileAltVisuals.put(HIGH_GRASS_OVERHANG,     new tileAlt(new float[]{50f}, HIGH_GRASS_OVERHANG_ALT));
 		tileAltVisuals.put(FURROWED_OVERHANG,       new tileAlt(new float[]{50f}, FURROWED_OVERHANG_ALT));
+
+		tileAltVisuals.put(FLAT_MINE_CRYSTAL,       new tileAlt(new float[]{52.5f, 5f}, FLAT_MINE_CRYSTAL_ALT, FLAT_MINE_CRYSTAL_ALT_2));
 		tileAltVisuals.put(RAISED_MINE_CRYSTAL,     new tileAlt(new float[]{52.5f, 5f}, RAISED_MINE_CRYSTAL_ALT, RAISED_MINE_CRYSTAL_ALT_2));
-		tileAltVisuals.put(RAISED_MINE_BOULDER,     new tileAlt(new float[]{52.5f, 5f}, RAISED_MINE_BOULDER_ALT, RAISED_MINE_BOULDER_ALT_2));
-		tileAltVisuals.put(HIGH_GRASS_UNDERHANG,    new tileAlt(new float[]{50f}, HIGH_GRASS_UNDERHANG_ALT));
-		tileAltVisuals.put(FURROWED_UNDERHANG,      new tileAlt(new float[]{50f}, FURROWED_UNDERHANG_ALT));
 		tileAltVisuals.put(MINE_CRYSTAL_OVERHANG,   new tileAlt(new float[]{52.5f, 5f}, MINE_CRYSTAL_OVERHANG_ALT, MINE_CRYSTAL_OVERHANG_ALT_2));
-		tileAltVisuals.put(MINE_BOULDER_OVERHANG,   new tileAlt(new float[]{52.5f, 5f}, MINE_BOULDER_OVERHANG_ALT, MINE_BOULDER_OVERHANG_ALT_2));
+
+		tileAltVisuals.put(MINE_FLOOR_DECO_HEAVY,   new tileAlt(new float[]{50f}, MINE_FLOOR_DECO_HEAVY_ALT));
+		tileAltVisuals.put(FLAT_MINE_BOULDER,       new tileAlt(new float[]{66.7f, 33.3f}, FLAT_MINE_BOULDER_ALT, FLAT_MINE_BOULDER_ALT_2));
+		tileAltVisuals.put(RAISED_MINE_BOULDER,     new tileAlt(new float[]{66.7f, 33.3f}, RAISED_MINE_BOULDER_ALT, RAISED_MINE_BOULDER_ALT_2));
+		tileAltVisuals.put(MINE_BOULDER_OVERHANG,   new tileAlt(new float[]{66.7f, 33.3f}, MINE_BOULDER_OVERHANG_ALT, MINE_BOULDER_OVERHANG_ALT_2));
 	}
 
 	//alt visual priority is back to front, so put lowest chance ones last
