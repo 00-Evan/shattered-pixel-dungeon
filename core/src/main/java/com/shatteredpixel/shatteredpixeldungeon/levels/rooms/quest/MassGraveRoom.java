@@ -222,7 +222,7 @@ public class MassGraveRoom extends SpecialRoom {
 		@Override
 		public Tilemap create() {
 			Tilemap v = super.create();
-			int[] data = mapSimpleImage( 4, 0, 256);
+			int[] data = mapSimpleImage( 5, 0, 256);
 			for (int i = 0; i < data.length; i++){
 				if (render[i] == 0) data[i] = -1;
 			}
