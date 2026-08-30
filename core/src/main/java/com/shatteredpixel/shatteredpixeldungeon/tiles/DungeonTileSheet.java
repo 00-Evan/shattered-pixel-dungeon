@@ -22,6 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.tiles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
+import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.watabou.utils.Random;
 import com.watabou.utils.SparseArray;
@@ -480,6 +482,7 @@ public class DungeonTileSheet {
 			}
 
 		Random.popGenerator();
+		updateAltVariants();
 	}
 
 	private static class tileAlt {
@@ -514,15 +517,21 @@ public class DungeonTileSheet {
 		tileAltVisuals.put(RAISED_FURROWED_GRASS,   new tileAlt(new float[]{50f}, RAISED_FURROWED_ALT));
 		tileAltVisuals.put(HIGH_GRASS_OVERHANG,     new tileAlt(new float[]{50f}, HIGH_GRASS_OVERHANG_ALT));
 		tileAltVisuals.put(FURROWED_OVERHANG,       new tileAlt(new float[]{50f}, FURROWED_OVERHANG_ALT));
+	}
 
-		tileAltVisuals.put(FLAT_MINE_CRYSTAL,       new tileAlt(new float[]{52.5f, 5f}, FLAT_MINE_CRYSTAL_ALT, FLAT_MINE_CRYSTAL_ALT_2));
-		tileAltVisuals.put(RAISED_MINE_CRYSTAL,     new tileAlt(new float[]{52.5f, 5f}, RAISED_MINE_CRYSTAL_ALT, RAISED_MINE_CRYSTAL_ALT_2));
-		tileAltVisuals.put(MINE_CRYSTAL_OVERHANG,   new tileAlt(new float[]{52.5f, 5f}, MINE_CRYSTAL_OVERHANG_ALT, MINE_CRYSTAL_OVERHANG_ALT_2));
-
-		tileAltVisuals.put(MINE_FLOOR_DECO_HEAVY,   new tileAlt(new float[]{50f}, MINE_FLOOR_DECO_HEAVY_ALT));
-		tileAltVisuals.put(FLAT_MINE_BOULDER,       new tileAlt(new float[]{66.7f, 33.3f}, FLAT_MINE_BOULDER_ALT, FLAT_MINE_BOULDER_ALT_2));
-		tileAltVisuals.put(RAISED_MINE_BOULDER,     new tileAlt(new float[]{66.7f, 33.3f}, RAISED_MINE_BOULDER_ALT, RAISED_MINE_BOULDER_ALT_2));
-		tileAltVisuals.put(MINE_BOULDER_OVERHANG,   new tileAlt(new float[]{66.7f, 33.3f}, MINE_BOULDER_OVERHANG_ALT, MINE_BOULDER_OVERHANG_ALT_2));
+	public static void updateAltVariants(){
+		if (Dungeon.level instanceof MiningLevel){
+			if (Blacksmith.Quest.Type() == Blacksmith.Quest.CRYSTAL){
+				tileAltVisuals.put(FLAT_MINE_CRYSTAL,       new tileAlt(new float[]{66.7f, 33.3f}, FLAT_MINE_CRYSTAL_ALT, FLAT_MINE_CRYSTAL_ALT_2));
+				tileAltVisuals.put(RAISED_MINE_CRYSTAL,     new tileAlt(new float[]{52.5f, 5f}, RAISED_MINE_CRYSTAL_ALT, RAISED_MINE_CRYSTAL_ALT_2));
+				tileAltVisuals.put(MINE_CRYSTAL_OVERHANG,   new tileAlt(new float[]{52.5f, 5f}, MINE_CRYSTAL_OVERHANG_ALT, MINE_CRYSTAL_OVERHANG_ALT_2));
+			} else if (Blacksmith.Quest.Type() == Blacksmith.Quest.GNOLL){
+				tileAltVisuals.put(MINE_FLOOR_DECO_HEAVY,   new tileAlt(new float[]{50f}, MINE_FLOOR_DECO_HEAVY_ALT));
+				tileAltVisuals.put(FLAT_MINE_BOULDER,       new tileAlt(new float[]{66.7f, 33.3f}, FLAT_MINE_BOULDER_ALT, FLAT_MINE_BOULDER_ALT_2));
+				tileAltVisuals.put(RAISED_MINE_BOULDER,     new tileAlt(new float[]{66.7f, 33.3f}, RAISED_MINE_BOULDER_ALT, RAISED_MINE_BOULDER_ALT_2));
+				tileAltVisuals.put(MINE_BOULDER_OVERHANG,   new tileAlt(new float[]{66.7f, 33.3f}, MINE_BOULDER_OVERHANG_ALT, MINE_BOULDER_OVERHANG_ALT_2));
+			}
+		}
 	}
 
 	//alt visual priority is back to front, so put lowest chance ones last
