@@ -642,6 +642,7 @@ public class GameScene extends PixelScene {
 					}
 
 					if (spawnersAbove > 0) {
+						GLog.newLine();
 						if (Dungeon.bossLevel()) {
 							GLog.n(Messages.get(this, "spawner_warn_final"));
 						} else {
