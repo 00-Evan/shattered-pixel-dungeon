@@ -23,6 +23,8 @@ package com.shatteredpixel.shatteredpixeldungeon.tiles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.LastShopLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
@@ -71,27 +73,63 @@ public class TerrainFeaturesTilemap extends DungeonTilemap {
 		stage = Math.min(stage, 4);
 		if (tile == Terrain.HIGH_GRASS){
 			if (DungeonTileSheet.getVisualWithAlts(DungeonTileSheet.RAISED_HIGH_GRASS, pos) == DungeonTileSheet.RAISED_HIGH_GRASS_ALT){
-				return 9 + 16*stage + 1;
+				return 128 + 16*stage + 1;
 			} else {
-				return 9 + 16*stage;
+				return 128 + 16*stage;
 			}
 		} else if (tile == Terrain.FURROWED_GRASS){
 			if (DungeonTileSheet.getVisualWithAlts(DungeonTileSheet.RAISED_FURROWED_GRASS, pos) == DungeonTileSheet.RAISED_FURROWED_ALT){
-				return 11 + 16*stage + 1;
+				return 130 + 16*stage + 1;
 			} else {
-				return 11 + 16*stage;
+				return 130 + 16*stage;
 			}
 		} else if (tile == Terrain.GRASS) {
 			if (DungeonTileSheet.getVisualWithAlts(DungeonTileSheet.GRASS, pos) == DungeonTileSheet.GRASS_ALT){
-				return 13 + 16*stage + 1;
+				return 132 + 16*stage + 1;
 			} else {
-				return 13 + 16*stage;
+				return 132 + 16*stage;
 			}
+		} else if (tile == Terrain.BARRICADE) {
+			return 134 + 16*stage;
+
+		} else if (tile == Terrain.ALCHEMY) {
+			return 135 + 16*stage;
+
+		} else if (tile == Terrain.STATUE || tile == Terrain.STATUE_SP) {
+			if (Dungeon.level instanceof CavesBossLevel || Dungeon.level instanceof CityBossLevel){
+				return -1; //statues get overriden here and are never near walls, so just skip
+			}
+			return 136 + 16*stage;
+
+		} else if (tile == Terrain.REGION_DECO) {
+			return 137 + 16 * stage;
+
+		} else if (tile == Terrain.REGION_DECO_ALT) {
+			return 138 + 16 * stage;
+
 		} else if (tile == Terrain.EMBERS) {
 			if (DungeonTileSheet.getVisualWithAlts(DungeonTileSheet.EMBERS, pos) == DungeonTileSheet.EMBERS_ALT){
-				return 9 + 16*stage + 1;
+				return 208 + 1;
 			} else {
-				return 9 + 16*stage;
+				return 208;
+			}
+		} else if (tile == Terrain.MINE_CRYSTAL){
+			int vis = DungeonTileSheet.getVisualWithAlts(DungeonTileSheet.RAISED_MINE_CRYSTAL, pos);
+			if (vis == DungeonTileSheet.RAISED_MINE_CRYSTAL_ALT_2){
+				return 210 + 2;
+			} else if (vis == DungeonTileSheet.RAISED_MINE_CRYSTAL_ALT){
+				return 210 + 1;
+			} else {
+				return 210;
+			}
+		} else if (tile == Terrain.MINE_BOULDER){
+			int vis = DungeonTileSheet.getVisualWithAlts(DungeonTileSheet.RAISED_MINE_BOULDER, pos);
+			if (vis == DungeonTileSheet.RAISED_MINE_BOULDER_ALT_2){
+				return 213 + 2;
+			} else if (vis == DungeonTileSheet.RAISED_MINE_BOULDER_ALT){
+				return 213 + 1;
+			} else {
+				return 213;
 			}
 		}
 

@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonWallsTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.RaisedTerrainTilemap;
 import com.watabou.noosa.TextureFilm;
 
 public abstract class CrystalSpireSprite extends MobSprite {
@@ -98,13 +97,9 @@ public abstract class CrystalSpireSprite extends MobSprite {
 			if (visible){
 				DungeonWallsTilemap.skipCells.add(ch.pos - 2*Dungeon.level.width());
 				DungeonWallsTilemap.skipCells.add(ch.pos - Dungeon.level.width());
-				RaisedTerrainTilemap.skipCells.add(ch.pos - 2*Dungeon.level.width());
-				RaisedTerrainTilemap.skipCells.add(ch.pos - Dungeon.level.width());
 			} else {
 				DungeonWallsTilemap.skipCells.remove(ch.pos - 2*Dungeon.level.width());
 				DungeonWallsTilemap.skipCells.remove(ch.pos - Dungeon.level.width());
-				RaisedTerrainTilemap.skipCells.remove(ch.pos - 2*Dungeon.level.width());
-				RaisedTerrainTilemap.skipCells.remove(ch.pos - Dungeon.level.width());
 			}
 			GameScene.updateMap(ch.pos-2*Dungeon.level.width());
 			GameScene.updateMap(ch.pos-Dungeon.level.width());
