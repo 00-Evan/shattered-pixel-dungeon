@@ -166,6 +166,10 @@ public class CavesBossLevel extends Level {
 		customVisuals.setRect(0, 0, width(), 11);
 		customTiles.add(customVisuals);
 
+		customVisuals = new EntranceTerrain();
+		customVisuals.setRect(WIDTH/2-2, 0, 5, 11);
+		customTerrain.add(customVisuals);
+
 		customVisuals = new EntranceOverhang();
 		customVisuals.setRect(0, 0, width(), 11);
 		customWalls.add(customVisuals);
@@ -655,7 +659,7 @@ public class CavesBossLevel extends Level {
 				-1,  7,  7,  7, -1,
 				-1,  1,  2,  3, -1,
 				 8,  1,  2,  3, 12,
-				30,  9, 10, 11, 31,
+				16,  9, 10, 11, 20,
 				16, 16, 22, 20, 20,
 				16, 17, 18, 19, 20,
 				16, 16, 18, 20, 20,
@@ -701,6 +705,45 @@ public class CavesBossLevel extends Level {
 			return v;
 		}
 
+	}
+
+	public static class EntranceTerrain extends CustomTilemap {
+
+		{
+			texture = Assets.Environment.CAVES_BOSS;
+		}
+
+		private static short[] entryWay = new short[]{
+				-1, -1, -1, -1, -1,
+				-1, -1, -1, -1, -1,
+				8,  -1, -1, -1, 12,
+				30, -1, -1, -1, 31,
+				-1, -1, -1, -1, -1,
+				-1, 17, -1, 19, -1,
+				-1, -1, -1, -1, -1,
+				-1, 17, -1, 19, -1,
+				-1, -1, -1, -1, -1,
+				-1, 17, -1, 19, -1,
+				-1, -1, -1, -1, -1
+		};
+
+		@Override
+		public Tilemap create() {
+			Tilemap v = super.create();
+			int[] data = new int[tileW*tileH];
+			int entryPos = 0;
+			for (int i = 0; i < data.length; i++){
+				data[i] = entryWay[entryPos++];
+			}
+
+			v.map( data, tileW );
+			return v;
+		}
+
+		@Override
+		public Image image(int tileX, int tileY) {
+			return null;
+		}
 	}
 
 	public static class EntranceOverhang extends CustomTilemap{

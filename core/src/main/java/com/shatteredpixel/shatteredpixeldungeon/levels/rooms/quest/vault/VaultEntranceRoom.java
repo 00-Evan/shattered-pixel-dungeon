@@ -82,7 +82,7 @@ public class VaultEntranceRoom extends VaultRoom {
 
 		AmbitiousImpRoom.WallBanners vis2 = new AmbitiousImpRoom.WallBanners();
 		vis2.pos(left+2, top+1);
-		level.customTiles.add(vis2);
+		level.customTerrain.add(vis2);
 
 		ArrayList<Point> pedestalCandidates = new ArrayList<>();
 		pedestalCandidates.add(new Point(left+2, c.y));

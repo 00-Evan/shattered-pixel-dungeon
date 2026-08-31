@@ -291,12 +291,12 @@ public class GameScene extends PixelScene {
 
 		terrainFeatures = new TerrainFeaturesTilemap(Dungeon.level.plants, Dungeon.level.traps);
 		terrain.add(terrainFeatures);
-		
-		levelVisuals = Dungeon.level.addVisuals();
-		add(levelVisuals);
 
 		customTerrain = new Group();
-		add(customTerrain);
+		terrain.add(customTerrain);
+
+		levelVisuals = Dungeon.level.addVisuals();
+		add(levelVisuals);
 
 		floorEmitters = new Group();
 		add(floorEmitters);

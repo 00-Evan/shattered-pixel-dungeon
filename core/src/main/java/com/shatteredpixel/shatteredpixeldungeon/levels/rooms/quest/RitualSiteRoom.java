@@ -98,7 +98,7 @@ public class RitualSiteRoom extends StandardRoom {
 				Table table = new Table();
 				Painter.drawInside(level, this, topRow, 2, Terrain.CUSTOM_DECO);
 				table.pos(topRow.x, topRow.y + 1);
-				level.customTiles.add(table); //probably want this to be raised after fixing that
+				level.customTerrain.add(table);
 			}
 			cageRow--;
 		}

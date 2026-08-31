@@ -23,8 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.tiles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.LastShopLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
@@ -96,9 +94,6 @@ public class TerrainFeaturesTilemap extends DungeonTilemap {
 			return 135 + 16*stage;
 
 		} else if (tile == Terrain.STATUE || tile == Terrain.STATUE_SP) {
-			if (Dungeon.level instanceof CavesBossLevel || Dungeon.level instanceof CityBossLevel){
-				return -1; //statues get overriden here and are never near walls, so just skip
-			}
 			return 136 + 16*stage;
 
 		} else if (tile == Terrain.REGION_DECO) {

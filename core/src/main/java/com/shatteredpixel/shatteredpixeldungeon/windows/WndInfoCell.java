@@ -58,6 +58,16 @@ public class WndInfoCell extends Window {
 				}
 			}
 		}
+		if (customImage == null){
+			for (CustomTilemap i : Dungeon.level.customTerrain){
+				if ((x >= i.tileX && x < i.tileX+i.tileW) &&
+						(y >= i.tileY && y < i.tileY+i.tileH)){
+					if (i.image(x - i.tileX, y - i.tileY) != null) {
+						customImage = i.image(x - i.tileX, y - i.tileY);
+					}
+				}
+			}
+		}
 
 		if (customImage != null){
 			return customImage;
@@ -86,6 +96,16 @@ public class WndInfoCell extends Window {
 				}
 			}
 		}
+		if (customTile == null){
+			for (CustomTilemap i : Dungeon.level.customTerrain){
+				if ((x >= i.tileX && x < i.tileX+i.tileW) &&
+						(y >= i.tileY && y < i.tileY+i.tileH)){
+					if (i.image(x - i.tileX, y - i.tileY) != null) {
+						customTile = i;
+					}
+				}
+			}
+		}
 		if (customTile != null){
 			x -= customTile.tileX;
 			y -= customTile.tileY;
@@ -110,6 +130,16 @@ public class WndInfoCell extends Window {
 					(y >= i.tileY && y < i.tileY+i.tileH)){
 				if (i.image(x - i.tileX, y - i.tileY) != null) {
 					customTile = i;
+				}
+			}
+		}
+		if (customTile == null){
+			for (CustomTilemap i : Dungeon.level.customTerrain){
+				if ((x >= i.tileX && x < i.tileX+i.tileW) &&
+						(y >= i.tileY && y < i.tileY+i.tileH)){
+					if (i.image(x - i.tileX, y - i.tileY) != null) {
+						customTile = i;
+					}
 				}
 			}
 		}

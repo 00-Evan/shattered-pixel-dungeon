@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.Tilemap;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.tweeners.AlphaTweener;
@@ -216,6 +217,10 @@ public class CityBossLevel extends Level {
 		CustomTilemap customVisuals = new CustomGroundVisuals();
 		customVisuals.setRect(0, 0, width(), height());
 		customTiles.add(customVisuals);
+
+		customVisuals = new CustomTerrainVisuals();
+		customVisuals.setRect(0, 0, width(), height());
+		customTerrain.add(customVisuals);
 
 		customVisuals = new CustomWallVisuals();
 		customVisuals.setRect(0, 0, width(), height());
@@ -600,12 +605,6 @@ public class CityBossLevel extends Level {
 						data[i] = 14*8 + 0;
 					}
 
-				//banners along walls
-				} else if (i < tileW*32 && map[i] == Terrain.WALL_DECO && map[i+tileW] != Terrain.WALL) {
-					data[i] = 6*8 + 7;
-				} else if (i < tileW*32 && (map[i] == Terrain.EMPTY || map[i] == Terrain.EMPTY_DECO) && map[i-tileW] == Terrain.WALL_DECO) {
-					data[i] = 7*8 + 7;
-
 				//otherwise no tile here
 				} else {
 
@@ -675,6 +674,82 @@ public class CityBossLevel extends Level {
 			}
 
 			return super.desc(tileX, tileY);
+		}
+	}
+
+	public static class CustomTerrainVisuals extends CustomTilemap {
+
+		{
+			texture = Assets.Environment.CITY_BOSS;
+			tileW = 15;
+			tileH = 48;
+		}
+
+		@Override
+		public Tilemap create() {
+			Tilemap v = super.create();
+			int[] data = new int[tileW*tileH];
+			int[] map = Dungeon.level.map;
+
+			//upper part of the level, skull statues
+			for (int i = tileW; i < tileW*22; i++){
+				if (map[i] == Terrain.STATUE) {
+					data[i] = 15*8 + 5;
+				} else {
+					data[i] = -1;
+				}
+			}
+
+			//lower part: statues and banners
+			for (int i = tileW*22; i < tileW * tileH; i++){
+
+				if (map[i] == Terrain.STATUE) {
+
+					//throne statues
+					if (i < tileW*32){
+						//facing left
+						if (i%tileW > 7) {
+							data[i] = 10 * 8 + 7;
+
+							i++;
+							data[i] = 11 * 8 + 7;
+
+						} else {
+							data[i] = 8 * 8 + 7;
+							i++;
+							data[i] = 9 * 8 + 7;
+						}
+					} else {
+
+						//regular statues facing left
+						if (i % tileW > 7) {
+							data[i] = 15 * 8 + 4;
+						} else {
+							data[i] = -1;
+						}
+
+					}
+
+				//banners along walls
+				} else if (i < tileW*32 && map[i] == Terrain.WALL_DECO && map[i+tileW] != Terrain.WALL) {
+					data[i] = 6*8 + 7;
+				} else if (i < tileW*32 && (map[i] == Terrain.EMPTY || map[i] == Terrain.EMPTY_DECO) && map[i-tileW] == Terrain.WALL_DECO) {
+					data[i] = 7*8 + 7;
+
+				//otherwise no tile here
+				} else {
+
+					data[i] = -1;
+				}
+			}
+
+			v.map( data, tileW );
+			return v;
+		}
+
+		@Override
+		public Image image(int tileX, int tileY) {
+			return null;
 		}
 	}
 
