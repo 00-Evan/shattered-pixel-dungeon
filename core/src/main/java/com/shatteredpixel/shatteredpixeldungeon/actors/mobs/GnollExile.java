@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollExileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.BArray;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
@@ -120,8 +121,10 @@ public class GnollExile extends Gnoll {
 	public void beckon(int cell) {
 		if (state != PASSIVE) {
 			super.beckon(cell);
-		} else {
-			//still attracts if passive, but doesn't remove passive state
+
+		//still attracts if passive, but doesn't remove passive state
+		//also limited in how often they can be guided to the hero this way (shares a variable)
+		} else if (seenNotifyCooldown <= 0){
 			target = cell;
 		}
 	}
@@ -137,10 +140,10 @@ public class GnollExile extends Gnoll {
 		return desc;
 	}
 
+	private int seenNotifyCooldown = 0;
+
 	//gnoll exiles wander around while passive
 	private class Passive extends Mob.Wandering {
-
-		private int seenNotifyCooldown = 0;
 
 		@Override
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
@@ -157,7 +160,7 @@ public class GnollExile extends Gnoll {
 				if (seenNotifyCooldown <= 0){
 					GLog.p(Messages.get(GnollExile.class, "seen_passive"));
 				}
-				seenNotifyCooldown = 10;
+				seenNotifyCooldown = 30;
 			} else {
 				seenNotifyCooldown--;
 			}
@@ -175,6 +178,20 @@ public class GnollExile extends Gnoll {
 
 			}
 		}
+	}
+
+	public static final String SEEN_NOTIF_CD = "seen_notif_cd";
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put(SEEN_NOTIF_CD, seenNotifyCooldown);
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		seenNotifyCooldown = bundle.getInt(SEEN_NOTIF_CD);
 	}
 
 	//standard wandering but with a warning that the exile is aggroed
