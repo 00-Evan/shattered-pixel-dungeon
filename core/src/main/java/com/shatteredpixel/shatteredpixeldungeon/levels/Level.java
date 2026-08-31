@@ -186,7 +186,7 @@ public abstract class Level implements Bundlable {
 	public SparseArray<Plant> plants;
 	public SparseArray<Trap> traps;
 	public ArrayList<CustomTilemap> customTiles;
-	public ArrayList<CustomTilemap> customRaised;
+	public ArrayList<CustomTilemap> customTerrain;
 	public ArrayList<CustomTilemap> customWalls;
 	
 	protected ArrayList<Item> itemsToSpawn = new ArrayList<>();
@@ -209,7 +209,7 @@ public abstract class Level implements Bundlable {
 	private static final String PLANTS		= "plants";
 	private static final String TRAPS       = "traps";
 	private static final String CUSTOM_TILES= "customTiles";
-	private static final String CUSTOM_RAISED= "customRaised";
+	private static final String CUSTOM_TERRAIN= "customTerrain";
 	private static final String CUSTOM_WALLS= "customWalls";
 	private static final String MOBS		= "mobs";
 	private static final String BLOBS		= "blobs";
@@ -307,7 +307,7 @@ public abstract class Level implements Bundlable {
 			plants = new SparseArray<>();
 			traps = new SparseArray<>();
 			customTiles = new ArrayList<>();
-			customRaised = new ArrayList<>();
+			customTerrain = new ArrayList<>();
 			customWalls = new ArrayList<>();
 			
 		} while (!build());
@@ -381,7 +381,7 @@ public abstract class Level implements Bundlable {
 		plants = new SparseArray<>();
 		traps = new SparseArray<>();
 		customTiles = new ArrayList<>();
-		customRaised = new ArrayList<>();
+		customTerrain = new ArrayList<>();
 		customWalls = new ArrayList<>();
 		
 		map		= bundle.getIntArray( MAP );
@@ -421,10 +421,10 @@ public abstract class Level implements Bundlable {
 			customTiles.add(vis);
 		}
 
-		collection = bundle.getCollection( CUSTOM_RAISED );
+		collection = bundle.getCollection( CUSTOM_TERRAIN );
 		for (Bundlable p : collection) {
 			CustomTilemap vis = (CustomTilemap)p;
-			customRaised.add(vis);
+			customTerrain.add(vis);
 		}
 
 		collection = bundle.getCollection( CUSTOM_WALLS );
@@ -492,7 +492,7 @@ public abstract class Level implements Bundlable {
 		bundle.put( PLANTS, plants.valueList() );
 		bundle.put( TRAPS, traps.valueList() );
 		bundle.put( CUSTOM_TILES, customTiles );
-		bundle.put( CUSTOM_RAISED, customRaised );
+		bundle.put( CUSTOM_TERRAIN, customTerrain);
 		bundle.put( CUSTOM_WALLS, customWalls );
 		bundle.put( MOBS, mobs );
 		bundle.put( BLOBS, blobs.values() );

@@ -108,7 +108,11 @@ public class RatKingRoom extends SecretRoom {
 
 		RatKingStatues statues = new RatKingStatues();
 		statues.setRect(left+1, top, width()-2, height());
-		level.customRaised.add(statues);
+		level.customTerrain.add(statues);
+
+		StatueOverhang overhang = new StatueOverhang();
+		overhang.setRect(left+1, top, width()-2, height());
+		level.customWalls.add(overhang);
 
 		RatKing king = new RatKing();
 		king.pos = center;
@@ -209,7 +213,34 @@ public class RatKingRoom extends SecretRoom {
 					if (Dungeon.level.map[cell] == Terrain.CUSTOM_DECO){
 						//statue
 						data[i] = 1;
-					} else if (Dungeon.level.map[cell + Dungeon.level.width()] == Terrain.CUSTOM_DECO){
+					} else {
+						data[i] = -1;
+					}
+					cell++;
+					i++;
+				}
+			}
+			v.map( data, tileW );
+			return v;
+		}
+
+	}
+
+	public static class StatueOverhang extends CustomTilemap {
+
+		{
+			texture = Assets.Environment.RAT_KING_ROOM;
+		}
+
+		@Override
+		public Tilemap create() {
+			Tilemap v = super.create();
+			int[] data = new int[tileW*tileH];
+			int i = 0;
+			for (int y = 0; y < tileH; y++){
+				int cell = tileX + (tileY+y)*Dungeon.level.width();
+				for (int x = 0; x < tileW; x++){
+					if (Dungeon.level.map[cell + Dungeon.level.width()] == Terrain.CUSTOM_DECO){
 						//statue overhang
 						data[i] = 2;
 					} else {

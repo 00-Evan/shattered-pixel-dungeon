@@ -76,11 +76,11 @@ public class MassGraveRoom extends SpecialRoom {
 
 		StatueRaised statue = new StatueRaised();
 		statue.setRect(left+3, top+2, 1, 1);
-		level.customRaised.add(statue);
+		level.customTerrain.add(statue);
 
 		statue = new StatueRaised();
 		statue.setRect(right-3, top+2, 1, 1);
-		level.customRaised.add(statue);
+		level.customTerrain.add(statue);
 
 		//50% 1 skeleton, 50% 2 skeletons
 		for (int i = 0; i <= Random.Int(2); i++){
