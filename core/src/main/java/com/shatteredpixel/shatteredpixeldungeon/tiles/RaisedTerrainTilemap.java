@@ -38,7 +38,7 @@ public class RaisedTerrainTilemap extends DungeonTilemap {
 		if (flat) return -1;
 
 		int region = (Dungeon.depth-1)/5;
-		int regionOffset = region*16;
+		int regionOffset = region*4;
 
 		if (tile == Terrain.HIGH_GRASS){
 			if (DungeonTileSheet.getVisualWithAlts(DungeonTileSheet.RAISED_HIGH_GRASS, pos) == DungeonTileSheet.RAISED_HIGH_GRASS_ALT){
