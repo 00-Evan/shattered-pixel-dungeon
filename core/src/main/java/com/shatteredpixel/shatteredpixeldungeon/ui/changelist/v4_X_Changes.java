@@ -64,6 +64,63 @@ public class v4_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("BETA-4", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton( ChangeIcons.V074_SHPX, "Dev Commentary",
+				"Hey folks, turns out that there were still quite a few bugs to fix! BETA-4 does include some other changes too though!\n" +
+				"\n" +
+				"I'm hopeing that I'll be able to focus on rouding out v4.0's content now, and then move toward a release early this coming week! Depending on how things shape up the beta might end up going a bit longer though."));
+
+		changes.addButton( new ChangeButton( ChangeIcons.V33_IMP, "Gameplay Changes",
+				"The new quest is showing up as very deadly in gameplay data so far, but feedback has been universally positive so I'm hesitant to scale difficulty down just yet. I think there's a good chance that success rates will climb as players learn how to do the quest. In the meantime though there are two specific changes:\n" +
+				"**-** Added a popup warning in the vault quest if the player is at low HP, reminding them that they can flee using vault-exclusive items instead of dieing. This warning shows up once per run, up to three times, and then stops.\n" +
+				"**-** Vault Scanning Sentries now deal 50% less damage after the first zap if they zap you several times in a row\n" +
+				"\n" +
+				"The new **crystal enchantment** is showing as exceptionally weak (except on thrown weapons), so I'm giving it a big boost:\n" +
+				"**-** Crystal melee weapons and spirit bow have ~15% more hits before breaking\n" +
+				"**-** Rate of self-repair for crystal melee weapons and spirit bow doubled\n" +
+				"**-** Crystal weapons now play a sound effect when becoming cracked"));
+
+		changes.addButton( new ChangeButton( ChangeIcons.V40_STONE_AGGRESSION, "Visual Changes",
+				"**Item Changes:**\n" +
+				"**-** Adjusted shading and brightness on runestones so their symbols 'pop' more\n" +
+				"**-** Darkened starflower seeds to make them more distinct from fadeleaf\n" +
+				"\n" +
+				"More item sprite tweaks in response to feedback are coming soon, with an emphasis on scrolls!\n" +
+				"\n" +
+				"**Environment Additions:**\n" +
+				"**-** Added new boss arena visuals in new vault quest!\n" +
+				"**-** Added new visuals for the gnoll caves quest!\n" +
+				"**-** Added new visuals for the prison ritual quest!\n" +
+				"\n" +
+				"**Misc:**\n" +
+				"**-** Lowered the ( and ) symbols in pixel font for better consistency with regular fonts. Makes for better text emotes too :) ;) =)\n"));
+
+		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs\n" +
+				"**Caused by BETA:**\n" +
+				"**-** Wands taken out of the vault not recharging in some cases\n" +
+				"**-** Rankings using items held in the vault if the hero died there, instead of their main items\n" +
+				"**-** Various errors with taking consumables out of the vault\n" +
+				"**-** Various layering issues with terrain graphics and larger enemies\n" +
+				"**-** Blacksmith room sometimes getting connecting doors on both top corners\n" +
+				"**-** Sniper's mark action indicator appearing when Sniper has no bow\n" +
+				"**-** Downed crystal guardians triggering swarm intelligence\n" +
+				"**-** Gnoll Exhiles being constantly becomes be new swarm intelligence\n" +
+				"**-** Vault token door and mirror not being interactable from a distance\n" +
+				"\n" +
+				"**Existed prior to BETA:**\n" +
+				"**-** Enemies converted to allies not granting xp or items in specific cases\n" +
+				"**-** Enemies with corrupting weapons turning other enemies into allies\n" +
+				"**-** Unequipped ring of force being usable via quickslot by Duelist\n" +
+				"**-** Minor visual errorss"));
+
 		changes = new ChangeInfo("BETA-3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
