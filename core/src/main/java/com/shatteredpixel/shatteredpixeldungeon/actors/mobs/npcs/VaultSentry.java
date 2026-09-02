@@ -43,6 +43,8 @@ import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
+
 public class VaultSentry extends NPC {
 
 	{
@@ -72,6 +74,8 @@ public class VaultSentry extends NPC {
 	//to avoid many sentries calling setSeen every turn
 	private boolean seen = false;
 
+	private ArrayList<Integer> recentZaps = new ArrayList<>();
+
 	@Override
 	protected boolean act() {
 		if (!seen && Dungeon.level.heroFOV[pos]){
@@ -85,6 +89,8 @@ public class VaultSentry extends NPC {
 		Dungeon.level.updateFieldOfView( this, fieldOfView );
 
 		curCooldown--;
+
+		ArrayList<Integer> curZaps = new ArrayList<>();
 
 		if (curCooldown <= 0) {
 			int[] scanDirsThisTurn = scanDirs[scanDirIdx];
@@ -112,8 +118,15 @@ public class VaultSentry extends NPC {
 					for (int cell : scan.cells) {
 						if (fieldOfView[cell]) {
 							Char ch = Actor.findChar(cell);
-							if (ch != null && ch.alignment == Alignment.ALLY && ch.invisible == 0) {
-								ch.damage(Random.NormalIntRange(6, 12), new DM100.LightningBolt());
+							if (ch != null
+									&& ch.alignment == Alignment.ALLY
+									&& ch.invisible == 0) {
+								if (recentZaps.contains(ch.id())) {
+									ch.damage(Random.NormalIntRange(3, 6), new DM100.LightningBolt());
+								} else {
+									ch.damage(Random.NormalIntRange(6, 12), new DM100.LightningBolt());
+								}
+								curZaps.add(ch.id());
 								if (ch.sprite.visible || sprite.visible) {
 									Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);
 									sprite.parent.add(new Lightning(sprite.center(), ch.sprite.destinationCenter(), null));
@@ -164,6 +177,9 @@ public class VaultSentry extends NPC {
 			}
 
 		}
+
+		recentZaps.clear();
+		recentZaps.addAll(curZaps);
 
 		if (curCooldown == 1 && giveWarning){
 			int[] scanDirsNextTurn = scanDirs[scanDirIdx];
@@ -238,6 +254,8 @@ public class VaultSentry extends NPC {
 
 	private static final String WARNING = "warning";
 
+	private static final String RECENT_ZAPS = "warning";
+
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
@@ -254,6 +272,12 @@ public class VaultSentry extends NPC {
 		bundle.put(SCANS, scansAfterCooldown);
 		bundle.put(SCANS_MADE, scansMade);
 		bundle.put(WARNING, giveWarning);
+
+		int[] recent = new int[recentZaps.size()];
+		for (int i = 0; i < recent.length; i++){
+			recent[i] = recentZaps.get(i);
+		}
+		bundle.put(RECENT_ZAPS, recent);
 	}
 
 	@Override
@@ -274,6 +298,12 @@ public class VaultSentry extends NPC {
 			scansAfterCooldown = bundle.getInt(SCANS);
 			scansMade = bundle.getInt(SCANS_MADE);
 			giveWarning = bundle.getBoolean(WARNING);
+		}
+		if (bundle.contains(RECENT_ZAPS)){
+			recentZaps.clear();
+			for (int i : bundle.getIntArray(RECENT_ZAPS)){
+				recentZaps.add(i);
+			}
 		}
 	}
 
