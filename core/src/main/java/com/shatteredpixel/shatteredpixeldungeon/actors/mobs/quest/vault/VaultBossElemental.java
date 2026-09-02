@@ -1238,7 +1238,7 @@ public class VaultBossElemental extends Mob {
 					Statistics.questScores[3] -= 100;
 					if (!ch.isAlive()){
 						Badges.validateDeathFromEnemyMagic();
-						Dungeon.fail(target);
+						Dungeon.fail(this);
 					}
 				}
 			}
