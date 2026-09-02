@@ -177,7 +177,7 @@ public class EscapeCrystal extends Item {
 											}
 											//lowest reward, just a consumable
 											if (finalScore <= 1000){
-												return !item.unique && (item instanceof EquipableItem || item instanceof Wand);
+												return !item.unique && !(item instanceof EquipableItem || item instanceof Wand);
 											//mid rewards, item at a max of +0 or +1
 											} else if (finalScore < 4000){
 												int maxLevel = finalScore > 2000 ? 1 : 0;
@@ -207,18 +207,22 @@ public class EscapeCrystal extends Item {
 													desc += "\n\n" + Messages.get(EscapeCrystal.class, "leaving_seal");
 												} else if (item instanceof MagesStaff){
 													desc += "\n\n" + Messages.get(EscapeCrystal.class, "leaving_staff");
+												//can only take 1 of a consumable item
+												} if (item.quantity() > 0 && !(item instanceof EquipableItem)){
+													item = item.duplicate().quantity(1);
 												}
 
+												Item finalItem = item;
 												GameScene.show(new WndOptions(
-														new ItemSprite(item),
-														Messages.titleCase(item.title()),
+														new ItemSprite(finalItem),
+														Messages.titleCase(finalItem.title()),
 														desc,
 														Messages.get(EscapeCrystal.class, "leaving_yes"),
 														Messages.get(EscapeCrystal.class, "leaving_no")){
 													@Override
 													protected void onSelect(int index) {
 														if (index == 0){
-															leaveVault(item, finalScore);
+															leaveVault(finalItem, finalScore);
 														}
 														super.onSelect(index);
 													}
