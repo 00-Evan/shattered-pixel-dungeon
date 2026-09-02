@@ -70,6 +70,8 @@ public class Statistics {
 	public static boolean qualifiedForBossRemainsBadge = false;
 	public static boolean qualifiedForBossChallengeBadge = false;
 	public static boolean qualifiedForRandomVictoryBadge = false;
+
+	public static boolean vaultInjureWarned = false;
 	
 	public static boolean amuletObtained = false;
 	public static boolean gameWon = false;
@@ -113,6 +115,8 @@ public class Statistics {
 		qualifiedForBossRemainsBadge = false;
 		qualifiedForBossChallengeBadge = false;
 		qualifiedForRandomVictoryBadge = GamesInProgress.randomizedClass;
+
+		vaultInjureWarned = false;
 		
 		amuletObtained = false;
 		gameWon = false;
