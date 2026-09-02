@@ -34,11 +34,14 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.EscapeCrystal;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.Trinket;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BadgesGrid;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BadgesList;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Button;
@@ -58,6 +61,7 @@ import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.DeviceCompat;
 
 import java.text.NumberFormat;
@@ -405,6 +409,21 @@ public class WndRanking extends WndTabbed {
 
 				}
 			}
+
+			EscapeCrystal crystal = Dungeon.hero.belongings.getItem(EscapeCrystal.class);
+			if (crystal != null){
+				IconButton vaultInv = new IconButton(new ItemSprite(ItemSpriteSheet.ESCAPE)){
+					@Override
+					protected void onClick() {
+						Bundle items = crystal.storedItems;
+						crystal.restoreHeroBelongings(Dungeon.hero, null);
+						crystal.storedItems = items; //want to preserve this
+						ShatteredPixelDungeon.scene().addToFront(new WndVaultItems());
+					}
+				};
+				vaultInv.setRect(width-16, 2, 16, 16);
+				add(vaultInv);
+			}
 		}
 		
 		private void addItem( Item item ) {
@@ -414,6 +433,16 @@ public class WndRanking extends WndTabbed {
 			
 			pos += slot.height() + 1;
 		}
+	}
+
+	private class WndVaultItems extends Window {
+
+		public WndVaultItems(){
+			resize(WIDTH, HEIGHT);
+
+			add(new ItemsTab());
+		}
+
 	}
 	
 	private class BadgesTab extends Group {
