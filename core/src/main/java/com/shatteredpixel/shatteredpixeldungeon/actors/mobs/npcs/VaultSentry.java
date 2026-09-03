@@ -254,7 +254,7 @@ public class VaultSentry extends NPC {
 
 	private static final String WARNING = "warning";
 
-	private static final String RECENT_ZAPS = "warning";
+	private static final String RECENT_ZAPS = "recent_zaps";
 
 	@Override
 	public void storeInBundle(Bundle bundle) {

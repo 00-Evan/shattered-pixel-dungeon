@@ -112,7 +112,7 @@ public class v4_X_Changes {
 				"**-** Blacksmith room sometimes getting connecting doors on both top corners\n" +
 				"**-** Sniper's mark action indicator appearing when Sniper has no bow\n" +
 				"**-** Downed crystal guardians triggering swarm intelligence\n" +
-				"**-** Gnoll Exhiles being constantly becomes be new swarm intelligence\n" +
+				"**-** Gnoll Exhiles being constantly beckoned by new swarm intelligence\n" +
 				"**-** Vault token door and mirror not being interactable from a distance\n" +
 				"\n" +
 				"**Existed prior to BETA:**\n" +
