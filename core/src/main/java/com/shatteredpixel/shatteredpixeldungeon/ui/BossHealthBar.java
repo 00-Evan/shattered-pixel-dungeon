@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BloodParticle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoMob;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Image;
@@ -232,10 +231,13 @@ public class BossHealthBar extends Component {
 	}
 
 	public static void assignBoss(Mob boss){
+		assignBoss(boss, false);
+	}
+
+	public static void assignBoss(Mob boss, boolean forceSpriteRefresh){
 		if (BossHealthBar.boss == boss) {
 			//re-assign sprite if it has changed
-			if (instance.skull instanceof CharSprite
-					&& instance.skull.getClass() != boss.spriteClass){
+			if (forceSpriteRefresh){
 				ShatteredPixelDungeon.runOnRenderThread(new Callback() {
 					@Override
 					public void call() {

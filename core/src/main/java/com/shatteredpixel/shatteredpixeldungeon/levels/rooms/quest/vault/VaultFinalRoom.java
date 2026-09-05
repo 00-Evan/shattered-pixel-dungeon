@@ -259,7 +259,8 @@ public class VaultFinalRoom extends SpecialRoom {
 				boss.fieldOfView = new boolean[Dungeon.level.length()];
 				Dungeon.level.updateFieldOfView( boss, boss.fieldOfView );
 				boss.aggro(Dungeon.hero);
-				boss.changeForm();
+				boss.sprite.turnTo(boss.pos, Dungeon.hero.pos);
+				boss.setElementalForm(boss.curForm()); //re-assert default form for particle fx
 				Dungeon.level.seal();
 				lockTriggered = true;
 			} else if (distance == 4 && warnState < 2) {

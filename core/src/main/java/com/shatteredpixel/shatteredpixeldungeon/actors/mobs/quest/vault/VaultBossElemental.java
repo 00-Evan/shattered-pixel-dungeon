@@ -61,6 +61,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.VaultBossElementalSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -80,7 +81,7 @@ public class VaultBossElemental extends Mob {
 
 	{
 		HP = HT = 600;
-		spriteClass = VaultBossElementalSprite.Fire.class;
+		spriteClass = VaultBossElementalSprite.class;
 
 		EXP = 30;
 		defenseSkill = 20;
@@ -90,17 +91,8 @@ public class VaultBossElemental extends Mob {
 
 	public VaultBossElemental(){
 		super();
-		switch (Random.Int(3)){
-			case 0:
-				spriteClass = VaultBossElementalSprite.Fire.class;
-				break;
-			case 1:
-				spriteClass = VaultBossElementalSprite.Frost.class;
-				break;
-			case 2:
-				spriteClass = VaultBossElementalSprite.Shock.class;
-				break;
-		}
+		form = ElementalForm.values()[Random.Int(3)];
+		formChances[form.ordinal()]--;
 	}
 
 	@Override
@@ -165,6 +157,10 @@ public class VaultBossElemental extends Mob {
 		setElementalForm(newForm);
 	}
 
+	public ElementalForm curForm(){
+		return form;
+	}
+
 	public void setElementalForm( ElementalForm form ){
 		//always remove pincushion as we're either leaving or entering frost form
 		Buff.affect(this, PinCushionRemover.class).preferGrouping = this.form == ElementalForm.FIRE;
@@ -172,8 +168,8 @@ public class VaultBossElemental extends Mob {
 		this.form = form;
 		boolean wasTurned = sprite.flipHorizontal;
 
-		sprite.killAndErase();
-		GameScene.addSprite(this);
+		((VaultBossElementalSprite)sprite).updateForm();
+		AttackIndicator.target(this);
 		if (form == ElementalForm.FIRE){
 			sprite.emitter().burst(FlameParticle.FACTORY, 50);
 
@@ -204,7 +200,7 @@ public class VaultBossElemental extends Mob {
 		envAttackCooldown /= 2;
 
 		sprite.flipHorizontal = wasTurned;
-		BossHealthBar.assignBoss(this);
+		BossHealthBar.assignBoss(this, true);
 		weakAnnounced = false;
 	}
 
@@ -395,10 +391,11 @@ public class VaultBossElemental extends Mob {
 		}
 
 		if (HP <= (curbracket-1)*hpBracket){
-			//cannot be hit through multiple brackets at a time
-			HP = Math.max(HP, (curbracket-2)*hpBracket);
 
 			if (isAlive()) {
+				//cannot be hit through multiple brackets at a time
+				HP = Math.max(HP, (curbracket-2)*hpBracket);
+
 				//changes forms!
 				ElementalForm newForm;
 				do {
@@ -419,15 +416,13 @@ public class VaultBossElemental extends Mob {
 
 	@Override
 	public CharSprite sprite() {
-		if (form != null) {
-			switch (form) {
-				case FIRE: spriteClass = VaultBossElementalSprite.Fire.class; break;
-				case FROST: spriteClass = VaultBossElementalSprite.Frost.class; break;
-				case SHOCK: spriteClass = VaultBossElementalSprite.Shock.class; break;
-				case UNSTABLE: spriteClass = VaultBossElementalSprite.Chaos.class; break;
-			}
+		if (form == null){
+			changeForm();
 		}
 		CharSprite sprite = super.sprite();
+		if (form != null) {
+			((VaultBossElementalSprite)sprite).setForm(form);
+		}
 		return sprite;
 	}
 

@@ -22,123 +22,198 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultBossElemental;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Callback;
+import com.watabou.utils.Random;
 
-public abstract class VaultBossElementalSprite extends ElementalSprite {
+public class VaultBossElementalSprite extends MobSprite {
+
+	private Emitter particles;
 
 	{
 		perspectiveRaise = 0 / 16f; //no need, it's huge and already floats
 	}
 
-	public VaultBossElementalSprite(){
+	private VaultBossElemental.ElementalForm form;
+
+	public VaultBossElementalSprite() {
 		super();
-		scale.set(2f);
+
+		texture( Assets.Sprites.VAULT_BOSS_ELEMENTAL );
+
+		updateAnimations();
+	}
+
+	public void setForm(VaultBossElemental.ElementalForm form){
+		this.form = form;
+		updateAnimations();
+	}
+
+	@Override
+	public void linkVisuals(Char ch) {
+		super.linkVisuals(ch);
+		if (ch instanceof VaultBossElemental && ((VaultBossElemental) ch).curForm() != null){
+			form = ((VaultBossElemental) ch).curForm();
+		}
+		updateAnimations();
+	}
+
+	public void updateForm(){
+		if (ch instanceof VaultBossElemental && ((VaultBossElemental) ch).curForm() != null){
+			form = ((VaultBossElemental) ch).curForm();
+		}
+		updateAnimations();
+	}
+
+	private void updateAnimations(){
+
+		//pick a random form if we have none
+		if (form == null){
+			form = VaultBossElemental.ElementalForm.values()[Random.Int(3)];
+		}
+
+		int c = 21*form.ordinal();
+
+		TextureFilm frames = new TextureFilm( texture, 24, 28 );
+
+		idle = new Animation( 10, true );
+		idle.frames( frames, c+0, c+1, c+2 );
+
+		run = new Animation( 12, true );
+		run.frames( frames, c+0, c+1, c+3 );
+
+		attack = new Animation( 15, false );
+		attack.frames( frames, c+4, c+5, c+6 );
+
+		zap = attack.clone();
+
+		die = new Animation( 15, false );
+		die.frames( frames, c+7, c+8, c+9, c+10, c+11, c+12, c+13, c+12 );
 
 		operate = attack.clone();
+
+		play( idle );
+
+		if (particles != null){
+			particles.killAndErase();
+			particles = createEmitter();
+		}
+
 	}
 
-	public static class Fire extends VaultBossElementalSprite {
+	@Override
+	public void onComplete( Animation anim ) {
+		if (anim == zap) {
+			idle();
+		}
+		super.onComplete( anim );
+	}
 
-		@Override
-		protected int texOffset() {
-			return 0;
+	@Override
+	public void zap(int cell) {
+		zap( cell, null );
+
+		switch (form){
+			case FIRE: default:
+				MagicMissile.boltFromChar( parent,
+						MagicMissile.FIRE,
+						this,
+						cell,
+						new Callback() {
+							@Override
+							public void call() {
+								((VaultBossElemental) ch).onZapComplete();
+							}
+						} );
+				Sample.INSTANCE.play( Assets.Sounds.ZAP );
+				break;
+			case FROST:
+				((VaultBossElemental) ch).onZapComplete();
+				Sample.INSTANCE.play( Assets.Sounds.SHATTER );
+				break;
+			case SHOCK:
+				zap( cell, null );
+
+				Ballistica b = new Ballistica(ch.pos, cell, Ballistica.STOP_SOLID);
+				cell = b.collisionPos;
+
+				((VaultBossElemental)ch).onZapComplete();
+
+				parent.add( new Lightning(center(), cell, null));
+				Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
+				break;
 		}
 
-		@Override
-		protected Emitter createEmitter() {
-			Emitter emitter = emitter();
-			emitter.pour( FlameParticle.FACTORY, 0.06f );
-			return emitter;
+	}
+
+	private Emitter createEmitter() {
+		Emitter emitter = emitter();
+		switch (form){
+			case FIRE: default:
+				emitter.pour( FlameParticle.FACTORY, 0.03f );
+				break;
+			case FROST:
+				emitter.pour( MagicMissile.MagicParticle.FACTORY, 0.03f );
+				break;
+			case SHOCK:
+				emitter.pour(  SparkParticle.STATIC, 0.03f );
+				break;
 		}
+		return emitter;
+	}
 
-		public void zap( int cell ) {
-			zap( cell, null );
+	@Override
+	public void link( Char ch ) {
+		super.link( ch );
 
-			MagicMissile.boltFromChar( parent,
-					MagicMissile.FIRE,
-					this,
-					cell,
-					new Callback() {
-						@Override
-						public void call() {
-							((VaultBossElemental) ch).onZapComplete();
-						}
-					} );
-			Sample.INSTANCE.play( Assets.Sounds.ZAP );
-		}
-
-		@Override
-		public int blood() {
-			return 0xFFFFBB33;
+		if (particles == null) {
+			particles = createEmitter();
 		}
 	}
 
-	public static class Frost extends VaultBossElementalSprite {
+	@Override
+	public void update() {
+		super.update();
 
-		@Override
-		protected int texOffset() {
-			return 28;
-		}
-
-		@Override
-		protected Emitter createEmitter() {
-			Emitter emitter = emitter();
-			emitter.pour( MagicMissile.MagicParticle.FACTORY, 0.06f );
-			return emitter;
-		}
-
-		public void zap( int cell ) {
-			zap( cell, null );
-
-			((VaultBossElemental)ch).onZapComplete();
-			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
-		}
-
-		@Override
-		public int blood() {
-			return 0xFF8EE3FF;
+		if (particles != null){
+			particles.visible = visible;
 		}
 	}
 
-	public static class Shock extends VaultBossElementalSprite {
-
-		//different bolt, so overrides zap
-		@Override
-		public void zap( int cell ) {
-			zap( cell, null );
-
-			Ballistica b = new Ballistica(ch.pos, cell, Ballistica.STOP_SOLID);
-			cell = b.collisionPos;
-
-			((VaultBossElemental)ch).onZapComplete();
-
-			parent.add( new Lightning(center(), cell, null));
-			Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
+	@Override
+	public void die() {
+		super.die();
+		if (particles != null){
+			particles.on = false;
 		}
+	}
 
-		@Override
-		protected int texOffset() {
-			return 42;
+	@Override
+	public void kill() {
+		super.kill();
+		if (particles != null){
+			particles.killAndErase();
 		}
+	}
 
-		@Override
-		protected Emitter createEmitter() {
-			Emitter emitter = emitter();
-			emitter.pour( SparkParticle.STATIC, 0.06f );
-			return emitter;
-		}
-
-		@Override
-		public int blood() {
-			return 0xFFFFFF85;
+	@Override
+	public int blood() {
+		switch (form){
+			case FIRE: default:
+				return 0xFFFFBB33;
+			case FROST:
+				return 0xFF8EE3FF;
+			case SHOCK:
+				return 0xFFFFFF85;
 		}
 	}
 
