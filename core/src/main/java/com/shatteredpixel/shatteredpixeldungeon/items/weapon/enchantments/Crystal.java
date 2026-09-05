@@ -118,6 +118,10 @@ public class Crystal extends Weapon.Enchantment {
 		thrownWeapon = true;
 	}
 
+	public void setDurability(float amount){
+		durability = visualDurability = amount;
+	}
+
 	public void repair(Weapon w, boolean inRose, float amount){
 		if (w instanceof MissileWeapon){
 			amount /= 2; //crystal thrown weapons have more uses, they repair more slowly
