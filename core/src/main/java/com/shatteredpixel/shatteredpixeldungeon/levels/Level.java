@@ -285,9 +285,12 @@ public abstract class Level implements Bundlable {
 						break;
 					default:
 						//if-else statements are fine here as only one chance can be above 0 at a time
-						if (Random.Float() < MossyClump.overrideNormalLevelChance()){
+						// we pre-generate the floats to ensure Random is called consistently
+						float mossyChance = Random.Float();
+						float trapMechChance = Random.Float();
+						if (mossyChance < MossyClump.overrideNormalLevelChance()){
 							feeling = MossyClump.getNextFeeling();
-						} else if (Random.Float() < TrapMechanism.overrideNormalLevelChance()) {
+						} else if (trapMechChance < TrapMechanism.overrideNormalLevelChance()) {
 							feeling = TrapMechanism.getNextFeeling();
 						} else {
 							feeling = Feeling.NONE;
