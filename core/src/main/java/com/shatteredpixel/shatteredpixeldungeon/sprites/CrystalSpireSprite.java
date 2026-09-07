@@ -27,22 +27,15 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonWallsTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.RaisedTerrainTilemap;
 import com.watabou.noosa.TextureFilm;
 
 public abstract class CrystalSpireSprite extends MobSprite {
 
-	{
-		perspectiveRaise = 7 / 16f; //7 pixels
-
-		shadowWidth     = 1f;
-		shadowHeight    = 1f;
-		shadowOffset    = 1f;
-	}
-
 	public CrystalSpireSprite(){
 		texture( Assets.Sprites.CRYSTAL_SPIRE );
 
-		TextureFilm frames = new TextureFilm( texture, 24, 41 );
+		TextureFilm frames = new TextureFilm( texture, 29, 40 );
 
 		int c = texOffset();
 
@@ -65,7 +58,7 @@ public abstract class CrystalSpireSprite extends MobSprite {
 			hpPercent = ch.HP/(float)ch.HT;
 		}
 
-		TextureFilm frames = new TextureFilm( texture, 24, 41 );
+		TextureFilm frames = new TextureFilm( texture, 29, 40 );
 
 		if (hpPercent > 0.9f){
 			idle.frames( frames, 0+texOffset() );
@@ -97,9 +90,13 @@ public abstract class CrystalSpireSprite extends MobSprite {
 			if (visible){
 				DungeonWallsTilemap.skipCells.add(ch.pos - 2*Dungeon.level.width());
 				DungeonWallsTilemap.skipCells.add(ch.pos - Dungeon.level.width());
+				RaisedTerrainTilemap.skipCells.add(ch.pos - 2*Dungeon.level.width());
+				RaisedTerrainTilemap.skipCells.add(ch.pos - Dungeon.level.width());
 			} else {
 				DungeonWallsTilemap.skipCells.remove(ch.pos - 2*Dungeon.level.width());
 				DungeonWallsTilemap.skipCells.remove(ch.pos - Dungeon.level.width());
+				RaisedTerrainTilemap.skipCells.remove(ch.pos - 2*Dungeon.level.width());
+				RaisedTerrainTilemap.skipCells.remove(ch.pos - Dungeon.level.width());
 			}
 			GameScene.updateMap(ch.pos-2*Dungeon.level.width());
 			GameScene.updateMap(ch.pos-Dungeon.level.width());
@@ -140,7 +137,7 @@ public abstract class CrystalSpireSprite extends MobSprite {
 	public static class Green extends CrystalSpireSprite {
 		@Override
 		protected int texOffset() {
-			return 5;
+			return 8;
 		}
 		@Override
 		public int blood() {
@@ -151,7 +148,7 @@ public abstract class CrystalSpireSprite extends MobSprite {
 	public static class Red extends CrystalSpireSprite {
 		@Override
 		protected int texOffset() {
-			return 10;
+			return 16;
 		}
 		@Override
 		public int blood() {

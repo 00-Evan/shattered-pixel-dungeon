@@ -314,9 +314,13 @@ public class DungeonTileSheet {
 	public static final int RAISED_REGION_DECO      = RAISED_OTHER+10;
 	public static final int RAISED_REGION_DECO_ALT  = RAISED_OTHER+11;
 
-	public static final int RAISED_MINE_CRYSTAL     = RAISED_OTHER+12;
-	public static final int RAISED_MINE_CRYSTAL_ALT = RAISED_OTHER+13;
-	public static final int RAISED_MINE_CRYSTAL_ALT_2=RAISED_OTHER+14;
+	public static final int RAISED_MINE_CRYSTAL_BLUE_1  = RAISED_OTHER+12; //blue1 is the default
+	public static final int RAISED_MINE_CRYSTAL_BLUE_2  = RAISED_OTHER+13;
+	public static final int RAISED_MINE_CRYSTAL_GREEN_1 = RAISED_OTHER+14;
+	public static final int RAISED_MINE_CRYSTAL_GREEN_2 = RAISED_OTHER+15;
+	public static final int RAISED_MINE_CRYSTAL_RED_1   = RAISED_OTHER+16;
+	public static final int RAISED_MINE_CRYSTAL_RED_2   = RAISED_OTHER+17;
+
 	public static final int RAISED_MINE_BOULDER     = RAISED_OTHER+12;
 	public static final int RAISED_MINE_BOULDER_ALT = RAISED_OTHER+13;
 	public static final int RAISED_MINE_BOULDER_ALT_2=RAISED_OTHER+14;
@@ -400,9 +404,9 @@ public class DungeonTileSheet {
 	public static final int REGION_DECO_OVERHANG        = OTHER_OVERHANG+10;
 	public static final int REGION_DECO_ALT_OVERHANG    = OTHER_OVERHANG+11;
 
-	public static final int MINE_CRYSTAL_OVERHANG       = OTHER_OVERHANG+12;
-	public static final int MINE_CRYSTAL_OVERHANG_ALT   = OTHER_OVERHANG+13;
-	public static final int MINE_CRYSTAL_OVERHANG_ALT_2 = OTHER_OVERHANG+14;
+	public static final int MINE_CRYSTAL_OVERHANG_BLUE  = OTHER_OVERHANG+12;
+	public static final int MINE_CRYSTAL_OVERHANG_GREEN = OTHER_OVERHANG+13;
+	public static final int MINE_CRYSTAL_OVERHANG_RED   = OTHER_OVERHANG+14;
 	public static final int MINE_BOULDER_OVERHANG       = OTHER_OVERHANG+12;
 	public static final int MINE_BOULDER_OVERHANG_ALT   = OTHER_OVERHANG+13;
 	public static final int MINE_BOULDER_OVERHANG_ALT_2 = OTHER_OVERHANG+14;
@@ -523,8 +527,9 @@ public class DungeonTileSheet {
 		if (Dungeon.level instanceof MiningLevel){
 			if (Blacksmith.Quest.Type() == Blacksmith.Quest.CRYSTAL){
 				tileAltVisuals.put(FLAT_MINE_CRYSTAL,       new tileAlt(new float[]{66.7f, 33.3f}, FLAT_MINE_CRYSTAL_ALT, FLAT_MINE_CRYSTAL_ALT_2));
-				tileAltVisuals.put(RAISED_MINE_CRYSTAL,     new tileAlt(new float[]{52.5f, 5f}, RAISED_MINE_CRYSTAL_ALT, RAISED_MINE_CRYSTAL_ALT_2));
-				tileAltVisuals.put(MINE_CRYSTAL_OVERHANG,   new tileAlt(new float[]{52.5f, 5f}, MINE_CRYSTAL_OVERHANG_ALT, MINE_CRYSTAL_OVERHANG_ALT_2));
+				tileAltVisuals.put(RAISED_MINE_CRYSTAL_BLUE_1,     new tileAlt(new float[]{83.3f, 66.7f, 50f, 33.3f, 16.7f},
+						RAISED_MINE_CRYSTAL_BLUE_2, RAISED_MINE_CRYSTAL_GREEN_1, RAISED_MINE_CRYSTAL_GREEN_2, RAISED_MINE_CRYSTAL_RED_1, RAISED_MINE_CRYSTAL_RED_2));
+				tileAltVisuals.put(MINE_CRYSTAL_OVERHANG_BLUE,   new tileAlt(new float[]{66.7f, 33.3f}, MINE_CRYSTAL_OVERHANG_GREEN, MINE_CRYSTAL_OVERHANG_RED));
 			} else if (Blacksmith.Quest.Type() == Blacksmith.Quest.GNOLL){
 				tileAltVisuals.put(MINE_FLOOR_DECO_HEAVY,   new tileAlt(new float[]{50f}, MINE_FLOOR_DECO_HEAVY_ALT));
 				tileAltVisuals.put(FLAT_MINE_BOULDER,       new tileAlt(new float[]{66.7f, 33.3f}, FLAT_MINE_BOULDER_ALT, FLAT_MINE_BOULDER_ALT_2));

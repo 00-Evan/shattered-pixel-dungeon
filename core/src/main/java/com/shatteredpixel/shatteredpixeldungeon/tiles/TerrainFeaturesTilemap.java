@@ -109,22 +109,28 @@ public class TerrainFeaturesTilemap extends DungeonTilemap {
 				return 208;
 			}
 		} else if (tile == Terrain.MINE_CRYSTAL){
-			int vis = DungeonTileSheet.getVisualWithAlts(DungeonTileSheet.RAISED_MINE_CRYSTAL, pos);
-			if (vis == DungeonTileSheet.RAISED_MINE_CRYSTAL_ALT_2){
+			int vis = DungeonTileSheet.getVisualWithAlts(DungeonTileSheet.RAISED_MINE_CRYSTAL_BLUE_1, pos);
+			if (vis == DungeonTileSheet.RAISED_MINE_CRYSTAL_RED_2){
+				return 210 + 5;
+			} else if (vis == DungeonTileSheet.RAISED_MINE_CRYSTAL_RED_1){
+				return 210 + 4;
+			} else if (vis == DungeonTileSheet.RAISED_MINE_CRYSTAL_GREEN_2){
+				return 210 + 3;
+			} else if (vis == DungeonTileSheet.RAISED_MINE_CRYSTAL_GREEN_1){
 				return 210 + 2;
-			} else if (vis == DungeonTileSheet.RAISED_MINE_CRYSTAL_ALT){
+			} else if (vis == DungeonTileSheet.RAISED_MINE_CRYSTAL_BLUE_2){
 				return 210 + 1;
 			} else {
-				return 210;
+				return 210 + 0;
 			}
 		} else if (tile == Terrain.MINE_BOULDER){
 			int vis = DungeonTileSheet.getVisualWithAlts(DungeonTileSheet.RAISED_MINE_BOULDER, pos);
 			if (vis == DungeonTileSheet.RAISED_MINE_BOULDER_ALT_2){
-				return 213 + 2;
+				return 216 + 2;
 			} else if (vis == DungeonTileSheet.RAISED_MINE_BOULDER_ALT){
-				return 213 + 1;
+				return 216 + 1;
 			} else {
-				return 213;
+				return 216;
 			}
 		}
 

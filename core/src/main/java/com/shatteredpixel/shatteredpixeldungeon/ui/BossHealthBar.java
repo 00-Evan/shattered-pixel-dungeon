@@ -166,8 +166,8 @@ public class BossHealthBar extends Component {
 
 		int paneSize = large ? 30 : 16;
 
-		if (skull.height() > 26 || skull.width() > 26){
-			skull.scale.set(skull.scale.x * PixelScene.align(26f/Math.max(skull.width(), skull.height())));
+		if (skull.height() > 24 || skull.width() > 24){
+			skull.scale.set(skull.scale.x * PixelScene.align(24f/Math.max(skull.width(), skull.height())));
 		}
 
 		skull.x = bar.x + (paneSize - skull.width())/2f;
