@@ -49,6 +49,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLightning;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
@@ -459,6 +460,14 @@ public class VaultBossElemental extends Mob {
 			props.add(Property.ELECTRIC);
 		}
 		return props;
+	}
+
+	@Override
+	public float resist(Class effect) {
+		if (form == ElementalForm.SHOCK && effect == WandOfLightning.class){
+			return 1; //shock form doesn't resist wand of lightning as it's a wand, and wands are effective vs. shock form
+		}
+		return super.resist(effect);
 	}
 
 	@Override
