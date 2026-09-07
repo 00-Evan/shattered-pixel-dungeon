@@ -66,7 +66,7 @@ public class SegmentedLibraryRoom extends StandardRoom {
 					if (width > 1 && height > 1){
 						Carpet carpet = new Carpet();
 						carpet.setRect(x, y, width, height);
-						level.customTiles.add(carpet);
+						//level.customTiles.add(carpet);
 						y += height-1;
 					}
 				}
@@ -75,57 +75,62 @@ public class SegmentedLibraryRoom extends StandardRoom {
 	}
 
 	private void createWalls( Level level, Rect area ){
-		if (Math.max(area.width()+1, area.height()+1) < 4
-				|| Math.min(area.width()+1, area.height()+1) < 3){
-			return;
+		if (Math.max(area.width()+1, area.height()+1) >= 4
+			&& Math.min(area.width()+1, area.height()+1) >= 3) {
+			int tries = 10;
+
+			//splitting top/bottom
+			if (area.width() > area.height() || (area.width() == area.height() && Random.Int(2) == 0)) {
+
+				do {
+					int splitX = Random.IntRange(area.left + 2, area.right - 2);
+
+					if (level.map[splitX + level.width() * (area.top - 1)] == Terrain.BOOKSHELF
+							&& level.map[splitX + level.width() * (area.bottom + 1)] == Terrain.BOOKSHELF) {
+
+						Painter.drawLine(level, new Point(splitX, area.top), new Point(splitX, area.bottom), Terrain.BOOKSHELF);
+
+						int spaceTop = Random.IntRange(area.top, area.bottom - 1);
+						Painter.set(level, splitX, spaceTop, Terrain.EMPTY_SP);
+						//Painter.set(level, splitX, spaceTop+1, Terrain.EMPTY);
+
+						createWalls(level, new Rect(area.left, area.top, splitX - 1, area.bottom));
+						createWalls(level, new Rect(splitX + 1, area.top, area.right, area.bottom));
+						return;
+					}
+
+				} while (--tries > 0);
+
+				//splitting left/right
+			} else {
+
+				do {
+					int splitY = Random.IntRange(area.top + 2, area.bottom - 2);
+
+					if (level.map[area.left - 1 + level.width() * splitY] == Terrain.BOOKSHELF
+							&& level.map[area.right + 1 + level.width() * splitY] == Terrain.BOOKSHELF) {
+
+						Painter.drawLine(level, new Point(area.left, splitY), new Point(area.right, splitY), Terrain.BOOKSHELF);
+
+						int spaceLeft = Random.IntRange(area.left, area.right - 1);
+						Painter.set(level, spaceLeft, splitY, Terrain.EMPTY_SP);
+						//Painter.set(level, spaceLeft+1, splitY, Terrain.EMPTY);
+
+						createWalls(level, new Rect(area.left, area.top, area.right, splitY - 1));
+						createWalls(level, new Rect(area.left, splitY + 1, area.right, area.bottom));
+						return;
+					}
+
+				} while (--tries > 0);
+
+			}
 		}
 
-		int tries = 10;
-
-		//splitting top/bottom
-		if (area.width() > area.height() || (area.width() == area.height() && Random.Int(2) == 0)){
-
-			do{
-				int splitX = Random.IntRange(area.left+2, area.right-2);
-
-				if (level.map[splitX + level.width()*(area.top-1)] == Terrain.BOOKSHELF
-						&& level.map[splitX + level.width()*(area.bottom+1)] == Terrain.BOOKSHELF){
-					tries = 0;
-
-					Painter.drawLine(level, new Point(splitX, area.top), new Point(splitX, area.bottom), Terrain.BOOKSHELF);
-
-					int spaceTop = Random.IntRange(area.top, area.bottom-1);
-					Painter.set(level, splitX, spaceTop, Terrain.EMPTY_SP);
-					//Painter.set(level, splitX, spaceTop+1, Terrain.EMPTY);
-
-					createWalls(level, new Rect(area.left, area.top, splitX-1, area.bottom));
-					createWalls(level, new Rect(splitX+1, area.top, area.right, area.bottom));
-				}
-
-			} while (--tries > 0);
-
-			//splitting left/right
-		} else {
-
-			do{
-				int splitY = Random.IntRange(area.top+2, area.bottom-2);
-
-				if (level.map[area.left-1 + level.width()*splitY] == Terrain.BOOKSHELF
-						&& level.map[area.right+1 + level.width()*splitY] == Terrain.BOOKSHELF){
-					tries = 0;
-
-					Painter.drawLine(level, new Point(area.left, splitY), new Point(area.right, splitY), Terrain.BOOKSHELF);
-
-					int spaceLeft = Random.IntRange(area.left, area.right-1);
-					Painter.set(level, spaceLeft, splitY, Terrain.EMPTY_SP);
-					//Painter.set(level, spaceLeft+1, splitY, Terrain.EMPTY);
-
-					createWalls(level, new Rect(area.left, area.top, area.right, splitY-1));
-					createWalls(level, new Rect(area.left, splitY+1, area.right, area.bottom));
-				}
-
-			} while (--tries > 0);
-
+		//try to place a carpet if we didn't segment this area for any reason
+		if (area.width()+1 >= 2 && area.height()+1 >= 2){
+			Carpet carpet = new Carpet();
+			carpet.setRect(area.left, area.top, area.width()+1, area.height()+1);
+			level.customTiles.add(carpet);
 		}
 	}
 
