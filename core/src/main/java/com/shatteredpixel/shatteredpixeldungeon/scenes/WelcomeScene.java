@@ -212,9 +212,9 @@ public class WelcomeScene extends PixelScene {
 				message += "\n" + Messages.get(this, "patch_translations");
 
 			}
-			message = "Greetings Beta Testers, after far too long v4.0.0 is finally ready for playtesting!" +
-					"\n\nThis massive update includes Shattered's biggest new quest ever, plus a bunch of new art, new enchantments, and several smaller changes and adjustments." +
-					"\n\nThe update is content-complete, but I expect there will be some refinements needed before release. Let me know what you think!";
+			message = "Greetings Beta Testers, after a bit longer than expected the beta for v4.0 is winding down!" +
+					"\n\nAfter a bunch of fixes this last beta includes a bunch of final visual changes, several of which are feedback-driven." +
+					"\n\nCheck the changes screen for details as usual, and let me know what you think!";
 		} else {
 			message = Messages.get(this, "what_msg");
 		}

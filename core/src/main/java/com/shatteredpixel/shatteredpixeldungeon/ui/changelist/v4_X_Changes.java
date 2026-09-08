@@ -24,6 +24,8 @@ package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.utils.DeviceCompat;
@@ -64,11 +66,44 @@ public class v4_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("RC-1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("BETA-4", false, null);
+		changes.addButton( new ChangeButton( ChangeIcons.V074_SHPX, "Dev Commentary",
+				"Hey folks, v4.0.0 is finally almost ready for release!\n" +
+				"\n" +
+				"This Release Candidate (RC) build is in a final state in terms of game logic, but there may still be some visual changes before full release. This beta in particular has a lot of item sprite changes in response to player feedback (with a strong emphasis on scrolls and runestones), so please let me know what you think!\n" +
+				"\n" +
+				"There is also one final new visual still to come, a new sprite for the vault boss! This one might not make it in time for release though, but if it doesn't it will be added shortly after."));
+
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.SCROLL_NAUDIZ), "Visual Improvements",
+				"**Item Sprites:**\n" +
+				"**- Scroll** symbols and shading have been tweaked in reponse to player feedback\n" +
+				"**- Exotic scroll** symbols have been tweaked in reponse to player feedback\n" +
+				"**- Runestone** shape and shading have been tweaked in reponse to player feedback\n" +
+				"**- Potions, Brews & Elixirs** have gotten minor tweaks in response to player feedback\n" +
+				"**- Recycle** has a new spell sprite!\n" +
+				"**- Reclaim Trap** has a new spell sprite!\n" +
+				"\n" +
+				"**Environments** have also gotten some final additions:\n" +
+				"**-** Updated visuals for the vault mirror and token door\n" +
+				"**-** Overhauled visuals in the crystal caves quest"));
+
+		changes.addButton( new ChangeButton( ChangeIcons.V081_MISC, Messages.get(ChangesScene.class, "misc"),
+				"**-** Defeating the caves quest boss now shows a 'boss slain' banner"));
+
+		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs\n" +
+				"**Caused by BETA:**\n" +
+				"**-** Vault boss resisting wands of lightning in the form that's supposed to be weak to wands\n" +
+				"**-** Carpets sometimes generating in walls in segmented library rooms\n" +
+				"**-** Various minor bugs with vault boss sprite\n" +
+				"\n" +
+				"**Existed prior to BETA:**\n" +
+				"**-** Mossy clump changing level shape for runs on the same seed"));
+
+		changes = new ChangeInfo("BETA-2 to BETA-4", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
@@ -104,50 +139,14 @@ public class v4_X_Changes {
 
 		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs\n" +
-				"**Caused by BETA:**\n" +
-				"**-** Wands taken out of the vault not recharging in some cases\n" +
-				"**-** Rankings using items held in the vault if the hero died there, instead of their main items\n" +
-				"**-** Various errors with taking consumables out of the vault\n" +
-				"**-** Various layering issues with terrain graphics and larger enemies\n" +
-				"**-** Blacksmith room sometimes getting connecting doors on both top corners\n" +
-				"**-** Sniper's mark action indicator appearing when Sniper has no bow\n" +
-				"**-** Downed crystal guardians triggering swarm intelligence\n" +
-				"**-** Gnoll Exhiles being constantly beckoned by new swarm intelligence\n" +
-				"**-** Vault token door and mirror not being interactable from a distance\n" +
-				"\n" +
+				"**BETA-4:**\n" +
 				"**Existed prior to BETA:**\n" +
 				"**-** Enemies converted to allies not granting xp or items in specific cases\n" +
 				"**-** Enemies with corrupting weapons turning other enemies into allies\n" +
 				"**-** Unequipped ring of force being usable via quickslot by Duelist\n" +
-				"**-** Minor visual errorss"));
-
-		changes = new ChangeInfo("BETA-3", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton( ChangeIcons.V081_MISC, Messages.get(ChangesScene.class, "misc"),
-				"**-** Added some additional hints to the descriptions of vault hazards\n" +
-				"**-** Roughly halved the particle cound for greater elemental frost abilities, reducing their performance impact\n" +
-				"**-** Substantially reduced the perticle density for skeleton key spectral walls, reducing their performance impact\n" +
+				"**-** Minor visual errorss\n" +
 				"\n" +
-				"Expect some more refinements in another few days, now that most of the bugs have been fixed!"));
-
-		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
-				"Note: A couple of players have reported wands not recharging after they leave the vault, but I haven't been able to reproduce this. If you encounter this issue, let me know!\n" +
-				"\n" +
-				"Fixed the following bugs\n" +
-				"**Caused by BETA:**\n" +
-				"**-** Fadeleaf softlocking the vault if triggered during the boss fight\n" +
-				"**-** Exploits involving using the dried rose to take additional items out of the vault\n" +
-				"**-** Various bugs with vault mirror and token door\n" +
-				"**-** Swarm intelligence going out of sync with its indicator in some cases\n" +
-				"**-** Softlocks if Gladiator is frozen by wondrous curse while using fury\n" +
-				"**-** Soiled Fist showing incorrect DOT damage for burning\n" +
-				"**-** Cursed wand supernova effect spamming targeted cells everywhere\n" +
-				"**-** Various rare crash bugs\n" +
-				"**-** Various minor visual errors"
-				,
-				"**Existed prior to BETA:**\n" +
+				"**BETA-3:**\n" +
 				"**-** Windows made by right clicking or middle clicking not centering on inventory pane when they should\n" +
 				"**-** Duelist's feint ability awakening sleeping enemies nearby\n" +
 				"**-** Combo parry into riposte move setting combo time to 5 when it was previously higher\n" +
@@ -155,33 +154,8 @@ public class v4_X_Changes {
 				"**-** Fireblast applying paralysis to downed ghouls\n" +
 				"**-** Specific cases where the player could jump into chasm on floor 26\n" +
 				"**-** Exploit allowing players to be at a floor entrance when ascending to it, instead of exit\n" +
-				"**-** Minor textual errors"));
-
-		changes = new ChangeInfo("BETA-2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs caused by BETA-1:\n" +
-				"**Vault Quest related:**\n" +
-				"**-** Crashes in new quest relating to Wand Preservation talent\n" +
-				"**-** Monk being able to use her abilities with 0 energy in the vault\n" +
-				"**-** Rings in final quest treasure room sometimes being higher level than intended\n" +
-				"**-** Some inter-floor teleports working in vault quest area\n" +
-				"**-** Paralysis not fully affecting vault quest boss\n" +
-				"**-** Vault area layout with the same seed varying slightly based on selected hero\n" +
-				"**-** Loot appearing under an enemy in one vault treasure room\n" +
-				"**-** Glitches involving old saves that were in the vault tester area\n" +
-				"**-** Vault Skeletons and Shamans not always dropping tokens\n" +
-				"**-** Objects in the vault being killable when they shouldn't"
-				,
-				"**Others:**\n" +
-				"**-** Various errors and visual corruptions when saving/loading with targeted cells active\n" +
-				"**-** Various minor errors with broken seal glyph transferring\n" +
-				"**-** Alchemy bubbles being visible from the fog of war\n" +
-				"**-** New Mass Grave room allowing multiple entrances\n" +
-				"**-** Swarm Intel triggering on enemy vs. enemy fights\n" +
-				"**-** Various minor textual and visual errors"));
+				"**-** Minor textual errors\n" +
+				"(All bugs fixed in BETA-2 were caused by BETA-1, and so are omitted)"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
