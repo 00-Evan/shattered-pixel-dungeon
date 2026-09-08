@@ -24,8 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.utils.DeviceCompat;
@@ -49,8 +47,8 @@ public class v4_X_Changes {
 		changes.hardlight(0xCCCCCC);
 		changeInfos.add(changes);
 
-		/*changes.addButton( new ChangeButton( ChangeIcons.V074_SHPX, "Overview and ETA",
-				"..."));*/
+		changes.addButton( new ChangeButton( ChangeIcons.V074_SHPX, "Overview and ETA",
+				"..."));
 
 		if (DeviceCompat.isiOS() && DeviceCompat.getPlatformVersion() <= 12) {
 			changes.addButton(new ChangeButton(Icons.WARNING.get(), "iOS 12 end of support",
@@ -62,124 +60,27 @@ public class v4_X_Changes {
 
 	public static void add_v4_0_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("v4.0-BETA", true, "");
+		ChangeInfo changes = new ChangeInfo("v4.0", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("RC-1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton( ChangeIcons.V074_SHPX, "Dev Commentary",
-				"Hey folks, v4.0.0 is finally almost ready for release!\n" +
-				"\n" +
-				"This Release Candidate (RC) build is in a final state in terms of game logic, but there may still be some visual changes before full release. This beta in particular has a lot of item sprite changes in response to player feedback (with a strong emphasis on scrolls and runestones), so please let me know what you think!\n" +
-				"\n" +
-				"There is also one final new visual still to come, a new sprite for the vault boss! This one might not make it in time for release though, but if it doesn't it will be added shortly after."));
-
-		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.SCROLL_NAUDIZ), "Visual Improvements",
-				"**Item Sprites:**\n" +
-				"**- Scroll** symbols and shading have been tweaked in reponse to player feedback\n" +
-				"**- Exotic scroll** symbols have been tweaked in reponse to player feedback\n" +
-				"**- Runestone** shape and shading have been tweaked in reponse to player feedback\n" +
-				"**- Potions, Brews & Elixirs** have gotten minor tweaks in response to player feedback\n" +
-				"**- Recycle** has a new spell sprite!\n" +
-				"**- Reclaim Trap** has a new spell sprite!\n" +
-				"\n" +
-				"**Environments** have also gotten some final additions:\n" +
-				"**-** Updated visuals for the vault mirror and token door\n" +
-				"**-** Overhauled visuals in the crystal caves quest"));
-
-		changes.addButton( new ChangeButton( ChangeIcons.V081_MISC, Messages.get(ChangesScene.class, "misc"),
-				"**-** Defeating the caves quest boss now shows a 'boss slain' banner"));
-
-		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs\n" +
-				"**Caused by BETA:**\n" +
-				"**-** Vault boss resisting wands of lightning in the form that's supposed to be weak to wands\n" +
-				"**-** Carpets sometimes generating in walls in segmented library rooms\n" +
-				"**-** Various minor bugs with vault boss sprite\n" +
-				"\n" +
-				"**Existed prior to BETA:**\n" +
-				"**-** Mossy clump changing level shape for runs on the same seed"));
-
-		changes = new ChangeInfo("BETA-2 to BETA-4", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton( ChangeIcons.V074_SHPX, "Dev Commentary",
-				"Hey folks, turns out that there were still quite a few bugs to fix! BETA-4 does include some other changes too though!\n" +
-				"\n" +
-				"I'm hopeing that I'll be able to focus on rouding out v4.0's content now, and then move toward a release early this coming week! Depending on how things shape up the beta might end up going a bit longer though."));
-
-		changes.addButton( new ChangeButton( ChangeIcons.V33_IMP, "Gameplay Changes",
-				"The new quest is showing up as very deadly in gameplay data so far, but feedback has been universally positive so I'm hesitant to scale difficulty down just yet. I think there's a good chance that success rates will climb as players learn how to do the quest. In the meantime though there are two specific changes:\n" +
-				"**-** Added a popup warning in the vault quest if the player is at low HP, reminding them that they can flee using vault-exclusive items instead of dieing. This warning shows up once per run, up to three times, and then stops.\n" +
-				"**-** Vault Scanning Sentries now deal 50% less damage after the first zap if they zap you several times in a row\n" +
-				"\n" +
-				"The new **crystal enchantment** is showing as exceptionally weak (except on thrown weapons), so I'm giving it a big boost:\n" +
-				"**-** Crystal melee weapons and spirit bow have ~15% more hits before breaking\n" +
-				"**-** Rate of self-repair for crystal melee weapons and spirit bow doubled\n" +
-				"**-** Crystal weapons now play a sound effect when becoming cracked"));
-
-		changes.addButton( new ChangeButton( ChangeIcons.V40_STONE_AGGRESSION, "Visual Changes",
-				"**Item Changes:**\n" +
-				"**-** Adjusted shading and brightness on runestones so their symbols 'pop' more\n" +
-				"**-** Darkened starflower seeds to make them more distinct from fadeleaf\n" +
-				"\n" +
-				"More item sprite tweaks in response to feedback are coming soon, with an emphasis on scrolls!\n" +
-				"\n" +
-				"**Environment Additions:**\n" +
-				"**-** Added new boss arena visuals in new vault quest!\n" +
-				"**-** Added new visuals for the gnoll caves quest!\n" +
-				"**-** Added new visuals for the prison ritual quest!\n" +
-				"\n" +
-				"**Misc:**\n" +
-				"**-** Lowered the ( and ) symbols in pixel font for better consistency with regular fonts. Makes for better text emotes too :) ;) =)\n"));
-
-		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs\n" +
-				"**BETA-4:**\n" +
-				"**Existed prior to BETA:**\n" +
-				"**-** Enemies converted to allies not granting xp or items in specific cases\n" +
-				"**-** Enemies with corrupting weapons turning other enemies into allies\n" +
-				"**-** Unequipped ring of force being usable via quickslot by Duelist\n" +
-				"**-** Minor visual errorss\n" +
-				"\n" +
-				"**BETA-3:**\n" +
-				"**-** Windows made by right clicking or middle clicking not centering on inventory pane when they should\n" +
-				"**-** Duelist's feint ability awakening sleeping enemies nearby\n" +
-				"**-** Combo parry into riposte move setting combo time to 5 when it was previously higher\n" +
-				"**-** Empowered clobber triggering at 6 combo instead of 7\n" +
-				"**-** Fireblast applying paralysis to downed ghouls\n" +
-				"**-** Specific cases where the player could jump into chasm on floor 26\n" +
-				"**-** Exploit allowing players to be at a floor entrance when ascending to it, instead of exit\n" +
-				"**-** Minor textual errors\n" +
-				"(All bugs fixed in BETA-2 were caused by BETA-1, and so are omitted)"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton( ChangeIcons.V074_SHPX, "Beta To-Do",
-				"Greetings Beta Testers!\n" +
+		changes.addButton( new ChangeButton( ChangeIcons.V074_SHPX, "Dev Commentary",
+				"**-** Released September 9th, 2026\n" +
+				"**-** 281 days after v3.3.0 (175 days after v3.3.8)\n" +
 				"\n" +
-				"v4.0 is releasing in a pretty much content-complete state, but there are still a few things to finish up before launch:\n" +
-				"\n" +
-				"**-** Some new visuals in the quest area are still a WIP, most notably the visuals for the boss fight.\n" +
-				"**-** There are finished new visuals for the Newborn Elemental quest and both caves quests that I have yet to implement.\n" +
-				"**-** I would like to make some tweaks to new visuals based on feedback, so please let me know what you think! In particular I'm aware there's been a lot of feedback on scrolls and runestones.\n" +
-				"**-** There will of course be bugs to fix and balance tweaks to make, especially with so much more content.\n" +
-				"\n" +
-				"I expect this beta to last 2-3 weeks."));
+				"Dev commentary will be added here in the future."));
 
 		changes.addButton( new ChangeButton( ChangeIcons.V33_IMP, "New City Quest",
 				"**The Ambitious Imp's quest has been totally redone, into easily the largest quest yet!**\n" +
 				"\n" +
 				"The Imp now tasks you with raiding an ancient dwarven vault, filled with hazards and loot! Be careful though, as you won't be able to take your gear with you! The quest includes:\n" +
 				"\n" +
-				"**-** A massive sub-region the size of ~3 dungeon floors, featuring over 20 new room types!\n" +
-				"**-** Three new static hazards that are integrated into 10 of the new rooms!\n" +
+				"**-** A massive new sub-region roughly the size of three dungeon floors, featuring over 20 new room types!\n" +
+				"**-** Three new static hazards that are integrated into ~10 of the new rooms!\n" +
 				"**-** New variants of enemies ranging from the prisons to the city!\n" +
 				"**-** An entire second progression experience, with easy low tier loot and well-defended high tier loot!\n" +
 				"**-** A new boss that's specially designed to test the skills of vault plunderers!\n" +
@@ -189,14 +90,14 @@ public class v4_X_Changes {
 		changes.addButton( new ChangeButton( ChangeIcons.V40_CITY_CARPET, "New Environment Visuals!",
 				"**After almost two years since I initially teased it, the first wave of visual improvements to Shattered's in-game pixel art are finally here!**\n" +
 				"\n" +
-				"Lots of dungeon environments have been improved or given new details by **Aleksandar Komitov!** This time around there's one important universal change, and then a focus on the city region and quest areas:\n" +
+				"Lots of dungeon environments have been improved or given new details by **Aleksandar Komitov**! This time around there's one important universal change and then a focus on the city region and quest rooms:\n" +
 				"\n" +
 				"**-** There is now shadowing where walls meet floor.\n" +
 				"**-** The City now has a new kind of special floor tile.\n" +
 				"**-** Carpets are now a custom visual that can be applied on top of regular tiles anywhere! They are currently only used in the dwarven city.\n" +
 				"**-** Enhanced visuals at the city entrance and exit.\n" +
-				"**-** Overhauled the Blacksmith's room.\n" +
-				"**-** Overhauled Mass Grave room from the prison quest.\n" +
+				"**-** Overhauled visuals for the caves quest & blacksmith.\n" +
+				"**-** Overhauled Mass Grave and Ritual rooms from the prison quest.\n" +
 				"**-** Improvements to sewer barrels, barricades, and city flaming pedestals.\n" +
 				"\n" +
 				"I expect to continue releasing waves of new art and tweaks each major update for the forseeable future, **please let me know what you think!**"));
@@ -269,14 +170,16 @@ public class v4_X_Changes {
 				"**-** Targeted cell VFX for incoming enemy attacks now persist until the attack occurs\n" +
 				"**-** Added better support for 3rd party Android appstores that handle updates themselves\n" +
 				"**-** Various internal code improvements to music playback, should reduce stuttering/glitching\n" +
+				"**-** Defeating the caves quest boss now shows a 'boss beaten' slain\n" +
 				"**-** Made UI/UX improvements to stone of augmentation\n" +
+				"**-** Lowered the ( and ) symbols in pixel font for better consistency with regular fonts. Makes for better text emotes too ;)\n" +
 				"\n" +
 				"**Other:**\n" +
 				"**-** Updated credits based on new artist contributions\n" +
 				"**-** Alchemy and well water VFX are now visible in the fog of war\n" +
 				"**-** Items are now pushed out of doors that become locked by bosses\n" +
 				"**-** Dropped support for savegames prior to v3.1.1 \n" +
-				"**-** Significant performance improvements to blue 'checked cell' visuals and red targeted cell indicators.\n" +
+				"**-** Performance improvements to blue 'checked cell' visuals, red targeted cell indicators, and skeleton key spectral walls.\n" +
 				"**-** Updated various code dependancies"));
 
 		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
@@ -285,14 +188,18 @@ public class v4_X_Changes {
 				"**-** Cases where necromancer skeleton visuals could become desynced from their actual location\n" +
 				"**-** Specific cases where generating extra artifacts (e.g. via wealth farming) could affect ring generation in later depths.\n" +
 				"**-** Blood vial causing healing effects to stack when they shouldn't\n" +
-				"\n" +
+				"**-** Mossy clump changing level shape for runs on the same seed"
+				,
 				"**Effects:**\n" +
 				"**-** Damage from Radiance's illuminate proc not counting as magical\n" +
 				"**-** Battlemage's wand of lightning effect lasting for less time than intended\n" +
 				"**-** Champion's second weapon not being counted as equipped by some effects\n" +
 				"**-** Partial damage buildup from Corruption being lost on save/load\n" +
 				"**-** Telefrag ability not interacting properly with some on-kill effects\n" +
-				"**-** Spectral walls from skeleton key using the wrong vfx on boss floors"
+				"**-** Spectral walls from skeleton key using the wrong vfx on boss floors\n" +
+				"**-** Duelist's feint ability awakening sleeping enemies nearby\n" +
+				"**-** Combo parry into riposte move setting combo time to 5 when it was previously higher\n" +
+				"**-** Empowered clobber triggering at 6 combo instead of 7"
 				,
 				"**Items:**\n" +
 				"**-** Helpful darts triggering on-hit fx on allies since v3.3.5\n" +
@@ -303,20 +210,26 @@ public class v4_X_Changes {
 				"**-** Value of elixir of honeyed healing not scaling properly with quantity\n" +
 				"**-** Skeleton key not pushing enemies behind doors it locked in some cases\n" +
 				"**-** Lost backpack item being usable to manipulate item stacks in shops\n" +
-				"**-** Potions counting as being used when they splash harmlessly"
+				"**-** Potions counting as being used when they splash harmlessly\n" +
+				"**-** Fireblast applying paralysis to downed ghouls"
 				,
 				"**Enemies:**\n" +
+				"**-** Enemies converted to allies not granting xp or items in specific cases\n" +
 				"**-** Specific cases where electricity VFX would not appear in the DM-300 fight\n" +
-				"**-** Necromancers being able to visually push their own skeleton when teleporting it\n" +
 				"**-** Specific cases where crystal guardians could get infinite haste\n" +
 				"**-** Necromancers being a bit too eager to teleport their skeletons in some cases\n" +
 				"**-** Various cases where chasms could cause enemy deaths to trigger twice\n" +
 				"**-** Assassination and combined lethality not working on armored brutes\n" +
 				"**-** Death by shocking elemental damage not counting as death by enemy magic\n" +
-				"\n" +
+				"**-** Enemies with corrupting weapons turning other enemies into allies"
+				,
 				"**Misc.:**\n" +
+				"**-** Exploit allowing players to be at a floor entrance when ascending to it, instead of exit\n" +
+				"**-** Specific cases where the player could jump into chasm on floor 26\n" +
 				"**-** Large bosses appearing outside the bounds of desktop boss HP bar\n" +
+				"**-** Windows made by right clicking or middle clicking not centering on inventory pane when they should\n" +
 				"**-** Incorrect text relating to potions of healing or waterskin in hero epitaphs\n" +
+				"**-** Unequipped ring of force being usable via quickslot by Duelist\n" +
 				"**-** Various rare and minor bugs in level generation\n" +
 				"**-** Various minor visual and textual errors\n" +
 				"**-** Various rare crash bugs"));

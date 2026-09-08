@@ -50,7 +50,7 @@ public enum Languages {
 	//CATALAN("català",     "ca", Status.X_UNFIN, new String[]{"Illyatwo2"}, new String[]{"Elosy", "n1ngu"})
 	//GALICIAN("galego",    "gl", Status.X_UNFIN, new String[]{"xecarballido"}, null),
 	//BASQUE("euskara",     "eu", Status.X_UNFIN, new String[]{"Deathrevenge", "Osoitz"}, null),
-	ESPERANTO("esperanto",  "eo", Status.O_COMPLETE, new String[]{"Verdulo"}, new String[]{"Raizin", "Rwelean", "kameluloj"});
+	ESPERANTO("esperanto",  "eo", Status.X_UNFINISH, new String[]{"Verdulo"}, new String[]{"Raizin", "Rwelean", "kameluloj"});
 
 	public enum Status{
 		//below 80% translated languages are not added or removed
