@@ -24,6 +24,8 @@ package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.utils.DeviceCompat;
@@ -34,10 +36,7 @@ public class v4_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
 
-		if (DeviceCompat.isiOS() && DeviceCompat.getPlatformVersion() <= 12) {
-			//only iOS 12 for the moment
-			add_Coming_Soon(changeInfos);
-		}
+		add_Coming_Soon(changeInfos);
 		add_v4_0_Changes(changeInfos);
 	}
 
@@ -48,7 +47,22 @@ public class v4_X_Changes {
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton( ChangeIcons.V074_SHPX, "Overview and ETA",
-				"..."));
+				"The next major update to Shattered will be v4.1.0! I expect this will be a quite small update, focusing mainly on being a followup to v4.0.0.\n" +
+				"\n" +
+				"To be honest I'm pretty whiped after v4.0 ended up taking almost 9 dang months to release after v3.3 (6 if you want to start from the last v3.3 patch), so I'm going to be taking things a bit easy for a while and don't have a specific ETA to provide.\n" +
+				"\n" +
+				"However, I would like to do another update in 2026, so you'll probably hear from me in another blog post with more details in the coming months."));
+
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.ARTIFACT_KEY), "New Items",
+				"In terms of new gameplay content, I expect v4.1 will focus mainly on some new additions to various item categories! I've been developing a few promising ideas on the side, and I think it's time to start implementing some of them.\n" +
+				"\n" +
+				"I've been inclined to do this since the success of the Skeleton Key, and realizing it was the first artifact I added in about 10 years!"));
+
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.SCIMITAR), "More New Visuals",
+				"Now that the in-game art overhaul project has started that will also be a focus moving forward. I can't give any garuntees, especially as the work is dependant on artists who have other projects too, but v4.1 will definitely include various new artwork. In particular I'd like to focus on general environment art, treasure rooms, and various equipment item sprites."));
+
+		changes.addButton( new ChangeButton( ChangeIcons.V081_MISC, "Misc. Changes",
+				"And of course, I expect v4.1 will include lots of little fixes an adjustments. All of the new content in v4.0 will likely get some adjustments in patches, but there will be larger changes to it that will need to be done in v4.1 instead."));
 
 		if (DeviceCompat.isiOS() && DeviceCompat.getPlatformVersion() <= 12) {
 			changes.addButton(new ChangeButton(Icons.WARNING.get(), "iOS 12 end of support",
