@@ -235,9 +235,9 @@ public class BossHealthBar extends Component {
 	}
 
 	public static void assignBoss(Mob boss, boolean forceSpriteRefresh){
-		if (BossHealthBar.boss == boss) {
+		if (BossHealthBar.boss == boss && instance != null) {
 			//re-assign sprite if it has changed
-			if (forceSpriteRefresh){
+			if (forceSpriteRefresh && instance.large){
 				ShatteredPixelDungeon.runOnRenderThread(new Callback() {
 					@Override
 					public void call() {
