@@ -40,7 +40,7 @@ public class VaultBossElementalSprite extends MobSprite {
 	private Emitter particles;
 
 	{
-		perspectiveRaise = 0 / 16f; //no need, it's huge and already floats
+		perspectiveRaise = 2 / 16f; //It's already huge and floats, so tiny raise
 	}
 
 	private VaultBossElemental.ElementalForm form;
@@ -81,17 +81,17 @@ public class VaultBossElementalSprite extends MobSprite {
 			form = VaultBossElemental.ElementalForm.values()[Random.Int(3)];
 		}
 
-		int c = 21*form.ordinal();
+		int c = 16*form.ordinal();
 
-		TextureFilm frames = new TextureFilm( texture, 24, 28 );
+		TextureFilm frames = new TextureFilm( texture, 31, 30 );
 
 		idle = new Animation( 10, true );
-		idle.frames( frames, c+0, c+1, c+2 );
+		idle.frames( frames, c+0, c+1, c+2, c+3 );
 
 		run = new Animation( 12, true );
-		run.frames( frames, c+0, c+1, c+3 );
+		run.frames( frames, c+0, c+1, c+2, c+3 );
 
-		attack = new Animation( 15, false );
+		attack = new Animation( 12, false );
 		attack.frames( frames, c+4, c+5, c+6 );
 
 		zap = attack.clone();
@@ -157,6 +157,9 @@ public class VaultBossElementalSprite extends MobSprite {
 
 	private Emitter createEmitter() {
 		Emitter emitter = emitter();
+		//centered on the core sprite region
+		emitter.pos(this, 8, 8, 16, 16);
+		emitter.fillTarget = false;
 		switch (form){
 			case FIRE: default:
 				emitter.pour( FlameParticle.FACTORY, 0.03f );

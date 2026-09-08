@@ -171,8 +171,12 @@ public class VaultBossElemental extends Mob {
 
 		((VaultBossElementalSprite)sprite).updateForm();
 		AttackIndicator.target(this);
+		Emitter e = sprite.emitter();
+		//centered a bit, but not totally
+		e.fillTarget = false;
+		e.pos(sprite, 4, 4, 24, 24);
 		if (form == ElementalForm.FIRE){
-			sprite.emitter().burst(FlameParticle.FACTORY, 50);
+			e.burst(FlameParticle.FACTORY, 50);
 
 			for (Buff b : buffs()){
 				if (b instanceof Chill || b instanceof Frost){
@@ -180,7 +184,7 @@ public class VaultBossElemental extends Mob {
 				}
 			}
 		} else if (form == ElementalForm.FROST){
-			sprite.emitter().burst(MagicMissile.MagicParticle.FACTORY, 50);
+			e.burst(MagicMissile.MagicParticle.FACTORY, 50);
 
 			for (Buff b : buffs()){
 				if (b instanceof Burning){
@@ -188,7 +192,7 @@ public class VaultBossElemental extends Mob {
 				}
 			}
 		} else if (form == ElementalForm.SHOCK){
-			sprite.emitter().burst(SparkParticle.FACTORY, 50);
+			e.burst(SparkParticle.FACTORY, 50);
 		}
 
 		//don't want to follow through now that form changed, so force a new sp attack instead
