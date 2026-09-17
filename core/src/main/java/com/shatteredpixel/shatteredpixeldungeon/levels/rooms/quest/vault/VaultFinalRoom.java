@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultBossElemental;
@@ -55,6 +56,7 @@ import com.watabou.noosa.Tilemap;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -250,10 +252,28 @@ public class VaultFinalRoom extends SpecialRoom {
 			int distance = Math.max(Math.abs(heroPos.x - lockedDoor.x), Math.abs(heroPos.y - lockedDoor.y));
 			//clear warned state if hero leaves
 			if (distance <= 3){
+				int bossPoss = Dungeon.level.pointToCell(center());
+				//if something is occupying Tengu's space, try to put him in an adjacent cell
+				if (Actor.findChar(bossPoss) != null){
+					ArrayList<Integer> candidates = new ArrayList<>();
+					for (int i : PathFinder.NEIGHBOURS8){
+						if (Actor.findChar(bossPoss + i) == null){
+							candidates.add(bossPoss + i);
+						}
+					}
+
+					if (!candidates.isEmpty()){
+						bossPoss = Random.element(candidates);
+						//if there are no adjacent cells, wait and do nothing
+					} else {
+						return;
+					}
+				}
+
 				Level.set(Dungeon.level.pointToCell(entryDoor), Terrain.LOCKED_DOOR);
 				GameScene.updateMap(Dungeon.level.pointToCell(entryDoor));
 				VaultBossElemental boss = new VaultBossElemental();
-				boss.pos = Dungeon.level.pointToCell(center());
+				boss.pos = bossPoss;
 				GameScene.add(boss, 1);
 				//we add a 1 turn delay, but compute FOV to prevent an opening surprise attack
 				boss.fieldOfView = new boolean[Dungeon.level.length()];
