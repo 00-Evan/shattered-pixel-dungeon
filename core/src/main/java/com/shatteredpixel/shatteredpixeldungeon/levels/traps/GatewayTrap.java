@@ -47,7 +47,7 @@ public class GatewayTrap extends Trap {
 		shape = CROSSHAIR;
 
 		disarmedByActivation = false;
-		avoidsHallways = true;
+		avoidsClosedSpaces = true;
 	}
 
 	private int telePos = -1;

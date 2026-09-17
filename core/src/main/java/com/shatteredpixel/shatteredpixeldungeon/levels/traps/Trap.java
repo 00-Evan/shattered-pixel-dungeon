@@ -67,7 +67,8 @@ public abstract class Trap implements Bundlable {
 	public boolean canBeHidden = true;
 	public boolean canBeSearched = true;
 
-	public boolean avoidsHallways = false; //whether this trap should avoid being placed in hallways
+	//whether this trap should avoid being placed in enclosed areas like hallways
+	public boolean avoidsClosedSpaces = false;
 
 	public Trap set(int pos){
 		this.pos = pos;

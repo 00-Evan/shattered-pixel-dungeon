@@ -51,7 +51,7 @@ public class RockfallTrap extends Trap {
 		shape = DIAMOND;
 		
 		canBeHidden = false;
-		avoidsHallways = true;
+		avoidsClosedSpaces = true;
 	}
 	
 	@Override
