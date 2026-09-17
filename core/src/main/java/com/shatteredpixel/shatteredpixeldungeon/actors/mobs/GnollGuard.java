@@ -80,6 +80,18 @@ public class GnollGuard extends Mob {
 	}
 
 	@Override
+	public int incomingDOT() {
+		if (!needsIncomingDOTUpdate){
+			return cachedIncomingDOT;
+		} else {
+			int DOT = super.incomingDOT();
+			if (hasSapper()) DOT /= 4;
+			cachedIncomingDOT = DOT;
+			return cachedIncomingDOT;
+		}
+	}
+
+	@Override
 	public int damageRoll() {
 		if (enemy != null && !Dungeon.level.adjacent(pos, enemy.pos)){
 			return Random.NormalIntRange( 16, 22 );
