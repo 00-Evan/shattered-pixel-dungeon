@@ -130,12 +130,19 @@ public enum Music {
 		trackChances = chances;
 		trackQueue.clear();
 
-		for (int i = 0; i < trackList.length; i++){
-			//create all the players we need pre-emptively, so they will be cached
-			createPlayer(trackList[i]);
-			if (Random.Float() < trackChances[i]){
-				trackQueue.add(trackList[i]);
+		try {
+			for (int i = 0; i < trackList.length; i++) {
+				//create all the players we need pre-emptively, so they will be cached
+				createPlayer(trackList[i]);
+				if (Random.Float() < trackChances[i]) {
+					trackQueue.add(trackList[i]);
+				}
 			}
+		} catch (Exception e){
+			Game.reportException(e);
+			//clear any players that may have been created
+			reset();
+			trackQueue.clear();
 		}
 
 		this.looping = false;
