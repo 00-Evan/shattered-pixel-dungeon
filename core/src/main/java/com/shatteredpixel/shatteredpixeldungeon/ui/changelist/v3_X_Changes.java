@@ -155,7 +155,7 @@ public class v3_X_Changes {
 		changes.addButton(new ChangeButton(ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
 				"**Highlights:**\n" +
-				"**-** Freezes caused by enemies dieing to DOT effects while thrown weapons were attached to them\n" +
+				"**-** Freezes caused by enemies dying to DOT effects while thrown weapons were attached to them\n" +
 				"**-** Exploits that could result in certain Imp shop items being free\n" +
 				"**-** Rare cases where thrown weapons would not disintegrate when they should\n" +
 				"\n" +
@@ -753,8 +753,8 @@ public class v3_X_Changes {
 				"**Shattered's title graphic has been totally redrawn!** The new title graphic, by Aleksandar Komitov, improves on text quality and style while trying to stay true to the original title. There is now a landscape and portrait variant of this title as well.\n" +
 				"\n" +
 				"The game's **Hero Splash Arts** have been improved as well! After so many years, Aleksandar has revised some of the game's hero splash arts to bring them up to his current standards:\n" +
-				"**-** The Huntress and Rogue have recieved major changes\n" +
-				"**-** The Mage has recieved moderate changes\n" +
+				"**-** The Huntress and Rogue have received major changes\n" +
+				"**-** The Mage has received moderate changes\n" +
 				"**-** The Duelist has received only tiny tweaks to some face details.\n" +
 				"**-** The Warrior's splash remains unchanged for the moment, but improvements to it are coming soon as well!\n" +
 				"\n" +

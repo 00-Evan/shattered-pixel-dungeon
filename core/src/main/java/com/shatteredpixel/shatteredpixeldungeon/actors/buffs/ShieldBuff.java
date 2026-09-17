@@ -76,7 +76,7 @@ public abstract class ShieldBuff extends Buff {
 		if (target != null) target.needsShieldUpdate = true;
 	}
 
-	//doesn't add shield, but postpones it detereorating
+	//doesn't add shield, but postpones it deteriorating
 	public void delay( float value ){
 		spend(value);
 	}

@@ -401,7 +401,7 @@ public class CrystalSpire extends Mob {
 							GLog.n(Messages.get(CrystalSpire.class, "alert"));
 							BossHealthBar.assignBoss(CrystalSpire.this);
 
-							abilityCooldown = 1; //dely first attack by 1 turn
+							abilityCooldown = 1; //delay first attack by 1 turn
 						}
 
 						boolean affectingGuardians = false;

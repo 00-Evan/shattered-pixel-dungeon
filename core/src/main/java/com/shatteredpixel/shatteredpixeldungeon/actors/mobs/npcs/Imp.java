@@ -214,7 +214,7 @@ public class Imp extends NPC {
 		private static boolean completed;
 		public static Item reward; //just used to hold the reward if her's inventory is full in new version
 
-		//variacles exclusive to new quest
+		//variables exclusive to new quest
 		public static ArrayList<Item> rewardOptions = new ArrayList<>();
 		public static int hazardFreebies; //player gets two free hits from hazards before they start penalizing score
 		public static boolean mirrorUsed = false;

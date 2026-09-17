@@ -233,7 +233,7 @@ public class v2_X_Changes {
 				"_-_ Aqua brew always knocking hero up and left when thrown on self\n" +
 				"_-_ Bomb fuses not being visually cleared when boss levels are reset by unblessed ankhs\n" +
 				"_-_ Helpful darts dealing damage to allies in rare cases\n" +
-				"_-_ Specific cases where beacon of returning could place the hero inside of closed dooors\n" +
+				"_-_ Specific cases where beacon of returning could place the hero inside of closed doors\n" +
 				"_-_ Tipped dart cleaning window showing 'clean all' and 'clean one' even with just 1 dart\n" +
 				"_-_ Specific cases where one scroll of transmutation couldn't be used on another\n" +
 				"_-_ Death via a reclaimed trap not counting as dying to your own magic item",
@@ -1093,7 +1093,7 @@ public class v2_X_Changes {
 
 				"_v2.1.3:_\n" +
 				"_-_ Various rare crash and hang bugs\n" +
-				"_-_ Weaker healing effects overiding stronger ones\n" +
+				"_-_ Weaker healing effects overriding stronger ones\n" +
 				"_-_ Divine inspiration potion not being cancellable if it was already identified\n" +
 				"_-_ Very rare cases where tapping a location wouldn't cause the hero to move\n" +
 				"_-_ Armored brutes blocking more damage than intended\n" +

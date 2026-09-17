@@ -28,8 +28,8 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.DarkBlock;
 import com.shatteredpixel.shatteredpixeldungeon.effects.EmoIcon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
-import com.shatteredpixel.shatteredpixeldungeon.effects.IceBlock;
 import com.shatteredpixel.shatteredpixeldungeon.effects.GlowBlock;
+import com.shatteredpixel.shatteredpixeldungeon.effects.IceBlock;
 import com.shatteredpixel.shatteredpixeldungeon.effects.ShieldHalo;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
@@ -137,7 +137,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	
 	@Override
 	public void play(Animation anim) {
-		//Shouldn't interrupt the dieing animation
+		//Shouldn't interrupt the dying animation
 		if (curAnim == null || curAnim != die) {
 			super.play(anim);
 		}
@@ -175,7 +175,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 
 	//used for just updating a sprite based on a given character, not linking them or placing in the game
 	public void linkVisuals( Char ch ){
-		//do nothin by default
+		//do nothing by default
 	}
 	
 	public PointF worldToCamera( int cell ) {

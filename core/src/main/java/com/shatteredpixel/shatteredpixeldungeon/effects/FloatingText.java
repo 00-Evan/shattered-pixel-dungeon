@@ -313,7 +313,7 @@ public class FloatingText extends RenderedTextBlock {
 	public static int getHitReasonIcon(Char attacker, float accRoll, Char defender, float defRoll){
 		HashMap<Integer, Float> hitReasons = new HashMap<>();
 
-		//go through some garunteed hit interactions first
+		//go through some guaranteed hit interactions first
 		if (defRoll == 0 && defender.buff(GuidingLight.Illuminated.class) != null){
 			return HIT_BLS;
 		}
@@ -396,7 +396,7 @@ public class FloatingText extends RenderedTextBlock {
 			Armor.testingNoArmDefSkill = false;
 			hitReasons.put(HIT_ARM, defender.defenseSkill(attacker)/(float)baseDef);
 		}
-		//hero specifically gets 1/2 eva when stunned, for mobs its a garunteed hit
+		//hero specifically gets 1/2 eva when stunned, for mobs its a guaranteed hit
 		if (defender.paralysed > 0)  {
 			if (defender instanceof Hero)   hitReasons.put(HIT_SUPR, 0.5f);
 			else                            return HIT_SUPR;

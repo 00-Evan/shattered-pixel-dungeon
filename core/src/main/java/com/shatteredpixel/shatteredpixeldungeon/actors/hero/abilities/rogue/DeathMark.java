@@ -39,10 +39,10 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
-import com.watabou.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.BArray;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 
@@ -206,7 +206,7 @@ public class DeathMark extends ArmorAbility {
 			}
 		}
 
-		//if something is already dieing when death mark is attached, need to avoid triggering die() again
+		//if something is already dying when death mark is attached, need to avoid triggering die() again
 		public void detachOnDeath(){
 			super.detach();
 			target.deathMarked = false;

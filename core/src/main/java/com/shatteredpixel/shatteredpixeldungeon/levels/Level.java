@@ -1542,7 +1542,7 @@ public abstract class Level implements Bundlable {
 		return distance( a, b ) == 1;
 	}
 	
-	//uses pythagorean theorum for true distance, as if there was no movement grid
+	//uses Pythagorean theorem for true distance, as if there was no movement grid
 	public float trueDistance(int a, int b){
 		int ax = a % width();
 		int ay = a / width();

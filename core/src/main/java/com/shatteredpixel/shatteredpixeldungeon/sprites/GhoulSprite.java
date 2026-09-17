@@ -62,7 +62,7 @@ public class GhoulSprite extends MobSprite {
 	@Override
 	public void die() {
 		if (curAnim == crumple){
-			//causes the sprite to not rise then fall again when dieing.
+			//causes the sprite to not rise then fall again when dying.
 			die.frames[0] = die.frames[1] = die.frames[2] = die.frames[3];
 		}
 		super.die();

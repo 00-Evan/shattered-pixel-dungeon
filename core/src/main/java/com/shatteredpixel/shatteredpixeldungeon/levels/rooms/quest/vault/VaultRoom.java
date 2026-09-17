@@ -68,7 +68,7 @@ public abstract class VaultRoom extends StandardRoom {
 
 		rooms.add(VaultHallwayRoom.class);
 		rooms.add(VaultLongRingsRoom.class);
-		//tokens room is garunteed and added in VaultLevel
+		//tokens room is guaranteed and added in VaultLevel
 
 		rooms.add(VaultCircleRoom.class);
 		rooms.add(VaultAlternatingFireRoom.class);

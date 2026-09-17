@@ -49,7 +49,7 @@ public class v4_X_Changes {
 		changes.addButton( new ChangeButton( ChangeIcons.V074_SHPX, "Overview and ETA",
 				"The next major update to Shattered will be v4.1.0! I expect this will be a quite small update, focusing mainly on being a followup to v4.0.0.\n" +
 				"\n" +
-				"To be honest I'm pretty whiped after v4.0 ended up taking almost 9 dang months to release after v3.3 (6 if you want to start from the last v3.3 patch), so I'm going to be taking things a bit easy for a while and don't have a specific ETA to provide.\n" +
+				"To be honest I'm pretty wiped after v4.0 ended up taking almost 9 dang months to release after v3.3 (6 if you want to start from the last v3.3 patch), so I'm going to be taking things a bit easy for a while and don't have a specific ETA to provide.\n" +
 				"\n" +
 				"However, I would like to do another update in 2026, so you'll probably hear from me in another blog post with more details in the coming months."));
 
@@ -59,7 +59,7 @@ public class v4_X_Changes {
 				"I've been inclined to do this since the success of the Skeleton Key, and realizing it was the first artifact I added in about 10 years!"));
 
 		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.SCIMITAR), "More New Visuals",
-				"Now that the in-game art overhaul project has started that will also be a focus moving forward. I can't give any garuntees, especially as the work is dependant on artists who have other projects too, but v4.1 will definitely include various new artwork. In particular I'd like to focus on general environment art, treasure rooms, and various equipment item sprites."));
+				"Now that the in-game art overhaul project has started that will also be a focus moving forward. I can't give any guarantees, especially as the work is dependant on artists who have other projects too, but v4.1 will definitely include various new artwork. In particular I'd like to focus on general environment art, treasure rooms, and various equipment item sprites."));
 
 		changes.addButton( new ChangeButton( ChangeIcons.V081_MISC, "Misc. Changes",
 				"And of course, I expect v4.1 will include lots of little fixes an adjustments. All of the new content in v4.0 will likely get some adjustments in patches, but there will be larger changes to it that will need to be done in v4.1 instead."));
@@ -114,7 +114,7 @@ public class v4_X_Changes {
 				"**-** Overhauled Mass Grave and Ritual rooms from the prison quest.\n" +
 				"**-** Improvements to sewer barrels, barricades, and city flaming pedestals.\n" +
 				"\n" +
-				"I expect to continue releasing waves of new art and tweaks each major update for the forseeable future, **please let me know what you think!**"));
+				"I expect to continue releasing waves of new art and tweaks each major update for the foreseeable future, **please let me know what you think!**"));
 
 		changes.addButton( new ChangeButton( ChangeIcons.V40_POTION_CRIMSON, "New Consumable Item Sprites!",
 				"**After almost two years since I initially teased it, the first wave of visual improvements to Shattered's in-game pixel art are finally here!**\n" +
@@ -128,7 +128,7 @@ public class v4_X_Changes {
 				"**-** Energy crystals & exotic crystals (related to spells)\n" +
 				"**-** Dwarf Tokens & other new quest items\n" +
 				"\n" +
-				"I expect to continue releasing waves of new art and tweaks each major update for the forseeable future, **please let me know what you think!**"));
+				"I expect to continue releasing waves of new art and tweaks each major update for the foreseeable future, **please let me know what you think!**"));
 
 		changes.addButton( new ChangeButton( ChangeIcons.V40_GREATSWORD_CRYSTAL, "New Enchantments!",
 				"**Four new enchantments and two new curses** have been added for weapons! Long-time players will recognize several of these as reworked enchantments that were previously removed years ago.\n" +
@@ -165,9 +165,9 @@ public class v4_X_Changes {
 		changeInfos.add(changes);
 
 		changes.addButton( new ChangeButton( ChangeIcons.V075_LONGSWORD_CORRUPTING, "Existing Enchant Changes",
-				"With new enchantments being added, I've also taken the oppourtunity to improve on some quirks relating to existing enchants:\n" +
+				"With new enchantments being added, I've also taken the opportunity to improve on some quirks relating to existing enchants:\n" +
 				"\n" +
-				"**- Kinetic** conserved damage is no longer lost (but still isn't increased) if the hit from kinetic is cancelled due to the enemy first dieing to another on-hit effect (e.g. smite)\n" +
+				"**- Kinetic** conserved damage is no longer lost (but still isn't increased) if the hit from kinetic is cancelled due to the enemy first dying to another on-hit effect (e.g. smite)\n" +
 				"**- Corrupting** can now apply if ANY part of the corrupting hit kills (e.g. smite), not just the hit from the corrupting weapon itself.\n" +
 				"**- Grim** now triggers more consistently if extra damage (e.g. smite, holy weapon) applies before the hit from the grim weapon itself."));
 
@@ -194,7 +194,7 @@ public class v4_X_Changes {
 				"**-** Items are now pushed out of doors that become locked by bosses\n" +
 				"**-** Dropped support for savegames prior to v3.1.1 \n" +
 				"**-** Performance improvements to blue 'checked cell' visuals, red targeted cell indicators, and skeleton key spectral walls.\n" +
-				"**-** Updated various code dependancies"));
+				"**-** Updated various code dependencies"));
 
 		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
@@ -277,7 +277,7 @@ public class v4_X_Changes {
 		changes.addButton( new ChangeButton( ChangeIcons.V40_STONE_AGGRESSION, "Item Nerfs",
 				"A few items were also showing as quite strong and are getting scaled back a bit.\n" +
 				"\n" +
-				"Most notably, I'm returning runestones of aggression back to their pre-v1.0 behaviour vs. bosses. In retrospect, while I do want them to be usable to redirect aggression during boss fights, letting them apply directly to bosses was a mistake. You can still use aggro stones on boss minions to take aggression off yourself during boss fights, and everthing ganging up on one minion is a more suitable scaled-back version of the scroll of rage effect.\n" +
+				"Most notably, I'm returning runestones of aggression back to their pre-v1.0 behaviour vs. bosses. In retrospect, while I do want them to be usable to redirect aggression during boss fights, letting them apply directly to bosses was a mistake. You can still use aggro stones on boss minions to take aggression off yourself during boss fights, and everything ganging up on one minion is a more suitable scaled-back version of the scroll of rage effect.\n" +
 				"\n" +
 				"**- Stone of Aggression** can no longer be directly applied to bosses\n" +
 				"**- Ring of Haste** speed boost per level down to +15%, from +17.5%\n" +

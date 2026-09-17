@@ -248,7 +248,7 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 		return false;
 	}
 
-	//can be overriden for special merge logic between rooms
+	//can be overridden for special merge logic between rooms
 	public void merge(Level l, Room other, Rect merge, int mergeTerrain){
 		Painter.fill(l, merge, mergeTerrain);
 	}

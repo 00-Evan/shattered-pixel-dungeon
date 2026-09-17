@@ -217,7 +217,7 @@ public class v0_9_X_Changes {
 				"\n" +
 				"v0.9.2 added the first tier of talents that were applicable through the later stages of the game. This is where the talent system really started to feel like it was deepening existing character customization systems in the game, rather than being tacked on top of them. It was always my intention for talents to work with subclasses as well, as there were lots of little subclass-level effects that could be fun but couldn't fit into their own full subclass. Talents give these mechanics a place to exist that compliments the game's existing systems.\n" +
 				"\n" +
-				"These talent additions also gave me balance room to give some help to weaker enemies and also better balance the various subclasses. Subclasses that were already a bit strong got some of their innate powers moved to talents, wheras other subclasses got entirely new effects via the talent system. The Gladiator and freerunner in particular got more wide-reaching changes for both balance and design reasons."));
+				"These talent additions also gave me balance room to give some help to weaker enemies and also better balance the various subclasses. Subclasses that were already a bit strong got some of their innate powers moved to talents, whereas other subclasses got entirely new effects via the talent system. The Gladiator and freerunner in particular got more wide-reaching changes for both balance and design reasons."));
 
 		changes.addButton(new ChangeButton(ChangeIcons.V090_TALENTS, "Tier Three Talents!",
 				"_32 new talents have been added that span levels 13 to 20!_\n\n" +

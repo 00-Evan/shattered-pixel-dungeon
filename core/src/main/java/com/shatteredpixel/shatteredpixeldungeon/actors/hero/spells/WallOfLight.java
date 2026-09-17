@@ -35,7 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -173,7 +172,7 @@ public class WallOfLight extends TargetedClericSpell {
 
 		int knockBackDir = PathFinder.CIRCLE8[closestIdx];
 
-		//if all 3 tiles infront of Paladin are blocked, assume cast was in error and cancel
+		//if all 3 tiles in front of Paladin are blocked, assume cast was in error and cancel
 		if (Dungeon.level.solid[closest]
 				&& Dungeon.level.solid[hero.pos + PathFinder.CIRCLE8[(closestIdx+1)%8]]
 				&& Dungeon.level.solid[hero.pos + PathFinder.CIRCLE8[(closestIdx+7)%8]]){

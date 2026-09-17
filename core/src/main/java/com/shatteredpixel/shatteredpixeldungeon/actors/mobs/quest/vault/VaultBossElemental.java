@@ -201,7 +201,7 @@ public class VaultBossElemental extends Mob {
 			spAttackCooldown = 0;
 		}
 
-		//significanlty reduce environment attack cooldown
+		//significantly reduce environment attack cooldown
 		envAttackCooldown /= 2;
 
 		sprite.flipHorizontal = wasTurned;
@@ -529,7 +529,7 @@ public class VaultBossElemental extends Mob {
 		BossHealthBar.assignBoss(this);
 	}
 
-	//used to forceably remove pincushion after its applied
+	//used to forcefully remove pincushion after its applied
 	public static class PinCushionRemover extends Buff{
 
 		{
@@ -1172,7 +1172,7 @@ public class VaultBossElemental extends Mob {
 		private static String TARGET_CELL = "target_cell";
 		private static String DISTANCE = "distance";
 
-		private static String FULL_VORTEX = "full_fortex";
+		private static String FULL_VORTEX = "full_vortex";
 		private static String ALT_DIR = "alt_direction";
 
 		@Override
