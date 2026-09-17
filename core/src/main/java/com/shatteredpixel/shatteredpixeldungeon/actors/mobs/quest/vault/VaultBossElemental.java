@@ -217,7 +217,11 @@ public class VaultBossElemental extends Mob {
 
 	@Override
 	protected boolean act() {
-		if (spTargetCell != -1 && paralysed == 0){
+		if (enemy == null){
+			chooseEnemy();
+		}
+
+		if (spTargetCell != -1 && paralysed == 0 && enemy != null){
 			if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
 				sprite.zap( spTargetCell );
 				lastEnemyPos = enemy.pos;
@@ -231,7 +235,7 @@ public class VaultBossElemental extends Mob {
 
 		spAttackCooldown--;
 		envAttackCooldown--;
-		if (state == HUNTING && paralysed == 0){
+		if (state == HUNTING && paralysed == 0  && enemy != null){
 			if (spAttackCooldown <= 0){
 				spend(GameMath.gate(attackDelay(), (int)Math.ceil(Dungeon.hero.cooldown()), 3*attackDelay()));
 				if (form == ElementalForm.FIRE){
