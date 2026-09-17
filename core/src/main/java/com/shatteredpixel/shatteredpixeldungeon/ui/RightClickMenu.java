@@ -169,7 +169,7 @@ public class RightClickMenu extends Component {
 		height += 2;
 		height += 13*buttons.length;
 
-		width = icon.width + 2 + titleText.width()+bg.marginVer();
+		width = icon.width() + 2 + titleText.width()+bg.marginVer();
 		if (topRightButton != null){
 			width += 2 + topRightButton.width();
 		}
