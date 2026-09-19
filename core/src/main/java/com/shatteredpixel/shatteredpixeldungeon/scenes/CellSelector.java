@@ -382,10 +382,10 @@ public class CellSelector extends ScrollArea {
 			heldDelay -= Game.elapsed;
 		}
 
-		if ((heldAction1 != SPDAction.NONE || leftStickAction != SPDAction.NONE) && Dungeon.hero.ready){
-			processKeyHold();
-		} else if (Dungeon.hero.ready) {
+		if ((heldAction1 == SPDAction.NONE && leftStickAction == SPDAction.NONE)){
 			lastCellMoved = -1;
+		} else if (Dungeon.hero.ready){
+			processKeyHold();
 		}
 	}
 
