@@ -470,7 +470,7 @@ abstract public class MissileWeapon extends Weapon {
 		}
 
 		if (enchantment instanceof Crystal){
-			usages = Math.min(usages/2f, 50); //cannot exceed 50 uses with crystal enchant
+			usages = Math.min(usages/2f, 30); //cannot exceed 30 uses with crystal enchant
 		}
 
 		//at 100 uses, items just last forever.

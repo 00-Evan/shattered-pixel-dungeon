@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -61,8 +62,13 @@ public class Crystal extends Weapon.Enchantment {
 				setThrownWep(); //we piggyback on thrown weapon durability, don't change our own
 			} else {
 				thrownWeapon = false;
-				//lasts for an average of ~33 attacks at normal speed
-				durability -= Random.Float(2, 4) * weapon.delayFactor(attacker);
+				//lasts for an average of 50 attacks at normal speed at +0...
+				float avgUses = 50;
+				//scaling down to 30 attacks at +6 (except spirit bow, which is always 50)
+				if (weapon instanceof MeleeWeapon){
+					avgUses -= Math.max(0, 20*weapon.buffedLvl()/6f);
+				}
+				durability -=  Random.NormalFloat(0.5f, 1.5f)*(1f/avgUses)*weapon.delayFactor(attacker);
 
 				float prevHeuristicDur = visualDurability;
 				visualDurability = GameMath.gate(durability-10, visualDurability, durability);
@@ -108,7 +114,7 @@ public class Crystal extends Weapon.Enchantment {
 			Buff.affect(Dungeon.hero, CrystalRepair.class);
 		}
 
-		int magicDmg = (int)Math.ceil(damage * 0.25f * genericProcChanceMultiplier(attacker));
+		int magicDmg = (int)Math.ceil(damage * 0.33f * genericProcChanceMultiplier(attacker));
 		defender.damage(magicDmg, this);
 
 		return damage;
@@ -124,7 +130,7 @@ public class Crystal extends Weapon.Enchantment {
 
 	public void repair(Weapon w, boolean inRose, float amount){
 		if (w instanceof MissileWeapon){
-			amount /= 2; //crystal thrown weapons have more uses, they repair more slowly
+			amount /= 2; //crystal thrown weapons repair more slowly
 			if (((MissileWeapon) w).durabilityLeft() < 100) {
 				((MissileWeapon) w).repair(amount);
 				if (((MissileWeapon) w).durabilityLeft() == 100){
