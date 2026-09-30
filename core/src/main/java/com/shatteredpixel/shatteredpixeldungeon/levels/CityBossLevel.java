@@ -622,9 +622,9 @@ public class CityBossLevel extends Level {
 				return true;
 			} else {
 				//allow curtain tails
-				int i = tileX + tileY*tileH;
+				int i = tileX + tileY*tileW;
 				int[] map = Dungeon.level.map;
-				return !(i < tileW*32 && (map[i] == Terrain.EMPTY || map[i] == Terrain.EMPTY_DECO) && map[i-tileW] == Terrain.WALL_DECO);
+				return i > tileW*32 && (map[i] == Terrain.EMPTY || map[i] == Terrain.EMPTY_DECO) && map[i-tileW] == Terrain.WALL_DECO;
 			}
 		}
 
