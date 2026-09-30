@@ -227,7 +227,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 
 		isMoving = true;
 		
-		if (visible && Dungeon.level.water[from] && !ch.flying) {
+		if (visible && Dungeon.level.water[from] && ch != null && !ch.flying) {
 			GameScene.ripple( from );
 		}
 
@@ -830,7 +830,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 
 				motion.killAndErase();
 				motion = null;
-				ch.onMotionComplete();
+				if (ch != null) ch.onMotionComplete();
 
 				GameScene.sortMobSprites();
 				notifyAll();
