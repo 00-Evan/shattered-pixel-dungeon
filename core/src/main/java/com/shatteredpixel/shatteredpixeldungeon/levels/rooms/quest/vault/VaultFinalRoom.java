@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ImpSprite;
@@ -135,8 +136,8 @@ public class VaultFinalRoom extends SpecialRoom {
 		return false;
 	}
 
-	private Point entryDoor;
-	private Point lockedDoor;
+	public Point entryDoor;
+	public Point lockedDoor;
 
 	@Override
 	public void paint(Level level) {
@@ -241,6 +242,22 @@ public class VaultFinalRoom extends SpecialRoom {
 		vis.setRect(treasure.left, treasure.top-1, treasure.width(), treasure.height()+1);
 		level.customTiles.add(vis);
 
+		FinalRoomDoor doorVis = new FinalRoomDoor();
+		doorVis.pos(entryDoor.x, entryDoor.y);
+		level.customTiles.add(doorVis);
+
+		doorVis = new FinalRoomDoor();
+		doorVis.pos(lockedDoor.x, lockedDoor.y);
+		level.customTiles.add(doorVis);
+
+		FinalRoomDoorOverhang doorOver = new FinalRoomDoorOverhang();
+		doorOver.pos(entryDoor.x, entryDoor.y-1);
+		level.customWalls.add(doorOver);
+
+		doorOver = new FinalRoomDoorOverhang();
+		doorOver.pos(lockedDoor.x, lockedDoor.y-1);
+		level.customWalls.add(doorOver);
+
 	}
 
 	private int warnState = 0;
@@ -253,7 +270,7 @@ public class VaultFinalRoom extends SpecialRoom {
 			//clear warned state if hero leaves
 			if (distance <= 3){
 				int bossPoss = Dungeon.level.pointToCell(center());
-				//if something is occupying Tengu's space, try to put him in an adjacent cell
+				//if something is occupying the space, try to move the boss adjacent cell
 				if (Actor.findChar(bossPoss) != null){
 					ArrayList<Integer> candidates = new ArrayList<>();
 					for (int i : PathFinder.NEIGHBOURS8){
@@ -282,6 +299,9 @@ public class VaultFinalRoom extends SpecialRoom {
 				boss.sprite.turnTo(boss.pos, Dungeon.hero.pos);
 				boss.setElementalForm(boss.curForm()); //re-assert default form for particle fx
 				Dungeon.level.seal();
+				Level.set(Dungeon.level.pointToCell(entryDoor), Terrain.LOCKED_DOOR);
+				GameScene.updateMap(Dungeon.level.pointToCell(entryDoor));
+				GameScene.updateMap(Dungeon.level.pointToCell(lockedDoor)); //to update custom visual
 				lockTriggered = true;
 			} else if (distance == 4 && warnState < 2) {
 				GLog.n(Messages.get(VaultFinalRoom.class, "final_warning"));
@@ -448,6 +468,147 @@ public class VaultFinalRoom extends SpecialRoom {
 			}
 
 		}
+	}
+
+	public static class FinalRoomDoor extends CustomTilemap {
+
+		{
+			texture = Assets.Environment.CITY_QUEST;
+			tileW = tileH = 1;
+		}
+
+		@Override
+		public Tilemap create() {
+			Tilemap v = super.create();
+			int[] data = new int[1];
+			updateCell(0, data);
+			v.map( data, tileW );
+			return v;
+		}
+
+		@Override
+		protected boolean updateCell(int cell, int[] data){
+			updateAll(data);
+			return true;
+		}
+
+		@Override
+		protected void updateAll(int[] data) {
+			int w = Dungeon.level.width();
+			int cell = tileX + tileY*w;
+
+			//Horizontal
+			if (Dungeon.level.map[cell+w] != Terrain.WALL){
+				if (Dungeon.level.map[cell] == Terrain.OPEN_DOOR){
+					data[0] = 16*9 + 1;
+				} else if (Dungeon.level.map[cell] == Terrain.DOOR){
+					data[0] = 16*9 + 2;
+				} else if (Dungeon.level.map[cell] == Terrain.LOCKED_DOOR){
+					data[0] = 16*9 + (Dungeon.level.locked ? 3 : 2);
+				}
+				if (Dungeon.level.map[cell+w] != Terrain.EMPTY_SP){
+					data[0] += 16;
+				} else if (Dungeon.level.map[cell-w] != Terrain.EMPTY_SP) {
+					data[0] += 32;
+				}
+				//vertical
+			} else {
+				data[0] = 16*12;
+
+				if (Dungeon.level.map[cell-1] != Terrain.EMPTY_SP){
+					data[0] += 1;
+				} else if (Dungeon.level.map[cell+1] != Terrain.EMPTY_SP) {
+					data[0] += 2;
+				}
+			}
+		}
+
+		@Override
+		public Image image(int tileX, int tileY) {
+			//always shows the door as facing the hero
+			Image img = new Image(texture);
+			if (!Dungeon.level.locked){
+				img.frame(32, 140, 16, 16);
+			} else {
+				img.frame(48, 140, 16, 16);
+			}
+			return img;
+		}
+
+		@Override
+		public String desc(int tileX, int tileY) {
+			if (Messages.lang() == Languages.ENGLISH){
+				//TODO, translate this in either v4.1 or v4.0 patches that have other text changes
+				if (!Dungeon.level.locked){
+					return "This door has symbols on it that seem similar to the marker on this room's floor. Perhaps they're tied together in some way?";
+				} else {
+					return "The symbols on the door are glowing and emitting the same energy as the greater elemental.\n\nThere's no way you're going to be able to open the door while it courses with the elemental's energy.";
+				}
+			} else {
+				return super.desc(tileX, tileY);
+			}
+		}
+	}
+
+	public static class FinalRoomDoorOverhang extends CustomTilemap {
+
+		{
+			texture = Assets.Environment.CITY_QUEST;
+			tileW = 1;
+			tileH = 2; //always placed 1 tile above door, for vertical overlap
+		}
+
+		@Override
+		public Tilemap create() {
+			Tilemap v = super.create();
+			int[] data = new int[2];
+			updateCell(0, data);
+			v.map( data, tileW );
+			return v;
+		}
+
+		@Override
+		protected boolean updateCell(int cell, int[] data){
+			updateAll(data);
+			return true;
+		}
+
+		@Override
+		protected void updateAll(int[] data) {
+			int w = Dungeon.level.width();
+			int cell = tileX + tileY*w + w; //cell of the door
+
+			//Horizontal
+			if (Dungeon.level.map[cell+w] != Terrain.WALL){
+				data[1] = -1; //no second row for horizontal
+				if (Dungeon.level.map[cell] == Terrain.OPEN_DOOR){
+					data[0] = -1;
+				} else if (Dungeon.level.map[cell] == Terrain.DOOR){
+					data[0] = 16*8 + 2;
+				} else if (Dungeon.level.map[cell] == Terrain.LOCKED_DOOR){
+					data[0] = 16*8 + (Dungeon.level.locked ? 3 : 2);
+				}
+
+			//vertical
+			} else {
+				if (Dungeon.level.map[cell] == Terrain.OPEN_DOOR){
+					data[0] = -1;
+					data[1] = -1;
+				} else if (Dungeon.level.map[cell] == Terrain.DOOR){
+					data[0] = 16*13;
+					data[1] = 16*13+3;
+				} else if (Dungeon.level.map[cell] == Terrain.LOCKED_DOOR){
+					data[0] = 16*13 + (Dungeon.level.locked ? 2 : 1);
+					data[1] = 16*13 + (Dungeon.level.locked ? 7 : 4);
+					if (Dungeon.level.map[cell-1] != Terrain.EMPTY_SP){
+						data[1] += 1;
+					} else if (Dungeon.level.map[cell+1] != Terrain.EMPTY_SP) {
+						data[1] += 2;
+					}
+				}
+			}
+		}
+
 	}
 
 	public static class VaultTreasure extends CustomTilemap {

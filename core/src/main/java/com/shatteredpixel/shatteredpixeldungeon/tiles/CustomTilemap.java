@@ -94,10 +94,36 @@ public abstract class CustomTilemap implements Bundlable {
 				//allow lighting for custom tilemaps
 				return NoosaScript.get();
 			}
+
+			@Override
+			public synchronized void updateMap() {
+				updateAll(data);
+				super.updateMap();
+			}
+
+			@Override
+			public synchronized void updateMapCell(int cell) {
+				int custX = cell % Dungeon.level.width() - tileX;
+				int custY = cell / Dungeon.level.width() - tileY;
+				if (custX >= 0 && custY >= 0
+						&& custX < tileW && custY < tileH) {
+					if (updateCell(cell, data)) {
+						super.updateMap(); //for now we update the whole map if something was changed
+					}
+				}
+			}
 		};
 		vis.x = tileX*SIZE;
 		vis.y = tileY*SIZE;
 		return vis;
+	}
+
+	protected boolean updateCell(int cell, int[] data){
+		return false; //do nothing by default, returns true if something was changed
+	}
+
+	protected void updateAll(int[] data){
+		//do nothing by default
 	}
 
 	//TODO we need broader support for being able to alter terrain on custom tilemaps, this is a bit of a bandaid for DK fight changes atm.
