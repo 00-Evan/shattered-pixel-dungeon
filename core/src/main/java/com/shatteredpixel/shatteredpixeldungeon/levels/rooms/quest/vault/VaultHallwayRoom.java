@@ -22,11 +22,15 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultDM100;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.quest.vault.VaultSkeleton;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -79,7 +83,32 @@ public class VaultHallwayRoom extends VaultLongRoom {
 			level.drop(i, lootPositions.get(0));
 		}
 
-		Mob enemy = level.createMob();
+		boolean nextToEntry = false;
+		for (Room r : connected.keySet()){
+			if (r.isEntrance()){
+				nextToEntry = true;
+			}
+		}
+
+		Mob enemy;
+		boolean valid;
+		ArrayList<Class<?extends Mob>> toReturn = new ArrayList<>();
+		do {
+			valid = true;
+			enemy = level.createMob();
+			//only T1 enemies next to entrance
+			if (nextToEntry && !(enemy instanceof VaultSkeleton || enemy instanceof VaultDM100)){
+				valid = false;
+			}
+			if (!valid){
+				toReturn.add(enemy.getClass());
+			}
+		} while (!valid);
+
+		for (Class<?extends Mob> cls : toReturn){
+			((VaultLevel) level).returnMob(cls);
+		}
+
 		if (wide()) {
 			enemy.setupStealthGameplayWanderPositions(
 					new int[]{level.pointToCell(new Point(left + 2, c.y)),

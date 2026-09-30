@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Point;
 
 public class VaultLongRingsRoom extends VaultLongRoom {
@@ -79,6 +80,12 @@ public class VaultLongRingsRoom extends VaultLongRoom {
 				|| level.map[pos] == Terrain.WALL_DECO
 				|| level.distance(pos, previous) < 6);
 		return pos;
+	}
+
+	@Override
+	public boolean canConnect(Room r) {
+		//more difficult rooms can't be adjacent to the entrance
+		return super.canConnect(r) && !(r instanceof VaultEntranceRoom);
 	}
 
 }
