@@ -197,8 +197,8 @@ public class BeaconOfReturning extends Spell {
 				return;
 			}
 
-			//cannot return to mining level
-			if (tracker.returnDepth >= 11 && tracker.returnDepth <= 14 && tracker.returnBranch == 1){
+			//cannot return to mining or vault level
+			if (tracker.returnDepth >= 11 && tracker.returnDepth <= 19 && tracker.returnBranch == 1){
 				GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 				return;
 			}
