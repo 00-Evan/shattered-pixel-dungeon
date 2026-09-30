@@ -78,6 +78,63 @@ public class v4_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("v4.0.1", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton( ChangeIcons.V40_GREATSWORD_CRYSTAL, "Enchantment Balance Changes",
+				"**Crystal** weapons are weak overall currently, so I'm giving them some major buffs, especially at lower levels:\n" +
+				"**-** Crystal damage bonus up to +33% from +25%\n" +
+				"**-** Avg uses until breaking up to 50 at +0, from 33\n" +
+				"**-** Uses until breaking steadily scale down with level, capping at 30 at +6\n" +
+				"**-** The crystal bow specifically always has 50 avg uses\n" +
+				"\n" +
+				"Crystal thrown weapons specifically are also getting a nerf:\n" +
+				"**-** Max uses until breaking for crystal thrown weapons down to 30, from 50.\n" +
+				"\n" +
+				"Also, three other enchantments are getting smaller boosts:\n" +
+				"**- Eldritch** base proc chance up to 25% from 20%\n" +
+				"**- Blooming** base avg grass created up to 1.5 from 1\n" +
+				"**- Corrupting** base proc chance up to 25% from 20%"));
+
+		changes.addButton( new ChangeButton( ChangeIcons.V33_IMP, "Vault Balance Changes",
+				"I'm making some changes aimed at improving clarity and giving players a little more space to get their bearings as the quest starts:\n" +
+				"\n" +
+				"**-** Overhauled visuals for 'hearing' enemies outside of your view in the vault. These visuals are now much clearer, show the type of enemy, and reveal unseen tiles.\n" +
+				"**-** Added an extra potion of healing to the vault that spawns near the entrance.\n" +
+				"**-** Rooms near the entrance now cannot contain caves+ enemies that are awake.\n" +
+				"\n" +
+				"I've also softened up three standard hazard rooms:\n" +
+				"**-** Slowed down the scanning speed of the sentry in the circular scan room.\n" +
+				"**-** Reduced the frequency of zaps in the room with many semi-random laser sentries.\n" +
+				"**-** Room of alternating fire traps now has a 1-tile safe border.\n"));
+
+		changes.addButton( new ChangeButton( ChangeIcons.V081_MISC, Messages.get(ChangesScene.class, "misc"),
+				"**-** Added new visuals for the doors in the final vault room\n" +
+				"**-** Slightly darkened the highlights on new runestone visuals\n" +
+				"**-** Improved visuals on crystal spire when it becomes damaged\n" +
+				"**-** Traps which cannot spawn in hallways now also can't spawn adjacent to each other\n" +
+				"**-** Removed (hopefully) unnecessary permissions from the Android version"));
+
+		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by v4.0:**\n" +
+				"**-** Incoming DOT display not showing correctly in specific cases\n" +
+				"**-** Vault boss being able to spawn on top of characters\n" +
+				"**-** Beacon of Returning being usable to return to the vault in specific cases\n" +
+				"**-** Various rare crash bugs\n" +
+				"**-** Various minor visual & textual errors\n" +
+				"\n" +
+				"**Existed Prior to v4.0:**\n" +
+				"**-** Left stick controller inputs being eaten in various cases\n" +
+				"**-** Chalice death chance display being slightly incorrect in some cases\n" +
+				"**-** Scroll of retribution from unstable spellbook not triggering artifact-effects (such as priest illuminate trigger) on enemies\n" +
+				"**-** Rat skull affecting levelgen in very specific cases"));
+
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
