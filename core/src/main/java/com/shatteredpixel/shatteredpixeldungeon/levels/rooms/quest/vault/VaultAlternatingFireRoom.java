@@ -50,9 +50,9 @@ public class VaultAlternatingFireRoom extends VaultRoom {
 
 		int cell;
 		boolean alternate = false;
-		for (int x = left+1; x <= right-1; x++){
+		for (int x = left+2; x <= right-2; x++){
 
-			for (int y = top+1; y <= bottom-1; y++){
+			for (int y = top+2; y <= bottom-2; y++){
 				cell = x + y*level.width();
 
 				if (level.map[cell] != Terrain.PEDESTAL) {
@@ -66,7 +66,7 @@ public class VaultAlternatingFireRoom extends VaultRoom {
 
 	@Override
 	public boolean canPlaceItem(Point p, Level l) {
-		return super.canPlaceItem(p, l) && p == center();
+		return super.canPlaceItem(p, l) && p.x == left+1 || p.y == top+1 || p.x == right-1 || p.y == bottom-1;
 	}
 
 	@Override

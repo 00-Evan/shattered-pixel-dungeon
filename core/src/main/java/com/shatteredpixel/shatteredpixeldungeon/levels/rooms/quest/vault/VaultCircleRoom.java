@@ -42,12 +42,13 @@ public class VaultCircleRoom extends VaultRoom {
 
 		VaultSentry sentry = new VaultSentry();
 		sentry.pos = level.pointToCell(center());
+		sentry.afterScanCooldown = 2;
 
 		sentry.scanLength = 4.49f;
 
 		int w = level.width();
 
-		switch (Random.Int(4)){
+		switch (Random.Int(3)){
 			case 0:
 				sentry.scanWidth = 90f;
 
@@ -75,7 +76,8 @@ public class VaultCircleRoom extends VaultRoom {
 						new int[]{sentry.pos+2-level.width(), sentry.pos-2+level.width()},
 				};
 				break;
-			case 3:
+				//removed, too difficult
+			/*case 3:
 				sentry.scanWidth = 22.5f;
 
 				sentry.scanDirs = new int[][]{
@@ -86,7 +88,7 @@ public class VaultCircleRoom extends VaultRoom {
 						new int[]{sentry.pos-2-3*w, sentry.pos+3-2*w, sentry.pos+2+3*w, sentry.pos-3+2*w},
 						new int[]{sentry.pos-1-3*w, sentry.pos+3-1*w, sentry.pos+1+3*w, sentry.pos-3+1*w},
 				};
-				break;
+				break;*/
 		}
 
 		level.mobs.add(sentry);

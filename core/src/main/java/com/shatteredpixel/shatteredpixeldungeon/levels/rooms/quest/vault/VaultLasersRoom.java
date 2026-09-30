@@ -56,7 +56,7 @@ public class VaultLasersRoom extends VaultRoom {
 					laser.laserDirs = new int[]{cell-level.width()};
 					laser.pos = cell;
 				}
-				laser.afterShotCooldown = Random.IntRange(3, 7);
+				laser.afterShotCooldown = Random.IntRange(7, 9);
 				laser.curCooldown = Random.IntRange(1, laser.afterShotCooldown);
 				level.mobs.add(laser);
 			}
@@ -77,7 +77,7 @@ public class VaultLasersRoom extends VaultRoom {
 					laser.laserDirs = new int[]{cell-1};
 					laser.pos = cell;
 				}
-				laser.afterShotCooldown = Random.IntRange(3, 7);
+				laser.afterShotCooldown = Random.IntRange(7, 9);
 				laser.curCooldown = Random.IntRange(1, laser.afterShotCooldown);
 				level.mobs.add(laser);
 			}
