@@ -624,6 +624,21 @@ public class VaultLevel extends CityLevel {
 			Random.popGenerator();
 		}
 
+		//generate one extra healing potion that is (almost)guaranteed to be in a room adjacent to the entrance
+		int tries = 1000;
+		int cell;
+		Room r;
+		do {
+			cell = randomDropCell();
+			r = room(cell);
+			tries--;
+		} while (!r.connected.containsKey(roomEntrance) && tries > 0);
+		drop( new PotionOfHealing(), cell ).type = Heap.Type.HEAP;
+		if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
+			map[cell] = Terrain.GRASS;
+			losBlocking[cell] = false;
+		}
+
 	}
 
 	@Override
