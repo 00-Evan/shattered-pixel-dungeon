@@ -269,6 +269,11 @@ public class AmbitiousImpRoom extends SpecialRoom {
 					alpha(0.3f + 0.3f*(float)Math.sin(Game.timeTotal));
 					super.update();
 				}
+
+				@Override
+				public synchronized void updateMapCell(int cell) {
+					//do nothing, never updates
+				}
 			};
 			vis.x = tileX*SIZE;
 			vis.y = tileY*SIZE;
