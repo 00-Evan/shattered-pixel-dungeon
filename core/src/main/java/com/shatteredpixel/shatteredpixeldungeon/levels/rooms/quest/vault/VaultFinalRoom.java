@@ -499,7 +499,7 @@ public class VaultFinalRoom extends SpecialRoom {
 
 			//Horizontal
 			if (Dungeon.level.map[cell+w] != Terrain.WALL){
-				if (Dungeon.level.map[cell] == Terrain.OPEN_DOOR){
+				if (Dungeon.level.map[cell] == Terrain.OPEN_DOOR || Dungeon.level.map[cell] == Terrain.EMBERS){
 					data[0] = 16*9 + 1;
 				} else if (Dungeon.level.map[cell] == Terrain.DOOR){
 					data[0] = 16*9 + 2;
@@ -511,7 +511,8 @@ public class VaultFinalRoom extends SpecialRoom {
 				} else if (Dungeon.level.map[cell-w] != Terrain.EMPTY_SP) {
 					data[0] += 32;
 				}
-				//vertical
+
+			//Vertical
 			} else {
 				data[0] = 16*12;
 
@@ -525,6 +526,9 @@ public class VaultFinalRoom extends SpecialRoom {
 
 		@Override
 		public Image image(int tileX, int tileY) {
+			if (Dungeon.level.map[this.tileX + this.tileY*Dungeon.level.width()] == Terrain.EMBERS){
+				return null;
+			}
 			//always shows the door as facing the hero
 			Image img = new Image(texture);
 			if (!Dungeon.level.locked){
@@ -581,7 +585,8 @@ public class VaultFinalRoom extends SpecialRoom {
 			//Horizontal
 			if (Dungeon.level.map[cell+w] != Terrain.WALL){
 				data[1] = -1; //no second row for horizontal
-				if (Dungeon.level.map[cell] == Terrain.OPEN_DOOR){
+				if (Dungeon.level.map[cell] == Terrain.OPEN_DOOR
+						|| Dungeon.level.map[cell] == Terrain.EMBERS){
 					data[0] = -1;
 				} else if (Dungeon.level.map[cell] == Terrain.DOOR){
 					data[0] = 16*8 + 2;
@@ -591,7 +596,8 @@ public class VaultFinalRoom extends SpecialRoom {
 
 			//vertical
 			} else {
-				if (Dungeon.level.map[cell] == Terrain.OPEN_DOOR){
+				if (Dungeon.level.map[cell] == Terrain.OPEN_DOOR
+						|| Dungeon.level.map[cell] == Terrain.EMBERS){
 					data[0] = -1;
 					data[1] = -1;
 				} else if (Dungeon.level.map[cell] == Terrain.DOOR){

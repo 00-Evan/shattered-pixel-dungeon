@@ -226,7 +226,7 @@ public class VaultTokensRoom extends VaultLongRoom {
 		@Override
 		protected boolean updateCell(int cell, int[] data){
 			cell = tileX + tileY*Dungeon.level.width();
-			if (Dungeon.level.map[cell] == Terrain.OPEN_DOOR){
+			if (Dungeon.level.map[cell] != Terrain.DOOR){
 				data[0] = 16*9 + 1;
 			} else {
 				data[0] = 16*9;
