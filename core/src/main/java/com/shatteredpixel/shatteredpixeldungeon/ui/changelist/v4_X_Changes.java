@@ -66,9 +66,9 @@ public class v4_X_Changes {
 
 		if (DeviceCompat.isiOS() && DeviceCompat.getPlatformVersion() <= 14) {
 			changes.addButton(new ChangeButton(Icons.WARNING.get(), "iOS 13 & 14 end of support",
-					"Unfortunately, due to an impending requirement by Apple, v4.0.0 was the the last version of Shattered compatible with iOS 12.\n" +
+					"Unfortunately, due to a new requirement by Apple, v4.0.0 was the the last version of Shattered compatible with iOS 12.\n" +
 					"\n" +
-					"iOS 13 and 14 support will also have to be dropped soon due to the same requirements, likely v4.1 will be the last update for those devices."));
+					"iOS 13 and 14 support will also have to be dropped soon due to the same requirements, likely v4.1 and any immediate patches will be the last update for those devices."));
 		}
 	}
 
@@ -125,6 +125,7 @@ public class v4_X_Changes {
 				"**Caused by v4.0:**\n" +
 				"**-** Incoming DOT display not showing correctly in specific cases\n" +
 				"**-** Vault boss being able to spawn on top of characters\n" +
+				"**-** Vault boss shocking form using direct attack more often than intended, and environment attack less often than intended\n" +
 				"**-** Beacon of Returning being usable to return to the vault in specific cases\n" +
 				"**-** Various rare crash bugs\n" +
 				"**-** Various minor visual & textual errors\n" +
