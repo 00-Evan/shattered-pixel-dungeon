@@ -263,7 +263,7 @@ public class VaultBossElemental extends Mob {
 				envAttackCooldown = Random.NormalIntRange( 10, 15 );
 				//shock form gets faster abilities
 				if (form == ElementalForm.SHOCK){
-					spAttackCooldown = (int) (spAttackCooldown*0.67f);
+					envAttackCooldown = (int) (envAttackCooldown*0.67f);
 				}
 
 				Dungeon.hero.interrupt();
