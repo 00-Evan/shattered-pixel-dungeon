@@ -117,11 +117,11 @@ public class ChaliceOfBlood extends Artifact {
 	}
 
 	private int minPrickDmg(){
-		return 18;
+		return (int)Math.ceil(3 + 2.5f*(level()*level()));
 	}
 
 	private int maxPrickDmg(){
-		return 20;
+		return (int)Math.floor(7 + 3.5f*(level()*level()));
 	}
 
 	private void prick(Hero hero){
