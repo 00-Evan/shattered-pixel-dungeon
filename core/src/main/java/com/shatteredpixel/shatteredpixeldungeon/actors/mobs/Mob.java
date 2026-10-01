@@ -745,7 +745,8 @@ public abstract class Mob extends Char {
 					GameScene.updateFog(pos, 1);
 				}
 			}
-			if (movementShadow == null){
+			//if we don't have a shadow, or it was removed from the scene (e.g. from scene reset)
+			if (movementShadow == null || movementShadow.parent == null){
 				movementShadow = sprite();
 				sprite.parent.add(movementShadow);
 			}
