@@ -115,30 +115,9 @@ public class VaultBossElementalSprite extends MobSprite {
 			particles = createEmitter();
 		}
 		if (doorLockVfx != null){
-			if (doorLockVfx[0] != null) {
-				doorLockVfx[0].killAndErase();
-				doorLockVfx[1].killAndErase();
-			}
-			Room room = ((RegularLevel)Dungeon.level).room(ch.pos);
-			if (room instanceof VaultFinalRoom){
-				doorLockVfx[0] = CellEmitter.get(Dungeon.level.pointToCell(((VaultFinalRoom) room).entryDoor));
-				doorLockVfx[1] = CellEmitter.get(Dungeon.level.pointToCell(((VaultFinalRoom) room).lockedDoor));
-				switch (form) {
-					case FIRE:
-					default:
-						doorLockVfx[0].pour(FlameParticle.FACTORY, 0.1f);
-						doorLockVfx[1].pour(FlameParticle.FACTORY, 0.1f);
-						break;
-					case FROST:
-						doorLockVfx[0].pour(MagicMissile.MagicParticle.FACTORY, 0.1f);
-						doorLockVfx[1].pour(MagicMissile.MagicParticle.FACTORY, 0.1f);
-						break;
-					case SHOCK:
-						doorLockVfx[0].pour(SparkParticle.STATIC, 0.1f);
-						doorLockVfx[1].pour(SparkParticle.STATIC, 0.1f);
-						break;
-				}
-			}
+			doorLockVfx[0].killAndErase();
+			doorLockVfx[1].killAndErase();
+			doorLockVfx = createDoorEmitters();
 		}
 
 	}
@@ -207,6 +186,33 @@ public class VaultBossElementalSprite extends MobSprite {
 		return emitter;
 	}
 
+	private Emitter[] createDoorEmitters(){
+		Room room = ((RegularLevel)Dungeon.level).room(ch.pos);
+		if (room instanceof VaultFinalRoom){
+			Emitter[] emitters = new Emitter[2];
+			emitters[0] = CellEmitter.get(Dungeon.level.pointToCell(((VaultFinalRoom) room).entryDoor));
+			emitters[1] = CellEmitter.get(Dungeon.level.pointToCell(((VaultFinalRoom) room).lockedDoor));
+			switch (form) {
+				case FIRE:
+				default:
+					emitters[0].pour(FlameParticle.FACTORY, 0.1f);
+					emitters[1].pour(FlameParticle.FACTORY, 0.1f);
+					break;
+				case FROST:
+					emitters[0].pour(MagicMissile.MagicParticle.FACTORY, 0.1f);
+					emitters[1].pour(MagicMissile.MagicParticle.FACTORY, 0.1f);
+					break;
+				case SHOCK:
+					emitters[0].pour(SparkParticle.STATIC, 0.1f);
+					emitters[1].pour(SparkParticle.STATIC, 0.1f);
+					break;
+			}
+			return emitters;
+		} else{
+			return null;
+		}
+	}
+
 	@Override
 	public void link( Char ch ) {
 		super.link( ch );
@@ -215,7 +221,7 @@ public class VaultBossElementalSprite extends MobSprite {
 			particles = createEmitter();
 		}
 		if (doorLockVfx == null){
-			doorLockVfx = new Emitter[2];
+			doorLockVfx = createDoorEmitters();
 		}
 	}
 
