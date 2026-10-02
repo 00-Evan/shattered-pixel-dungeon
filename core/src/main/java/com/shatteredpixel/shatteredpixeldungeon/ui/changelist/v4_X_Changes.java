@@ -115,6 +115,9 @@ public class v4_X_Changes {
 
 		changes.addButton( new ChangeButton( ChangeIcons.V081_MISC, Messages.get(ChangesScene.class, "misc"),
 				"**-** Added new visuals for the doors in the final vault room\n" +
+				"**-** Vault boss now plays sfx when swapping forms\n" +
+				"**-** Darkened new 'investigating' thought bubble to make it more distinct from 'hunting'\n" +
+				"\n" +
 				"**-** Slightly darkened the highlights on new runestone visuals\n" +
 				"**-** Improved visuals on crystal spire when it becomes damaged\n" +
 				"**-** Traps which cannot spawn in hallways now also can't spawn adjacent to each other\n" +
