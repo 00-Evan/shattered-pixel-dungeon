@@ -177,6 +177,7 @@ public class VaultBossElemental extends Mob {
 		e.pos(sprite, 4, 4, 24, 24);
 		if (form == ElementalForm.FIRE){
 			e.burst(FlameParticle.FACTORY, 50);
+			Sample.INSTANCE.play(Assets.Sounds.BURNING, 2f);
 
 			for (Buff b : buffs()){
 				if (b instanceof Chill || b instanceof Frost){
@@ -185,6 +186,7 @@ public class VaultBossElemental extends Mob {
 			}
 		} else if (form == ElementalForm.FROST){
 			e.burst(MagicMissile.MagicParticle.FACTORY, 50);
+			Sample.INSTANCE.play(Assets.Sounds.SHATTER, 2f);
 
 			for (Buff b : buffs()){
 				if (b instanceof Burning){
@@ -193,6 +195,7 @@ public class VaultBossElemental extends Mob {
 			}
 		} else if (form == ElementalForm.SHOCK){
 			e.burst(SparkParticle.FACTORY, 50);
+			Sample.INSTANCE.play(Assets.Sounds.LIGHTNING, 2f);
 		}
 
 		//don't want to follow through now that form changed, so force a new sp attack instead
