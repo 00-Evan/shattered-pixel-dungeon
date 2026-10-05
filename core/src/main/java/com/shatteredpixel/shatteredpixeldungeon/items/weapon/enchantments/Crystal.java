@@ -66,7 +66,7 @@ public class Crystal extends Weapon.Enchantment {
 				float avgUses = 50;
 				//scaling down to 30 attacks at +6 (except spirit bow, which is always 50)
 				if (weapon instanceof MeleeWeapon){
-					avgUses -= Math.max(0, 20*weapon.buffedLvl()/6f);
+					avgUses -= Math.min(20, 20*weapon.buffedLvl()/6f);
 				}
 				durability -=  Random.NormalFloat(0.5f, 1.5f)*(1f/avgUses)*weapon.delayFactor(attacker);
 
