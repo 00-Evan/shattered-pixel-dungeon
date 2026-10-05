@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StatuesRoom;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.custom.Carpet;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Rect;
 
@@ -51,11 +50,7 @@ public class StatuesEntranceRoom extends StatuesRoom {
 		if (width() >= 11 || height() >= 11){
 			Point c = center();
 			entrance = level.pointToCell(c);
-			for (int i : PathFinder.NEIGHBOURS8){
-				if (level.map[entrance + i] != Terrain.STATUE ){
-					Painter.set(level, entrance + i, Terrain.EMPTY_DECO);
-				}
-			}
+
 			Carpet carpet = new Carpet();
 			Rect carpetRect = new Rect(c.x-1, c.y-1, c.x+1, c.y+1);
 			if (width()%2 == 0){
@@ -72,6 +67,13 @@ public class StatuesEntranceRoom extends StatuesRoom {
 					carpetRect.top--;
 				}
 			}
+
+			for (Point p : carpetRect.getPoints()){
+				if (level.map[level.pointToCell(p)] != Terrain.STATUE ){
+					Painter.set(level, p, Terrain.EMPTY_DECO);
+				}
+			}
+
 			carpet.setRect(carpetRect.left, carpetRect.top, carpetRect.width()+1, carpetRect.height()+1);
 			carpet.overrideTile(entrance, level, Carpet.CITY_ENTRANCE);
 			level.customTiles.add(0, carpet); //so other carpets are on top of it
