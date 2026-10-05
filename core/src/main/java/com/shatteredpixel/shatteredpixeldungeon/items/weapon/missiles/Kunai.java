@@ -23,7 +23,9 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
@@ -58,6 +60,9 @@ public class Kunai extends MissileWeapon {
 				int exStr = hero.STR() - STRReq();
 				if (exStr > 0) {
 					damage += Hero.heroDamageIntRange(0, exStr);
+				}
+				if (owner.buff(Momentum.class) != null && owner.buff(Momentum.class).freerunning()) {
+					damage = Math.round(damage * (1f + 0.15f * ((Hero) owner).pointsInTalent(Talent.PROJECTILE_MOMENTUM)));
 				}
 				return damage;
 			}
