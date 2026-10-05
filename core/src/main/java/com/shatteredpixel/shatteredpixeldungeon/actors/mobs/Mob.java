@@ -731,6 +731,7 @@ public abstract class Mob extends Char {
 
 	@Override
 	public void move(int step, boolean travelling) {
+		int from = pos;
 		super.move(step, travelling);
 		if (usingStealthGamePlay
 				&& travelling
@@ -750,10 +751,10 @@ public abstract class Mob extends Char {
 				movementShadow = sprite();
 				sprite.parent.add(movementShadow);
 			}
-			movementShadow.point(DungeonTilemap.raisedTileCenterToWorld(previousPos));
+			movementShadow.point(DungeonTilemap.raisedTileCenterToWorld(from));
 			movementShadow.x -= movementShadow.width()/2f;
 			movementShadow.y -= movementShadow.height()/2f;
-			movementShadow.move(previousPos, pos);
+			movementShadow.move(from, pos);
 			movementShadow.alpha(sprite.alpha());
 			if (shadowFade == null){
 				shadowFade = new AlphaTweener( movementShadow, 0, 1 ) {
