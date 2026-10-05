@@ -220,7 +220,12 @@ public class VaultBossElemental extends Mob {
 
 	@Override
 	protected boolean act() {
+		//i.e. right after loading a save
 		if (enemy == null){
+			if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
+				fieldOfView = new boolean[Dungeon.level.length()];
+				Dungeon.level.updateFieldOfView( this, fieldOfView );
+			}
 			chooseEnemy();
 		}
 
