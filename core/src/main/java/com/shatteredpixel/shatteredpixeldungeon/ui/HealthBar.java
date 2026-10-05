@@ -91,11 +91,13 @@ public class HealthBar extends Component {
 	}
 
 	public void level(Char c){
-		float health = c.HP;
-		float shield = c.shielding();
-		float incomingDot = c.incomingDOT();
-		float max = Math.max(health+shield, c.HT);
+		if (c != null) {
+			float health = c.HP;
+			float shield = c.shielding();
+			float incomingDot = c.incomingDOT();
+			float max = Math.max(health + shield, c.HT);
 
-		level(health/max, (health+shield)/max, incomingDot/max);
+			level(health / max, (health + shield) / max, incomingDot / max);
+		}
 	}
 }
