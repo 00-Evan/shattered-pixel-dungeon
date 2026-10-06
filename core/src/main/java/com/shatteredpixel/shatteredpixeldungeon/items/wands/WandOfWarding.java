@@ -79,7 +79,11 @@ public class WandOfWarding extends Wand {
 	
 	@Override
 	public boolean tryToZap(Hero owner, int target) {
-		
+		if (cursed){
+			//we're not spawning a ward/sentry if cursed, so skip all special logic here
+			return super.tryToZap(owner, target);
+		}
+
 		int currentWardEnergy = 0;
 		for (Char ch : Actor.chars()){
 			if (ch instanceof Ward){
