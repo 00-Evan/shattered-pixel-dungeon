@@ -78,9 +78,25 @@ public class v4_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v4.0.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by v4.0.1:**\n" +
+				"**-** Crystal enchantment having lower durability than intended at melee weapon levels above +6\n" +
+				"(it got VERY low around +10 and higher, it should now correctly cap at 30 avg uses at +6, sorry!)\n" +
+				"\n" +
+				"**Caused by v4.0.0:**\n" +
+				"**-** Traps appearing over carpet in rare cases\n" +
+				"**-** Further crashes when loading during vault boss fight\n" +
+				"**-** Various rare crash bugs\n" +
+				"\n" +
+				"**Existed Prior to v4.0:**\n" +
+				"**-** Metamorphed weapon recharging talent not applying its bonus damage correctly\n" +
+				"**-** Kunai and Knives not benefitting from projectile momentum when surprise attacking\n" +
+				"**-** Cursed wands of warding being limited by ward spawning rules, despite not spawning wards"));
 
 		changes = new ChangeInfo("v4.0.1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);

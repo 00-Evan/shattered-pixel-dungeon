@@ -1,5 +1,4 @@
-v4.0.1 is a patch!
-This patch contains tweaks to game balance.
+v4.0.2 is a patch!
 This patch contains bugfixes.
 This patch contains translation updates.
 
