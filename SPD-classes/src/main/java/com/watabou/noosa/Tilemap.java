@@ -216,7 +216,7 @@ public class Tilemap extends Visual {
 			updating.setEmpty();
 		}
 
-		NoosaScript script = script();
+		NoosaScript script = NoosaScript.get();
 
 		texture.bind();
 
@@ -229,10 +229,6 @@ public class Tilemap extends Visual {
 
 		script.drawQuadSet( buffer, size, 0 );
 
-	}
-	
-	protected NoosaScript script(){
-		return NoosaScriptNoLighting.get();
 	}
 
 	@Override

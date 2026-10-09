@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.custom.Carpet;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.Tilemap;
 import com.watabou.utils.Point;
@@ -258,11 +257,6 @@ public class AmbitiousImpRoom extends SpecialRoom {
 			//largely a copy of super method, so that we can change alpha on update
 			if (vis != null && vis.alive) vis.killAndErase();
 			vis = new Tilemap(texture, new TextureFilm( texture, SIZE, SIZE )){
-				@Override
-				protected NoosaScript script() {
-					//allow lighting for custom tilemaps
-					return NoosaScript.get();
-				}
 
 				@Override
 				public void update() {

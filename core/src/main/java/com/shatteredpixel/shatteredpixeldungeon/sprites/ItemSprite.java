@@ -299,7 +299,7 @@ public class ItemSprite extends MovieClip {
 				dirty = false;
 			}
 
-			NoosaScript script = script();
+			NoosaScript script = NoosaScript.get();
 
 			texture.bind();
 

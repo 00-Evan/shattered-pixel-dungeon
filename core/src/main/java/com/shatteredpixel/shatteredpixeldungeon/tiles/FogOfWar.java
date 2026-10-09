@@ -26,8 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.NoosaScript;
-import com.watabou.noosa.NoosaScriptNoLighting;
 import com.watabou.utils.Rect;
 
 import java.util.ArrayList;
@@ -311,11 +309,6 @@ public class FogOfWar extends Image {
 	private void fillCell( Pixmap fog, int x, int y, int color){
 		fog.setColor((color << 8) | (color >>> 24));
 		fog.fillRectangle(x * PIX_PER_TILE, y*PIX_PER_TILE, PIX_PER_TILE, PIX_PER_TILE);
-	}
-
-	@Override
-	protected NoosaScript script() {
-		return NoosaScriptNoLighting.get();
 	}
 
 	@Override
