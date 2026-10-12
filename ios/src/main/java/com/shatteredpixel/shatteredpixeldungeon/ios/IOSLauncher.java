@@ -22,10 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.ios;
 
 import com.badlogic.gdx.Files;
-import com.badlogic.gdx.backends.iosrobovm.DefaultIOSInput;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
-import com.badlogic.gdx.backends.iosrobovm.IOSInput;
 import com.badlogic.gdx.backends.iosrobovm.IOSPreferences;
 import com.badlogic.gdx.backends.iosrobovm.bindings.metalangle.MGLDrawableColorFormat;
 import com.badlogic.gdx.backends.iosrobovm.bindings.metalangle.MGLDrawableDepthFormat;
@@ -38,7 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.services.updates.UpdateImpl;
 import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
 import com.watabou.noosa.Game;
 import com.watabou.utils.FileUtils;
-
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.foundation.NSBundle;
 import org.robovm.apple.foundation.NSException;
@@ -47,7 +44,6 @@ import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.foundation.NSString;
 import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIInterfaceOrientation;
-import org.robovm.apple.uikit.UITextField;
 
 import java.io.File;
 
@@ -188,22 +184,7 @@ public class IOSLauncher extends IOSApplication.Delegate {
 		config.addIosDevice("SIMULATOR_64",     "x86_64", 460);
 		config.addIosDevice("SIMULATOR_ARM64",  "arm64", 460);
 
-		return new IOSApplication(new ShatteredPixelDungeon(new IOSPlatformSupport()), config){
-			@Override
-			protected IOSInput createInput() {
-				//FIXME essentially a backport of a fix to text fields from libGDX ios backend 1.13.5
-				return new DefaultIOSInput(this){
-					@Override
-					public void setOnscreenKeyboardVisible(boolean visible, OnscreenKeyboardType type) {
-						super.setOnscreenKeyboardVisible(visible, type);
-						if (visible){
-							((UITextField)getActiveKeyboardTextField()).setText("x");
-						}
-					}
-				};
-
-			}
-		};
+		return new IOSApplication(new ShatteredPixelDungeon(new IOSPlatformSupport()), config);
 	}
 
 	@Override
