@@ -143,8 +143,21 @@ public class NoosaScript extends Script {
 		
 		Gdx.gl20.glDrawElements( Gdx.gl20.GL_TRIANGLES, Quad.SIZE * length, Gdx.gl20.GL_UNSIGNED_SHORT, Quad.SIZE * Short.SIZE/8 * offset );
 	}
+
+	//a static brightness multiplier that is applied to all color math
+	// values < 1 dim and decrease contrast, values above 1 brighten and increase contrast
+	// <1 also squishes brightness values together a bit, >1 crushes some bright colors to white
+	public static void brightness(float brightness){
+		brightnessMulti = brightness;
+	}
+
+	public static float brightnessMulti = 1f;
 	
 	public void lighting( float rm, float gm, float bm, float am, float ra, float ga, float ba, float aa ) {
+		rm *= brightnessMulti;
+		gm *= brightnessMulti;
+		bm *= brightnessMulti;
+
 		uColorM.value4f( rm, gm, bm, am );
 		uColorA.value4f( ra, ga, ba, aa );
 	}

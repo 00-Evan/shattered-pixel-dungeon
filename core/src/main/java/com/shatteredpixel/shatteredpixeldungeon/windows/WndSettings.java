@@ -44,6 +44,7 @@ import com.watabou.input.ControllerHandler;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.DeviceCompat;
@@ -273,10 +274,12 @@ public class WndSettings extends WndTabbed {
 			add(sep2);
 
 			optBrightness = new OptionSlider(Messages.get(this, "brightness"),
-					Messages.get(this, "dark"), Messages.get(this, "bright"), -1, 1) {
+					Messages.get(this, "dark"), Messages.get(this, "bright"), -2, 2) {
 				@Override
 				protected void onChange() {
 					SPDSettings.brightness(getSelectedValue());
+					// 0.8/0.91/1/1.11/1.25
+					NoosaScript.brightness(1f/(1f-getSelectedValue()/10f));
 				}
 			};
 			optBrightness.setSelectedValue(SPDSettings.brightness());

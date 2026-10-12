@@ -28,8 +28,8 @@ import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.ui.TitleBackground;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
+import com.shatteredpixel.shatteredpixeldungeon.ui.TitleBackground;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Tooltip;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Holiday;
@@ -46,6 +46,7 @@ import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.Scene;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.ui.Component;
@@ -175,6 +176,9 @@ public class PixelScene extends Scene {
 		Tooltip.resetLastUsedTime();
 
 		Cursor.setCustomCursor(Cursor.Type.DEFAULT, defaultZoom);
+
+		// 0.8/0.91/1/1.11/1.25
+		NoosaScript.brightness(1f/(1f-SPDSettings.brightness()/10f));
 
 	}
 

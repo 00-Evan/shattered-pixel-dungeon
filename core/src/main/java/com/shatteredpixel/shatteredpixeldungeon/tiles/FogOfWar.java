@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.tiles;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Rect;
@@ -32,33 +31,10 @@ import java.util.ArrayList;
 
 public class FogOfWar extends Image {
 
-	//first index is visibility type, second is brightness level
-	private static final int FOG_COLORS[][] = new int[][]{{
-			//visible
-			0x00000000, //-1 brightness
-			0x00000000, //0  brightness
-			0x00000000, //1  brightness
-			}, {
-			//visited
-			0xCC000000,
-			0x99000000,
-			0x55000000
-			}, {
-			//mapped
-			0xCC112244,
-			0x99193366,
-			0x55224488
-			}, {
-			//invisible
-			0xFF000000,
-			0xFF000000,
-			0xFF000000
-			}};
-
-	private static final int VISIBLE    =   0;
-	private static final int VISITED    =   1;
-	private static final int MAPPED     =   2;
-	private static final int INVISIBLE  =   3;
+	private static final int VISIBLE    =   0x00000000;
+	private static final int VISITED    =   0x99000000;
+	private static final int MAPPED     =   0x99193366;
+	private static final int INVISIBLE  =   0xFF000000;
 
 	private int mapWidth;
 	private int mapHeight;
@@ -165,13 +141,11 @@ public class FogOfWar extends Image {
 	private boolean[] visible;
 	private boolean[] visited;
 	private boolean[] mapped;
-	private int brightness;
 	
 	private void updateTexture( boolean[] visible, boolean[] visited, boolean[] mapped ) {
 		this.visible = visible;
 		this.visited = visited;
 		this.mapped = mapped;
-		this.brightness = SPDSettings.brightness() + 1;
 
 		moveToUpdating();
 		
@@ -200,7 +174,7 @@ public class FogOfWar extends Image {
 						//we skip filling cells here if it isn't a full update
 						// because they must already be dark
 						if (fullUpdate)
-							fillCell(fog, j, i, FOG_COLORS[INVISIBLE][brightness]);
+							fillCell(fog, j, i, INVISIBLE);
 						cell++;
 						continue;
 					}
@@ -210,7 +184,7 @@ public class FogOfWar extends Image {
 						
 						//always dark if nothing is beneath them
 						if (cell + mapWidth >= mapLength) {
-							fillCell(fog, j, i, FOG_COLORS[INVISIBLE][brightness]);
+							fillCell(fog, j, i, INVISIBLE);
 							
 						//internal wall tiles, need to check both the left and right side,
 						// to account for only one half of them being seen
@@ -224,17 +198,17 @@ public class FogOfWar extends Image {
 									
 									//if below-left is also a wall, then we should be dark no matter what.
 									if (wall(cell + mapWidth - 1)) {
-										fillLeft(fog, j, i, FOG_COLORS[INVISIBLE][brightness]);
+										fillLeft(fog, j, i, INVISIBLE);
 									} else {
-										fillLeft(fog, j, i, FOG_COLORS[Math.max(getCellFog(cell), Math.max(getCellFog(cell + mapWidth - 1), getCellFog(cell - 1)))][brightness]);
+										fillLeft(fog, j, i, getCellFog(cell, cell + mapWidth - 1, cell - 1));
 									}
 									
 								} else {
-									fillLeft(fog, j, i, FOG_COLORS[Math.max(getCellFog(cell), getCellFog(cell - 1))][brightness]);
+									fillLeft(fog, j, i, getCellFog(cell, cell - 1));
 								}
 								
 							} else {
-								fillLeft(fog, j, i, FOG_COLORS[INVISIBLE][brightness]);
+								fillLeft(fog, j, i, INVISIBLE);
 							}
 							
 							//right side
@@ -245,28 +219,28 @@ public class FogOfWar extends Image {
 									
 									//if below-right is also a wall, then we should be dark no matter what.
 									if (wall(cell + mapWidth + 1)) {
-										fillRight(fog, j, i, FOG_COLORS[INVISIBLE][brightness]);
+										fillRight(fog, j, i, INVISIBLE);
 									} else {
-										fillRight(fog, j, i, FOG_COLORS[Math.max(getCellFog(cell), Math.max(getCellFog(cell + mapWidth + 1), getCellFog(cell + 1)))][brightness]);
+										fillRight(fog, j, i, getCellFog(cell, cell + mapWidth + 1, cell + 1));
 									}
 									
 								} else {
-									fillRight(fog, j, i, FOG_COLORS[Math.max(getCellFog(cell), getCellFog(cell + 1))][brightness]);
+									fillRight(fog, j, i, getCellFog(cell, cell + 1));
 								}
 								
 							} else {
-								fillRight(fog, j, i, FOG_COLORS[INVISIBLE][brightness]);
+								fillRight(fog, j, i, INVISIBLE);
 							}
 							
 						//camera-facing wall tiles
 						//darkest between themselves and the tile below them
 						} else {
-							fillCell(fog, j, i, FOG_COLORS[Math.max(getCellFog(cell), getCellFog(cell + mapWidth))][brightness]);
+							fillCell(fog, j, i, getCellFog(cell, cell + mapWidth));
 						}
 						
 					//other tiles, just their direct value
 					} else {
-						fillCell(fog, j, i, FOG_COLORS[getCellFog(cell)][brightness]);
+						fillCell(fog, j, i, getCellFog(cell));
 					}
 					
 					cell++;
@@ -283,8 +257,19 @@ public class FogOfWar extends Image {
 		return DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell]);
 	}
 
-	private int getCellFog( int cell ){
+	//if multiple cells are referenced, we pick the darkest value between them.
+	private int getCellFog( int... cells){
+		int result = VISIBLE;
+		for (int cell : cells){
+			int value = getCellFog(cell);
+			if (value == INVISIBLE)                         return INVISIBLE; //just return it right away
+			if (value == MAPPED)                            result = MAPPED;
+			else if (value == VISITED && result == VISIBLE) result = VISITED;
+		}
+		return result;
+	}
 
+	private int getCellFog( int cell ){
 		if (visible[cell]) {
 			return VISIBLE;
 		} else if (visited[cell]) {
