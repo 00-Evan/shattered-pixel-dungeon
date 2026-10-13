@@ -1557,7 +1557,8 @@ public abstract class Level implements Bundlable {
 	//only check on base terrain, we want to ignore temporary changes from blobs (e.g. light wall)
 	public boolean invalidHeroPos( int tile ){
 		int flags = Terrain.flags[map[tile]];
-		return (flags & Terrain.PASSABLE) != 0 && (flags & Terrain.AVOID) != 0;
+		//not passable and not avoid
+		return (flags & Terrain.PASSABLE) == 0 && (flags & Terrain.AVOID) == 0;
 	}
 
 	//returns true if the input is a valid tile within the level
