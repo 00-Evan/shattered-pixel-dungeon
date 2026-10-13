@@ -138,8 +138,7 @@ public class TextInput extends Component {
 			});
 		}
 
-		textField.setOnscreenKeyboard(new TextField.OnscreenKeyboard() {
-			@Override
+		textField.setOnscreenKeyboard(new TextField.DefaultOnscreenKeyboard() {
 			public void show(boolean visible) {
 				Game.platform.setOnscreenKeyboardVisible(visible, multiline);
 			}
