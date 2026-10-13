@@ -260,6 +260,7 @@ public class TextInput extends Component {
 			Game.inputHandler.removeInputProcessor(stage);
 			Game.platform.setOnscreenKeyboardVisible(false, false);
 			if (!DeviceCompat.isDesktop()) Game.platform.updateSystemUI();
+			Script.unuse();
 		}
 	}
 }
