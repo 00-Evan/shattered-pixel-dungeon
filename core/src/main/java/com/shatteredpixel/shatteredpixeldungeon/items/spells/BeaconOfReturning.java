@@ -240,7 +240,12 @@ public class BeaconOfReturning extends Spell {
 	
 	@Override
 	public ItemSprite.Glowing glowing() {
-		return returnDepth != -1 ? WHITE : null;
+		BeaconTracker tracker = Dungeon.hero.buff(BeaconTracker.class);
+		if (tracker != null){
+			return WHITE;
+		} else {
+			return null;
+		}
 	}
 	
 	private static final String DEPTH	= "depth";
