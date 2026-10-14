@@ -102,6 +102,16 @@ public class TerrainFeaturesTilemap extends DungeonTilemap {
 		} else if (tile == Terrain.REGION_DECO_ALT) {
 			return 138 + 16 * stage;
 
+		} else if (DungeonTileSheet.doorTile(tile) && wall(pos-1) && wall(pos+1)) {
+			if (tile == Terrain.DOOR){
+				return 139 + 16*stage;
+			} else if (tile == Terrain.LOCKED_DOOR || tile == Terrain.HERO_LKD_DR){
+				return 140 + 16*stage;
+			} else if (tile == Terrain.CRYSTAL_DOOR){
+				return 141 + 16*stage;
+			} else {
+				return -1;
+			}
 		} else if (tile == Terrain.EMBERS) {
 			if (DungeonTileSheet.getVisualWithAlts(DungeonTileSheet.EMBERS, pos) == DungeonTileSheet.EMBERS_ALT){
 				return 208 + 1;
@@ -135,6 +145,10 @@ public class TerrainFeaturesTilemap extends DungeonTilemap {
 		}
 
 		return -1;
+	}
+
+	private boolean wall(int cell) {
+		return DungeonTileSheet.wallStitcheable(map[cell]);
 	}
 
 	public static Image getTrapVisual( Trap trap ){

@@ -32,8 +32,8 @@ public class WallOcclusionTilemap extends DungeonTilemap {
 	//direct values
 	private static final int CLEARED        = 0;
 	private static final int EMPTY          = 0;
-	private static final int DOOR_VERT      = 6;
-	private static final int DOOR_HORIZ     = 7;
+	private static final int DOOR_VERT      = 6; //per-region variants in each row down
+	private static final int DOOR_HORIZ     = 7; //per-region variants in each row down
 
 	//modifiers, added together to form tile
 	private static final int WALL_ABOVE     = 40;
@@ -59,10 +59,11 @@ public class WallOcclusionTilemap extends DungeonTilemap {
 		int curr = EMPTY;
 		if (DungeonTileSheet.doorTile(tile)){
 
+			int region = (Dungeon.depth-1) % 5 + 1;
 			if (wall(pos-1) && wall(pos+1)){
-				curr = DOOR_HORIZ;
+				curr = DOOR_HORIZ + 8*region;
 			} else {
-				curr = DOOR_VERT;
+				curr = DOOR_VERT + 8*region;
 			}
 
 		} else if (!DungeonTileSheet.wallStitcheable(tile) && !Dungeon.level.pit[pos]) {
