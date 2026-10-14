@@ -69,7 +69,7 @@ public class KeyDisplay extends Visual {
 		super(0, 0, 0, 0);
 	}
 	
-	public void updateKeys(){
+	public synchronized void updateKeys(){
 		keys = new int[keyMap.size()+1];
 		
 		for (Notes.KeyRecord rec : Notes.getRecords(Notes.KeyRecord.class)){
@@ -120,7 +120,7 @@ public class KeyDisplay extends Visual {
 		script.drawQuadSet( buffer, totalKeys, 0 );
 	}
 	
-	private void updateVertices(){
+	private synchronized void updateVertices(){
 		//assumes shorter key sprite
 		int maxRows = (int)(height +1) / 5;
 		
