@@ -83,7 +83,7 @@ public abstract class CrystalWispSprite extends MobSprite {
 	}
 
 	@Override
-	public synchronized void attack(int cell) {
+	public void attack(int cell) {
 		super.attack(cell);
 		parent.add(new AlphaTweener(light, 1f, 0.2f) {
 			@Override
