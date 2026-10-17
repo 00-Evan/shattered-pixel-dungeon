@@ -542,11 +542,10 @@ public class VaultFinalRoom extends SpecialRoom {
 		@Override
 		public String desc(int tileX, int tileY) {
 			if (Messages.lang() == Languages.ENGLISH){
-				//TODO, translate this in either v4.1 or v4.0 patches that have other text changes
 				if (!Dungeon.level.locked){
-					return "This door has symbols on it that seem similar to the marker on this room's floor. Perhaps they're tied together in some way?";
+					return Messages.get(this, "desc");
 				} else {
-					return "The symbols on the door are glowing and emitting the same energy as the greater elemental.\n\nThere's no way you're going to be able to open the door while it courses with the elemental's energy.";
+					return Messages.get(this, "desc_locked");
 				}
 			} else {
 				return super.desc(tileX, tileY);
