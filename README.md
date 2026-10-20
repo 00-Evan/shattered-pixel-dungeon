@@ -11,17 +11,33 @@ Shattered Pixel Dungeon currently compiles for Android, iOS, and Desktop platfor
 [![Itch.io](https://shatteredpixel.com/assets/images/badges/itch.png)](https://shattered-pixel.itch.io/shattered-pixel-dungeon)
 [![Github Releases](https://shatteredpixel.com/assets/images/badges/github.png)](https://github.com/00-Evan/shattered-pixel-dungeon/releases)
 
-If you like this game, please consider [supporting me on Patreon](https://www.patreon.com/ShatteredPixel)!
+- If you like this game, please consider [supporting me on Patreon](https://www.patreon.com/ShatteredPixel)!
+- There is an official blog for this project at [ShatteredPixel.com](https://www.shatteredpixel.com/blog/).
+- The game also has a translation project hosted on [Transifex](https://explore.transifex.com/shattered-pixel/shattered-pixel-dungeon/).
 
-There is an official blog for this project at [ShatteredPixel.com](https://www.shatteredpixel.com/blog/).
+## Notes for Developers:
 
-The game also has a translation project hosted on [Transifex](https://explore.transifex.com/shattered-pixel/shattered-pixel-dungeon/).
+(last Updated October 2026)
 
-Note that **this repository does not accept pull requests!** The code here is provided in hopes that others may find it useful for their own projects, not to allow community contribution. Issue reports of all kinds (bug reports, feature requests, etc.) are welcome.
+### Contributing
+
+Thank you for the interest, but **this repository does not accept pull requests!** The code here is provided in hopes that others may find it useful for their own projects, not to allow community contribution. 
+
+Issue reports of all kinds (bug reports, feature requests, etc.) are welcome.
+
+### Use of Generative AI
+
+Shattered Pixel Dungeon is made by humans (me, I'm the human), for humans. Generative AI in its current form is privately owned technology built on mass-theft, which is actively attempting to replace the very people it has stolen from. **This project does not use genAI/LLMs in ANY way.**
+
+If you are considering using genAI when making your own Pixel Dungeon version, **DON'T**. If you do use AI, do not message me asking for help, permission, etc. I don't want anything to do with you.
+
+### Documentation
 
 If you'd like to work with the code, you can find the following guides in `/docs`:
-- [Compiling for Android.](docs/getting-started-android.md)
-    - **[If you plan to distribute on Google Play please read the end of this guide.](docs/getting-started-android.md#distributing-your-app)**
-- [Compiling for desktop platforms.](docs/getting-started-desktop.md)
-- [Compiling for iOS.](docs/getting-started-ios.md)
-- [Recommended changes for making your own version.](docs/recommended-changes.md)
+- [Quick Setup (desktop only)](docs/quick-setup.md)
+- [Getting Started](docs/getting-started.md)
+  - [Compiling for Android](docs/compiling-for-android.md)
+  - [Compiling for Desktop Platforms](docs/compiling-for-desktop.md)
+  - [Compiling for iOS](docs/compiling-for-ios.md)
+- [Recommended changes for making your own version](docs/recommended-changes.md)
+  - **This section has important details If you plan to distribute your PD version on storefronts like Google Play!**
