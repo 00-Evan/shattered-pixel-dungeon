@@ -68,7 +68,7 @@ public class Crystal extends Weapon.Enchantment {
 				if (weapon instanceof MeleeWeapon){
 					avgUses -= Math.min(20, 20*weapon.buffedLvl()/6f);
 				}
-				durability -=  Random.NormalFloat(0.5f, 1.5f)*(1f/avgUses)*weapon.delayFactor(attacker);
+				durability -=  Random.NormalFloat(0.5f, 1.5f)*(100f/avgUses)*weapon.delayFactor(attacker);
 
 				float prevHeuristicDur = visualDurability;
 				visualDurability = GameMath.gate(durability-10, visualDurability, durability);
