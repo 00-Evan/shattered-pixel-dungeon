@@ -240,8 +240,7 @@ public class BeaconOfReturning extends Spell {
 	
 	@Override
 	public ItemSprite.Glowing glowing() {
-		BeaconTracker tracker = Dungeon.hero.buff(BeaconTracker.class);
-		if (tracker != null){
+		if (Dungeon.hero != null  && Dungeon.hero.belongings.contains(this) && Dungeon.hero.buff(BeaconTracker.class) != null) {
 			return WHITE;
 		} else {
 			return null;
