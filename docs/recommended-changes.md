@@ -1,8 +1,8 @@
 (Last Updated October 2026)
 
-This guide covers a few technical changes developers will likely want to make when creating their own Pixel Dungeon version based on Shattered's source code.
+This guide covers a few changes developers will likely want to make when creating their own Pixel Dungeon version based on Shattered's source code.
 
-## Application name, version name, and package name
+## Root build.gradle Variables
 
 There are a number of variables defined in the root [build.gradle](../build.gradle) file that you may want to change:
 - `appName` defines the user-visible name of your app. You must change this to whatever you wish to call your game.
@@ -14,7 +14,7 @@ The other variables do not need to be changed when setting up your own version o
 
 Note that some older guides may recommend that you change the package structure (i.e. the folder names) of the application. This used to be required, but is now optional as the `appPackageName` variable can be used instead.
 
-## Differentiating your game from Shattered
+## Differentiating your Game From Shattered
 
 You will likely want to change core application details to distinguish your version from Shattered Pixel Dungeon, in addition to whatever changes you plan to make to the game itself. This is as simple as modifying text and image assets, but there are a few of them.
 
@@ -26,7 +26,7 @@ For icons, you can find the icons for each platform here: [Android(debug)](../an
 
 If you just want to make a version to share on PD communities then changes here can be minimal, but **if you plan to release your version on storefronts such as Google Play, then larger changes here are NECESSARY!** Google Play in particular has a history of taking down PD versions for 'impersonating' Shattered, and so making changes to the name and core visuals to sufficiently differentiate your version is important. Google also has a mechanism to give them [advanced notice](https://support.google.com/googleplay/android-developer/answer/6320428) that you have permission to use Shattered's code/assets under the GPLv3 license. Sadly, in 2026 it seems that removing "Pixel Dungeon" from your app name is the most consistent way to avoid trouble here.
 
-## Application version code
+## Application Version Code
 
 Shattered Pixel Dungeon has an internal version code which should be incremented with each release. It is defined with the `appVersionCode` variable in the root [build.gradle](../build.gradle) file.
 
@@ -34,7 +34,7 @@ You may be tempted to set this value back to 1, but Shattered has compatibility 
 
 If you wish to set it to 1 anyway, the various constant variables toward the top of [ShatteredPixelDungeon.java](../core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/ShatteredPixelDungeon.java) are a good starting point for finding all of the cases where the game refers to the version code for compatibility purposes.
 
-## Credits & Supporter button
+## Credits & Supporter Button
 
 You will likely want to add yourself to the credits or change the current supporter link. Feel free to adjust these however you like, the relevant code is in [AboutScene.java](../core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/scenes/AboutScene.java) and [SupporterScene.java](../core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/scenes/SupporterScene.java). If you wish to disable the supporter link, simply comment out the line `add(btnSupport);` in [TitleScene.java](../core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/scenes/TitleScene.java).
 

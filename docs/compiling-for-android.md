@@ -4,20 +4,20 @@ Follow the steps in [getting started](./getting-started.md) first if you haven't
 
 Note that this guide includes links to Google documentation that uses Android Studio. They should be just as applicable to Intellij with the Android plugin, though the UI may differ in some places.
 
-## Running the code
+## Running the Code
 
 Firstly, to compile for Android in Intellij you have to download the Android plugin. Go to 'File -> Plugins', select the 'Marketplace' tab and search for 'Android', download and install the Android plugin.
 
 Running the Android build will require either a physical android device or an android emulator. Using a physical device is recommended as the Android Emulator is less convenient to work with and has additional system requirements. Note that when you first build the code Intellij may take some time, as it needs to set up the project and download various android build tools. You may need to sync the project (Build -> Sync project with gradle files) before compiling.
 
 The Google developer website has guides for:
-- Setting up a [physical android device](https://developer.android.com/studio/run/device.html).
+- Setting up a [physical android device](https://developer.android.com/studio/run/device).
 - Setting up an [emulated android devices](https://developer.android.com/studio/run/emulator).
 - Actually [running your code on a device](https://developer.android.com/studio/run#basic-build-run).
 
 If you frequently wish to run your code for debugging purposes, and the changes you make are to platform-independent modules (core and SPD-classes, which is most of the code), you may find that debugging with the [desktop build](compiling-for-desktop.md) is more convenient.
 
-## Generating an installable APK or AAB
+## Generating an Installable APK or AAB
 
 APK (Android PacKage) and AAB (Android App Bundle) files are used to distribute Android applications. You can build these from 'Build' ->  'Generate Signed App Bundle or APK'. APK files are best used when you are not trying to upload your app to Google Play, otherwise you must provide Google with an AAB file and they will used that to generate APK files for you.
 

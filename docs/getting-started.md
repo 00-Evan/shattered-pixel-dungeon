@@ -4,7 +4,7 @@
 
 To compile Shattered Pixel Dungeon using this guide you will need:
 
-**Universal:**
+**All Platforms:**
 - (required) A computer which meets the [system requirements for Intellij](https://www.jetbrains.com/help/idea/installation-guide.html#requirements).
 - (recommended) A GitHub account to fork this repository, if you wish to use version control.
 
@@ -18,7 +18,7 @@ To compile Shattered Pixel Dungeon using this guide you will need:
 - (required) An Apple computer must be used to compile the game for iOS.
 - (recommended) A physical iOS device to test your build of Shattered Pixel Dungeon. Using a simulator is also possible but they are much less convenient.
 
-## Installing initial programs
+## Installing Initial Programs
 
 Download and install the latest version of [Intellij](https://www.jetbrains.com/idea/download/). Android Studio (which is based on Intellij) is another option, but it is not the IDE this guide is written for.
 
@@ -28,13 +28,13 @@ After installing Intellij, you may wish to make the following customizations to 
 
 It is strongly recommended to use version control to manage your copy of the Shattered Pixel Dungeon codebase. Version control is software which helps you manage changes to code. To use version control you will need to download and install [Git](https://git-scm.com/install/). You are welcome to use a separate graphical git client or git CLI if you prefer, but this guide will use Intellij's built-in git tools.
 
-## Setting up your copy of the code
+## Setting Up Your Copy of the Code
 
 If you are using version control, fork this repository using the 'fork' button at the top-right of this web page, so that you have your own copy of the code on GitHub. This requires a github account.
 
 If you do not wish to use version control, press the green 'code' button on [this repository's main page](https://github.com/00-Evan/shattered-pixel-dungeon), and then 'Download ZIP'. Unzip the downloaded zip to any directory on your computer you like.
 
-## Opening the code in Intellij
+## Opening the Code in Intellij
 
 Open Intellij, you will be greeted with a splash page with a few options.
 

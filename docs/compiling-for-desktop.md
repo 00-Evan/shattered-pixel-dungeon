@@ -2,7 +2,7 @@
 
 Follow the steps in [getting started](./getting-started.md) first if you haven't already.
 
-## Running the code
+## Running the Code
 
 Once the code is open in Intellij, you can run it by specifying the gradle commands from the quick guide as a [run configuration](https://www.jetbrains.com/help/idea/run-debug-configuration.html#launch-run-configuration):
 - Select the run configurations dropdown menu on the top right toolbar, and then 'Edit Configurations...'.
@@ -12,7 +12,7 @@ Once the code is open in Intellij, you can run it by specifying the gradle comma
 
 That configuration is now saved and can be selected from the run configurations dropdown menu. It can be ran using the green arrow icon, and debugged with the green bug icon.
 
-## Generating a distributable JAR file
+## Generating a Distributable JAR File
 
 A JAR (Java ARchive) is a file used to distribute Java applications. Just as with running the code, a run configuration must be set up to create the jar. Follow the above steps, but with 'release' instead of 'debug'. Running this configuration will generate a distributable JAR file in the `/desktop/build/libs` folder.
 
@@ -20,7 +20,7 @@ Note that by distributing your modification of Shattered Pixel Dungeon, you are 
 
 Note that JAR files will require a [Java 11+ runtime environment](https://adoptium.net/temurin/releases) (a 'JRE', not a 'JDK') to be installed on a user's computer in order to work. This is unfortunately a pretty big technical hurdle for most users, so JAR builds aren't suitable for wider distribution.
 
-## Generating OS-specific executables
+## Generating OS-Specific Executables
 
 Shattered Pixel Dungeon uses [Jpackage](https://docs.oracle.com/en/java/javase/25/jpackage/packaging-overview.html) and [Badass Runtime](https://badass-runtime-plugin.beryx.org/releases/latest/) to generate platform-specific executables that don't require users to install Java to run the game. This process is unfortunately more awkward for you as a developer, and locks the game to a specific operating system. Because of this JARs are recommended as a simpler starting point, but executable are better for wider distribution.
 

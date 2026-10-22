@@ -2,7 +2,7 @@
 
 Follow the steps in [getting started](./getting-started.md) first if you haven't already.
 
-# ...Good Luck!
+## ...Good Luck!
 
 You have now set up the initial project on your computer. From this point compiling the game for [Android](./compiling-for-android.md) or [Desktop](./compiling-for-desktop.md) is relatively simple, but iOS is significantly more complicated. This is due to a mixture of Apple's development process and the RoboVM tool that Shattered uses to cross-compile for iOS.
 

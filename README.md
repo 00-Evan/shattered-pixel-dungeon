@@ -17,7 +17,7 @@ Shattered Pixel Dungeon currently compiles for Android, iOS, and Desktop platfor
 
 ## Notes for Developers:
 
-(last Updated October 2026)
+(Last Updated October 2026)
 
 ### Contributing
 
