@@ -47,6 +47,7 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.Callback;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.Random;
 
@@ -1099,6 +1100,16 @@ public class WndSettings extends WndTabbed {
 							@Override
 							public void afterCreate() {
 								//do nothing
+								if (langs.get(langIndex) == Languages.ARABIC){
+									ShatteredPixelDungeon.runOnRenderThread(new Callback() {
+										@Override
+										public void call() {
+											ShatteredPixelDungeon.scene().addToFront(new WndTitledMessage(Icons.WARNING.get(),
+													"Arabic is Unfinished!",
+													"Arabic, as a right-to-left language, requires quite a bit of new functionality to work properly! The current Arabic implementation is missing most translations and is NOT considered usable for playing the game yet. Please send me any feedback you have!"));
+										}
+									});
+								}
 							}
 						});
 					}

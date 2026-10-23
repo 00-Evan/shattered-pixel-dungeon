@@ -195,9 +195,7 @@ public class SPDSettings extends GameSettings {
 	}
 
 	public static boolean systemFont(){
-		return getBoolean(KEY_SYSTEMFONT,
-				(language() == Languages.CHI_SMPL || language() == Languages.CHI_TRAD
-						|| language() == Languages.KOREAN || language() == Languages.JAPANESE));
+		return getBoolean(KEY_SYSTEMFONT, Languages.requiresSmoothFont(language()));
 	}
 
 	public static void vibration(boolean value){
@@ -437,7 +435,13 @@ public class SPDSettings extends GameSettings {
 	public static Languages language() {
 		String code = getString(KEY_LANG, null);
 		if (code == null){
-			return Languages.matchLocale(Locale.getDefault());
+			Languages lang = Languages.matchLocale(Locale.getDefault());
+			//TODO Arabic is currently very unfinished, so we don't default it on for AR devices
+			if (lang == Languages.ARABIC){
+				return Languages.ENGLISH;
+			} else {
+				return lang;
+			}
 		} else {
 			return Languages.matchCode(code);
 		}

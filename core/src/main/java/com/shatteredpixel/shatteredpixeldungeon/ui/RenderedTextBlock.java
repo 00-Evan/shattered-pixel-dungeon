@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.ArabicUtils;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -53,9 +54,10 @@ public class RenderedTextBlock extends Component {
 	public static final int LEFT_ALIGN = 1;
 	public static final int CENTER_ALIGN = 2;
 	public static final int RIGHT_ALIGN = 3;
-	private int alignment = LEFT_ALIGN;
-	
-	public RenderedTextBlock(int size){
+	//TODO lots of places do not look great with right-aligned text currently
+	private int alignment = Messages.lang() == Languages.ARABIC ? RIGHT_ALIGN : LEFT_ALIGN;
+
+	public RenderedTextBlock(int size) {
 		this.size = size;
 	}
 
@@ -66,6 +68,11 @@ public class RenderedTextBlock extends Component {
 
 	public void text(String text){
 		this.text = text;
+
+		//if text contains Arabic characters, we need to perform various conversions on it
+		if (text != null && ArabicUtils.containsARChars(text)) {
+			text = ArabicUtils.convertTextBlockForDisplay(text);
+		}
 
 		if (text != null && !text.equals("")) {
 			
@@ -126,7 +133,7 @@ public class RenderedTextBlock extends Component {
 			} else if (str.equals(" ")){
 				words.add(SPACE);
 			} else {
-				RenderedText word = new RenderedText(str, size);
+				RenderedText word = new RenderedText(str, size, ArabicUtils.containsARChars(str));
 				
 				if (highlighting) word.hardlight(hightlightColor);
 				else if (color != -1) word.hardlight(color);

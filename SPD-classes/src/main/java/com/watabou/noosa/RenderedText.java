@@ -41,8 +41,13 @@ import java.util.HashMap;
 public class RenderedText extends Image {
 	
 	private BitmapFont font = null;
+	private BitmapFont overlayFont = null;
 	private int size;
 	private String text;
+
+	//Render in two passes (border, then fill) if characters in this text block are expected
+	// to overlap into each other, e.g. for combining Arabic characters/
+	private boolean renderOverlapping = false;
 	
 	public RenderedText( ) {
 		text = null;
@@ -59,6 +64,14 @@ public class RenderedText extends Image {
 		
 		measure();
 	}
+
+	public RenderedText(String text, int size, boolean renderOverlapping){
+		this.text = text;
+		this.size = size;
+		this.renderOverlapping = renderOverlapping;
+
+		measure();
+	}
 	
 	public void text( String text ){
 		this.text = text;
@@ -72,6 +85,11 @@ public class RenderedText extends Image {
 	
 	public void size( int size ){
 		this.size = size;
+		measure();
+	}
+
+	public void renderOverlapping( boolean value ){
+		renderOverlapping = value;
 		measure();
 	}
 
@@ -93,6 +111,10 @@ public class RenderedText extends Image {
 		}
 		
 		font = Game.platform.getFont(size, text, true, true);
+
+		if (renderOverlapping) {
+			overlayFont = Game.platform.getFont(size, text, true, false);
+		}
 		
 		if (font != null){
 			GlyphLayout glyphs = new GlyphLayout( font, text);
@@ -145,7 +167,20 @@ public class RenderedText extends Image {
 		if (font != null) {
 			updateMatrix();
 			TextRenderBatch.textBeingRendered = this;
-			font.draw(textRenderer, text, 0, 0);
+			if (overlayFont != null){
+				float rt = rm;
+				float gt = gm;
+				float bt = bm;
+				//want to draw the bottom layer as all-black
+				rm = gm = bm = 0;
+				font.draw(textRenderer, text, 0, 0);
+				rm = rt;
+				gm = gt;
+				bm = bt;
+				overlayFont.draw(textRenderer, text, 0, 0);
+			} else {
+				font.draw(textRenderer, text, 0, 0);
+			}
 		}
 	}
 

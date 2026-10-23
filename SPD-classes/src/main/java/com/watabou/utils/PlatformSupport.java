@@ -23,6 +23,7 @@ package com.watabou.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
@@ -157,8 +158,11 @@ public abstract class PlatformSupport {
 			FreeTypeFontGenerator.FreeTypeFontParameter parameters = new FreeTypeFontGenerator.FreeTypeFontParameter();
 			parameters.size = size;
 			parameters.flip = flipped;
-			if (border) {
-				parameters.borderWidth = parameters.size / 10f;
+			parameters.borderWidth = parameters.size / 10f;
+			if (!border) {
+				//we draw a border here and just have it be clear so that border and no border font have the same spacing
+				//this is needed for Arabic, which overlays border and no border font
+				parameters.borderColor = Color.CLEAR;
 			}
 			if (size >= 20){
 				parameters.renderCount = 2;

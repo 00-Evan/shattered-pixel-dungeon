@@ -93,6 +93,8 @@ public class Messages {
 		} else {
 			locale = new Locale(lang.code());
 			bundleLocal = locale;
+			//TODO override locale for now as this swaps us to Arabic numbers in lots of cases
+			if (lang == Languages.ARABIC) locale = Locale.ROOT;
 		}
 		formatters.clear();
 

@@ -205,7 +205,9 @@ public class AndroidPlatformSupport extends PlatformSupport {
 	private static FreeTypeFontGenerator ZHFontGenerator;
 	//droid sans / noto sans, for use with Japanese
 	private static FreeTypeFontGenerator JPFontGenerator;
-	
+	//droid sans / noto sans, for use with Arabic
+	private static FreeTypeFontGenerator ARFontGenerator;
+
 	//special logic for handling korean android 6.0 font oddities
 	private static boolean koreanAndroid6OTF = false;
 	
@@ -291,11 +293,22 @@ public class AndroidPlatformSupport extends PlatformSupport {
 			if (JPFontGenerator == null) JPFontGenerator = fallbackGenerator;
 			
 		}
-		
+
+		//Arabic font generators
+		//TODO arabic font might need its own splitting rules here, NotoNaskhArabic doesn't seem to include common english symbols like ( or )
+		if (Gdx.files.absolute("/system/fonts/NotoNaskhArabic-Regular.ttf").exists()){
+			ARFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoNaskhArabic-Regular.ttf"));
+		} else if (Gdx.files.absolute("/system/fonts/NotoNaskh-Regular.ttf").exists()){
+			ARFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoNaskh-Regular.ttf"));
+		} else {
+			ARFontGenerator = null;
+		}
+
 		if (basicFontGenerator != null) fonts.put(basicFontGenerator, new HashMap<>());
 		if (KRFontGenerator != null) fonts.put(KRFontGenerator, new HashMap<>());
 		if (ZHFontGenerator != null) fonts.put(ZHFontGenerator, new HashMap<>());
 		if (JPFontGenerator != null) fonts.put(JPFontGenerator, new HashMap<>());
+		if (ARFontGenerator != null) fonts.put(ARFontGenerator, new HashMap<>());
 		
 		//would be nice to use RGBA4444 to save memory, but this causes problems on some gpus =S
 		packer = new PixmapPacker(pageSize, pageSize, Pixmap.Format.RGBA8888, 1, false);
@@ -304,6 +317,7 @@ public class AndroidPlatformSupport extends PlatformSupport {
 	private static Matcher KRMatcher = Pattern.compile("\\p{InHangul_Syllables}").matcher("");
 	private static Matcher ZHMatcher = Pattern.compile("\\p{InCJK_Unified_Ideographs}|\\p{InCJK_Symbols_and_Punctuation}|\\p{InHalfwidth_and_Fullwidth_Forms}").matcher("");
 	private static Matcher JPMatcher = Pattern.compile("\\p{InHiragana}|\\p{InKatakana}").matcher("");
+	private static Matcher ARMatcher = Pattern.compile("\\p{InArabic}|\\p{InARABIC_PRESENTATION_FORMS_B}").matcher("");
 
 	@Override
 	protected FreeTypeFontGenerator getGeneratorForString( String input ){
@@ -313,6 +327,8 @@ public class AndroidPlatformSupport extends PlatformSupport {
 			return ZHFontGenerator;
 		} else if (JPMatcher.reset(input).find()){
 			return JPFontGenerator;
+		} else if (ARMatcher.reset(input).find()){
+			return ARFontGenerator;
 		} else {
 			return basicFontGenerator;
 		}
