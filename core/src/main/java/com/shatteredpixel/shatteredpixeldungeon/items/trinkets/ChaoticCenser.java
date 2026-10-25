@@ -191,7 +191,7 @@ public class ChaoticCenser extends Trinket {
 		if (Dungeon.level.trueDistance(target.pos, Dungeon.hero.pos) >= 4){
 			//if target is a distance from the hero, aim in front of them instead
 			for (int i : PathFinder.NEIGHBOURS8){
-				while (!Dungeon.level.solid[targetpos+i]
+				while (!Dungeon.level.solid[target.pos+i]
 						&& Dungeon.level.trueDistance(target.pos+i, Dungeon.hero.pos) < Dungeon.level.trueDistance(targetpos, Dungeon.hero.pos)){
 					targetpos = target.pos+i;
 				}
