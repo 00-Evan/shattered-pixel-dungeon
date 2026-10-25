@@ -1002,12 +1002,14 @@ public class AlchemyScene extends PixelScene {
 				@Override
 				//only the first empty button accepts key input
 				public GameAction keyAction() {
-					for (InputButton i : inputs){
-						if (i.item == null || i.item instanceof WndBag.Placeholder) {
-							if (i == InputButton.this) {
-								return SPDAction.INVENTORY;
-							} else {
-								return super.keyAction();
+					synchronized (inputs) {
+						for (InputButton i : inputs) {
+							if (i != null && (i.item == null || i.item instanceof WndBag.Placeholder)) {
+								if (i == InputButton.this) {
+									return SPDAction.INVENTORY;
+								} else {
+									return super.keyAction();
+								}
 							}
 						}
 					}
