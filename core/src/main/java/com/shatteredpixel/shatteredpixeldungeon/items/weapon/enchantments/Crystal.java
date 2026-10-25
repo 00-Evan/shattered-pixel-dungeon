@@ -85,6 +85,7 @@ public class Crystal extends Weapon.Enchantment {
 					visualDurability = Math.max(visualDurability, 1);
 
 					Sample.INSTANCE.play( Assets.Sounds.SHATTER );
+					Splash.at(attacker.pos, 0x0088FF, 5);
 					if (attacker instanceof Hero) {
 						GLog.n(Messages.get(this, "alert_cracked"));
 					} else if (attacker instanceof DriedRose.GhostHero){
@@ -95,9 +96,7 @@ public class Crystal extends Weapon.Enchantment {
 					Splash.at(attacker.pos, 0x0088FF, 15);
 					if (attacker instanceof Hero) {
 						if (weapon.isEquipped((Hero) attacker)) {
-							weapon.doUnequip((Hero) attacker, false);
-						} else {
-							weapon.detachAll(((Hero) attacker).belongings.backpack);
+							weapon.enchant(null);
 						}
 						GLog.n(Messages.get(this, "alert_shattered"));
 					} else if (attacker instanceof DriedRose.GhostHero){
