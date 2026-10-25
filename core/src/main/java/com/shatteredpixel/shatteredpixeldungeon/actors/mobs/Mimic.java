@@ -120,7 +120,7 @@ public class Mimic extends Mob {
 	@Override
 	public String description() {
 		if (alignment == Alignment.NEUTRAL){
-			if (MimicTooth.stealthyMimics()){
+			if (stealthy()){
 				return Messages.get(Heap.class, "chest_desc");
 			} else {
 				return Messages.get(Heap.class, "chest_desc") + "\n\n" + Messages.get(this, "hidden_hint");

@@ -84,10 +84,20 @@ public class MimicSprite extends MobSprite {
 	public void hideMimic(Char ch){
 		if (ch instanceof Mimic && ((Mimic) ch).stealthy()){
 			play(advancedHiding);
+			visibleOutOfFFOV = true;
 		} else {
 			play(hiding);
+			visibleOutOfFFOV = false;
 		}
 		hideSleep();
+	}
+
+	@Override
+	public void play(Animation anim) {
+		super.play(anim);
+		if (anim != advancedHiding){
+			visibleOutOfFFOV = false;
+		}
 	}
 
 	@Override
