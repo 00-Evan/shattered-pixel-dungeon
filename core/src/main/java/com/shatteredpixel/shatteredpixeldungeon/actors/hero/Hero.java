@@ -1903,9 +1903,10 @@ public class Hero extends Char {
 			if (subClass == HeroSubClass.FREERUNNER){
 				Buff.affect(this, Momentum.class).gainStack();
 			}
-			
-			sprite.move(pos, step);
+
+			int oldPos = pos;
 			move(step);
+			sprite.move(oldPos, pos);
 
 			spend( delay / speed() );
 			
