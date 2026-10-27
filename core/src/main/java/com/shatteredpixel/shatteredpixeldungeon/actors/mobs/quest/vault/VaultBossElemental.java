@@ -172,9 +172,6 @@ public class VaultBossElemental extends Mob {
 		((VaultBossElementalSprite)sprite).updateForm();
 		AttackIndicator.target(this);
 		Emitter e = sprite.emitter();
-		//centered a bit, but not totally
-		e.fillTarget = false;
-		e.pos(sprite, 4, 4, 24, 24);
 		if (form == ElementalForm.FIRE){
 			e.burst(FlameParticle.FACTORY, 50);
 			Sample.INSTANCE.play(Assets.Sounds.BURNING, 2f);
@@ -186,7 +183,7 @@ public class VaultBossElemental extends Mob {
 			}
 		} else if (form == ElementalForm.FROST){
 			e.burst(MagicMissile.MagicParticle.FACTORY, 50);
-			Sample.INSTANCE.play(Assets.Sounds.SHATTER, 2f);
+			Sample.INSTANCE.play(Assets.Sounds.GAS, 2f);
 
 			for (Buff b : buffs()){
 				if (b instanceof Burning){
