@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
-import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -135,6 +134,7 @@ public class RipperDemon extends Mob {
 	private int leapPos = -1;
 	private float leapCooldown = 0;
 
+	//FIXME a LOT of copypasta here =S
 	public class Hunting extends Mob.Hunting {
 
 		@Override
@@ -225,11 +225,19 @@ public class RipperDemon extends Mob {
 
 			} else {
 
+				//if we cannot attack our target, but were hit by something else that
+				// is visible and attackable or closer, swap targets
+				if (handleRecentAttackers()){
+					return act( true, justAlerted );
+				}
+
 				if (enemyInFOV) {
 					target = enemy.pos;
 				} else if (enemy == null) {
+					sprite.showLost();
 					state = WANDERING;
-					target = Dungeon.level.randomDestination( RipperDemon.this );
+					target = ((Mob.Wandering)WANDERING).randomDestination();
+					spend( TICK );
 					return true;
 				}
 
