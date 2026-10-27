@@ -870,6 +870,7 @@ public abstract class Mob extends Char {
 		//or if attacked by target, simply update target position
 		if (state != FLEEING) {
 			if (state != HUNTING) {
+				alerted = true;
 				aggro(enemy);
 				target = enemy.pos;
 			} else {
@@ -1422,6 +1423,20 @@ public abstract class Mob extends Char {
 		//Try to switch targets to another enemy that is closer or reachable
 		//unless we have already done that and still can't move toward them, then move on.
 		protected boolean handleUnreachableTarget(boolean enemyInFOV, boolean justAlerted){
+
+			//if we are large, and being attacked by an unreachable enemy out of FOV
+			// then try to 'side-step' a bit vs. a path to them, to try and put them into view
+			if (enemy != null && properties.contains(Property.LARGE) && !enemyInFOV && justAlerted) {
+
+				PathFinder.buildDistanceMap(enemy.pos, Dungeon.level.passable, 8);
+				for (int i : PathFinder.NEIGHBOURS8) {
+					if (Dungeon.level.openSpace[pos + i] && PathFinder.distance[pos + i] <= PathFinder.distance[pos]) {
+						target = pos + i;
+						return true;
+					}
+				}
+			};
+
 			if (!recursing) {
 				Char oldEnemy = enemy;
 				enemy = null;

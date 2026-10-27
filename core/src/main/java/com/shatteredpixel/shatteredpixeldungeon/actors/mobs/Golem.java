@@ -131,6 +131,11 @@ public class Golem extends Mob {
 				selfTeleCooldown = 30;
 			} else {
 				target = Dungeon.level.randomDestination(this);
+				//try one more time
+				if (Actor.findChar(target) == null && Dungeon.level.openSpace[target]) {
+					ScrollOfTeleportation.appear(this, target);
+					selfTeleCooldown = 30;
+				}
 			}
 			teleporting = false;
 			spend(TICK);
@@ -252,6 +257,23 @@ public class Golem extends Mob {
 				}
 
 			}
+		}
+
+		@Override
+		protected boolean handleUnreachableTarget(boolean enemyInFOV, boolean justAlerted) {
+			boolean result = super.handleUnreachableTarget(enemyInFOV, justAlerted);
+
+			//try to self-teleport in these cases
+			if (state == WANDERING){
+				target =  Dungeon.level.randomDestination( Golem.this );
+				if (!Dungeon.bossLevel() && target != -1 && target != pos && selfTeleCooldown <= 0) {
+					((GolemSprite)sprite).teleParticles(true);
+					teleporting = true;
+					spend( TICK ); //already spent a turn swapping states, so just 1 here
+				}
+			}
+
+			return result;
 		}
 	}
 
