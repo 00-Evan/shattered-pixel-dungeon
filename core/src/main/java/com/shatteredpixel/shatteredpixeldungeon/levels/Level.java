@@ -886,17 +886,15 @@ public abstract class Level implements Bundlable {
 			losBlocking[i + width()-1] = solid[i + width()-1] = true;
 		}
 
-		//an open space is large enough to fit large mobs. A space is open when it is not solid
-		// and there is an open corner with both adjacent cells opens
+		//an open space is large enough to fit large mobs. A space is open when
+		// it is open/passable and there is an open/passable corner with both adjacent cells open/passable.
 		for (int i=0; i < length(); i++) {
-			if (solid[i]){
-				openSpace[i] = false;
-			} else {
+			openSpace[i] = false;
+			if ((!solid[i] || passable[i])){
 				for (int j = 1; j < PathFinder.CIRCLE8.length; j += 2){
-					if (solid[i+PathFinder.CIRCLE8[j]]) {
-						openSpace[i] = false;
-					} else if (!solid[i+PathFinder.CIRCLE8[(j+1)%8]]
-							&& !solid[i+PathFinder.CIRCLE8[(j+2)%8]]){
+					if ((!solid[i+PathFinder.CIRCLE8[(j)%8]] || passable[i+PathFinder.CIRCLE8[(j)%8]])
+							&& (!solid[i+PathFinder.CIRCLE8[(j+1)%8]] || passable[i+PathFinder.CIRCLE8[(j+1)%8]])
+							&& (!solid[i+PathFinder.CIRCLE8[(j+2)%8]] || passable[i+PathFinder.CIRCLE8[(j+2)%8]])){
 						openSpace[i] = true;
 						break;
 					}
