@@ -83,8 +83,11 @@ public class BeamingRay extends TargetedClericSpell {
 		Char ally = PowerOfMany.getPoweredAlly();
 
 		if (ally == null){
-			//temporary, for distance checks
-			ally = Dungeon.hero;
+			ally = Stasis.getStasisAlly();
+			if (ally == null){
+				return;
+			}
+			ally.pos = Dungeon.hero.pos; //calculate distances using hero pos for stasis allies
 		}
 
 		int telePos = target;
@@ -109,10 +112,6 @@ public class BeamingRay extends TargetedClericSpell {
 		if (telePos == -1){
 			GLog.w(Messages.get(this, "no_space"));
 			return;
-		}
-
-		if (ally == Dungeon.hero){
-			ally = Stasis.getStasisAlly();
 		}
 
 		int range = 4*hero.pointsInTalent(Talent.BEAMING_RAY);
