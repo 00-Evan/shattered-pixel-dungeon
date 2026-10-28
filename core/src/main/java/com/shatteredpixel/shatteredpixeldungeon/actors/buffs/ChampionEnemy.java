@@ -264,7 +264,8 @@ public abstract class ChampionEnemy extends Buff {
 		@Override
 		public boolean act() {
 			multiplier += 0.01f;
-			spend(4*TICK);
+			//4/5/6/7/8 turns at 1.2/1.5/1.83/2.17/2.5, etc.
+			spend(Math.round(3f*multiplier));
 			return true;
 		}
 
