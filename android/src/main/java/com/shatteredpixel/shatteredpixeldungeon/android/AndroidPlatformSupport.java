@@ -217,25 +217,42 @@ public class AndroidPlatformSupport extends PlatformSupport {
 
 		ContentResolver resolver = ((AndroidApplication)Gdx.app).getContentResolver();
 		List<UriPermission> Uris = resolver.getPersistedUriPermissions();
+
+		Uri folderURI = null;
 		for (UriPermission p : Uris){
 			if (p.isReadPermission() && p.isWritePermission()){
 				if (URIString != null){
 					if (URIString.equals(p.getUri().toString())){
-						return p.getUri().toString();
+						folderURI = p.getUri();
 					}
 				} else if (folderName != null && !folderName.isEmpty()){
 					String name = p.getUri().getLastPathSegment();
 					name = name.substring(name.indexOf(':')+1);
 					if (name.equalsIgnoreCase(folderName)) {
-						return p.getUri().toString();
+						folderURI = p.getUri();
 					}
 				} else {
-					return p.getUri().toString();
+					folderURI = p.getUri();
 				}
 			}
 		}
 
-		return null;
+		if (folderURI != null){
+
+			//check if this folder we have permission for actually exists
+			Uri documentList = DocumentsContract.buildChildDocumentsUriUsingTree(folderURI, DocumentsContract.getTreeDocumentId(folderURI));
+			Cursor cursor = resolver.query(documentList, null, null, null, null);
+			//clear our URI permission if folder was deleted and try again
+			if (cursor == null){
+				resolver.releasePersistableUriPermission(folderURI, Intent.FLAG_GRANT_READ_URI_PERMISSION
+						| Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+				return getExternalDataFolder(folderName);
+			}
+
+			return folderURI.toString();
+		} else {
+			return null;
+		}
 	}
 
 	private static AndroidEventListener listener;
