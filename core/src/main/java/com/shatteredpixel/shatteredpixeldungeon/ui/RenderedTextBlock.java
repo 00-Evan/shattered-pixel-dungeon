@@ -54,8 +54,11 @@ public class RenderedTextBlock extends Component {
 	public static final int LEFT_ALIGN = 1;
 	public static final int CENTER_ALIGN = 2;
 	public static final int RIGHT_ALIGN = 3;
-	//TODO lots of places do not look great with right-aligned text currently
-	private int alignment = Messages.lang() == Languages.ARABIC ? RIGHT_ALIGN : LEFT_ALIGN;
+
+	private int alignment = LEFT_ALIGN;
+
+	//set when Arabic characters are detected
+	private boolean rightToLeft = false;
 
 	public RenderedTextBlock(int size) {
 		this.size = size;
@@ -67,10 +70,12 @@ public class RenderedTextBlock extends Component {
 	}
 
 	public void text(String text){
+		//we persist the text here before editing it for displaying
 		this.text = text;
 
 		//if text contains Arabic characters, we need to perform various conversions on it
 		if (text != null && ArabicUtils.containsARChars(text)) {
+			rightToLeft = true;
 			text = ArabicUtils.convertTextBlockForDisplay(text);
 		}
 
@@ -285,6 +290,16 @@ public class RenderedTextBlock extends Component {
 						text.x += width() - lineWidth;
 						PixelScene.align(text);
 					}
+				}
+			}
+		}
+
+		if (rightToLeft){
+			for (ArrayList<RenderedText> line : lines) {
+				for (RenderedText text : line) {
+					float ofs = text.x - this.x;
+					text.x = this.x + this.width() - ofs - text.width();
+					PixelScene.align(text);
 				}
 			}
 		}

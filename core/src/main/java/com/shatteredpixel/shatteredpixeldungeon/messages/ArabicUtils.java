@@ -18,9 +18,9 @@ public class ArabicUtils {
 	//Maps Arabic Unicode block chars to their equivalents in Arabic Presentation Forms
 	//then we can further increment based on specific form:
 	// Isolated: unchanged
-	// End of Word: +1      (leftmost, remember we read right-to-left!)
-	// Start of Word: +2    (rightmost)
-	// Middle of Word: +3
+	// End: +1      (leftmost, remember we read right-to-left!)
+	// Start: +2    (rightmost)
+	// Middle: +3
 	private static SparseArray<Character> ARMap = new SparseArray<>();
 	static {
 		ARMap.put(0x0622, (char) 0xFE81);
@@ -71,76 +71,75 @@ public class ArabicUtils {
 		finalOnly.add((char) 0x0649);
 	}
 
-
-	//FIXME this has a lot of issues atm! Needs work! It holds up pretty well for single lines but falls apart on bigger paragraphs
 	public static String convertTextBlockForDisplay( String input ){
 		StringBuilder result = new StringBuilder();
 
 		for (int i = 0; i < input.length(); i++) {
 			char c = input.charAt(i);
-			//TODO underscores and punctuation?
 			if (Character.isWhitespace(c)) {
-				result.insert(0, c);
+				result.append(c);
 
 			} else {
 
 				boolean arabicWord = false;
 				int j = i + 1;
 				while (j < input.length() && !Character.isWhitespace(input.charAt(j))) {
-					if (Character.UnicodeBlock.of(c) == Character.UnicodeBlock.ARABIC) {
+					if (Character.UnicodeBlock.of(input.charAt(j)) == Character.UnicodeBlock.ARABIC) {
 						arabicWord = true;
-						break;
 					}
 					j++;
 				}
 
+				//for arabic words, we need to invert character order and also handle combining forms
 				if (arabicWord) {
 
-					j = i + 1;
-					while (j < input.length() && !Character.isWhitespace(input.charAt(j))) {
-						j++;
-					}
+					int resultEnd = result.length();
 
 					for (int k = i; k < j; k++) {
 						c = input.charAt(k);
 
-						//need to modify chars here based on position within a word
-						if (j - i > 1) { //don't modify on isolated letters
-							//k == j-1 is end (leftmost, going right-to-left!)
-							//k == i is start (rightmost)
-							//otherwise middle
-							//some letter only have alt forms for end state
-							if (ARMap.containsKey(c)) {
-								if (finalOnly.contains(c)) {
-									c = ARMap.get(c);
-									if (k == j - 1) {
-										c += 1;
-									}
+						//need to convert arabic chars into combining forms
+						if (ARMap.containsKey(c)) {
+							if (finalOnly.contains(c)) {
+								c = ARMap.get(c);
+								//only check if no arabic char after
+								if (k == j-1 || Character.UnicodeBlock.of(input.charAt(k+1)) != Character.UnicodeBlock.ARABIC) {
+									c += 1;
+								}
+							} else {
+								c = ARMap.get(c);
+								boolean end = k == j-1 || Character.UnicodeBlock.of(input.charAt(k+1)) != Character.UnicodeBlock.ARABIC;
+								boolean start = k == i || Character.UnicodeBlock.of(input.charAt(k-1)) != Character.UnicodeBlock.ARABIC;
+								if (end && start){
+									//isolated, no change
+								} else if (end){
+									c += 1; //end (no arabic char after)
+								} else if (start){
+									c += 2; //start (no arabic char before)
 								} else {
-									c = ARMap.get(c);
-									if (k == j - 1) {
-										c += 1;
-									} else if (k == i) {
-										c += 2;
-									} else {
-										c += 3;
-									}
+									c += 3; //middle
 								}
 							}
 						}
 
-						result.insert(0, c);
+						//weird bracket handling logic, probably this needs to become more robust
+						if (c == '('){
+							c = ')';
+							result.append(c);
+						} else if (c == ')'){
+							c = '(';
+							result.insert(resultEnd, c);
+						} else {
+							result.insert(resultEnd, c);
+						}
 					}
-					i = j - 1;
 
 				} else {
-					j = i + 1;
-					while (j < input.length() && !Character.isWhitespace(input.charAt(j))) {
-						j++;
-					}
-					result.insert(0, input.substring(i, j));
-					i = j - 1;
+					//non-Arabic words just get appended
+					result.append(input.substring(i, j));
 				}
+
+				i = j - 1; //-1 because it's about to be incremented
 			}
 		}
 
