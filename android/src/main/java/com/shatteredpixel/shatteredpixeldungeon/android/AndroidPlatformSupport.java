@@ -21,17 +21,25 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.android;
 
+import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.UriPermission;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
 import android.graphics.Rect;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.DocumentsContract;
 import android.view.DisplayCutout;
 import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowManager;
-
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.android.AndroidApplication;
+import com.badlogic.gdx.backends.android.AndroidEventListener;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -41,7 +49,10 @@ import com.watabou.noosa.Game;
 import com.watabou.utils.PlatformSupport;
 import com.watabou.utils.RectF;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -193,6 +204,132 @@ public class AndroidPlatformSupport extends PlatformSupport {
 	@Override
 	public boolean supportsVibration() {
 		return true; //always true on Android
+	}
+
+	@Override
+	//Note that this returns the URI string, not just the folder name!
+	public String getExternalDataFolder(String folderName) {
+		//accepts either a folder name or a full URI
+		String URIString = null;
+		if (folderName != null && folderName.startsWith("content://")){
+			URIString = folderName;
+		}
+
+		ContentResolver resolver = ((AndroidApplication)Gdx.app).getContentResolver();
+		List<UriPermission> Uris = resolver.getPersistedUriPermissions();
+		for (UriPermission p : Uris){
+			if (p.isReadPermission() && p.isWritePermission()){
+				if (URIString != null){
+					if (URIString.equals(p.getUri().toString())){
+						return p.getUri().toString();
+					}
+				} else if (folderName != null && !folderName.isEmpty()){
+					String name = p.getUri().getLastPathSegment();
+					name = name.substring(name.indexOf(':')+1);
+					if (name.equalsIgnoreCase(folderName)) {
+						return p.getUri().toString();
+					}
+				} else {
+					return p.getUri().toString();
+				}
+			}
+		}
+
+		return null;
+	}
+
+	private static AndroidEventListener listener;
+	private static final int FOLDER_CODE = 1234;
+
+	@Override
+	public void createExternalDataFolder(String folderName, FolderCreationCallback callback) {
+		Intent intent;
+		intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+
+		//just a suggestion, only works if the folder already exists =S
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, folderName);
+		}
+
+		//handling the result of the intent
+		if (listener == null){
+			listener = new AndroidEventListener() {
+				@Override
+				public void onActivityResult(int requestCode, int resultCode, Intent data) {
+					if (requestCode == FOLDER_CODE){
+						if (resultCode == Activity.RESULT_OK && data != null){
+							Uri uri = data.getData();
+
+							//this lets us retain permissions until user changes the folder or app is uninstalled
+							((AndroidApplication)Gdx.app).getContentResolver().takePersistableUriPermission(uri,
+									(Intent.FLAG_GRANT_READ_URI_PERMISSION
+											| Intent.FLAG_GRANT_WRITE_URI_PERMISSION));
+
+							callback.call(uri.toString());
+
+						} else {
+							callback.call(null);
+						}
+					}
+				}
+			};
+			((AndroidApplication)Gdx.app).addAndroidEventListener(listener);
+		}
+
+		//we launch the activity flow here, which shows a folder creator/selector UI to the user.
+		((AndroidApplication)Gdx.app).startActivityForResult(intent, FOLDER_CODE);
+	}
+
+	private Uri getExternalDataFile(String foldername, String filename) {
+		Uri folder = Uri.parse(getExternalDataFolder(foldername));
+		ContentResolver resolver = ((AndroidApplication)Gdx.app).getContentResolver();
+
+		try {
+
+			//if file already exists, return its Uri
+			Uri documentList = DocumentsContract.buildChildDocumentsUriUsingTree(folder, DocumentsContract.getTreeDocumentId(folder));
+			Cursor cursor = resolver.query(documentList, null, null, null, null);
+			if (cursor != null){
+				int displayIdx = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_DISPLAY_NAME);
+				int IDIdx = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_DOCUMENT_ID);
+				while (cursor.moveToNext()){
+					if (filename.equals(cursor.getString(displayIdx))){
+						return DocumentsContract.buildDocumentUriUsingTree(folder, cursor.getString(IDIdx));
+					}
+				}
+			}
+
+			//otherwise, create the file
+			folder = DocumentsContract.buildDocumentUriUsingTree(folder, DocumentsContract.getTreeDocumentId(folder));
+			Uri document = DocumentsContract.createDocument(resolver, folder, "application/octet-stream", filename);
+			return document;
+		} catch (Exception e) {
+			return null;
+		}
+
+	}
+
+	@Override
+	public InputStream readExternalDataFile(String folderName, String fileName) {
+		Uri file = getExternalDataFile(folderName, fileName);
+		ContentResolver resolver = ((AndroidApplication)Gdx.app).getContentResolver();
+		try {
+			return resolver.openInputStream(file);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Override
+	public OutputStream writeExternalDataFile(String folderName, String fileName) {
+		Uri file = getExternalDataFile(folderName, fileName);
+		ContentResolver resolver = ((AndroidApplication)Gdx.app).getContentResolver();
+		try {
+			//always overwrites, just calling this deletes file contents!
+			return resolver.openOutputStream(file, "wt");
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	/* FONT SUPPORT */
