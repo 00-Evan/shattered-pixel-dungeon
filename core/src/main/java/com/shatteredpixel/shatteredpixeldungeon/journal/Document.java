@@ -375,5 +375,13 @@ public enum Document {
 			}
 		}
 	}
+
+	public static void unload(){
+		for (Document doc : values()) {
+			for (String page : doc.pagesStates.keySet()){
+				doc.pagesStates.put(page, NOT_FOUND);
+			}
+		}
+	}
 	
 }

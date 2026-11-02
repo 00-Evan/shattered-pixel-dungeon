@@ -52,6 +52,15 @@ public class Journal {
 		
 		loaded = true;
 	}
+
+	//clears all loaded data
+	public static void unload(){
+		Catalog.unload();
+		Bestiary.unload();
+		Document.unload();
+		loaded = false;
+		saveNeeded = false;
+	}
 	
 	//package-private
 	static boolean saveNeeded = false;

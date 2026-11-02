@@ -343,6 +343,13 @@ public class Badges {
 		}
 	}
 
+	//clears all loaded data
+	public static void unload(){
+		global = null;
+		local.clear();
+		saveNeeded = false;
+	}
+
 	public static int totalUnlocked(boolean global){
 		if (global) return Badges.global.size();
 		else        return Badges.local.size();
