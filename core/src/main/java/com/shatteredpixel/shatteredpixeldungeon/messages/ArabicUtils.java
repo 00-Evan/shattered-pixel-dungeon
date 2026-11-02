@@ -71,19 +71,30 @@ public class ArabicUtils {
 		finalOnly.add((char) 0x0649);
 	}
 
+	private static boolean splitOn( char c ){
+		return Character.isWhitespace(c) || c == ')' || c == '(';
+	}
+
 	public static String convertTextBlockForDisplay( String input ){
 		StringBuilder result = new StringBuilder();
 
 		for (int i = 0; i < input.length(); i++) {
 			char c = input.charAt(i);
-			if (Character.isWhitespace(c)) {
-				result.append(c);
+			if (splitOn(c)) {
+				//swap ( and )
+				if (c == '('){
+					result.append(')');
+				} else if (c == ')'){
+					result.append('(');
+				} else {
+					result.append(c);
+				}
 
 			} else {
 
 				boolean arabicWord = false;
 				int j = i + 1;
-				while (j < input.length() && !Character.isWhitespace(input.charAt(j))) {
+				while (j < input.length() && !splitOn(input.charAt(j))) {
 					if (Character.UnicodeBlock.of(input.charAt(j)) == Character.UnicodeBlock.ARABIC) {
 						arabicWord = true;
 					}
@@ -123,15 +134,15 @@ public class ArabicUtils {
 						}
 
 						//weird bracket handling logic, probably this needs to become more robust
-						if (c == '('){
+						/*if (c == '('){
 							c = ')';
 							result.append(c);
 						} else if (c == ')'){
 							c = '(';
 							result.insert(resultEnd, c);
-						} else {
+						} else {*/
 							result.insert(resultEnd, c);
-						}
+						//}
 					}
 
 				} else {
