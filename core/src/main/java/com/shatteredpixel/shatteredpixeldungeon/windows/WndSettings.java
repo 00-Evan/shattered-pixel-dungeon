@@ -786,6 +786,8 @@ public class WndSettings extends WndTabbed {
 		CheckBox chkUpdates;
 		CheckBox chkBetas;
 		CheckBox chkWifi;
+		ColorBlock sep2;
+		RedButton btnBackupRestore;
 
 		@Override
 		protected void createChildren() {
@@ -844,6 +846,25 @@ public class WndSettings extends WndTabbed {
 				chkWifi.checked(SPDSettings.WiFi());
 				add(chkWifi);
 			}
+
+			//only shown on Android (iOS has sync, Desktop can access files)
+			if (DeviceCompat.isAndroid()) {
+
+				sep2 = new ColorBlock(1, 1, 0xFF000000);
+				add(sep2);
+
+				btnBackupRestore = new RedButton( Messages.get(this, "backup") ){
+					@Override
+					protected void onClick() {
+						if (ShatteredPixelDungeon.scene() instanceof GameScene) {
+							GameScene.show(new WndError(Messages.get(WndSettings.DataTab.this, "backup_main_menu")));
+						} else {
+							ShatteredPixelDungeon.scene().addToFront(new WndAndroidLocalBackupRestore());
+						}
+					}
+				};
+				add(btnBackupRestore);
+			}
 		}
 
 		@Override
@@ -874,6 +895,17 @@ public class WndSettings extends WndTabbed {
 			if (chkWifi != null){
 				chkWifi.setRect(0, pos + GAP, width, BTN_HEIGHT);
 				pos = chkWifi.bottom();
+			}
+
+			if (sep2 != null){
+				sep2.size(width, 1);
+				sep2.y = pos + GAP;
+				pos = sep2.y + 1;
+			}
+
+			if (btnBackupRestore != null){
+				btnBackupRestore.setRect(0, pos + GAP, width, BTN_HEIGHT);
+				pos = btnBackupRestore.bottom();
 			}
 
 			height = pos;

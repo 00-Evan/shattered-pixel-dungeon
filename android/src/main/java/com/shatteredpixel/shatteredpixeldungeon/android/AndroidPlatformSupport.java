@@ -297,7 +297,7 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		((AndroidApplication)Gdx.app).startActivityForResult(intent, FOLDER_CODE);
 	}
 
-	private Uri getExternalDataFile(String foldername, String filename) {
+	private Uri getExternalDataFile(String foldername, String filename, boolean create) {
 		Uri folder = Uri.parse(getExternalDataFolder(foldername));
 		ContentResolver resolver = ((AndroidApplication)Gdx.app).getContentResolver();
 
@@ -316,6 +316,10 @@ public class AndroidPlatformSupport extends PlatformSupport {
 				}
 			}
 
+			if (!create){
+				return null;
+			}
+
 			//otherwise, create the file
 			folder = DocumentsContract.buildDocumentUriUsingTree(folder, DocumentsContract.getTreeDocumentId(folder));
 			Uri document = DocumentsContract.createDocument(resolver, folder, "application/octet-stream", filename);
@@ -328,7 +332,10 @@ public class AndroidPlatformSupport extends PlatformSupport {
 
 	@Override
 	public InputStream readExternalDataFile(String folderName, String fileName) {
-		Uri file = getExternalDataFile(folderName, fileName);
+		Uri file = getExternalDataFile(folderName, fileName, false);
+		if (file == null){
+			return null;
+		}
 		ContentResolver resolver = ((AndroidApplication)Gdx.app).getContentResolver();
 		try {
 			return resolver.openInputStream(file);
@@ -339,7 +346,7 @@ public class AndroidPlatformSupport extends PlatformSupport {
 
 	@Override
 	public OutputStream writeExternalDataFile(String folderName, String fileName) {
-		Uri file = getExternalDataFile(folderName, fileName);
+		Uri file = getExternalDataFile(folderName, fileName, true);
 		ContentResolver resolver = ((AndroidApplication)Gdx.app).getContentResolver();
 		try {
 			//always overwrites, just calling this deletes file contents!
