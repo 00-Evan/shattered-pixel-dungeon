@@ -55,6 +55,10 @@ public abstract class Actor implements Bundlable {
 	//used to determine what order actors act in if their time is equal. Higher values act earlier.
 	protected int actPriority = DEFAULT;
 
+	public int actPriority(){
+		return actPriority;
+	}
+
 	protected abstract boolean act();
 
 	//Always spends exactly the specified amount of time, regardless of time-influencing factors
@@ -242,7 +246,7 @@ public abstract class Actor implements Bundlable {
 	}
 
 	public static int curActorPriority() {
-		return current != null ? current.actPriority : HERO_PRIO;
+		return current != null ? current.actPriority() : HERO_PRIO;
 	}
 	
 	public static boolean keepActorThreadAlive = true;
@@ -263,7 +267,7 @@ public abstract class Actor implements Bundlable {
 
 						//some actors will always go before others if time is equal.
 						if (actor.time < earliest ||
-								actor.time == earliest && (current == null || actor.actPriority > current.actPriority)) {
+								actor.time == earliest && (current == null || actor.actPriority() > current.actPriority())) {
 							earliest = actor.time;
 							current = actor;
 						}
