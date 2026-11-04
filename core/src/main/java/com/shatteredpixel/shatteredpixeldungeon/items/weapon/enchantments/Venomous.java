@@ -44,11 +44,11 @@ public class Venomous extends Weapon.Enchantment {
 
 			float powerMulti = Math.max(1f, procChance);
 
-			//delays the poison's damage by 3 turns if the enemy had no poison on them already
+			//delays the poison's damage by 5 turns if the enemy had no poison on them already
 			Poison poison = defender.buff(Poison.class);
 			if (poison == null) {
 				poison = Buff.affect(defender, Poison.class);
-				poison.delay(3f);
+				poison.delay(5f);
 				poison = defender.buff(Poison.class);
 			}
 			if (poison != null){
