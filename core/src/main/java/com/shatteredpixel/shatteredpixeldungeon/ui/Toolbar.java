@@ -481,6 +481,43 @@ public class Toolbar extends Component {
 			}
 		});
 
+		//hidden button for showing the inventory pane on non-full UI if bag button is pressed
+		if (SPDSettings.interfaceSize() != 2){
+			for (int i = 1; i <= 5; i++){
+				final int index = i;
+				add(new Button(){
+					@Override
+					protected void onClick() {
+						if (Dungeon.hero != null && Dungeon.hero.ready && !GameScene.cancel()) {
+							ArrayList<Bag> bags = Dungeon.hero.belongings.getBags();
+							if (index <= bags.size()){
+								GameScene.show(new WndBag(bags.get(index-1)));
+							} else {
+								GameScene.show(new WndBag(Dungeon.hero.belongings.backpack));
+							}
+
+						}
+					}
+
+					@Override
+					public GameAction keyAction() {
+						switch (index){
+							case 1: default:
+								return SPDAction.BAG_1;
+							case 2:
+								return SPDAction.BAG_2;
+							case 3:
+								return SPDAction.BAG_3;
+							case 4:
+								return SPDAction.BAG_4;
+							case 5:
+								return SPDAction.BAG_5;
+						}
+					}
+				});
+			}
+		}
+
 		add(pickedUp = new PickedUpItem());
 	}
 	
