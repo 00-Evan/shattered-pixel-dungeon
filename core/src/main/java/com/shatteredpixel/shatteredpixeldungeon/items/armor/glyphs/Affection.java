@@ -40,10 +40,10 @@ public class Affection extends Glyph {
 
 		int level = Math.max(0, armor.buffedLvl());
 		
-		// lvl 0 - 15%
-		// lvl 1 ~ 19%
-		// lvl 2 ~ 23%
-		float procChance = (level+3f)/(level+20f) * procChanceMultiplier(defender);
+		// lvl 0 - 20%
+		// lvl 1 ~ 27%
+		// lvl 2 ~ 33%
+		float procChance = (level+2f)/(level+10f) * procChanceMultiplier(defender);
 		if (Random.Float() < procChance) {
 
 			float powerMulti = Math.max(1f, procChance);

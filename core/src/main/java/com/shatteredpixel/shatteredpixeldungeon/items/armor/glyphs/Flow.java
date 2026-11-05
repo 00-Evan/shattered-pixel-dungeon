@@ -23,6 +23,8 @@ package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -39,20 +41,32 @@ public class Flow extends Armor.Glyph {
 	}
 
 	public static float speedBoost( Char owner, int level ){
-		if (level == -1 || !Dungeon.level.water[owner.pos]){
+		if (level == -1){
 			return 1;
-		} else {
+		}
+
+		float duration = (level+2)/4f * genericProcChanceMultiplier(owner);
+		if (Dungeon.level.water[owner.pos] && duration > 0.5f){
+			//Each step is half a turn, so an extra step every 2nd upgrade lvl essentially, assuming no other speed boosts
+			Buff.prolong(owner, FlowTracker.class, duration-0.5f);
+		}
+
+		if (Dungeon.level.water[owner.pos] || owner.buff(FlowTracker.class) != null){
 			if (owner.sprite != null && owner.sprite.visible){
 				int particles = 2 + (int) Random.Float(1+level/2f);
 				owner.sprite.emitter().startDelayed(Speck.factory(Speck.BLUE_LIGHT), 0.02f, particles, 0.05f);
 			}
-			return (2f + 0.5f*level) * genericProcChanceMultiplier(owner);
+			return 2f;
 		}
+
+		return 1f;
 	}
 
 	@Override
 	public ItemSprite.Glowing glowing() {
 		return BLUE;
 	}
+
+	public static class FlowTracker extends FlavourBuff {}
 
 }
