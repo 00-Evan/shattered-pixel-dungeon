@@ -60,27 +60,51 @@ public class RingOfWealth extends Ring {
 		buffClass = Wealth.class;
 	}
 
-	private float triesToDrop = Float.MIN_VALUE;
-	private int dropsToRare = Integer.MIN_VALUE;
-	
+	//20% more common regular loot from enemies per level
+	private static final float LOOT_FACTOR = 1.2f;
+
+	public static float dropChanceMultiplier( int bonus ){
+		return (float)Math.pow(LOOT_FACTOR, bonus);
+	}
+
+	public static float dropChanceMultiplier( Char target ){
+		return dropChanceMultiplier(getBuffedBonus(target, Wealth.class));
+	}
+
+	@Override
+	protected RingBuff buff( ) {
+		return new Wealth();
+	}
+
+	public class Wealth extends RingBuff {}
+
+	@Override
 	public String statsInfo() {
 		if (isIdentified()){
 			String info = Messages.get(this, "stats",
-					Messages.decimalFormat("#.##", 100f * (Math.pow(1.20f, soloBuffedBonus()) - 1f)));
+					Messages.decimalFormat("#.##", 100f * (dropChanceMultiplier(soloBuffedBonus()) - 1f)));
+
 			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero)){
 				info += "\n\n" + Messages.get(this, "combined_stats",
-						Messages.decimalFormat("#.##", 100f * (Math.pow(1.20f, combinedBuffedBonus(Dungeon.hero)) - 1f)));
+						Messages.decimalFormat("#.##", 100f * (dropChanceMultiplier(combinedBuffedBonus(Dungeon.hero)) - 1f)));
 			}
+
 			return info;
 		} else {
-			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 20f));
+			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 100*(dropChanceMultiplier(1)-1f)));
 		}
 	}
 
+	@Override
 	public String upgradeStat1(int level){
 		if (cursed && cursedKnown) level = Math.min(-1, level-3);
-		return Messages.decimalFormat("#.##", 100f * (Math.pow(1.2f, level+1)-1f)) + "%";
+		return Messages.decimalFormat("#.##", 100f * (dropChanceMultiplier(level+1)-1f)) + "%";
 	}
+
+	//*** Various logic for custom Ring of Wealth drops ***
+
+	private float triesToDrop = Float.MIN_VALUE;
+	private int dropsToRare = Integer.MIN_VALUE;
 
 	private static final String TRIES_TO_DROP = "tries_to_drop";
 	private static final String DROPS_TO_RARE = "drops_to_rare";
@@ -99,14 +123,7 @@ public class RingOfWealth extends Ring {
 		dropsToRare = bundle.getInt(DROPS_TO_RARE);
 	}
 
-	@Override
-	protected RingBuff buff( ) {
-		return new Wealth();
-	}
-	
-	public static float dropChanceMultiplier( Char target ){
-		return (float)Math.pow(1.20, getBuffedBonus(target, Wealth.class));
-	}
+
 	
 	public static ArrayList<Item> tryForBonusDrop(Char target, int tries ){
 		int bonus = getBuffedBonus(target, Wealth.class);
@@ -306,9 +323,6 @@ public class RingOfWealth extends Ring {
 			latestDropTier = 3;
 		}
 		return result;
-	}
-
-	public class Wealth extends RingBuff {
 	}
 
 	public static class TriesToDropTracker extends CounterBuff {

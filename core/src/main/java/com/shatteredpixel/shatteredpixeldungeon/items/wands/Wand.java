@@ -847,8 +847,18 @@ public abstract class Wand extends Item {
 			float turnsToCharge = (float) (BASE_CHARGE_DELAY
 					+ (SCALING_CHARGE_ADDITION * Math.pow(scalingFactor, missingCharges)));
 
-			if (Regeneration.regenOn())
-				partialCharge += (1f/turnsToCharge) * RingOfEnergy.wandChargeMultiplier(target);
+			if (Regeneration.regenOn()) {
+				float chargeToGain = (1f / turnsToCharge);
+				chargeToGain *= RingOfEnergy.rechargeSpeedMultiplier(target);
+
+				if (target instanceof Hero
+						&& ((Hero) target).heroClass != HeroClass.CLERIC
+						&& ((Hero) target).hasTalent(Talent.LIGHT_READING)){
+					chargeToGain *= 1f + (0.2f * ((Hero) target).pointsInTalent(Talent.LIGHT_READING)/3f);
+				}
+
+				partialCharge += chargeToGain;
+			}
 
 			for (Recharging bonus : target.buffs(Recharging.class)){
 				if (bonus != null && bonus.remainder() > 0f) {

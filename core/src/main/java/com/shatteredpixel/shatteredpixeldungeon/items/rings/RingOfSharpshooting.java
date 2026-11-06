@@ -33,45 +33,64 @@ public class RingOfSharpshooting extends Ring {
 		buffClass = Aim.class;
 	}
 
+	//1 extra thrown weapon lvl of damage per level. Scales linearly!
+	private static final float LVL_FACTOR = 1f;
+
+	public static int levelDamageBonus( int bonus ){
+		return (int) (LVL_FACTOR*bonus);
+	}
+
+	public static int levelDamageBonus( Char target ){
+		return levelDamageBonus(getBuffedBonus(target, Aim.class));
+	}
+
+	//25% extra thrown weapon durability per level
+	private static final float DUR_FACTOR = 1.25f;
+
+	public static float durabilityMultiplier( int bonus ){
+		return (float)(Math.pow(DUR_FACTOR, bonus));
+	}
+
+	public static float durabilityMultiplier( Char target ){
+		return durabilityMultiplier(getBonus(target, Aim.class));
+	}
+
+	@Override
+	protected RingBuff buff( ) {
+		return new Aim();
+	}
+
+	public class Aim extends RingBuff {}
+
+	@Override
 	public String statsInfo() {
 		if (isIdentified()){
 			String info = Messages.get(this, "stats",
-					soloBuffedBonus(), Messages.decimalFormat("#.##", 100f * (Math.pow(1.25, soloBonus()) - 1f)));
+					levelDamageBonus(soloBonus()),
+					Messages.decimalFormat("#.##", 100f * (durabilityMultiplier(soloBuffedBonus()) - 1f)));
+
 			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero)){
 				info += "\n\n" + Messages.get(this, "combined_stats",
-						combinedBuffedBonus(Dungeon.hero), Messages.decimalFormat("#.##", 100f * (Math.pow(1.25, combinedBonus(Dungeon.hero)) - 1f)));
+						levelDamageBonus(getBonus(Dungeon.hero, RingOfMight.Might.class)),
+						Messages.decimalFormat("#.##", 100f * (durabilityMultiplier(combinedBuffedBonus(Dungeon.hero)) - 1f)));
 			}
 			return info;
 		} else {
-			return Messages.get(this, "typical_stats", 1, Messages.decimalFormat("#.##", 25f));
+			return Messages.get(this, "typical_stats",
+					levelDamageBonus(1),
+					Messages.decimalFormat("#.##", 100*(durabilityMultiplier(1)-1f)));
 		}
 	}
 
 	@Override
 	public String upgradeStat1(int level) {
 		if (cursed && cursedKnown) level = Math.min(-1, level-3);
-		return Integer.toString(level+1);
+		return Integer.toString(levelDamageBonus(level+1));
 	}
 
 	@Override
 	public String upgradeStat2(int level) {
 		if (cursed && cursedKnown) level = Math.min(-1, level-3);
-		return Messages.decimalFormat("#.##", 100f * (Math.pow(1.25, level+1)-1f)) + "%";
-	}
-	
-	@Override
-	protected RingBuff buff( ) {
-		return new Aim();
-	}
-	
-	public static int levelDamageBonus( Char target ){
-		return getBuffedBonus(target, RingOfSharpshooting.Aim.class);
-	}
-	
-	public static float durabilityMultiplier( Char target ){
-		return (float)(Math.pow(1.25, getBonus(target, Aim.class)));
-	}
-
-	public class Aim extends RingBuff {
+		return Messages.decimalFormat("#.##", 100f * (durabilityMultiplier(level+1)-1f)) + "%";
 	}
 }

@@ -33,34 +33,44 @@ public class RingOfHaste extends Ring {
 		buffClass = Haste.class;
 	}
 
-	public String statsInfo() {
-		if (isIdentified()){
-			String info = Messages.get(this, "stats",
-					Messages.decimalFormat("#.##", 100f * (Math.pow(1.15f, soloBuffedBonus()) - 1f)));
-			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero)){
-				info += "\n\n" + Messages.get(this, "combined_stats",
-						Messages.decimalFormat("#.##", 100f * (Math.pow(1.15f, combinedBuffedBonus(Dungeon.hero)) - 1f)));
-			}
-			return info;
-		} else {
-			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 15f));
-		}
+	//15% more movement speed per level
+	private static final float SPD_FACTOR = 1.15f;
+
+	public static float speedMultiplier( int bonus ){
+		return (float)Math.pow(SPD_FACTOR, bonus);
 	}
 
-	public String upgradeStat1(int level){
-		if (cursed && cursedKnown) level = Math.min(-1, level-3);
-		return Messages.decimalFormat("#.##", 100f * (Math.pow(1.15f, level+1)-1f)) + "%";
+	public static float speedMultiplier( Char target ){
+		return speedMultiplier(getBuffedBonus(target, Haste.class));
 	}
-	
+
 	@Override
 	protected RingBuff buff( ) {
 		return new Haste();
 	}
-	
-	public static float speedMultiplier( Char target ){
-		return (float)Math.pow(1.15, getBuffedBonus(target, Haste.class));
+
+	public class Haste extends RingBuff {}
+
+	@Override
+	public String statsInfo() {
+		if (isIdentified()){
+			String info = Messages.get(this, "stats",
+					Messages.decimalFormat("#.##", 100f * (speedMultiplier(soloBuffedBonus()) - 1f)));
+
+			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero)){
+				info += "\n\n" + Messages.get(this, "combined_stats",
+						Messages.decimalFormat("#.##", 100f * (speedMultiplier(combinedBuffedBonus(Dungeon.hero)) - 1f)));
+			}
+
+			return info;
+		} else {
+			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 100*(speedMultiplier(1)-1f)));
+		}
 	}
-	
-	public class Haste extends RingBuff {
+
+	@Override
+	public String upgradeStat1(int level){
+		if (cursed && cursedKnown) level = Math.min(-1, level-3);
+		return Messages.decimalFormat("#.##", 100f * (speedMultiplier(level+1)-1f)) + "%";
 	}
 }

@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -274,7 +273,7 @@ public class SandalsOfNature extends Artifact {
 			if (charge < chargeCap){
 				//0.5 charge per grass at +0, up to 1.5 at +10
 				float chargeGain = (3f + 2*level())/6f;
-				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
+				chargeGain *= rechargeSpeedMultiplier(target);
 				partialCharge += Math.max(0, chargeGain);
 				while (partialCharge >= 1){
 					charge++;

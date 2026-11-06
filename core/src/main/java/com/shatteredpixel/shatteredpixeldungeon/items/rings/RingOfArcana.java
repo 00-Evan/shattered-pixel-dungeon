@@ -33,23 +33,15 @@ public class RingOfArcana extends Ring {
 		buffClass = Arcana.class;
 	}
 
-	public String statsInfo() {
-		if (isIdentified()){
-			String info = Messages.get(this, "stats",
-					Messages.decimalFormat("#.##", 100f * (Math.pow(1.175f, soloBuffedBonus()) - 1f)));
-			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero)){
-				info += "\n\n" + Messages.get(this, "combined_stats",
-						Messages.decimalFormat("#.##", 100f * (Math.pow(1.175f, combinedBuffedBonus(Dungeon.hero)) - 1f)));
-			}
-			return info;
-		} else {
-			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 17.5f));
-		}
+	//17.5% more enchant/glyph power per level
+	private static final float ENCH_FACTOR = 1.175f;
+
+	public static float enchantPowerMultiplier( int bonus ){
+		return (float)Math.pow(ENCH_FACTOR, bonus);
 	}
 
-	public String upgradeStat1(int level){
-		if (cursed) level = Math.min(-1, level-3);
-		return Messages.decimalFormat("#.##", 100f * (Math.pow(1.175f, level+1)-1f)) + "%";
+	public static float enchantPowerMultiplier( Char target ){
+		return enchantPowerMultiplier(getBuffedBonus(target, Arcana.class));
 	}
 
 	@Override
@@ -57,11 +49,28 @@ public class RingOfArcana extends Ring {
 		return new Arcana();
 	}
 
-	public static float enchantPowerMultiplier(Char target ){
-		return (float)Math.pow(1.175f, getBuffedBonus(target, Arcana.class));
+	public class Arcana extends RingBuff {}
+
+	@Override
+	public String statsInfo() {
+		if (isIdentified()){
+			String info = Messages.get(this, "stats",
+					Messages.decimalFormat("#.##", 100f * (enchantPowerMultiplier(soloBuffedBonus()) - 1f)));
+
+			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero)){
+				info += "\n\n" + Messages.get(this, "combined_stats",
+						Messages.decimalFormat("#.##", 100f * (enchantPowerMultiplier(combinedBuffedBonus(Dungeon.hero)) - 1f)));
+			}
+
+			return info;
+		} else {
+			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 100*(enchantPowerMultiplier(1)-1f)));
+		}
 	}
 
-	public class Arcana extends RingBuff {
+	@Override
+	public String upgradeStat1(int level){
+		if (cursed && cursedKnown) level = Math.min(-1, level-3);
+		return Messages.decimalFormat("#.##", 100f * (enchantPowerMultiplier(level+1)-1f)) + "%";
 	}
-
 }

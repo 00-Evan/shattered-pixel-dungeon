@@ -1679,7 +1679,7 @@ public class Hero extends Char {
 		dmg = Math.round(damage);
 
 		//we ceil this one to avoid letting the player easily take 0 dmg from tenacity early
-		dmg = (int)Math.ceil(dmg * RingOfTenacity.damageMultiplier( this ));
+		dmg = (int)Math.ceil(dmg * RingOfTenacity.effectiveDamageMultiplier( this ));
 
 		int preHP = HP + shielding();
 		if (src instanceof Hunger) preHP -= shielding();

@@ -45,28 +45,45 @@ public class RingOfElements extends Ring {
 		buffClass = Resistance.class;
 	}
 
-	public String statsInfo() {
-		if (isIdentified()){
-			String info = Messages.get(this, "stats",
-					Messages.decimalFormat("#.##", 100f * (1f - Math.pow(0.825f, soloBuffedBonus()))));
-			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero)){
-				info += "\n\n" + Messages.get(this, "combined_stats",
-						Messages.decimalFormat("#.##", 100f * (1f - Math.pow(0.825f, combinedBuffedBonus(Dungeon.hero)))));
-			}
-			return info;
-		} else {
-			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 17.5f));
-		}
+	//'elemental' effects are 17.5% weaker per level
+	private static final float RESIST_FACTOR = 0.825f;
+
+	public static float elementalPowerMultiplier( int bonus ){
+		return (float)Math.pow(RESIST_FACTOR, bonus);
 	}
 
-	public String upgradeStat1(int level){
-		if (cursed && cursedKnown) level = Math.min(-1, level-3);
-		return Messages.decimalFormat("#.##", 100f * (1f - Math.pow(0.825f, level+1))) + "%";
+	public static float elementalPowerMultiplier( Char target ){
+		return elementalPowerMultiplier(getBuffedBonus(target, Resistance.class));
 	}
-	
+
 	@Override
 	protected RingBuff buff( ) {
 		return new Resistance();
+	}
+
+	public class Resistance extends RingBuff {}
+
+	@Override
+	public String statsInfo() {
+		if (isIdentified()){
+			String info = Messages.get(this, "stats",
+					Messages.decimalFormat("#.##", 100f * (1f - elementalPowerMultiplier(soloBuffedBonus()))));
+
+			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero)){
+				info += "\n\n" + Messages.get(this, "combined_stats",
+						Messages.decimalFormat("#.##", 100f * (1f - elementalPowerMultiplier(combinedBuffedBonus(Dungeon.hero)))));
+			}
+
+			return info;
+		} else {
+			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 100*(1f - elementalPowerMultiplier(1))));
+		}
+	}
+
+	@Override
+	public String upgradeStat1(int level){
+		if (cursed && cursedKnown) level = Math.min(-1, level-3);
+		return Messages.decimalFormat("#.##", 100f * (1f - elementalPowerMultiplier(level+1))) + "%";
 	}
 
 	public static final HashSet<Class> RESISTS = new HashSet<>();
@@ -84,20 +101,21 @@ public class RingOfElements extends Ring {
 
 		RESISTS.addAll( AntiMagic.RESISTS );
 	}
-	
+
 	public static float resist( Char target, Class effect ){
-		if (getBuffedBonus(target, Resistance.class) == 0) return 1f;
-		
+		float factor = elementalPowerMultiplier(target);
+		if (factor == 1f){
+			return 1f;
+		}
+
 		for (Class c : RESISTS){
 			if (c.isAssignableFrom(effect)){
-				return (float)Math.pow(0.825, getBuffedBonus(target, Resistance.class));
+				return factor;
 			}
 		}
-		
+
 		return 1f;
 	}
-	
-	public class Resistance extends RingBuff {
-	
-	}
+
+
 }

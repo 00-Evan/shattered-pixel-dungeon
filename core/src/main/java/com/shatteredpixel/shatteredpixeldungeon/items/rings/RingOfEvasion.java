@@ -33,34 +33,44 @@ public class RingOfEvasion extends Ring {
 		buffClass = Evasion.class;
 	}
 
-	public String statsInfo() {
-		if (isIdentified()){
-			String info = Messages.get(this, "stats",
-					Messages.decimalFormat("#.##", 100f * (Math.pow(1.125f, soloBuffedBonus()) - 1f)));
-			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero)){
-				info += "\n\n" + Messages.get(this, "combined_stats",
-						Messages.decimalFormat("#.##", 100f * (Math.pow(1.125f, combinedBuffedBonus(Dungeon.hero)) - 1f)));
-			}
-			return info;
-		} else {
-			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 12.5f));
-		}
+	//12.5% more evasion per level
+	private static final float EVA_FACTOR = 1.125f;
+
+	public static float evasionMultiplier( int bonus ){
+		return (float)Math.pow(EVA_FACTOR, bonus);
 	}
 
-	public String upgradeStat1(int level){
-		if (cursed && cursedKnown) level = Math.min(-1, level-3);
-		return Messages.decimalFormat("#.##", 100f * (Math.pow(1.125f, level+1)-1f)) + "%";
+	public static float evasionMultiplier( Char target ){
+		return evasionMultiplier(getBuffedBonus(target, Evasion.class));
 	}
-	
+
 	@Override
 	protected RingBuff buff( ) {
 		return new Evasion();
 	}
-	
-	public static float evasionMultiplier( Char target ){
-		return (float) Math.pow( 1.125, getBuffedBonus(target, Evasion.class));
+
+	public class Evasion extends RingBuff {}
+
+	@Override
+	public String statsInfo() {
+		if (isIdentified()){
+			String info = Messages.get(this, "stats",
+					Messages.decimalFormat("#.##", 100f * (evasionMultiplier(soloBuffedBonus()) - 1f)));
+
+			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero)){
+				info += "\n\n" + Messages.get(this, "combined_stats",
+						Messages.decimalFormat("#.##", 100f * (evasionMultiplier(combinedBuffedBonus(Dungeon.hero)) - 1f)));
+			}
+
+			return info;
+		} else {
+			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 100*(evasionMultiplier(1)-1f)));
+		}
 	}
 
-	public class Evasion extends RingBuff {
+	@Override
+	public String upgradeStat1(int level){
+		if (cursed && cursedKnown) level = Math.min(-1, level-3);
+		return Messages.decimalFormat("#.##", 100f * (evasionMultiplier(level+1)-1f)) + "%";
 	}
 }

@@ -53,6 +53,8 @@ public class RingOfForce extends Ring {
 	protected RingBuff buff( ) {
 		return new Force();
 	}
+
+	public class Force extends RingBuff {}
 	
 	public static int armedDamageBonus( Char ch, KindOfWeapon wep ){
 		int level = getBuffedBonus( ch, Force.class );
@@ -149,14 +151,25 @@ public class RingOfForce extends Ring {
 		float tier = tier(Dungeon.hero != null ? Dungeon.hero.STR() : 10);
 		if (isIdentified()) {
 			int level = soloBuffedBonus();
-			String info = Messages.get(this, "stats", min(level, tier), max(level, tier), level, Math.abs(level), Math.abs(3*level));
+			//if cursed, we allow a negative to be at the start of the bonus dmg range, but use abs to prevent it at th end
+			String info = Messages.get(this, "stats",
+					min(level, tier), max(level, tier),
+					level, Math.abs(level),
+					level, Math.abs(3*level));
+
 			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero)){
 				level = combinedBuffedBonus(Dungeon.hero);
-				info += "\n\n" + Messages.get(this, "combined_stats", min(level, tier), max(level, tier), level, Math.abs(level), Math.abs(3*level));
+				info += "\n\n" + Messages.get(this, "combined_stats",
+						min(level, tier), max(level, tier),
+						level, Math.abs(level),
+						level, Math.abs(3*level));
 			}
 			return info;
 		} else {
-			return Messages.get(this, "typical_stats", min(1, tier), max(1, tier), 1, 3);
+			return Messages.get(this, "typical_stats",
+					min(1, tier), max(1, tier),
+					1, 1,
+					1, 3);
 		}
 	}
 
@@ -185,10 +198,7 @@ public class RingOfForce extends Ring {
 		}
 	}
 
-	public class Force extends RingBuff {
-	}
-
-	//Duelist stuff
+	//*** Duelist logic ***
 
 	public static String AC_ABILITY = "ABILITY";
 

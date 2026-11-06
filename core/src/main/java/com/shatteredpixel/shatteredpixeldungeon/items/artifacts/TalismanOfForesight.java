@@ -33,9 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CheckedCell;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -133,7 +131,7 @@ public class TalismanOfForesight extends Artifact {
 	}
 
 	private float maxDist(){
-		return Math.min(5 + 2*level(), (charge-3)/1.08f);
+		return Math.min(5 + 2*level(), (charge-1)/1.08f);
 	}
 
 	public CellSelector.Listener scry = new CellSelector.Listener(){
@@ -220,8 +218,8 @@ public class TalismanOfForesight extends Artifact {
 				}
 				updateQuickslot();
 
-				//5 charge at 2 tiles, up to 30 charge at 25 tiles
-				charge -= 3 + dist*1.08f;
+				//5 charge at 4 tiles, up to 30 charge at 25 tiles
+				charge -= 1 + dist*1.08f;
 				partialCharge -= (dist*1.08f)%1f;
 				if (partialCharge < 0 && charge > 0){
 					partialCharge ++;
@@ -283,7 +281,7 @@ public class TalismanOfForesight extends Artifact {
 					&& Regeneration.regenOn()) {
 				//fully charges in 2000 turns at +0, scaling to 1000 turns at +10.
 				float chargeGain = (0.05f+(level()*0.005f));
-				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
+				chargeGain *= rechargeSpeedMultiplier(target);
 				partialCharge += chargeGain;
 
 				while (partialCharge >= 1){

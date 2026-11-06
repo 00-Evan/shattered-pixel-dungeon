@@ -33,36 +33,50 @@ public class RingOfTenacity extends Ring {
 		buffClass = Tenacity.class;
 	}
 
-	public String statsInfo() {
-		if (isIdentified()){
-			String info = Messages.get(this, "stats",
-					Messages.decimalFormat("#.##", 100f * (1f - Math.pow(0.85f, soloBuffedBonus()))));
-			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero)){
-				info += "\n\n" + Messages.get(this, "combined_stats",
-						Messages.decimalFormat("#.##", 100f * (1f - Math.pow(0.85f, combinedBuffedBonus(Dungeon.hero)))));
-			}
-			return info;
-		} else {
-			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 15f));
-		}
+	//damage taken is reduced by up to 15% per level
+	private static final float MAX_DMG_FACTOR = 0.85f;
+
+	public static float maxDamageMultiplier( int bonus ){
+		return (float)Math.pow(MAX_DMG_FACTOR, bonus);
 	}
 
-	public String upgradeStat1(int level){
-		if (cursed && cursedKnown) level = Math.min(-1, level-3);
-		return Messages.decimalFormat("#.##", 100f * (1f - Math.pow(0.85f, level+1))) + "%";
+	public static float maxDamageMultiplier( Char target ){
+		return maxDamageMultiplier(getBuffedBonus( target, Tenacity.class));
 	}
 
 	@Override
 	protected RingBuff buff( ) {
 		return new Tenacity();
 	}
-	
-	public static float damageMultiplier( Char t ){
-		//(HT - HP)/HT = heroes current % missing health.
-		return (float)Math.pow(0.85, getBuffedBonus( t, Tenacity.class)*((float)(t.HT - t.HP)/t.HT));
+
+	public class Tenacity extends RingBuff {}
+
+	@Override
+	public String statsInfo() {
+		if (isIdentified()){
+			String info = Messages.get(this, "stats",
+					Messages.decimalFormat("#.##", 100f * (1f - maxDamageMultiplier(soloBuffedBonus()))));
+
+			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero)){
+				info += "\n\n" + Messages.get(this, "combined_stats",
+						Messages.decimalFormat("#.##", 100f * (1f - maxDamageMultiplier(combinedBuffedBonus(Dungeon.hero)))));
+			}
+
+			return info;
+		} else {
+			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 100*(1f - maxDamageMultiplier(1))));
+		}
 	}
 
-	public class Tenacity extends RingBuff {
+	@Override
+	public String upgradeStat1(int level){
+		if (cursed && cursedKnown) level = Math.min(-1, level-3);
+		return Messages.decimalFormat("#.##", 100f * (1f - maxDamageMultiplier(level+1))) + "%";
+	}
+
+	public static float effectiveDamageMultiplier( Char target ){
+		float missingHPPercent = ((float)(target.HT - target.HP)/target.HT);
+		return maxDamageMultiplier(target)*missingHPPercent;
 	}
 }
 

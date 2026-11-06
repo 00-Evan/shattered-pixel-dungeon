@@ -336,7 +336,7 @@ abstract public class ClassArmor extends Armor {
 		public boolean act() {
 			if (Regeneration.regenOn()) {
 				float chargeGain = 100 / 500f; //500 turns to full charge
-				chargeGain *= RingOfEnergy.armorChargeMultiplier(target);
+				chargeGain *= RingOfEnergy.rechargeSpeedMultiplier(target);
 				charge += chargeGain;
 				updateQuickslot();
 				if (charge > 100) {

@@ -32,35 +32,45 @@ public class RingOfAccuracy extends Ring {
 		icon = ItemSpriteSheet.Icons.RING_ACCURACY;
 		buffClass = Accuracy.class;
 	}
-	
-	public String statsInfo() {
-		if (isIdentified()){
-			String info = Messages.get(this, "stats",
-					Messages.decimalFormat("#.##", 100f * (Math.pow(1.3f, soloBuffedBonus()) - 1f)));
-			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero)){
-				info += "\n\n" + Messages.get(this, "combined_stats",
-						Messages.decimalFormat("#.##", 100f * (Math.pow(1.3f, combinedBuffedBonus(Dungeon.hero)) - 1f)));
-			}
-			return info;
-		} else {
-			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 30f));
-		}
+
+	//30% more accuracy per level
+	private static final float ACC_FACTOR = 1.3f;
+
+	public static float accuracyMultiplier( int bonus ){
+		return (float)Math.pow(ACC_FACTOR, bonus);
 	}
 
-	public String upgradeStat1(int level){
-		if (cursed && cursedKnown) level = Math.min(-1, level-3);
-		return Messages.decimalFormat("#.##", 100f * (Math.pow(1.3f, level+1)-1f)) + "%";
+	public static float accuracyMultiplier( Char target ){
+		return accuracyMultiplier(getBuffedBonus(target, Accuracy.class));
 	}
-	
+
 	@Override
 	protected RingBuff buff( ) {
 		return new Accuracy();
 	}
-	
-	public static float accuracyMultiplier( Char target ){
-		return (float)Math.pow(1.3f, getBuffedBonus(target, Accuracy.class));
+
+	public class Accuracy extends RingBuff {}
+
+	@Override
+	public String statsInfo() {
+		if (isIdentified()){
+			String info = Messages.get(this, "stats",
+					Messages.decimalFormat("#.##", 100f * (accuracyMultiplier(soloBuffedBonus()) - 1f)));
+
+			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero)){
+				info += "\n\n" + Messages.get(this, "combined_stats",
+						Messages.decimalFormat("#.##", 100f * (accuracyMultiplier(combinedBuffedBonus(Dungeon.hero)) - 1f)));
+			}
+
+			return info;
+		} else {
+			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 100*(accuracyMultiplier(1)-1f)));
+		}
 	}
-	
-	public class Accuracy extends RingBuff {
+
+	@Override
+	public String upgradeStat1(int level){
+		if (cursed && cursedKnown) level = Math.min(-1, level-3);
+		return Messages.decimalFormat("#.##", 100f * (accuracyMultiplier(level+1)-1f)) + "%";
 	}
 }
