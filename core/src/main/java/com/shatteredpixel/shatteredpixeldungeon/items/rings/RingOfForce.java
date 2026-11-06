@@ -28,7 +28,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.SpiritForm;
+import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -36,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -51,8 +54,23 @@ public class RingOfForce extends Ring {
 		return new Force();
 	}
 	
-	public static int armedDamageBonus( Char ch ){
-		return getBuffedBonus( ch, Force.class);
+	public static int armedDamageBonus( Char ch, KindOfWeapon wep ){
+		int level = getBuffedBonus( ch, Force.class );
+		int min = level;
+		int max = level;
+		//scales from 1-1 to 1-3 bonus dmg per lvl, based on weapon tier
+		if (wep instanceof MeleeWeapon){
+			max = (int)(level * (((MeleeWeapon) wep).tier+1)/2f);
+		} else if (wep instanceof MissileWeapon){
+			max = (int)(level * (((MissileWeapon) wep).tier+1)/2f);
+		}
+
+		if (max >= min) {
+			return Random.NormalIntRange(min, max);
+		} else {
+			//cursed, negative numbers, so max is lower
+			return Random.NormalIntRange(max, min);
+		}
 	}
 
 	@Override
@@ -72,9 +90,9 @@ public class RingOfForce extends Ring {
 
 	private static float tier(int str){
 		float tier = Math.max(1, (str - 8)/2f);
-		//each str point after 18 is half as effective
-		if (tier > 5){
-			tier = 5 + (tier - 5) / 2f;
+		//each str point after 20 is half as effective
+		if (tier > 6){
+			tier = 6 + (tier - 6) / 2f;
 		}
 		return tier;
 	}
@@ -131,14 +149,14 @@ public class RingOfForce extends Ring {
 		float tier = tier(Dungeon.hero != null ? Dungeon.hero.STR() : 10);
 		if (isIdentified()) {
 			int level = soloBuffedBonus();
-			String info = Messages.get(this, "stats", min(level, tier), max(level, tier), level);
+			String info = Messages.get(this, "stats", min(level, tier), max(level, tier), level, Math.abs(level), Math.abs(3*level));
 			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero)){
 				level = combinedBuffedBonus(Dungeon.hero);
-				info += "\n\n" + Messages.get(this, "combined_stats", min(level, tier), max(level, tier), level);
+				info += "\n\n" + Messages.get(this, "combined_stats", min(level, tier), max(level, tier), level, Math.abs(level), Math.abs(3*level));
 			}
 			return info;
 		} else {
-			return Messages.get(this, "typical_stats", min(1, tier), max(1, tier), 1);
+			return Messages.get(this, "typical_stats", min(1, tier), max(1, tier), 1, 3);
 		}
 	}
 
@@ -152,7 +170,7 @@ public class RingOfForce extends Ring {
 	@Override
 	public String upgradeStat2(int level) {
 		if (cursed && cursedKnown) level = Math.min(-1, level-3);
-		return Integer.toString(level+1);
+		return (level+1) + "-" + Math.abs(level+1) + "/" + (level+1) + "-" + 3*Math.abs(level+1);
 	}
 
 	@Override
