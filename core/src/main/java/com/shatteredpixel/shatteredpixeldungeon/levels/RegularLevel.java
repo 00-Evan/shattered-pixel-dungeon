@@ -51,6 +51,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.CrystalKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.CrackedSpyglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ExoticCrystals;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MimicTooth;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrinketCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
@@ -686,6 +687,19 @@ public abstract class RegularLevel extends Level {
 					losBlocking[cell] = false;
 				}
 				drop( Generator.randomUsingDefaults(), cell).hidden = true;
+			}
+		Random.popGenerator();
+
+		//extra exotic crystals loot
+		Random.pushGenerator(Random.Long());
+			if (Random.Float() < ExoticCrystals.extraConsumableChance()){
+				Item item = Generator.random(Random.oneOf(Generator.Category.POTION, Generator.Category.SCROLL));
+				int cell = randomDropCell();
+				if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
+					map[cell] = Terrain.GRASS;
+					losBlocking[cell] = false;
+				}
+				drop( item, cell );
 			}
 		Random.popGenerator();
 
