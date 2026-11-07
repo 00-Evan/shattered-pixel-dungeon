@@ -858,6 +858,9 @@ public class Hero extends Char {
 		}
 		
 		checkVisibleMobs();
+		if (buff(TalismanOfForesight.Foresight.class) != null){
+			buff(TalismanOfForesight.Foresight.class).checkAwareness();
+		}
 		BuffIndicator.refreshHero();
 		BuffIndicator.refreshBoss();
 		

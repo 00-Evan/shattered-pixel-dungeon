@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TenguDartTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -131,7 +132,7 @@ public class TalismanOfForesight extends Artifact {
 	}
 
 	private float maxDist(){
-		return Math.min(5 + 2*level(), (charge-1)/1.08f);
+		return Math.min(5 + 2*level(), charge);
 	}
 
 	public CellSelector.Listener scry = new CellSelector.Listener(){
@@ -147,7 +148,7 @@ public class TalismanOfForesight extends Artifact {
 
 				float dist = Dungeon.level.trueDistance(curUser.pos, target);
 
-				if (dist >= 3 && dist > maxDist()){
+				if (dist > maxDist()){
 					Ballistica trajectory = new Ballistica(curUser.pos, target, Ballistica.STOP_TARGET);
 					int i = 0;
 					while (i < trajectory.path.size()
@@ -156,19 +157,34 @@ public class TalismanOfForesight extends Artifact {
 						i++;
 					}
 					dist = Dungeon.level.trueDistance(curUser.pos, target);
+
+				} else if (dist < 5){
+					Ballistica trajectory = new Ballistica(curUser.pos, target, Ballistica.WONT_STOP);
+					int i = 0;
+					while (i < trajectory.path.size()
+							&& Dungeon.level.trueDistance(curUser.pos, trajectory.path.get(i)) <= 5){
+						target = trajectory.path.get(i);
+						i++;
+					}
+					dist = Dungeon.level.trueDistance(curUser.pos, target);
 				}
 
-				//starts at 200 degrees, loses 8% per tile of distance
-				float angle = Math.round(200*(float)Math.pow(0.92, dist));
+				//starts at 160 degrees, loses 5% per tile of distance
+				// roughly 123/96/74/57/44 degrees at 5/10/15/20/25 tiles
+				float angle = Math.round(160*(float)Math.pow(0.95, dist));
 				ConeAOE cone = new ConeAOE(new Ballistica(curUser.pos, target, Ballistica.STOP_TARGET), angle);
 
-				int earnedExp = 0;
+				float discoveredTiles = 0;
+				float discoveredTraps = 0;
+				float discoveredHeaps = 0;
+				float discoveredEnemies = 0;
+				float discoveredDoors = 0;
 				boolean noticed = false;
 				for (int cell : cone.cells){
 					GameScene.checkedCell( cell, curUser.pos );
 					if (Dungeon.level.discoverable[cell] && !(Dungeon.level.mapped[cell] || Dungeon.level.visited[cell])){
 						Dungeon.level.mapped[cell] = true;
-						earnedExp++;
+						discoveredTiles++;
 					}
 
 					if (Dungeon.level.secret[cell]) {
@@ -179,9 +195,14 @@ public class TalismanOfForesight extends Artifact {
 						noticed = true;
 
 						if (oldValue == Terrain.SECRET_TRAP){
-							earnedExp += 10;
+							if (Dungeon.level.traps.get(cell) instanceof TenguDartTrap){
+								//due to there being so many, Tengu traps give less exp
+								discoveredTraps += 0.4f;
+							} else {
+								discoveredTraps++;
+							}
 						} else if (oldValue == Terrain.SECRET_DOOR){
-							earnedExp += 100;
+							discoveredDoors++;
 						}
 					}
 
@@ -191,10 +212,11 @@ public class TalismanOfForesight extends Artifact {
 							&& ch.alignment != curUser.alignment){
 						Buff.append(curUser, CharAwareness.class, 5 + 2*level()).charID = ch.id();
 
-						artifactProc(ch, visiblyUpgraded(), (int)(3 + dist*1.08f));
+						artifactProc(ch, visiblyUpgraded(), (int)dist);
 
-						if (!curUser.fieldOfView[ch.pos]){
-							earnedExp += 10;
+						if (!curUser.fieldOfView[ch.pos] && ch.buff(CharDetectTracker.class) == null){
+							discoveredEnemies++;
+							Buff.affect(ch, CharDetectTracker.class);
 						}
 					}
 
@@ -203,32 +225,26 @@ public class TalismanOfForesight extends Artifact {
 						Buff.append(curUser, HeapAwareness.class, 5 + 2*level()).pos = h.pos;
 
 						if (!h.seen){
-							earnedExp += 10;
+							discoveredHeaps++;
 						}
 					}
 
 				}
 
-				exp += earnedExp;
-				if (exp >= 100 + 50*level() && level() < levelCap) {
-					exp -= 100 + 50*level();
+				exp += Math.min(discoveredTiles, 2*dist); //capped to ensure empty scans aren't too rewarding
+				exp += 5*discoveredTraps;
+				exp += 10*discoveredHeaps;
+				exp += 20*discoveredEnemies;
+				exp += 100*discoveredDoors;
+				if (exp >= 50 + 50*level() && level() < levelCap) {
+					exp -= 50 + 50*level();
 					upgrade();
 					Catalog.countUse(TalismanOfForesight.class);
 					GLog.p( Messages.get(TalismanOfForesight.class, "levelup") );
 				}
 				updateQuickslot();
 
-				//5 charge at 4 tiles, up to 30 charge at 25 tiles
-				charge -= 1 + dist*1.08f;
-				partialCharge -= (dist*1.08f)%1f;
-				if (partialCharge < 0 && charge > 0){
-					partialCharge ++;
-					charge --;
-				}
-				while (charge < 0){
-					charge++;
-					partialCharge--;
-				}
+				charge -= dist;
 				Invisibility.dispel(curUser);
 				Talent.onArtifactUsed(Dungeon.hero);
 				updateQuickslot();
@@ -250,6 +266,8 @@ public class TalismanOfForesight extends Artifact {
 			return Messages.get(TalismanOfForesight.class, "prompt");
 		}
 	};
+
+	public static class CharDetectTracker extends Buff{};
 
 	private static final String WARN = "warn";
 	
@@ -273,14 +291,12 @@ public class TalismanOfForesight extends Artifact {
 		public boolean act() {
 			spend( TICK );
 
-			checkAwareness();
-
 			if (charge < chargeCap
 					&& !cursed
 					&& target.buff(MagicImmune.class) == null
 					&& Regeneration.regenOn()) {
-				//fully charges in 2000 turns at +0, scaling to 1000 turns at +10.
-				float chargeGain = (0.05f+(level()*0.005f));
+				//fully charges in 1500 turns at +0, scaling to 750 turns at +10.
+				float chargeGain = (0.067f+(level()*0.0067f));
 				chargeGain *= rechargeSpeedMultiplier(target);
 				partialCharge += chargeGain;
 

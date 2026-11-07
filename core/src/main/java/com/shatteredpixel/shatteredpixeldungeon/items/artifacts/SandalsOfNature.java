@@ -313,7 +313,8 @@ public class SandalsOfNature extends Artifact {
 				Sample.INSTANCE.play( Assets.Sounds.PLANT );
 				hero.busy();
 				hero.spend( Actor.TICK );
-				if (seeds.size() >= 3+(level()*3)){
+				//needs 3/5/7 seeds to upgrade to +3/+6/+10
+				if (seeds.size() >= 3+(level()*2)){
 					seeds.clear();
 					upgrade();
 					Catalog.countUses(SandalsOfNature.class, level() == 3 ? 4 : 3);
