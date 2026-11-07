@@ -91,7 +91,7 @@ public class EscapeCrystal extends Item {
 
 				int score = 0;
 
-				//firstly, score is always a full 4k if the hero had the statue
+				//firstly, score is always a full 4k if the hero has the statue
 				if (hero.belongings.getItem(ImpStatue.class) != null){
 					score = 4000;
 				} else {
@@ -140,16 +140,24 @@ public class EscapeCrystal extends Item {
 
 				}
 
+				//at least 50 score needed to leave (leaving entrance, basically)
 				if (score < 50){
 					GameScene.show(new WndTitledMessage(new ImpSprite(),
 							Messages.titleCase(Messages.get(Imp.class, "name")),
 							Messages.get(EscapeCrystal.class, "leaving_start")));
 				} else {
 					String message;
-					if (score < 500)        message = Messages.get(EscapeCrystal.class, "leaving_early");
-					else if (score <= 1000) message = Messages.get(EscapeCrystal.class, "leaving_partly_explored");
-					else if (score <= 2000) message = Messages.get(EscapeCrystal.class, "leaving_fully_explored");
+					//50-249: no loot
+					if (score < 250)        message = Messages.get(EscapeCrystal.class, "leaving_early");
+					//250-499: can take a consumable
+					else if (score < 500)   message = Messages.get(EscapeCrystal.class, "leaving_minimal_explored");
+					//500-999: can take consumable or equipment, no higher than +0
+					else if (score < 1000)  message = Messages.get(EscapeCrystal.class, "leaving_partly_explored");
+					//1000-1999: gets shop, can take consumable or equipment, no higher than +1
+					else if (score < 2000)  message = Messages.get(EscapeCrystal.class, "leaving_mostly_explored");
+					//2000-3999: gets shop, can take consumable or equipment, no higher than +2
 					else if (score < 4000)  message = Messages.get(EscapeCrystal.class, "leaving_partial_victory");
+					//4000: gets shop, can take any item they like
 					else                    message = Messages.get(EscapeCrystal.class, "leaving_victory");
 
 					int finalScore = score;
@@ -161,7 +169,7 @@ public class EscapeCrystal extends Item {
 						@Override
 						protected void onSelect(int index) {
 							if (index == 0) {
-								if (finalScore >= 500) {
+								if (finalScore >= 250) {
 									GameScene.selectItem(new WndBag.ItemSelector(){
 
 										@Override
@@ -175,11 +183,13 @@ public class EscapeCrystal extends Item {
 												return false;
 											}
 											//lowest reward, just a consumable
-											if (finalScore <= 1000){
+											if (finalScore < 500){
 												return !item.unique && !(item instanceof EquipableItem || item instanceof Wand);
-											//mid rewards, item at a max of +0 or +1
+											//mid rewards, consumable or equipment at a max of +0/+1/+2
 											} else if (finalScore < 4000){
-												int maxLevel = finalScore > 2000 ? 1 : 0;
+												int maxLevel = 0;
+												if (finalScore >= 1000) maxLevel++;
+												if (finalScore >= 2000) maxLevel++;
 												if (item instanceof MagesStaff){
 													return ((MagesStaff) item).wandClass() != null
 															&& item.level() <= maxLevel+1; //+1 to account for staff's level
@@ -188,6 +198,7 @@ public class EscapeCrystal extends Item {
 												} else {
 													return item.level() <= maxLevel && !item.unique;
 												}
+											//full reward, any item that isn't unique
 											} else {
 												if (item instanceof MagesStaff){
 													return ((MagesStaff) item).wandClass() != null;

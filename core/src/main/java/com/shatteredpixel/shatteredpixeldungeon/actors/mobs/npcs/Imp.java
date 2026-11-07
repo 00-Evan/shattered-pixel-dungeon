@@ -81,7 +81,7 @@ public class Imp extends NPC {
 			Quest.reward = null;
 		}
 
-		if (Quest.isCompleted() && Quest.score > 2000
+		if (Quest.isCompleted() && Quest.score >= 1000
 				&& fieldOfView != null && !fieldOfView[Dungeon.hero.pos]){
 			flee();
 		} else if (!Quest.given && Dungeon.level.visited[pos]) {
@@ -171,7 +171,7 @@ public class Imp extends NPC {
 			} else if (!Quest.isCompleted()) {
 				tell(Messages.get(Imp.this, "quest_in_progress"));
 			} else {
-				if (Quest.score <= 2000){
+				if (Quest.score < 1000){
 					tell(Messages.get(Imp.this, "quest_completed_bad"));
 				} else if (Quest.score < 4000){
 					tell(Messages.get(Imp.this, "quest_completed_good"));
@@ -395,7 +395,7 @@ public class Imp extends NPC {
 		}
 
 		public static boolean earnedShop() {
-			return completed && (oldQuest || score > 2000);
+			return completed && (oldQuest || score >= 1000);
 		}
 	}
 }
