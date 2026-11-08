@@ -78,6 +78,88 @@ public class v4_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("v4.0.3", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton( ChangeIcons.V081_DISPLAY_VERT, "Misc & QoL Features",
+				"Shattered now supports a new language: **Arabic!** Because of the complexities of support inga RTL language, Arabic is currently not fully translated and is not yet usable for playing the game normally. I expect to fix issues with it as they get identified, let me know if you see any!\n" +
+				"\n" +
+				"Shattered's **brightness slider** has been overhauled, and now increases (or decreases) brightness/contrast for the entire game. Previously it just lightening the fog of war.\n" +
+				"\n" +
+				"The OSS Android version of shattered now has a local backup & restore system! It was previously impossible for de-googled Android users to back up or migrate save data, as all Android OS backup/restore features are proprietary these days. Other versions of the game already have accessible save data (e.g. desktop) or existing backup solutions (e.g. Google Play, AppStore, Steam.)"));
+
+		changes.addButton( new ChangeButton( ChangeIcons.V23_ARROWS, "Many Balance Changes",
+				"I was planning to make many of these balance changes in v4.1, but I've been patching v4.0 for long enough that there's plenty of gameplay data to make a bunch of changes now. Many of these changes are aimed as improving underperforming items or adjusting other mechanics.\n" +
+				"\n" +
+				"**Imp Quest** reward scaling is now more generous. The ability to take out higher upgraded items and unlocking the imp shop now both occur at lower levels of exploration. Taking out any item you want still requires defeating the boss however.\n" +
+				"\n" +
+				"**- Paralysis resist** now always guarantees that a character will get to take 1 action before being able to be paralysed again.\n" +
+				"\n" +
+				"**- Force cube** base dmg reverted to 10-25 from 10-30, but now deals 1/2 dmg to allies and self\n" +
+				"**- Holy lance** charge cost reduced to 3 from 4\n" +
+				"**- Exotic Crystals** now give a 0/33/67/100% chance (based on level) to drop an extra potion or scroll each floor.",
+
+				"**Rings:**\n" +
+				"**- Force** soft STR scaling cap up to 20 from 18, weapon bonus dmg now applies to thrown weapons, and dmg bonus to weapons can now scale from 1-1 to 1-3 based on weapon tier.\n" +
+				"**- Sharpshooting** durability boost per level up to 25% from 20%\n" +
+				"**- Might** max HP boost level level up to 5% from 3.5%\n" +
+				"\n" +
+				"**Artifacts:**\n" +
+				"**- Sandals of nature** now require 3/5/7 seeds to level up, down from 3/6/9\n" +
+				"**- Master Thieve's Armband** now also weakens an enemy if they are surprised\n" +
+				"**- Talisman of foresight** now more responsively warns you about traps, scrying now charges faster and occurs in a larger area. levelling up is slightly faster but less exp is gained from scanning empty spaces & traps.",
+
+				"**Champion Enemies:**\n" +
+				"**- Giant** champion % dmg reduced down to 75% from 80%\n" +
+				"**- Growing** champions now power up more slowly over time, most noticeable after 2x power\n" +
+				"\n" +
+				"**Enchantments & Glyphs:**\n" +
+				"**- Venomous** initial poison delay up to 5 turns from 3\n" +
+				"**- Crystal** enchantment no longer destroys the weapon when it breaks, only the enchantment is lost\n" +
+				"**- Viscocity** base dmg deferred up to 25% from 17%\n" +
+				"**- Flow** speed boost now persists for an extra 0.25 turns per level, but speed boost is down to 2x, from 2x + 0.5x per lvl\n" +
+				"**- Affection** base proc chance up to 20% from 15% and scaling increased"));
+
+		changes.addButton( new ChangeButton( ChangeIcons.V081_MISC, Messages.get(ChangesScene.class, "misc"),
+				"**-** Large enemies should no longer stand completely still when being attacked around corners\n" +
+				"**-** Spinner webs are no longer impassable for large characters (they are still rooted)\n" +
+				"**-** Artifacts are no longer usable in the dwarf vault, to prevent exploits\n" +
+				"**-** Improved clarity on the Imp's warning text when unprepared for the final vault quest fight\n" +
+				"\n" +
+				"**-** Improved occlusion shadowing visuals around doorways\n" +
+				"**-** hotkeys for selecting a particular bag now open the inventory UI if it was closed\n" +
+				"**-** Slightly improved the visuals when the greater elemental spawns and swaps forms\n" +
+				"**-** Removed support for iOS devices with A8- processors\n" +
+				"**-** Removed 10 year old rendering optimizations that are no longer relevant\n" +
+				"**-** Updated various internal code libraries"));
+
+		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by v4.0.2:** \n" +
+				"**-** Crystal enchantment never breaking in most cases\n" +
+				"\n" +
+				"**Caused by v4.0.0:**\n" +
+				"**-** Cursed wand transmutation effect applying to spirit bow or mage's staff when triggered via wondrous curse\n" +
+				"**-** Rare game freezes in crystal caves quest\n" +
+				"**-** Rare cases where the hero could teleport into walls\n" +
+				"\n" +
+				"**Existed Prior to v4.0:**\n" +
+				"**-** Ripper demons not swapping targets in lots of cases where they should\n" +
+				"**-** Beaming ray's distance check incorrectly interacting with stasis\n" +
+				"**-** Rare quirks with hiding mimic sprites\n" +
+				"**-** Rare cases of skeletons summoned by necromancers becoming visually desynced\n" +
+				"**-** Very rare cases where Duelist's challenge ability wouldn't apply to all enemies\n" +
+				"**-** Golems being able to teleport large characters into enclosed spaces\n" +
+				"**-** Beacon of returning not blinking when it should\n" +
+				"**-** Temporary strength boosts not always showing in game in progress summaries\n" +
+				"**-** Various minor visual and textual errors\n" +
+				"**-** Various rare crash bugs"));
+
 		changes = new ChangeInfo("v4.0.2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
@@ -127,7 +209,7 @@ public class v4_X_Changes {
 				"I've also softened up three standard hazard rooms:\n" +
 				"**-** Slowed down the scanning speed of the sentry in the circular scan room.\n" +
 				"**-** Reduced the frequency of zaps in the room with many semi-random laser sentries.\n" +
-				"**-** Room of alternating fire traps now has a 1-tile safe border.\n"));
+				"**-** Room of alternating fire traps now has a 1-tile safe border."));
 
 		changes.addButton( new ChangeButton( ChangeIcons.V081_MISC, Messages.get(ChangesScene.class, "misc"),
 				"**-** Added new visuals for the doors in the final vault room\n" +
