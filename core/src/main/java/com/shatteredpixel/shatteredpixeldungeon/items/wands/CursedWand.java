@@ -1144,7 +1144,7 @@ public class CursedWand {
 		public boolean valid(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
 			if (positiveOnly){
 				return true;
-			} else if (origin == null || user != Dungeon.hero || !Dungeon.hero.belongings.contains(origin)){
+			} else if (origin == null || origin.unique || user != Dungeon.hero || !Dungeon.hero.belongings.contains(origin)){
 				return false;
 			} else {
 				return true;
