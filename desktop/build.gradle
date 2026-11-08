@@ -81,7 +81,7 @@ runtime {
     } else if (osName.contains('linux')) {
         //May work on glibc 2.12 (2010), but that's old enough that I'm only officially supporting glibc 2.17 (2012)
         targetPlatform("linux") {
-            jdkHome = jdkDownload("https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20.1%2B1/OpenJDK17U-jdk_x64_linux_hotspot_17.0.17_10.tar.gz")
+            jdkHome = jdkDownload("https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20.1%2B1/OpenJDK17U-jdk_x64_linux_hotspot_17.0.20.1_1.tar.gz")
             javaHome = file("./build/jdks/linux/jdk-17.0.20.1+1").getAbsolutePath()
             jpackage {
                 jpackageHome = file("./build/jdks/linux/jdk-17.0.20.1+1")
@@ -92,7 +92,7 @@ runtime {
     } else if (osName.contains('mac')) {
         //This JDK officially supports MacOS 12 (2021), but internals suggest support for 10.12 (2016)
         targetPlatform("mac") {
-            jdkHome = jdkDownload("https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20.1%2B1/OpenJDK17U-jdk_x64_mac_hotspot_17.0.17_10.tar.gz")
+            jdkHome = jdkDownload("https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20.1%2B1/OpenJDK17U-jdk_x64_mac_hotspot_17.0.20.1_1.tar.gz")
             javaHome = file("./build/jdks/mac/jdk-17.0.20.1+1/Contents/Home/").getAbsolutePath()
             jpackage {
                 jpackageHome = file("./build/jdks/mac/jdk-17.0.20.1+1/Contents/Home/")
