@@ -77,6 +77,8 @@ public class RenderedTextBlock extends Component {
 		if (text != null && ArabicUtils.containsARChars(text)) {
 			rightToLeft = true;
 			text = ArabicUtils.convertTextBlockForDisplay(text);
+		} else {
+			rightToLeft = false;
 		}
 
 		if (text != null && !text.equals("")) {
