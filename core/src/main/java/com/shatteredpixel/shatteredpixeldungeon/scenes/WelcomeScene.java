@@ -211,6 +211,7 @@ public class WelcomeScene extends PixelScene {
 				message += "\n" + Messages.get(this, "patch_bugfixes");
 				message += "\n" + Messages.get(this, "patch_translations");
 
+				message = "Greetings beta testers!\n\nv4.0.3 is a fairly large patch with balance changes and a couple new tech features, and so it's getting a little time in beta before full release. Let me know if you encounter any issues!";
 			}
 		} else {
 			message = Messages.get(this, "what_msg");
