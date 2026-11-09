@@ -39,10 +39,7 @@
 		</array>
 		<key>UIRequiredDeviceCapabilities</key>
 		<array>
-			<!-- We don't actually use ARKit, but need to exclude devices with an A8 or lower -->
-			<!-- Can remove this once minimum iOS is 16+ -->
-			<string>arkit</string>
-			<string>metal</string>
+			<string>opengles-2</string>
 			<string>arm64</string>
 		</array>
 		<key>UISupportedInterfaceOrientations</key>
