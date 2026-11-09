@@ -44,6 +44,15 @@ public class RingOfTenacity extends Ring {
 		return maxDamageMultiplier(getBuffedBonus( target, Tenacity.class));
 	}
 
+	public static float effectiveDamageMultiplier( int bonus, float HPPercent ){
+		return (float)Math.pow(MAX_DMG_FACTOR, bonus*HPPercent);
+	}
+
+	public static float effectiveDamageMultiplier( Char target ){
+		float missingHPPercent = ((float)(target.HT - target.HP)/target.HT);
+		return effectiveDamageMultiplier(getBuffedBonus( target, Tenacity.class), missingHPPercent);
+	}
+
 	@Override
 	protected RingBuff buff( ) {
 		return new Tenacity();
@@ -72,11 +81,6 @@ public class RingOfTenacity extends Ring {
 	public String upgradeStat1(int level){
 		if (cursed && cursedKnown) level = Math.min(-1, level-3);
 		return Messages.decimalFormat("#.##", 100f * (1f - maxDamageMultiplier(level+1))) + "%";
-	}
-
-	public static float effectiveDamageMultiplier( Char target ){
-		float missingHPPercent = ((float)(target.HT - target.HP)/target.HT);
-		return maxDamageMultiplier(target)*missingHPPercent;
 	}
 }
 
