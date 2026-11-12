@@ -82,8 +82,9 @@ public class RenderedTextBlock extends Component {
 		}
 
 		if (text != null && !text.equals("")) {
-			
-			tokens = Game.platform.splitforTextBlock(text, multiline);
+
+			//if we're RTL we have to split on words because of word reversing
+			tokens = Game.platform.splitforTextBlock(text, multiline || rightToLeft);
 			
 			build();
 		}

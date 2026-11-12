@@ -24,6 +24,7 @@ public class ArabicUtils {
 	private static SparseArray<Character> ARMap = new SparseArray<>();
 	static {
 		ARMap.put(0x0622, (char) 0xFE81);
+		ARMap.put(0x0625, (char) 0xFE87);
 		ARMap.put(0x0627, (char) 0xFE8D);
 		ARMap.put(0x0628, (char) 0xFE8F);
 		ARMap.put(0x0629, (char) 0xFE93);
@@ -62,6 +63,7 @@ public class ArabicUtils {
 	private static ArrayList<Character> finalOnly = new ArrayList<>();
 	static {
 		finalOnly.add((char) 0x0627);
+		finalOnly.add((char) 0x0625);
 		finalOnly.add((char) 0x0629);
 		finalOnly.add((char) 0x062F);
 		finalOnly.add((char) 0x0630);
@@ -113,14 +115,23 @@ public class ArabicUtils {
 						if (ARMap.containsKey(c)) {
 							if (finalOnly.contains(c)) {
 								c = ARMap.get(c);
-								//only check if no arabic char after
-								if (k == j-1 || Character.UnicodeBlock.of(input.charAt(k+1)) != Character.UnicodeBlock.ARABIC) {
+								//these chars aren't joinable to the left, so they're always at the 'end'
+								//we need to check whether they're isolated or can join with a letter to their right
+								if (k != i
+										&& Character.UnicodeBlock.of(input.charAt(k-1)) == Character.UnicodeBlock.ARABIC
+										&& !finalOnly.contains(input.charAt(k-1))){
 									c += 1;
 								}
 							} else {
 								c = ARMap.get(c);
 								boolean end = k == j-1 || Character.UnicodeBlock.of(input.charAt(k+1)) != Character.UnicodeBlock.ARABIC;
 								boolean start = k == i || Character.UnicodeBlock.of(input.charAt(k-1)) != Character.UnicodeBlock.ARABIC;
+
+								//need to check if the arabic to the right is a final only char, which doesn't join in that direction
+								if (!start && finalOnly.contains(input.charAt(k-1))){
+									start = true;
+								}
+
 								if (end && start){
 									//isolated, no change
 								} else if (end){
@@ -133,16 +144,7 @@ public class ArabicUtils {
 							}
 						}
 
-						//weird bracket handling logic, probably this needs to become more robust
-						/*if (c == '('){
-							c = ')';
-							result.append(c);
-						} else if (c == ')'){
-							c = '(';
-							result.insert(resultEnd, c);
-						} else {*/
-							result.insert(resultEnd, c);
-						//}
+						result.insert(resultEnd, c);
 					}
 
 				} else {
