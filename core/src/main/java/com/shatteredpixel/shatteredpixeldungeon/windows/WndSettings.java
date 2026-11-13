@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.ArabicUtils;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -1238,6 +1239,13 @@ public class WndSettings extends WndTabbed {
 
 						RenderedTextBlock text = PixelScene.renderTextBlock(7);
 						text.maxWidth(w);
+						if (currLang == Languages.ARABIC){
+							for (int i = 0; i < entries.length; i++){
+								entries[i] = ArabicUtils.convertTextBlockForDisplay(entries[i]);
+							}
+							text.rightToLeft = true;
+						}
+
 						text.tokens(entries);
 
 						text.setPos(0, title.bottom() + 4);

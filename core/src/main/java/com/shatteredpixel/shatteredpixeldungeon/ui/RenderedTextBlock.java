@@ -58,7 +58,7 @@ public class RenderedTextBlock extends Component {
 	private int alignment = LEFT_ALIGN;
 
 	//set when Arabic characters are detected
-	private boolean rightToLeft = false;
+	public boolean rightToLeft = false;
 
 	public RenderedTextBlock(int size) {
 		this.size = size;
