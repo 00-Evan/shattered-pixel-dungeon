@@ -78,9 +78,18 @@ public class v4_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v4.0.3-BETA-2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton( ChangeIcons.V081_MISC, Messages.get(ChangesScene.class, "misc"),
+				"**-** Updated translations\n" +
+				"**-** Updated some internal code dependencies"));
+
+		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by BETA-1:** \n" +
+				"**-** Various errors with combining symbols in Arabic"));
 
 		changes = new ChangeInfo("v4.0.3-BETA-1", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
