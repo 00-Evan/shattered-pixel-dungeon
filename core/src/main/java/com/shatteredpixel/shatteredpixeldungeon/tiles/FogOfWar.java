@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.tiles;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Rect;
@@ -31,10 +32,35 @@ import java.util.ArrayList;
 
 public class FogOfWar extends Image {
 
+	//first index is visibility type, second is brightness level
+	private static final int FOG_COLORS[][] = new int[][]{{
+			//visible
+			0x00000000, //default and reduced brightness
+			0x00000000, //+1  brightness
+			0x00000000, //+2  brightness
+	}, {
+			//visited
+			0x99000000,
+			0x77000000,
+			0x55000000
+	}, {
+			//mapped
+			0x99193366,
+			0x77193366,
+			0x55193366,
+	}, {
+			//invisible
+			0xFF000000,
+			0xFF000000,
+			0xFF000000
+	}};
+
 	private static final int VISIBLE    =   0x00000000;
-	private static final int VISITED    =   0x99000000;
-	private static final int MAPPED     =   0x99193366;
 	private static final int INVISIBLE  =   0xFF000000;
+
+	//these two can be adjusted by brightness level
+	private static int VISITED    =   0x99000000;
+	private static int MAPPED     =   0x99193366;
 
 	private int mapWidth;
 	private int mapHeight;
@@ -148,7 +174,17 @@ public class FogOfWar extends Image {
 		this.mapped = mapped;
 
 		moveToUpdating();
-		
+
+		int brightness = SPDSettings.brightness();
+		if (brightness <= 0){
+			VISITED = 0x99000000;
+			MAPPED = 0x99193366;
+		} else if (brightness >= 1){
+			//fog of war is lightening if brightness is increased, to improve visibility
+			VISITED = 0x77000000;
+			MAPPED = 0x77193388;
+		}
+
 		boolean fullUpdate = false;
 		if (updating.size() == 1){
 			Rect update = updating.get(0);

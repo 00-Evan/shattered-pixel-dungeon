@@ -282,6 +282,7 @@ public class WndSettings extends WndTabbed {
 					SPDSettings.brightness(getSelectedValue());
 					// 0.8/0.91/1/1.11/1.25
 					NoosaScript.brightness(1f/(1f-getSelectedValue()/10f));
+					GameScene.updateFog();
 				}
 			};
 			optBrightness.setSelectedValue(SPDSettings.brightness());
