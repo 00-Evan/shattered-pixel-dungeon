@@ -17,14 +17,17 @@ public class ArabicUtils {
 
 	//Maps Arabic Unicode block chars to their equivalents in Arabic Presentation Forms
 	//then we can further increment based on specific form:
-	// Isolated: unchanged
-	// End: +1      (leftmost, remember we read right-to-left!)
-	// Start: +2    (rightmost)
-	// Middle: +3
-	private static SparseArray<Character> ARMap = new SparseArray<>();
+	// Isolated:    +0
+	// End:         +1 (leftmost, remember we read right-to-left!)
+	// Start:       +2 (rightmost)
+	// Middle:      +3
+	private static final SparseArray<Character> ARMap = new SparseArray<>();
 	static {
 		ARMap.put(0x0622, (char) 0xFE81);
+		ARMap.put(0x0623, (char) 0xFE83);
+		ARMap.put(0x0624, (char) 0xFE85);
 		ARMap.put(0x0625, (char) 0xFE87);
+		ARMap.put(0x0626, (char) 0xFE89);
 		ARMap.put(0x0627, (char) 0xFE8D);
 		ARMap.put(0x0628, (char) 0xFE8F);
 		ARMap.put(0x0629, (char) 0xFE93);
@@ -59,11 +62,14 @@ public class ArabicUtils {
 		ARMap.put(0x064A, (char) 0xFEF1);
 	}
 
-	//these chars only have transformations for being at the end of a word
-	private static ArrayList<Character> finalOnly = new ArrayList<>();
+	//these chars only have transformations for being at the end of a sequence
+	private static final ArrayList<Character> finalOnly = new ArrayList<>();
 	static {
-		finalOnly.add((char) 0x0627);
+		finalOnly.add((char) 0x0622);
+		finalOnly.add((char) 0x0623);
+		finalOnly.add((char) 0x0624);
 		finalOnly.add((char) 0x0625);
+		finalOnly.add((char) 0x0627);
 		finalOnly.add((char) 0x0629);
 		finalOnly.add((char) 0x062F);
 		finalOnly.add((char) 0x0630);
@@ -71,6 +77,17 @@ public class ArabicUtils {
 		finalOnly.add((char) 0x0632);
 		finalOnly.add((char) 0x0648);
 		finalOnly.add((char) 0x0649);
+	}
+
+	//the four variants of the 'Alef' symbol form ligatures with 'Lam' if they are after it
+	//Alef is also final only
+	private static final char LAM = 0x0644;
+	private static final SparseArray<Character> AlefLamLigatures = new SparseArray<>();
+	static {
+		AlefLamLigatures.put(0x0622, (char) 0xFEF5);
+		AlefLamLigatures.put(0x0623, (char) 0xFEF7);
+		AlefLamLigatures.put(0x0625, (char) 0xFEF9);
+		AlefLamLigatures.put(0x0627, (char) 0xFEFB);
 	}
 
 	private static boolean splitOn( char c ){
@@ -111,23 +128,48 @@ public class ArabicUtils {
 					for (int k = i; k < j; k++) {
 						c = input.charAt(k);
 
-						//need to convert arabic chars into combining forms
 						if (ARMap.containsKey(c)) {
-							if (finalOnly.contains(c)) {
-								c = ARMap.get(c);
-								//these chars aren't joinable to the left, so they're always at the 'end'
-								//we need to check whether they're isolated or can join with a letter to their right
-								if (k != i
-										&& Character.UnicodeBlock.of(input.charAt(k-1)) == Character.UnicodeBlock.ARABIC
-										&& !finalOnly.contains(input.charAt(k-1))){
-									c += 1;
-								}
-							} else {
-								c = ARMap.get(c);
-								boolean end = k == j-1 || Character.UnicodeBlock.of(input.charAt(k+1)) != Character.UnicodeBlock.ARABIC;
-								boolean start = k == i || Character.UnicodeBlock.of(input.charAt(k-1)) != Character.UnicodeBlock.ARABIC;
 
-								//need to check if the arabic to the right is a final only char, which doesn't join in that direction
+							//these chars aren't joinable to the left, so they can only 'end' a sequence
+							//we need to check whether they're isolated or can join with a letter to their right
+							if (finalOnly.contains(c)) {
+
+								//Alef specifically forms ligatures with Lam, so we need to handle that
+								if (AlefLamLigatures.containsKey(c) && k != i && input.charAt(k-1) == LAM){
+									c = AlefLamLigatures.get(c);
+
+									//Lam wasn't added, so we need to check the symbol before it
+									if (k != i+1
+											&& ARMap.containsKey(input.charAt(k-2))
+											&& !finalOnly.contains(input.charAt(k-2))){
+										c += 1;
+									}
+
+								//otherwise handle as normal
+								} else {
+									c = ARMap.get(c);
+
+									if (k != i
+											&& ARMap.containsKey(input.charAt(k-1))
+											&& !finalOnly.contains(input.charAt(k-1))){
+										c += 1;
+									}
+								}
+
+							//these chars can be isolated, or at the start/middle/end of a sequence
+							} else {
+
+								//we're going to form a ligature, so skip inserting this char
+								if (c == LAM && k != j-1 && AlefLamLigatures.containsKey(input.charAt(k+1))){
+									continue;
+								}
+
+								c = ARMap.get(c);
+								boolean end = k == j-1 || !ARMap.containsKey(input.charAt(k+1));
+								boolean start = k == i || !ARMap.containsKey(input.charAt(k-1));
+
+								//need to check if the char to the right is final only
+								// final only chars don't join in this direction
 								if (!start && finalOnly.contains(input.charAt(k-1))){
 									start = true;
 								}
@@ -135,11 +177,11 @@ public class ArabicUtils {
 								if (end && start){
 									//isolated, no change
 								} else if (end){
-									c += 1; //end (no arabic char after)
+									c += 1; //end (no combining char after)
 								} else if (start){
-									c += 2; //start (no arabic char before)
+									c += 2; //start (no combining char before)
 								} else {
-									c += 3; //middle
+									c += 3; //middle (combining before and after)
 								}
 							}
 						}
