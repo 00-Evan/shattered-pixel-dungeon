@@ -270,7 +270,7 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 	public boolean connect( Room room ) {
 
 		if ((neigbours.contains(room) || addNeigbour(room))
-				&& !connected.containsKey( room ) && canConnect(room)) {
+				&& !connected.containsKey( room ) && canConnect(room) && room.canConnect(this)) {
 			connected.put( room, null );
 			room.connected.put( this, null );
 			return true;
