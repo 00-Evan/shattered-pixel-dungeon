@@ -105,8 +105,10 @@ public class UnstableBrew extends Brew {
 	public void shatter(int cell) {
 		Potion p = Reflection.newInstance(Random.chances(potionChances));
 
-		//reroll the potion if it wasn't a good potion to throw
-		while (!mustThrowPots.contains(p.getClass()) && !canThrowPots.contains(p.getClass())){
+		//reroll the potion if it wasn't a 'harmful' potion to throw
+		//levitation does harm enemies, but purity doesn't so it's skipped here
+		while (!mustThrowPots.contains(p.getClass())
+				&& !(p instanceof PotionOfLevitation)){
 			p = Reflection.newInstance(Random.chances(potionChances));
 		}
 
