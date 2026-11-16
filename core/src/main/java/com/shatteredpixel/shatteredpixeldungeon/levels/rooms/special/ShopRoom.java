@@ -112,7 +112,12 @@ public class ShopRoom extends SpecialRoom {
 
 	}
 
-	protected void placeShopkeeper( Level level ) {
+	@Override
+	public boolean canPlaceCharacter(Point p, Level l) {
+		return false; //no wandering or teleporting into shops
+	}
+
+	protected void placeShopkeeper(Level level ) {
 
 		int pos = level.pointToCell(center());
 
