@@ -444,7 +444,10 @@ public class Combo extends Buff implements ActionIndicator.Action {
 					furyHitsLeft = count;
 					count = 0;
 					detach();
+					//we spend time at the start of fury
+					// this is awkward but needed to prevent exploits (quit during fury for 0 turns)
 					hero.spend(hero.attackDelay());
+					hero.cancelNext(); //forces hits to process first even if we did something like end time freeze
 				}
 				furyHitsLeft--;
 				//fury attacks as many times as you have combo count
@@ -460,6 +463,11 @@ public class Combo extends Buff implements ActionIndicator.Action {
 					furyHitsLeft = 0;
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 					ActionIndicator.clearAction(Combo.this);
+					//revert time spend due to lethal momentum
+					if (hero.buff(Talent.LethalMomentumTracker.class) != null){
+						hero.buff(Talent.LethalMomentumTracker.class).detach();
+						hero.spend(-hero.attackDelay());
+					}
 					hero.next();
 				}
 				break;

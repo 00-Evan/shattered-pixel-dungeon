@@ -241,6 +241,16 @@ public abstract class Actor implements Bundlable {
 		}
 	}
 
+	//used to cancel a prior next call to ensure that acting does not progress while something is happening
+	//(which we'll then call next() again at the end of)
+	//Currently this is only used to solve a weird interaction between fury and time freeze
+	//because fury spends time at the start of the hit chain instead of at the end.
+	public void cancelNext(){
+		if (current == null){
+			current = this;
+		}
+	}
+
 	public static boolean processing(){
 		return current != null;
 	}
