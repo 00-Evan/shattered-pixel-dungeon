@@ -263,8 +263,8 @@ public class Golem extends Mob {
 		protected boolean handleUnreachableTarget(boolean enemyInFOV, boolean justAlerted) {
 			boolean result = super.handleUnreachableTarget(enemyInFOV, justAlerted);
 
-			//try to self-teleport in these cases
-			if (state == WANDERING){
+			//try to self-teleport in these cases, unless we're in stealth gameplay (no random TP there)
+			if (state == WANDERING && !(state instanceof Mob.StealthGameplayWandering)){
 				target =  Dungeon.level.randomDestination( Golem.this );
 				if (!Dungeon.bossLevel() && target != -1 && target != pos && selfTeleCooldown <= 0) {
 					((GolemSprite)sprite).teleParticles(true);
