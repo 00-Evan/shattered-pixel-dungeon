@@ -36,17 +36,19 @@ public class Unstable extends Weapon.Enchantment {
 			Blocking.class,
 			Blooming.class,
 			Chilling.class,
-			Kinetic.class,
 			Corrupting.class,
+			Crystal.class,
 			Elastic.class,
+			Eldritch.class,
 			Grim.class,
+			Kinetic.class,
 			Lucky.class,
 			//projecting not included, no on-hit effect
 			Shocking.class,
+			//no unstable either, can't proc itself
 			Vampiric.class,
 			Venomous.class,
 			Vorpal.class,
-			Eldritch.class
 	};
 
 	@Override
