@@ -148,23 +148,30 @@ public class ScrollOfTeleportation extends Scroll {
 		
 		RegularLevel level = (RegularLevel) Dungeon.level;
 		ArrayList<Integer> candidates = new ArrayList<>();
-		
+
+		//iterate though all rooms
 		for (Room r : level.rooms()){
+			//special rooms have extra considerations, as we teleport to their entrance door
 			if (r instanceof SpecialRoom || r instanceof VaultTreasureRoom){
-				int terr;
-				boolean locked = false;
-				for (Point p : r.getPoints()){
-					terr = level.map[level.pointToCell(p)];
-					if (terr == Terrain.LOCKED_DOOR || terr == Terrain.CRYSTAL_DOOR || terr == Terrain.BARRICADE){
-						locked = true;
-						break;
-					}
-				}
-				if (locked){
+
+				Room.Door entrance = null;
+				if (r instanceof SpecialRoom)        entrance = ((SpecialRoom) r).entrance();
+				if (r instanceof VaultTreasureRoom)  entrance = ((VaultTreasureRoom) r).entrance();
+				int doorPos = level.pointToCell(entrance);
+				int terr = level.map[doorPos];
+
+				//always skip doors that are locked/blocked
+				if (terr == Terrain.LOCKED_DOOR || terr == Terrain.CRYSTAL_DOOR || terr == Terrain.BARRICADE){
+					continue;
+				//also skip open rooms whose door is in hero FOV
+				//except rooms with a hidden door, they are always considered
+				} else if (terr != Terrain.SECRET_DOOR && hero.fieldOfView[doorPos]){
 					continue;
 				}
+
 			}
-			
+
+			//otherwise, add all unseen points as a teleport candidate
 			int cell;
 			for (Point p : r.charPlaceablePoints(level)){
 				cell = level.pointToCell(p);
@@ -175,6 +182,7 @@ public class ScrollOfTeleportation extends Scroll {
 		}
 		
 		if (candidates.isEmpty()){
+			//no unseen candidates, so revert to teleporting randomly
 			return teleportChar( hero );
 		} else {
 			int pos = Random.element(candidates);
