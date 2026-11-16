@@ -170,6 +170,11 @@ public class MiningLevel extends CavesLevel {
 	}
 
 	@Override
+	public void rollForChampion(Mob m) {
+		//no champions on this level
+	}
+
+	@Override
 	public float respawnCooldown() {
 		//normal enemies respawn much more slowly here
 		return 3*TIME_TO_RESPAWN;

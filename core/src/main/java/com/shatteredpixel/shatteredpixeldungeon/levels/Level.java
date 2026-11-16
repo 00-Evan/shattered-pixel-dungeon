@@ -539,9 +539,11 @@ public abstract class Level implements Bundlable {
 			mobsToSpawn = MobSpawner.getMobRotation(Dungeon.depth);
 		}
 
-		Mob m = Reflection.newInstance(mobsToSpawn.remove(0));
+		return Reflection.newInstance(mobsToSpawn.remove(0));
+	}
+
+	public void rollForChampion(Mob m){
 		ChampionEnemy.rollForChampion(m);
-		return m;
 	}
 
 	abstract protected void createMobs();
@@ -775,6 +777,8 @@ public abstract class Level implements Bundlable {
 		PathFinder.buildDistanceMap(Dungeon.hero.pos, BArray.or(passable, avoid, null));
 
 		Mob mob = createMob();
+
+		rollForChampion(mob);
 		if (mob.state != mob.PASSIVE) {
 			mob.state = mob.WANDERING;
 		}

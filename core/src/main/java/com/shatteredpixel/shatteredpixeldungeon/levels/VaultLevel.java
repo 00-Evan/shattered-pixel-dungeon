@@ -562,6 +562,11 @@ public class VaultLevel extends CityLevel {
 		return Reflection.newInstance(cls);
 	}
 
+	@Override
+	public void rollForChampion(Mob m) {
+		//no champions on this level
+	}
+
 	//important to try and preserve mobs that can't spawn in a certain place (e.g. corridors)
 	public void returnMob( Class<?extends Mob> cls){
 		mobsToSpawn.add(0, cls);

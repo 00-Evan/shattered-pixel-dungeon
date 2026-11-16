@@ -255,6 +255,7 @@ public abstract class RegularLevel extends Level {
 		Mob mob = null;
 		while (mobsToSpawn > 0) {
 			if (mob == null) mob = createMob();
+			rollForChampion(mob);
 			Room roomToSpawn;
 			
 			if (!stdRoomIter.hasNext()) {
@@ -283,6 +284,7 @@ public abstract class RegularLevel extends Level {
 				//chance to add a second mob to this room, except on floor 1
 				if (Dungeon.depth > 1 && mobsToSpawn > 0 && Random.Int(4) == 0){
 					mob = createMob();
+					rollForChampion(mob);
 
 					tries = 30;
 					do {
