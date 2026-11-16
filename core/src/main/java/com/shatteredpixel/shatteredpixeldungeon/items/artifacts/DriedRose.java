@@ -602,10 +602,6 @@ public class DriedRose extends Artifact {
 			else                return null;
 		}
 
-		public void clearWeapon(){
-			if (rose != null) rose.weapon = null;
-		}
-
 		public Armor armor(){
 			if (rose != null)   return rose.armor;
 			else                return null;

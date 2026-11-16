@@ -63,7 +63,7 @@ public class Crystal extends Weapon.Enchantment {
 			} else {
 				thrownWeapon = false;
 				//lasts for an average of 50 attacks at normal speed at +0...
-				float avgUses = 50;
+				float avgUses = 5;
 				//scaling down to 30 attacks at +6 (except spirit bow, which is always 50)
 				if (weapon instanceof MeleeWeapon){
 					avgUses -= Math.min(20, 20*weapon.buffedLvl()/6f);
@@ -94,13 +94,10 @@ public class Crystal extends Weapon.Enchantment {
 				} else if (visualDurability <= 0) {
 					Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 					Splash.at(attacker.pos, 0x0088FF, 15);
+					weapon.enchant(null);
 					if (attacker instanceof Hero) {
-						if (weapon.isEquipped((Hero) attacker)) {
-							weapon.enchant(null);
-						}
 						GLog.n(Messages.get(this, "alert_shattered"));
 					} else if (attacker instanceof DriedRose.GhostHero){
-						((DriedRose.GhostHero) attacker).clearWeapon();
 						GLog.n(Messages.get(this, "alert_shattered_ghost"));
 					}
 				}
