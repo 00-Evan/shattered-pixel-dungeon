@@ -88,6 +88,11 @@ public class Tag extends Button {
 		this.b = (color & 0xFF) / 255f;
 		bg.hardlight( r, g, b );
 	}
+
+	public void brightnessWithColor( float brightness ){
+		lightness = 0;
+		bg.hardlight( r*brightness, g*brightness, b*brightness );
+	}
 	
 	@Override
 	public void update() {

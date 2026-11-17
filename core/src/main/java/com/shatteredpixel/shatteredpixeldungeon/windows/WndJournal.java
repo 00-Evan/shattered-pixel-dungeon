@@ -78,6 +78,7 @@ import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.Visual;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.RectF;
 import com.watabou.utils.Reflection;
@@ -262,6 +263,7 @@ public class WndJournal extends WndTabbed {
 					@Override
 					public boolean onClick(float x, float y) {
 						if (inside( x, y ) && found) {
+							Sample.INSTANCE.play( Assets.Sounds.CLICK );
 							ShatteredPixelDungeon.scene().addToFront( new WndStory( Document.ADVENTURERS_GUIDE.pageSprite(page),
 									Document.ADVENTURERS_GUIDE.pageTitle(page),
 									Document.ADVENTURERS_GUIDE.pageBody(page) ));
@@ -504,6 +506,7 @@ public class WndJournal extends WndTabbed {
 						@Override
 						public boolean onClick(float x, float y) {
 							if (inside(x, y)) {
+								Sample.INSTANCE.play( Assets.Sounds.CLICK, 0.7f, 0.7f, 1.2f );
 								GameScene.show(new CustomNoteButton.CustomNoteWindow(rec, WndJournal.INSTANCE));
 								return true;
 							} else {
@@ -851,6 +854,7 @@ public class WndJournal extends WndTabbed {
 				@Override
 				public boolean onClick(float x, float y) {
 					if (inside(x, y)) {
+						Sample.INSTANCE.play( Assets.Sounds.CLICK, 0.7f, 0.7f, 1.2f );
 						Image sprite = new ItemSprite();
 						sprite.copy(icon);
 						if (ShatteredPixelDungeon.scene() instanceof GameScene){
@@ -985,6 +989,7 @@ public class WndJournal extends WndTabbed {
 				@Override
 				public boolean onClick(float x, float y) {
 					if (inside(x, y)) {
+						Sample.INSTANCE.play( Assets.Sounds.CLICK, 0.7f, 0.7f, 1.2f );
 						Image image;
 						if (seen && finalMob != null){
 							image = finalMob.sprite();
@@ -1027,6 +1032,7 @@ public class WndJournal extends WndTabbed {
 				@Override
 				public boolean onClick(float x, float y) {
 					if (inside(x, y)) {
+						Sample.INSTANCE.play( Assets.Sounds.CLICK, 0.7f, 0.7f, 1.2f );
 						Image sprite = new Image(icon);
 						if (seen) {
 							if (ShatteredPixelDungeon.scene() instanceof GameScene){

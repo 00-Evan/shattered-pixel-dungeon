@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -47,6 +48,7 @@ import com.watabou.input.KeyEvent;
 import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Component;
 
 import java.util.ArrayList;
@@ -352,6 +354,7 @@ public class WndHero extends WndTabbed {
 			
 			protected boolean onClick ( float x, float y ) {
 				if (inside( x, y )) {
+					Sample.INSTANCE.play( Assets.Sounds.CLICK );
 					GameScene.show(new WndInfoBuff(buff));
 					return true;
 				} else {

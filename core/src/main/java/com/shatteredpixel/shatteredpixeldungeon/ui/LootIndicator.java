@@ -47,6 +47,17 @@ public class LootIndicator extends Tag {
 		super.createChildren();
 
 		slot = new ItemSlot() {
+
+			@Override
+			protected void onPointerDown() {
+				if (Dungeon.hero.ready) brightnessWithColor(1.5f);
+			}
+
+			@Override
+			protected void onPointerUp() {
+				if (Dungeon.hero.ready) brightnessWithColor(1f);
+			}
+
 			protected void onClick() {
 				LootIndicator.this.onClick();
 				if (Dungeon.hero.ready && Dungeon.hero.handle(Dungeon.hero.pos)){

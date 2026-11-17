@@ -66,6 +66,16 @@ public class ResumeIndicator extends Tag {
 	}
 
 	@Override
+	protected void onPointerDown() {
+		if (Dungeon.hero.ready) brightnessWithColor(1.5f);
+	}
+
+	@Override
+	protected void onPointerUp() {
+		if (Dungeon.hero.ready) brightnessWithColor(1f);
+	}
+
+	@Override
 	protected void onClick() {
 		super.onClick();
 		if (Dungeon.hero.ready) {

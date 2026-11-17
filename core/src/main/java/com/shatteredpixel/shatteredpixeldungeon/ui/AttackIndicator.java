@@ -176,6 +176,16 @@ public class AttackIndicator extends Tag {
 	private synchronized void visible( boolean value ) {
 		bg.visible = value;
 	}
+
+	@Override
+	protected void onPointerDown() {
+		if (enabled && Dungeon.hero.ready) brightnessWithColor(1.5f);
+	}
+
+	@Override
+	protected void onPointerUp() {
+		if (enabled && Dungeon.hero.ready) brightnessWithColor(1f);
+	}
 	
 	@Override
 	protected void onClick() {

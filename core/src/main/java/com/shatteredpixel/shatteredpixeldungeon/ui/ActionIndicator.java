@@ -134,6 +134,16 @@ public class ActionIndicator extends Tag {
 	}
 
 	@Override
+	protected void onPointerDown() {
+		if (action != null && Dungeon.hero.ready) brightnessWithColor(1.5f);
+	}
+
+	@Override
+	protected void onPointerUp() {
+		if (action != null && Dungeon.hero.ready) brightnessWithColor(1f);
+	}
+
+	@Override
 	protected void onClick() {
 		super.onClick();
 		if (action != null && Dungeon.hero.ready) {

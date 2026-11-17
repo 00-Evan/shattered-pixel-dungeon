@@ -47,6 +47,7 @@ import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Music;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.RectF;
@@ -342,7 +343,15 @@ public class RankingsScene extends PixelScene {
 			desc.setPos(x + 16 + GAP, shield.y + (shield.height - desc.height()) / 2f + 1);
 			align(desc);
 		}
-		
+
+		//TODO these elements should have a background or something so they are more clearly buttons
+		// (a bit like games in progress)
+
+		@Override
+		protected void onPointerDown() {
+			Sample.INSTANCE.play( Assets.Sounds.CLICK );
+		}
+
 		@Override
 		protected void onClick() {
 			parent.add( new WndRanking( rec ) );

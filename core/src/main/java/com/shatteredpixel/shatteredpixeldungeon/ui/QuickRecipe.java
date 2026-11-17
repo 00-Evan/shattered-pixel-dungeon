@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.ArcaneResin;
@@ -78,6 +79,7 @@ import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.PointerArea;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Reflection;
 
@@ -108,6 +110,17 @@ public class QuickRecipe extends Component {
 			curr = new ItemSlot(in) {
 				{
 					hotArea.blockLevel = PointerArea.NEVER_BLOCK;
+				}
+
+				@Override
+				protected void onPointerDown() {
+					sprite.brightness(1.5f);
+					Sample.INSTANCE.play( Assets.Sounds.CLICK );
+				}
+
+				@Override
+				protected void onPointerUp() {
+					sprite.resetColor();
 				}
 
 				@Override
@@ -156,6 +169,18 @@ public class QuickRecipe extends Component {
 		
 		anonymize(output);
 		this.output = new ItemSlot(output){
+
+			@Override
+			protected void onPointerDown() {
+				sprite.brightness(1.5f);
+				Sample.INSTANCE.play( Assets.Sounds.CLICK );
+			}
+
+			@Override
+			protected void onPointerUp() {
+				sprite.resetColor();
+			}
+
 			@Override
 			protected void onClick() {
 				ShatteredPixelDungeon.scene().addToFront(new WndInfoItem(output));

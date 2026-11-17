@@ -137,8 +137,18 @@ public class BadgesGrid extends Component {
 		}
 
 		@Override
-		protected void onClick() {
+		protected void onPointerDown() {
+			icon.brightness( unlocked ? 1.5f : 0.6f );
 			Sample.INSTANCE.play( Assets.Sounds.CLICK, 0.7f, 0.7f, 1.2f );
+		}
+
+		@Override
+		protected void onPointerUp() {
+			icon.brightness( unlocked ? 1f : 0.4f);
+		}
+
+		@Override
+		protected void onClick() {
 			Game.scene().addToFront( new WndBadge( badge, unlocked ) );
 		}
 

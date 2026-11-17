@@ -108,6 +108,16 @@ public class DangerIndicator extends Tag {
 	}
 	
 	@Override
+	protected void onPointerDown() {
+		brightnessWithColor(1.5f);
+	}
+
+	@Override
+	protected void onPointerUp() {
+		brightnessWithColor(1f);
+	}
+
+	@Override
 	protected void onClick() {
 		super.onClick();
 		if (Dungeon.hero.visibleEnemies() > 0) {
