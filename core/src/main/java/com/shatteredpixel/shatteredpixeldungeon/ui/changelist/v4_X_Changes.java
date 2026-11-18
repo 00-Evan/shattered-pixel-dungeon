@@ -78,6 +78,46 @@ public class v4_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo("v4.0.3-BETA-3", false, null);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton( ChangeIcons.V23_ARROWS, "Poison Balance Changes",
+				"Many players disliked the game feel of the beta-1 venomous nerf, and it didn't affect the overall power of the enchant as much as I'd like anyway, so I'm trying something different:\n" +
+				"\n" +
+				"**- Venomous** initial delay reverted to 3 turns from 5.\n" +
+				"**- Poison** debuff now deals 1 damage for the last 3 turns of duration, up from the last 2. This means it now deals 1 dmg as many times as every other damage number.\n" +
+				"**-** Various non-venomous poison sources adjusted to compensate (in general they deal 1 more total dmg and last 1 more turn).\n" +
+				"**-** Poison effect from mystery meat nerfed, no longer deals absurd dmg at high max HP."));
+
+		changes.addButton( new ChangeButton( ChangeIcons.V081_MISC, Messages.get(ChangesScene.class, "misc"),
+				"**-** Updated translations\n" +
+				"**-** Putting game brightness at +1 or +2 now lightens the fog of war specifically again. If you've been playing with +2 to better see in the fog of war, try the game at +1.\n" +
+				"**-** Enemies can no longer randomly wander into shops\n" +
+				"**-** Unstable brew no longer has a chance to trigger purity effect when thrown\n" +
+				"**-** Summoning traps and multiplicity curse are no longer capable of spawning champion enemies\n" +
+				"**-** Added 'pressing' vfx/sfx to several buttons and button-like objects that were lacking them\n" +
+				"**-** Improved wording on potion of purity and Imp quest start"));
+
+		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by BETA-1:**\n" +
+				"**-** Further errors with combining symbols in Arabic\n" +
+				"**-** Crystal enchant never breaking on the spirit bow\n" +
+				"**-** Golems teleporting in the vault in some cases\n\n" +
+				"**Caused by v4.0.2:**\n" +
+				"**-** Standard rooms with stronger enemies still rarely connecting to the vault entrance\n\n" +
+				"**Caused by v4.0.0:**\n" +
+				"**-** Unstable enchant never triggering crystal\n\n" +
+				"**Existed Prior to v4.0:**\n" +
+				"**-** Scroll of Teleportation placing the hero right next to their previous location in some cases\n" +
+				"**-** Incorrect interactions between fury and time freeze or lethal momentum\n" +
+				"**-** Specific errors involving Duelist's challenge ability and moving between floors"));
+
 		changes = new ChangeInfo("v4.0.3-BETA-2", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
