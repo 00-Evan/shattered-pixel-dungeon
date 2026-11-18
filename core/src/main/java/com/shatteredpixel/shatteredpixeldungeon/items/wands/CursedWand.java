@@ -910,7 +910,7 @@ public class CursedWand {
 							break;
 						case 2:
 							Poison poison = Buff.affect(ch, Poison.class);
-							poison.set(3 + Dungeon.scalingDepth() / 2);
+							poison.set(4 + Dungeon.scalingDepth() / 2);
 							ch.damage(dmg, poison);
 							ch.sprite.emitter().burst(PoisonParticle.SPLASH, 20);
 							break;

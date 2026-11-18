@@ -38,17 +38,17 @@ public class Venomous extends Weapon.Enchantment {
 	public int proc(Weapon weapon, Char attacker, Char defender, int damage) {
 		int level = Math.max( 0, weapon.buffedLvl() );
 
-		// flat 33% proc chance, effect scales with level
-		float procChance = 1/3f * procChanceMultiplier(attacker);
+		// flat 25% proc chance, effect scales with level
+		float procChance = 1/4f * procChanceMultiplier(attacker);
 		if (Random.Float() < procChance) {
 
 			float powerMulti = Math.max(1f, procChance);
 
-			//delays the poison's damage by 5 turns if the enemy had no poison on them already
+			//delays the poison's damage by 3 turns if the enemy had no poison on them already
 			Poison poison = defender.buff(Poison.class);
 			if (poison == null) {
 				poison = Buff.affect(defender, Poison.class);
-				poison.delay(5f);
+				poison.delay(3f);
 				poison = defender.buff(Poison.class);
 			}
 			if (poison != null){

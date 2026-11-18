@@ -132,7 +132,7 @@ public class Swarm extends Mob {
 			Buff.affect( clone, Burning.class ).reignite( clone );
 		}
 		if (buff( Poison.class ) != null) {
-			Buff.affect( clone, Poison.class ).set(2);
+			Buff.affect( clone, Poison.class ).set(3);
 		}
 		for (Buff b : buffs()){
 			if (b.revivePersists) {

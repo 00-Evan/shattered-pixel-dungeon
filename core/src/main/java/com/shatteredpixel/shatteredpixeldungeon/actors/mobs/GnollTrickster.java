@@ -96,7 +96,7 @@ public class GnollTrickster extends Gnoll {
 				Buff.affect(enemy, Burning.class).reignite( enemy );
 
 			} else {
-				Buff.affect(enemy, Poison.class).set((effect - 2));
+				Buff.affect(enemy, Poison.class).set((effect - 1));
 			}
 
 		}

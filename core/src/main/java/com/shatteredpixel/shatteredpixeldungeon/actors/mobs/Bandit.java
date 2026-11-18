@@ -47,7 +47,8 @@ public class Bandit extends Thief {
 		if (super.steal( hero )) {
 			
 			Buff.prolong( hero, Blindness.class, Blindness.DURATION/2f );
-			Buff.affect( hero, Poison.class ).set(Random.IntRange(5, 6) );
+			//9 or 12 total dmg
+			Buff.affect( hero, Poison.class ).set( Random.IntRange(6, 7) );
 			Buff.prolong( hero, Cripple.class, Cripple.DURATION/2f );
 			Dungeon.observe();
 			

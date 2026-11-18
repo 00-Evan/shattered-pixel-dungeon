@@ -424,7 +424,7 @@ public class ElementalStrike extends ArmorAbility {
 						p = Buff.affect(ch, Poison.class);
 						p.delay(3f);
 					}
-					//27 total damage at base
+					//22 total damage at base
 					p.extend(powerMulti*10);
 				}
 			}

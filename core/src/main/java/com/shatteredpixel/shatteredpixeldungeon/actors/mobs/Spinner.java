@@ -120,7 +120,8 @@ public class Spinner extends Mob {
 	public int attackProc(Char enemy, int damage) {
 		damage = super.attackProc( enemy, damage );
 		if (Random.Int(2) == 0) {
-			int duration = Random.IntRange(7, 8);
+			//15 or 18 total dmg
+			int duration = Random.IntRange(8, 9);
 			//we only use half the ascension modifier here as total poison dmg doesn't scale linearly
 			duration = Math.round(duration * (AscensionChallenge.statModifier(this)/2f + 0.5f));
 			Buff.affect(enemy, Poison.class).set(duration);

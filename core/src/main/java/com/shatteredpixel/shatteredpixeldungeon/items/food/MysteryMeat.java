@@ -63,7 +63,8 @@ public class MysteryMeat extends Food {
 				break;
 			case 2:
 				GLog.w( Messages.get(MysteryMeat.class, "not_well") );
-				Buff.affect( hero, Poison.class ).set( hero.HT / 5 );
+				// harms the hero for ~40% of their max HP in poison
+				Buff.affect( hero, Poison.class ).set(4 + hero.lvl/2);
 				break;
 			case 3:
 				GLog.w( Messages.get(MysteryMeat.class, "stuffed") );
