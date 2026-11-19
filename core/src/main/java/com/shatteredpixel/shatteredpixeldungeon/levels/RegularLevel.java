@@ -252,10 +252,15 @@ public abstract class RegularLevel extends Level {
 
 		PathFinder.buildDistanceMap(entrance(), entranceWalkable, 8);
 
-		Mob mob = null;
-		while (mobsToSpawn > 0) {
-			if (mob == null) mob = createMob();
+		ArrayList<Mob> spawning = new ArrayList<>();
+		while (spawning.size() < mobsToSpawn){
+			Mob mob = createMob();
 			rollForChampion(mob);
+			spawning.add(mob);
+		}
+
+		while (!spawning.isEmpty()) {
+			Mob mob = spawning.get(0);
 			Room roomToSpawn;
 			
 			if (!stdRoomIter.hasNext()) {
@@ -277,14 +282,12 @@ public abstract class RegularLevel extends Level {
 					|| (!openSpace[mob.pos] && mob.properties().contains(Char.Property.LARGE))));
 
 			if (tries >= 0) {
-				mobsToSpawn--;
 				mobs.add(mob);
-				mob = null;
+				spawning.remove(mob);
 
 				//chance to add a second mob to this room, except on floor 1
-				if (Dungeon.depth > 1 && mobsToSpawn > 0 && Random.Int(4) == 0){
-					mob = createMob();
-					rollForChampion(mob);
+				if (Dungeon.depth > 1 && !spawning.isEmpty() && Random.Int(4) == 0){
+					mob = spawning.get(0);
 
 					tries = 30;
 					do {
@@ -300,9 +303,8 @@ public abstract class RegularLevel extends Level {
 							|| (!openSpace[mob.pos] && mob.properties().contains(Char.Property.LARGE))));
 
 					if (tries >= 0) {
-						mobsToSpawn--;
 						mobs.add(mob);
-						mob = null;
+						spawning.remove(mob);
 					}
 				}
 			}
