@@ -63,7 +63,7 @@ public class Crystal extends Weapon.Enchantment {
 			} else {
 				thrownWeapon = false;
 				//lasts for an average of 50 attacks at normal speed at +0...
-				float avgUses = 5;
+				float avgUses = 50;
 				//scaling down to 30 attacks at +6 (except spirit bow, which is always 50)
 				if (weapon instanceof MeleeWeapon){
 					avgUses -= Math.min(20, 20*weapon.buffedLvl()/6f);
