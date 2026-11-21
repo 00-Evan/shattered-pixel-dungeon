@@ -20,7 +20,7 @@ To compile Shattered Pixel Dungeon using this guide you will need:
 
 ## Installing Initial Programs
 
-Download and install the latest version of [Intellij](https://www.jetbrains.com/idea/download/). Android Studio (which is based on Intellij) is another option, but it is not the IDE this guide is written for.
+Download and install the latest version of [Intellij](https://www.jetbrains.com/idea/download/). Note that the free trial is for 'Ultimate' features that aren't really useful to us, not the whole program. Android Studio (which is based on Intellij) is another option, but it is not the IDE this guide is written for.
 
 After installing and first launching Intellij, There are a number of configuration changes that you should make:
 - (required) when first launching Intellij, agree to the EULA and either accept or reject anonymous statistics collection
