@@ -1426,7 +1426,7 @@ public abstract class Mob extends Char {
 
 			//if we are large, and being attacked by an unreachable enemy out of FOV
 			// then try to 'side-step' a bit vs. a path to them, to try and put them into view
-			if (enemy != null && properties.contains(Property.LARGE) && !enemyInFOV && justAlerted) {
+			if (enemy != null && hasProp(Mob.this, Property.LARGE) && !enemyInFOV && justAlerted) {
 
 				PathFinder.buildDistanceMap(enemy.pos, Dungeon.level.passable, 8);
 				for (int i : PathFinder.NEIGHBOURS8) {
