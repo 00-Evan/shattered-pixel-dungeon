@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.TippedDart;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Reflection;
@@ -90,6 +91,11 @@ public class Recycle extends InventorySpell {
 		}
 		Transmuting.show(curUser, item, result);
 		curUser.sprite.emitter().start(Speck.factory(Speck.CHANGE), 0.2f, 10);
+
+		Recycle next = (Recycle)Dungeon.hero.belongings.getSimilar(curItem);
+		if (next != null){
+			GameScene.selectItem( next.itemSelector );
+		}
 	}
 	
 	@Override
