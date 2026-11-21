@@ -677,7 +677,11 @@ public class Hero extends Char {
 		if (!RingOfForce.fightingUnarmed(this)) {
 			dmg = wep.damageRoll( this );
 
-			dmg += RingOfForce.armedDamageBonus(this, wep);
+			int forceDmg = RingOfForce.armedDamageBonus(this, wep);
+			if (wep instanceof MeleeWeapon && ((MeleeWeapon) wep).augment != null){
+				forceDmg = ((MeleeWeapon) wep).augment.damageFactor(forceDmg);
+			}
+			dmg += forceDmg;
 		} else {
 			dmg = RingOfForce.damageRoll(this);
 			if (RingOfForce.unarmedGetsWeaponAugment(this)){
