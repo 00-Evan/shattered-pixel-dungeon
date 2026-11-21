@@ -78,9 +78,25 @@ public class v4_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v4.0.3-BETA-4", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton( ChangeIcons.V081_MISC, Messages.get(ChangesScene.class, "misc"),
+				"**-** Updated translations\n" +
+				"**-** Ring of Force weapon damage bonus is now affected by weapon augments\n" +
+				"**-** Recycle spell item now re-shows its item selector after each use"));
+
+		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"**Caused by BETA-3:**\n" +
+				"**-** Crystal enchantment having much less durability than intended\n" +
+				"**-** More champion enemies spawning than intended\n\n" +
+				"**Caused by BETA-1:**\n" +
+				"**-** Even more cases of Arabic characters not properly combining\n" +
+				"**-** Rare errors in new logic for large enemies\n\n" +
+				"**Existed Prior to v4.0:**\n" +
+				"**-** UI not properly updating if enemies become visible because of upgrading a talent"));
 
 		changes = new ChangeInfo("v4.0.3-BETA-3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
