@@ -90,6 +90,11 @@ public class ArabicUtils {
 		AlefLamLigatures.put(0x0627, (char) 0xFEFB);
 	}
 
+	//These symbols are meant to sit between two other chars, and so should be skipped when determining combining
+	private static boolean isZeroWidthSymbol(char c){
+		return c >= 0x064B && c <= 0x065F;
+	}
+
 	private static boolean splitOn( char c ){
 		return Character.isWhitespace(c) || c == ')' || c == '(';
 	}
@@ -97,6 +102,7 @@ public class ArabicUtils {
 	public static String convertTextBlockForDisplay( String input ){
 		StringBuilder result = new StringBuilder();
 
+		//TODO when some English is present it gets reversed too, should see if we can fix that (creates issues with line-breaks though)
 		for (int i = 0; i < input.length(); i++) {
 			char c = input.charAt(i);
 			if (splitOn(c)) {
@@ -140,8 +146,8 @@ public class ArabicUtils {
 
 									//Lam wasn't added, so we need to check the symbol before it
 									if (k != i+1
-											&& ARMap.containsKey(input.charAt(k-2))
-											&& !finalOnly.contains(input.charAt(k-2))){
+											&& ARMap.containsKey(getLeftSymbol(input, k-1))
+											&& !finalOnly.contains(getLeftSymbol(input, k-1))){
 										c += 1;
 									}
 
@@ -150,8 +156,8 @@ public class ArabicUtils {
 									c = ARMap.get(c);
 
 									if (k != i
-											&& ARMap.containsKey(input.charAt(k-1))
-											&& !finalOnly.contains(input.charAt(k-1))){
+											&& ARMap.containsKey(getLeftSymbol(input, k))
+											&& !finalOnly.contains(getLeftSymbol(input, k))){
 										c += 1;
 									}
 								}
@@ -165,12 +171,12 @@ public class ArabicUtils {
 								}
 
 								c = ARMap.get(c);
-								boolean end = k == j-1 || !ARMap.containsKey(input.charAt(k+1));
-								boolean start = k == i || !ARMap.containsKey(input.charAt(k-1));
+								boolean end = k == j-1 || !ARMap.containsKey(getRightSymbol(input, k));
+								boolean start = k == i || !ARMap.containsKey(getLeftSymbol(input, k));
 
 								//need to check if the char to the right is final only
 								// final only chars don't join in this direction
-								if (!start && finalOnly.contains(input.charAt(k-1))){
+								if (!start && finalOnly.contains(getLeftSymbol(input, k))){
 									start = true;
 								}
 
@@ -199,6 +205,36 @@ public class ArabicUtils {
 		}
 
 		return result.toString();
+	}
+
+	private static char getLeftSymbol(String input, int idx){
+		int i = idx-1;
+		while (i >= 0){
+			char c = input.charAt(i);
+			if (ARMap.containsKey(c)){
+				return c;
+			} else if (isZeroWidthSymbol(c)){
+				i--; //loop again
+			} else {
+				return 0;
+			}
+		}
+		return 0;
+	}
+
+	private static char getRightSymbol(String input, int idx){
+		int i = idx+1;
+		while (i < input.length()){
+			char c = input.charAt(i);
+			if (ARMap.containsKey(c)){
+				return c;
+			} else if (isZeroWidthSymbol(c)){
+				i++; //loop again
+			} else {
+				return 0;
+			}
+		}
+		return 0;
 	}
 
 }
