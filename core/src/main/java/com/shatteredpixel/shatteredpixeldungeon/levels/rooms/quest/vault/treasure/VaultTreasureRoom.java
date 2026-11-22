@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.treasu
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.vault.VaultRoom;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
@@ -48,6 +49,24 @@ public abstract class VaultTreasureRoom extends VaultRoom {
 			}
 		}
 		return entrance;
+	}
+
+	private static final String ENTRANCE = "entrance";
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		if (entrance() != null){
+			bundle.put(ENTRANCE, entrance());
+		}
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		if (bundle.contains(ENTRANCE)){
+			entrance = (Door)bundle.get(ENTRANCE);
+		}
 	}
 
 	@Override
