@@ -1133,14 +1133,11 @@ public class WndSettings extends WndTabbed {
 							}
 							@Override
 							public void afterCreate() {
-								//do nothing
 								if (langs.get(langIndex) == Languages.ARABIC){
 									ShatteredPixelDungeon.runOnRenderThread(new Callback() {
 										@Override
 										public void call() {
-											ShatteredPixelDungeon.scene().addToFront(new WndTitledMessage(Icons.WARNING.get(),
-													"Arabic is Unfinished!",
-													"Arabic, as a right-to-left language, requires quite a bit of new functionality to work properly! The current Arabic implementation is missing most translations and is NOT considered usable for playing the game yet. Please send me any feedback you have!"));
+											ShatteredPixelDungeon.scene().addToFront(new WndArabicWarn());
 										}
 									});
 								}
@@ -1311,6 +1308,20 @@ public class WndSettings extends WndTabbed {
 				height = txtTranifex.bottom();
 			}
 
+		}
+	}
+
+	public static class WndArabicWarn extends WndTitledMessage{
+
+		public WndArabicWarn() {
+			super(Icons.INFO.get(), "دعم تجريبي للغة العربية!", "تدعم لعبة Shattered Pixel Dungeon الآن اللغة العربية! نظرًا لأن اللغة العربية لغة تُكتب من اليمين إلى اليسار، فقد كانت هناك حاجة إلى بعض وظائف عرض النصوص الجديدة لجعلها تعمل. يجب أن يعمل كل شيء في الغالب، ولكن يُرجى إبلاغي إذا واجهت أي مشاكل! يمكنك تغيير اللغة مرة أخرى إلى الإنجليزية في قائمة الإعدادات");
+
+			RenderedTextBlock text = PixelScene.renderTextBlock( 6 );
+			text.text("_Experimental Arabic Support!_\n\nShattered Pixel Dungeon now supports Arabic! Because Arabic is a right-to-left language, some new text-rendering functionality was needed. Things should work for the most part, but please let me know if you encounter issues! You can switch the language back to English in the settings menu.", width);
+			text.setPos( 0, height + 2*GAP );
+			add( text );
+
+			resize(width, (int) text.bottom());
 		}
 	}
 }

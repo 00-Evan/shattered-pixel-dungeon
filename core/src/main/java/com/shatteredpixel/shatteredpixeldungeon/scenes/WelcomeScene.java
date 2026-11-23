@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Fireball;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
@@ -40,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TitleBackground;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndHardNotification;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndSettings;
 import com.watabou.glwrap.Blending;
 import com.watabou.input.ControllerHandler;
 import com.watabou.noosa.Camera;
@@ -234,6 +236,10 @@ public class WelcomeScene extends PixelScene {
 					//do nothing, must press the okay button
 				}
 			});
+		}
+
+		if (SPDSettings.language() == Languages.ARABIC){
+			addToFront(new WndSettings.WndArabicWarn());
 		}
 	}
 
