@@ -1,4 +1,4 @@
-(Last Updated October 2026)
+(Last Updated November 2026)
 
 This guide covers a few changes developers will likely want to make when creating their own Pixel Dungeon version based on Shattered's source code.
 
@@ -24,7 +24,7 @@ For the title screen, you can find the game's title graphic and separate glow la
 
 For icons, you can find the icons for each platform here: [Android(debug)](../android/src/debug/res), [Android(release)](../android/src/main/res), [Desktop](../desktop/src/main/assets/icons), [iOS](../ios/assets/Assets.xcassets). These should also be modified, ideally more than a recolor.
 
-If you just want to make a version to share on PD communities then changes here can be minimal, but **if you plan to release your version on storefronts such as Google Play, then larger changes here are NECESSARY!** Google Play in particular has a history of taking down PD versions for 'impersonating' Shattered, and so making changes to the name and core visuals to sufficiently differentiate your version is important. Google also has a mechanism to give them [advanced notice](https://support.google.com/googleplay/android-developer/answer/6320428) that you have permission to use Shattered's code/assets under the GPLv3 license. Sadly, in 2026 it seems that removing "Pixel Dungeon" from your app name is the most consistent way to avoid trouble here.
+If you just want to make a version to share on PD communities then changes here can be minimal, but **if you plan to release your version on storefronts such as Google Play, then larger changes here are NECESSARY!** Google Play in particular has a history of taking down PD versions for 'impersonating' Shattered, and so making changes to the name and core visuals to sufficiently differentiate your version is important. Google also has a mechanism to give them [advanced notice](https://support.google.com/googleplay/android-developer/answer/6320428) that you have permission to use Shattered's code/assets under the GPLv3 license. Sadly, currently it seems that removing "Pixel Dungeon" from your app name is the most consistent way to avoid trouble here.
 
 ## Application Version Code
 

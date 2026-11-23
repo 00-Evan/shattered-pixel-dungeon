@@ -18,7 +18,7 @@ A JAR (Java ARchive) is a file used to distribute Java applications. Just as wit
 
 Note that by distributing your modification of Shattered Pixel Dungeon, you are bound by the terms of the GPLv3 license, which requires that you make any modifications you have made open-source. If you followed this guide and are using version control, that is already set up for you as your forked repository is publicly hosted on GitHub. Just make sure to push any changes you make back to that repository.
 
-Note that JAR files will require a [Java 11+ runtime environment](https://adoptium.net/temurin/releases) (a 'JRE', not a 'JDK') to be installed on a user's computer in order to work. This is unfortunately a pretty big technical hurdle for most users, so JAR builds aren't suitable for wider distribution.
+Note that JAR files will require a [Java 11+ runtime environment](https://adoptium.net/temurin/releases) (a 'JRE', not a 'JDK') to be installed on a user's computer in order to work. This is unfortunately a pretty big technical hurdle for most users, so JAR builds aren't suitable for wider distribution. For now, you can lower this requirement to [Java 8](https://www.java.com/en/download/) (which is generally easier for users to install) by changing the `appJavaCompatibility` variable in the main build.gradle file to `JavaVersion.VERSION_1_8`. Note that Java 8 support is being phased out, and so changing this value will cause a bunch of warnings to be spit up.
 
 ## Generating OS-Specific Executables
 

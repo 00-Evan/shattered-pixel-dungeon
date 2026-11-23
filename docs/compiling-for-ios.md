@@ -1,4 +1,4 @@
-(Last Updated October 2026)
+(Last Updated November 2026)
 
 Follow the steps in [getting started](./getting-started.md) first if you haven't already.
 

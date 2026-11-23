@@ -17,7 +17,7 @@ Shattered Pixel Dungeon currently compiles for Android, iOS, and Desktop platfor
 
 ## Notes for Developers:
 
-(Last Updated October 2026)
+(Last Updated November 2026)
 
 ### Contributing
 
@@ -29,7 +29,7 @@ Issue reports of all kinds (bug reports, feature requests, etc.) are welcome.
 
 Shattered Pixel Dungeon is made by humans (me, I'm the human), for humans. Generative AI in its current form is privately owned technology built on mass-theft, which is actively attempting to replace the very people it has stolen from. **This project does not use genAI/LLMs in ANY way.**
 
-If you are considering using genAI when making your own Pixel Dungeon version, **DON'T**. If you do use AI, do not message me asking for help, permission, etc. I don't want anything to do with you.
+If you are considering using genAI when making your own Pixel Dungeon version, **DON'T**. If you do use AI, do not message me asking for help, advice, permission, etc. I don't want anything to do with you.
 
 ### Documentation
 
@@ -41,3 +41,5 @@ If you'd like to work with the code, you can find the following guides in `/docs
   - [Compiling for iOS](docs/compiling-for-ios.md)
 - [Recommended changes for making your own version](docs/recommended-changes.md)
   - **This section has important details If you plan to distribute your PD version on storefronts like Google Play!**
+
+Please also feel free to message me if you'd like any help/advice working with the code, or have suggestions for other things you'd like to see explained here! I am actively trying to make Shattered's codebase easier for humans (not AI) to work with, and so I hope to expand these docs soon.
