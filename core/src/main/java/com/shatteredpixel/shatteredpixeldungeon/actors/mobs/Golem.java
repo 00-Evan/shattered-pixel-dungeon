@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -126,22 +127,29 @@ public class Golem extends Mob {
 		enemyTeleCooldown--;
 		if (teleporting){
 			((GolemSprite)sprite).teleParticles(false);
-			if (Actor.findChar(target) == null && Dungeon.level.openSpace[target]) {
-				ScrollOfTeleportation.appear(this, target);
-				selfTeleCooldown = 30;
-			} else {
-				target = Dungeon.level.randomDestination(this);
+			if (!selfTeleport(target)){
 				//try one more time
-				if (Actor.findChar(target) == null && Dungeon.level.openSpace[target]) {
-					ScrollOfTeleportation.appear(this, target);
-					selfTeleCooldown = 30;
-				}
+				target = Dungeon.level.randomDestination(this);
+				selfTeleport(target);
 			}
 			teleporting = false;
 			spend(TICK);
 			return true;
 		}
 		return super.act();
+	}
+
+	private boolean selfTeleport( int cell ){
+		if (Actor.findChar(cell) == null && Dungeon.level.openSpace[cell]) {
+			PinCushion pin = buff(PinCushion.class);
+			if (pin != null){
+				pin.detach();
+			}
+			ScrollOfTeleportation.appear(this, cell);
+			selfTeleCooldown = 100;
+			return true;
+		}
+		return false;
 	}
 
 	public void onZapComplete(){

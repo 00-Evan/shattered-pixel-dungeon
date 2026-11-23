@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ClericSpell;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.PhantomMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -67,6 +68,10 @@ public class PhantomPiranha extends Piranha {
 						}
 					}
 					if (!candidates.isEmpty()) {
+						PinCushion pin = buff(PinCushion.class);
+						if (pin != null){
+							pin.detach();
+						}
 						ScrollOfTeleportation.appear(this, Random.element(candidates));
 						aggro(dmgSource);
 					} else {
