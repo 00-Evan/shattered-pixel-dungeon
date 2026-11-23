@@ -209,11 +209,9 @@ public class WelcomeScene extends PixelScene {
 				//TODO: change the messages here in accordance with the type of patch.
 				message = Messages.get(this, "patch_intro");
 				message += "\n";
-				//message += "\n" + Messages.get(this, "patch_balance");
+				message += "\n" + Messages.get(this, "patch_balance");
 				message += "\n" + Messages.get(this, "patch_bugfixes");
 				message += "\n" + Messages.get(this, "patch_translations");
-
-				message = "Greetings beta testers!\n\nv4.0.3 has been in beta for a bit more than a week and I expect this will be the final beta patch for it. Expect full release in another couple of days!";
 			}
 		} else {
 			message = Messages.get(this, "what_msg");
