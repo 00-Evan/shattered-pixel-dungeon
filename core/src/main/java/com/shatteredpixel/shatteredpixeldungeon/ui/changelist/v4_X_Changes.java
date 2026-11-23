@@ -51,7 +51,9 @@ public class v4_X_Changes {
 				"\n" +
 				"To be honest I'm pretty wiped after v4.0 ended up taking almost 9 dang months to release after v3.3 (6 if you want to start from the last v3.3 patch), so I'm going to be taking things a bit easy for a while and don't have a specific ETA to provide.\n" +
 				"\n" +
-				"However, I would like to do another update in 2026, so you'll probably hear from me in another blog post with more details in the coming months."));
+				"However, I would like to do another update in 2026, so you'll probably hear from me in another blog post with more details in the coming months.\n" +
+				"\n" +
+				"**November Update:** With patches for v4.0 taking longer than expected (with some new features added!) it's now looking less likely that v4.1 will release this year. You can still expect a blog post from me soon though."));
 
 		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.ARTIFACT_KEY), "New Items",
 				"In terms of new gameplay content, I expect v4.1 will focus mainly on some new additions to various item categories! I've been developing a few promising ideas on the side, and I think it's time to start implementing some of them.\n" +
@@ -78,99 +80,35 @@ public class v4_X_Changes {
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo("v4.0.3-BETA-4", false, null);
+		changes = new ChangeInfo("v4.0.3", false, null);
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton( ChangeIcons.V081_MISC, Messages.get(ChangesScene.class, "misc"),
-				"**-** Updated translations\n" +
-				"**-** Ring of Force weapon damage bonus is now affected by weapon augments\n" +
-				"**-** Recycle spell item now re-shows its item selector after each use"));
-
-		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by BETA-3:**\n" +
-				"**-** Crystal enchantment having much less durability than intended\n" +
-				"**-** More champion enemies spawning than intended\n\n" +
-				"**Caused by BETA-1:**\n" +
-				"**-** Even more cases of Arabic characters not properly combining\n" +
-				"**-** Rare errors in new logic for large enemies\n\n" +
-				"**Existed Prior to v4.0:**\n" +
-				"**-** UI not properly updating if enemies become visible because of upgrading a talent"));
-
-		changes = new ChangeInfo("v4.0.3-BETA-3", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton( ChangeIcons.V23_ARROWS, "Poison Balance Changes",
-				"Many players disliked the game feel of the beta-1 venomous nerf, and it didn't affect the overall power of the enchant as much as I'd like anyway, so I'm trying something different:\n" +
-				"\n" +
-				"**- Venomous** initial delay reverted to 3 turns from 5.\n" +
-				"**- Poison** debuff now deals 1 damage for the last 3 turns of duration, up from the last 2. This means it now deals 1 dmg as many times as every other damage number.\n" +
-				"**-** Various non-venomous poison sources adjusted to compensate (in general they deal 1 more total dmg and last 1 more turn).\n" +
-				"**-** Poison effect from mystery meat nerfed, no longer deals absurd dmg at high max HP."));
-
-		changes.addButton( new ChangeButton( ChangeIcons.V081_MISC, Messages.get(ChangesScene.class, "misc"),
-				"**-** Updated translations\n" +
-				"**-** Putting game brightness at +1 or +2 now lightens the fog of war specifically again. If you've been playing with +2 to better see in the fog of war, try the game at +1.\n" +
-				"**-** Enemies can no longer randomly wander into shops\n" +
-				"**-** Unstable brew no longer has a chance to trigger purity effect when thrown\n" +
-				"**-** Summoning traps and multiplicity curse are no longer capable of spawning champion enemies\n" +
-				"**-** Added 'pressing' vfx/sfx to several buttons and button-like objects that were lacking them\n" +
-				"**-** Improved wording on potion of purity and Imp quest start"));
-
-		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by BETA-1:**\n" +
-				"**-** Further errors with combining symbols in Arabic\n" +
-				"**-** Crystal enchant never breaking on the spirit bow\n" +
-				"**-** Golems teleporting in the vault in some cases\n\n" +
-				"**Caused by v4.0.2:**\n" +
-				"**-** Standard rooms with stronger enemies still rarely connecting to the vault entrance\n\n" +
-				"**Caused by v4.0.0:**\n" +
-				"**-** Unstable enchant never triggering crystal\n\n" +
-				"**Existed Prior to v4.0:**\n" +
-				"**-** Scroll of Teleportation placing the hero right next to their previous location in some cases\n" +
-				"**-** Incorrect interactions between fury and time freeze or lethal momentum\n" +
-				"**-** Specific errors involving Duelist's challenge ability and moving between floors"));
-
-		changes = new ChangeInfo("v4.0.3-BETA-2", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton( ChangeIcons.V081_MISC, Messages.get(ChangesScene.class, "misc"),
-				"**-** Updated translations\n" +
-				"**-** Updated some internal code dependencies"));
-
-		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"**Caused by BETA-1:** \n" +
-				"**-** Various errors with combining symbols in Arabic"));
-
-		changes = new ChangeInfo("v4.0.3-BETA-1", false, null);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton( ChangeIcons.V081_DISPLAY_VERT, "Misc & QoL Features",
+		changes.addButton( new ChangeButton( ChangeIcons.V081_DISPLAY_VERT, "New Features",
 				"Shattered now supports a new language: **Arabic!** Because of the complexities of support inga RTL language, Arabic is currently not fully translated and is not yet usable for playing the game normally. I expect to fix issues with it as they get identified, let me know if you see any!\n" +
 				"\n" +
-				"Shattered's **brightness slider** has been overhauled, and now increases (or decreases) brightness/contrast for the entire game. Previously it just lightening the fog of war.\n" +
+				"Shattered's **brightness slider** has been overhauled, and now increases (or decreases) brightness/contrast for the entire game in addition to lightening the fog of war. Previously it only lightening the fog of war.\n" +
 				"\n" +
-				"The OSS Android version of shattered now has a local backup & restore system! It was previously impossible for de-googled Android users to back up or migrate save data, as all Android OS backup/restore features are proprietary these days. Other versions of the game already have accessible save data (e.g. desktop) or existing backup solutions (e.g. Google Play, AppStore, Steam.)"));
+				"The OSS Android version of shattered now has a **local backup & restore system**! It was previously impossible for de-googled Android users to back up or migrate save data, as all Android OS backup/restore features are proprietary these days. Other versions of the game already have accessible save data (e.g. desktop) or existing backup solutions (e.g. Google Play, AppStore, Steam)."));
 
 		changes.addButton( new ChangeButton( ChangeIcons.V23_ARROWS, "Many Balance Changes",
 				"I was planning to make many of these balance changes in v4.1, but I've been patching v4.0 for long enough that there's plenty of gameplay data to make a bunch of changes now. Many of these changes are aimed as improving underperforming items or adjusting other mechanics.\n" +
 				"\n" +
 				"**Imp Quest** reward scaling is now more generous. The ability to take out higher upgraded items and unlocking the imp shop now both occur at lower levels of exploration. Taking out any item you want still requires defeating the boss however.\n" +
 				"\n" +
-				"**- Paralysis resist** now always guarantees that a character will get to take 1 action before being able to be paralysed again.\n" +
+				"**Paralysis resist** now always guarantees that a character will get to take 1 action before being able to be paralysed again.\n" +
 				"\n" +
+				"**Poison** has received a couple tweaks, mainly aimed at lightly nerfing venomous:\n" +
+				"**- Poison** debuff now deals 1 damage for the last 3 turns of duration, up from the last 2. This means it now deals 1 dmg as many times as every other damage number.\n" +
+				"**-** Non-venomous poison sources adjusted to compensate (in general they deal 1 more total dmg and last 1 more turn).\n" +
+				"**-** Poison effect from mystery meat nerfed, no longer deals absurd dmg at high max HP.",
+
 				"**- Force cube** base dmg reverted to 10-25 from 10-30, but now deals 1/2 dmg to allies and self\n" +
 				"**- Holy lance** charge cost reduced to 3 from 4\n" +
-				"**- Exotic Crystals** now give a 0/33/67/100% chance (based on level) to drop an extra potion or scroll each floor.",
-
+				"**- Exotic Crystals** now give a 0/33/67/100% chance (based on level) to drop an extra potion or scroll each floor.\n" +
+				"\n" +
 				"**Rings:**\n" +
-				"**- Force** soft STR scaling cap up to 20 from 18, weapon bonus dmg now applies to thrown weapons, and dmg bonus to weapons can now scale from 1-1 to 1-3 based on weapon tier.\n" +
+				"**- Force** soft STR scaling cap up to 20 from 18, weapon bonus dmg now applies to thrown weapons, and dmg bonus to weapons can now scale from 1-1 to 1-3 based on weapon tier. Bonus dmg to weapons now also respects weapon augment.\n" +
 				"**- Sharpshooting** durability boost per level up to 25% from 20%\n" +
 				"**- Might** max HP boost level level up to 5% from 3.5%\n" +
 				"\n" +
@@ -184,7 +122,6 @@ public class v4_X_Changes {
 				"**- Growing** champions now power up more slowly over time, most noticeable after 2x power\n" +
 				"\n" +
 				"**Enchantments & Glyphs:**\n" +
-				"**- Venomous** initial poison delay up to 5 turns from 3\n" +
 				"**- Crystal** enchantment no longer destroys the weapon when it breaks, only the enchantment is lost\n" +
 				"**- Viscocity** base dmg deferred up to 25% from 17%\n" +
 				"**- Flow** speed boost now persists for an extra 0.25 turns per level, but speed boost is down to 2x, from 2x + 0.5x per lvl\n" +
@@ -194,26 +131,36 @@ public class v4_X_Changes {
 				"**-** Large enemies should no longer stand completely still when being attacked around corners\n" +
 				"**-** Spinner webs are no longer impassable for large characters (they are still rooted)\n" +
 				"**-** Artifacts are no longer usable in the dwarf vault, to prevent exploits\n" +
-				"**-** Improved clarity on the Imp's warning text when unprepared for the final vault quest fight\n" +
-				"\n" +
+				"**-** Enemies can no longer randomly wander into shops\n" +
+				"**-** Summoning traps and multiplicity curse are no longer capable of spawning champion enemies\n" +
+				"**-** Unstable brew no longer has a chance to trigger purity effect when thrown\n" +
+				"**-** Recycle spell item now re-shows its item selector after each use\n" +
 				"**-** Improved occlusion shadowing visuals around doorways\n" +
 				"**-** hotkeys for selecting a particular bag now open the inventory UI if it was closed\n" +
 				"**-** Slightly improved the visuals when the greater elemental spawns and swaps forms\n" +
 				"**-** Removed support for iOS devices with A8- processors\n" +
 				"**-** Removed 10 year old rendering optimizations that are no longer relevant\n" +
+				"**-** Added 'pressing' vfx/sfx to several buttons and button-like objects that were lacking them\n" +
+				"**-** Improved wording on potion of purity and parts of Imp quest\n" +
 				"**-** Updated various internal code libraries"));
 
 		changes.addButton( new ChangeButton( ChangeIcons.V061_BUGFIX, Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
-				"**Caused by v4.0.2:** \n" +
+				"**Caused by v4.0.1/v4.0.2:** \n" +
 				"**-** Crystal enchantment never breaking in most cases\n" +
+				"**-** Standard rooms with stronger enemies still rarely connecting to the vault entrance\n" +
 				"\n" +
 				"**Caused by v4.0.0:**\n" +
 				"**-** Cursed wand transmutation effect applying to spirit bow or mage's staff when triggered via wondrous curse\n" +
 				"**-** Rare game freezes in crystal caves quest\n" +
 				"**-** Rare cases where the hero could teleport into walls\n" +
-				"\n" +
+				"**-** Unstable enchant never triggering crystal\n" +
+				"**-** UI not properly updating if enemies become visible because of upgrading a talent"
+				,
 				"**Existed Prior to v4.0:**\n" +
+				"**-** Scroll of Teleportation placing the hero right next to their previous location in some cases\n" +
+				"**-** Incorrect interactions between fury and time freeze or lethal momentum\n" +
+				"**-** Specific errors involving Duelist's challenge ability and moving between floors\n" +
 				"**-** Ripper demons not swapping targets in lots of cases where they should\n" +
 				"**-** Beaming ray's distance check incorrectly interacting with stasis\n" +
 				"**-** Rare quirks with hiding mimic sprites\n" +
